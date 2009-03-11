@@ -25,12 +25,12 @@ $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 ## On or off 
 $compress_options['active'] = "0";
-## Display a link back to PHP Speedy
+## Display a link back to Web Optimizer
 $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
-## Should Speedy Clean Up the cache directory?
+## Should Web Optimizer Clean Up the cache directory?
 $compress_options['cleanup']['on'] = "0";
-## Should Speedy use data URIs for background images?
+## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";

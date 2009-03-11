@@ -1,4 +1,8 @@
 <?php
+/**
+ * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
+ *
+ **/
 //We need these
 require("controller/admin.php");
 require("libs/php/view.php");
@@ -9,11 +13,11 @@ $_GET['page'] = 'install_set_password';
 }
 
 //Merge _GET and _POST
-$input = array_merge($_GET,$_POST);
+$input = array_merge($_GET, $_POST);
 
 //Con. the view library
 $view = new compressor_view();
 
 //Con. the admin controller
-new admin(array('view'=>$view,'input'=>$input));
+new admin(array('view'=>$view, 'input'=>$input));
 ?>
