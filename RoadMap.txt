@@ -1,0 +1,50 @@
+1. Installer: 1 php file ot full archive. Several languages / OSes.
+ a) Checks for curl -- and download / create all necessary files
+ b) If no curl -- ask to download full archive 
+
+2. System check
++a) .htaccess posibility
++b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
+ c) PHP (other languages) libs: gzhandler , etc.
+
+3. Configurator: config.php -- number of options
++a) CSS / JS merging
++b) CSS / JS gzip
+ c) CSS /JS compressing options
++d) .htaccess enabling
++e) data:URI
+ f) auto CSS Sprites
++g) Caching headers (Expires, Cache-Control, Last-Modified)
+ h) CDN integration options
++i) Cache directory
+ j) Source directories for CSS / JS files
+ k) Source PHP / HTML files to auto-change
+ l) images optimization settings
+ m) usage of auto-optimization solutions (smash.it / webo.in)
+ n) website load counter (via webo.in)
+
+4. Minifier
++a) JSMin (PHP4/5)
+ b) CSS Tidy for CSS files (no rules merging)
+ c) YUI Compressor (if java exists)
+
+5. Including
+ a) Manual including 2 strings
+ b) Semi-auto including (root index.php)
+ c) Auto-parsing source directories for css / js files
+
+6. Possiblity to enable unobtrusive JS
+ a) YASS module loading
+ b) Auto tree of modules
+
+7. CDN integration
+ a) Google Apps Engine
+ b) AMazon S3
+ c) EdgeCast
+ d) 
+ e) NGENIX
+
+8. Server cache integration
++a) Raw files (cache directory)
+ b) APC
+ c) Memcache
