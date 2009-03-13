@@ -23,6 +23,7 @@ $compress_options['gzip']['css'] = "0";
 ## Versioning
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
+$compress_options['far_future_expires']['static'] = "1";
 ## On or off 
 $compress_options['active'] = "0";
 ## Display a link back to Web Optimizer

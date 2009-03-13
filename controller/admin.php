@@ -180,7 +180,7 @@ class admin {
 					),
 					'css_sprites'=>array(
 						'title'=>'CSS Sprites',
-						'intro'=>'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP reuqests website load.
+						'intro'=>'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
 									<br/>This technique is fully supported by all modern browsers.',
 						'value'=>$this->compress_options['css_sprites']
 					),
@@ -210,14 +210,14 @@ class admin {
 					)
 	);
 	
-	$page_variables = array("title"=>"Installation stage 2",
-							"paths"=>$this->view->paths,
-							"page"=>$this->input['page'],
-							"message"=>$save,
-							"javascript_cachedir"=>$this->view->paths['full']['current_directory'],
-							"css_cachedir"=>$this->view->paths['full']['current_directory'],
-							"options"=>$options,
-							"compress_options"=>$this->compress_options);	
+	$page_variables = array("title" => "Installation stage 2",
+							"paths" => $this->view->paths,
+							"page" => $this->input['page'],
+							"message" => $save,
+							"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
+							"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
+							"options" => $options,
+							"compress_options" => $this->compress_options);	
 	
 	//Show the install page
 	$this->view->render("admin_container",$page_variables);
@@ -335,28 +335,46 @@ mod_gzip_maximum_inmem_size 60000
 mod_gzip_min_http 1000
 mod_gzip_handle_methods GET POST
 mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
+mod_gzip_dechunk Yes";
+					if ($this->input['user']['gzip']['page']) {
+						$content .= "
 mod_gzip_item_include mime ^text/html$
 mod_gzip_item_include mime ^text/plain$
-mod_gzip_item_include mime ^text/css$
+mod_gzip_item_include mime ^image/x-icon$
+mod_gzip_item_include mime ^httpd/unix-directory$";
+					}
+					if ($this->input['user']['gzip']['css']) {
+						$content .= "
+mod_gzip_item_include mime ^text/css$";
+					}
+					if ($this->input['user']['gzip']['javascript']) {
+						$content .= "
 mod_gzip_item_include mime ^text/javascript$
 mod_gzip_item_include mime ^application/javascript$
-mod_gzip_item_include mime ^application/x-javascript$
-mod_gzip_item_include mime ^image/x-icon$
-mod_gzip_item_include mime ^httpd/unix-directory$
-mod_gzip_dechunk Yes";
+mod_gzip_item_include mime ^application/x-javascript$";
 					}
+				}
 				if ($htaccess_options['mod_deflate']) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/html
-AddOutputFilterByType DEFLATE text/xml
-AddOutputFilterByType DEFLATE text/css
-AddOutputFilterByType DEFLATE text/javascript
-AddOutputFilterByType DEFLATE application/javascript
-AddOutputFilterByType DEFLATE application/x-javascript
-AddOutputFilterByType DEFLATE image/x-icon
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+					if ($this->input['user']['gzip']['page']) {
+						$content .= "
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE image/x-icon";
+					}
+					if ($this->input['user']['gzip']['css']) {
+						$content .= "
+AddOutputFilterByType DEFLATE text/css";
+					}
+					if ($this->input['user']['gzip']['javascript']) {
+						$content .= "
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript";
+					}
 				}
 				if ($htaccess_options['mod_expires']) {
 					$content .= "
@@ -365,6 +383,24 @@ ExpiresDefault \"access plus 10 years\"
 <FilesMatch .*\.(php|phtml|shtml|html|xml)$>
 	ExpiresActive Off
 </FilesMatch>";
+					if (!$this->input['user']['far_future_expires']['css']) {
+						$content .= "
+<FilesMatch .*\.css$>
+	ExpiresActive Off
+</FilesMatch>";
+					}
+					if (!$this->input['user']['far_future_expires']['javascript']) {
+						$content .= "
+<FilesMatch .*\.js$>
+	ExpiresActive Off
+</FilesMatch>";
+					}
+					if (!$this->input['user']['far_future_expires']['static']) {
+						$content .= "
+<FilesMatch .*\.(bmp|png|gif|jpe?g|ico|swf|flv|pdf)$>
+	ExpiresActive Off
+</FilesMatch>";
+					}
 				}
 				if ($htaccess_options['mod_headers']) {
 					if ($htaccess_options['mod_deflate'] || $htaccess_options['mod_gzip']) {
@@ -376,7 +412,7 @@ ExpiresDefault \"access plus 10 years\"
 					}
 					if ($htaccess_options['mod_expires']) {
 						$content .= "
-<FilesMatch \"\\.(ico|pdf|flv|swf|jpe?g|png|gif|js|css)$\">
+<FilesMatch \"\\.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$\">
 	Header unset Last-Modified
 	FileETag MTime
 </FilesMatch>";

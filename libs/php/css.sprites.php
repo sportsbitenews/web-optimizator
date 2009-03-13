@@ -16,7 +16,7 @@ class css_sprites {
 		require('class.csstidy.php');
 /* convert CSS code to hash */
 		$this->css = new csstidy();
-		$this->css->load_template($root_dir . '/web-optimizer/lib/php/css.template.tpl');
+		$this->css->load_template($root_dir . 'web-optimizer/libs/php/css.template.tpl');
 		$this->css->parse($css_code);
 /* array for global media@ distribution */
 		$this->media = array();
@@ -142,7 +142,7 @@ class css_sprites {
 
 					if ($image['height'] && $image['width'] && !$image['background-repeat']) {
 
-						$image['background-repeat'] = $media[$import][$key]['background-repeat'] = 'no-repeat';
+						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
 
 					}
 
@@ -180,7 +180,7 @@ class css_sprites {
 						list($width, $height) = $this->get_image($sprite, &$css_image);
 						if ($width && $height && !preg_match("/(bottom|center|em|%)/", $image['background-position'])) {
 //need to handle existing shift
-							if (!$css_images[$sprite]) {
+							if (!$this->css_images[$sprite]) {
 
 								$this->css_images[$sprite] = array();
 								$this->css_images[$sprite]['x'] = 0;
@@ -189,12 +189,8 @@ class css_sprites {
 
 							}
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array(preg_replace("/.*\//", "", $css_image), $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, 0, 0, $import, $key);
 
-						} else {
-							if (is_file($css_image)) {
-								unlink($css_image);
-							}
 						}
 
 					}
@@ -217,12 +213,8 @@ class css_sprites {
 
 							}
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array(preg_replace("/.*\//", "", $css_image), $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, 0, 0, $import, $key);
 
-						} else {
-							if (is_file($css_image)) {
-								unlink($css_image);
-							}
 						}
 
 					}
@@ -254,12 +246,8 @@ class css_sprites {
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
 
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array(preg_replace("/.*\//", "", $css_image), $width, $height, $left, $top, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, $left, $top, $import, $key);
 
-						} else {
-							if (is_file($css_image)) {
-								unlink($css_image);
-							}
 						}
 
 					}
@@ -269,8 +257,8 @@ class css_sprites {
 					if (count($this->css_images[$image['background-image']]) < 2) {
 
 						$sprite = 'webo.'. $this->timestamp .'.png';
-						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = $thos->get_image($sprite, &$css_image);
+						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image($sprite, &$css_image);
 /* try to place image if it's possible */
 						if ($width && $height && !preg_match("/(right|bottom|center|em|%)/", $image['background-position'])) {
 							if (!$this->css_images[$sprite]) {
@@ -286,12 +274,8 @@ class css_sprites {
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
 
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array(preg_replace("/.*\//", "", $css_image), $width, $height, $left, $top, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, $left, $top, $import, $key);
 
-						} else {
-							if (is_file($css_image)) {
-								unlink($css_image);
-							}
 						}
 
 					}
@@ -728,7 +712,7 @@ class css_sprites {
 
 						}
 
-						if ($this->css->css[$import][$key]['background-color'] || $css_left || $css_top || $this->css->css[$import][$key]['background-attachement']) {
+						if ($this->css->css[$import][$key]['background-color'] || $css_left || $css_top || $this->css->css[$import][$key]['background-attachement'] || $this->css->css[$import][$key]['background']) {
 /* update current styles in initial selector */
 							$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", ($this->css->css[$import][$key]['background-color'] ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
 								($css_left ? $css_left . 'px ' : '0 '). ($css_top ? $css_top . 'px ' : '0 ') . $css_repeat . ' ' .
@@ -749,15 +733,15 @@ class css_sprites {
 
 				}
 /* output final sprite */
-				if ($this->truecolor_in_jpeg && $fullcolor) {
+				if ($this->truecolor_in_jpeg && $fullcolor && ($type == 3 || $type == 4)) {
 					$sprite = preg_replace("/png$/", "jpg", $sprite);
 					imagejpeg($sprite_raw, $sprite, 75);
 				} else {
 					imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
-					if (is_file($this->root_dir . '/web-optimizer/lib/php/pngcrush')) {
+					if (is_file($this->root_dir . 'web-optimizer/libs/php/pngcrush')) {
 
-						shell_exec($this->root_dir . '/web-optimizer/lib/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
+						shell_exec($this->root_dir . 'web-optimizer/libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
 						if (is_file('pngout.png') && filesize('pngout.png') < filesize($sprite)) {
 							copy('pngout.png', $sprite);
 							unlink('pngout.png');

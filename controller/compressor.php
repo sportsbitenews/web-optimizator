@@ -395,7 +395,7 @@ class compressor {
 		$options['original_ext'] = $options['ext'];
 		
 		//Change the extension
-		if($options['gzip'] || $options['far_future_expires']) {
+		if(!empty($options['gzip']) || !empty($options['far_future_expires'])) {
 			$options['ext'] = "php";
 		}
 		
@@ -447,11 +447,11 @@ class compressor {
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info); //Absolute paths
 
 						if ($options['css_sprites']) {
-							$file_contents = $this->convert_css_sprites($file_contents, $info, $options); //Create CSS Sprites in CSS dir
+							$file_contents = $this->convert_css_sprites($file_contents, $options); //Create CSS Sprites in CSS dir
 						}
 
 						if ($options['data_uris']) {
-							$file_contents = $this->convert_css_bgr_to_data($file_contents, $info); //CSS background images to data URIs
+							$file_contents = $this->convert_css_bgr_to_data($file_contents, $options); //CSS background images to data URIs
 						}
 
 						$file_contents = $this->add_media_header($file_contents, $info); //Add media type header
@@ -1049,10 +1049,9 @@ class compressor {
 	* Convert all background image to CSS Sprites if possible
 	**/
 	
-	function convert_css_sprites ($content, $info, $options) {
+	function convert_css_sprites ($content, $options) {
 
-		$dir = preg_replace("/\/[^\/]*$/", "", $info['src']);
-		chdir($dir);
+		chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['document_root'], $options['truecolor_in_jpeg']);
 		return $css_sprites->process();
 
@@ -1061,7 +1060,7 @@ class compressor {
 	/**
 	* Take CSS background images and convert to data URIs
 	**/
-	function convert_css_bgr_to_data($content,$path) {
+	function convert_css_bgr_to_data($content, $path) {
 		
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
 				
@@ -1071,10 +1070,14 @@ class compressor {
 			foreach($matches[1] AS $key=>$file) {
 			
 				$original_file = trim($file);
+				if (preg_match("/^webo[ixy\.]/", $file)) {
+					$file_path = $path['cachedir'] . '/' . $file;
+				} else {
 				//Get full path
-				$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);				
-				$file_path = trim($file_path);
-							
+					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);				
+					$file_path = trim($file_path);
+				}
+			
 				//Get mime type
 				$mime = $this->get_mimetype($file_path);
 				//Get file contents
