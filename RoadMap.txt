@@ -1,6 +1,8 @@
 1. Installer: 1 php file ot full archive. Several languages / OSes.
  a) Checks for curl -- and download / create all necessary files
  b) If no curl -- ask to download full archive 
+ c) Delete temporary directories
+ d) Uninstaller
 
 2. System check
 +a) .htaccess posibility
@@ -10,10 +12,10 @@
 3. Configurator: config.php -- number of options
 +a) CSS / JS merging
 +b) CSS / JS gzip
- c) CSS /JS compressing options
++c) CSS /JS compressing options
 +d) .htaccess enabling
 +e) data:URI
- f) auto CSS Sprites
++f) auto CSS Sprites
 +g) Caching headers (Expires, Cache-Control, Last-Modified)
  h) CDN integration options
 +i) Cache directory
@@ -25,11 +27,11 @@
 
 4. Minifier
 +a) JSMin (PHP4/5)
- b) CSS Tidy for CSS files (no rules merging)
++b) CSS Tidy for CSS files (no rules merging)
  c) YUI Compressor (if java exists)
 
 5. Including
- a) Manual including 2 strings
++a) Manual including 2 strings
  b) Semi-auto including (root index.php)
  c) Auto-parsing source directories for css / js files
 
