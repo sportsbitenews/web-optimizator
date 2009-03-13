@@ -13,13 +13,13 @@ $compress_options['js_libraries'] = "";
 ## Ignore list
 $compress_options['ignore_list'] = "";
 ## Minify options
-$compress_options['minify']['javascript'] = "0";
+$compress_options['minify']['javascript'] = "1";
 $compress_options['minify']['page'] = "1";
 $compress_options['minify']['css'] = "1";
 ## Gzip options
-$compress_options['gzip']['javascript'] = "0";
-$compress_options['gzip']['page'] = "0";
-$compress_options['gzip']['css'] = "0";
+$compress_options['gzip']['javascript'] = "1";
+$compress_options['gzip']['page'] = "1";
+$compress_options['gzip']['css'] = "1";
 ## Versioning
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
