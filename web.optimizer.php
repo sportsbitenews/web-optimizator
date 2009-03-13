@@ -11,7 +11,7 @@
 require("controller/compressor.php");
 require("libs/php/view.php"); //Include this for path getting help
 require("libs/php/user_agent.php"); //Include this for getting user agent
-require('libs/css.sprites.php'); //Include this for CSS Sprites generating
+require("libs/php/css.sprites.php"); //Include this for CSS Sprites generating
 
 //We need to know the config
 require("config.php");
@@ -25,18 +25,15 @@ $user_agent = new _webo_User_agent();
 //Con. the js min library
 if (substr(phpversion(), 0, 1) == 5) {
 	require_once('libs/php/jsmin5.php');
-	$jsmin = new JSMin(null);
 }
 
 if (substr(phpversion(), 0, 1) == 4) {
 	require_once('libs/php/jsmin4.php');
-	$jsmin = new JSMin(null);
 }
 
 //Con. the compression controller
 $compressor = new compressor(array('view'=>$view,
 	'options' => $compress_options,
-	'jsmin' => $jsmin,
 	'user_agent' => $user_agent)
 );
 ?>

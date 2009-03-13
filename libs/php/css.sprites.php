@@ -15,7 +15,8 @@ class css_sprites {
 
 		require('class.csstidy.php');
 /* convert CSS code to hash */
-		$this-css = new csstidy();
+		$this->css = new csstidy();
+		$this->css->load_template($root_dir . '/web-optimizer/lib/php/css.template.tpl');
 		$this->css->parse($css_code);
 /* array for global media@ distribution */
 		$this->media = array();
@@ -55,7 +56,7 @@ class css_sprites {
 
 							if ($key == 'background') {
 /* resolve background property */
-								$background = $css->optimise->dissolve_short_bg($value);
+								$background = $this->css->optimise->dissolve_short_bg($value);
 								foreach ($background as $bg => $property) {
 /* skip default properties */
 									if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left' || $property == 'top' || $property == 'left')) &&
@@ -176,7 +177,7 @@ class css_sprites {
 
 						$sprite = 'webox.'. $this->timestamp .'.png';
 						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = get_image($sprite, &$css_image);
+						list($width, $height) = $this->get_image($sprite, &$css_image);
 						if ($width && $height && !preg_match("/(bottom|center|em|%)/", $image['background-position'])) {
 //need to handle existing shift
 							if (!$css_images[$sprite]) {
@@ -204,7 +205,7 @@ class css_sprites {
 
 						$sprite = 'weboy.'. $this->timestamp .'.png';
 						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = get_image($sprite, &$css_image);
+						list($width, $height) = $this->get_image($sprite, &$css_image);
 						if ($width && $height && !preg_match("/(right|center|em|%)/", $image['background-position'])) {
 
 							if (!$this->css_images[$sprite]) {
@@ -237,7 +238,7 @@ class css_sprites {
 
 						$sprite = 'weboi.'. $this->timestamp .'.png';
 						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = get_image($sprite, &$css_image);
+						list($width, $height) = $this->get_image($sprite, &$css_image);
 /* try to place image if it's possible */
 						if ($width && $height && !preg_match("/(right|bottom|center|em|%)/", $image['background-position'])) {
 							if (!$this->css_images[$sprite]) {
@@ -269,7 +270,7 @@ class css_sprites {
 
 						$sprite = 'webo.'. $this->timestamp .'.png';
 						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = get_image($sprite, &$css_image);
+						list($width, $height) = $thos->get_image($sprite, &$css_image);
 /* try to place image if it's possible */
 						if ($width && $height && !preg_match("/(right|bottom|center|em|%)/", $image['background-position'])) {
 							if (!$this->css_images[$sprite]) {
@@ -302,14 +303,14 @@ class css_sprites {
 		}
 
 /* merge simple cases: repeat-x/y */
-		merge_sprites('webox.'. $this->timestamp .'.png', 1);
-		merge_sprites('weboy.'. $this->timestamp .'.png', 2);
+		$this->merge_sprites('webox.'. $this->timestamp .'.png', 1);
+		$this->merge_sprites('weboy.'. $this->timestamp .'.png', 2);
 /* than parse more complicated one: no-repeat icons */
-		merge_sprites('weboi.'. $this->timestamp .'.png', 3);
+		$this->merge_sprites('weboi.'. $this->timestamp .'.png', 3);
 /* only then try to combine all other images into the last one */
-		merge_sprites('webo.'. $this->timestamp .'.png', $4);
+		$this->merge_sprites('webo.'. $this->timestamp .'.png', 4);
 
-		return $css->print->formatted();
+		return $this->css->print->formatted();
 	}
 
 /* download requested image */
@@ -340,7 +341,7 @@ class css_sprites {
 		} else {
 			if (preg_match("/http:\/\//", $css_image)) {
 /* try to download image */
-				$ch = curl_init($css_image));
+				$ch = curl_init($css_image);
 				$css_image = preg_replace("/.*\//", "", $css_image);
 				$fp = fopen($css_image, "w");
 
@@ -365,7 +366,7 @@ class css_sprites {
 
 		if (is_file($css_image)) {
 /* check for animation */
-			if (strtolower(preg_replace("/.*\./", "", $css_image)) == 'gif' && is_animated_gif($css_image)) {
+			if (strtolower(preg_replace("/.*\./", "", $css_image)) == 'gif' && $this->is_animated_gif($css_image)) {
 
 				return array(0, 0);
 
@@ -549,7 +550,7 @@ class css_sprites {
 /* need to count placement for each image in array */
 			if ($type == 4) {
 
-				$this->css_images[$sprite] = sprites_placement($this->css_images[$sprite]);
+				$this->css_images[$sprite] = $this->sprites_placement($this->css_images[$sprite]);
 
 			} else {
 
@@ -748,16 +749,19 @@ class css_sprites {
 
 				}
 /* output final sprite */
-				imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+				if ($this->truecolor_in_jpeg && $fullcolor) {
+					$sprite = preg_replace("/png$/", "jpg", $sprite);
+					imagejpeg($sprite_raw, $sprite, 75);
+				} else {
+					imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
-				if (is_file($this->root_dir . '/web-optimizator/lib/pngcrush')) {
+					if (is_file($this->root_dir . '/web-optimizer/lib/php/pngcrush')) {
 
-					shell_exec($this->root_dir . '/web-optimizator/lib/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
-
-					if (is_file('pngout.png') && filesize('pngout.png') < filesize($sprite)) {
-
-						copy('pngout.png', $sprite);
-						unlink('pngout.png');
+						shell_exec($this->root_dir . '/web-optimizer/lib/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
+						if (is_file('pngout.png') && filesize('pngout.png') < filesize($sprite)) {
+							copy('pngout.png', $sprite);
+							unlink('pngout.png');
+						}
 
 					}
 

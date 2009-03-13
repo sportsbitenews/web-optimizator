@@ -143,21 +143,21 @@ class admin {
 
 	$options = array('cache_dir'=>array(
 						'title'=>'Cache Directory',
-						'intro'=>'PHP Speedy will store your compressed JavaScript and CSS files in a cache directory. <br/>You can enter a new directory below if desired. This directory must be within your document root and writable by the server. If in doubt just use the directory suggested.',
+						'intro'=>'Web Optimizer will store your compressed JavaScript and CSS files in a cache directory. <br/>You can enter a new directory below if desired. This directory must be within your document root and writable by the server. If in doubt just use the directory suggested.',
 						'key'=>'Directory',
 						'value'=>$this->compress_options['javascript_cachedir']
 					),
 					'js_libraries'=>array(
 						'title'=>'JavaScript Libraries',
-						'intro'=>'If your plugins or theme use a JavaScript library, it is advisable to let PHP Speedy handle where it is included.<br /><br />
-									Speedy has determined that the libraries below could be in use by your installation. It is recommended that you tick all the scripts to let PHP Speedy handle them.<br/><br />
+						'intro'=>'If your plugins or theme use a JavaScript library, it is advisable to let Web Optimizer handle where it is included.<br /><br />
+									Speedy has determined that the libraries below could be in use by your installation. It is recommended that you tick all the scripts to let Web Optimizer handle them.<br/><br />
 									If your plugins or theme use a higher version or you are sure you don\'t use the library at all, leave unticked.',
 						'key'=>'JS_Libraries',
 						'value'=>$this->compress_options['js_libraries']
 					),
 					'ignore_list'=>array(
 						'title'=>'Ignore list',
-						'intro'=>'PHP Speedy can ignore certain scripts of your choosing. Please enter the filenames of the scripts you would like to ignore below, separated by a comma.',
+						'intro'=>'Web Optimizer can ignore certain scripts of your choosing. Please enter the filenames of the scripts you would like to ignore below, separated by a comma.',
 						'key'=>'Ignore_List',
 						'value'=>$this->compress_options['ignore_list']
 					),
@@ -198,14 +198,14 @@ class admin {
 					),
 					'cleanup'=>array(
 						'title'=>'File cleanup',
-						'intro'=>'When you change your JavaScript or CCS PHP Speedy will automatically generate a new compressed file and remove any unused files from the directory.
+						'intro'=>'When you change your JavaScript or CSS Web Optimizer will automatically generate a new compressed file and remove any unused files from the directory.
 									<br/>However, if different pages in your site use different JS or CSS files Speedy will get confused and cleanup files it shouldn\'t. In this case, you should turn off the cleanup process.',
 						'value'=>$this->compress_options['cleanup']
 					),
 					'footer'=>array(
 						'title'=>'Footer text',
-						'intro'=>'PHP Speedy can add a link in your blog footer back to the PHP Speedy website. The link can be a text link, a small image link or both.
-									<br/>Please support PHP Speedy by enabling this.',
+						'intro'=>'Web Optimizer can add a link in your blog footer back to the Web Optimizer website. The link can be a text link, a small image link or both.
+									<br/>Please support Web Optimizer by enabling this.',
 						'value'=>$this->compress_options['footer']
 					)
 	);
@@ -287,37 +287,42 @@ class admin {
 				$docroot = substr($absolutepath, 0, strpos($absolutepath, $localpath));
 			}
 
-			//first of all just cut current PHP Speedy options from .htaccess
+			//first of all just cut current Web Optimizer options from .htaccess
 			$htaccess = $docroot.'/.htaccess';
-			$fp = @fopen($htaccess, 'r');
-			if (!$fp) {
-				$this->error("<p>Please sure that the root of your website is readable and writable to your web server process.</p>
-								<p>Make CHMOD 775 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
-			} else {
-				$stop_saving = 0;
-				$content_saved = '';
-				while ($htaccess_string = fgets($fp)) {
-					if (preg_match("/# PHP Speedy options/",$htaccess_string)) {
-						$stop_saving = 1;
-					}
-					if (!$stop_saving && $htaccess_string != "\n") {
-						$content_saved .= $htaccess_string;
-					}
-					if (preg_match("/# PHP Speedy end/",$htaccess_string)) {
-						$stop_saving = 0;
-					}
-				}
-				fclose($fp);
-			
-				$fp = @fopen($htaccess, 'w');
+			if (is_file($htaccess)) {
+				$fp = @fopen($htaccess, 'r');
 				if (!$fp) {
-					$this->error("<p>Please sure that the root of your website is writable to your web server process.</p>
-									<p>Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
+					$this->error("<p>Please sure that the root of your website is readable and writable to your web server process.</p>
+									<p>Make CHMOD 775 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
 				} else {
-					$htaccess_options = $this->input['user']['htaccess'];
-					$content = '# Web Optimizer options';
-					if ($htaccess_options['mod_gzip']) {
-						$content .= "
+					$stop_saving = 0;
+					$content_saved = '';
+					while ($htaccess_string = fgets($fp)) {
+						if (preg_match("/# Web Optimizer options/",$htaccess_string)) {
+							$stop_saving = 1;
+						}
+						if (!$stop_saving && $htaccess_string != "\n") {
+							$content_saved .= $htaccess_string;
+						}
+						if (preg_match("/# Web Optimizer end/",$htaccess_string)) {
+							$stop_saving = 0;
+						}
+					}
+					fclose($fp);
+					
+				}
+				
+			}
+			
+			$fp = @fopen($htaccess, 'w');
+			if (!$fp) {
+				$this->error("<p>Please sure that the root of your website is writable to your web server process.</p>
+								<p>Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
+			} else {
+				$htaccess_options = $this->input['user']['htaccess'];
+				$content = '# Web Optimizer options';
+				if ($htaccess_options['mod_gzip']) {
+					$content .= "
 mod_gzip_on Yes
 mod_gzip_can_negotiate Yes
 mod_gzip_static_suffix .gz
@@ -340,8 +345,8 @@ mod_gzip_item_include mime ^image/x-icon$
 mod_gzip_item_include mime ^httpd/unix-directory$
 mod_gzip_dechunk Yes";
 					}
-					if ($htaccess_options['mod_deflate']) {
-						$content .= "
+				if ($htaccess_options['mod_deflate']) {
+					$content .= "
 AddOutputFilterByType DEFLATE text/html
 AddOutputFilterByType DEFLATE text/xml
 AddOutputFilterByType DEFLATE text/css
@@ -352,35 +357,34 @@ AddOutputFilterByType DEFLATE image/x-icon
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
-					}
-					if ($htaccess_options['mod_expires']) {
-						$content .= "
+				}
+				if ($htaccess_options['mod_expires']) {
+					$content .= "
 ExpiresActive On
 ExpiresDefault \"access plus 10 years\"
 <FilesMatch .*\.(php|phtml|shtml|html|xml)$>
 	ExpiresActive Off
 </FilesMatch>";
-					}
-					if ($htaccess_options['mod_headers']) {
-						if ($htaccess_options['mod_deflate'] || $htaccess_options['mod_gzip']) {
-							$content .= "
+				}
+				if ($htaccess_options['mod_headers']) {
+					if ($htaccess_options['mod_deflate'] || $htaccess_options['mod_gzip']) {
+						$content .= "
 <FilesMatch .*\.(css|js|php|phtml|shtml|html|xml)$>
 	Header append Vary User-Agent
 	Header append Cache-Control private
 </FilesMatch>";
-						}
-						if ($htaccess_options['mod_expires']) {
-							$content .= "
+					}
+					if ($htaccess_options['mod_expires']) {
+						$content .= "
 <FilesMatch \"\\.(ico|pdf|flv|swf|jpe?g|png|gif|js|css)$\">
 	Header unset Last-Modified
 	FileETag MTime
 </FilesMatch>";
-						}
 					}
-					$content .= "\n# Web Optimizer end";
-					fwrite($fp, $content_saved."\n".$content);
-					fclose($fp);
 				}
+				$content .= "\n# Web Optimizer end";
+				fwrite($fp, $content_saved."\n".$content);
+				fclose($fp);
 			}
 		}
 	}

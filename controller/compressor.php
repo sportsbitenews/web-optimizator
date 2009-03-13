@@ -14,12 +14,12 @@ class compressor {
 	function compressor($options=false) {
 	
 		if(!empty($options['skip_startup'])) {
-		return;
+			return;
 		}	
 
 		//Allow merging of other classes with this one
 		foreach($options AS $key=>$value) {
-		$this->$key = $value;
+			$this->$key = $value;
 		}
 
 		//Set options
@@ -416,7 +416,7 @@ class compressor {
 		}
 			
 		//Get the cache hash
-		$cache_file = '_cmp_' . $options['save_name'] . '_' . md5(implode("_",$_script_array).$datestring.implode("_",$options));
+		$cache_file = md5(implode("_",$_script_array).$datestring.implode("_",$options));
 		$cache_file = urlencode($cache_file);
 		//echo $cache_file . "\n";
 							
@@ -447,7 +447,7 @@ class compressor {
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info); //Absolute paths
 
 						if ($options['css_sprites']) {
-							$file_contents = $this->convert_css_sprites($file_contents, $info, $options['truecolor_in_jpeg']); //Create CSS Sprites in CSS dir
+							$file_contents = $this->convert_css_sprites($file_contents, $info, $options); //Create CSS Sprites in CSS dir
 						}
 
 						if ($options['data_uris']) {
@@ -469,7 +469,8 @@ class compressor {
 		if(!empty($contents)) {	
 			//Allow for minification of javascript
 			if($options['header'] == "javascript" && $options['minify']) {
-				$contents = $this->jsmin->minify($contents);			
+				$this->jsmin = new JSMin($contents);
+				$contents = $this->jsmin->minify();
 			}
 			//Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS
 			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS
@@ -1048,11 +1049,11 @@ class compressor {
 	* Convert all background image to CSS Sprites if possible
 	**/
 	
-	function convert_css_sprites ($content, $info) {
+	function convert_css_sprites ($content, $info, $options) {
 
 		$dir = preg_replace("/\/[^\/]*$/", "", $info['src']);
 		chdir($dir);
-		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['document_root']);
+		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['document_root'], $options['truecolor_in_jpeg']);
 		return $css_sprites->process();
 
 	}
@@ -1097,8 +1098,8 @@ class compressor {
 * as far as IE8 supports data:URI -- it's actual only for this old stuff
 * unfortunately both selectors don't work with comma, only as different chunks
 **/
-						$this->ie_only_css[] = " " . $selector . " { * html background-image:url(" . $original_file . ")}";
-						$this->ie_only_css[] = " " . $selector . " { *+html background-image:url(" . $original_file . ")}";
+						$this->ie_only_css[] = " * html " . $selector . "{background-image:url(" . $original_file . ")}";
+						$this->ie_only_css[] = " *+html " . $selector . "{background-image:url(" . $original_file . ")}";
 /**
 * of course we can try to use mhtml: protocol for IE7- but there is an issue with IE7@Vista that doens't support it correctly
 * so due to compatibility issues only external images, no embedded ones
