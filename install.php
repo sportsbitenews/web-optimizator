@@ -9,7 +9,7 @@ require("libs/php/view.php");
 
 //Set the default page
 if(empty($_GET['page'])) {
-$_GET['page'] = 'install_set_password';
+	$_GET['page'] = 'install_set_password';
 }
 
 //Merge _GET and _POST

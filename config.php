@@ -32,6 +32,9 @@ $compress_options['footer']['image'] = "1";
 $compress_options['cleanup']['on'] = "0";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
+## Should Web Optimizer use CSS Sprites for background images?
+$compress_options['css_sprites']['enabled'] = "1";
+$compress_options['css_sprites']['truecolor_in_jpeg'] = "1";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";

@@ -11,6 +11,7 @@
 require("controller/compressor.php");
 require("libs/php/view.php"); //Include this for path getting help
 require("libs/php/user_agent.php"); //Include this for getting user agent
+require('libs/css.sprites.php'); //Include this for CSS Sprites generating
 
 //We need to know the config
 require("config.php");
