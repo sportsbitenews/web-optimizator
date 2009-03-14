@@ -64,9 +64,8 @@ class compressor {
 											 "minify" => $this->options['minify']['page']
 											)
 					          );	
-							  	
-		$this->options = $full_options; //overwrite ethe options array that we passed in
-					
+
+		$this->options = $full_options; //overwrite other options array that we passed in
 		//Make sure cachedir does not have trailing slash
 		foreach($this->options AS $key=>$option) {			
 			   if(!empty($option['cachedir'])) {
@@ -78,9 +77,8 @@ class compressor {
 			   $this->options[$key] = $option;			
 		}
 		
-	$this->options['show_timer'] = false; //time the javascript and css compression?	
-				
-							   
+		$this->options['show_timer'] = false; //time the javascript and css compression?	
+
 	}	
 
 	
@@ -201,69 +199,63 @@ class compressor {
 	* GZIP and minify the CSS as required
 	*
 	**/	
-	function css($options,$type) {
+	function css($options, $type) {
 	
-	$head = $this->get_head($this->content);			
-	if(!$head) { //Need a head
-	return;
-	}
-	
-	//Get links
-	preg_match_all("!<link[^>]+text/css[^>]+>!is", $head, $matches);	
-	if(count($matches[0]) == 0) {
-	return;
-	}
-			
-	//find variants
-	foreach($matches[0] AS $link) {
-		
-		preg_match_all("@(rel)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
-						
-		if(is_array($variants)) {
-			$marker = "";
-			foreach($variants AS $variant_type) {
-			$marker .= $variant_type[2];	
-			$return[$variant_type[1]] = $variant_type[2];
-			}
+		$head = $this->get_head($this->content);
+		if(!$head) { //Need a head
+			return;
 		}
-		
-		//Sub this new marker into the link
-		$marker = str_replace(" ","",$marker);
-		$new_link = preg_replace("@type=('|\")(.*?)('|\")@","type=$1" . "%%MARK%%" . "$3",$link);
-		$new_link = str_replace("%%MARK%%",md5($marker),$new_link);
-		$this->content = str_replace($link,$new_link,$this->content);
-		$return['real_type'] = $marker;
-		$media_types[md5($marker)] = $return;		
-					
-	}
-	
-	//print_r($media_types);	
-	$this->process_report['media_types'] = $media_types;
-								
-			//Compress separately for each media type	
-			foreach($media_types AS $key=>$value) {
-												
-				$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
-														  'tag' => 'link',
-														  'type' => $key,
-														  'ext' => 'css',
-														  'src' => 'href',
-														  'rel' => !empty($value['rel']) ? $value['rel'] : false,	
-														  'media' => !empty($value['media']) ? $value['media'] : false,
-														  'data_uris' => $options['data_uris'],
-														  'css_sprites' => $options['css_sprites'],
-														  'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
-														  'self_close' => true,
-														  'gzip' => $options['gzip'],
-														  'minify' => $options['minify'],
-														  'far_future_expires' => $options['far_future_expires'],												  
-														  'header' => $type,
-														  'save_name' => $type.$value['real_type']), $this->content);	
+/* Get links */
+		preg_match_all("!<link[^>]+stylesheet[^>]+>!is", $head, $matches);	
+		if(count($matches[0]) == 0) {
+			return;
+		}		
+/* find variants */
+		foreach($matches[0] AS $link) {
 
-				//Replace out the markers
-				$this->content = str_replace($key,'text/css',$this->content);												  
-
+			preg_match_all("@(rel)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
+			if(is_array($variants)) {
+				$marker = "";
+				foreach($variants AS $variant_type) {
+					$marker .= $variant_type[2];	
+					$return[$variant_type[1]] = $variant_type[2];
+				}
 			}
+/* Sub this new marker into the link */
+			$marker = str_replace(" ", "", $marker);
+			$new_link = preg_replace("@type=('|\")(.*?)('|\")@","type=$1" . "%%MARK%%" . "$3", $link);
+			$new_link = str_replace("%%MARK%%", md5($marker), $new_link);
+			$this->content = str_replace($link, $new_link, $this->content);
+			$return['real_type'] = $marker;
+			$media_types[md5($marker)] = $return;		
+					
+		}
+
+		$this->process_report['media_types'] = $media_types;
+								
+/* Compress separately for each media type*/
+		foreach($media_types AS $key => $value) {
+	
+			$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
+														'tag' => 'link',
+														'type' => $key,
+														'ext' => 'css',
+														'src' => 'href',
+														'rel' => !empty($value['rel']) ? $value['rel'] : false,	
+														'media' => !empty($value['media']) ? $value['media'] : false,
+														'data_uris' => $options['data_uris'],
+														'css_sprites' => $options['css_sprites'],
+														'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
+														'self_close' => true,
+														'gzip' => $options['gzip'],
+														'minify' => $options['minify'],
+														'far_future_expires' => $options['far_future_expires'],												  
+														'header' => $type,
+														'save_name' => $type.$value['real_type']), $this->content);	
+/* Replace out the markers */
+			$this->content = str_replace($key, 'text/css', $this->content);												  
+
+		}
 
 	}
 
@@ -403,10 +395,10 @@ class compressor {
 		$cachedir = $options['cachedir'];		
 		
 		//Get array of scripts
-		$script_array = $this->get_script_array($source,$options);	
+		$script_array = $this->get_script_array($source, $options);	
 												
 		//Get date string for making hash
-		$datestring = $this->get_file_dates($script_array,$options);
+		$datestring = $this->get_file_dates($script_array, $options);
 						
 		//If only one script found
 		if(!is_array($script_array)) {
@@ -416,17 +408,18 @@ class compressor {
 		}
 			
 		//Get the cache hash
-		$cache_file = md5(implode("_",$_script_array).$datestring.implode("_",$options));
+		$cache_file = md5(implode("_", $_script_array).$datestring.implode("_", $options));
 		$cache_file = urlencode($cache_file);
-		//echo $cache_file . "\n";
 							
 		//Check if the cache file exists
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {		
-			$script_array = $this->get_file_locations($script_array,$options);	//Put in locations and remove certain scripts		
-			$source = $this->_remove_scripts($script_array,$source);
-			$newfile = $this->get_new_file($options,$cache_file);
-			$source = str_replace("@@@marker@@@","",$source); //No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source);
-			//Move to top
+/* Put in locations and remove certain scripts */
+			$script_array = $this->get_file_locations($script_array, $options);
+			$source = $this->_remove_scripts($script_array, $source);
+			$newfile = $this->get_new_file($options, $cache_file);
+/* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
+			$source = str_replace("@@@marker@@@", "", $source);
+/* Move to top */
 			$source = preg_replace("!<head([^>]+)?>!is","$0 \n".$newfile."\n",$source);
 			return $source;
 		}
@@ -457,7 +450,7 @@ class compressor {
 						$file_contents = $this->add_media_header($file_contents, $info); //Add media type header
 					}
 
-					$contents .=  $file_contents . "\n";
+					$contents .=  preg_replace("/@import[^;]+;/", "", preg_replace("/;\}/", "}", $file_contents));
 			   		$source = $this->_remove_scripts($script_array,$source);
 
 				}				
@@ -562,7 +555,7 @@ class compressor {
 		
 		$files = $this->get_file_locations($files,$options);
 						
-		if(!is_array($files)) {
+		if (!is_array($files)) {
 			return;
 		}
 	
@@ -573,61 +566,116 @@ class compressor {
 			}
 		}
 		
-		if(is_array($dates)) {
-			return implode(".",$dates);
+		if (is_array($dates)) {
+			return implode(".", $dates);
 		}
+		
+		return;
 	
 	}
-	
+
+	/**
+	* Get full pathname for the given file
+	* 
+	**/
+	function get_file_name ($file) {
+
+		$file = preg_replace("/https?:\/\/".$_SERVER['HTTP_HOST']."/", "", $file);
+		if (substr($file,0,1) == "/") {
+			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
+		} else {
+			return $this->view->paths['full']['current_directory'] . $file;
+		}
+
+	}
+
+	/**
+	* Resursively resolve all @import in CSS files
+	* 
+	**/
+	function resolve_css_imports ($css_files, $src) {
+
+		$file = $this->get_file_name($src);
+		if (is_file($file)) {
+
+			$content = file_get_contents($file);
+			preg_match_all("/@import ?(url)?\(? *(\"([^\"]+)\"|'([^']+)'|([^ ;]+)) *\)?[^;]*;/i", $content, $imports, PREG_SET_ORDER);
+			if (is_array($imports)) {
+
+				foreach ($imports as $import) {
+
+					if ($import[3]) {
+						$src = $import[3];
+					} elseif ($import[4]) {
+						$src = $import[4];
+					} elseif ($import[5]) {
+						$src = $import[5];
+					}
+
+					if ($src) {
+						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
+						$css_files[] = 'href="' . $src . '"';
+						$css_files = $this->resolve_css_imports($css_files, $src);
+					}
+
+				}
+
+			}
+
+		}
+
+		return $css_files;
+
+	}
+
 	/**
 	* Gets an array of scripts/css files to be processed
 	* 
-	**/		
-	function get_script_array($source,$options) {
+	**/
+	function get_script_array($source, $options) {
 	
-		$head = $this->get_head($source);			
-		if($head) {
-			$regex = "!<" . $options['tag'] . "[^>]+type=['\"](" . $options['type'] . ")['\"]([^>]+)?>(</" . $options['tag'] . ">)?!is";
+		$head = $this->get_head($source);
+		if ($head) {
+			$regex = "!<" . $options['tag'] . ($options['type'] == 'text/javascript' ? "[^>]+type=['\"](" . $options['type'] : "[^>]+rel=['\"](" . $options['rel'] ). ")['\"]([^>]+)?>(</" . $options['tag'] . ">)?!is";
 			preg_match_all($regex, $head, $matches);
 		}
 							
-		if(!empty($matches[0])) {				
+		if (!empty($matches[0])) {				
 			$script_array = $matches[0];
 		} else {
 			$script_array = "";
 		}
 						
-		if(empty($script_array)) { //No file
+		if (empty($script_array)) { //No file
 			return $source;
 		}
-		
-		//Make sure src element present
+/* Make sure src element present */
 		foreach($script_array AS $key=>$value) {
-			if(!strstr($value,$options['src'])) {
-			unset($script_array[$key]);
+			if(!strstr($value, $options['src'])) {
+				unset($script_array[$key]);
 			}
 		}
-
-				
-		//Remove empty sources and any externally linked files
+/* Remove empty sources and any externally linked files */
 		foreach($script_array AS $key=>$value) {
 		$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
 		preg_match($regex, $value, $src);
 			if(!$src[1]){
-			unset($script_array[$key]);
-			}
+				unset($script_array[$key]);
+			} 
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
-				if(!strstr($src[1],$_SERVER['HTTP_HOST'])) {
-				unset($script_array[$key]);		
-				$this->process_report['skipped'][$src[1]] = array('from'=>$src[1],
+				if(!strstr($src[1], $_SERVER['HTTP_HOST'])) {
+					unset($script_array[$key]);		
+					$this->process_report['skipped'][$src[1]] = array('from'=>$src[1],
 													 'reason'=>'Cannot compress external files');												
-				}			
+				}
+			} 
+/* recursively resolve @import in CSS files */
+			if ($options['rel'] == 'stylesheet') {
+				$script_array = $this->resolve_css_imports($script_array, $src[1]);
 			}
 			
-		}		
-		
-		
-		//Remove ignore files
+		}
+/* Remove ignored files */
 		if(!empty($this->ignore_files)) {
 			foreach($script_array AS $return_key=>$src) {
 				foreach($this->ignore_files AS $ignore) {
@@ -648,40 +696,31 @@ class compressor {
 	* Gets the path locations of the scripts being compressed
 	* 
 	**/		
-	function get_file_locations($script_array,$options) {
+	function get_file_locations($script_array, $options) {
 	
 		if(!is_array($script_array)) {
-		return;
+			return;
 		}
-					
-		//Remove empty sources
+/* Remove empty sources */
 		foreach($script_array AS $key=>$value) {
 		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value, $src);
 			if(!$src[1]) {
-			unset($script_array[$key]);
+				unset($script_array[$key]);
 			}
 		}			
-		//Create file
-		foreach($script_array AS $key=>$value) {
-			//Get the src
+/* Create file */
+		foreach($script_array AS $key => $value) {
+/* Get the src */
 			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value, $src);
-			$src[1] = str_replace("http://".$_SERVER['HTTP_HOST'],"",$src[1]);
-						
-			if(substr($src[1],0,1) == "/") {
-			$current_src = $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $src[1];
-			} else {
-			$current_src = $this->view->paths['full']['current_directory'] . $src[1];
-			}			
-			
+			$current_src = $this->get_file_name($src);
 			if($current_src != $this->strip_querystring($current_src)) {
-			$this->process_report['notice'][$current_src] = array('from'=>$current_src,
-													 			  'notice'=>'The querystring was stripped from this script');				
+				$this->process_report['notice'][$current_src] = array('from'=>$current_src,
+													 			  'notice'=>'The querystring was stripped from this script');
 			}
-			
-			$current_src = $this->strip_querystring($current_src);
-						
-			//Make sure script exists
-			if(file_exists($current_src)) {
+
+			$current_src = $this->strip_querystring($current_src);						
+/* Make sure script exists */
+			if (file_exists($current_src)) {
 						
 				//Make sure script has the correct extension
 				$extentsion_length = strlen($options['original_ext']);
@@ -1101,8 +1140,8 @@ class compressor {
 * as far as IE8 supports data:URI -- it's actual only for this old stuff
 * unfortunately both selectors don't work with comma, only as different chunks
 **/
-						$this->ie_only_css[] = " * html " . $selector . "{background-image:url(" . $original_file . ")}";
-						$this->ie_only_css[] = " *+html " . $selector . "{background-image:url(" . $original_file . ")}";
+						$this->ie_only_css[] = "* html " . $selector . "{background-image:url(" . $original_file . ")}";
+						$this->ie_only_css[] = "*+html " . $selector . "{background-image:url(" . $original_file . ")}";
 /**
 * of course we can try to use mhtml: protocol for IE7- but there is an issue with IE7@Vista that doens't support it correctly
 * so due to compatibility issues only external images, no embedded ones
