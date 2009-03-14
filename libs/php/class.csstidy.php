@@ -30,21 +30,21 @@
  *
  * @version 1.3
  */
-require('data.inc.php');
+require_once('data.inc.php');
 
 /**
  * Contains a class for printing CSS code
  *
  * @version 1.0
  */
-require('class.csstidy_print.php');
+require_once('class.csstidy_print.php');
 
 /**
  * Contains a class for optimising CSS code
  *
  * @version 1.0
  */
-require('class.csstidy_optimise.php');
+require_once('class.csstidy_optimise.php');
 
 /**
  * CSS Parser class

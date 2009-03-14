@@ -1,4 +1,4 @@
-<?
+<?php
 // ==============================================================================================
 // Licensed under the MIT (MIT-LICENSE.txt)
 // ==============================================================================================
@@ -8,13 +8,13 @@
 // @copyright  Copyright &copy; 2008-2009 Leon Chevalier, Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 
-require("controller/compressor.php");
-require("libs/php/view.php"); //Include this for path getting help
-require("libs/php/user_agent.php"); //Include this for getting user agent
-require("libs/php/css.sprites.php"); //Include this for CSS Sprites generating
+require_once("controller/compressor.php");
+require_once("libs/php/view.php"); //Include this for path getting help
+require_once("libs/php/user_agent.php"); //Include this for getting user agent
+require_once("libs/php/css.sprites.php"); //Include this for CSS Sprites generating
 
 //We need to know the config
-require("config.php");
+require_once("config.php");
 
 //Con. the view library
 $view = new compressor_view();

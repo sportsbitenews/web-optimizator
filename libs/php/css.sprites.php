@@ -13,7 +13,7 @@ class css_sprites {
 	**/
 	function css_sprites ($css_code, $current_dir, $root_dir, $truecolor_in_jpeg) {
 
-		require('class.csstidy.php');
+		require_once('class.csstidy.php');
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($root_dir . 'web-optimizer/libs/php/css.template.tpl');
