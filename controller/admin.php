@@ -80,9 +80,7 @@ class admin {
 	
 		//Show the install page
 		$this->view->render("admin_container",$page_variables);	
-	
-	
-	
+
 	}
 
 	/**
@@ -90,17 +88,15 @@ class admin {
 	* 
 	**/	
 	function install_stage_1() {
-				
-	$page_variables = array("title"=>"Welcome to compressor installation!",
-							"paths"=>$this->view->paths,
-							"page"=>$this->input['page'],
-							"document_root"=>$this->compress_options['document_root'],
-							"compress_options"=>$this->compress_options);
+
+		$page_variables = array("title" => "Welcome to compressor installation!",
+							"paths" => $this->view->paths,
+							"page" => $this->input['page'],
+							"document_root" => $this->compress_options['document_root'],
+							"compress_options" => $this->compress_options);
 	
-	
-	//Show the install page
-	$this->view->render("admin_container",$page_variables);
-	
+		//Show the install page
+		$this->view->render("admin_container", $page_variables);
 	
 	}
 	
@@ -112,10 +108,10 @@ class admin {
 		
 	//Save the options file
 	if(!empty($this->input['user']['document_root'])) {
-	$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
+		$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
 	}
 	if(!empty($this->input['submit'])) {
-	$save = $this->save_option('[\'document_root\']',$_SERVER['DOCUMENT_ROOT']);
+		$save = $this->save_option('[\'document_root\']',$_SERVER['DOCUMENT_ROOT']);
 	}
 	$this->view->set_paths(); //Set paths with the new document root
 

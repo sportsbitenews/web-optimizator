@@ -35,6 +35,10 @@ class compressor_view {
 
 	//Save doc root
 	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+	//fix for PHP as CGI
+	if (!$this->paths['full']['document_root']) {
+		$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))))
+	}
 	
 	//Set the current relative path
 	$this->paths['relative']['current_directory'] = str_replace($_SERVER['DOCUMENT_ROOT'],"",$this->paths['full']['current_directory']);
