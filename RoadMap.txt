@@ -25,19 +25,23 @@
  m) usage of auto-optimization solutions (smash.it / webo.in)
  n) website load counter (via webo.in)
 
-4. Minifier
+4. Merging
++a) Base CSS / JS merging
+?b) @media support for CSS merging
+ c) @import support for CSS merging
+ d) Unobtrusive JS
+ e) YASS modules loader
+
+5. Minifier
 +a) JSMin (PHP4/5)
 +b) CSS Tidy for CSS files (no rules merging)
  c) YUI Compressor (if java exists)
+ d) Packer for JS files
 
-5. Including
+6. Including
 +a) Manual including 2 strings
  b) Semi-auto including (root index.php)
  c) Auto-parsing source directories for css / js files
-
-6. Possiblity to enable unobtrusive JS
- a) YASS module loading
- b) Auto tree of modules
 
 7. CDN integration
  a) Google Apps Engine
