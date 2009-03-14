@@ -254,8 +254,16 @@ class admin {
 		}	
 
 	}
+/* check for Apache installation */
+	if (function_exists('apache_get_modules')) {
 
-	$apache_modules = apache_get_modules();
+		$apache_modules = apache_get_modules();
+		
+	} else {
+/* if PHP installed as CGI module -- we don't need .htaccess */	
+		$apache_modules = array();
+	
+	}
 
 	//Create the options file
 	$this->options_file = "config.php";
@@ -264,9 +272,11 @@ class admin {
 		foreach($this->input['user'] AS $key=>$option) {
 			if(is_array($option)) {
 				foreach($option AS $option_name=>$option_value) {
-					if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip'))) {
-						$option_value = $option_value && in_array($option_name, $apache_modules);
-						$this->input['user'][$key][$option_name] = $option_value;
+					if (!empty($apache_modules)) {
+						if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip'))) {
+							$option_value = $option_value && in_array($option_name, $apache_modules);
+							$this->input['user'][$key][$option_name] = $option_value;
+						}
 					}
 					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']",$option_value);	
 				}			
@@ -276,7 +286,7 @@ class admin {
 		}
 
 		//additional check for .htaccess -- need to open exact file
-		if ($this->input['user']['htaccess']['enabled']) {
+		if ($this->input['user']['htaccess']['enabled'] && !empty($apache_modules)) {
 		//Getting document root, solution from http://www.helicron.net/php/
 			$docroot = getenv("DOCUMENT_ROOT");
 			if (!$docroot) {
