@@ -39,7 +39,7 @@ class compressor {
 	function set_options() {
 	
 	   //Set paths with new options
-	   $this->view->set_paths($this->options['document_root']);		
+	   $this->view->set_paths($this->options['document_root']);
 		
 		//Set ignore file
 		if(!empty($this->options['ignore_list'])) {

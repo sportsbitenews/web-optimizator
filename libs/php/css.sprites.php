@@ -176,8 +176,8 @@ class css_sprites {
 					if (count($this->css_images[$image['background-image']]) < 2) {
 
 						$sprite = 'webox.'. $this->timestamp .'.png';
-						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = $this->get_image($sprite, &$css_image);
+						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image($sprite);
 						if ($width && $height && !preg_match("/(bottom|center|em|%)/", $image['background-position'])) {
 //need to handle existing shift
 							if (!$this->css_images[$sprite]) {
@@ -189,7 +189,7 @@ class css_sprites {
 
 							}
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, 0, 0, $import, $key);
 
 						}
 
@@ -200,8 +200,8 @@ class css_sprites {
 					if (count($this->css_images[$image['background-image']]) < 2) {
 
 						$sprite = 'weboy.'. $this->timestamp .'.png';
-						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = $this->get_image($sprite, &$css_image);
+						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image($sprite);
 						if ($width && $height && !preg_match("/(right|center|em|%)/", $image['background-position'])) {
 
 							if (!$this->css_images[$sprite]) {
@@ -213,7 +213,7 @@ class css_sprites {
 
 							}
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, 0, 0, $import, $key);
 
 						}
 
@@ -229,8 +229,8 @@ class css_sprites {
 					if (count($this->css_images[$image['background-image']]) < 2) {
 
 						$sprite = 'weboi.'. $this->timestamp .'.png';
-						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = $this->get_image($sprite, &$css_image);
+						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image($sprite);
 /* try to place image if it's possible */
 						if ($width && $height && !preg_match("/(right|bottom|center|em|%)/", $image['background-position'])) {
 							if (!$this->css_images[$sprite]) {
@@ -246,7 +246,7 @@ class css_sprites {
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
 
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, $left, $top, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $import, $key);
 
 						}
 
@@ -257,8 +257,8 @@ class css_sprites {
 					if (count($this->css_images[$image['background-image']]) < 2) {
 
 						$sprite = 'webo.'. $this->timestamp .'.png';
-						$css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-						list($width, $height) = $this->get_image($sprite, &$css_image);
+						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image($sprite);
 /* try to place image if it's possible */
 						if ($width && $height && !preg_match("/(right|bottom|center|em|%)/", $image['background-position'])) {
 							if (!$this->css_images[$sprite]) {
@@ -274,7 +274,7 @@ class css_sprites {
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
 
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($css_image, $width, $height, $left, $top, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $import, $key);
 
 						}
 
@@ -298,36 +298,36 @@ class css_sprites {
 	}
 
 /* download requested image */
-	function get_image ($sprite, $css_image) {
+	function get_image ($sprite) {
 /* handle cases with data:URI */
-		if (substr($css_image, 0, 5) == 'data:') {
+		if (substr($this->css_image, 0, 5) == 'data:') {
 
-			$image_name = md5($css_image) . "." . preg_replace("/.*image\/([^;]*);base64.*/", "$1", $css_image);
+			$image_name = md5($this->css_image) . "." . preg_replace("/.*image\/([^;]*);base64.*/", "$1", $this->css_image);
 			$fp = fopen($image_name , "w");
 
 			if ($fp) {
 
-				fwrite($fp, base64_decode(preg_replace("/.*;base64,/", "", $css_image)));
+				fwrite($fp, base64_decode(preg_replace("/.*;base64,/", "", $this->css_image)));
 				fclose($fp);
-				$css_image = $image_name;
+				$this->css_image = $image_name;
 
 			} else {
 
-				$css_image = '';
+				$this->css_image = '';
 
 			}
 
 /* handle cases with mhtml: */
-		} elseif (substr($css_image, 0, 6) == 'mhtml:') {
+		} elseif (substr($this->css_image, 0, 6) == 'mhtml:') {
 
-			$css_image = '';
+			$this->css_image = '';
 
 		} else {
-			if (preg_match("/http:\/\//", $css_image)) {
+			if (preg_match("/http:\/\//", $this->css_image)) {
 /* try to download image */
-				$ch = curl_init($css_image);
-				$css_image = preg_replace("/.*\//", "", $css_image);
-				$fp = fopen($css_image, "w");
+				$ch = curl_init($this->css_image);
+				$this->css_image = preg_replace("/.*\//", "", $this->css_image);
+				$fp = fopen($this->css_image, "w");
 
 				if ($fp && $ch) {
 
@@ -342,21 +342,21 @@ class css_sprites {
 			
 			} else {
 			
-				$css_image = preg_match("/^\//", $css_image) ? $this->root_dir . $css_image : $this->current_dir . '/' .$css_image;
+				$this->css_image = preg_match("/^\//", $this->css_image) ? $this->root_dir . $this->css_image : $this->current_dir . '/' .$this->css_image;
 			
 			}
 			
 		}
 
-		if (is_file($css_image)) {
+		if (is_file($this->css_image)) {
 /* check for animation */
-			if (strtolower(preg_replace("/.*\./", "", $css_image)) == 'gif' && $this->is_animated_gif($css_image)) {
+			if (strtolower(preg_replace("/.*\./", "", $this->css_image)) == 'gif' && $this->is_animated_gif($this->css_image)) {
 
 				return array(0, 0);
 
 			}
 /* get dimensions from downloaded image */
-			return getimagesize($css_image);
+			return getimagesize($this->css_image);
 
 		} else {
 
