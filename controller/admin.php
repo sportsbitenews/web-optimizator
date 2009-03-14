@@ -119,7 +119,16 @@ class admin {
 	}
 	$this->view->set_paths(); //Set paths with the new document root
 
-	$apache_modules = apache_get_modules();
+/* check for Apache installation */
+	if (function_exists('apache_get_modules')) {
+
+		$apache_modules = apache_get_modules();
+		
+	} else {
+/* if PHP installed as CGI module -- we don't need .htaccess */	
+		$apache_modules = array();
+	
+	}
 	$apache_modules_enabled = array();
 	if (in_array('mod_expires', $apache_modules)) {
 		$apache_modules_enabled[] = 'mod_expires';
@@ -264,7 +273,6 @@ class admin {
 		$apache_modules = array();
 	
 	}
-
 	//Create the options file
 	$this->options_file = "config.php";
 	if(!empty($this->input['submit'])) {
