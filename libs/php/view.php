@@ -23,13 +23,13 @@ class compressor_view {
 	function set_paths($document_root=null) {
 
 	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
-	$this->paths['full']['current_directory'] = $document_root . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+		$this->paths['full']['current_directory'] = $document_root . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 	} else if(!empty($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['SCRIPT_NAME'])) {
-	$this->paths['full']['current_directory'] = $_SERVER['DOCUMENT_ROOT'] . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+		$this->paths['full']['current_directory'] = $_SERVER['DOCUMENT_ROOT'] . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 	}
 	
 	if(!file_exists($this->paths['full']['current_directory'])) {
-	$this->paths['full']['current_directory'] = getcwd();
+		$this->paths['full']['current_directory'] = getcwd();
 	}
 	$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
 
@@ -41,7 +41,7 @@ class compressor_view {
 	}
 	
 	//Set the current relative path
-	$this->paths['relative']['current_directory'] = str_replace($_SERVER['DOCUMENT_ROOT'],"",$this->paths['full']['current_directory']);
+	$this->paths['relative']['current_directory'] = str_replace($this->paths['full']['document_root'], "", $this->paths['full']['current_directory']);
 	
 	//Set the view directory
 	$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";	
