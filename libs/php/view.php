@@ -22,23 +22,23 @@ class compressor_view {
 	 **/	
 	function set_paths($document_root=null) {
 
+	//Save doc root, problems with Denwer, used more generic version (below)
+	//$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+	//fix for PHP as CGI
+	if (!$this->paths['full']['document_root']) {
+		$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
+	}
+
 	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
 		$this->paths['full']['current_directory'] = $document_root . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-	} else if(!empty($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['SCRIPT_NAME'])) {
-		$this->paths['full']['current_directory'] = $_SERVER['DOCUMENT_ROOT'] . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+	} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
+		$this->paths['full']['current_directory'] = $this->paths['full']['document_root'] . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 	}
 	
 	if(!file_exists($this->paths['full']['current_directory'])) {
 		$this->paths['full']['current_directory'] = getcwd();
 	}
 	$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
-
-	//Save doc root
-	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
-	//fix for PHP as CGI
-	if (!$this->paths['full']['document_root']) {
-		$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
-	}
 	
 	//Set the current relative path
 	$this->paths['relative']['current_directory'] = str_replace($this->paths['full']['document_root'], "", $this->paths['full']['current_directory']);

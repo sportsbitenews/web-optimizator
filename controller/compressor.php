@@ -1086,7 +1086,7 @@ class compressor {
 	function convert_css_sprites ($content, $options) {
 
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['document_root'], $options['truecolor_in_jpeg']);
+		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['current_directory'], $options['truecolor_in_jpeg']);
 		return $css_sprites->process();
 
 	}
