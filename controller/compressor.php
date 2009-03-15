@@ -706,7 +706,7 @@ class compressor {
 		foreach($script_array AS $key => $value) {
 /* Get the src */
 			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
-			$current_src = $this->get_file_name($src);
+			$current_src = $this->get_file_name($src[1]);
 			if($current_src != $this->strip_querystring($current_src)) {
 				$this->process_report['notice'][$current_src] = array('from'=>$current_src,
 													 			  'notice'=>'The querystring was stripped from this script');
@@ -720,7 +720,8 @@ class compressor {
 				$extentsion_length = strlen($options['original_ext']);
 				if(".".substr($this->view->get_basename($current_src),(-1*$extentsion_length)) == ".".$options['original_ext']) {			
 				$return_array[] = array('src'=>$current_src,
-										'location'=>$value);
+										'location'=>$value['file'],
+										'content' => $value['content']);
 				} else {
 				$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
 														 'reason'=>'Must have ' . $options['original_ext'] . ' extension');
