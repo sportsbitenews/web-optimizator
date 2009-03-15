@@ -288,17 +288,13 @@ class admin {
 				$this->save_option("['" . strtolower($key) . "']",$option);			
 			}			
 		}
-/* chmod for shell exec files */
-		if ($this->input['user']['css_sprites']['enabled'] && is_file($this->paths['full']['current_directory'] . 'libs/php/pngcrush')) {
-			chmod($this->paths['full']['current_directory'] . 'libs/php/pngcrush', 775);
-		}
 
 		//additional check for .htaccess -- need to open exact file
 		if ($this->input['user']['htaccess']['enabled'] && !empty($apache_modules)) {
 
 			$this->view->set_paths();
 /* first of all just cut current Web Optimizer options from .htaccess */
-			$htaccess = $this->paths['full']['document_root'] . '/.htaccess';
+			$htaccess = $this->view->paths['full']['document_root'] . '/.htaccess';
 			if (is_file($htaccess)) {
 				$fp = @fopen($htaccess, 'r');
 				if (!$fp) {
