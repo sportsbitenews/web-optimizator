@@ -432,9 +432,7 @@ class compressor {
 		if(is_array($script_array)) {
 			foreach($script_array AS $key => $info) {	
 				//Get the code
-				if (file_exists($info['src'])) {
-
-					$file_contents = file_get_contents($info['src']);
+				if ($file_contents = $info['content']) {
 					//Mess with the CSS source
 					if($options['header'] == "css") {
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info); //Absolute paths
@@ -450,8 +448,8 @@ class compressor {
 						$file_contents = $this->add_media_header($file_contents, $info); //Add media type header
 					}
 
-					$contents .=  preg_replace("/@import[^;]+;/", "", preg_replace("/;\}/", "}", $file_contents));
-			   		$source = $this->_remove_scripts($script_array,$source);
+					$contents .=  $file_contents;
+			   		$source = $this->_remove_scripts($script_array, $source);
 
 				}				
 
@@ -590,10 +588,10 @@ class compressor {
 	}
 
 	/**
-	* Resursively resolve all @import in CSS files
+	* Resursively resolve all @import in CSS files and get files content
 	* 
 	**/
-	function resolve_css_imports ($css_files, $src) {
+	function resolve_css_imports ($src) {
 
 		$file = $this->get_file_name($src);
 		if (is_file($file)) {
@@ -603,7 +601,6 @@ class compressor {
 			if (is_array($imports)) {
 
 				foreach ($imports as $import) {
-
 					if ($import[3]) {
 						$src = $import[3];
 					} elseif ($import[4]) {
@@ -611,20 +608,17 @@ class compressor {
 					} elseif ($import[5]) {
 						$src = $import[5];
 					}
-
-					if ($src) {
+                    if ($src) {
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
-						$css_files[] = 'href="' . $src . '"';
-						$css_files = $this->resolve_css_imports($css_files, $src);
+						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/", $this->resolve_css_imports($src), $content);
 					}
-
 				}
 
 			}
 
 		}
 
-		return $css_files;
+        return $content;
 
 	}
 
@@ -640,8 +634,10 @@ class compressor {
 			preg_match_all($regex, $head, $matches);
 		}
 							
-		if (!empty($matches[0])) {				
-			$script_array = $matches[0];
+		if (!empty($matches[0])) {
+			foreach($matches[0] as $match)  {
+				$script_array[] = array('file' => $match);
+			}
 		} else {
 			$script_array = "";
 		}
@@ -651,14 +647,14 @@ class compressor {
 		}
 /* Make sure src element present */
 		foreach($script_array AS $key=>$value) {
-			if(!strstr($value, $options['src'])) {
+			if(!strstr($value['file'], $options['src'])) {
 				unset($script_array[$key]);
 			}
 		}
 /* Remove empty sources and any externally linked files */
 		foreach($script_array AS $key=>$value) {
 		$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
-		preg_match($regex, $value, $src);
+		preg_match($regex, $value['file'], $src);
 			if(!$src[1]){
 				unset($script_array[$key]);
 			} 
@@ -669,24 +665,22 @@ class compressor {
 													 'reason'=>'Cannot compress external files');												
 				}
 			} 
-/* recursively resolve @import in CSS files */
-			if ($options['rel'] == 'stylesheet') {
-				$script_array = $this->resolve_css_imports($script_array, $src[1]);
-			}
+/* recursively resolve @import in files */
+			$script_array[$key]['content'] = $this->resolve_css_imports($src[1]);
 			
 		}
 /* Remove ignored files */
 		if(!empty($this->ignore_files)) {
-			foreach($script_array AS $return_key=>$src) {
+			foreach ($script_array AS $return_key => $src) {
 				foreach($this->ignore_files AS $ignore) {
-					if(strstr($src,$ignore)) {
-					$this->process_report['notice'][$src] = array('from'=>$src,
-													 			  'notice'=>'The file was on the ignore list and skipped');									
-					unset($script_array[$return_key]);
-					}			
-				}		
+					if(strstr($src['file'], $ignore)) {
+						$this->process_report['notice'][$src['file']] = array('from'=>$src['file'],
+																				'notice'=>'The file was on the ignore list and skipped');
+						unset($script_array[$return_key]);
+					}
+				}
 			}
-		}		
+		}
 				
 		return $script_array;
 
@@ -703,7 +697,7 @@ class compressor {
 		}
 /* Remove empty sources */
 		foreach($script_array AS $key=>$value) {
-		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value, $src);
+		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
 			if(!$src[1]) {
 				unset($script_array[$key]);
 			}
@@ -711,7 +705,7 @@ class compressor {
 /* Create file */
 		foreach($script_array AS $key => $value) {
 /* Get the src */
-			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value, $src);
+			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
 			$current_src = $this->get_file_name($src);
 			if($current_src != $this->strip_querystring($current_src)) {
 				$this->process_report['notice'][$current_src] = array('from'=>$current_src,
