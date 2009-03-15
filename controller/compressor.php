@@ -461,7 +461,7 @@ class compressor {
 			//Allow for minification of javascript
 			if($options['header'] == "javascript" && $options['minify']) {
 				$this->jsmin = new JSMin($contents);
-				$contents = $this->jsmin->minify();
+				$contents = $this->jsmin->minify($contents);
 			}
 			//Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS
 			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS
