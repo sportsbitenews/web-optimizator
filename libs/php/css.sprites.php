@@ -697,6 +697,12 @@ class css_sprites {
 									$css_top = 0;
 									$css_repeat = 'repeat-y';
 									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+									$final_y = $height;
+/* semi-fix for bug with different height of repeating images, thx to xstroy */
+									while ($final_y < $css_images[$sprite]['y']) {
+										imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+										$final_y += $height;
+									}
 									break;
 /* repeat-x */
 								case 1:
@@ -704,6 +710,11 @@ class css_sprites {
 									$css_top = -$final_y;
 									$css_repeat = 'repeat-x';
 									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+/* semi-fix for bug with different width of repeating images, thx to xstroy */
+									while ($final_x < $css_images[$sprite]['x']) {
+										imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+										$final_x += $width;
+									}
 									break;
 
 							}
@@ -743,9 +754,9 @@ class css_sprites {
 
 						shell_exec($this->root_dir . 'web-optimizer/libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
 						if (is_file('pngout.png') && filesize('pngout.png') < filesize($sprite)) {
-							copy('pngout.png', $sprite);
-							unlink('pngout.png');
+							copy('pngout.png', $sprite)
 						}
+						unlink('pngout.png');
 
 					}
 
