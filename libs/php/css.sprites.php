@@ -111,8 +111,8 @@ class css_sprites {
 						foreach ($this->media as $imp => $images) {
 
 							foreach ($images as $key => $image) {
-
-								if (in_array($key, split(",", $tags))) {
+/* remove pseudo-selectors, i.e. :focus, :hover, etc*/
+								if (in_array($key, split(",", $tags)) || in_array(preg_replace("/:.*/", "", $key), split(",", $tags))) {
 
 									$this->media[$imp][$key][$property] = $value;
 
@@ -611,6 +611,7 @@ class css_sprites {
 				} else {
 
 					$back = imagecolorallocatealpha($sprite_raw, 255, 255, 255, 127);
+					imagecolortransparent($sprite_raw, $back);
 
 				}
 
@@ -669,6 +670,19 @@ class css_sprites {
 						}
 
 						if ($im) {
+/* recount colors number, switch to fullcolor if more than 256 */
+							if (imagecolorstotal($im) + imagecolorstotal($sprite_raw) > 256) {
+
+								$fullcolor = 1;
+								$new_raw = @imagecreatetruecolor($css_images[$sprite]['x'], $css_images[$sprite]['y']);
+								if ($new_raw) {
+									$back = imagecolorallocate($new_raw, 255, 255, 255);
+									imagefilledrectangle($new_raw, 0, 0, $css_images[$sprite]['x'], $css_images[$sprite]['y'], $back);
+									imagecopy($new_raw, $sprite_raw, 0, 0, 0, 0, $css_images[$sprite]['x'], $css_images[$sprite]['y']);
+									$sprite_raw = $new_raw;
+								}
+
+							}
 
 							switch ($type) {
 /* the most complicated case */
@@ -746,7 +760,7 @@ class css_sprites {
 /* output final sprite */
 				if ($this->truecolor_in_jpeg && $fullcolor && ($type == 3 || $type == 4)) {
 					$sprite = preg_replace("/png$/", "jpg", $sprite);
-					imagejpeg($sprite_raw, $sprite, 75);
+					imagejpeg($sprite_raw, $sprite, 80);
 				} else {
 					imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
@@ -762,6 +776,9 @@ class css_sprites {
 
 				}
 				imagedestroy($sprite_raw);
+				if ($new_raw) {
+					imagedestroy($new_raw);
+				}
 /* add selector with final sprite */
 				foreach ($merged_selector as $import => $keys) {
 
