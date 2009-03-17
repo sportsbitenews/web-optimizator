@@ -50,7 +50,8 @@ class compressor {
 	   $full_options = array("javascript"=>array("cachedir" => $this->options['javascript_cachedir'],
 										   "gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 										   "minify" => $this->options['minify']['javascript'],
-										   "far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires']
+										   "far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+										   "unobtrusive" => $this->options['unobtrusive']['on']
 										   ),
 							  "css"=>array("cachedir" => $this->options['css_cachedir'],
 										   "gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
@@ -192,7 +193,8 @@ class compressor {
 											  'minify' => $options['minify'],		
 											  'far_future_expires' => $options['far_future_expires'],
 											  'header' => $type,
-											  'save_name' => $type),$this->content);	
+											  'save_name' => $type,
+											  'unobtrusive' => $options['unobtrusive']),$this->content);	
 	}
 
 	/**
@@ -345,7 +347,8 @@ class compressor {
 																  'tag' => 'script',
 																  'type' => 'text/javascript',
 																  'ext' => 'js',
-																  'src' => 'src'));															  	
+																  'src' => 'src',
+																  'unobtrusive' => $options['unobtrusive']));															  	
 		//If we have scripts		
 		if(is_array($script_array)) {												
 		
@@ -381,56 +384,112 @@ class compressor {
 	* Compress JS or CSS and return source
 	*
 	**/	
-	function do_compress($options, $source) {	
-		
+	function do_compress($options, $source) {
+
 		//Save the original extension
 		$options['original_ext'] = $options['ext'];
-		
+
 		//Change the extension
-		if(!empty($options['gzip']) || !empty($options['far_future_expires'])) {
+		if (!empty($options['gzip']) || !empty($options['far_future_expires'])) {
 			$options['ext'] = "php";
 		}
-		
-		//Set cachedir		
-		$cachedir = $options['cachedir'];		
-		
+
+		//Set cachedir
+		$cachedir = $options['cachedir'];
+
 		//Get array of scripts
-		$script_array = $this->get_script_array($source, $options);	
-												
-		//Get date string for making hash
+		$script_array = $this->get_script_array($source, $options);
+
+/* prepare JS w/o src for merging in unobtrusive way */
+		if ($options['unobtrusive'] && !empty($script_array)) {
+
+			$postloader = array();
+			$handler = 'scripts';
+			$key = 0;
+			foreach ($script_array as $script) {
+				$handler_new = $script['file'] ? 'scripts' : 'handler';
+				if ($handler_new != $handler) {
+					$key++;
+				}
+				$postloader[$key][$handler_new][] = $script;
+				$handler = $handler_new;
+			}
+/* go through postloader and include */
+			foreach ($postloader as $script_block) {
+				$source = $this->do_include($options, $source, $cachedir, $script_block['scripts'], $script_block['handler']);
+			}
+			
+		} else {
+			$source = $this->do_include($options, $source, $cachedir, $script_array);
+		}
+		
+		return $source;
+	}
+
+	/**
+	* Include a single file or an unobtrusive bundle
+	*
+	**/
+	function include_bundle ($source, $newfile, $handler_array, $cachedir, $include) {
+/* if no unobtrusive logic */
+		if (!$include) {
+/* move to top */
+			$source = preg_replace("!<head([^>]+)?>!is", "$0 \n" . $newfile . "\n", $source);
+/* else use unobtrusive loader */
+		} else {
+			if (preg_match("/var yass_modules/i", $source)) {
+				$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["' . preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handler_array 
+					. '"]]', $source);
+			} else {
+				$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) .'","'. $handler_array 
+					. '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" . $_SERVER['HTTP_HOST'], $cachedir) .  '/yass.loader.js'
+					. '"></script></body>', $source);
+			}
+		}
+
+		return $source;
+
+	}
+	
+	/**
+	* Include compressed JS or CSS into source and return it
+	*
+	**/
+	function do_include($options, $source, $cachedir, $script_array, $handler_array = null) {
+/* merge and escape handlers array */
+		if ($handler_array) {
+			$handler_array = preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', implode(";", $handler_array))));
+		}
+/* Get date string for making hash */
 		$datestring = $this->get_file_dates($script_array, $options);
-						
-		//If only one script found
+/* If only one script found */
 		if(!is_array($script_array)) {
 			$_script_array = array($script_array);
 		} else {
 			$_script_array = $script_array;
 		}
-			
-		//Get the cache hash
-		$cache_file = md5(implode("_", $_script_array).$datestring.implode("_", $options));
+/* Get the cache hash */
+		$cache_file = md5(implode("_", $_script_array) . $datestring . implode("_", $options) . $handler_array);
 		$cache_file = urlencode($cache_file);
-							
-		//Check if the cache file exists
-		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {		
+/* Check if the cache file exists */
+		if (file_exists($cachedir . '/' . $cache_file . " . $options[ext]")) {
 /* Put in locations and remove certain scripts */
 			$script_array = $this->get_file_locations($script_array, $options);
 			$source = $this->_remove_scripts($script_array, $source);
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-/* Move to top */
-			$source = preg_replace("!<head([^>]+)?>!is","$0 \n".$newfile."\n",$source);
+			$source = $this->include_bundle($source, $newfile, $handler_array, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
 			return $source;
 		}
-			
+
 		//If the file didn't exist, continue ...			
-		$script_array = $this->get_file_locations($script_array,$options);	
-																										
+		$script_array = $this->get_file_locations($script_array,$options);
+
 		//Create file
 		$contents = "";
 		if(is_array($script_array)) {
-			foreach($script_array AS $key => $info) {	
+			foreach($script_array AS $key => $info) {
 				//Get the code
 				if ($file_contents = $info['content']) {
 					//Mess with the CSS source
@@ -455,7 +514,7 @@ class compressor {
 
 			}	
 
-		}	
+		}
 
 		if(!empty($contents)) {	
 			//Allow for minification of javascript
@@ -475,17 +534,14 @@ class compressor {
 			if($contents) {
 
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
-
 					fwrite($fp, $contents);
 					fclose($fp);
-					//Set permissions, required by some hosts
+/* Set permissions, required by some hosts */
 					chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755")); 
-					//Create the link to the new file
-					$newfile = $this->get_new_file($options,$cache_file);						
-
+/* Create the link to the new file */
+					$newfile = $this->get_new_file($options, $cache_file);
 					$source = str_replace("@@@marker@@@","",$source);
-					$source = preg_replace("!<head([^>]+)?>!is","$0 \n".$newfile."\n",$source);
-
+					$source = $this->include_bundle($source, $newfile, $handler_array, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
 					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . $options['rel'],
 																'from' => $script_array,
 																'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']);
@@ -494,7 +550,8 @@ class compressor {
 			}
 								
 		}
-
+/* clear garbage */
+		$source = preg_replace('/<script type="text\/javascript"><\/script>/i', '', preg_replace('/<link rel="stylesheet">/i', '', $source));
 		return $source;
 	}
 	
@@ -522,25 +579,20 @@ class compressor {
 	**/
 	function get_new_file($options,$cache_file,$not_modified=false) {
 		
-	$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->unify_dir_separator($this->view->paths['full']['document_root'])),"",$this->view->prevent_trailing_slash($this->unify_dir_separator($options['cachedir'])));
-	$newfile = "<" . $options['tag'] . " type=\"" . $options['type'] . "\" $options[src]=\"http://" . $_SERVER['HTTP_HOST'] . "/" . $this->view->prevent_leading_slash($relative_cachedir) ."/$cache_file." . $options['ext'] . "$not_modified\"";
-						
-						if(!empty($options['rel'])) {
-						$newfile .= " rel=\"" . $options['rel'] . "\"";
-						}
-						
-						if(!empty($options['media'])) {
-						$newfile .= " media=\"" . $options['media'] . "\"";
-						}						
-						
-						if(!empty($options['self_close'])) {
-						$newfile .= " />";
-						} else {
-						$newfile .= "></" . $options['tag'] . ">";
-						}
-
-		$this->compressed_files[] = $newfile;				
-
+		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->unify_dir_separator($options['cachedir'])));
+		$newfile = "<" . $options['tag'] . " type=\"" . $options['type'] . "\" $options[src]=\"http://" . $_SERVER['HTTP_HOST'] . "/" . $this->view->prevent_leading_slash($relative_cachedir) ."/$cache_file." . $options['ext'] . "$not_modified\"";				
+		if (!empty($options['rel'])) {
+			$newfile .= " rel=\"" . $options['rel'] . "\"";
+		}
+		if (!empty($options['media'])) {
+			$newfile .= " media=\"" . $options['media'] . "\"";
+		}										
+		if(!empty($options['self_close'])) {
+			$newfile .= " />";
+		} else {
+			$newfile .= "></" . $options['tag'] . ">";
+		}
+		$this->compressed_files[] = $newfile;
 		return $newfile;
 	
 	}
@@ -551,23 +603,21 @@ class compressor {
 	**/	
 	function get_file_dates($files,$options) {
 		
-		$files = $this->get_file_locations($files,$options);
-						
+		$files = $this->get_file_locations($files, $options);
 		if (!is_array($files)) {
 			return;
 		}
-	
+
 		foreach($files AS $key=>$value) {
-			if(file_exists($value['src'])) {
+			if (file_exists($value['src'])) {
 				$thedate = filemtime($value['src']);
 				$dates[] = $thedate;
 			}
 		}
-		
+
 		if (is_array($dates)) {
 			return implode(".", $dates);
 		}
-		
 		return;
 	
 	}
@@ -627,35 +677,39 @@ class compressor {
 	* 
 	**/
 	function get_script_array($source, $options) {
-	
-		$head = $this->get_head($source);
-		if ($head) {
-			$regex = "!<" . $options['tag'] . ($options['type'] == 'text/javascript' ? "[^>]+type=['\"](" . $options['type'] : "[^>]+rel=['\"](" . $options['rel'] ). ")['\"]([^>]+)?>(</" . $options['tag'] . ">)?!is";
-			preg_match_all($regex, $head, $matches);
+
+/* links to JS files can be anywhere */
+		if ($options['type'] == 'text/javascript') {
+			$regex = "!<" . $options['tag'] . "[^>]+type=['\"](" . $options['type'] . ")['\"]([^>]+)?>(.*?)(</" . $options['tag'] . ">)?!is";
+			preg_match_all($regex, $source, $matches, PREG_SET_ORDER);
+/* links to CSS files can be included only to head, W3.org */
+		} else {
+			$head = $this->get_head($source);
+			if ($head) {
+				$regex = "!<" . $options['tag'] . "[^>]+rel=['\"](" . $options['rel'] . ")['\"]([^>]+)?>(</" . $options['tag'] . ">)?!is";
+				preg_match_all($regex, $head, $matches, PREG_SET_ORDER);
+			}
 		}
-							
-		if (!empty($matches[0])) {
-			foreach($matches[0] as $match)  {
-				$script_array[] = array('file' => $match);
+
+		if (!empty($matches)) {
+			foreach($matches as $match) {
+				$script_array[] = array('file' => $match[2],
+										'content' => $match[3]);
 			}
 		} else {
 			$script_array = "";
 		}
-						
+
 		if (empty($script_array)) { //No file
 			return $source;
 		}
-/* Make sure src element present */
-		foreach($script_array AS $key=>$value) {
-			if(!strstr($value['file'], $options['src'])) {
-				unset($script_array[$key]);
-			}
-		}
 /* Remove empty sources and any externally linked files */
-		foreach($script_array AS $key=>$value) {
-		$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
-		preg_match($regex, $value['file'], $src);
-			if(!$src[1]){
+		foreach($script_array AS $key => $value) {
+			$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
+/* Make sure src element present */
+			preg_match($regex, $value['file'], $src);
+/* but keep JS w/o src to merge into unobtrusive loader */
+			if(!$src[1] && !$options['unobtrusive']){
 				unset($script_array[$key]);
 			} 
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
@@ -665,15 +719,17 @@ class compressor {
 													 'reason'=>'Cannot compress external files');												
 				}
 			} 
+			if (!$options['unobtrusive'] || !$value['content']) {
 /* recursively resolve @import in files */
-			$script_array[$key]['content'] = $this->resolve_css_imports($src[1]);
-			
+				$script_array[$key]['content'] = $this->resolve_css_imports($src[1]);
+			}
+
 		}
 /* Remove ignored files */
 		if(!empty($this->ignore_files)) {
 			foreach ($script_array AS $return_key => $src) {
 				foreach($this->ignore_files AS $ignore) {
-					if(strstr($src['file'], $ignore)) {
+					if (strstr($src['file'], $ignore)) {
 						$this->process_report['notice'][$src['file']] = array('from'=>$src['file'],
 																				'notice'=>'The file was on the ignore list and skipped');
 						unset($script_array[$return_key]);
@@ -681,7 +737,7 @@ class compressor {
 				}
 			}
 		}
-				
+
 		return $script_array;
 
 	}
@@ -1086,7 +1142,7 @@ class compressor {
 	function convert_css_sprites ($content, $options) {
 
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $dir, $this->view->paths['full']['current_directory'], $options['truecolor_in_jpeg']);
+		$css_sprites = new css_sprites($content, $options['cachedir'], $this->view->paths['full']['document_root'], $options['truecolor_in_jpeg']);
 		return $css_sprites->process();
 
 	}
