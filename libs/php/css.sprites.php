@@ -767,10 +767,12 @@ class css_sprites {
 					if (is_file($this->root_dir . 'web-optimizer/libs/php/pngcrush')) {
 
 						shell_exec($this->root_dir . 'web-optimizer/libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
-						if (is_file('pngout.png') && filesize('pngout.png') < filesize($sprite)) {
-							copy('pngout.png', $sprite)
+						if (is_file('pngout.png')) {
+							if (filesize('pngout.png') < filesize($sprite)) {
+								copy('pngout.png', $sprite);
+							}
+							unlink('pngout.png');
 						}
-						unlink('pngout.png');
 
 					}
 

@@ -64,7 +64,7 @@ class compressor {
 							   "page"=>array("gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 											 "minify" => $this->options['minify']['page']
 											)
-					          );	
+							  );	
 
 		$this->options = $full_options; //overwrite other options array that we passed in
 		//Make sure cachedir does not have trailing slash
@@ -178,23 +178,22 @@ class compressor {
 	* GZIP and minify the javascript as required
 	*
 	**/	
-	function javascript($options,$type) {
-	
-	//Remove any files in the remove list
-	$this->do_remove();
-					
-	$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
-					 						  'tag' => 'script',
-										      'type' => 'text/javascript',
-										      'ext' => 'js',
-										      'src' => 'src',
-										      'self_close' => false,
-											  'gzip' => $options['gzip'],
-											  'minify' => $options['minify'],		
-											  'far_future_expires' => $options['far_future_expires'],
-											  'header' => $type,
-											  'save_name' => $type,
-											  'unobtrusive' => $options['unobtrusive']),$this->content);	
+		function javascript($options,$type) {
+
+		//Remove any files in the remove list
+		$this->do_remove();
+		$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
+													'tag' => 'script',
+													'type' => 'text/javascript',
+													'ext' => 'js',
+													'src' => 'src',
+													'self_close' => false,
+													'gzip' => $options['gzip'],
+													'minify' => $options['minify'],
+													'far_future_expires' => $options['far_future_expires'],
+													'header' => $type,
+													'save_name' => $type,
+													'unobtrusive' => $options['unobtrusive']),$this->content);
 	}
 
 	/**
@@ -202,16 +201,16 @@ class compressor {
 	*
 	**/	
 	function css($options, $type) {
-	
+
 		$head = $this->get_head($this->content);
 		if(!$head) { //Need a head
 			return;
 		}
 /* Get links */
-		preg_match_all("!<link[^>]+stylesheet[^>]+>!is", $head, $matches);	
+		preg_match_all("!<link[^>]+stylesheet[^>]+>!is", $head, $matches);
 		if(count($matches[0]) == 0) {
 			return;
-		}		
+		}
 /* find variants */
 		foreach($matches[0] AS $link) {
 
@@ -219,7 +218,7 @@ class compressor {
 			if(is_array($variants)) {
 				$marker = "";
 				foreach($variants AS $variant_type) {
-					$marker .= $variant_type[2];	
+					$marker .= $variant_type[2];
 					$return[$variant_type[1]] = $variant_type[2];
 				}
 			}
@@ -229,21 +228,20 @@ class compressor {
 			$new_link = str_replace("%%MARK%%", md5($marker), $new_link);
 			$this->content = str_replace($link, $new_link, $this->content);
 			$return['real_type'] = $marker;
-			$media_types[md5($marker)] = $return;		
-					
+			$media_types[md5($marker)] = $return;
+
 		}
 
 		$this->process_report['media_types'] = $media_types;
-								
 /* Compress separately for each media type*/
 		foreach($media_types AS $key => $value) {
-	
+
 			$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
 														'tag' => 'link',
 														'type' => $key,
 														'ext' => 'css',
 														'src' => 'href',
-														'rel' => !empty($value['rel']) ? $value['rel'] : false,	
+														'rel' => !empty($value['rel']) ? $value['rel'] : false,
 														'media' => !empty($value['media']) ? $value['media'] : false,
 														'data_uris' => $options['data_uris'],
 														'css_sprites' => $options['css_sprites'],
@@ -251,11 +249,11 @@ class compressor {
 														'self_close' => true,
 														'gzip' => $options['gzip'],
 														'minify' => $options['minify'],
-														'far_future_expires' => $options['far_future_expires'],												  
+														'far_future_expires' => $options['far_future_expires'],
 														'header' => $type,
-														'save_name' => $type.$value['real_type']), $this->content);	
+														'save_name' => $type.$value['real_type']), $this->content);
 /* Replace out the markers */
-			$this->content = str_replace($key, 'text/css', $this->content);												  
+			$this->content = str_replace($key, 'text/css', $this->content);
 
 		}
 
@@ -368,11 +366,9 @@ class compressor {
 					}
 				}			
 			}
-
-			//Put back
+/* Put back */
 			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@",$_immune,$this->content);
-
-			//Remove comments
+/* Remove comments */
 			$this->content = str_replace("<!-- REMOVE IMMUNE -->","",$this->content);
 			$this->content = str_replace("<!-- END REMOVE IMMUNE -->","",$this->content);			
 
@@ -385,21 +381,16 @@ class compressor {
 	*
 	**/	
 	function do_compress($options, $source) {
-
-		//Save the original extension
+/* Save the original extension */
 		$options['original_ext'] = $options['ext'];
-
-		//Change the extension
+/* Change the extension */
 		if (!empty($options['gzip']) || !empty($options['far_future_expires'])) {
 			$options['ext'] = "php";
 		}
-
-		//Set cachedir
+/* Set cachedir */
 		$cachedir = $options['cachedir'];
-
-		//Get array of scripts
+/* Get array of scripts */
 		$script_array = $this->get_script_array($source, $options);
-
 /* prepare JS w/o src for merging in unobtrusive way */
 		if ($options['unobtrusive'] && !empty($script_array)) {
 
@@ -408,21 +399,21 @@ class compressor {
 			$key = 0;
 			foreach ($script_array as $script) {
 				$handler_new = $script['file'] ? 'scripts' : 'handler';
+				$postloader[$key][$handler_new][] = $script;
+				$handler = $handler_new;
 				if ($handler_new != $handler) {
 					$key++;
 				}
-				$postloader[$key][$handler_new][] = $script;
-				$handler = $handler_new;
 			}
 /* go through postloader and include */
 			foreach ($postloader as $script_block) {
 				$source = $this->do_include($options, $source, $cachedir, $script_block['scripts'], $script_block['handler']);
 			}
-			
+
 		} else {
 			$source = $this->do_include($options, $source, $cachedir, $script_array);
 		}
-		
+
 		return $source;
 	}
 
@@ -430,7 +421,7 @@ class compressor {
 	* Include a single file or an unobtrusive bundle
 	*
 	**/
-	function include_bundle ($source, $newfile, $handler_array, $cachedir, $include) {
+	function include_bundle ($source, $newfile, $handlers, $cachedir, $include) {
 /* if no unobtrusive logic */
 		if (!$include) {
 /* move to top */
@@ -438,12 +429,12 @@ class compressor {
 /* else use unobtrusive loader */
 		} else {
 			if (preg_match("/var yass_modules/i", $source)) {
-				$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["' . preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handler_array 
-					. '"]]', $source);
+				$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["' 
+					. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 			} else {
-				$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) .'","'. $handler_array 
-					. '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" . $_SERVER['HTTP_HOST'], $cachedir) .  '/yass.loader.js'
-					. '"></script></body>', $source);
+				$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) 
+					.'","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" 
+					. $_SERVER['HTTP_HOST'], $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 			}
 		}
 
@@ -457,8 +448,11 @@ class compressor {
 	**/
 	function do_include($options, $source, $cachedir, $script_array, $handler_array = null) {
 /* merge and escape handlers array */
-		if ($handler_array) {
-			$handler_array = preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', implode(";", $handler_array))));
+		if (is_array($handler_array)) {
+			$handlers = '';
+			foreach ($handler_array as $ha) {
+				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
+			}
 		}
 /* Get date string for making hash */
 		$datestring = $this->get_file_dates($script_array, $options);
@@ -469,24 +463,25 @@ class compressor {
 			$_script_array = $script_array;
 		}
 /* Get the cache hash */
-		$cache_file = md5(implode("_", $_script_array) . $datestring . implode("_", $options) . $handler_array);
+		$cache_file = md5(implode("_", $_script_array) . $datestring . implode("_", $options) . $handlers);
 		$cache_file = urlencode($cache_file);
 /* Check if the cache file exists */
-		if (file_exists($cachedir . '/' . $cache_file . " . $options[ext]")) {
+		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
 			$script_array = $this->get_file_locations($script_array, $options);
+			if (is_array($handler_array)) {
+				$script_array = array_merge($script_array, $handler_array);
+			}
 			$source = $this->_remove_scripts($script_array, $source);
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handler_array, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
 			return $source;
 		}
-
-		//If the file didn't exist, continue ...			
+/* If the file didn't exist, continue ... */
 		$script_array = $this->get_file_locations($script_array,$options);
-
-		//Create file
+/* Create file */
 		$contents = "";
 		if(is_array($script_array)) {
 			foreach($script_array AS $key => $info) {
@@ -494,83 +489,81 @@ class compressor {
 				if ($file_contents = $info['content']) {
 					//Mess with the CSS source
 					if($options['header'] == "css") {
-						$file_contents = $this->convert_paths_to_absolute($file_contents, $info); //Absolute paths
-
+/* Absolute paths */
+						$file_contents = $this->convert_paths_to_absolute($file_contents, $info);
 						if ($options['css_sprites']) {
 							$file_contents = $this->convert_css_sprites($file_contents, $options); //Create CSS Sprites in CSS dir
 						}
-
 						if ($options['data_uris']) {
 							$file_contents = $this->convert_css_bgr_to_data($file_contents, $options); //CSS background images to data URIs
 						}
-
 						$file_contents = $this->add_media_header($file_contents, $info); //Add media type header
 					}
 
 					$contents .=  $file_contents;
-			   		$source = $this->_remove_scripts($script_array, $source);
 
-				}				
+				}
 
-			}	
+			}
+			if (is_array($handler_array)) {
+				$script_array = array_merge($script_array, $handler_array);
+			}
+			$source = $this->_remove_scripts($script_array, $source);
 
 		}
 
-		if(!empty($contents)) {	
-			//Allow for minification of javascript
+		if(!empty($contents)) {
+/* Allow for minification of javascript */
 			if($options['header'] == "javascript" && $options['minify']) {
 				$this->jsmin = new JSMin($contents);
 				$contents = $this->jsmin->minify($contents);
 			}
-			//Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS
+/* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS
 				$contents = $this->minify_text($contents);
-			}	
-			//Allow for gzipping and headers
-			if($options['gzip'] || $options['far_future_expires']) {		
-				$contents = $this->gzip_header[$options['header']] . $contents;		
-			}						
-			//Write to cache and display
+			}
+/* Allow for gzipping and headers */
+			if($options['gzip'] || $options['far_future_expires']) {
+				$contents = $this->gzip_header[$options['header']] . $contents;
+			}
+/* Write to cache and display */
 			if($contents) {
 
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
 					fwrite($fp, $contents);
 					fclose($fp);
 /* Set permissions, required by some hosts */
-					chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755")); 
+					chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
-					$source = str_replace("@@@marker@@@","",$source);
-					$source = $this->include_bundle($source, $newfile, $handler_array, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
 					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . $options['rel'],
 																'from' => $script_array,
 																'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']);
+					}
+
 				}
 
 			}
-								
+			return $source;
 		}
-/* clear garbage */
-		$source = preg_replace('/<script type="text\/javascript"><\/script>/i', '', preg_replace('/<link rel="stylesheet">/i', '', $source));
-		return $source;
-	}
-	
+
 	/**
 	* Replaces the script or css links in the source with a marker
 	*
 	*/
-	function _remove_scripts($script_array,$source) {	
-	
+	function _remove_scripts($script_array, $source) {
+
 		$maxKey = array_pop(array_keys($script_array));
 		foreach($script_array AS $key=>$value) {
 			if($key == $maxKey) { //Remove script
-				$source = str_replace($value['location'], "@@@marker@@@", $source);
+				$source = str_replace($value['source'], "@@@marker@@@", $source);
 			} else {
-				$source = str_replace($value['location'], "", $source);
+				$source = str_replace($value['source'], "", $source);
 			}
 		}
 		return $source;
-	
+
 	}
 	
 	/**
@@ -658,7 +651,7 @@ class compressor {
 					} elseif ($import[5]) {
 						$src = $import[5];
 					}
-                    if ($src) {
+					if ($src) {
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/", $this->resolve_css_imports($src), $content);
 					}
@@ -668,7 +661,7 @@ class compressor {
 
 		}
 
-        return $content;
+		return $content;
 
 	}
 
@@ -678,29 +671,23 @@ class compressor {
 	**/
 	function get_script_array($source, $options) {
 
-/* links to JS files can be anywhere */
-		if ($options['type'] == 'text/javascript') {
-			$regex = "!<" . $options['tag'] . "[^>]+type=['\"](" . $options['type'] . ")['\"]([^>]+)?>(.*?)(</" . $options['tag'] . ">)?!is";
-			preg_match_all($regex, $source, $matches, PREG_SET_ORDER);
-/* links to CSS files can be included only to head, W3.org */
-		} else {
-			$head = $this->get_head($source);
-			if ($head) {
-				$regex = "!<" . $options['tag'] . "[^>]+rel=['\"](" . $options['rel'] . ")['\"]([^>]+)?>(</" . $options['tag'] . ">)?!is";
-				preg_match_all($regex, $head, $matches, PREG_SET_ORDER);
-			}
+		$head = $this->get_head($source);
+		if ($head) {
+			$regex = "!<" . $options['tag'] . "[^>]+" . ($options['type'] == 'text/javascript' ? "type\\s*=\\s*['\"](" . $options['type'] : "rel\\s*=\\s*['\"](" . $options['rel']) . ")['\"]([^>]*)>(.*?</" . $options['tag'] . ">)?!is";
+			preg_match_all($regex, $head, $matches, PREG_SET_ORDER);
 		}
 
 		if (!empty($matches)) {
 			foreach($matches as $match) {
-				$script_array[] = array('file' => $match[2],
-										'content' => $match[3]);
+				$script_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[0])),
+										'content' => preg_replace("/(^<script type=['\"]text\/javascript[^>+]>|<\/script>$)/i", "", $match[0]),
+										'source' => $match[0]);
 			}
 		} else {
 			$script_array = "";
 		}
-
-		if (empty($script_array)) { //No file
+/* No file */
+		if (empty($script_array)) {
 			return $source;
 		}
 /* Remove empty sources and any externally linked files */
@@ -711,14 +698,14 @@ class compressor {
 /* but keep JS w/o src to merge into unobtrusive loader */
 			if(!$src[1] && !$options['unobtrusive']){
 				unset($script_array[$key]);
-			} 
+			}
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
 				if(!strstr($src[1], $_SERVER['HTTP_HOST'])) {
-					unset($script_array[$key]);		
+					unset($script_array[$key]);
 					$this->process_report['skipped'][$src[1]] = array('from'=>$src[1],
-													 'reason'=>'Cannot compress external files');												
+																		'reason'=>'Cannot compress external files');
 				}
-			} 
+			}
 			if (!$options['unobtrusive'] || !$value['content']) {
 /* recursively resolve @import in files */
 				$script_array[$key]['content'] = $this->resolve_css_imports($src[1]);
@@ -776,7 +763,7 @@ class compressor {
 				$extentsion_length = strlen($options['original_ext']);
 				if(".".substr($this->view->get_basename($current_src),(-1*$extentsion_length)) == ".".$options['original_ext']) {			
 				$return_array[] = array('src'=>$current_src,
-										'location'=>$value['file'],
+										'source'=>$value['source'],
 										'content' => $value['content']);
 				} else {
 				$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
@@ -1039,9 +1026,9 @@ class compressor {
 					
 				foreach($files AS $file) {
 						
-					if (strstr($file,"_cmp_") && !strstr($this->compressed_files_string,$file)) {
+					if (!strstr($this->compressed_files_string,$file)) {
 						if(file_exists($path . "/" . $file)) {
-						unlink($path . "/" . $file);
+							unlink($path . "/" . $file);
 						}
 					} // end if
 			
@@ -1171,9 +1158,9 @@ class compressor {
 				//Get mime type
 				$mime = $this->get_mimetype($file_path);
 				//Get file contents
-			    $contents = @file_get_contents($file_path);
+				$contents = @file_get_contents($file_path);
 				//Base64 encode contents
-			    $base64   = base64_encode($contents); 				
+				$base64   = base64_encode($contents); 				
 				
 				//Set new data uri
 				$data_uri = ('data:' . $mime . ';base64,' . $base64);
@@ -1232,85 +1219,85 @@ class compressor {
 	 * Get file extension
 	 *
 	**/	
-    function get_file_extension($file) {
+	function get_file_extension($file) {
 
-        return array_pop(explode('.',$file));
-    }
+		return array_pop(explode('.',$file));
+	}
 
 	/**
 	 * Get mime from extension
 	 *
 	 **/
-    function get_mimetype($value='') {
+	function get_mimetype($value='') {
 
-        $ct['htm'] = 'text/html';
-        $ct['html'] = 'text/html';
-        $ct['txt'] = 'text/plain';
-        $ct['asc'] = 'text/plain';
-        $ct['bmp'] = 'image/bmp';
-        $ct['gif'] = 'image/gif';
-        $ct['jpeg'] = 'image/jpeg';
-        $ct['jpg'] = 'image/jpeg';
-        $ct['jpe'] = 'image/jpeg';
-        $ct['png'] = 'image/png';
-        $ct['ico'] = 'image/vnd.microsoft.icon';
-        $ct['mpeg'] = 'video/mpeg';
-        $ct['mpg'] = 'video/mpeg';
-        $ct['mpe'] = 'video/mpeg';
-        $ct['qt'] = 'video/quicktime';
-        $ct['mov'] = 'video/quicktime';
-        $ct['avi']  = 'video/x-msvideo';
-        $ct['wmv'] = 'video/x-ms-wmv';
-        $ct['mp2'] = 'audio/mpeg';
-        $ct['mp3'] = 'audio/mpeg';
-        $ct['rm'] = 'audio/x-pn-realaudio';
-        $ct['ram'] = 'audio/x-pn-realaudio';
-        $ct['rpm'] = 'audio/x-pn-realaudio-plugin';
-        $ct['ra'] = 'audio/x-realaudio';
-        $ct['wav'] = 'audio/x-wav';
-        $ct['css'] = 'text/css';
-        $ct['zip'] = 'application/zip';
-        $ct['pdf'] = 'application/pdf';
-        $ct['doc'] = 'application/msword';
-        $ct['bin'] = 'application/octet-stream';
-        $ct['exe'] = 'application/octet-stream';
-        $ct['class']= 'application/octet-stream';
-        $ct['dll'] = 'application/octet-stream';
-        $ct['xls'] = 'application/vnd.ms-excel';
-        $ct['ppt'] = 'application/vnd.ms-powerpoint';
-        $ct['wbxml']= 'application/vnd.wap.wbxml';
-        $ct['wmlc'] = 'application/vnd.wap.wmlc';
-        $ct['wmlsc']= 'application/vnd.wap.wmlscriptc';
-        $ct['dvi'] = 'application/x-dvi';
-        $ct['spl'] = 'application/x-futuresplash';
-        $ct['gtar'] = 'application/x-gtar';
-        $ct['gzip'] = 'application/x-gzip';
-        $ct['js'] = 'application/x-javascript';
-        $ct['swf'] = 'application/x-shockwave-flash';
-        $ct['tar'] = 'application/x-tar';
-        $ct['xhtml']= 'application/xhtml+xml';
-        $ct['au'] = 'audio/basic';
-        $ct['snd'] = 'audio/basic';
-        $ct['midi'] = 'audio/midi';
-        $ct['mid'] = 'audio/midi';
-        $ct['m3u'] = 'audio/x-mpegurl';
-        $ct['tiff'] = 'image/tiff';
-        $ct['tif'] = 'image/tiff';
-        $ct['rtf'] = 'text/rtf';
-        $ct['wml'] = 'text/vnd.wap.wml';
-        $ct['wmls'] = 'text/vnd.wap.wmlscript';
-        $ct['xsl'] = 'text/xml';
-        $ct['xml'] = 'text/xml';
+		$ct['htm'] = 'text/html';
+		$ct['html'] = 'text/html';
+		$ct['txt'] = 'text/plain';
+		$ct['asc'] = 'text/plain';
+		$ct['bmp'] = 'image/bmp';
+		$ct['gif'] = 'image/gif';
+		$ct['jpeg'] = 'image/jpeg';
+		$ct['jpg'] = 'image/jpeg';
+		$ct['jpe'] = 'image/jpeg';
+		$ct['png'] = 'image/png';
+		$ct['ico'] = 'image/vnd.microsoft.icon';
+		$ct['mpeg'] = 'video/mpeg';
+		$ct['mpg'] = 'video/mpeg';
+		$ct['mpe'] = 'video/mpeg';
+		$ct['qt'] = 'video/quicktime';
+		$ct['mov'] = 'video/quicktime';
+		$ct['avi']  = 'video/x-msvideo';
+		$ct['wmv'] = 'video/x-ms-wmv';
+		$ct['mp2'] = 'audio/mpeg';
+		$ct['mp3'] = 'audio/mpeg';
+		$ct['rm'] = 'audio/x-pn-realaudio';
+		$ct['ram'] = 'audio/x-pn-realaudio';
+		$ct['rpm'] = 'audio/x-pn-realaudio-plugin';
+		$ct['ra'] = 'audio/x-realaudio';
+		$ct['wav'] = 'audio/x-wav';
+		$ct['css'] = 'text/css';
+		$ct['zip'] = 'application/zip';
+		$ct['pdf'] = 'application/pdf';
+		$ct['doc'] = 'application/msword';
+		$ct['bin'] = 'application/octet-stream';
+		$ct['exe'] = 'application/octet-stream';
+		$ct['class']= 'application/octet-stream';
+		$ct['dll'] = 'application/octet-stream';
+		$ct['xls'] = 'application/vnd.ms-excel';
+		$ct['ppt'] = 'application/vnd.ms-powerpoint';
+		$ct['wbxml']= 'application/vnd.wap.wbxml';
+		$ct['wmlc'] = 'application/vnd.wap.wmlc';
+		$ct['wmlsc']= 'application/vnd.wap.wmlscriptc';
+		$ct['dvi'] = 'application/x-dvi';
+		$ct['spl'] = 'application/x-futuresplash';
+		$ct['gtar'] = 'application/x-gtar';
+		$ct['gzip'] = 'application/x-gzip';
+		$ct['js'] = 'application/x-javascript';
+		$ct['swf'] = 'application/x-shockwave-flash';
+		$ct['tar'] = 'application/x-tar';
+		$ct['xhtml']= 'application/xhtml+xml';
+		$ct['au'] = 'audio/basic';
+		$ct['snd'] = 'audio/basic';
+		$ct['midi'] = 'audio/midi';
+		$ct['mid'] = 'audio/midi';
+		$ct['m3u'] = 'audio/x-mpegurl';
+		$ct['tiff'] = 'image/tiff';
+		$ct['tif'] = 'image/tiff';
+		$ct['rtf'] = 'text/rtf';
+		$ct['wml'] = 'text/vnd.wap.wml';
+		$ct['wmls'] = 'text/vnd.wap.wmlscript';
+		$ct['xsl'] = 'text/xml';
+		$ct['xml'] = 'text/xml';
 
-        $extension = $this->get_file_extension($value);
+		$extension = $this->get_file_extension($value);
 
-        if (!$type = $ct[strtolower($extension)]) {
+		if (!$type = $ct[strtolower($extension)]) {
 
-            $type = 'text/html';
-        }
+			$type = 'text/html';
+		}
 
-        return $type;
-    } 		
+		return $type;
+	} 		
 	
 	//Start script timing
 	function startTimer() {
