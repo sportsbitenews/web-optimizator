@@ -442,7 +442,7 @@ ExpiresDefault \"access plus 10 years\"
 					}
 					if (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-						$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->view->paths['full']['current_directory'] . '/web.optimizer.php\');' . "\n", $content_saved);
+						$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->view->paths['full']['current_directory'] . 'web.optimizer.php\');' . "\n", $content_saved);
 					} else {
 						$content_saved = "<?php require('" . $this->paths['full']['current_directory'] . "web-optimizer/web.optimizer.php'); ?>" . $content_saved;
 					}

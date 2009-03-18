@@ -32,7 +32,7 @@ class compressor_view {
 	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
 		$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']));
 	} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
-		$this->paths['full']['current_directory'] = $this->paths['full']['document_root'] . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
+		$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->paths['full']['document_root']) . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 	}
 
 	if(!file_exists($this->paths['full']['current_directory'])) {
@@ -41,7 +41,7 @@ class compressor_view {
 	$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
 	
 	//Set the current relative path
-	$this->paths['relative']['current_directory'] = str_replace($this->paths['full']['document_root'], "", $this->paths['full']['current_directory']);
+	$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
 
 	//Set the root relative path
 	$this->paths['relative']['document_root'] = preg_replace("/web-optimizer\//", "", $this->paths['relative']['current_directory']);
@@ -73,13 +73,13 @@ class compressor_view {
 	 * 
 	 **/	
 	 function prevent_trailing_slash($path) {
-	 
-	 	if(substr($path,-1,1) == "/" || substr($path,-1,1) == "\\") {
-		$path = substr($path,0,-1); 
-		}	 
-	 
+
+	 	if (substr($path,-1,1) == "/" || substr($path,-1,1) == "\\") {
+			$path = substr($path, 0, -1);
+		}
+
 	 	return $path;
-	 
+
 	 }
 	 
 	/**
