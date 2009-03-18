@@ -12,7 +12,7 @@
 			
 			<p>			
 				<div class="notice">
-				Your document root is the root folder that your HTML files are served from. If you don't know what it is, it's probably the path above. Just click <strong>Next...</strong> below			
+				Your document root is the root folder that your HTML files are served from. If you don't know what it is, it's probably the path above. Just click <strong>Next...</strong> below
 				</div>		
 			</p>
 			<p></p>

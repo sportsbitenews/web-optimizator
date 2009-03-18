@@ -13,4 +13,9 @@ Installation
 
 Support and bug reports
 ----------------------
-Please submit support requests and bug reports via http://webo.name/contacts/
+Please submit support requests and bug reports via http://code.google.com/p/web-optimizator/
+
+Upgrade issues
+----------------------
+Please note that on uprading from version 0.2 and below you need to replace in the last part in index.php file 'compressor' to
+'web_optimizer'.

@@ -16,11 +16,10 @@
 			<label>Your CSS will be cached in</label>
 				<div class="info">
 				<input type="text" name="user[css_cachedir]" class="long_text" value="<?php echo $css_cachedir ?>" />
-				</div>	
-				
+				</div>				
 	</fieldset>
 
-			<?php foreach($options AS $key=>$type) { 
+			<?php foreach($options AS $key=>$type) {
 					if(is_array($type['value'])) {
 			?>	
 				<fieldset class="spd_options">
@@ -33,8 +32,8 @@
 						
 						<label><?php echo $key . " " . $option ?></label>
 							<div class="info">
-							Yes: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="1" <?php if(!empty($value)) { ?>checked<?php } ?> class="radio">
-							No: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="0" <?php if(empty($value)) { ?>checked<?php } ?> class="radio">				
+							Yes: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="radio">
+							No: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="0" <?php if(empty($value)) { ?>checked="checked"<?php } ?> class="radio">				
 							</div>	
 							
 						<?php } ?>
@@ -50,4 +49,4 @@
 		<input type="hidden" name="user[_username]" value="<?php echo $compress_options['username'] ?>" />
 		<input type="hidden" name="user[_password]" value="<?php echo $compress_options['password'] ?>" />	
 	
-</form>	
+</form>

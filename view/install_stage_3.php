@@ -5,7 +5,7 @@
 
 <p>Your configuration options have been successfully saved.</p>
 
-<h2>Verify test page is working correctly</h2>
+<!-- h2>Verify test page is working correctly</h2>
 
 <p>This installation comes with a test page. You should now check the test page is working correctly.</p>
 
@@ -20,12 +20,23 @@
 	<li>View the source of the page and you should see the links to the compressed javascript and CSS</li>
 	<li>Look in the cache directories what we have specified in the install. You should see the compressed JavaScript and CSS files there.</li>
 </ul>
-</p>
+</p -->
+<?php
 
+	if ($auto_rewrite) {
+
+?>
+<h2>Your configuration has been successfully saved</h2>
+
+<p>You website based on [here goes CMS title] is successfully patched. You can <a href="<?php echo $paths['relative']['document_root'] ?>">check the result here</a>.</p>
+<?php
+	
+	} else {
+	
+?>
 <h2>That's working. OK now what?</h2>
 
-<p>Now should should add the Web Optimizer code to your own PHP page. This is made a lot easier if you have one PHP file that serves every page in your site. In a Wordpress blog, for example, this would be the <strong>wp-blog-header.php</strong> file. Because <strong>wp-blog-header.php</strong> is accessed for every page, we just have to modify that file. If you have different PHP files serving different pages, then you will need to modify each of those pages.
-</p>
+<p>Now should should add the Web Optimizer code to your own PHP page. This is made a lot easier if you have one PHP file that serves every page in your site. In a Wordpress blog, for example, this would be the <strong>wp-blog-header.php</strong> file. Because <strong>wp-blog-header.php</strong> is accessed for every page, we just have to modify that file. If you have different PHP files serving different pages, then you will need to modify each of those pages.</p>
 
 <h3>How to modify your PHP file</h3>
 
@@ -38,21 +49,25 @@
 <p>We need to add in the Web Optimizer code <strong>before</strong> that. So you would add this to the very top of the page:
 <p>
 	  <span class="red">&lt;?php</span><br />
-	  <span class="green">require</span>(<span class="red">'<?php echo($paths['full']['current_directory']) ?>web.optimizer.php'</span>);<br />
+	  <span class="green">require</span>(<span class="red">'<?php echo $paths['full']['current_directory'] ?>web.optimizer.php'</span>);<br />
 	  <span class="red">?&gt;</span><br />
 </p>
 </p>
 <p>Finally, we must then add one more line of code to the very bottom of the page as follows:
 <p>
 	  <span class="red">&lt;?php</span><br />
-	  $compressor->finish();<br />
+	  $web_optimizer->finish();<br />
 	  <span class="red">?&gt;</span><br />
 </p>
 <p>
+<?php
 
+	}
+
+?>
 <h2>Now for some testing...</h2>
 
-<p>That's all you have to do. I recommend testing this out on a non-live site first, and then playing with the options to get optimal performance. To change the options you can:
+<p>That's all you have to do. We recommend testing this out on a non-live site first, and then playing with the options to get optimal performance. To change the options you can:
 <ul>
 		<li>Manually edit the config.php file here: <?php echo($paths['full']['current_directory']) ?>config.php</li>
 		<li>Just run this install again. It will remember your current options.</li>
@@ -60,5 +75,4 @@
 </p>
 <h2>Extra security</h2>
 
-<p>Although the package installs a username and password to access the install, you can also delete <?php echo($paths['full']['current_directory']) ?>install.php for extra security.
-</p>
+<p>Although the package installs a username and password to access the install, you can also delete <?php echo($paths['full']['current_directory']) ?>install.php for extra security.</p>

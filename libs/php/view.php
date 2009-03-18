@@ -30,11 +30,11 @@ class compressor_view {
 	}
 
 	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
-		$this->paths['full']['current_directory'] = $document_root . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+		$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']));
 	} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
-		$this->paths['full']['current_directory'] = $this->paths['full']['document_root'] . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+		$this->paths['full']['current_directory'] = $this->paths['full']['document_root'] . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
 	}
-	
+
 	if(!file_exists($this->paths['full']['current_directory'])) {
 		$this->paths['full']['current_directory'] = getcwd();
 	}
@@ -42,7 +42,10 @@ class compressor_view {
 	
 	//Set the current relative path
 	$this->paths['relative']['current_directory'] = str_replace($this->paths['full']['document_root'], "", $this->paths['full']['current_directory']);
-	
+
+	//Set the root relative path
+	$this->paths['relative']['document_root'] = preg_replace("/web-optimizer\//", "", $this->paths['relative']['current_directory']);
+
 	//Set the view directory
 	$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";	
 	
