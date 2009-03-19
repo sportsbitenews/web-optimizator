@@ -215,7 +215,7 @@ class admin {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
 						'title' => 'Auto change /index.php',
-						'intro' => 'Web Optimizer can add to your website based on [here should go CMS title] all required changes (only for /index.php).' .
+						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info() .' all required changes (only for /index.php).' .
 									'<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.',
 						'value' => is_array($this->compress_options['auto_rewrite']) ? $this->compress_options['auto_rewrite'] : array('enabled' => null)
 			);
@@ -470,7 +470,8 @@ ExpiresDefault \"access plus 10 years\"
 								"paths" => $this->view->paths,
 								"page" => $this->input['page'],
 								"message" => "Configuration saved",
-								"auto_rewrite" => $auto_rewrite);
+								"auto_rewrite" => $auto_rewrite,
+								"cms_version" => $this->system_info());
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
 
@@ -579,8 +580,24 @@ ExpiresDefault \"access plus 10 years\"
 	* Make safe for regex
 	* 
 	**/		
-	function regex_escape($string) 	{
+	function regex_escape($string) {
 		return  addcslashes($string,'\^$.[]|()?*+{}');
+	}
+
+	/**
+	* Get current PHP system info
+	* 
+	**/		
+	function system_info($root) {
+		if (is_file($root . 'wp-config.php')) {
+			$wp_version = '1.0.0';
+			if (is_file($root . 'wp-includes/version.php')) {
+				require($root . 'wp-includes/version.php');
+			}
+			return 'Wordpress ' . $wp_version;
+		}
+		
+		return 'CMS 42';
 	}
 
 }

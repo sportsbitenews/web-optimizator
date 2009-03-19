@@ -28,7 +28,7 @@
 ?>
 <h2>Your configuration has been successfully saved</h2>
 
-<p>You website based on [here goes CMS title] is successfully patched. You can <a href="<?php echo $paths['relative']['document_root'] ?>">check the result here</a>.</p>
+<p>You website based on <?php echo $cms_version ?> is successfully patched. You can <a href="<?php echo $paths['relative']['document_root'] ?>">check the result here</a>.</p>
 <?php
 	
 	} else {

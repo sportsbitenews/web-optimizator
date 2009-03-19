@@ -28,9 +28,9 @@
 4. Merging
 +a) Base CSS / JS merging
 ?b) @media support for CSS merging
- c) @import support for CSS merging
- d) Unobtrusive JS
- e) YASS modules loader
++c) @import support for CSS merging
++d) Unobtrusive JS with YASS modules loader
+ e) Unobtrusive ads blocks inside page
 
 5. Minifier
 +a) JSMin (PHP4/5)
@@ -40,12 +40,12 @@
 
 6. Including
 +a) Manual including 2 strings
- b) Semi-auto including (root index.php)
++b) Auto including (root index.php)
  c) Auto-parsing source directories for css / js files
 
 7. CDN integration
  a) Google Apps Engine
- b) AMazon S3
+ b) Amazon S3
  c) EdgeCast
  d) 
  e) NGENIX
