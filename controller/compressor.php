@@ -1148,9 +1148,8 @@ class compressor {
 	function convert_css_bgr_to_data($content, $path) {
 		
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
-				
-		if(count($matches[1]) > 0) {	
-		
+		if(count($matches[1]) > 0) {
+
 			$matches[1] = array_unique($matches[1]); //Unique
 			foreach($matches[1] AS $key=>$file) {
 			
@@ -1168,8 +1167,7 @@ class compressor {
 				//Get file contents
 				$contents = @file_get_contents($file_path);
 				//Base64 encode contents
-				$base64   = base64_encode($contents); 				
-				
+				$base64   = base64_encode($contents); 
 				//Set new data uri
 				$data_uri = ('data:' . $mime . ';base64,' . $base64);
 				
@@ -1204,7 +1202,13 @@ class compressor {
 
 		//Add IE only css
 		if(is_array($this->ie_only_css)) {
-			$content .= implode(" ",$this->ie_only_css);
+			$this->ie_only_css_rules = implode("", $this->ie_only_css);
+/* add to previous @media */
+			if (substr($content, strlen($content) - 2, 2) == '}}') {
+				$content = preg_replace("/\}\}$/", "}". $this->ie_only_css_rules ."}", $content);
+			} else {
+				$content .= $this->ie_only_css_rules;
+			}
 		}
 
 		return $content;
