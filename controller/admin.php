@@ -431,7 +431,7 @@ ExpiresDefault \"access plus 10 years\"
 
 			}
 /* define CMS*/
-			$cms_version = $this->system_info($this->view->paths['full']['document_root']));
+			$cms_version = $this->system_info($this->view->paths['full']['document_root']);
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
 			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
@@ -478,7 +478,7 @@ ExpiresDefault \"access plus 10 years\"
 								"page" => $this->input['page'],
 								"message" => "Configuration saved",
 								"auto_rewrite" => $auto_rewrite,
-								"cms_version" => $cms_version;
+								"cms_version" => $cms_version);
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
 
@@ -610,7 +610,7 @@ ExpiresDefault \"access plus 10 years\"
 			if ($fp) {
 				while ($str = fgets($fp)) {
 					if (strstr($str, 'version = "')) {
-						$drupal_version = preg_replace('/version="([0-9.]*?)"/', "$1", $str);
+						$drupal_version = preg_replace('/version\s+=\s+"([0-9.]*?)"/', "$1", $str);
 					}
 				}
 			}
