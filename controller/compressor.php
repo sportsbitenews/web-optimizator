@@ -336,26 +336,24 @@ class compressor {
 	**/	
 	function do_remove() {
 
-	if(empty($this->remove_files)) {
-		return;
-	}
+		if(empty($this->remove_files)) {
+			return;
+		}
 
-	//Get non-immune scripts
-	$script_array = $this->get_script_array($this->content, array('cachedir' => $options['cachedir'],
-																  'tag' => 'script',
-																  'type' => 'text/javascript',
-																  'ext' => 'js',
-																  'src' => 'src',
-																  'unobtrusive' => $options['unobtrusive']));															  	
-		//If we have scripts		
-		if(is_array($script_array)) {												
-		
-		//Pull out remove immune
-		preg_match("@<!-- REMOVE IMMUNE -->(.*?)<!-- END REMOVE IMMUNE -->@is", $this->content, $match);		
-		$_immune = $match[0];
-		$this->content = str_replace($_immune,'@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@', $this->content);			
-
-			foreach($script_array AS $script) {			
+/* Get non-immune scripts */
+		$this->script_array = $this->get_script_array($this->content, array('cachedir' => $options['cachedir'],
+																			'tag' => 'script',
+																			'type' => 'text/javascript',
+																			'ext' => 'js',
+																			'src' => 'src',
+																			'unobtrusive' => $options['unobtrusive']));
+/* If we have scripts */
+		if(is_array($this->script_array)) {
+/* Pull out remove immune */
+			preg_match("@<!-- REMOVE IMMUNE -->(.*?)<!-- END REMOVE IMMUNE -->@is", $this->content, $match);
+			$_immune = $match[0];
+			$this->content = str_replace($_immune,'@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@', $this->content);
+			foreach($this->script_array AS $script) {			
 				foreach($this->remove_files AS $file) {
 					if(!empty($file) && !empty($script)) {
 						if(strstr($script,$file)) { //Remove the scripts from the source if they are on the remove list		
@@ -367,10 +365,10 @@ class compressor {
 				}			
 			}
 /* Put back */
-			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@",$_immune,$this->content);
+			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@", $_immune, $this->content);
 /* Remove comments */
-			$this->content = str_replace("<!-- REMOVE IMMUNE -->","",$this->content);
-			$this->content = str_replace("<!-- END REMOVE IMMUNE -->","",$this->content);			
+			$this->content = str_replace("<!-- REMOVE IMMUNE -->", "", $this->content);
+			$this->content = str_replace("<!-- END REMOVE IMMUNE -->", "", $this->content);			
 
 		}
 
@@ -390,14 +388,14 @@ class compressor {
 /* Set cachedir */
 		$cachedir = $options['cachedir'];
 /* Get array of scripts */
-		$script_array = $this->get_script_array($source, $options);
+		$this->script_array = $this->get_script_array($source, $options);
 /* prepare JS w/o src for merging in unobtrusive way */
-		if ($options['unobtrusive'] && !empty($script_array)) {
+		if ($options['unobtrusive'] && !empty($this->script_array)) {
 
 			$postloader = array();
 			$handler = 'scripts';
 			$key = 0;
-			foreach ($script_array as $script) {
+			foreach ($this->script_array as $script) {
 				$handler_new = $script['file'] ? 'scripts' : 'handler';
 				$postloader[$key][$handler_new][] = $script;
 				$handler = $handler_new;
@@ -411,7 +409,7 @@ class compressor {
 			}
 
 		} else {
-			$source = $this->do_include($options, $source, $cachedir, $script_array);
+			$source = $this->do_include($options, $source, $cachedir, $this->script_array);
 		}
 
 		return $source;
@@ -446,7 +444,7 @@ class compressor {
 	* Include compressed JS or CSS into source and return it
 	*
 	**/
-	function do_include($options, $source, $cachedir, $script_array, $handler_array = null) {
+	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
 /* merge and escape handlers array */
 		if (is_array($handler_array)) {
 			$handlers = '';
@@ -457,10 +455,10 @@ class compressor {
 /* Get date string for making hash */
 		$datestring = $this->get_file_dates($script_array, $options);
 /* If only one script found */
-		if(!is_array($script_array)) {
-			$_script_array = array($script_array);
+		if(!is_array($external_array)) {
+			$_script_array = array($external_array);
 		} else {
-			$_script_array = $script_array;
+			$_script_array = $external_array;
 		}
 /* Get the cache hash */
 		$cache_file = md5(implode("_", $_script_array) . $datestring . implode("_", $options) . $handlers);
@@ -468,11 +466,11 @@ class compressor {
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
-			$script_array = $this->get_file_locations($script_array, $options);
+			$external_array = $this->get_file_locations($external_array, $options);
 			if (is_array($handler_array)) {
-				$script_array = array_merge($script_array, $handler_array);
+				$external_array = array_merge($external_array, $handler_array);
 			}
-			$source = $this->_remove_scripts($script_array, $source);
+			$source = $this->_remove_scripts($external_array, $source);
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
@@ -480,11 +478,11 @@ class compressor {
 			return $source;
 		}
 /* If the file didn't exist, continue ... */
-		$script_array = $this->get_file_locations($script_array,$options);
+		$external_array = $this->get_file_locations($external_array, $options);
 /* Create file */
 		$contents = "";
-		if(is_array($script_array)) {
-			foreach($script_array AS $key => $info) {
+		if(is_array($external_array)) {
+			foreach($external_array AS $key => $info) {
 				//Get the code
 				if ($file_contents = $info['content']) {
 					//Mess with the CSS source
@@ -506,9 +504,9 @@ class compressor {
 
 			}
 			if (is_array($handler_array)) {
-				$script_array = array_merge($script_array, $handler_array);
+				$external_array = array_merge($external_array, $handler_array);
 			}
-			$source = $this->_remove_scripts($script_array, $source);
+			$source = $this->_remove_scripts($external_array, $source);
 
 		}
 
@@ -538,7 +536,7 @@ class compressor {
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
 					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . $options['rel'],
-																'from' => $script_array,
+																'from' => $external_array,
 																'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']);
 					}
 
@@ -552,10 +550,10 @@ class compressor {
 	* Replaces the script or css links in the source with a marker
 	*
 	*/
-	function _remove_scripts($script_array, $source) {
+	function _remove_scripts($external_array, $source) {
 
-		$maxKey = array_pop(array_keys($script_array));
-		foreach($script_array AS $key=>$value) {
+		$maxKey = array_pop(array_keys($external_array));
+		foreach($external_array AS $key=>$value) {
 			if($key == $maxKey) { //Remove script
 				$source = str_replace($value['source'], "@@@marker@@@", $source);
 			} else {
@@ -621,7 +619,7 @@ class compressor {
 	**/
 	function get_file_name ($file) {
 
-		$file = preg_replace("/https?:\/\/".$_SERVER['HTTP_HOST']."/", "", $file);
+		$file = preg_replace("/(https?:\/\/".$_SERVER['HTTP_HOST']."|\?.*)/", "", $file);
 		if (substr($file,0,1) == "/") {
 			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
 		} else {
@@ -679,53 +677,53 @@ class compressor {
 
 		if (!empty($matches)) {
 			foreach($matches as $match) {
-				$script_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[0])),
+				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[0])),
 										'content' => preg_replace("/(^<script type=['\"]text\/javascript[^>+]>|<\/script>$)/i", "", $match[0]),
 										'source' => $match[0]);
 			}
 		} else {
-			$script_array = "";
+			$external_array = "";
 		}
 /* No file */
-		if (empty($script_array)) {
+		if (empty($external_array)) {
 			return $source;
 		}
 /* Remove empty sources and any externally linked files */
-		foreach($script_array AS $key => $value) {
+		foreach($external_array AS $key => $value) {
 			$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
 /* but keep JS w/o src to merge into unobtrusive loader */
 			if(!$src[1] && !$options['unobtrusive']){
-				unset($script_array[$key]);
+				unset($external_array[$key]);
 			}
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
 				if(!strstr($src[1], $_SERVER['HTTP_HOST'])) {
-					unset($script_array[$key]);
+					unset($external_array[$key]);
 					$this->process_report['skipped'][$src[1]] = array('from'=>$src[1],
 																		'reason'=>'Cannot compress external files');
 				}
 			}
 			if (!$options['unobtrusive'] || !$value['content']) {
 /* recursively resolve @import in files */
-				$script_array[$key]['content'] = $this->resolve_css_imports($src[1]);
+				$external_array[$key]['content'] = $this->resolve_css_imports($src[1]);
 			}
 
 		}
 /* Remove ignored files */
 		if(!empty($this->ignore_files)) {
-			foreach ($script_array AS $return_key => $src) {
+			foreach ($external_array AS $return_key => $src) {
 				foreach($this->ignore_files AS $ignore) {
 					if (strstr($src['file'], $ignore)) {
 						$this->process_report['notice'][$src['file']] = array('from'=>$src['file'],
 																				'notice'=>'The file was on the ignore list and skipped');
-						unset($script_array[$return_key]);
+						unset($external_array[$return_key]);
 					}
 				}
 			}
 		}
 
-		return $script_array;
+		return $external_array;
 
 	}
 	
@@ -733,20 +731,20 @@ class compressor {
 	* Gets the path locations of the scripts being compressed
 	* 
 	**/		
-	function get_file_locations($script_array, $options) {
+	function get_file_locations($external_array, $options) {
 	
-		if(!is_array($script_array)) {
+		if(!is_array($external_array)) {
 			return;
 		}
 /* Remove empty sources */
-		foreach($script_array AS $key=>$value) {
+		foreach($external_array AS $key=>$value) {
 		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
 			if(!$src[1]) {
-				unset($script_array[$key]);
+				unset($external_array[$key]);
 			}
 		}			
 /* Create file */
-		foreach($script_array AS $key => $value) {
+		foreach($external_array AS $key => $value) {
 /* Get the src */
 			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
 			$current_src = $this->get_file_name($src[1]);

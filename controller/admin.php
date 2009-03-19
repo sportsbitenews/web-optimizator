@@ -589,12 +589,25 @@ ExpiresDefault \"access plus 10 years\"
 	* 
 	**/		
 	function system_info($root) {
-		if (is_file($root . 'wp-config.php')) {
+/* Wordpress */
+		if (is_dir($root . 'wp-includes')) {
 			$wp_version = '1.0.0';
 			if (is_file($root . 'wp-includes/version.php')) {
 				require($root . 'wp-includes/version.php');
 			}
 			return 'Wordpress ' . $wp_version;
+		} elseif (is_dir($root . 'modules/system')) {
+/* Drupal */
+			$drupal_version = '1.0.0';
+			$fp  = @fopen($root . 'modules/system/system.info', "r");
+			if ($fp) {
+				while ($str = fgets($fp)) {
+					if (strstr($str, 'version = "')) {
+						$drupal_version = preg_replace('/version="([0-9.]*?)"/', "$1", $str);
+					}
+				}
+			}
+			return 'Drupal ' . $drupal_version;
 		}
 		
 		return 'CMS 42';
