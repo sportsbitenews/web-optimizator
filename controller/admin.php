@@ -472,6 +472,8 @@ ExpiresDefault \"access plus 10 years\"
 			}
 
 		}
+/* try to set some libs executable */
+		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 775);
 
 		$page_variables = array("title" => "Installation stage 3",
 								"paths" => $this->view->paths,
