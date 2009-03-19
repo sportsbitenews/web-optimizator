@@ -430,6 +430,8 @@ ExpiresDefault \"access plus 10 years\"
 				}
 
 			}
+/* define CMS*/
+			$cms_version = $this->system_info($this->view->paths['full']['document_root']));
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
 			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
@@ -450,7 +452,12 @@ ExpiresDefault \"access plus 10 years\"
 /* add finish block */
 						$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
 					} else {
-						$content_saved .= '<?php $web_optimizer->finish(); ?>';
+/* fix for Drupal on not-closed ?> */
+						if (substr($cms_version, 0, 6) == 'Drupal') {
+							$content_saved .= '$web_optimizer->finish();';
+						} else {
+							$content_saved .= '<?php $web_optimizer->finish(); ?>';
+						}
 					}
 					fclose($fp);
 					$fp = @fopen($index, "w");
@@ -471,7 +478,7 @@ ExpiresDefault \"access plus 10 years\"
 								"page" => $this->input['page'],
 								"message" => "Configuration saved",
 								"auto_rewrite" => $auto_rewrite,
-								"cms_version" => $this->system_info($this->view->paths['full']['document_root']));
+								"cms_version" => $cms_version;
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
 
