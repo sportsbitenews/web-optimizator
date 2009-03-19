@@ -215,7 +215,7 @@ class admin {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
 						'title' => 'Auto change /index.php',
-						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info() .' all required changes (only for /index.php).' .
+						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info($this->view->paths['full']['document_root']) .' all required changes (only for /index.php).' .
 									'<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.',
 						'value' => is_array($this->compress_options['auto_rewrite']) ? $this->compress_options['auto_rewrite'] : array('enabled' => null)
 			);
@@ -471,7 +471,7 @@ ExpiresDefault \"access plus 10 years\"
 								"page" => $this->input['page'],
 								"message" => "Configuration saved",
 								"auto_rewrite" => $auto_rewrite,
-								"cms_version" => $this->system_info());
+								"cms_version" => $this->system_info($this->view->paths['full']['document_root']));
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
 
