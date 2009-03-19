@@ -214,14 +214,26 @@ class compressor {
 /* find variants */
 		foreach($matches[0] AS $link) {
 
-			preg_match_all("@(rel)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
+			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
 			if(is_array($variants)) {
+				$media = "all";
 				$marker = "";
 				foreach($variants AS $variant_type) {
-					$marker .= $variant_type[2];
-					$return[$variant_type[1]] = $variant_type[2];
+
+					switch ($variant_type[1]) {
+						case "rel":
+							$marker .= $variant_type[2];
+							$return[$variant_type[1]] = $variant_type[2];
+							break;
+/* create array of sources / media to merge the minto 1 file */
+						case "media":
+						case "href":
+							$$variant_type[1] = $variant_type[2];
+							break;
+					}
 				}
 			}
+			$return['media_all'][$href] = $media;
 /* Sub this new marker into the link */
 			$marker = str_replace(" ", "", $marker);
 			$new_link = preg_replace("@type=('|\")(.*?)('|\")@","type=$1" . "%%MARK%%" . "$3", $link);
@@ -229,7 +241,6 @@ class compressor {
 			$this->content = str_replace($link, $new_link, $this->content);
 			$return['real_type'] = $marker;
 			$media_types[md5($marker)] = $return;
-
 		}
 
 		$this->process_report['media_types'] = $media_types;
@@ -243,6 +254,7 @@ class compressor {
 														'src' => 'href',
 														'rel' => !empty($value['rel']) ? $value['rel'] : false,
 														'media' => !empty($value['media']) ? $value['media'] : false,
+														'media_all' => $value['media_all'],
 														'data_uris' => $options['data_uris'],
 														'css_sprites' => $options['css_sprites'],
 														'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
@@ -483,19 +495,22 @@ class compressor {
 		$contents = "";
 		if(is_array($external_array)) {
 			foreach($external_array AS $key => $info) {
-				//Get the code
+/* Get the code */
 				if ($file_contents = $info['content']) {
-					//Mess with the CSS source
+/* Mess with the CSS source */
 					if($options['header'] == "css") {
 /* Absolute paths */
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info);
 						if ($options['css_sprites']) {
-							$file_contents = $this->convert_css_sprites($file_contents, $options); //Create CSS Sprites in CSS dir
+/* Create CSS Sprites in CSS dir */
+							$file_contents = preg_replace("/;\}/", "}", $this->convert_css_sprites($file_contents, $options));
 						}
 						if ($options['data_uris']) {
-							$file_contents = $this->convert_css_bgr_to_data($file_contents, $options); //CSS background images to data URIs
+/* CSS background images to data URIs */
+							$file_contents = $this->convert_css_bgr_to_data($file_contents, $options);
 						}
-						$file_contents = $this->add_media_header($file_contents, $info); //Add media type header
+/* Add media type header */
+						$file_contents = $this->add_media_header($file_contents, $info);
 					}
 
 					$contents .=  $file_contents;
@@ -524,9 +539,8 @@ class compressor {
 			if($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] . $contents;
 			}
-/* Write to cache and display */
 			if($contents) {
-
+/* Write to cache and display */
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
 					fwrite($fp, $contents);
 					fclose($fp);
@@ -543,7 +557,7 @@ class compressor {
 				}
 
 			}
-			return $source;
+			return preg_replace("/@@@marker@@@/", "", $source);
 		}
 
 	/**
@@ -706,7 +720,8 @@ class compressor {
 			}
 			if (!$options['unobtrusive'] || !$value['content']) {
 /* recursively resolve @import in files */
-				$external_array[$key]['content'] = $this->resolve_css_imports($src[1]);
+				$external_array[$key]['content'] = ($options['media_all'][$src[1]] ? "@media " . $options['media_all'][$src[1]] . "{" : "") . 
+					$this->resolve_css_imports($src[1]) . ($options['media_all'][$src[1]] ? "}" : "");
 			}
 
 		}
@@ -765,13 +780,13 @@ class compressor {
 										'content' => $value['content']);
 				} else {
 				$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
-														 'reason'=>'Must have ' . $options['original_ext'] . ' extension');
+																		'reason'=>'Must have ' . $options['original_ext'] . ' extension');
 				}
 			
 			} else {
 				if(!strstr($current_src,'php_speedy_control')) {
 					$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
-															 'reason'=>'Not on server');						
+																			'reason'=>'Not on server');						
 				}
 			}
 											
@@ -815,9 +830,8 @@ class compressor {
 			} 			
 					
 ?>';
-				
-	
-		if(!empty($this->options[$type]['gzip'])) { ////ob_start ("ob_gzhandler");					
+/* ob_start ("ob_gzhandler"); */
+		if(!empty($this->options[$type]['gzip'])) { 
 			$this->gzip_header[$type] .= '<?php	
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
@@ -891,24 +905,20 @@ class compressor {
 	* 
 	**/	
 	function minify_text($txt) {
-	
 		// Compress whitespace.
 		$txt = preg_replace('/\s+/', ' ', $txt);
 		// Remove comments.
 		$txt = preg_replace('/\/\*.*?\*\//', '', $txt);
 		//Further minification (Thanks to Andy & David)		
 		//$txt = preg_replace('/\s*(,|;|:|{|})\s/','$1', $txt);
-		
 		return $txt;
-	
 	}
 
 	/**
 	* Safely trim whitespace from an HTML page
 	* Adapted from smarty code http://www.smarty.net/
 	**/		
-	function trimwhitespace($source)
-	{
+	function trimwhitespace($source) {
 		// Pull out the script blocks
 		preg_match_all("!<script[^>]+>.*?</script>!is", $source, $match);
 		$_script_blocks = $match[0];
