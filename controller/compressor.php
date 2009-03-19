@@ -503,7 +503,7 @@ class compressor {
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info);
 						if ($options['css_sprites']) {
 /* Create CSS Sprites in CSS dir */
-							$file_contents = preg_replace("/;\}/", "}", $this->convert_css_sprites($file_contents, $options));
+							$file_contents = $this->convert_css_sprites($file_contents, $options);
 						}
 						if ($options['data_uris']) {
 /* CSS background images to data URIs */

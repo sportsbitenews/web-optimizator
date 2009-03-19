@@ -259,7 +259,7 @@ function csstidy()
 	$this->settings['compress_font-weight'] = true;
 	$this->settings['lowercase_s'] = false;
 	$this->settings['optimise_shorthands'] = 1;
-	$this->settings['remove_last_;'] = false;
+	$this->settings['remove_last_;'] = true;
 	$this->settings['case_properties'] = 1;
 	$this->settings['sort_properties'] = false;
 	$this->settings['sort_selectors'] = false;
