@@ -88,7 +88,7 @@ class admin {
 	**/	
 	function install_stage_1() {
 
-		$page_variables = array("title" => "Welcome to compressor installation!",
+		$page_variables = array("title" => "Welcome to Web Optimizer installation!",
 							"paths" => $this->view->paths,
 							"page" => $this->input['page'],
 							"document_root" => $this->compress_options['document_root'],
@@ -106,7 +106,13 @@ class admin {
 	function install_stage_2() {
 /* Save the options file */
 		if(!empty($this->input['user']['document_root'])) {
-			$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
+/* check if we are using correct root directory */
+			if (is_dir($this->input['user']['document_root'] . 'web-optimizer')) {
+				$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
+			} else {
+				$this->error("<p>Unable to open ". $this->input['user']['document_root'] ."/web-optimizer.<br>
+								Please make sure the directory exists and Web Optimizer is located in web-optimizer inside the root directory.</p>");
+			}
 		}
 		if(!empty($this->input['submit'])) {
 			$save = $this->save_option('[\'document_root\']', $_SERVER['DOCUMENT_ROOT']);

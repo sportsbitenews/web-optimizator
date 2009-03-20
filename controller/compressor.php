@@ -565,17 +565,17 @@ class compressor {
 	*
 	*/
 	function _remove_scripts($external_array, $source) {
-
-		$maxKey = array_pop(array_keys($external_array));
-		foreach($external_array AS $key=>$value) {
-			if($key == $maxKey) { //Remove script
-				$source = str_replace($value['source'], "@@@marker@@@", $source);
-			} else {
-				$source = str_replace($value['source'], "", $source);
+		if (is_array($external_array)) {
+			$maxKey = array_pop(array_keys($external_array));
+			foreach($external_array AS $key=>$value) {
+				if($key == $maxKey) { //Remove script
+					$source = str_replace($value['source'], "@@@marker@@@", $source);
+				} else {
+					$source = str_replace($value['source'], "", $source);
+				}
 			}
 		}
 		return $source;
-
 	}
 	
 	/**

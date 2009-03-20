@@ -28,9 +28,9 @@ class compressor_view {
 	if (!$this->paths['full']['document_root']) {
 		$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
 	}
-
+	
 	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
-		$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']));
+		$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
 	} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
 		$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->paths['full']['document_root']) . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 	}
