@@ -1157,44 +1157,43 @@ class compressor {
 				if (preg_match("/^webo[ixy\.]/", $file)) {
 					$file_path = $path['cachedir'] . '/' . $file;
 				} else {
-				//Get full path
+/* Get full path */
 					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);				
 					$file_path = trim($file_path);
 				}
-			
-				//Get mime type
-				$mime = $this->get_mimetype($file_path);
-				//Get file contents
-				$contents = @file_get_contents($file_path);
-				//Base64 encode contents
-				$base64   = base64_encode($contents); 
-				//Set new data uri
-				$data_uri = ('data:' . $mime . ';base64,' . $base64);
-				
-				//Find the element this refers to
-				$regex = "([a-z0-9\s\.\:#_\-@]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
-				preg_match_all("/".$regex."/is",$content,$elements);
-	
-				//IE only conditional style
-				if(is_array($elements[1])) {
-					foreach($elements[1] AS $selector) {
+				if (is_file(file_path)) {
+/* Get mime type */
+					$mime = $this->get_mimetype($file_path);
+/* Get file contents */
+					$contents = @file_get_contents($file_path);
+/* Base64 encode contents */
+					$base64   = base64_encode($contents); 
+/* Set new data uri */
+					$data_uri = ('data:' . $mime . ';base64,' . $base64);
+/* Find the element this refers to */
+					$regex = "([a-z0-9\s\.\:#_\-@]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
+					preg_match_all("/" . $regex . "/is", $content, $elements);
+/* IE only conditional style */
+					if(is_array($elements[1])) {
+						foreach($elements[1] AS $selector) {
 /**
 * we need to use html * selector -- for IE6- browsers
 * and html+* selector -- for IE7 browser
 * as far as IE8 supports data:URI -- it's actual only for this old stuff
 * unfortunately both selectors don't work with comma, only as different chunks
 **/
-						$this->ie_only_css[] = "* html " . $selector . "{background-image:url(" . $original_file . ")}";
-						$this->ie_only_css[] = "*+html " . $selector . "{background-image:url(" . $original_file . ")}";
+							$this->ie_only_css[] = "* html " . $selector . "{background-image:url(" . $original_file . ")}";
+							$this->ie_only_css[] = "*+html " . $selector . "{background-image:url(" . $original_file . ")}";
 /**
 * of course we can try to use mhtml: protocol for IE7- but there is an issue with IE7@Vista that doens't support it correctly
 * so due to compatibility issues only external images, no embedded ones
 **/
+						}
 					}
-				}
 				
 				//Replace
-				$content = str_replace($original_file,$data_uri,$content);
+					$content = str_replace($original_file, $data_uri, $content);
+				}
 				
 			}					
 			
