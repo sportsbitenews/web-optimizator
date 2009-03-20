@@ -135,8 +135,12 @@ class css_sprites {
 			foreach ($images as $key => $image) {
 
 				if (!$image['background-image'] || $image['background-image'] == 'none') {
-
-					unset($this->media[$import][$key]);
+/* try to find w/o pseudo-selectors, i.e. :focus, :hover, etc */
+					if ($media[$import][preg_replace("/:.*/", "", $key)]) {
+						$media[$import][$key]['background-image'] = $media[$import][preg_replace("/:.*/", "", $key)]['background-image'];
+					} else {
+						unset($this->media[$import][$key]);
+					}
 
 				} else {
 
@@ -188,8 +192,10 @@ class css_sprites {
 								$this->css_images[$sprite]['images'] = array();
 
 							}
+							$position = split(" ", $image['background-position']);
+							$top = $position[0] == 'top' ? 0 : round($position[1]);
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, 0, $top, $import, $key);
 
 						}
 
@@ -212,8 +218,10 @@ class css_sprites {
 								$this->css_images[$sprite]['images'] = array();
 
 							}
+							$position = split(" ", $image['background-position']);
+							$left = $position[0] == 'left' ? 0 : round($position[0]);
 /* add image to CSS Sprite to merge */
-							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, 0, 0, $import, $key);
+							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, $left, 0, $import, $key);
 
 						}
 
@@ -241,10 +249,9 @@ class css_sprites {
 								$this->css_images[$sprite]['images'] = array();
 
 							}
-
+							$position = split(" ", $image['background-position']);
 							$left = $position[0] == 'left' ? 0 : round($position[0]);
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
-
 /* add image to CSS Sprite to merge */
 							$this->css_images[$sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $import, $key);
 
@@ -269,7 +276,7 @@ class css_sprites {
 								$this->css_images[$sprite]['images'] = array();
 
 							}
-
+							$position = split(" ", $image['background-position']);
 							$left = $position[0] == 'left' ? 0 : round($position[0]);
 							$top = $position[0] == 'top' ? 0 : round($position[1]);
 
@@ -294,7 +301,7 @@ class css_sprites {
 /* only then try to combine all other images into the last one */
 		$this->merge_sprites('webo.'. $this->timestamp .'.png', 4);
 
-		return $this->css->print->formatted();
+		return html_entity_decode($this->css->print->formatted());
 	}
 
 /* download requested image */
@@ -405,25 +412,19 @@ class css_sprites {
 				for ($i = 0; $i < $matrix_x; $i++) {
 
 					for ($j = 0; $j < $matrix_y; $j++) {
-/* left top corner is empty */
-						if (!$matrix[$i][$j]) {
+/* left top corner is empty and three other corners are empty -- we have a placeholder*/
+						if (!$matrix[$i][$j] && !$matrix[$i + $width] && !$matrix[$i][$j + $height] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
 /* and Sprite is big enough */
 							if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
-/* three other corners are empty -- we have a placeholder */
-								if (!$matrix[$i + $width] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
-
-									$I = $i;
-									$J = $j;
-									$i = $matrix_x;
-									$j = $matrix_y;
-									$no_space = 0;
-
-								}
-/* else try to remember this placement -- it can be the optimal one */
+								$I = $i;
+								$J = $j;
+								$i = $matrix_x;
+								$j = $matrix_y;
+								$no_space = 0;
 							} else {
-/* if this place is better and we haven't chosen placement yet */
+/* else try to remember this placement -- it can be the optimal one */
 								if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
-
+/* if this place is better and we haven't chosen placement yet */
 									$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
 									$I = $i;
 									$J = $j;
@@ -455,7 +456,7 @@ class css_sprites {
 				}
 /* calculate increase of matrix dimensions */
 				$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
-				$minimal_y = $J + $height > $matrix_y ? $height + $Y - $matrix_y : 0;
+				$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
 /* we need to enlarge Sprite -- we have enough space */
 				if ($minimal_x || $minimal_y) {
 /* top right fragment */
@@ -553,6 +554,8 @@ class css_sprites {
 
 					$width = $image[1];
 					$height = $image[2];
+					$final_x = $image[3];
+					$final_y = $image[4];
 
 					switch ($type) {
 
@@ -560,13 +563,13 @@ class css_sprites {
 							$this->css_images[$sprite]['images'][$key][3] = 0;
 							$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'];
 							$this->css_images[$sprite]['x'] = $width > $this->css_images[$sprite]['x'] ? $width : $this->css_images[$sprite]['x'];
-							$this->css_images[$sprite]['y'] += $height;
+							$this->css_images[$sprite]['y'] += $height + $final_y;
 						break;
 
 						case 2:
 							$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'];
 							$this->css_images[$sprite]['images'][$key][4] = 0;
-							$this->css_images[$sprite]['x'] += $width;
+							$this->css_images[$sprite]['x'] += $width + $final_x;
 							$this->css_images[$sprite]['y'] =  $height > $this->css_images[$sprite]['y'] ? $height : $this->css_images[$sprite]['y'];
 						break;
 
