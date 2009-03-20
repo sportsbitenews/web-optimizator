@@ -1,6 +1,6 @@
 <h1>Enter your login details</h1>
 
-<p>Please enter your login details below</p>
+<p>You have already installed Web Optimizer to this website. Please enter your login details below to get access to all settings:</p>
 
 <form method="post" enctype="multipart/form-data" action="">
 

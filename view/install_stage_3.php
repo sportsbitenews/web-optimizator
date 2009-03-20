@@ -76,3 +76,5 @@
 <h2>Extra security</h2>
 
 <p>Although the package installs a username and password to access the install, you can also delete <?php echo($paths['full']['current_directory']) ?>install.php for extra security.</p>
+
+<form action="<?php echo $paths['relative']['document_root'] ?>" method="get"><p><input type="submit" value="Finish installation"/></p></form>
