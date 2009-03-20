@@ -444,7 +444,7 @@ class compressor {
 			} else {
 				$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) 
 					.'","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" 
-					. $_SERVER['HTTP_HOST'], $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
+					. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 			}
 		}
 
