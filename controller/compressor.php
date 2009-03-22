@@ -1332,6 +1332,4 @@ class compressor {
 
 } // end class
 
-
-
 ?>

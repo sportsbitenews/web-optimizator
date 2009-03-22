@@ -534,18 +534,13 @@ class css_sprites {
 		if (count($this->css_images[$sprite]['images']) > 1) {
 /* need to count placement for each image in array */
 			if ($type == 4) {
-
 				$this->css_images[$sprite] = $this->sprites_placement($this->css_images[$sprite]);
-
 			} else {
-
 				$this->css_images[$sprite]['x'] = 0;
 				$this->css_images[$sprite]['y'] = 0;
-
 			}
 /* recount x/y sizes for repeat-x / repeat-y / repeat icons -- we can have duplicated dimensions */
 			$counted_images = array();
-
 /* flag for full color (if JPEG is used) */
 			$fullcolor = 0;
 			foreach ($this->css_images[$sprite]['images'] as $key => $image) {
@@ -598,7 +593,7 @@ class css_sprites {
 
 			} else {
 
-				$sprite_raw = @imagecreate($css_images[$sprite]['x'], $css_images[$sprite]['y']);
+				$sprite_raw = @imagecreate($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 
 			}
 
@@ -677,11 +672,11 @@ class css_sprites {
 							if (imagecolorstotal($im) + imagecolorstotal($sprite_raw) > 256) {
 
 								$fullcolor = 1;
-								$new_raw = @imagecreatetruecolor($css_images[$sprite]['x'], $css_images[$sprite]['y']);
+								$new_raw = @imagecreatetruecolor($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 								if ($new_raw) {
 									$back = imagecolorallocate($new_raw, 255, 255, 255);
-									imagefilledrectangle($new_raw, 0, 0, $css_images[$sprite]['x'], $css_images[$sprite]['y'], $back);
-									imagecopy($new_raw, $sprite_raw, 0, 0, 0, 0, $css_images[$sprite]['x'], $css_images[$sprite]['y']);
+									imagefilledrectangle($new_raw, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y'], $back);
+									imagecopy($new_raw, $sprite_raw, 0, 0, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 									$sprite_raw = $new_raw;
 								}
 
@@ -716,7 +711,7 @@ class css_sprites {
 									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									$final_y = $height;
 /* semi-fix for bug with different height of repeating images, thx to xstroy */
-									while ($final_y < $css_images[$sprite]['y']) {
+									while ($final_y < $this->css_images[$sprite]['y']) {
 										imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 										$final_y += $height;
 									}
@@ -728,7 +723,7 @@ class css_sprites {
 									$css_repeat = 'repeat-x';
 									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 /* semi-fix for bug with different width of repeating images, thx to xstroy */
-									while ($final_x < $css_images[$sprite]['x']) {
+									while ($final_x < $this->css_images[$sprite]['x']) {
 										imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 										$final_x += $width;
 									}

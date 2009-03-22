@@ -220,7 +220,7 @@ class admin {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
 						'title' => 'Auto change /index.php',
-						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info($this->view->paths['full']['document_root']) .' all required changes (only for /index.php).' .
+						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info($this->view->paths['absolute']['document_root']) .' all required changes (only for /index.php).' .
 									'<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.',
 						'value' => is_array($this->compress_options['auto_rewrite']) ? $this->compress_options['auto_rewrite'] : array('enabled' => null)
 			);
@@ -436,7 +436,7 @@ ExpiresDefault \"access plus 10 years\"
 
 			}
 /* define CMS*/
-			$cms_version = $this->system_info($this->view->paths['full']['document_root']);
+			$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
 			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
@@ -447,7 +447,10 @@ ExpiresDefault \"access plus 10 years\"
 					while ($index_string = fgets($fp)) {
 						$content_saved .= preg_replace("/(require\('[^\']+web-optimizer\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
 					}
-					if (substr($content_saved, 0, 2) == '<?') {
+/* fix for Joomla 1.5+ */
+					if (preg_match("/Joomla 1.[56789]/", $this->system_info($this->view->paths['absolute']['document_root']))) {
+						$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/", '$1require(\'' . $this->view->paths['full']['current_directory'] . 'web.optimizer.php\');' . "\n", $content_saved);
+					} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 						$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->view->paths['full']['current_directory'] . 'web.optimizer.php\');' . "\n", $content_saved);
 					} else {
@@ -622,6 +625,14 @@ ExpiresDefault \"access plus 10 years\"
 				}
 			}
 			return 'Drupal ' . $drupal_version;
+/* Joomla 1.5 */
+		} elseif (is_dir($root . 'libraries')) {
+			if (is_file($root . 'libraries/joomla/version.php')) {
+				require($root . 'libraries/joomla/version.php');
+			} else {
+				define('JVERSION' , '1.5.0');
+			}
+			return 'Joomla ' . JVERSION;
 		}
 		
 		return 'CMS 42';

@@ -24,18 +24,21 @@
  l) images optimization settings
  m) usage of auto-optimization solutions (smash.it / webo.in)
  n) website load counter (via webo.in)
+ o) External JS / CSS merging
+ p) List of protected from merging files
 
 4. Merging
 +a) Base CSS / JS merging
-?b) @media support for CSS merging
++b) @media support for CSS merging
 +c) @import support for CSS merging
 +d) Unobtrusive JS with YASS modules loader
  e) Unobtrusive ads blocks inside page
+ f) External CSS /JS merging possibility
 
 5. Minifier
 +a) JSMin (PHP4/5)
 +b) CSS Tidy for CSS files (no rules merging)
- c) YUI Compressor (if java exists)
+ c) YUI Compressor (if java exists) -- akira is responsible
  d) Packer for JS files
 
 6. Including
@@ -54,3 +57,7 @@
 +a) Raw files (cache directory)
  b) APC
  c) Memcache
+
+9. Look and feel
+ a) Design -- samir is responsible
+ b) Make up / clientside development -- yely is responsible
