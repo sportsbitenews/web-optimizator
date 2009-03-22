@@ -675,6 +675,7 @@ class css_sprites {
 								$new_raw = @imagecreatetruecolor($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 								if ($new_raw) {
 									$back = imagecolorallocate($new_raw, 255, 255, 255);
+									imagecolortransparent($new_raw, $back);
 									imagefilledrectangle($new_raw, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y'], $back);
 									imagecopy($new_raw, $sprite_raw, 0, 0, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 									$sprite_raw = $new_raw;
@@ -731,7 +732,7 @@ class css_sprites {
 
 							}
 
-							imagedestroy($im);
+							@imagedestroy($im);
 
 						}
 
@@ -775,9 +776,9 @@ class css_sprites {
 					}
 
 				}
-				imagedestroy($sprite_raw);
+				@imagedestroy($sprite_raw);
 				if ($new_raw) {
-					imagedestroy($new_raw);
+					@imagedestroy($new_raw);
 				}
 /* add selector with final sprite */
 				foreach ($merged_selector as $import => $keys) {

@@ -407,18 +407,18 @@ class csstidy_optimise
                 {
                     if (strpos(strtolower($temp[$l]),$units[$m]) !== FALSE)
                     {
-                        $temp[$l] = floatval($temp[$l]).$units[$m];
+                        $temp[$l] = preg_replace("/,/", ".", floatval($temp[$l])) . $units[$m];
                         $unit_found = TRUE;
                         break;
                     }
                 }
                 if (!$unit_found && in_array($this->property,$unit_values,TRUE))
                 {
-                    $temp[$l] = floatval($temp[$l]).'px';
+                    $temp[$l] = preg_replace("/,/", ".", floatval($temp[$l])).'px';
                 }
                 else if (!$unit_found)
                 {
-                    $temp[$l] = floatval($temp[$l]);
+                    $temp[$l] = preg_replace("/,/", ".", floatval($temp[$l]));
                 }
                 // Remove leading zero
                 if (abs(floatval($temp[$l])) < 1) {
