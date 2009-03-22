@@ -468,8 +468,13 @@ class compressor {
 		} else {
 			$_script_array = $external_array;
 		}
+/* patch from xandrx */
+		$_script_array_files = array();
+		foreach ($_script_array as $value) {
+			$_script_array_files[] = $value['file'];
+		}
 /* Get the cache hash */
-		$cache_file = md5(implode("_", $_script_array) . $datestring . implode("_", $options) . $handlers);
+		$cache_file = md5(implode("_", $_script_array_files) . $datestring . implode("_", $options) . $handlers);
 		$cache_file = urlencode($cache_file);
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
@@ -548,7 +553,7 @@ class compressor {
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
-					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . $options['rel'],
+					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . @$options['rel'],
 																'from' => $external_array,
 																'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']);
 					}
@@ -565,7 +570,8 @@ class compressor {
 	*/
 	function _remove_scripts($external_array, $source) {
 		if (is_array($external_array)) {
-			$maxKey = array_pop(array_keys($external_array));
+			$keys = array_keys($external_array);
+			$maxKey = array_pop($keys);
 			foreach($external_array AS $key=>$value) {
 				if($key == $maxKey) { //Remove script
 					$source = str_replace($value['source'], "@@@marker@@@", $source);
@@ -611,8 +617,8 @@ class compressor {
 		if (!is_array($files)) {
 			return;
 		}
-
-		foreach($files AS $key=>$value) {
+		$dates = false;
+		foreach($files AS $key => $value) {
 			if (file_exists($value['src'])) {
 				$thedate = filemtime($value['src']);
 				$dates[] = $thedate;
@@ -632,6 +638,9 @@ class compressor {
 	**/
 	function get_file_name ($file) {
 
+		if(is_array($file) && count($file)>0) {
+			$file = $file[0];
+		}
 		$file = preg_replace("/(https?:\/\/".$_SERVER['HTTP_HOST']."|\?.*)/", "", $file);
 		if (substr($file,0,1) == "/") {
 			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
@@ -647,31 +656,26 @@ class compressor {
 	**/
 	function resolve_css_imports ($src) {
 
+		$content = false;
 		$file = $this->get_file_name($src);
 		if (is_file($file)) {
-
 			$content = file_get_contents($file);
-			preg_match_all("/@import ?(url)?\(? *(\"([^\"]+)\"|'([^']+)'|([^ ;]+)) *\)?[^;]*;/i", $content, $imports, PREG_SET_ORDER);
+/* new RegExp from xandrx */
+			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
 			if (is_array($imports)) {
-
 				foreach ($imports as $import) {
-					if ($import[3]) {
-						$src = $import[3];
-					} elseif ($import[4]) {
-						$src = $import[4];
-					} elseif ($import[5]) {
-						$src = $import[5];
+					$src = false;
+					if (isset($import[2])) {
+						$src = $import[2];
+						$src = trim($src, '\'" ');
 					}
 					if ($src) {
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/", $this->resolve_css_imports($src), $content);
 					}
 				}
-
 			}
-
 		}
-
 		return $content;
 
 	}
@@ -718,9 +722,13 @@ class compressor {
 				}
 			}
 			if (!$options['unobtrusive'] || !$value['content']) {
+				if ($options['ext'] == 'css') {
 /* recursively resolve @import in files */
-				$external_array[$key]['content'] = ($options['media_all'][$src[1]] ? "@media " . $options['media_all'][$src[1]] . "{" : "") . 
-					$this->resolve_css_imports($src[1]) . ($options['media_all'][$src[1]] ? "}" : "");
+					$external_array[$key]['content'] = ($options['media_all'][$src[1]] ? "@media " . $options['media_all'][$src[1]] . "{" : "") . 
+						$this->resolve_css_imports($src[1]) . ($options['media_all'][$src[1]] ? "}" : "");
+				} else {
+					$external_array[$key]['content'] = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : false;
+				}
 			}
 
 		}
@@ -750,6 +758,7 @@ class compressor {
 		if(!is_array($external_array)) {
 			return;
 		}
+		$return_array = array();
 /* Remove empty sources */
 		foreach($external_array AS $key=>$value) {
 		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
@@ -759,12 +768,17 @@ class compressor {
 		}			
 /* Create file */
 		foreach($external_array AS $key => $value) {
-/* Get the src */
-			preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
-			$current_src = $this->get_file_name($src[1]);
+/* Get the src, RegExp from xandrx */
+			if (preg_match('/'.$options["src"].'\\s*=\\s*[\'"](.*?)[\'"]/si', $value['file'], $regs)) {
+				$src = $regs[1];
+			} else {
+				continue;
+			}
+			$current_src = $this->get_file_name($src);
 			if($current_src != $this->strip_querystring($current_src)) {
-				$this->process_report['notice'][$current_src] = array('from'=>$current_src,
-													 			  'notice'=>'The querystring was stripped from this script');
+				$this->process_report['notice'][$current_src] = array(
+					'from'=>$current_src,
+					'notice'=>'The querystring was stripped from this script');
 			}
 
 			$current_src = $this->strip_querystring($current_src);						
@@ -1230,8 +1244,8 @@ class compressor {
 	 *
 	**/	
 	function get_file_extension($file) {
-
-		return array_pop(explode('.',$file));
+		$f = explode('.', $file);
+		return array_pop($f);
 	}
 
 	/**

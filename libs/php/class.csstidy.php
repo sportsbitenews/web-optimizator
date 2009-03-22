@@ -929,7 +929,7 @@ function merge_css_blocks($media,$selector,$css_add)
  * @access public
  * @version 1.0
  */
-function is_important(&$value)
+public static function is_important(&$value)
 {
 	return (!strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'],'',$value),-10,10),'!important'));
 }
@@ -941,7 +941,7 @@ function is_important(&$value)
  * @access public
  * @version 1.0
  */
-function gvw_important($value)
+public static function gvw_important($value)
 {
 	if(csstidy::is_important($value))
 	{

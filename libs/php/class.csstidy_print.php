@@ -174,7 +174,7 @@ class csstidy_print
                 case PROPERTY:
                     if($this->parser->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
                     if($this->parser->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
-                    $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
+                    $out .= @$template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
 
                 case VALUE:
