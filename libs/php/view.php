@@ -1,19 +1,17 @@
 <?php
 /**
+ * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  * Very basic templating class
- * 
  *
  **/
 class compressor_view {
 
 	/**
 	* 
-	* 
+	* Creates class instance
 	**/
 	function compressor_view($options=null) {
-		
-	$this->set_paths();	
-	
+		$this->set_paths();	
 	}
 
 	/**
@@ -22,39 +20,39 @@ class compressor_view {
 	 **/	
 	function set_paths($document_root=null) {
 
-	//Save doc root, problems with Denwer, used more generic version (below)
-	//$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
-	//fix for PHP as CGI
-	if (!$this->paths['full']['document_root']) {
-		$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
-	}
-	
-	if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {	//Get the view directory	
-		$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
-	} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
-		$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->paths['full']['document_root']) . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
-	}
+		if (!is_array($this->paths)) {
+			$this->paths = array();
+		}
+/* Save doc root, problems with Denwer, used more generic version (below)
+	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+	fix for PHP as CGI */
+		if (!$this->paths['full']['document_root']) {
+			$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
+		}
+/* Get the view directory */
+		if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {
+			$this->paths['full']['current_directory'] = $document_root . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
+		} else if(!empty($this->paths['full']['document_root']) && !empty($_SERVER['SCRIPT_NAME'])) {
+			$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->paths['full']['document_root']) . str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+		}
 
-	if(!file_exists($this->paths['full']['current_directory'])) {
-		$this->paths['full']['current_directory'] = getcwd();
-	}
-	$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
-	
-	//Set the current relative path
-	$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
+		if(!file_exists($this->paths['full']['current_directory'])) {
+			$this->paths['full']['current_directory'] = getcwd();
+		}
 
-	//Set the root relative path
-	$this->paths['relative']['document_root'] = preg_replace("/web-optimizer\//", "", $this->paths['relative']['current_directory']);
-
+		$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
+/* Set the current relative path */
+		$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
+/* Set the root relative path */
+		$this->paths['relative']['document_root'] = preg_replace("/web-optimizer\//", "", $this->paths['relative']['current_directory']);
 /* set absolute root for some cases */
-	$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(str_replace("web-optimizer/", "", $this->paths['relative']['current_directory']), 1);
-
-	//Set the view directory
-	$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";	
-	
-	//Set the css directory
-	$this->paths['relative']['css_directory'] = $this->paths['relative']['current_directory'] . "libs/css/";		
-		
+		$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(str_replace("web-optimizer/", "", $this->paths['relative']['current_directory']), 1);
+/* set absolute root for some cases */
+		$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(str_replace("web-optimizer/", "", $this->paths['relative']['current_directory']), 1);
+/* Set the view directory */
+		$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";
+/* Set the css directory */
+		$this->paths['relative']['css_directory'] = $this->paths['relative']['current_directory'] . "libs/css/";
 	}
 
 	/**

@@ -37,47 +37,50 @@ class compressor {
 	* Options are read from config.php
 	**/
 	function set_options() {
-	
-	   //Set paths with new options
-	   $this->view->set_paths($this->options['document_root']);
-		
-		//Set ignore file
+/* Set paths with new options */
+		$this->options['document_root'] = $this->options['document_root'] ? $this->options['document_root'] : '';
+		$this->view->set_paths();
+/* Set ignore file */
 		if(!empty($this->options['ignore_list'])) {
 			$this->ignore(trim($this->options['ignore_list']));
 		}			
-				
-	   //Read in options	   			   	   	
-	   $full_options = array("javascript"=>array("cachedir" => $this->options['javascript_cachedir'],
-										   "gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
-										   "minify" => $this->options['minify']['javascript'],
-										   "far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
-										   "unobtrusive" => $this->options['unobtrusive']['on']
-										   ),
-							  "css"=>array("cachedir" => $this->options['css_cachedir'],
-										   "gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
-										   "minify" => $this->options['minify']['css'],
-										   "far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
-										   "data_uris" => $this->options['data_uris']['on'],
-										   "css_sprites" => $this->options['css_sprites']['enabled'],
-										   "truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg']
-										   ),
-							   "page"=>array("gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
-											 "minify" => $this->options['minify']['page']
-											)
-							  );	
-
-		$this->options = $full_options; //overwrite other options array that we passed in
-		//Make sure cachedir does not have trailing slash
+/* Read in options */
+		$full_options = array(
+			"javascript" => array(
+				"cachedir" => $this->options['javascript_cachedir'],
+				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"minify" => $this->options['minify']['javascript'],
+				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"unobtrusive" => $this->options['unobtrusive']['on']
+			),
+			"css" => array(
+				"cachedir" => $this->options['css_cachedir'],
+				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"minify" => $this->options['minify']['css'],
+				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"data_uris" => $this->options['data_uris']['on'],
+				"css_sprites" => $this->options['css_sprites']['enabled'],
+				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
+				"unobtrusive" => false
+			),
+			"page" => array(
+				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"minify" => $this->options['minify']['page']
+			)
+		);
+/* overwrite other options array that we passed in */
+		$this->options = $full_options;
+/* Make sure cachedir does not have trailing slash */
 		foreach($this->options AS $key=>$option) {			
-			   if(!empty($option['cachedir'])) {
-				   if(substr($option['cachedir'],-1,1) == "/") {
-				   $cachedir = substr($option['cachedir'],0,-1); 
-				   $option['cachedir'] = $cachedir;
-				   }			   
-			   }
-			   $this->options[$key] = $option;			
+			if(!empty($option['cachedir'])) {
+				if(substr($option['cachedir'],-1,1) == "/") {
+					$cachedir = substr($option['cachedir'],0,-1); 
+					$option['cachedir'] = $cachedir;
+				}			   
+			}
+			$this->options[$key] = $option;			
 		}
-		
+
 		$this->options['show_timer'] = false; //time the javascript and css compression?	
 
 	}	
@@ -130,48 +133,44 @@ class compressor {
 	**/	
 	function finish($content=false) {
 		
-	$this->runtime = $this->startTimer();
-	$this->times['start_compress'] = $this->returnTime($this->runtime);
+		$this->runtime = $this->startTimer();
+		$this->times['start_compress'] = $this->returnTime($this->runtime);
 	
-	if(!$content) {
-	$this->content = ob_get_clean();
-	} else {
-	$this->content = $content;
-	}
-		
-	//Run the functions specified in options
-	if(is_array($this->options)) {
-		foreach($this->options AS $func=>$option) {
-			if(method_exists($this,$func)) {
-				if(!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires'])) {
-				$this->$func($option,$func);
+		if(!$content) {
+			$this->content = ob_get_clean();
+		} else {
+			$this->content = $content;
+		}
+/* Run the functions specified in options */
+		if(is_array($this->options)) {
+			foreach($this->options AS $func => $option) {
+				if(method_exists($this,$func)) {
+					if(!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires'])) {
+						$this->$func($option,$func);
+					}
 				}
 			}
 		}
-	}
-				
-	//Delete old cache files
-	if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
-	$this->compressed_files_string = implode("",$this->compressed_files); //Make a string with the names of the compressed files
-	}
-	
-	if(!empty($this->options['cleanup']['on'])) {
-	$this->do_cleanup(); //Delete any files that don't match the string
-	}
-	
-	$this->times['end'] = $this->returnTime($this->runtime);
-	
-	//Echo content to the browser
-	if(empty($this->supress_output)) {
-		if(!empty($this->return_content)) {
-		return $this->content;
-		} else {
-		echo $this->content;
+/* Delete old cache files */
+		if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
+/* Make a string with the names of the compressed files */
+			$this->compressed_files_string = implode("",$this->compressed_files);
 		}
-	}
+/* Delete any files that don't match the string	 */
+		if(!empty($this->options['cleanup']['on'])) {
+			$this->do_cleanup();
+		}
 	
-	
-	
+		$this->times['end'] = $this->returnTime($this->runtime);
+/* Echo content to the browser */
+		if(empty($this->supress_output)) {
+			if(!empty($this->return_content)) {
+				return $this->content;
+			} else {
+			echo $this->content;
+			}
+		}
+
 	}
 
 	/**
@@ -179,21 +178,25 @@ class compressor {
 	*
 	**/	
 		function javascript($options,$type) {
-
-		//Remove any files in the remove list
+/* Remove any files in the remove list */
 		$this->do_remove();
-		$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
-													'tag' => 'script',
-													'type' => 'text/javascript',
-													'ext' => 'js',
-													'src' => 'src',
-													'self_close' => false,
-													'gzip' => $options['gzip'],
-													'minify' => $options['minify'],
-													'far_future_expires' => $options['far_future_expires'],
-													'header' => $type,
-													'save_name' => $type,
-													'unobtrusive' => $options['unobtrusive']),$this->content);
+		$this->content = $this->do_compress(
+			array(
+				'cachedir' => $options['cachedir'],
+				'tag' => 'script',
+				'type' => 'text/javascript',
+				'ext' => 'js',
+				'src' => 'src',
+				'self_close' => false,
+				'gzip' => $options['gzip'],
+				'minify' => $options['minify'],
+				'far_future_expires' => $options['far_future_expires'],
+				'header' => $type,
+				'save_name' => $type,
+				'unobtrusive' => $options['unobtrusive']
+			),
+			$this->content
+		);
 	}
 
 	/**
@@ -203,7 +206,8 @@ class compressor {
 	function css($options, $type) {
 
 		$head = $this->get_head($this->content);
-		if(!$head) { //Need a head
+/* Need a head, HTML is out of the range */
+		if(!$head) {
 			return;
 		}
 /* Get links */
@@ -213,13 +217,11 @@ class compressor {
 		}
 /* find variants */
 		foreach($matches[0] AS $link) {
-
 			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
 			if(is_array($variants)) {
 				$media = "all";
 				$marker = "";
 				foreach($variants AS $variant_type) {
-
 					switch ($variant_type[1]) {
 						case "rel":
 							$marker .= $variant_type[2];
@@ -246,27 +248,31 @@ class compressor {
 		$this->process_report['media_types'] = $media_types;
 /* Compress separately for each media type*/
 		foreach($media_types AS $key => $value) {
-
-			$this->content = $this->do_compress(array('cachedir' => $options['cachedir'],
-														'tag' => 'link',
-														'type' => $key,
-														'ext' => 'css',
-														'src' => 'href',
-														'rel' => !empty($value['rel']) ? $value['rel'] : false,
-														'media' => !empty($value['media']) ? $value['media'] : false,
-														'media_all' => $value['media_all'],
-														'data_uris' => $options['data_uris'],
-														'css_sprites' => $options['css_sprites'],
-														'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
-														'self_close' => true,
-														'gzip' => $options['gzip'],
-														'minify' => $options['minify'],
-														'far_future_expires' => $options['far_future_expires'],
-														'header' => $type,
-														'save_name' => $type.$value['real_type']), $this->content);
+			$this->content = $this->do_compress(
+				array(
+					'cachedir' => $options['cachedir'],
+					'tag' => 'link',
+					'type' => $key,
+					'ext' => 'css',
+					'src' => 'href',
+					'rel' => !empty($value['rel']) ? $value['rel'] : false,
+					'media' => !empty($value['media']) ? $value['media'] : false,
+					'media_all' => $value['media_all'],
+					'data_uris' => $options['data_uris'],
+					'css_sprites' => $options['css_sprites'],
+					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
+					'self_close' => true,
+					'gzip' => $options['gzip'],
+					'minify' => $options['minify'],
+					'far_future_expires' => $options['far_future_expires'],
+					'header' => $type,
+					'save_name' => $type.$value['real_type'],
+					'unobtrusive' => $options['unobtrusive']
+				),
+				$this->content
+			);
 /* Replace out the markers */
 			$this->content = str_replace($key, 'text/css', $this->content);
-
 		}
 
 	}
@@ -275,24 +281,19 @@ class compressor {
 	* GZIP and minify the page itself as required
 	*
 	**/		
-	function page($options,$type) {
-
-		//Minify page itself
+	function page($options, $type) {
+/* Minify page itself */
 		if(!empty($options['minify'])) {
-		$this->content = $this->trimwhitespace($this->content);		
+			$this->content = $this->trimwhitespace($this->content);		
 		}
-	
-		//Gzip page itself
+/* Gzip page itself */
 		if(!empty($options['gzip'])) {
-		
-			 $content = $this->create_gz_compress($this->content);
-			 if($content) {			 
-			 $this->set_gzip_header();
-			 $this->content = $content;
-			 }
-		 
-		 }
-	
+			$content = $this->create_gz_compress($this->content);
+			if($content) {			 
+				$this->set_gzip_header();
+				$this->content = $content;
+			}
+		}
 	}
 	
 	/**
@@ -302,44 +303,35 @@ class compressor {
 	function create_gz_compress($content) {
 	
 		if(strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzcompress')) {
-		
 				$Size = strlen( $this->content );
-				$Crc = crc32( $this->content );		
-				 
+				$Crc = crc32( $this->content );
 				$content = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
-				
 				$this->content = gzcompress( $this->content,2);
 				$this->content = substr( $this->content, 0, strlen( $this->content) - 4 );
-				
 				$content .= ( $this->content );
 				$content .= ( pack( 'V', $Crc ) );
-				$content .= ( pack( 'V', $Size ) ); 			 
-			 
-				return $content;	
-			 
+				$content .= ( pack( 'V', $Size ) );
+				return $content;
 		} else {
 			return false;
 		}
-	
+
 	}
 	
 	/**
 	* Sets the correct gzip header
 	*
 	**/	
-	function set_gzip_header() {	
-	
+	function set_gzip_header() {
 		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip"))	{
 			$encoding = "x-gzip";
 		}
 		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) 	{
 			$encoding = "gzip";
-		}
-			
+		}			
 		if(!empty($encoding)) {
-		header("Content-Encoding: ".$encoding);
+			header("Content-Encoding: ".$encoding);
 		}
-	
 	}	
 	
 	/**
@@ -351,14 +343,18 @@ class compressor {
 		if(empty($this->remove_files)) {
 			return;
 		}
-
 /* Get non-immune scripts */
-		$this->script_array = $this->get_script_array($this->content, array('cachedir' => $options['cachedir'],
-																			'tag' => 'script',
-																			'type' => 'text/javascript',
-																			'ext' => 'js',
-																			'src' => 'src',
-																			'unobtrusive' => $options['unobtrusive']));
+		$this->script_array = $this->get_script_array(
+			$this->content,
+			array(
+				'cachedir' => $options['cachedir'],
+				'tag' => 'script',
+				'type' => 'text/javascript',
+				'ext' => 'js',
+				'src' => 'src',
+				'unobtrusive' => $options['unobtrusive']
+			)
+		);
 /* If we have scripts */
 		if(is_array($this->script_array)) {
 /* Pull out remove immune */
@@ -368,10 +364,13 @@ class compressor {
 			foreach($this->script_array AS $script) {			
 				foreach($this->remove_files AS $file) {
 					if(!empty($file) && !empty($script)) {
-						if(strstr($script,$file)) { //Remove the scripts from the source if they are on the remove list		
-							$this->content = str_replace($script,"",$this->content);			
-							$this->process_report['notice'][$script] = array('from'=>htmlspecialchars($script),
-																			 'notice'=>'The file was replaced by a standard library and removed');															
+						if(strstr($script,$file)) {
+/* Remove the scripts from the source if they are on the remove list */
+							$this->content = str_replace($script, "", $this->content);			
+							$this->process_report['notice'][$script] = array(
+								'from' => htmlspecialchars($script),
+								'notice' => 'The file was replaced by a standard library and removed'
+							);
 						}			
 					}
 				}			
@@ -380,8 +379,7 @@ class compressor {
 			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@", $_immune, $this->content);
 /* Remove comments */
 			$this->content = str_replace("<!-- REMOVE IMMUNE -->", "", $this->content);
-			$this->content = str_replace("<!-- END REMOVE IMMUNE -->", "", $this->content);			
-
+			$this->content = str_replace("<!-- END REMOVE IMMUNE -->", "", $this->content);
 		}
 
 	}
@@ -402,8 +400,7 @@ class compressor {
 /* Get array of scripts */
 		$this->script_array = $this->get_script_array($source, $options);
 /* prepare JS w/o src for merging in unobtrusive way */
-		if ($options['unobtrusive'] && !empty($this->script_array)) {
-
+		if ($options['unobtrusive'] && !empty($this->script_array) && is_array($this->script_array)) {
 			$postloader = array();
 			$handler = 'scripts';
 			$key = 0;
@@ -419,7 +416,6 @@ class compressor {
 			foreach ($postloader as $script_block) {
 				$source = $this->do_include($options, $source, $cachedir, $script_block['scripts'], $script_block['handler']);
 			}
-
 		} else {
 			$source = $this->do_include($options, $source, $cachedir, $this->script_array);
 		}
@@ -457,9 +453,9 @@ class compressor {
 	*
 	**/
 	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
+		$handlers = '';
 /* merge and escape handlers array */
 		if (is_array($handler_array)) {
-			$handlers = '';
 			foreach ($handler_array as $ha) {
 				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
 			}
@@ -479,6 +475,9 @@ class compressor {
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
 			$external_array = $this->get_file_locations($external_array, $options);
+			if (!is_array($external_array)) {
+				$external_array = array($external_array);
+			}
 			if (is_array($handler_array)) {
 				$external_array = array_merge($external_array, $handler_array);
 			}
