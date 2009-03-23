@@ -443,31 +443,43 @@ class compressor {
 					. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 			}
 		}
-
 		return $source;
-
 	}
-	
+
 	/**
 	* Include compressed JS or CSS into source and return it
 	*
 	**/
 	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
 		$handlers = '';
-/* merge and escape handlers array */
-		if (is_array($handler_array)) {
-			foreach ($handler_array as $ha) {
-				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
-			}
-		}
-/* Get date string for making hash */
-		$datestring = $this->get_file_dates($script_array, $options);
 /* If only one script found */
 		if(!is_array($external_array)) {
 			$_script_array = array($external_array);
 		} else {
 			$_script_array = $external_array;
 		}
+/* merge and escape handlers array */
+		if (is_array($handler_array)) {
+			foreach ($handler_array as $ha) {
+				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
+			}
+		} elseif ($options['external_scripts']) {
+		    $counter = -1;
+		    $new_script_array = array();
+/* combine external and inline scripts */
+		    foreach ($_script_array as $key => $value) {
+				if ($value['content']) {
+					$new_script_array[++$counter] = $value;
+				} else {
+					$new_script_array[$counter]['content'] .= "\n" . preg_replace("/(^<script[^>]*>|<\/script>$)/is", "", $value['source']);
+					$source = str_replace($value['source'], "", $source);
+				}
+		    }
+		    $_script_array = $new_script_array;
+		}
+/* Get date string for making hash */
+		$datestring = $this->get_file_dates($script_array, $options);
+
 /* patch from xandrx */
 		$_script_array_files = array();
 		foreach ($_script_array as $value) {
@@ -526,9 +538,7 @@ class compressor {
 				$external_array = array_merge($external_array, $handler_array);
 			}
 			$source = $this->_remove_scripts($external_array, $source);
-
 		}
-
 		if(!empty($contents)) {
 /* Allow for minification of javascript */
 			if($options['header'] == "javascript" && $options['minify']) {
@@ -553,16 +563,17 @@ class compressor {
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
-					$this->process_report['scripts'][] = array('type' => $options['header'] . " " . @$options['rel'],
-																'from' => $external_array,
-																'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']);
-					}
-
+					$this->process_report['scripts'][] = array(
+						'type' => $options['header'] . " " . @$options['rel'],
+						'from' => $external_array,
+						'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']
+					);
 				}
-
 			}
-			return preg_replace("/@@@marker@@@/", "", $source);
+
 		}
+		return preg_replace("/@@@marker@@@/", "", $source);
+	}
 
 	/**
 	* Replaces the script or css links in the source with a marker
@@ -587,8 +598,7 @@ class compressor {
 	* Returns the filename for our new compressed file
 	*
 	**/
-	function get_new_file($options,$cache_file,$not_modified=false) {
-		
+	function get_new_file($options, $cache_file, $not_modified=false) {
 		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->unify_dir_separator($options['cachedir'])));
 		$newfile = "<" . $options['tag'] . " type=\"" . $options['type'] . "\" $options[src]=\"http://" . $_SERVER['HTTP_HOST'] . "/" . $this->view->prevent_leading_slash($relative_cachedir) ."/$cache_file." . $options['ext'] . "$not_modified\"";				
 		if (!empty($options['rel'])) {
@@ -604,7 +614,6 @@ class compressor {
 		}
 		$this->compressed_files[] = $newfile;
 		return $newfile;
-	
 	}
 	
 	/**
@@ -612,7 +621,6 @@ class compressor {
 	* In this way we can see if any changes have been made
 	**/	
 	function get_file_dates($files,$options) {
-		
 		$files = $this->get_file_locations($files, $options);
 		if (!is_array($files)) {
 			return;
@@ -624,12 +632,10 @@ class compressor {
 				$dates[] = $thedate;
 			}
 		}
-
 		if (is_array($dates)) {
 			return implode(".", $dates);
 		}
 		return;
-	
 	}
 
 	/**
@@ -637,7 +643,6 @@ class compressor {
 	* 
 	**/
 	function get_file_name ($file) {
-
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
@@ -647,7 +652,6 @@ class compressor {
 		} else {
 			return $this->view->paths['full']['current_directory'] . $file;
 		}
-
 	}
 
 	/**
@@ -655,7 +659,6 @@ class compressor {
 	* 
 	**/
 	function resolve_css_imports ($src) {
-
 		$content = false;
 		$file = $this->get_file_name($src);
 		if (is_file($file)) {
@@ -677,7 +680,6 @@ class compressor {
 			}
 		}
 		return $content;
-
 	}
 
 	/**
@@ -711,14 +713,23 @@ class compressor {
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
 /* but keep JS w/o src to merge into unobtrusive loader */
-			if(!$src[1] && !$options['unobtrusive']){
+			if(!$src[1] && !$options['unobtrusive'] && !$options['remove']) {
 				unset($external_array[$key]);
 			}
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
 				if(!strstr($src[1], $_SERVER['HTTP_HOST'])) {
-					unset($external_array[$key]);
-					$this->process_report['skipped'][$src[1]] = array('from'=>$src[1],
-																		'reason'=>'Cannot compress external files');
+/* get an external file */
+					$file = $this->get_remote_file($options, $src[1]);
+					if ($options['external_scripts'] && $file) {
+						$src[1] = str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . "/" . $file;
+						$external_array[$key]['file'] = $options['src'] . '="' . $src[1]  . '"';
+					} else {
+						unset($external_array[$key]);
+						$this->process_report['skipped'][$src[1]] = array(
+							'from'=>$src[1],
+							'reason'=>'Cannot compress external files'
+						);
+					}
 				}
 			}
 			if (!$options['unobtrusive'] || !$value['content']) {
@@ -744,9 +755,7 @@ class compressor {
 				}
 			}
 		}
-
 		return $external_array;
-
 	}
 	
 	/**
@@ -780,33 +789,33 @@ class compressor {
 					'from'=>$current_src,
 					'notice'=>'The querystring was stripped from this script');
 			}
-
 			$current_src = $this->strip_querystring($current_src);						
 /* Make sure script exists */
 			if (file_exists($current_src)) {
-						
-				//Make sure script has the correct extension
+/* Make sure script has the correct extension */
 				$extentsion_length = strlen($options['original_ext']);
 				if(".".substr($this->view->get_basename($current_src),(-1*$extentsion_length)) == ".".$options['original_ext']) {			
-				$return_array[] = array('src'=>$current_src,
-										'source'=>$value['source'],
-										'content' => $value['content']);
+					$return_array[] = array(
+						'src'=>$current_src,
+						'source'=>$value['source'],
+						'content' => $value['content']
+					);
 				} else {
-				$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
-																		'reason'=>'Must have ' . $options['original_ext'] . ' extension');
+					$this->process_report['skipped'][$current_src] = array(
+						'from'=>$current_src,
+						'reason'=>'Must have ' . $options['original_ext'] . ' extension'
+					);
 				}
-			
 			} else {
 				if(!strstr($current_src,'php_speedy_control')) {
-					$this->process_report['skipped'][$current_src] = array('from'=>$current_src,
-																			'reason'=>'Not on server');						
+					$this->process_report['skipped'][$current_src] = array(
+						'from'=>$current_src,
+						'reason'=>'Not on server'
+					);	
 				}
-			}
-											
+			}								
 		}
-		
-		return $return_array;
-	
+		return $return_array;	
 	}
 
 	/**
@@ -895,7 +904,6 @@ class compressor {
 								
 	
 	} // end FE	
-			
 	
 	}
 
@@ -904,13 +912,11 @@ class compressor {
 	* 
 	**/	
 	function strip_querystring($path) {
-	
 		if ($commapos = strpos($path, '?')) {
 			return substr($path, 0, $commapos);
 		} else {
 			return $path;
 		}
-	
 	}
 
 	/**
@@ -918,12 +924,10 @@ class compressor {
 	* 
 	**/	
 	function minify_text($txt) {
-		// Compress whitespace.
+/* Compress whitespace */
 		$txt = preg_replace('/\s+/', ' ', $txt);
-		// Remove comments.
+/* Remove comments */
 		$txt = preg_replace('/\/\*.*?\*\//', '', $txt);
-		//Further minification (Thanks to Andy & David)		
-		//$txt = preg_replace('/\s*(,|;|:|{|})\s/','$1', $txt);
 		return $txt;
 	}
 
@@ -932,40 +936,29 @@ class compressor {
 	* Adapted from smarty code http://www.smarty.net/
 	**/		
 	function trimwhitespace($source) {
-		// Pull out the script blocks
+/* Pull out the script blocks */
 		preg_match_all("!<script[^>]+>.*?</script>!is", $source, $match);
 		$_script_blocks = $match[0];
 		$source = preg_replace("!<script[^>]+>.*?</script>!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
-	
-		// Pull out the pre blocks
+/* Pull out the pre blocks */
 		preg_match_all("!<pre>.*?</pre>!is", $source, $match);
 		$_pre_blocks = $match[0];
 		$source = preg_replace("!<pre>.*?</pre>!is",
 							   '@@@COMPRESSOR:TRIM:PRE@@@', $source);
-	
-		// Pull out the textarea blocks
+/* Pull out the textarea blocks */
 		preg_match_all("!<textarea[^>]+>.*?</textarea>!is", $source, $match);
 		$_textarea_blocks = $match[0];
 		$source = preg_replace("!<textarea[^>]+>.*?</textarea>!is",
 							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
-	
-		// remove all leading spaces, tabs and carriage returns NOT
-		// preceeded by a php close tag.
+/* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
-		
-		//Remove comments
-		//$source =  preg_replace("/<!--.*-->/U","",$source); 			
-	
-		// replace textarea blocks
+/* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
-	
-		// replace pre blocks
+/* replace pre blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:PRE@@@",$_pre_blocks, $source);
-	
-		// replace script blocks
+/* replace script blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@",$_script_blocks, $source);
-	
 		return $source;
 	}
 
@@ -976,32 +969,29 @@ class compressor {
 	function trimwhitespace_replace($search_str, $replace, &$subject) {
 		$_len = strlen($search_str);
 		$_pos = 0;
-		for ($_i=0, $_count=count($replace); $_i<$_count; $_i++)
-			if (($_pos=strpos($subject, $search_str, $_pos))!==false)
+		for ($_i=0, $_count=count($replace); $_i<$_count; $_i++) {
+			if (($_pos=strpos($subject, $search_str, $_pos))!==false) {
 				$subject = substr_replace($subject, $replace[$_i], $_pos, $_len);
-			else
+			} else {
 				break;
-	
-	}	
+			}
+		}
+	}
+
 	
 	/**
 	* Gets the directory we are in
 	* 
 	**/		
 	function get_current_path($trailing=false) {
-	
-	
-	   $current_dir = $this->view->paths->relative->current_directory;		
-	   
-	   //Remove trailing slash
-	   if($trailing) {
-		   if(substr($current_dir,-1,1) == "/") {
-		   $current_dir = substr($current_dir,0,-1); 
-		   }
-	   }
-	
-	   return $current_dir;
-	
+		$current_dir = $this->view->paths->relative->current_directory;
+/* Remove trailing slash */
+		if($trailing) {
+			if(substr($current_dir,-1,1) == "/") {
+				$current_dir = substr($current_dir,0,-1); 
+			}
+		}
+		return $current_dir;
 	}
 
 	/**
@@ -1009,22 +999,13 @@ class compressor {
 	* 
 	**/			
 	function get_head($source) {
-			
 		preg_match("!<head([^>]+)?>.*?</head>!is", $source, $matches);
-				
 		if(!empty($matches[0])) {
-		
 			$head = $matches[0];
-			
-			// Pull out the comment blocks, so as to avoid touching conditional comments
-			$head = preg_replace("@<!--.*?-->@is",
-								   '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', $head);		
-						
-			return $head;	
-			
+/* Pull out the comment blocks, so as to avoid touching conditional comments */
+			$head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', $head);
+			return $head;
 		}
-	
-	
 	}
 	
 	/**
@@ -1032,34 +1013,24 @@ class compressor {
 	* 
 	**/		
 	function do_cleanup() {
-		
-	//Get all directories
-	foreach($this->options AS $key=>$value) {
-		if(!empty($value['cachedir'])) {
-			$active_dirs[] = $value['cachedir'];
-		}
-	}
-			
+/* Get all directories */
+		foreach($this->options AS $key=>$value) {
+			if(!empty($value['cachedir'])) {
+				$active_dirs[] = $value['cachedir'];
+			}
+		}	
 		if(!empty($active_dirs)) {	
 			foreach($active_dirs AS $path) {
-			
 			$files = $this->get_files_in_dir($path);
-					
-				foreach($files AS $file) {
-						
+				foreach($files AS $file) {	
 					if (!strstr($this->compressed_files_string,$file)) {
 						if(file_exists($path . "/" . $file)) {
 							unlink($path . "/" . $file);
 						}
-					} // end if
-			
+					}
 				}
-			
 			}
 		}
-	
-
-	
 	}	
 	
 	/**
@@ -1067,39 +1038,28 @@ class compressor {
 	* 
 	**/	
 	function get_files_in_dir($path) {
-		
-	// open this directory 
-	$myDirectory = opendir($path);
-	
-	// get each entry
-	while($entryName = readdir($myDirectory))
-	{
-		$dirArray[] = $entryName;
-	}
-	// close directory
-	closedir($myDirectory);	
-	
-	return $dirArray;
-	
-	
-	}
-	
-	//Adds CSS media info
-	function add_media_header($content,$path) {
-	
-	preg_match("@(media)=[\"'](.*?)[\"']@",$path['location'],$media); //|media
-	
-		if($media[2]) {
-		$content = "@media " . $media[2] . " {" . $content;
-		$content .= " }";
+/* open this directory */
+		$myDirectory = opendir($path);
+/* get each entry */
+		while($entryName = readdir($myDirectory)) {
+			$dirArray[] = $entryName;
 		}
-	
-	return $content;
-	
+/* close directory */
+		closedir($myDirectory);
+		return $dirArray;
 	}
-		
 	
-	//Find background images in the CSS and convert their paths to absolute
+/* Adds CSS media info */
+	function add_media_header($content,$path) {
+		preg_match("@(media)=[\"'](.*?)[\"']@",$path['location'],$media); //|media
+		if($media[2]) {
+			$content = "@media " . $media[2] . " {" . $content;
+			$content .= " }";
+		}
+		return $content;
+	}
+	
+/* Find background images in the CSS and convert their paths to absolute */
 	function convert_paths_to_absolute($content,$path) {
 		
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
@@ -1142,19 +1102,16 @@ class compressor {
 		return $content;
 	
 	}
-	
+
 	/**
 	* Convert all background image to CSS Sprites if possible
 	**/
-	
 	function convert_css_sprites ($content, $options) {
-
 		chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, $options['cachedir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg']);
 		return $css_sprites->process();
-
 	}
-	
+
 	/**
 	* Take CSS background images and convert to data URIs
 	**/
@@ -1171,7 +1128,7 @@ class compressor {
 					$file_path = $path['cachedir'] . '/' . $file;
 				} else {
 /* Get full path */
-					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);				
+					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);
 					$file_path = trim($file_path);
 				}
 				if (is_file(file_path)) {
@@ -1226,17 +1183,13 @@ class compressor {
 		return $content;
 	
 	}	
-	
-	//Make the sep the same
+/* Make the sep the same */
 	function unify_dir_separator($path) {
-	
 		if (DIRECTORY_SEPARATOR != '/') {
-				return str_replace (DIRECTORY_SEPARATOR, '/', $path);
+			return str_replace (DIRECTORY_SEPARATOR, '/', $path);
 		} else {
-				return $path;
-		}	
-	
-	
+			return $path;
+		}
 	}
 	
 	/**
@@ -1253,7 +1206,6 @@ class compressor {
 	 *
 	 **/
 	function get_mimetype($value='') {
-
 		$ct['htm'] = 'text/html';
 		$ct['html'] = 'text/html';
 		$ct['txt'] = 'text/plain';
@@ -1312,37 +1264,47 @@ class compressor {
 		$ct['wmls'] = 'text/vnd.wap.wmlscript';
 		$ct['xsl'] = 'text/xml';
 		$ct['xml'] = 'text/xml';
-
 		$extension = $this->get_file_extension($value);
-
 		if (!$type = $ct[strtolower($extension)]) {
-
 			$type = 'text/html';
 		}
-
 		return $type;
 	} 		
-	
-	//Start script timing
+/* Start script timing */
 	function startTimer() {
-	   $mtime = microtime();
-	   $mtime = explode(" ",$mtime);
-	   $mtime = $mtime[1] + $mtime[0];
-	   $starttime = $mtime;
-	   return $starttime;
-	} 
-	
-	//Return current time
+		$mtime = microtime();
+		$mtime = explode(" ",$mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$starttime = $mtime;
+		return $starttime;
+	}
+/* Return current time */
 	function returnTime($starttime) {
 		$mtime = microtime();
-	   $mtime = explode(" ",$mtime);
-	   $mtime = $mtime[1] + $mtime[0];
-	   $endtime = $mtime;
-	   $totaltime = ($endtime - $starttime);
-	   return $totaltime;
-	}	
-	
-		
+		$mtime = explode(" ",$mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$endtime = $mtime;
+		$totaltime = ($endtime - $starttime);
+		return $totaltime;
+	}
+/* download remote files to include */
+    function get_remote_file ($options, $file) {
+		chdir($options['cachedir']);
+/* try to download remote file */
+		$ch = curl_init($file);
+		$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
+		$fp = fopen($return_filename, "w");
+		if ($fp && $ch) {
+			curl_setopt($ch, CURLOPT_FILE, $fp);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
+			curl_exec($ch);
+			curl_close($ch);
+			fclose($fp);
+			return $return_filename;
+		}
+		return false;
+    }		
 
 } // end class
 

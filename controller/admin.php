@@ -11,48 +11,43 @@ class admin {
 	* Sets the options and defines the gzip headers
 	**/
 	function admin($options=null) {
-	
 		if(!empty($options['skip_startup'])) {
-		return;
+			return;
 		}
-	
-		//Ensure no caching
+/* Ensure no caching */
 		header('Last-Modified: '.gmdate('D, d M Y H:i:s', mktime(0, 0, 0, date("m"), date("d")-2, date("Y"))).' GMT');
 		header('Expires: '.gmdate('D, d M Y H:i:s', mktime(0, 0, 0, date("m"), date("d")-1, date("Y"))).' GMT');		
 		header("Cache-Control: private");	
 		header("Pragma: no-cache");	
-
 		foreach($options AS $key=>$value) {
-		$this->$key = $value;
+			$this->$key = $value;
 		}
-		
-		//Set name of options file
+/* Set name of options file */
 		$this->options_file = "config.php";
 		require_once($this->options_file);
 		$this->compress_options = $compress_options;
-		
-		//Make sure login valid
+/* Make sure login valid */
 		$this->manage_password();
-		$this->password_not_required = array('install_enter_password'=>1,
-											 'install_set_password'=>1
-											);
+		$this->password_not_required = array(
+			'install_enter_password' => 1,
+			'install_set_password' => 1
+		);
 		if(empty($this->password_not_required[$this->input['page']])) {
-		$this->check_login();
+			$this->check_login();
 		}
-		
-		//Set page functions for the installation and admin, makes sure nothing else can be run
-		$this->page_functions = array('install_set_password'=>1,
-									  'install_enter_password'=>1,
-									  'install_stage_1'=>1,
-									  'install_stage_2'=>1,
-									  'install_stage_3'=>1);
-		
-		//Show page
+/* Set page functions for the installation and admin, makes sure nothing else can be run */
+		$this->page_functions = array(
+			'install_set_password' => 1,
+			'install_enter_password' => 1,
+			'install_stage_1' => 1,
+			'install_stage_2' => 1,
+			'install_stage_3' => 1
+		);
+/* Show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
 			$func = $this->input['page'];
 			$this->$func();
 		}
-	
 	}
 
 	/**
@@ -62,19 +57,13 @@ class admin {
 	function install_set_password() {
 	
 	if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
-
-
 		$page_variables = array("title"=>"Enter your password for installtion",
 								"paths"=>$this->view->paths,
 								"page"=>'install_enter_password'); //take document root from the options file
-
-
 	} else {
-	
 		$page_variables = array("title"=>"Set your password for installtion",
 								"paths"=>$this->view->paths,
 								"page"=>'install_set_password'); //take document root from the options file
-	
 	}	
 	
 		//Show the install page
@@ -169,6 +158,19 @@ class admin {
 							'title'=>'Minify Options',
 							'intro'=>'Minifying removes whitespace and other unnecessary characters.',
 							'value'=>$this->compress_options['minify']
+						),
+						'unobtrusive' => array(
+							'title' => 'Make JavaScript unobtrusive',
+							'intro' => 'Unobtrusive JavaScript will be loaded right after all content is shown in browser.
+										<br/>This can significantly increase website load speed. But in some cases can break the clientside logic (if it\'s not designed to handle in unobtrusive way).
+										<br/>Please be careful with this option.',
+							'value' => $this->compress_options['unobtrusive']
+						),
+						'external_scripts' => array(
+							'title' => 'Include external and inline scripts',
+							'intro' => 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
+										<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.',
+							'value' => $this->compress_options['external_scripts']
 						),
 						'gzip'=>array(
 							'title'=>'Gzip Options',
