@@ -11,7 +11,7 @@ $compress_options['css_cachedir'] = "";
 ## Comma separated list of JS Libraries to include
 $compress_options['js_libraries'] = "";
 $compress_options['unobtrusive']['on'] = "1";
-$compress_options['external_scripts']['on'] = "1";
+$compress_options['external_scripts']['on'] = "0";
 ## Ignore list
 $compress_options['ignore_list'] = "";
 ## Minify options
