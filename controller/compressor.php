@@ -51,7 +51,8 @@ class compressor {
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
-				"unobtrusive" => $this->options['unobtrusive']['on']
+				"unobtrusive" => $this->options['unobtrusive']['on'],
+				"external_scripts" => $this->options['external_scripts']['on']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -61,7 +62,8 @@ class compressor {
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
-				"unobtrusive" => false
+				"unobtrusive" => false,
+				"external_scripts" => $this->options['external_scripts']['on']
 			),
 			"page" => array(
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
@@ -193,7 +195,8 @@ class compressor {
 				'far_future_expires' => $options['far_future_expires'],
 				'header' => $type,
 				'save_name' => $type,
-				'unobtrusive' => $options['unobtrusive']
+				'unobtrusive' => $options['unobtrusive'],
+				'external_scripts' => $options['external_scripts']
 			),
 			$this->content
 		);
@@ -267,7 +270,8 @@ class compressor {
 					'far_future_expires' => $options['far_future_expires'],
 					'header' => $type,
 					'save_name' => $type.$value['real_type'],
-					'unobtrusive' => $options['unobtrusive']
+					'unobtrusive' => $options['unobtrusive'],
+					'external_scripts' => $options['external_scripts']
 				),
 				$this->content
 			);
@@ -713,7 +717,7 @@ class compressor {
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
 /* but keep JS w/o src to merge into unobtrusive loader */
-			if(!$src[1] && !$options['unobtrusive'] && !$options['remove']) {
+			if(!$src[1] && !$options['unobtrusive'] && !$options['external_scripts']) {
 				unset($external_array[$key]);
 			}
 			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
@@ -1131,7 +1135,7 @@ class compressor {
 					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);
 					$file_path = trim($file_path);
 				}
-				if (is_file(file_path)) {
+				if (is_file($file_path)) {
 /* Get mime type */
 					$mime = $this->get_mimetype($file_path);
 /* Get file contents */
@@ -1290,9 +1294,15 @@ class compressor {
 /* download remote files to include */
     function get_remote_file ($options, $file) {
 		chdir($options['cachedir']);
+		$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
+/* prevent download more than 1 time a day */
+		if (is_file($return_filename)) {
+			if (filemtime($return_filename) + 86400 > time()) {
+				return $return_filename;
+			}
+		}
 /* try to download remote file */
 		$ch = curl_init($file);
-		$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
 		$fp = fopen($return_filename, "w");
 		if ($fp && $ch) {
 			curl_setopt($ch, CURLOPT_FILE, $fp);
