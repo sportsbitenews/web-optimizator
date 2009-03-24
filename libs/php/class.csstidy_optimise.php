@@ -699,7 +699,8 @@ class csstidy_optimise
                 {
                     $return['background-size'] .= substr($str_value[$i][$j],1,-1).',';
                 }
-                elseif(in_array($str_value[$i][$j],$pos,TRUE) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === NULL)
+/* fixing bug with float values, i.e. .35em -- first is dot, not numeric */
+                elseif(in_array($str_value[$i][$j],$pos,TRUE) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === '.' || $str_value[$i][$j]{0} === NULL)
                 {
                     $return['background-position'] .= $str_value[$i][$j];
                     if(!$have['pos']) $return['background-position'] .= ' '; else $return['background-position'].= ',';

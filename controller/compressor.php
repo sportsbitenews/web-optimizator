@@ -1311,6 +1311,19 @@ class compressor {
 			curl_exec($ch);
 			curl_close($ch);
 			fclose($fp);
+/* try to replace background images to local ones */
+			$contents = @file_get_contents($return_filename);
+			if ($contents) {
+				$fp = @fopen($return_filename, "w");
+				if ($fp) {
+/* replace absolute URLs */
+					$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+/* replace relative URLs */
+					$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
+					fwrite($fp, $contents);
+					fclose($fp);
+				}
+			}
 			return $return_filename;
 		}
 		return false;
