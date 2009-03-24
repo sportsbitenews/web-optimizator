@@ -78,8 +78,8 @@ class admin {
 	* 
 	**/	
 	function install_stage_1() {
-/* remove instances of Web Optimizer from index.php */
 		if ($this->input['uninstall']) {
+/* remove instances of Web Optimizer from index.php */
 			$index = preg_replace("/web-optimizer\//", "", $this->view->paths['full']['current_directory']) . 'index.php';
 			$fp = @fopen($index, "r");
 			if ($fp) {
@@ -92,6 +92,32 @@ class admin {
 				if ($fp) {
 					fwrite($fp, $content_saved);
 					fclose($fp);
+				}
+			}
+/* remove rules from .htaccess */
+			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+			if (is_file($htaccess)) {
+				$fp = @fopen($htaccess, 'r');
+				if ($fp) {
+					$stop_saving = 0;
+					$content_saved = '';
+					while ($htaccess_string = fgets($fp)) {
+						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
+							$stop_saving = 1;
+						}
+						if (!$stop_saving && $htaccess_string != "\n") {
+							$content_saved .= $htaccess_string;
+						}
+						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
+							$stop_saving = 0;
+						}
+					}
+					fclose($fp);
+					$fp = @fopen($htaccess, "w");
+					if ($fp) {
+						fwrite($fp, $content_saved);
+						fclose($fp);
+					}
 				}
 			}
 		}
@@ -320,7 +346,7 @@ class admin {
 
 				$this->view->set_paths();
 /* first of all just cut current Web Optimizer options from .htaccess */
-				$htaccess = $this->view->paths['full']['document_root'] . '/.htaccess';
+				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
 				if (is_file($htaccess)) {
 					$fp = @fopen($htaccess, 'r');
 					if (!$fp) {
