@@ -15,9 +15,8 @@ class admin {
 			return;
 		}
 /* Ensure no caching */
-		header('Last-Modified: '.gmdate('D, d M Y H:i:s', mktime(0, 0, 0, date("m"), date("d")-2, date("Y"))).' GMT');
-		header('Expires: '.gmdate('D, d M Y H:i:s', mktime(0, 0, 0, date("m"), date("d")-1, date("Y"))).' GMT');		
-		header("Cache-Control: private");	
+		header('Expires: ' . date("r"));
+		header("Cache-Control: no-store, no-cache, must-revalidate, private");	
 		header("Pragma: no-cache");	
 		foreach($options AS $key=>$value) {
 			$this->$key = $value;
@@ -55,20 +54,23 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
-	
-	if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
-		$page_variables = array("title"=>"Enter your password for installtion",
-								"paths"=>$this->view->paths,
-								"page"=>'install_enter_password'); //take document root from the options file
-	} else {
-		$page_variables = array("title"=>"Set your password for installtion",
-								"paths"=>$this->view->paths,
-								"page"=>'install_set_password'); //take document root from the options file
-	}	
-	
-		//Show the install page
+/* take document root from the options file */
+		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
+			$page_variables = array(
+				"title" => "Enter your password for installation",
+				"paths" => $this->view->paths,
+				"page" => 'install_enter_password'
+			);
+		} else {
+/* take document root from the options file */
+			$page_variables = array(
+				"title" => "Set your password for installation",
+				"paths" => $this->view->paths,
+				"page" => 'install_set_password'
+			); 
+		}
+/* Show the install page */
 		$this->view->render("admin_container",$page_variables);	
-
 	}
 
 	/**
@@ -76,16 +78,33 @@ class admin {
 	* 
 	**/	
 	function install_stage_1() {
-
-		$page_variables = array("title" => "Welcome to Web Optimizer installation!",
-							"paths" => $this->view->paths,
-							"page" => $this->input['page'],
-							"document_root" => $this->compress_options['document_root'],
-							"compress_options" => $this->compress_options);
-	
-		//Show the install page
+/* remove instances of Web Optimizer from index.php */
+		if ($this->input['uninstall']) {
+			$index = preg_replace("/web-optimizer\//", "", $this->view->paths['full']['current_directory']) . 'index.php';
+			$fp = @fopen($index, "r");
+			if ($fp) {
+				$content_saved = '';
+				while ($index_string = fgets($fp)) {
+					$content_saved .= preg_replace("/(require\('[^\']+web-optimizer\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+				}
+				fclose($fp);
+				$fp = @fopen($index, "w");
+				if ($fp) {
+					fwrite($fp, $content_saved);
+					fclose($fp);
+				}
+			}
+		}
+		$page_variables = array(
+			"title" => "Welcome to Web Optimizer installation!",
+			"paths" => $this->view->paths,
+			"page" => $this->input['page'],
+			"document_root" => $this->compress_options['document_root'],
+			"compress_options" => $this->compress_options,
+			"uninstall" => $this->input['uninstall']
+		);
+/* Show the install page */
 		$this->view->render("admin_container", $page_variables);
-	
 	}
 	
 	/**
@@ -217,7 +236,7 @@ class admin {
 		);
 		$options['auto_rewrite'] = null;
 /* check /index.php to possiblity to rewrite it */
-		$fp = @fopen($this->input['user']['document_root'] . "index.php", "ar");
+		$fp = @fopen($this->input['user']['document_root'] . "index.php", "a+");
 		if ($fp) {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(

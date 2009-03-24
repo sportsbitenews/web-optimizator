@@ -1,4 +1,12 @@
-<?php if(!empty($message)) { ?><div class="success"><?php echo $message ?></div><?php } ?>
+<?php if(!empty($message)) { ?><div class="success"><?php echo $message ?></div><?php } if ($uninstall) { ?>
+
+<h1>Uninstall</h1>
+
+<p>Thank you for using Web Optimizer. You can install it once more later by visiting <a href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . $this->paths['relative']['current_directory'] ?>"><?php echo "http://" . $_SERVER['HTTP_HOST'] . $this->paths['relative']['current_directory'] ?></a>.</p>
+
+<p>Feel free to visit <a href="http://code.google.com/p/web-optimizator/">Web Optimizer website</a> and submit <a href="http://code.google.com/p/web-optimizator/issues/list">any related issues</a>.</p>
+
+<?php } else { ?>
 
 <h1>Installation - Stage 1</h1>
 
@@ -25,3 +33,5 @@
 	</form>	
 		
 </fieldset>
+
+<?php } ?>
