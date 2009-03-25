@@ -38,7 +38,7 @@ class compressor {
 	**/
 	function set_options() {
 /* Set paths with new options */
-		$this->options['document_root'] = $this->options['document_root'] ? $this->options['document_root'] : '';
+		$this->options['document_root'] = defined($this->options['document_root']) ? $this->options['document_root'] : '';
 		$this->view->set_paths();
 /* Set ignore file */
 		if(!empty($this->options['ignore_list'])) {
@@ -456,6 +456,7 @@ class compressor {
 	**/
 	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
 		$handlers = '';
+		$_script_array = array();
 /* If only one script found */
 		if(!is_array($external_array)) {
 			$_script_array = array($external_array);
@@ -482,7 +483,7 @@ class compressor {
 		    $_script_array = $new_script_array;
 		}
 /* Get date string for making hash */
-		$datestring = $this->get_file_dates($script_array, $options);
+		$datestring = $this->get_file_dates($_script_array, $options);
 
 /* patch from xandrx */
 		$_script_array_files = array();

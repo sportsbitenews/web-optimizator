@@ -20,8 +20,11 @@ class compressor_view {
 	 **/	
 	function set_paths($document_root=null) {
 
-		if (!is_array($this->paths)) {
+		if (!defined($this->paths)) {
 			$this->paths = array();
+			$this->paths['full'] = array();
+			$this->paths['relative'] = array();
+			$this->paths['absolute'] = array();
 		}
 /* Save doc root, problems with Denwer, used more generic version (below)
 	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);

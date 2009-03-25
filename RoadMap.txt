@@ -1,4 +1,4 @@
-1. Installer: 1 php file ot full archive. Several languages / OSes.
+1. Installer: 1 php file or full archive. Several languages / OSes.
  a) Checks for curl -- and download / create all necessary files
  b) If no curl -- ask to download full archive 
  c) Delete temporary directories
@@ -20,7 +20,7 @@
  h) CDN integration options
 +i) Cache directory
  j) Source directories for CSS / JS files
- k) Source PHP / HTML files to auto-change
++k) Source PHP / HTML files to auto-change
  l) images optimization settings
  m) usage of auto-optimization solutions (smash.it / webo.in)
  n) website load counter (via webo.in)
@@ -50,7 +50,7 @@
  a) Google Apps Engine
  b) Amazon S3
  c) EdgeCast
- d) 
+ d) ?
  e) NGENIX
 
 8. Server cache integration
@@ -61,3 +61,9 @@
 9. Look and feel
  a) Design -- samir is responsible
  b) Make up / clientside development -- yely is responsible
+
+10. Other languages porting
+ a) Perl
+ b) Java
+ c) Python
+ d) ?
