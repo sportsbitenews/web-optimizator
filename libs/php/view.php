@@ -11,25 +11,23 @@ class compressor_view {
 	* Creates class instance
 	**/
 	function compressor_view($options=null) {
-		$this->set_paths();	
+		$this->paths = array();
+		$this->paths['full'] = array();
+		$this->paths['relative'] = array();
+		$this->paths['absolute'] = array();
+		$this->set_paths();
 	}
 
 	/**
 	 * Sets the paths
 	 * 
 	 **/	
-	function set_paths($document_root=null) {
+	function set_paths($document_root = null) {
 
-		if (!defined($this->paths)) {
-			$this->paths = array();
-			$this->paths['full'] = array();
-			$this->paths['relative'] = array();
-			$this->paths['absolute'] = array();
-		}
 /* Save doc root, problems with Denwer, used more generic version (below)
 	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
 	fix for PHP as CGI */
-		if (!$this->paths['full']['document_root']) {
+		if (empty($this->paths['full']['document_root'])) {
 			$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
 		}
 /* Get the view directory */

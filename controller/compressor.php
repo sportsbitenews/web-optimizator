@@ -38,7 +38,7 @@ class compressor {
 	**/
 	function set_options() {
 /* Set paths with new options */
-		$this->options['document_root'] = defined($this->options['document_root']) ? $this->options['document_root'] : '';
+		$this->options['document_root'] = !empty($this->options['document_root']) ? $this->options['document_root'] : '';
 		$this->view->set_paths();
 /* Set ignore file */
 		if(!empty($this->options['ignore_list'])) {
@@ -490,8 +490,17 @@ class compressor {
 		foreach ($_script_array as $value) {
 			$_script_array_files[] = $value['file'];
 		}
+/* get options string */
+		$optstring = '';
+		foreach ($options as $key => $value) {
+			if (is_array($value)) {
+				$optstring .= '_' . implode('_', $value);
+			} else {
+				$optstring .= '_' . $value;
+			}
+		}
 /* Get the cache hash */
-		$cache_file = md5(implode("_", $_script_array_files) . $datestring . implode("_", $options) . $handlers);
+		$cache_file = md5(implode("_", $_script_array_files) . $datestring . $optstring . $handlers);
 		$cache_file = urlencode($cache_file);
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
@@ -740,8 +749,8 @@ class compressor {
 			if (!$options['unobtrusive'] || !$value['content']) {
 				if ($options['ext'] == 'css') {
 /* recursively resolve @import in files */
-					$external_array[$key]['content'] = ($options['media_all'][$src[1]] ? "@media " . $options['media_all'][$src[1]] . "{" : "") . 
-						$this->resolve_css_imports($src[1]) . ($options['media_all'][$src[1]] ? "}" : "");
+					$external_array[$key]['content'] = (empty($options['media_all'][$src[1]]) ? "" : "@media " . $options['media_all'][$src[1]] . "{") . 
+						$this->resolve_css_imports($src[1]) . (empty($options['media_all'][$src[1]]) ? "" : "}");
 				} else {
 					$external_array[$key]['content'] = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : false;
 				}
