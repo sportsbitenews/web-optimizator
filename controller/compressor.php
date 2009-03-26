@@ -11,26 +11,20 @@ class compressor {
 	* Constructor
 	* Sets the options and defines the gzip headers
 	**/
-	function compressor($options=false) {
-	
+	function compressor($options = false) {
 		if(!empty($options['skip_startup'])) {
 			return;
 		}	
-
-		//Allow merging of other classes with this one
+/* Allow merging of other classes with this one */
 		foreach($options AS $key=>$value) {
 			$this->$key = $value;
 		}
-
-		//Set options
+/* Set options */
 		$this->set_options();
-		
-		//Define the gzip headers
+/* Define the gzip headers */
 		$this->set_gzip_headers();
-		
-		//Start things off
+/* Start things off */
 		$this->start();
-	
 	}
 	
 	/**
@@ -48,6 +42,7 @@ class compressor {
 		$full_options = array(
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
+				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
@@ -56,6 +51,7 @@ class compressor {
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
+				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['css'],
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
@@ -93,9 +89,7 @@ class compressor {
 	* 
 	**/	
 	function start() {
-		
-	ob_start();	
-	
+		ob_start();
 	}
 	
 	/**
@@ -103,41 +97,33 @@ class compressor {
 	* 
 	**/	
 	function compress($content) {
-					
-	$this->finish($content);
-	
+		$this->finish($content);
 	}
 	
 	/**
 	* Tells the script to ignore certain files
 	* 
 	**/	
-	function ignore($files=false) {
-					
+	function ignore($files = false) {
 		if(!empty($files)) {
-		$files_array = explode(",",$files);
+			$files_array = explode(",",$files);
 		}
-		
-		//Ignore these files		
+/* Ignore these files */
 		if(!empty($files_array)) {
 			foreach($files_array AS $key=>$value) {
-			$this->ignore_files[] = trim($value);		
+				$this->ignore_files[] = trim($value);
 			}
 		}
-			
 	}	
-	
-			
 
 	/**
 	* Do work and return output buffer
 	*
 	**/	
 	function finish($content=false) {
-		
+
 		$this->runtime = $this->startTimer();
 		$this->times['start_compress'] = $this->returnTime($this->runtime);
-	
 		if(!$content) {
 			$this->content = ob_get_clean();
 		} else {
@@ -179,12 +165,13 @@ class compressor {
 	* GZIP and minify the javascript as required
 	*
 	**/	
-		function javascript($options,$type) {
+	function javascript($options,$type) {
 /* Remove any files in the remove list */
 		$this->do_remove();
 		$this->content = $this->do_compress(
 			array(
 				'cachedir' => $options['cachedir'],
+				'installdir' => $options['installdir'],
 				'tag' => 'script',
 				'type' => 'text/javascript',
 				'ext' => 'js',
@@ -254,6 +241,7 @@ class compressor {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
+					'installdir' => $options['installdir'],
 					'tag' => 'link',
 					'type' => $key,
 					'ext' => 'css',
@@ -343,7 +331,6 @@ class compressor {
 	*
 	**/	
 	function do_remove() {
-
 		if(empty($this->remove_files)) {
 			return;
 		}
@@ -352,6 +339,7 @@ class compressor {
 			$this->content,
 			array(
 				'cachedir' => $options['cachedir'],
+				'installdir' => $options['installdir'],
 				'tag' => 'script',
 				'type' => 'text/javascript',
 				'ext' => 'js',
@@ -409,7 +397,7 @@ class compressor {
 			$handler = 'scripts';
 			$key = 0;
 			foreach ($this->script_array as $script) {
-				$handler_new = $script['file'] ? 'scripts' : 'handler';
+				$handler_new = empty($script['file']) ? 'handler' : 'scripts';
 				$postloader[$key][$handler_new][] = $script;
 				$handler = $handler_new;
 				if ($handler_new != $handler) {
@@ -418,12 +406,11 @@ class compressor {
 			}
 /* go through postloader and include */
 			foreach ($postloader as $script_block) {
-				$source = $this->do_include($options, $source, $cachedir, $script_block['scripts'], $script_block['handler']);
+				$source = $this->do_include($options, $source, $cachedir, empty($script_block['scripts']) ? null : $script_block['scripts'], empty($script_block['handler']) ? null : $script_block['handler']);
 			}
 		} else {
 			$source = $this->do_include($options, $source, $cachedir, $this->script_array);
 		}
-
 		return $source;
 	}
 
@@ -488,7 +475,9 @@ class compressor {
 /* patch from xandrx */
 		$_script_array_files = array();
 		foreach ($_script_array as $value) {
-			$_script_array_files[] = $value['file'];
+			if (!empty($value['file'])) {
+				$_script_array_files[] = $value['file'];
+			}
 		}
 /* get options string */
 		$optstring = '';
@@ -783,10 +772,13 @@ class compressor {
 		}
 		$return_array = array();
 /* Remove empty sources */
-		foreach($external_array AS $key=>$value) {
-		preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
-			if(!$src[1]) {
-				unset($external_array[$key]);
+		foreach($external_array AS $key => $value) {
+			$src = array(0, 0);
+			if (!empty($value['file'])) {
+				preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
+			}
+			if (empty($value['file']) || !$src[1]) {
+					unset($external_array[$key]);
 			}
 		}			
 /* Create file */
@@ -837,25 +829,21 @@ class compressor {
 	* 
 	**/	
 	function set_gzip_headers() {
-	
-	//When will the file expire?
-	$offset = 6000000 * 60 ;
-	$ExpStr = "Expires: " . 
-	gmdate("D, d M Y H:i:s",
-	time() + $offset) . " GMT";
-	
-	$types = array("css","javascript");
+/* When will the file expire? */
+		$offset = 6000000 * 60 ;
+		$ExpStr = "Expires: " . 
+		gmdate("D, d M Y H:i:s",
+		time() + $offset) . " GMT";
+		$types = array("css","javascript");
 			
-	foreach($types AS $type) {
-			
-		//Always send etag
-		$this->gzip_header[$type] = '<?php	
+		foreach($types AS $type) {
+/* Always send etag */
+			$this->gzip_header[$type] = '<?php	
 			$hash = md5($_SERVER[\'SCRIPT_FILENAME\']);
 			header ("Etag: \"" . $hash . "\"");		
 ?>';			
-	
-		//Send 304?
-		$this->gzip_header[$type] .= '<?php	
+/* Send 304? */
+			$this->gzip_header[$type] .= '<?php	
 				
 			if (isset($_SERVER[\'HTTP_IF_NONE_MATCH\']) && 
 				stripslashes($_SERVER[\'HTTP_IF_NONE_MATCH\']) == \'"\' . $hash . \'"\') 	{
@@ -867,8 +855,8 @@ class compressor {
 					
 ?>';
 /* ob_start ("ob_gzhandler"); */
-		if(!empty($this->options[$type]['gzip'])) { 
-			$this->gzip_header[$type] .= '<?php	
+			if(!empty($this->options[$type]['gzip'])) { 
+				$this->gzip_header[$type] .= '<?php	
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
 				
@@ -903,22 +891,21 @@ class compressor {
 				
 				}
 ?>';	
-		}
+			}
 	
-		if(!empty($this->options[$type]['far_future_expires'])) {
-			$this->gzip_header[$type] .= '<?php	
+			if(!empty($this->options[$type]['far_future_expires'])) {
+				$this->gzip_header[$type] .= '<?php	
 				header("Cache-Control: must-revalidate");
 				header("' . $ExpStr . '");
 ?>';	
-		}
+			}
 		
 			$this->gzip_header[$type] .= '<?php	
 				header("Content-type: text/' . $type .'; charset: UTF-8");
 ?>';	
 								
 	
-	} // end FE	
-	
+		} // end FE	
 	}
 
 	/**
@@ -1083,36 +1070,33 @@ class compressor {
 			$counter = 0;
 			foreach($matches[1] AS $key=>$file) {
 			
-			if(strstr($file,"data:")) { //Don't touch data URIs
-			continue;
-			}
+				if(strstr($file,"data:")) { //Don't touch data URIs
+					continue;
+				}
 			
-			$counter++;
-			
+				$counter++;
 				$original_file = trim($file);
 				$file = preg_replace("@'|\"@","",$original_file);
 		
-				if(substr($file,0,1) != "/" && substr($file,0,5) != "http:") { //Not absolute
+				if(substr($file,0,1) != "/" && (substr($file, 0, 5) != "http:" || substr($file, 0, 6) != "https:")) { //Not absolute
 														
-					$full_path_to_image = str_replace($this->view->get_basename($path['src']),"",$path['src']);
-					$absolute_path = "/". $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']),"",$this->unify_dir_separator($full_path_to_image . $file)));								
+					$full_path_to_image = str_replace($this->view->get_basename($path['src']), "", $path['src']);
+					$absolute_path = "/". $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 										
 					$marker = md5($counter);	
 					$markers[$marker] = $absolute_path;					
 					
-					$content = str_replace($original_file,$marker,$content);				
+					$content = str_replace($original_file, $marker, $content);				
 				}
 			
 			}
 		}
-		
 		if(!empty($markers) && is_array($markers)) {
-			//Replace the markers for the real path
-			foreach($markers AS $md5=>$real_path) {
-			$content = str_replace($md5,$real_path,$content);
+/* Replace the markers for the real path */
+			foreach($markers AS $md5 => $real_path) {
+				$content = str_replace($md5, $real_path, $content);
 			}
 		}
-		
 		return $content;
 	
 	}
@@ -1122,7 +1106,7 @@ class compressor {
 	**/
 	function convert_css_sprites ($content, $options) {
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $options['cachedir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg']);
+		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $options['truecolor_in_jpeg'], $this->view->paths['absolute']['document_root']);
 		return $css_sprites->process();
 	}
 

@@ -11,12 +11,12 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $current_dir, $root_dir, $truecolor_in_jpeg) {
+	function css_sprites ($css_code, $current_dir, $root_dir, $truecolor_in_jpeg, $website_root) {
 
 		require_once('class.csstidy.php');
 /* convert CSS code to hash */
 		$this->css = new csstidy();
-		$this->css->load_template($root_dir . 'web-optimizer/libs/php/css.template.tpl');
+		$this->css->load_template($root_dir . 'libs/php/css.template.tpl');
 		$this->css->parse($css_code);
 /* array for global media@ distribution */
 		$this->media = array();
@@ -27,6 +27,7 @@ class css_sprites {
 /* set directories */
 		$this->current_dir = $current_dir;
 		$this->root_dir = $root_dir;
+		$this->website_root = $website_root;
 /* output True Color images in JPEG (or PNG24) */
 		$this->truecolor_in_jpeg = $truecolor_in_jpeg;
 	}
@@ -349,7 +350,7 @@ class css_sprites {
 			
 			} else {
 			
-				$this->css_image = preg_match("/^\//", $this->css_image) ? $this->root_dir . $this->css_image : $this->current_dir . '/' .$this->css_image;
+				$this->css_image = preg_match("/^\//", $this->css_image) ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;
 			
 			}
 			
@@ -556,13 +557,13 @@ class css_sprites {
 
 						case 1:
 							$this->css_images[$sprite]['images'][$key][3] = 0;
-							$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'];
+							$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'] + $final_y;
 							$this->css_images[$sprite]['x'] = $width > $this->css_images[$sprite]['x'] ? $width : $this->css_images[$sprite]['x'];
 							$this->css_images[$sprite]['y'] += $height + $final_y;
 						break;
 
 						case 2:
-							$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'];
+							$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;
 							$this->css_images[$sprite]['images'][$key][4] = 0;
 							$this->css_images[$sprite]['x'] += $width + $final_x;
 							$this->css_images[$sprite]['y'] =  $height > $this->css_images[$sprite]['y'] ? $height : $this->css_images[$sprite]['y'];
@@ -759,9 +760,9 @@ class css_sprites {
 				} else {
 					imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
-					if (is_file($this->root_dir . 'web-optimizer/libs/php/pngcrush')) {
+					if (is_file($this->root_dir . 'libs/php/pngcrush')) {
 
-						shell_exec($this->root_dir . 'web-optimizer/libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
+						shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $sprite);
 						if (is_file('pngout.png')) {
 							if (filesize('pngout.png') < filesize($sprite)) {
 								copy('pngout.png', $sprite);

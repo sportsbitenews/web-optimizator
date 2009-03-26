@@ -45,9 +45,9 @@ class compressor_view {
 /* Set the current relative path */
 		$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
 /* Set the root relative path */
-		$this->paths['relative']['document_root'] = preg_replace("/web-optimizer\//", "", $this->paths['relative']['current_directory']);
+		$this->paths['relative']['document_root'] = preg_replace("/[^\/]+\/$/", "", $this->paths['relative']['current_directory']);
 /* set absolute root for some cases */
-		$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(str_replace("web-optimizer/", "", $this->paths['relative']['current_directory']), 1);
+		$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(preg_replace("/[^\/]+\/$/", "", $this->paths['relative']['current_directory']), 1);
 /* Set the view directory */
 		$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";
 /* Set the css directory */

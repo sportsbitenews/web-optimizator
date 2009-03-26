@@ -1,22 +1,25 @@
 <?php if(!empty($message)) { ?><div class="success"><?php echo $message ?></div><?php } ?>
 
 <h1>Installation - Stage 2</h1>
-
-<p>Compression options</p>
-
 <form method="post" enctype="multipart/form-data" action="">
+	<input type="submit" name="submit" value="Next..." />	
+
+	<p>Compression options</p>
 
 	<fieldset>
 		<legend>Cache Directories</legend>
-
 			<label>Your JavaScript will be cached in</label>
 				<div class="info">
 				<input type="text" name="user[javascript_cachedir]" class="long_text" value="<?php echo $javascript_cachedir ?>" />
-				</div>	
+				</div>
 			<label>Your CSS will be cached in</label>
 				<div class="info">
 				<input type="text" name="user[css_cachedir]" class="long_text" value="<?php echo $css_cachedir ?>" />
-				</div>				
+				</div>
+			<label>Web Optimizer is located in</label>
+				<div class="info">
+				<input type="text" name="user[webo_cachedir]" class="long_text" value="<?php echo $webo_cachedir ?>" />
+				</div>
 	</fieldset>
 
 			<?php foreach($options AS $key=>$type) {

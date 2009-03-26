@@ -14,6 +14,9 @@ class admin {
 		if(!empty($options['skip_startup'])) {
 			return;
 		}
+		if (function_exists('date_default_timezone_set')) {
+			date_default_timezone_set('Europe/Moscow');
+		}
 /* Ensure no caching */
 		header('Expires: ' . date("r"));
 		header("Cache-Control: no-store, no-cache, must-revalidate, private");	
@@ -78,14 +81,14 @@ class admin {
 	* 
 	**/	
 	function install_stage_1() {
-		if ($this->input['uninstall']) {
+		if (!empty($this->input['uninstall'])) {
 /* remove instances of Web Optimizer from index.php */
-			$index = preg_replace("/web-optimizer\//", "", $this->view->paths['full']['current_directory']) . 'index.php';
+			$index = preg_replace("/[^\/]+\/$/", "", $compress_options['webo_cachedir']) . 'index.php';
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';
 				while ($index_string = fgets($fp)) {
-					$content_saved .= preg_replace("/(require\('[^\']+web-optimizer\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
 				}
 				fclose($fp);
 				$fp = @fopen($index, "w");
@@ -125,9 +128,9 @@ class admin {
 			"title" => "Welcome to Web Optimizer installation!",
 			"paths" => $this->view->paths,
 			"page" => $this->input['page'],
-			"document_root" => $this->compress_options['document_root'],
+			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
 			"compress_options" => $this->compress_options,
-			"uninstall" => $this->input['uninstall']
+			"uninstall" => empty($this->input['uninstall']) ? null : $this->input['uninstall']
 		);
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
@@ -143,9 +146,9 @@ class admin {
 			$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
 		}
 /* check if we are using correct root directory */
-		if (!is_dir($_SERVER['DOCUMENT_ROOT'] . 'web-optimizer')) {
-			$this->error("<p>Unable to open ". $this->input['user']['document_root'] ."/web-optimizer.<br>
-							Please make sure the directory exists and Web Optimizer is located in web-optimizer inside the root directory.</p>");
+		if (!is_dir($_SERVER['DOCUMENT_ROOT'])) {
+			$this->error("<p>Unable to open ". $this->input['user']['document_root'] ." .<br>
+							Please make sure the directory exists and it is your root directory.</p>");
 		}
 		if(!empty($this->input['submit'])) {
 			$save = $this->save_option('[\'document_root\']', $_SERVER['DOCUMENT_ROOT']);
@@ -179,13 +182,7 @@ class admin {
 							'Far_future_expires'=>$this->compress_options['far_future_expires']
 						);
 
-		$options = array('cache_dir'=>array(
-							'title'=>'Cache Directory',
-							'intro'=>'Web Optimizer will store your compressed JavaScript and CSS files in a cache directory. <br/>You can enter a new directory below if desired. This directory must be within your document root and writable by the server. If in doubt just use the directory suggested.',
-							'key'=>'Directory',
-							'value'=>$this->compress_options['javascript_cachedir']
-						),
-						'js_libraries'=>array(
+		$options = array('js_libraries'=>array(
 							'title'=>'JavaScript Libraries',
 							'intro'=>'If your plugins or theme use a JavaScript library, it is advisable to let Web Optimizer handle where it is included.<br /><br />
 										Speedy has determined that the libraries below could be in use by your installation. It is recommended that you tick all the scripts to let Web Optimizer handle them.<br/><br />
@@ -243,7 +240,7 @@ class admin {
 						),
 						'htaccess'=>array(
 							'title'=>'Use .htaccess',
-							'intro'=>'Most of gzip and cache options can be written to your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).
+							'intro'=>'Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).
 										<br/>Available options: ' . implode(", ", $apache_modules_enabled),
 							'value'=>$this->compress_options['htaccess']
 						),
@@ -269,7 +266,7 @@ class admin {
 						'title' => 'Auto change /index.php',
 						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info($this->view->paths['absolute']['document_root']) .' all required changes (only for /index.php).' .
 									'<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.',
-						'value' => is_array($this->compress_options['auto_rewrite']) ? $this->compress_options['auto_rewrite'] : array('enabled' => null)
+						'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
 			);
 		}
 
@@ -279,6 +276,7 @@ class admin {
 							"message" => $save,
 							"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
 							"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
+							"webo_cachedir" => $this->view->paths['full']['current_directory'],
 							"options" => $options,
 							"compress_options" => $this->compress_options);
 /* Show the install page */
@@ -350,7 +348,7 @@ class admin {
 				if (is_file($htaccess)) {
 					$fp = @fopen($htaccess, 'r');
 					if (!$fp) {
-						$this->error("<p>Please sure that the root of your website is readable and writable to your web server process.</p>
+						$this->error("<p>Please sure that the root of your website is readable and writable for your web server process.</p>
 										<p>Make CHMOD 775 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
 					} else {
 						$stop_saving = 0;
@@ -374,7 +372,7 @@ class admin {
 
 				$fp = @fopen($htaccess, 'w');
 				if (!$fp) {
-					$this->error("<p>Please sure that the root of your website is writable to your web server process.</p>
+					$this->error("<p>Please sure that the root of your website is writable for your web server process or there is a writable .htaccess file.</p>
 									<p>Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
 				} else {
 					$htaccess_options = $this->input['user']['htaccess'];
@@ -487,39 +485,45 @@ ExpiresDefault \"access plus 10 years\"
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
 			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
-				$index = preg_replace("/web-optimizer\//", "", $this->view->paths['full']['current_directory']) . 'index.php';
-				$fp = @fopen($index, "r");
-				if ($fp) {
-					$content_saved = '';
-					while ($index_string = fgets($fp)) {
-						$content_saved .= preg_replace("/(require\('[^\']+web-optimizer\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
-					}
-/* fix for Joomla 1.5+ */
-					if (preg_match("/Joomla 1.[56789]/", $this->system_info($this->view->paths['absolute']['document_root']))) {
-						$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/", '$1require(\'' . $this->view->paths['full']['current_directory'] . 'web.optimizer.php\');' . "\n", $content_saved);
-					} elseif (substr($content_saved, 0, 2) == '<?') {
-/* add require block */
-						$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->view->paths['full']['current_directory'] . 'web.optimizer.php\');' . "\n", $content_saved);
-					} else {
-						$content_saved = "<?php require('" . $this->paths['full']['current_directory'] . "web-optimizer/web.optimizer.php'); ?>" . $content_saved;
-					}
-					if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
-/* add finish block */
-						$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
-					} else {
-/* fix for Drupal on not-closed ?> */
-						if (substr($cms_version, 0, 6) == 'Drupal') {
-							$content_saved .= '$web_optimizer->finish();';
-						} else {
-							$content_saved .= '<?php $web_optimizer->finish(); ?>';
-						}
-					}
-					fclose($fp);
-					$fp = @fopen($index, "w");
+/* check for web.optimizer.php existence */
+				$fp = fopen($this->input['user']['webo_cachedir'] . 'web.optimizer.php', 'r');
+				if (!$fp) {
+					$this->error("<p>Please sure that you have installed Web Optimizer into " . $this->input['user']['webo_cachedir'] . ".</p>");
+				} else {
+					$index = $this->view->paths['absolute']['document_root'] . 'index.php';
+					$fp = @fopen($index, "r");
 					if ($fp) {
-						fwrite($fp, $content_saved);
+						$content_saved = '';
+						while ($index_string = fgets($fp)) {
+							$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+						}
+/* fix for Joomla 1.5+ */
+						if (preg_match("/Joomla 1.[56789]/", $this->system_info($this->view->paths['absolute']['document_root']))) {
+							$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+						} elseif (substr($content_saved, 0, 2) == '<?') {
+/* add require block */
+							$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+						} else {
+							$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
+						}
+						if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
+/* add finish block */
+							$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
+						} else {
+/* fix for Drupal on not-closed ?> */
+							if (substr($cms_version, 0, 6) == 'Drupal') {
+								$content_saved .= '$web_optimizer->finish();';
+							} else {
+								$content_saved .= '<?php $web_optimizer->finish(); ?>';
+							}
+						}
 						fclose($fp);
-						$auto_rewrite = 1;
+						$fp = @fopen($index, "w");
+						if ($fp) {
+							fwrite($fp, $content_saved);
+							fclose($fp);
+							$auto_rewrite = 1;
+						}	
 					}
 
 				}

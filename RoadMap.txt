@@ -67,3 +67,14 @@
  b) Java
  c) Python
  d) ?
+
+11. Default CMS-compatibility
++a) Wordpress
++b) Joomla 1.5
++c) Drupal 6
+ d) Bitrix
+ e) Typo3
+ f) WebGUI
+ g) Plone
+ h) Xoops
+ i) PHP Nuke

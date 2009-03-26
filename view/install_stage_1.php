@@ -6,6 +6,8 @@
 
 <p>Feel free to visit <a href="http://code.google.com/p/web-optimizator/">Web Optimizer website</a> and submit <a href="http://code.google.com/p/web-optimizator/issues/list">any related issues</a>.</p>
 
+<p>Now you can return back to <a href="<?php echo $this->paths['relative']['document_root'] ?>">your website</a>.</p>
+
 <?php } else { ?>
 
 <h1>Installation - Stage 1</h1>
