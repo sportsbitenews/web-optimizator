@@ -111,11 +111,10 @@ class css_sprites {
 						foreach ($this->media as $imp => $images) {
 
 							foreach ($images as $key => $image) {
+								$fixed_key = $this->fix_css3_selectors($key);
 /* remove pseudo-selectors, i.e. :focus, :hover, etc*/
-								if (in_array($key, split(",", $tags)) || in_array(preg_replace("/:.*/", "", $key), split(",", $tags))) {
-
+								if (in_array($key, split(",", $tags)) || in_array($fixed_key, split(",", $tags))) {
 									$this->media[$imp][$key][$property] = $value;
-
 								}
 
 							}
@@ -136,9 +135,12 @@ class css_sprites {
 
 				if (!$image['background-image'] || $image['background-image'] == 'none') {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
-					$key_fixed = preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
+					$key_fixed = $this->fix_css3_selectors($key);
 					if ($media[$import][$key_fixed]) {
 						$image['background-image'] = $media[$import][$key]['background-image'] = $media[$import][$key_fixed]['background-image'];
+						if (!$image['background-repeat']) {
+							$image['background-repeat'] = $media[$import][$key]['background-repeat'] = $media[$import][$key_fixed]['background-repeat'];
+						}
 					} else {
 						unset($this->media[$import][$key]);
 					}
@@ -148,9 +150,7 @@ class css_sprites {
 				if ($image['background-image'] && $image['background-image'] != 'none') {
 
 					if ($image['height'] && $image['width'] && !$image['background-repeat']) {
-
 						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
-
 					}
 
 					if ($image['background-repeat']) {
@@ -158,11 +158,8 @@ class css_sprites {
 						$this->css_images[$image['background-repeat'] == 'no-repeat' ? ('no-repeat' . ($image['width'] && $image['height'] ? '' : 'i')) : $image['background-repeat']]++;
 /* count selectors for every images -- to handle initial CSS Sprites */
 						if (!$this->css_images[$image['background-image']]) {
-
 							$this->css_images[$image['background-image']] = array();
-
 						}
-
 						$this->css_images[$image['background-image']][$image['background-position']] = 1;
 
 					}
@@ -591,13 +588,9 @@ class css_sprites {
 			}
 
 			if ($fullcolor) {
-
 				$sprite_raw = @imagecreatetruecolor($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
-
 			} else {
-
 				$sprite_raw = @imagecreate($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
-
 			}
 
 			if ($sprite_raw) {
@@ -667,8 +660,9 @@ class css_sprites {
 						}
 
 						if ($im) {
+							$colors = imagecolorsforindex($im, imagecolorat($im, 0, 0));
 /* recount colors number, switch to fullcolor if more than 256 */
-							if (imagecolorstotal($im) + imagecolorstotal($sprite_raw) > 256) {
+							if (imagecolorstotal($im) + imagecolorstotal($sprite_raw) > 256 || $colors['alpha']) {
 								$fullcolor = 1;
 								$new_raw = @imagecreatetruecolor($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 								if ($new_raw) {
@@ -679,7 +673,6 @@ class css_sprites {
 									$sprite_raw = $new_raw;
 								}
 							}
-							$colors = imagecolorsforindex($im, imagecolorat($im, 0, 0);
 /* handling 32bit colors in PNG */
 							if ($colors['alpha']) {
 								imagealphablending($sprite_raw, false);
@@ -689,10 +682,10 @@ class css_sprites {
 							switch ($type) {
 /* the most complicated case */
 								case 4:
-									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									$css_left = -$final_x;
 									$css_top = -$final_y;
 									$css_repeat = 'no-repeat';
+									imagecopy($sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									break;
 
 /* icons */
@@ -700,12 +693,12 @@ class css_sprites {
 /* shift placing point for images */
 									$x -= $width;
 									$y += $final_y;
+									$css_left = -$x;
+									$css_top = -$y;
+									$css_repeat = 'no-repeat';
 									imagecopy($sprite_raw, $im, $x, $y, 0, 0, $width, $height);
 									$x -= $final_x;
 									$y += $height;
-									$css_left = -$x;
-									$css_top = -$y + $height;
-									$css_repeat = 'no-repeat';
 									break;
 /* repeat-y */
 								case 2:
@@ -821,6 +814,10 @@ class css_sprites {
 		}
 
 		return $frames > 1;
+	}
+/* return CSS selector w/o CSS3 pseudo-addons */
+	function fix_css3_selectors ($key) {
+		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
 	}
 	
 }
