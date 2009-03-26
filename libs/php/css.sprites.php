@@ -135,14 +135,17 @@ class css_sprites {
 			foreach ($images as $key => $image) {
 
 				if (!$image['background-image'] || $image['background-image'] == 'none') {
-/* try to find w/o pseudo-selectors, i.e. :focus, :hover, etc */
-					if ($media[$import][preg_replace("/:.*/", "", $key)]) {
-						$media[$import][$key]['background-image'] = $media[$import][preg_replace("/:.*/", "", $key)]['background-image'];
+/* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
+					$key_fixed = preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
+					if ($media[$import][$key_fixed]) {
+						$image['background-image'] = $media[$import][$key]['background-image'] = $media[$import][$key_fixed]['background-image'];
 					} else {
 						unset($this->media[$import][$key]);
 					}
 
-				} else {
+				} 
+/* re-check background image existence */
+				if ($image['background-image'] && $image['background-image'] != 'none') {
 
 					if ($image['height'] && $image['width'] && !$image['background-repeat']) {
 
@@ -603,14 +606,10 @@ class css_sprites {
 
 /* fill sprite with transparent color */
 				if ($fullcolor) {
-
 					$back = imagecolorallocate($sprite_raw, 255, 255, 255);
-
 				} else {
-
 					$back = imagecolorallocatealpha($sprite_raw, 255, 255, 255, 127);
 					imagecolortransparent($sprite_raw, $back);
-
 				}
 
 				imagefilledrectangle($sprite_raw, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y'], $back);
@@ -670,7 +669,6 @@ class css_sprites {
 						if ($im) {
 /* recount colors number, switch to fullcolor if more than 256 */
 							if (imagecolorstotal($im) + imagecolorstotal($sprite_raw) > 256) {
-
 								$fullcolor = 1;
 								$new_raw = @imagecreatetruecolor($this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 								if ($new_raw) {
@@ -680,7 +678,12 @@ class css_sprites {
 									imagecopy($new_raw, $sprite_raw, 0, 0, 0, 0, $this->css_images[$sprite]['x'], $this->css_images[$sprite]['y']);
 									$sprite_raw = $new_raw;
 								}
-
+							}
+							$colors = imagecolorsforindex($im, imagecolorat($im, 0, 0);
+/* handling 32bit colors in PNG */
+							if ($colors['alpha']) {
+								imagealphablending($sprite_raw, false);
+								imagesavealpha($sprite_raw, true);
 							}
 
 							switch ($type) {
