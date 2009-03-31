@@ -60,6 +60,7 @@ class compressor {
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
+				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['on']
 			),
@@ -255,6 +256,7 @@ class compressor {
 					'data_uris' => $options['data_uris'],
 					'css_sprites' => $options['css_sprites'],
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
+					'aggressive' => $options['aggressive'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
 					'minify' => $options['minify'],
@@ -1112,7 +1114,7 @@ class compressor {
 	**/
 	function convert_css_sprites ($content, $options) {
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $options['truecolor_in_jpeg'], $this->view->paths['absolute']['document_root']);
+		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg'], $options['aggressive']);
 		return $css_sprites->process();
 	}
 
@@ -1172,18 +1174,18 @@ class compressor {
 			}					
 			
 		}
-
-		//Add IE only css
-		if(is_array($this->ie_only_css)) {
-			$this->ie_only_css_rules = implode("", $this->ie_only_css);
+/* Add IE only css */
+		if(!empty($this->ie_only_css)) {
+			if (is_array($this->ie_only_css)) {
+				$this->ie_only_css_rules = implode("", $this->ie_only_css);
 /* add to previous @media */
-			if (substr($content, strlen($content) - 2, 2) == '}}') {
-				$content = preg_replace("/\}\}$/", "}". $this->ie_only_css_rules ."}", $content);
-			} else {
-				$content .= $this->ie_only_css_rules;
+				if (substr($content, strlen($content) - 2, 2) == '}}') {
+					$content = preg_replace("/\}\}$/", "}". $this->ie_only_css_rules ."}", $content);
+				} else {
+					$content .= $this->ie_only_css_rules;
+				}
 			}
 		}
-
 		return $content;
 	
 	}	

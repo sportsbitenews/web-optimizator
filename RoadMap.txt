@@ -16,7 +16,7 @@
 +c) CSS /JS compressing options
 +d) .htaccess enabling
 +e) data:URI
-+f) auto CSS Sprites
++f) auto CSS Sprites (+jpegtran / pngcrush)
 +g) Caching headers (Expires, Cache-Control, Last-Modified)
  h) CDN integration options
 +i) Cache directory
@@ -40,7 +40,7 @@
 +a) JSMin (PHP4/5)
 +b) CSS Tidy for CSS files (no rules merging)
  c) YUI Compressor (if java exists) -- akira is responsible
- d) Packer for JS files
++d) Packer for JS files
 
 6. Including
 +a) Manual including 2 strings

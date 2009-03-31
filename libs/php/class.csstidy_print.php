@@ -151,8 +151,9 @@ class csstidy_print
         if (!empty($this->namespace)) {
             $output .= $template[0].'@namespace '.$template[5].$this->namespace.$template[6];
         }
-
-        $output .= $template[13];
+		if (!empty($template[13])) {
+			$output .= $template[13];
+		}
         $in_at_out = '';
         $out =& $output;
 

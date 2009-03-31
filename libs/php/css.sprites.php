@@ -11,7 +11,7 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $current_dir, $root_dir, $truecolor_in_jpeg, $website_root) {
+	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg, $aggressive) {
 
 		require_once('class.csstidy.php');
 /* convert CSS code to hash */
@@ -30,6 +30,8 @@ class css_sprites {
 		$this->website_root = $website_root;
 /* output True Color images in JPEG (or PNG24) */
 		$this->truecolor_in_jpeg = $truecolor_in_jpeg;
+/* use aggressive logic for repeat-x/y */
+		$this->aggressive = $aggressive;
 	}
 	/**
 	* Main function
@@ -148,14 +150,14 @@ class css_sprites {
 							}
 						}
 						if ($image['background-repeat'] == 'repeat-x') {
-							if (!$image['height']) {
+							if (!$image['height'] && !$this->aggressive) {
 								$repeat_key = 'repeat-xl';
 							} elseif (preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'repeat';
 							}
 						}
 						if ($image['background-repeat'] == 'repeat-y') {
-							if (!$image['width']) {
+							if (!$image['width'] && !$this->aggressive) {
 								$repeat_key = 'repeat-yl';
 							} elseif (preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'repeat';
@@ -328,7 +330,6 @@ class css_sprites {
 	function sprites_placement ($css_images, $css_icons) {
 /* initial matrix for css images */
 		$matrix = array(array(0));
-		$filled_square = 0;
 		$css_images['x'] = $css_images['y'] = $matrix_x = $matrix_y = 0;
 /* to separarte new images from old ones */
 		$last_key = -1;
@@ -405,7 +406,6 @@ class css_sprites {
 					for ($i = $I; $i < $I + $width; $i++) {
 						for ($j = $J; $j < $J + $height; $j++) {
 							$matrix[$i][$j] = 1;
-							$filled_square++;
 						}
 					}
 /* remember coordinates for this image, keep top/left */
@@ -425,97 +425,59 @@ class css_sprites {
 			$css_images['x'] = $matrix_x;
 			$css_images['y'] = $matrix_y;
 		}
-/* fill rate for final matrix */
-		if ($matrix_x && $matrix_y) {
-			$fillness = $filled_square / $matrix_x / $matrix_y;
-/* merge no-repeat images with icons */
-			$x = round($fillness * $fullness * $matrix_y);
-			$y = round($fillness * $fullness * $matrix_x);
-		}
-		$left_x = 0;
-		$right_x = $matrix_x;
-		$top_y = 0;
-		$bottom_y = $matrix_y;
+		$x = 0;
+		$y = 0;
+/* count initial shift (not to hurt current images) */
+		$shift = $matrix_y;
+		$distance = 0;
 /* need to add weboi Sprite to the main one */
 		if (count($css_icons['images'])) {
-/* in case of small amount of additional images */
-			if (count($css_icons['images']) < 3) {
-				if ($matrix_x > $matrix_y) {
-					$x = $matrix_x - $css_icons['images'][0][1] - $css_icons['images'][0][3];
-					$y = $matrix_y + $css_icons['images'][0][2] + $css_icons['images'][0][4];
-				} else {
-					$x = $matrix_x + $css_icons['images'][0][1] + $css_icons['images'][0][3];
-					$y = $matrix_y - $css_icons['images'][0][2] - $css_icons['images'][0][4];
-				}
+			foreach ($css_icons['images'] as $image) {
+				$shift += $image[2] + $image[4];
 			}
-/* try to find best position */
+/* distance from the main Sprite */
+			$distance = $shift - $matrix_y - $css_icons['images'][0][2] - $css_icons['images'][0][4];
+			$x = 0;
+			$y = $shift;
+/* creating 'steps' */
 			foreach ($css_icons['images'] as $image) {
 				$width = $image[1];
 				$height = $image[2];
 				$final_x = $image[3];
 				$final_y = $image[4];
-				if ($matrix_x > $matrix_y) {
-					$y = $y - $height - $final_y;
-					if ($y >= 0 && $x < $matrix_x) {
-						while ($matrix[$x][$y]) {
-							$x++;
-						}
-					}
-					$x = $x + $final_x + $width;
-					$image[3] = $x - $width;
-					$image[4] = $y + $final_y;
-/* calculate borders of the new image */
-					if ($left_x > $x - $final_x - $width) {
-						$left_x = $x - $final_x - $width;
-					}
-					if ($right_x < $x) {
-						$right_x = $x;
-					}
-					if ($bottom_y < $y + $final_y + $height) {
-						$bottom_y = $y + $final_y + $height;
-					}
-					if ($top_y > $y) {
-						$top_y = $y;
-					}
-				} else {
-					$x = $x - $final_x - $width;
-					if ($x >= 0 && $y < $matrix_y) {
-						while ($matrix[$x][$y]) {
-							$y++;
-						}
-					}
-					$y = $y + $height + $final_y;
-					$image[3] = $x + $final_x;
-					$image[4] = $y - $height;
-/* calculate borders of the new image */
-					if ($left_x > $x) {
-						$left_x = $x;
-					}
-					if ($right_x < $x + $final_x + $width) {
-						$right_x = $x + $final_x + $width;
-					}
-					if ($bottom_y < $y) {
-						$bottom_y = $y;
-					}
-					if ($top_y > $y - $final_y - $height) {
-						$top_y = $y - $final_y - $height;
-					}
+				$i = $x;
+				$x = $x + $width + $final_x;
+				$y = $y - $height - $final_y;
+				$image[3] = $x - $width;
+				$image[4] = $y + $final_y;
+				$j = $y;
+				while (!$matrix[$i][$j]) {
+					$j--;
 				}
-
+/* remember minimal distance */
+				if ($distance > $y - $j - 1) {
+					$distance = $y - $j - 1;
+				}
 				$css_images['images'][] = $image;
 			}
 		}
 /* try to restore required pixels in the Sprite */
-		$addon_x = -$left_x;
-		$addon_y = -$top_y;
+		$addon_x = -$x + $matrix_x;
+		$addon_y = $y < 0 ? -$y : 0;
 		if (is_array($css_images['images'])) {
 			foreach ($css_images['images'] as $key => $image) {
-				$css_images['images'][$key][3] += $addon_x;
-				$css_images['images'][$key][4] += $addon_y;
+/* images from the main Sprite */
+				if ($key <= $last_key) {
+					$css_images['images'][$key][3] += $addon_x;
+					$css_images['images'][$key][4] += $addon_y;
+/* shrink distance between webo and weboi Sprites */
+				} else {
+					$css_images['images'][$key][4] -= $distance;
+				}
 			}
-/* increase dimansions */
-			$css_images['x'] = $right_x - $left_x;
-			$css_images['y'] = $bottom_y - $top_y;
+/* increase dimensions */
+			$css_images['x'] = $x > $matrix_x ? $x : $matrix_x;
+			$css_images['y'] = $shift - $distance + ($y - $distance < 0 ? $distance - $y : 0);
 			return $css_images;
 		} else {
 			return array();
@@ -827,6 +789,15 @@ class css_sprites {
 				if ($this->truecolor_in_jpeg && $fullcolor) {
 					$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
 					imagejpeg($this->sprite_raw, $this->sprite, 80);
+					if (is_file($this->root_dir . 'libs/php/jpegtran')) {
+						shell_exec($this->root_dir . 'libs/php/jpegtran -copy none -perfect -optimize ' . $this->sprite . ' > jpegtran.'. $this->timestamp .'.jpg');
+						if (is_file('jpegtran.'. $this->timestamp .'.jpg') && filesize('jpegtran.'. $this->timestamp .'.jpg')) {
+							if (filesize('jpegtran.'. $this->timestamp .'.jpg') < filesize($this->sprite)) {
+								copy('jpegtran.'. $this->timestamp .'.jpg', $this->sprite);
+							}
+						}
+						@unlink('jpegtran.'. $this->timestamp .'.jpg');
+					}
 				} else {
 /* handling 32bit colors in PNG */
 					if ($alpha_enabled) {
@@ -836,12 +807,12 @@ class css_sprites {
 					imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
 					if (is_file($this->root_dir . 'libs/php/pngcrush')) {
-						shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite);
-						if (is_file('pngout.png')) {
-							if (filesize('pngout.png') < filesize($this->sprite)) {
-								copy('pngout.png', $this->sprite);
+						shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite . ' pngout.'. $this->timestamp .'.png');
+						if (is_file('pngout.'. $this->timestamp .'.png')) {
+							if (filesize('pngout.'. $this->timestamp .'.png') < filesize($this->sprite)) {
+								copy('pngout.'. $this->timestamp .'.png', $this->sprite);
 							}
-							unlink('pngout.png');
+							unlink('pngout.'. $this->timestamp .'.png');
 						}
 					}
 				}

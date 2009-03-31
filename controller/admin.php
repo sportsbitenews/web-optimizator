@@ -229,7 +229,7 @@ class admin {
 						'css_sprites'=>array(
 							'title'=>'CSS Sprites',
 							'intro'=>'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
-										<br/>This technique is fully supported by all modern browsers.',
+										<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.',
 							'value'=>$this->compress_options['css_sprites']
 						),
 						'data_uris'=>array(
@@ -533,7 +533,8 @@ ExpiresDefault \"access plus 10 years\"
 		}
 /* try to set some libs executable */
 		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 775);
-
+		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/jpegtran', 775);
+		
 		$page_variables = array("title" => "Installation stage 3",
 								"paths" => $this->view->paths,
 								"page" => $this->input['page'],
