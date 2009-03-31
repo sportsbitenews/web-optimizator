@@ -520,22 +520,19 @@ class compressor {
 					if($options['header'] == "css") {
 /* Absolute paths */
 						$file_contents = $this->convert_paths_to_absolute($file_contents, $info);
-						if ($options['css_sprites']) {
-/* Create CSS Sprites in CSS dir */
-							$file_contents = $this->convert_css_sprites($file_contents, $options);
-						}
-						if ($options['data_uris']) {
-/* CSS background images to data URIs */
-							$file_contents = $this->convert_css_bgr_to_data($file_contents, $options);
-						}
 /* Add media type header */
 						$file_contents = $this->add_media_header($file_contents, $info);
 					}
-
 					$contents .=  $file_contents;
-
 				}
-
+			}
+			if ($options['css_sprites']) {
+/* Create CSS Sprites in CSS dir */
+				$contents = $this->convert_css_sprites($contents, $options);
+			}
+			if ($options['data_uris']) {
+/* CSS background images to data URIs */
+				$contents = $this->convert_css_bgr_to_data($contents, $options);
 			}
 			if (is_array($handler_array)) {
 				$external_array = array_merge($external_array, $handler_array);
