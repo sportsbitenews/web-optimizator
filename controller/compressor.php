@@ -45,6 +45,7 @@ class compressor {
 				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
+				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : $this->options['minify']['with_packer'] ? 'packer' : 'jsmin',
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"external_scripts" => $this->options['external_scripts']['on']
@@ -54,6 +55,7 @@ class compressor {
 				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['css'],
+				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
@@ -179,6 +181,7 @@ class compressor {
 				'self_close' => false,
 				'gzip' => $options['gzip'],
 				'minify' => $options['minify'],
+				'minify_with' => $options['minify_with'],
 				'far_future_expires' => $options['far_future_expires'],
 				'header' => $type,
 				'save_name' => $type,
@@ -255,6 +258,7 @@ class compressor {
 					'self_close' => true,
 					'gzip' => $options['gzip'],
 					'minify' => $options['minify'],
+					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'header' => $type,
 					'save_name' => $type.$value['real_type'],
@@ -542,8 +546,13 @@ class compressor {
 		if(!empty($contents)) {
 /* Allow for minification of javascript */
 			if($options['header'] == "javascript" && $options['minify']) {
-				$this->jsmin = new JSMin($contents);
-				$contents = $this->jsmin->minify($contents);
+				if ($options['minify_with'] == 'packer') {
+					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
+					$contents = $this->packer->pack();
+				} else {
+					$this->jsmin = new JSMin($contents);
+					$contents = $this->jsmin->minify($contents);
+				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS

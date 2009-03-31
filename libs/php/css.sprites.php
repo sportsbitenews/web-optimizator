@@ -330,6 +330,8 @@ class css_sprites {
 		$matrix = array(array(0));
 		$filled_square = 0;
 		$css_images['x'] = $css_images['y'] = $matrix_x = $matrix_y = 0;
+/* to separarte new images from old ones */
+		$last_key = -1;
 /* check if we have initial no-repeat images */
 		if (is_array($css_images['images'])) {
 /* array for images ordered by square */
@@ -349,6 +351,7 @@ class css_sprites {
 			krsort($ordered_images);
 /* add images to matrix */
 			foreach ($ordered_images as $key => $image) {
+				$last_key = $key;
 				$minimal_x = 0;
 				$minimal_y = 0;
 /* if this is a unique image */
@@ -424,10 +427,10 @@ class css_sprites {
 		}
 /* fill rate for final matrix */
 		if ($matrix_x && $matrix_y) {
-			$fillness = sqrt($filled_square / $matrix_x / $matrix_y);
+			$fillness = $filled_square / $matrix_x / $matrix_y;
 /* merge no-repeat images with icons */
-			$x = round($fillness * $matrix_x * $matrix_y / $matrix_x);
-			$y = round($fillness * $matrix_y * $matrix_x / $matrix_y);
+			$x = round($fillness * $fullness * $matrix_y);
+			$y = round($fillness * $fullness * $matrix_x);
 		}
 		$left_x = 0;
 		$right_x = $matrix_x;
@@ -657,7 +660,9 @@ class css_sprites {
 					$x = $this->css_images[$this->sprite]['x'];
 					$y = 0;
 				}
-
+/* to nadle 32bit alpha transparent images */
+				$alpha_enabled = 0;
+/* loop in all given CSS images */
 				foreach ($this->css_images[$this->sprite]['images'] as $image) {
 
 					$filename = $image[0];
@@ -699,6 +704,7 @@ class css_sprites {
 
 						if ($im) {
 							$colors = imagecolorsforindex($im, imagecolorat($im, 0, 0));
+							$alpha_enabled = $alpha_enabled || !!$colors['alpha'];
 /* recount colors number, switch to fullcolor if more than 256 */
 							if (imagecolorstotal($im) + imagecolorstotal($this->sprite_raw) > 256 || $colors['alpha']) {
 								$fullcolor = 1;
@@ -706,21 +712,21 @@ class css_sprites {
 							}
 							switch ($type) {
 /* 0 100% case */
-							case 6:
-								$css_top = 'bottom';
-								$css_left = -$final_x;
-								$css_repeat = 'no-repeat';
-								imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
-                                break;
+								case 6:
+									$css_top = 'bottom';
+									$css_left = -$final_x;
+									$css_repeat = 'no-repeat';
+									imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
+									break;
 /* 100% 0 case */
-                            case 5:
-								$css_top = -$final_y;
-								$css_left = 'right';
-								$css_repeat = 'no-repeat';
-								imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
-								break;
+								case 5:
+									$css_top = -$final_y;
+									$css_left = 'right';
+									$css_repeat = 'no-repeat';
+									imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
+									break;
 /* the most complicated case */
-							case 4:
+								case 4:
 									$css_left = -$final_x;
 									$css_top = -$final_y;
 									$css_repeat = 'no-repeat';
@@ -823,8 +829,7 @@ class css_sprites {
 					imagejpeg($this->sprite_raw, $this->sprite, 80);
 				} else {
 /* handling 32bit colors in PNG */
-					$colors = imagecolorsforindex($this->sprite_raw, imagecolorat($this->sprite_raw, 0, 0));
-					if ($colors['alpha']) {
+					if ($alpha_enabled) {
 						imagealphablending($this->sprite_raw, false);
 						imagesavealpha($this->sprite_raw, true);
 					}

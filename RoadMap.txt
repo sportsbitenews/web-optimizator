@@ -3,6 +3,7 @@
  b) If no curl -- ask to download full archive 
  c) Delete temporary directories
 +d) Uninstaller
+ e) Auto-updater
 
 2. System check
 +a) .htaccess posibility
@@ -73,7 +74,7 @@
 +b) Joomla 1.5
 +c) Drupal 6
  d) Bitrix
- e) Typo3
++e) Typo3
  f) WebGUI
  g) Plone
  h) Xoops

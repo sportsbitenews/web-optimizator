@@ -198,7 +198,7 @@ class admin {
 						),
 						'minify'=>array(
 							'title'=>'Minify Options',
-							'intro'=>'Minifying removes whitespace and other unnecessary characters.',
+							'intro'=>'Minifying removes whitespace and other unnecessary characters. Also you can choose the tool for CSS/JavaScript minification or obfuscation.',
 							'value'=>$this->compress_options['minify']
 						),
 						'unobtrusive' => array(
@@ -633,15 +633,15 @@ ExpiresDefault \"access plus 10 years\"
 	* 
 	**/		
 	function error($string) {
-
-		$page_variables = array("title"=>"Oopps! Something went wrong",
-								"paths"=>$this->view->paths,
-								"error"=>$string,
-								"page"=>'error');								
+		$page_variables = array(
+			"title" => "Oopps! Something went wrong",
+			"paths" => $this->view->paths,
+			"error" => $string,
+			"page" => 'error'
+		);
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
 		die();
-
 	}
 
 	/**
@@ -684,6 +684,13 @@ ExpiresDefault \"access plus 10 years\"
 				define('JVERSION' , '1.5.0');
 			}
 			return 'Joomla ' . JVERSION;
+/* Typo 3 */
+		} elseif (is_dir($root . 'typo3conf')) {
+			$TYPO3_CONF_VARS = array('SYS' => array('compat_version' => '4.2'));
+			if (is_file($root . 'typo3conf/localconf.php')) {
+				require($root . 'typo3conf/localconf.php');
+			}
+			return 'Typo3 ' . $TYPO3_CONF_VARS['SYS']['compat_version'];
 		}
 		
 		return 'CMS 42';

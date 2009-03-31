@@ -28,10 +28,12 @@ $user_agent = new _webo_User_agent();
 /* Con. the js min library */
 if (substr(phpversion(), 0, 1) == 5) {
 	require_once('libs/php/jsmin5.php');
+	require_once('libs/php/packer5.php');
 }
 
 if (substr(phpversion(), 0, 1) == 4) {
 	require_once('libs/php/jsmin4.php');
+	require_once('libs/php/packer4.php');
 }
 
 /* Con. the compression controller */

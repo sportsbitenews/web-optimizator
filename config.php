@@ -17,6 +17,8 @@ $compress_options['external_scripts']['on'] = "0";
 $compress_options['ignore_list'] = "";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
+$compress_options['minify']['with_packer'] = "0";
+$compress_options['minify']['with_yui'] = "0";
 $compress_options['minify']['page'] = "1";
 $compress_options['minify']['css'] = "1";
 ## Gzip options
@@ -39,6 +41,7 @@ $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer use CSS Sprites for background images?
 $compress_options['css_sprites']['enabled'] = "1";
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
+$compress_options['css_sprites']['aggressive'] = "0";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";
