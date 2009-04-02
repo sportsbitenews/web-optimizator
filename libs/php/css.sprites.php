@@ -11,7 +11,7 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg = 0, $aggressive = 0) {
+	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg = 0, $aggressive = 0, $ignore_list = '') {
 
 		require_once('class.csstidy.php');
 /* convert CSS code to hash */
@@ -32,6 +32,8 @@ class css_sprites {
 		$this->truecolor_in_jpeg = $truecolor_in_jpeg;
 /* use aggressive logic for repeat-x/y */
 		$this->aggressive = $aggressive;
+/* list of excluded from CSS SPrites files */
+		$this->ignore_list = split("\\\s+", $ignore_list);
 	}
 	/**
 	* Main function
@@ -111,26 +113,34 @@ class css_sprites {
 		foreach ($this->media as $import => $images) {
 
 			foreach ($images as $key => $image) {
-				if (empty($image['background-image']) || $image['background-image'] == 'none') {
+
+				$back = $image['background-image'];
+
+				if (empty($back) || $back == 'none') {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 					$key_fixed = $this->fix_css3_selectors($key);
 					if ($this->media[$import][$key_fixed]) {
-						$image['background-image'] = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
+						$back = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
 						if (empty($image['width'])) {
 							$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
 						}
 						if (empty($image['height'])) {
 							$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
 						}
-						if (empty($image['background-repeat'])) {
-							$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
+						if (empty($back)) {
+							$back = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
 						}
 					} else {
 						unset($this->media[$import][$key]);
 					}
-				} 
+				}
+/* exclude files from ignore list */
+				if (empty($this->ignore_list) || !in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
+					unset($this->media[$import][$key]);
+				}
 /* re-check background image existence */
-				if (!empty($image['background-image']) && $image['background-image'] != 'none') {
+				if (!empty($back) && $back != 'none') {
+
 					if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
 						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
 					}
@@ -170,10 +180,10 @@ class css_sprites {
 /* count different images with repeating options */
 							$this->css_images[$repeat_key]++;
 /* count selectors for every images -- to handle initial CSS Sprites */
-							if (empty($this->css_images[$image['background-image']])) {
-								$this->css_images[$image['background-image']] = array();
+							if (empty($this->css_images[$back])) {
+								$this->css_images[$back] = array();
 							}
-							$this->css_images[$image['background-image']][$image['background-position']] = 1;
+							$this->css_images[$back][$image['background-position']] = 1;
 						}
 /* disable images w/o background-repeat */
 					} else {
@@ -378,7 +388,7 @@ __________________
 					for ($i = 0; $i < $matrix_x; $i++) {
 						for ($j = 0; $j < $matrix_y; $j++) {
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
-							if ($matrix[$i][$j] && !$matrix[$i + $width] && !$matrix[$i][$j + $height] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
+							if (!$matrix[$i][$j] && !$matrix[$i + $width] && !$matrix[$i][$j + $height] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
 /* and Sprite is big enough */
 								if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
 									$I = $i;

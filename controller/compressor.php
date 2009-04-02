@@ -48,7 +48,8 @@ class compressor {
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : $this->options['minify']['with_packer'] ? 'packer' : 'jsmin',
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
-				"external_scripts" => $this->options['external_scripts']['on']
+				"external_scripts" => $this->options['external_scripts']['on'],
+				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -59,10 +60,12 @@ class compressor {
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
+				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"unobtrusive" => false,
-				"external_scripts" => $this->options['external_scripts']['on']
+				"external_scripts" => $this->options['external_scripts']['on'],
+				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list']
 			),
 			"page" => array(
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
@@ -75,7 +78,7 @@ class compressor {
 		foreach($this->options AS $key=>$option) {			
 			if(!empty($option['cachedir'])) {
 				if(substr($option['cachedir'],-1,1) == "/") {
-					$cachedir = substr($option['cachedir'],0,-1); 
+					$cachedir = substr($option['cachedir'], 0, -1); 
 					$option['cachedir'] = $cachedir;
 				}			   
 			}
@@ -186,10 +189,12 @@ class compressor {
 				'far_future_expires' => $options['far_future_expires'],
 				'header' => $type,
 				'css_sprites' => false,
+				'css_sprites_exclude' => false,
 				'data_uris' => false,
 				'save_name' => $type,
 				'unobtrusive' => $options['unobtrusive'],
-				'external_scripts' => $options['external_scripts']
+				'external_scripts' => $options['external_scripts'],
+				'external_scripts_exclude' => $options['external_scripts_exclude']
 			),
 			$this->content
 		);
@@ -257,6 +262,7 @@ class compressor {
 					'media_all' => $value['media_all'],
 					'data_uris' => $options['data_uris'],
 					'css_sprites' => $options['css_sprites'],
+					'css_sprites_exclude' => $options['css_sprites_exclude'],
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 					'aggressive' => $options['aggressive'],
 					'self_close' => true,
@@ -267,7 +273,8 @@ class compressor {
 					'header' => $type,
 					'save_name' => $type.$value['real_type'],
 					'unobtrusive' => $options['unobtrusive'],
-					'external_scripts' => $options['external_scripts']
+					'external_scripts' => $options['external_scripts'],
+					'external_scripts_exclude' => $options['external_scripts_exclude']
 				),
 				$this->content
 			);
@@ -352,7 +359,8 @@ class compressor {
 				'type' => 'text/javascript',
 				'ext' => 'js',
 				'src' => 'src',
-				'unobtrusive' => $options['unobtrusive']
+				'unobtrusive' => $options['unobtrusive'],
+				'external_scripts_exclude' => $options['external_scripts_exclude']
 			)
 		);
 /* If we have scripts */
@@ -716,20 +724,22 @@ class compressor {
 		} else {
 			$external_array = "";
 		}
-/* No file */
+/* No files */
 		if (empty($external_array)) {
 			return $source;
 		}
+		$excluded_scripts = split("\\\s+", $options['external_scripts_exclude']);
 /* Remove empty sources and any externally linked files */
 		foreach($external_array AS $key => $value) {
 			$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
-/* but keep JS w/o src to merge into unobtrusive loader */
-			if(!$src[1] && !$options['unobtrusive'] && !$options['external_scripts']) {
+/* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
+			if(!$src[1] && !$options['unobtrusive'] && !$options['external_scripts'] || (!empty($excluded_scripts) && in_array(preg_replace("/.*\//", "", $src[1]), $excluded_scripts))) {
 				unset($external_array[$key]);
 			}
-			if(strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://')==0) {
+			if (strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://') == 0) {
+/* exclude files from */
 				if(!strstr($src[1], $_SERVER['HTTP_HOST'])) {
 /* get an external file */
 					$file = $this->get_remote_file($options, $src[1]);
@@ -1110,7 +1120,7 @@ class compressor {
 	**/
 	function convert_css_sprites ($content, $options) {
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg'], $options['aggressive']);
+		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg'], $options['aggressive'], $options['css_sprites_exclude']);
 		return $css_sprites->process();
 	}
 

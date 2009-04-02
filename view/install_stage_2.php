@@ -31,15 +31,25 @@
 					<?php echo $type['intro'] ?>
 					<br /><br />
 			
-						<?php foreach($type['value'] AS $option=>$value) {  ?>
-						
-						<label><?php echo $key . " " . $option ?></label>
+						<?php foreach($type['value'] AS $option=>$value) { ?>
+
+							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo $key . " " . $option ?></label>
+
+							<?php if ($option == 'ignore_list') { ?>
+
+							<div class="info">
+							Please separate with space: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
+							</div>
+
+							<?php } else { ?>
 							<div class="info">
 							Yes: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="radio">
 							No: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="0" <?php if(empty($value)) { ?>checked="checked"<?php } ?> class="radio">				
 							</div>	
 							
-						<?php } ?>
+							<?php }
+
+						} ?>
 					
 				</fieldset>
 			<?php 

@@ -179,7 +179,8 @@ class admin {
 							'GZIP'=>$this->compress_options['gzip'],
 							'htaccess'=>$this->compress_options['htaccess'],
 							'css_sprites'=>$this->compress_options['css_sprites'],
-							'Far_future_expires'=>$this->compress_options['far_future_expires']
+							'Far_future_expires'=>$this->compress_options['far_future_expires'],
+							'external_scripts'=>$this->compress_options['far_future_expires']
 						);
 
 		$options = array('js_libraries'=>array(
@@ -211,7 +212,8 @@ class admin {
 						'external_scripts' => array(
 							'title' => 'Include external and inline scripts',
 							'intro' => 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
-										<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.',
+										<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.
+										<br/>You also can define a list of excluded files (i.e. ga.js, jquery.min.js, etc).',
 							'value' => $this->compress_options['external_scripts']
 						),
 						'gzip'=>array(
@@ -229,7 +231,8 @@ class admin {
 						'css_sprites'=>array(
 							'title'=>'CSS Sprites',
 							'intro'=>'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
-										<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.',
+										<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.
+										<br/>You also can define images to exclude from CSS Sprites creation (i.e. logo.png, bg.gif, etc).',
 							'value'=>$this->compress_options['css_sprites']
 						),
 						'data_uris'=>array(

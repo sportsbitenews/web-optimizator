@@ -26,7 +26,8 @@
  m) usage of auto-optimization solutions (smash.it / webo.in)
  n) website load counter (via webo.in)
 +o) External and inline JS / external CSS merging
- p) List of protected from merging files -- really required?
++p) List of protected from merging files -- really required!
++r) List of protected from merging imgages (for CSS Sprites)
 
 4. Merging
 +a) Base CSS / JS merging
@@ -35,6 +36,7 @@
 +d) Unobtrusive JS with YASS modules loader
  e) Unobtrusive ads blocks inside page
 +f) External CSS /JS merging possibility
+ g) Unobtrusive counters
 
 5. Minifier
 +a) JSMin (PHP4/5)
@@ -70,12 +72,18 @@
  d) ?
 
 11. Default CMS-compatibility
-+a) Wordpress
-+b) Joomla 1.5
-+c) Drupal 6
++a) Wordpress (2.7.1)
++b) Joomla (1.0.15, 1.5.0, 1.5.10)
++c) Drupal (6.10)
  d) Bitrix
-+e) Typo3
++e) Typo3 (4.2)
  f) WebGUI
  g) Plone
  h) Xoops
  i) PHP Nuke
+ 
+ 12. Localization
+  a) English
+  b) Russian
+  c) German
+  d) Jewish
