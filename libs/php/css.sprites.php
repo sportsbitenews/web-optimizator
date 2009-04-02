@@ -1,8 +1,8 @@
 <?php
 /**
  * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
- * Parses content, gets all CSS images, convert them to CSS Sprites.
- * Output minified (no sorting selectors) content
+ * Parses content, gets all CSS images, converts them to CSS Sprites.
+ * Outputs minified (no sorting selectors) content
  *
  **/
 class css_sprites {
@@ -11,7 +11,7 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg, $aggressive) {
+	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg = 0, $aggressive = 0) {
 
 		require_once('class.csstidy.php');
 /* convert CSS code to hash */
@@ -48,7 +48,7 @@ class css_sprites {
 					if (preg_match("/background/", $key)) {
 						foreach (split(",", $tags) as $tag) {
 /* create new item (array) if required */
-							if (!$this->media[$import][$tag]) {
+							if (!empty($this->media[$import][$tag])) {
 								$this->media[$import][$tag] = array();
 							}
 
@@ -111,18 +111,18 @@ class css_sprites {
 		foreach ($this->media as $import => $images) {
 
 			foreach ($images as $key => $image) {
-				if (!$image['background-image'] || $image['background-image'] == 'none') {
+				if (empty($image['background-image']) || $image['background-image'] == 'none') {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 					$key_fixed = $this->fix_css3_selectors($key);
 					if ($this->media[$import][$key_fixed]) {
 						$image['background-image'] = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
-						if (!$image['width']) {
+						if (empty($image['width'])) {
 							$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
 						}
-						if (!$image['height']) {
+						if (empty($image['height'])) {
 							$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
 						}
-						if (!$image['background-repeat']) {
+						if (empty($image['background-repeat'])) {
 							$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
 						}
 					} else {
@@ -130,18 +130,18 @@ class css_sprites {
 					}
 				} 
 /* re-check background image existence */
-				if ($image['background-image'] && $image['background-image'] != 'none') {
-					if ($image['height'] && $image['width'] && !$image['background-repeat']) {
+				if (!empty($image['background-image']) && $image['background-image'] != 'none') {
+					if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
 						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
 					}
-					if ($image['background-repeat']) {
+					if (!empty($image['background-repeat'])) {
 						$repeat_key = $image['background-repeat'];
 						if ($image['background-repeat'] == 'no-repeat') {
-							if ($image['height'] && ($image['background-position'] == '100% 0' || (preg_match("/right/", $image['background-position']) && !preg_match("/bottom|center|(50|100)%/", $image['background-position'])))) {
+							if ($image['height'] && !preg_match("/em|%|auto/", $image['height']) && ($image['background-position'] == '100% 0' || (preg_match("/right/", $image['background-position']) && !preg_match("/bottom|center|(50|100)%/", $image['background-position'])))) {
 								$repeat_key = 'no-repeatr';
-							} elseif ($image['width'] && ($image['background-position'] == '0 100%' || (preg_match("/bottom/", $image['background-position']) && !preg_match("/right|center|(50|100)%/", $image['background-position'])))) {
+							} elseif ($image['width'] && !preg_match("/em|%|auto/", $image['width']) && ($image['background-position'] == '0 100%' || (preg_match("/bottom/", $image['background-position']) && !preg_match("/right|center|(50|100)%/", $image['background-position'])))) {
 								$repeat_key = 'no-repeatb';
-							} elseif ($image['width'] && $image['height']) {
+							} elseif ($image['width'] && $image['height'] && !preg_match("/em|%|auto/", $image['height']) && !preg_match("/em|%|auto/", $image['width'])) {
 								$repeat_key = 'no-repeat';
 							} elseif (!preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'no-repeati';
@@ -170,7 +170,7 @@ class css_sprites {
 /* count different images with repeating options */
 							$this->css_images[$repeat_key]++;
 /* count selectors for every images -- to handle initial CSS Sprites */
-							if (!$this->css_images[$image['background-image']]) {
+							if (empty($this->css_images[$image['background-image']])) {
 								$this->css_images[$image['background-image']] = array();
 							}
 							$this->css_images[$image['background-image']][$image['background-position']] = 1;
@@ -197,34 +197,39 @@ class css_sprites {
 /* fix background-position & repeat for fixed images */
 						if ($width == $image['width'] && $height == $image['height']) {
 							$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
-							$image['background-position'] = $this->media[$import][$key]['background-position'] = '0 0';
+/* but try to save existing position */
+							if (!$image['background-position']) {
+								$image['background-position'] = $this->media[$import][$key]['background-position'] = '0 0';
+							}
 						}
-/* tune dimensions to prevent overlap of images */
-						$width = $image['width'] > $width ? $image['width'] : $width;
-						$height = $image['height'] > $height ? $image['height'] : $height;
-
 						if (!$this->css_images[$this->sprite]) {
 							$this->css_images[$this->sprite] = array();
 							$this->css_images[$this->sprite]['x'] = 0;
 							$this->css_images[$this->sprite]['y'] = 0;
 							$this->css_images[$this->sprite]['images'] = array();
 						}
+						$shift_x = $shift_y = $top = $left = 0;
 						$position = split(" ", $image['background-position']);
 						switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
 							case 'repeat-x':
 /* repeat-x case w/o dimensions - can be added safely only to the end of Sprite */
 							case 'repeat-xl':
-								$left = 0;
 								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+/* shift for bottom left corner of the object */
+								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 								break;
 /* repeat-y case */
 							case 'repeat-y':
 /* repeat-y case w/o dimensions - can be added safely only to the end of Sprite */
 							case 'repeat-yl':
 								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-								$top = 0;
+								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
 								break;
+/* no-repeat case w/ dimensions can be placed all together */
+							case 'no-repeat':
+								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
+								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 /* no-repeat case w/o dimensions -- icons -- should be placed like this:
 	*
    *
@@ -232,8 +237,7 @@ class css_sprites {
  *
 */
 							case 'no-repeati':
-/* no-repeat case w/ dimensions can be placed all together */
-							case 'no-repeat':
+/* don't need any shift for icons -- they have enough room for any object */
 								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
 								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
 								break;
@@ -248,8 +252,17 @@ class css_sprites {
 								$top = 'bottom';
 								break;
 							}
-/* add image to CSS Sprite to merge */
-						$this->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $import, $key);
+/* add image to CSS Sprite to merge. Overall picture looks like this:
+__________________
+|    left         |   <- outer borders belong to
+|top  ______      |      an object
+|    | width|     |    <- inner borders belong
+|    |height|     |       to the image
+|    |______|     |
+|            shift|
+|_________________|
+*/
+						$this->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
 					}
 				}
 			}
@@ -275,7 +288,7 @@ class css_sprites {
 		}
 /* only then try to combine all possible images into the last one */
 		$this->sprite = 'webo.'. $this->timestamp .'.png';
-		if (!empty($this->css_images[$this->sprite])) {	
+		if (!empty($this->css_images[$this->sprite]) || !empty($this->css_images['weboi.'. $this->timestamp .'.png'])) {
 			$this->merge_sprites(4);
 		}
 		return html_entity_decode($this->css->print->formatted());
@@ -331,8 +344,6 @@ class css_sprites {
 /* initial matrix for css images */
 		$matrix = array(array(0));
 		$css_images['x'] = $css_images['y'] = $matrix_x = $matrix_y = 0;
-/* to separarte new images from old ones */
-		$last_key = -1;
 /* check if we have initial no-repeat images */
 		if (is_array($css_images['images'])) {
 /* array for images ordered by square */
@@ -352,23 +363,22 @@ class css_sprites {
 			krsort($ordered_images);
 /* add images to matrix */
 			foreach ($ordered_images as $key => $image) {
-				$last_key = $key;
 				$minimal_x = 0;
 				$minimal_y = 0;
 /* if this is a unique image */
 				if (!$added_images[$image[0]]) {
 /* initial coordinates */
 					$I = $J = 0;
-					$width = $image[1] + $image[3];
-					$height = $image[2] + $image[4];
+					$width = $image[1] + $image[3] + $image[5];
+					$height = $image[2] + $image[4] + $image[6];
 /* to remember the most 'full' place for new image */
 					$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
 					$no_space = 1;
 					for ($i = 0; $i < $matrix_x; $i++) {
 						for ($j = 0; $j < $matrix_y; $j++) {
-/* left top corner is empty and three other corners are empty -- we have a placeholder*/
-							if (!$matrix[$i][$j] && !$matrix[$i + $width] && !$matrix[$i][$j + $height] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
+/* left top corner is empty and three other corners are empty -- we have a placeholder */
+							if ($matrix[$i][$j] && !$matrix[$i + $width] && !$matrix[$i][$j + $height] && !$matrix[$i + $width][$j] && !$matrix[$i + $width][$j + $height]) {
 /* and Sprite is big enough */
 								if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
 									$I = $i;
@@ -388,7 +398,6 @@ class css_sprites {
 							}
 						}
 					}
-
 					if ($no_space) {
 /* re-count minimal square with linear enlargement */
 						if ($width * $matrix_y < $minimal_square) {
@@ -425,11 +434,9 @@ class css_sprites {
 			$css_images['x'] = $matrix_x;
 			$css_images['y'] = $matrix_y;
 		}
-		$x = 0;
-		$y = 0;
+		$distance = $x = $y = 0;
 /* count initial shift (not to hurt current images) */
 		$shift = $matrix_y;
-		$distance = 0;
 /* need to add weboi Sprite to the main one */
 		if (count($css_icons['images'])) {
 			foreach ($css_icons['images'] as $image) {
@@ -451,24 +458,24 @@ class css_sprites {
 				$image[3] = $x - $width;
 				$image[4] = $y + $final_y;
 				$j = $y;
-				while (!$matrix[$i][$j]) {
+				while (!$matrix[$i][$j] && $j>0) {
 					$j--;
 				}
 /* remember minimal distance */
 				if ($distance > $y - $j - 1) {
 					$distance = $y - $j - 1;
 				}
+/* to separate new images from old ones */
+				$image[] = 1;
 				$css_images['images'][] = $image;
 			}
 		}
 /* try to restore required pixels in the Sprite */
-		$addon_x = -$x + $matrix_x;
 		$addon_y = $y < 0 ? -$y : 0;
 		if (is_array($css_images['images'])) {
 			foreach ($css_images['images'] as $key => $image) {
 /* images from the main Sprite */
-				if ($key <= $last_key) {
-					$css_images['images'][$key][3] += $addon_x;
+				if (empty($image[9])) {
 					$css_images['images'][$key][4] += $addon_y;
 /* shrink distance between webo and weboi Sprites */
 				} else {
@@ -487,7 +494,13 @@ class css_sprites {
 /* merge all images into final CSS Sprite */
 	function merge_sprites ($type) {
 
-		if (count($this->css_images[$this->sprite]['images']) > 1 || $type == 4) {
+		$images_number = false;
+		if (!empty($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)])) {
+			$images_number = count($this->css_images[$this->sprite]['images']) && count($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)]['images']);
+		} else {
+			$images_number = count($this->css_images[$this->sprite]['images']) > 1;
+		}
+		if ($images_number || $type == 4) {
 
 			$this->css_images[$this->sprite]['x'] = 0;
 			$this->css_images[$this->sprite]['y'] = 0;
@@ -497,31 +510,29 @@ class css_sprites {
 			$fullcolor = 0;
 			if (is_array($this->css_images[$this->sprite]['images'])) {
 				foreach ($this->css_images[$this->sprite]['images'] as $key => $image) {
-					if (($type == 1 || $type == 2 || $type == 3 || $tyoe == 5 || $type == 6) && !$counter_images[$image[0]]) {
+					if (($type == 1 || $type == 2) && !$counter_images[$image[0]]) {
 						$width = $image[1];
 						$height = $image[2];
 						$final_x = $image[3];
 						$final_y = $image[4];
+						$shift_x = $image[5];
+						$shift_y = $image[6];
 						switch ($type) {
 							case 1:
 								$this->css_images[$this->sprite]['images'][$key][3] = 0;
 								$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
 								$this->css_images[$this->sprite]['x'] = $width > $this->css_images[$this->sprite]['x'] ? $width : $this->css_images[$this->sprite]['x'];
-								$this->css_images[$this->sprite]['y'] += $height + $final_y;
+								$this->css_images[$this->sprite]['y'] += $height + $final_y + $shift_y;
 							break;
 							case 2:
 								$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] + $final_x;
 								$this->css_images[$this->sprite]['images'][$key][4] = 0;
-								$this->css_images[$this->sprite]['x'] += $width + $final_x;
+								$this->css_images[$this->sprite]['x'] += $width + $final_x + $shift_x;
 								$this->css_images[$this->sprite]['y'] =  $height > $this->css_images[$this->sprite]['y'] ? $height : $this->css_images[$this->sprite]['y'];
 							break;
-							case 3:
-								$this->css_images[$this->sprite]['x'] += $width;
-								$this->css_images[$this->sprite]['y'] += $height;
-								break;
-							}
-							$counter_images[$image[0]] = 1;
 						}
+						$counter_images[$image[0]] = 1;
+					}
 					if (preg_match("/\.jpe?g/i", $image[0])) {
 						$fullcolor = 1;
 					}
@@ -534,23 +545,30 @@ class css_sprites {
 /* add to the end of Sprite repeat-x w/o dimensions */
 				if (count($this->css_images[$no_dimensions]['images'])) {
 					$image = $this->css_images[$no_dimensions][0];
+					$final_y = $image[4];
+					$image[3] = 0;
+					$image[4] += $this->css_images[$this->sprite]['y'];
 					$this->css_images[$this->sprite]['images'][] = $image;
 					$this->css_images[$this->sprite]['x'] = $image[1] > $this->css_images[$this->sprite]['x'] ? $image[1] : $this->css_images[$this->sprite]['x'];
-					$this->css_images[$this->sprite]['y'] += $image[2];
+					$this->css_images[$this->sprite]['y'] += $image[2] + $final_y;
 					unset($this->css_images[$no_dimensions][0]);
 				}
 				$counted_images = array();
 				$no_repeat = preg_replace("/x/", "", $this->sprite);
+				if (!empty($this->css_images[$no_repeat]['images'])) {
 /* try to find small no-repeat image to put before all repeat-x ones */
-				foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
-					if ($image[1] <= $this->css_images[$this->sprite]['x'] && !$counted_images[$image[0]]) {
-						$counter_images[$image[0]] = 1;
-						$image[4] = $added_height;
-						$added_height += $image[2];
-						$this->css_images[$this->sprite]['y'] += $image[2];
-						$image[] = 1;
-						$this->css_images[$this->sprite]['images'][] = $image;
-						unset($this->css_images[$no_repeat][$key]);
+					foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
+						if ($image[1] <= $this->css_images[$this->sprite]['x'] && !$counted_images[$image[0]]) {
+							$counted_images[$image[0]] = 1;
+							$final_y = $image[4];
+							$image[3] = 0;
+							$image[4] = $added_height + $final_y;
+							$added_height += $image[2] + $final_y + $image[6];
+							$this->css_images[$this->sprite]['y'] += $image[2] + $final_y + $image[6];
+							$image[] = 1;
+							$this->css_images[$this->sprite]['images'][] = $image;
+							unset($this->css_images[$no_repeat][$key]);
+						}
 					}
 				}
 			}
@@ -559,22 +577,29 @@ class css_sprites {
 /* add to the end of Sprite repeat-x w/o dimensions */
 				if (count($this->css_images[$no_dimensions]['images'])) {
 					$image = $this->css_images[$no_dimensions][0];
+					$final_x = $image[3];
+					$image[3] += $this->css_images[$this->sprite]['x'];
+					$image[4] = 0;
 					$this->css_images[$this->sprite]['images'][] = $image;
-					$this->css_images[$this->sprite]['x'] += $image[1];
+					$this->css_images[$this->sprite]['x'] += $image[1] + $final_x;
 					$this->css_images[$this->sprite]['y'] = $image[2] > $this->css_images[$this->sprite]['y'] ? $image[2] : $this->css_images[$this->sprite]['y'];
 					unset($this->css_images[$no_dimensions][0]);
 				}
 				$counted_images = array();
 				$no_repeat = preg_replace("/y/", "", $this->sprite);
+				if (!empty($this->css_images[$no_repeat]['images'])) {
 /* try to find small no-repeat image to put before all repeat-y ones */
-				foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
-					if ($image['height'] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
-						$counter_images[$image[0]] = 1;
-						$image[3] = $added_width;
-						$added_width += $image[1];
-						$image[] = 1;
-						$this->css_images[$this->sprite]['images'][] = $image;
-						unset($this->css_images[$no_repeat][$key]);
+					foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
+						if ($image['height'] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
+							$counted_images[$image[0]] = 1;
+							$final_x = $image[3];
+							$image[3] = $added_width + $final_x;
+							$added_width += $image[1] + $final_x + $image[5];
+							$this->css_images[$this->sprite]['x'] += $image[1] + $final_x + $image[5];
+							$image[] = 1;
+							$this->css_images[$this->sprite]['images'][] = $image;
+							unset($this->css_images[$no_repeat][$key]);
+						}
 					}
 				}
 			}
@@ -610,20 +635,20 @@ class css_sprites {
 				$merged_selector = array();
 /* fill sprite with transparent color */
 				if ($fullcolor) {
-					$back = imagecolorallocate($this->sprite_raw, 255, 255, 255);
+					$back = @imagecolorallocate($this->sprite_raw, 255, 255, 255);
 				} else {
-					$back = imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
-					imagecolortransparent($this->sprite_raw, $back);
+					$back = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
+					@imagecolortransparent($this->sprite_raw, $back);
 				}
 
-				imagefill($this->sprite_raw, 0, 0, $back);
+				@imagefill($this->sprite_raw, 0, 0, $back);
 /* starting point for some cases */
 				if ($type == 3) {
 					$x = $this->css_images[$this->sprite]['x'];
 					$y = 0;
 				}
 /* to nadle 32bit alpha transparent images */
-				$alpha_enabled = 0;
+				$this->alpha_enabled = 0;
 /* loop in all given CSS images */
 				foreach ($this->css_images[$this->sprite]['images'] as $image) {
 
@@ -632,10 +657,10 @@ class css_sprites {
 					$height = $image[2];
 					$final_x = $image[3];
 					$final_y = $image[4];
-					$import = $image[5];
-					$key = $image[6];
+					$import = $image[7];
+					$key = $image[8];
 /* for added to repeat-x / repeat-y image with no-repeat */
-					$added = $image[7];
+					$added = $image[9];
 /* try to detect duplicates in this Sprite*/
 					$image_used = 0;
 					foreach ($this->css_images[$this->sprite]['images'] as $image) {
@@ -646,29 +671,30 @@ class css_sprites {
 					}
 
 					if (!$image_used) {
+						$im = null;
 /* try to copy initial image into sprite */
 						switch (strtolower(preg_replace("/.*\./", "", $filename))) {
 							case 'gif':
-								$im = imagecreatefromgif($filename);
+								$im = @imagecreatefromgif($filename);
 								break;
 							case 'png':
-								$im = imagecreatefrompng($filename);
+								$im = @imagecreatefrompng($filename);
 								break;
 							case 'jpg':
 							case 'jpeg':
 								$fullcolor = 1;
-								$im = imagecreatefromjpeg($filename);
+								$im = @imagecreatefromjpeg($filename);
 								break;
 							case 'bmp':
-								$im = imagecreatefromwbmp($filename);
+								$im = @imagecreatefromwbmp($filename);
 								break;
 						}
 
 						if ($im) {
-							$colors = imagecolorsforindex($im, imagecolorat($im, 0, 0));
-							$alpha_enabled = $alpha_enabled || !!$colors['alpha'];
+							$colors = @imagecolorsforindex($im, @imagecolorat($im, 0, 0));
+							$this->alpha_enabled = $this->alpha_enabled || !!$colors['alpha'];
 /* recount colors number, switch to fullcolor if more than 256 */
-							if (imagecolorstotal($im) + imagecolorstotal($this->sprite_raw) > 256 || $colors['alpha']) {
+							if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 || $colors['alpha']) {
 								$fullcolor = 1;
 								$this->create_new_raw();
 							}
@@ -678,34 +704,21 @@ class css_sprites {
 									$css_top = 'bottom';
 									$css_left = -$final_x;
 									$css_repeat = 'no-repeat';
-									imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
+									@imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
 									break;
 /* 100% 0 case */
 								case 5:
 									$css_top = -$final_y;
 									$css_left = 'right';
 									$css_repeat = 'no-repeat';
-									imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
+									@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
 									break;
 /* the most complicated case */
 								case 4:
 									$css_left = -$final_x;
 									$css_top = -$final_y;
 									$css_repeat = 'no-repeat';
-									imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
-									break;
-
-/* icons, it seems outdated case */
-								case 3:
-/* shift placing point for images */
-									$x -= $width;
-									$y += $final_y;
-									$css_left = -$x;
-									$css_top = -$y;
-									$css_repeat = 'no-repeat';
-									imagecopy($this->sprite_raw, $im, $x, $y, 0, 0, $width, $height);
-									$x -= $final_x;
-									$y += $height;
+									@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									break;
 /* repeat-y */
 								case 2:
@@ -716,11 +729,11 @@ class css_sprites {
 									} else {
 										$css_repeat = 'repeat-y';
 									}
-									imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+									@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									$final_y = $height;
 /* semi-fix for bug with different height of repeating images, thx to xstroy */
 									while ($final_y < $this->css_images[$this->sprite]['y']) {
-										imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+										@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 										$final_y += $height;
 									}
 									break;
@@ -733,10 +746,10 @@ class css_sprites {
 									} else {
 										$css_repeat = 'repeat-x';
 									}
-									imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+									@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 /* semi-fix for bug with different width of repeating images, thx to xstroy */
 									while ($final_x < $this->css_images[$this->sprite]['x']) {
-										imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+										@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 										$final_x += $width;
 									}
 									break;
@@ -745,11 +758,11 @@ class css_sprites {
 							@imagedestroy($im);
 						}
 
-						if ($this->css->css[$import][$key]['background-color'] || $css_left || $css_top || $this->css->css[$import][$key]['background-attachement'] || $this->css->css[$import][$key]['background']) {
+						if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
-							$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", ($this->css->css[$import][$key]['background-color'] ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
+							$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->css->css[$import][$key]['background-color']) ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
 								($css_left ? $css_left . 'px ' : '0 '). ($css_top ? $css_top . 'px ' : '0 ') . $css_repeat . ' ' .
-								($this->css->css[$import][$key]['background-attachement'] ? $this->css->css[$import][$key]['background-attachement'] . ' ' : ''));
+								(!empty($this->css->css[$import][$key]['background-attachement']) ? $this->css->css[$import][$key]['background-attachement'] . ' ' : ''));
 						}
 
 					} else {
@@ -765,30 +778,30 @@ class css_sprites {
 /* try to add right and bottom Sprites to the main one */
 				if ($type == 4) {
 					if (is_file($sprite_right)) {
-						$im = imagecreatefrompng($sprite_right);
+						$im = @imagecreatefrompng($sprite_right);
 						if ($im) {
-							if (imagecolorstotal($im) + imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
+							if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
 								$fullcolor = 1;
 								$this->create_new_raw();
 							}
                         }
-                        imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
+                        @imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
                     }
 					if (is_file($sprite_bottom)) {
-						$im = imagecreatefrompng($sprite_bottom);
+						$im = @imagecreatefrompng($sprite_bottom);
 						if ($im) {
-							if (imagecolorstotal($im) + imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
+							if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
 								$fullcolor = 1;
 								$this->create_new_raw();
 							}
 						}
-						imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
+						@imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
                     }
                 }
 /* output final sprite */
 				if ($this->truecolor_in_jpeg && $fullcolor) {
 					$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
-					imagejpeg($this->sprite_raw, $this->sprite, 80);
+					@imagejpeg($this->sprite_raw, $this->sprite, 80);
 					if (is_file($this->root_dir . 'libs/php/jpegtran')) {
 						shell_exec($this->root_dir . 'libs/php/jpegtran -copy none -perfect -optimize ' . $this->sprite . ' > jpegtran.'. $this->timestamp .'.jpg');
 						if (is_file('jpegtran.'. $this->timestamp .'.jpg') && filesize('jpegtran.'. $this->timestamp .'.jpg')) {
@@ -800,11 +813,11 @@ class css_sprites {
 					}
 				} else {
 /* handling 32bit colors in PNG */
-					if ($alpha_enabled) {
-						imagealphablending($this->sprite_raw, false);
-						imagesavealpha($this->sprite_raw, true);
+					if ($this->alpha_enabled) {
+						@imagealphablending($this->sprite_raw, false);
+						@imagesavealpha($this->sprite_raw, true);
 					}
-					imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
+					@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
 					if (is_file($this->root_dir . 'libs/php/pngcrush')) {
 						shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite . ' pngout.'. $this->timestamp .'.png');
@@ -863,11 +876,15 @@ class css_sprites {
 	function create_new_raw () {
 		$new_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 		if ($new_raw) {
-			$back = imagecolorallocatealpha($new_raw, 0, 0, 0, 127);
-			imagecolortransparent($new_raw, $back);
-			imagefill($new_raw, 0, 0, $back);
-			imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
+			$back = @imagecolorallocatealpha($new_raw, 0, 0, 0, 127);
+			@imagecolortransparent($new_raw, $back);
+			@imagefill($new_raw, 0, 0, $back);
+			@imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 			$this->sprite_raw = $new_raw;
+			if ($this->alpha_enabled) {
+				@imagealphablending($this->sprite_raw, false);
+				@imagesavealpha($this->sprite_raw, true);
+			}
 		}
 	}
 }

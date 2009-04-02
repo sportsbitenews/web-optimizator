@@ -1,7 +1,7 @@
 <?php
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
- * 
+ * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
  *
  **/
 class admin {
@@ -83,7 +83,7 @@ class admin {
 	function install_stage_1() {
 		if (!empty($this->input['uninstall'])) {
 /* remove instances of Web Optimizer from index.php */
-			$index = preg_replace("/[^\/]+\/$/", "", $compress_options['webo_cachedir']) . 'index.php';
+			$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';
@@ -497,9 +497,15 @@ ExpiresDefault \"access plus 10 years\"
 						while ($index_string = fgets($fp)) {
 							$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
 						}
-/* fix for Joomla 1.5+ */
-						if (preg_match("/Joomla 1.[56789]/", $this->system_info($this->view->paths['absolute']['document_root']))) {
+/* fix for Joomla 1.0 */
+						if (preg_match("/Joomla 1\.0/", $cms_version)) {
+							$content_saved = preg_replace("/(initGzip\(\);\r?\n)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+/* fix for Joomla 1.5.0 */
+						} elseif (preg_match("/Joomla 1\.5\.0/", $cms_version)) {
 							$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+/* fix for Joomla 1.5+ */
+						} elseif (preg_match("/Joomla 1\.[56789]/", $cms_version)) {
+							$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 						} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 							$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -510,8 +516,8 @@ ExpiresDefault \"access plus 10 years\"
 /* add finish block */
 							$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
 						} else {
-/* fix for Drupal on not-closed ?> */
-							if (substr($cms_version, 0, 6) == 'Drupal') {
+/* fix for Drupal / Joomla on not-closed ?> */
+							if (substr($cms_version, 0, 6) == 'Drupal' || (preg_match("/Joomla 1\.[56789]/", $cms_version) && !preg_match("/Joomla 1\.5\.0/", $cms_version))) {
 								$content_saved .= '$web_optimizer->finish();';
 							} else {
 								$content_saved .= '<?php $web_optimizer->finish(); ?>';
@@ -679,12 +685,26 @@ ExpiresDefault \"access plus 10 years\"
 			return 'Drupal ' . $drupal_version;
 /* Joomla 1.5 */
 		} elseif (is_dir($root . 'libraries')) {
+			$joomla_version = '1.5.0';
 			if (is_file($root . 'libraries/joomla/version.php')) {
 				require($root . 'libraries/joomla/version.php');
-			} else {
-				define('JVERSION' , '1.5.0');
+				$jv = new JVersion();
+				if ($jv) {
+					$joomla_version = $jv->RELEASE . '.' . $jv->DEV_LEVEL;
+				} else {
+					$joomla_version = JVERSION;
+				}
 			}
-			return 'Joomla ' . JVERSION;
+			return 'Joomla ' . $joomla_version;
+/* Joomla 1.0 */
+		} elseif (is_dir($root . 'includes')) {
+			define('_VALID_MOS', 1);
+			$joomla_version = '1.0';
+			if (is_file($root . 'includes/version.php')) {
+				require($root . 'includes/version.php');
+				$joomla_version = $_VERSION->RELEASE;
+			}
+			return 'Joomla ' . $joomla_version;
 /* Typo 3 */
 		} elseif (is_dir($root . 'typo3conf')) {
 			$TYPO3_CONF_VARS = array('SYS' => array('compat_version' => '4.2'));

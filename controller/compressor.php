@@ -1,9 +1,9 @@
 <?php
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
+ * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page. 
  * Can also gzip and minify the page itself
- *
  **/
 class compressor {
 
@@ -185,6 +185,8 @@ class compressor {
 				'minify_with' => $options['minify_with'],
 				'far_future_expires' => $options['far_future_expires'],
 				'header' => $type,
+				'css_sprites' => false,
+				'data_uris' => false,
 				'save_name' => $type,
 				'unobtrusive' => $options['unobtrusive'],
 				'external_scripts' => $options['external_scripts']
@@ -1059,44 +1061,38 @@ class compressor {
 	}
 	
 /* Adds CSS media info */
-	function add_media_header($content,$path) {
-		preg_match("@(media)=[\"'](.*?)[\"']@",$path['location'],$media); //|media
-		if($media[2]) {
-			$content = "@media " . $media[2] . " {" . $content;
-			$content .= " }";
+	function add_media_header($content, $path) {
+		if (!empty($path['location'])) {
+			preg_match("@(media)=[\"'](.*?)[\"']@", $path['location'], $media); //|media
+			if(!empty($media[2])) {
+				$content = "@media " . $media[2] . " {" . $content;
+				$content .= " }";
+			}
 		}
 		return $content;
 	}
-	
 /* Find background images in the CSS and convert their paths to absolute */
 	function convert_paths_to_absolute($content,$path) {
 		
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
-				
 		if(count($matches[1]) > 0) {
-		
 			$counter = 0;
 			foreach($matches[1] AS $key=>$file) {
-			
-				if(strstr($file,"data:")) { //Don't touch data URIs
+/* Don't touch data URIs, external files or mhtml: */
+				if(strstr($file,"data:") || strstr($file,"https://") || strstr($file,"http://") || strstr($file,"mhtml:")) {
 					continue;
 				}
-			
 				$counter++;
 				$original_file = trim($file);
 				$file = preg_replace("@'|\"@","",$original_file);
-		
-				if(substr($file,0,1) != "/" && (substr($file, 0, 5) != "http:" || substr($file, 0, 6) != "https:")) { //Not absolute
-														
+/* Not absolute */
+				if (substr($file,0,1) != "/") {
 					$full_path_to_image = str_replace($this->view->get_basename($path['src']), "", $path['src']);
 					$absolute_path = "/". $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
-										
-					$marker = md5($counter);	
-					$markers[$marker] = $absolute_path;					
-					
+					$marker = md5($counter);
+					$markers[$marker] = $absolute_path;
 					$content = str_replace($original_file, $marker, $content);				
 				}
-			
 			}
 		}
 		if(!empty($markers) && is_array($markers)) {
@@ -1318,10 +1314,14 @@ class compressor {
 			if ($contents) {
 				$fp = @fopen($return_filename, "w");
 				if ($fp) {
-/* replace absolute URLs */
-					$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+/* make external URLs safe */
+					$contents = preg_replace("/(url\(\s*['\"]?)(https?:\/\/)/", "$1/$2", $contents);
 /* replace relative URLs */
 					$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
+/* remove slash before https? */
+					$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
+/* replace absolute URLs */
+					$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
 					fwrite($fp, $contents);
 					fclose($fp);
 				}
