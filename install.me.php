@@ -12,12 +12,14 @@
 	function download ($file, $install_directory) {
 		$ch = @curl_init('http://web-optimizator.googlecode.com/svn/trunk/' . $file);
 		$dir = $file;
+/* remember current directory */
+		$current_directory = @getcwd();
 		@chdir($install_directory);
 /* create directory */
 		while (preg_match("/\//", $dir)) {
 			$directory = preg_replace("/\/.*/", "", $dir);
 			if (!is_dir($directory)) {
-				@mkdir($directory, 775);
+				@mkdir($directory, 0775);
 				if (is_dir($directory)) {
 					@chdir($directory);
 				} else {
@@ -26,6 +28,7 @@
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
 		}
+		@chdir($current_directory);
 		$fp = @fopen($install_directory . '/' . $file, "w");
 		if ($fp && $ch) {
 			@curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -35,6 +38,7 @@
 			@curl_close($ch);
 			@fclose($fp);
 		}
+/* return to the initial directory */
 	}
 
 /* check for curl installed */

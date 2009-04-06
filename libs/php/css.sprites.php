@@ -321,18 +321,23 @@ __________________
 			$this->css_image = '';
 		} else {
 			if (preg_match("/http:\/\//", $this->css_image)) {
+/* check for curl */
+				if (function_exists('curl_init')) {
 /* try to download image */
-				$ch = curl_init($this->css_image);
-				$this->css_image = preg_replace("/.*\//", "", $this->css_image);
-				$fp = fopen($this->css_image, "w");
-				if ($fp && $ch) {
-					curl_setopt($ch, CURLOPT_FILE, $fp);
-					curl_setopt($ch, CURLOPT_HEADER, 0);
-					curl_setopt($ch, CURLOPT_REFERER, $protocol . $host);
-					curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
-					curl_exec($ch);
-					curl_close($ch);
-					fclose($fp);
+					$ch = curl_init($this->css_image);
+					$this->css_image = preg_replace("/.*\//", "", $this->css_image);
+					$fp = fopen($this->css_image, "w");
+					if ($fp && $ch) {
+						curl_setopt($ch, CURLOPT_FILE, $fp);
+						curl_setopt($ch, CURLOPT_HEADER, 0);
+						curl_setopt($ch, CURLOPT_REFERER, $protocol . $host);
+						curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
+						curl_exec($ch);
+						curl_close($ch);
+						fclose($fp);
+					}
+				} else {
+					$this->css_image = '';
 				}
 			} else {
 				$this->css_image = preg_match("/^\//", $this->css_image) ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;

@@ -1,6 +1,6 @@
 <?php
 #########################################
-## Compressor option file ##############
+## Web Optimizer options file ###########
 #########################################
 ## Access control
 $compress_options['username'] = "";

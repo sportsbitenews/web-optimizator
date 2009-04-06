@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Web Optimizer Admin | <?php echo $title ?></title>
+<title><?php echo _WEBO_GENERAL_TITLE ?> | <?php echo $title ?></title>
+<meta http-equiv="content-type" content="text/html; charset=<?php echo _WEBO_CHARSET ?>" />
 <link href="libs/css/forms.css" rel="stylesheet" type="text/css" />
 <link href="libs/css/grid.css" rel="stylesheet" type="text/css" />
 <link href="libs/css/ie.css" rel="stylesheet" type="text/css" />
@@ -46,8 +47,8 @@ color: #006600
 -->
 </style>
 </head>
+<body>
 <a href="http://webo.name/"><img src="images/php_speedy_logo_small.gif" alt="Web Optimizer" border="0" /></a>
 <?php require($page.".php") ?>
-<body>
 </body>
 </html>

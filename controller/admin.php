@@ -5,7 +5,6 @@
  *
  **/
 class admin {
-
 	/**
 	* Constructor
 	* Sets the options and defines the gzip headers
@@ -60,20 +59,20 @@ class admin {
 /* take document root from the options file */
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 			$page_variables = array(
-				"title" => "Enter your password for installation",
+				"title" => _WEBO_LOGIN_TITLE,
 				"paths" => $this->view->paths,
 				"page" => 'install_enter_password'
 			);
 		} else {
 /* take document root from the options file */
 			$page_variables = array(
-				"title" => "Set your password for installation",
+				"title" => _WEBO_NEW_ENTER,
 				"paths" => $this->view->paths,
 				"page" => 'install_set_password'
 			); 
 		}
 /* Show the install page */
-		$this->view->render("admin_container",$page_variables);	
+		$this->view->render("admin_container", $page_variables);	
 	}
 
 	/**
@@ -125,7 +124,7 @@ class admin {
 			}
 		}
 		$page_variables = array(
-			"title" => "Welcome to Web Optimizer installation!",
+			"title" => _WEBO_SPLASH1_WELCOME,
 			"paths" => $this->view->paths,
 			"page" => $this->input['page'],
 			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
@@ -147,8 +146,7 @@ class admin {
 		}
 /* check if we are using correct root directory */
 		if (!is_dir($_SERVER['DOCUMENT_ROOT'])) {
-			$this->error("<p>Unable to open ". $this->input['user']['document_root'] ." .<br>
-							Please make sure the directory exists and it is your root directory.</p>");
+			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 		}
 		if(!empty($this->input['submit'])) {
 			$save = $this->save_option('[\'document_root\']', $_SERVER['DOCUMENT_ROOT']);
@@ -175,89 +173,70 @@ class admin {
 		if (in_array('mod_headers', $apache_modules)) {
 			$apache_modules_enabled[] = 'mod_headers';
 		}
-		$options = array('Minify'=>$this->compress_options['minify'],
-							'GZIP'=>$this->compress_options['gzip'],
-							'htaccess'=>$this->compress_options['htaccess'],
-							'css_sprites'=>$this->compress_options['css_sprites'],
-							'Far_future_expires'=>$this->compress_options['far_future_expires'],
-							'external_scripts'=>$this->compress_options['far_future_expires']
-						);
+		$options = array(
+			'Minify' => $this->compress_options['minify'],
+			'GZIP' => $this->compress_options['gzip'],
+			'htaccess' => $this->compress_options['htaccess'],
+			'css_sprites' => $this->compress_options['css_sprites'],
+			'Far_future_expires' => $this->compress_options['far_future_expires'],
+			'external_scripts' => $this->compress_options['external_scripts']
+		);
 
 		$options = array('js_libraries'=>array(
-							'title'=>'JavaScript Libraries',
-							'intro'=>'If your plugins or theme use a JavaScript library, it is advisable to let Web Optimizer handle where it is included.<br /><br />
-										Speedy has determined that the libraries below could be in use by your installation. It is recommended that you tick all the scripts to let Web Optimizer handle them.<br/><br />
-										If your plugins or theme use a higher version or you are sure you don\'t use the library at all, leave unticked.',
-							'key'=>'JS_Libraries',
-							'value'=>$this->compress_options['js_libraries']
-						),
-						'ignore_list'=>array(
-							'title'=>'Ignore list',
-							'intro'=>'Web Optimizer can ignore certain scripts of your choosing. Please enter the filenames of the scripts you would like to ignore below, separated by a comma.',
-							'key'=>'Ignore_List',
-							'value'=>$this->compress_options['ignore_list']
+							'title' => _WEBO_SPLASH2_JSLIB,
+							'intro' => _WEBO_SPLASH2_JSLIB_INFO,
+							'key' => 'JS_Libraries',
+							'value' => $this->compress_options['js_libraries']
 						),
 						'minify'=>array(
-							'title'=>'Minify Options',
-							'intro'=>'Minifying removes whitespace and other unnecessary characters. Also you can choose the tool for CSS/JavaScript minification or obfuscation.',
-							'value'=>$this->compress_options['minify']
+							'title' => _WEBO_SPLASH2_MINIFY,
+							'intro' => _WEBO_SPLASH2_MINIFY_INFO,
+							'value' => $this->compress_options['minify']
 						),
 						'unobtrusive' => array(
-							'title' => 'Make JavaScript unobtrusive',
-							'intro' => 'Unobtrusive JavaScript will be loaded right after all content is shown in browser.
-										<br/>This can significantly increase website load speed. But in some cases can break the clientside logic (if it\'s not designed to handle in unobtrusive way).
-										<br/>Please be careful with this option.',
+							'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
+							'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
 							'value' => $this->compress_options['unobtrusive']
 						),
 						'external_scripts' => array(
-							'title' => 'Include external and inline scripts',
-							'intro' => 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
-										<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.
-										<br/>You also can define a list of excluded files (i.e. ga.js, jquery.min.js, etc).',
+							'title' => _WEBO_SPLASH2_EXTERNAL,
+							'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
 							'value' => $this->compress_options['external_scripts']
 						),
 						'gzip'=>array(
-							'title'=>'Gzip Options',
-							'intro'=>'Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.
-										<br/>For larger sites, you should Gzip via the web server.',
-							'value'=>$this->compress_options['gzip']
+							'title' => _WEBO_SPLASH2_GZIP,
+							'intro' => _WEBO_SPLASH2_GZIP_INFO,
+							'value' => $this->compress_options['gzip']
 						),
 						'far_future_expires'=>array(
-							'title'=>'Far Future Expires Options',
-							'intro'=>'This adds an expires header to your JavaScipt and CSS files which ensures they are cached client-side by the browser.
-										<br/>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.',
-							'value'=>$this->compress_options['far_future_expires']
+							'title' => _WEBO_SPLASH2_EXPIRES,
+							'intro' => _WEBO_SPLASH2_EXPIRES_INFO,
+							'value' => $this->compress_options['far_future_expires']
 						),
 						'css_sprites'=>array(
-							'title'=>'CSS Sprites',
-							'intro'=>'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
-										<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.
-										<br/>You also can define images to exclude from CSS Sprites creation (i.e. logo.png, bg.gif, etc).',
-							'value'=>$this->compress_options['css_sprites']
+							'title' => _WEBO_SPLASH2_SPRITES,
+							'intro' => _WEBO_SPLASH2_SPRITES_INFO,
+							'value' => $this->compress_options['css_sprites']
 						),
-						'data_uris'=>array(
-							'title'=>'Data URIs',
-							'intro'=>'It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests. 
-										<br/>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.',
-							'value'=>$this->compress_options['data_uris']
+						'data_uris' => array(
+							'title' => _WEBO_SPLASH2_DATAURI,
+							'intro' => _WEBO_SPLASH2_DATAURI_INFO,
+							'value' => $this->compress_options['data_uris']
 						),
-						'htaccess'=>array(
-							'title'=>'Use .htaccess',
-							'intro'=>'Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).
-										<br/>Available options: ' . implode(", ", $apache_modules_enabled),
-							'value'=>$this->compress_options['htaccess']
+						'htaccess' => array(
+							'title' => _WEBO_SPLASH2_HTACCESS,
+							'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $apache_modules_enabled),
+							'value' => $this->compress_options['htaccess']
 						),
-						'cleanup'=>array(
-							'title'=>'File cleanup',
-							'intro'=>'When you change your JavaScript or CSS Web Optimizer will automatically generate a new compressed file and remove any unused files from the directory.
-										<br/>However, if different pages in your site use different JS or CSS files Speedy will get confused and cleanup files it shouldn\'t. In this case, you should turn off the cleanup process.',
-							'value'=>$this->compress_options['cleanup']
+						'cleanup' => array(
+							'title' => _WEBO_SPLASH2_CLEANUP,
+							'intro' => _WEBO_SPLASH2_CLEANUP_INFO,
+							'value' => $this->compress_options['cleanup']
 						),
-						'footer'=>array(
-							'title'=>'Footer text',
-							'intro'=>'Web Optimizer can add a link in your blog footer back to the Web Optimizer website. The link can be a text link, a small image link or both.
-										<br/>Please support Web Optimizer by enabling this.',
-							'value'=>$this->compress_options['footer']
+						'footer' => array(
+							'title' => _WEBO_SPLASH2_FOOTER,
+							'intro' => _WEBO_SPLASH2_FOOTER_INFO,
+							'value' => $this->compress_options['footer']
 						)
 		);
 		$options['auto_rewrite'] = null;
@@ -266,25 +245,26 @@ class admin {
 		if ($fp) {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
-						'title' => 'Auto change /index.php',
-						'intro' => 'Web Optimizer can add to your website based on '. $this->system_info($this->view->paths['absolute']['document_root']) .' all required changes (only for /index.php).' .
-									'<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.',
-						'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
+				'title' => _WEBO_SPLASH2_AUTOCHANGE,
+				'intro' => _WEBO_SPLASH2_AUTOCHANGE_INFO . $this->system_info($this->view->paths['absolute']['document_root']) . _WEBO_SPLASH2_AUTOCHANGE_INFO2,
+				'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
 			);
 		}
 
-		$page_variables = array("title" => "Installation stage 2",
-							"paths" => $this->view->paths,
-							"page" => $this->input['page'],
-							"message" => $save,
-							"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
-							"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
-							"webo_cachedir" => $this->view->paths['full']['current_directory'],
-							"options" => $options,
-							"compress_options" => $this->compress_options);
+		$page_variables = array(
+			"title" => _WEBO_SPLASH2_TITLE,
+			"paths" => $this->view->paths,
+			"page" => $this->input['page'],
+			"message" => $save,
+			"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
+			"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
+			"webo_cachedir" => $this->view->paths['full']['current_directory'],
+			"options" => $options,
+			"compress_options" => $this->compress_options
+		);
 /* Show the install page */
-		$this->view->render("admin_container",$page_variables);	
-	
+		$this->view->render("admin_container", $page_variables);
+
 	}
 
 	/**
@@ -296,17 +276,17 @@ class admin {
 /* Check we can write to the specified directory */
 		$content = "Test";
 		$test_dirs = array(
-					'javascript' => $this->view->ensure_trailing_slash($this->input['user']['javascript_cachedir']),
-					'css' => $this->view->ensure_trailing_slash($this->input['user']['css_cachedir'])
+			'javascript' => $this->view->ensure_trailing_slash($this->input['user']['javascript_cachedir']),
+			'css' => $this->view->ensure_trailing_slash($this->input['user']['css_cachedir'])
 		);
-		foreach($test_dirs AS $name=>$dir) {
+		foreach($test_dirs AS $name => $dir) {
 
 			$fp = @fopen($dir."test", 'w');
 			if(!$fp) {
 /* unable to open file for writing */
-			$this->error("<p>Unable to write to the $name directory you specified. Please make sure the directory exists and is writable.<p>
-						<p>You can usually do this from your FTP client. Just navigate to the directory, right click and look for a Properties or CHMOD option.</p>
-						<p>Once you have done so, please refresh this page.</p>");
+			$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p>
+						<p>". _WEBO_SPLASH3_CANTWRITE3 ."</p>
+						<p>". _WEBO_SPLASH3_CANTWRITE4 ."</p>");
 			} else {
 /* write the file */
 				fwrite($fp, $content);
@@ -322,17 +302,32 @@ class admin {
 /* if PHP installed as CGI module -- we don't need .htaccess */	
 			$apache_modules = array();
 		}
+		$loaded_modules = @get_loaded_extensions();
 /* Create the options file */
 		$this->options_file = "config.php";
 		if(!empty($this->input['submit'])) {
-/* Save the options		 */
+/* Save the options	*/
 			foreach($this->input['user'] AS $key=>$option) {
 				if(is_array($option)) {
-					foreach($option AS $option_name=>$option_value) {
+					foreach($option AS $option_name => $option_value) {
 						if (!empty($apache_modules)) {
 							if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip'))) {
 								$option_value = $option_value && in_array($option_name, $apache_modules);
 								$this->input['user'][$key][$option_name] = $option_value;
+							}
+						}
+/* check for curl existence */
+						if ($key == 'external_scripts' && $option_name == 'on') {
+							if (!empty($apache_modules)) {
+								if (!in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
+									$this->input['user'][$key][$option_name] = 0;
+								}
+							}
+						}
+/* check for gzencode existence */
+						if ($key == 'gzip') {
+							if (!function_exists('gzencode') && !$this->input['user']['htaccess']['enabled']) {
+								$this->input['user'][$key][$option_name] = 0;
 							}
 						}
 						$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']",$option_value);	
@@ -351,8 +346,8 @@ class admin {
 				if (is_file($htaccess)) {
 					$fp = @fopen($htaccess, 'r');
 					if (!$fp) {
-						$this->error("<p>Please sure that the root of your website is readable and writable for your web server process.</p>
-										<p>Make CHMOD 775 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
+						$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD ."</p>
+										<p>". _WEBO_SPLASH3_HTACCESS_CHMOD2 ."</p>");
 					} else {
 						$stop_saving = 0;
 						$content_saved = '';
@@ -375,8 +370,8 @@ class admin {
 
 				$fp = @fopen($htaccess, 'w');
 				if (!$fp) {
-					$this->error("<p>Please sure that the root of your website is writable for your web server process or there is a writable .htaccess file.</p>
-									<p>Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.</p>");
+					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD3 ."</p>
+									<p>". _WEBO_SPLASH3_HTACCESS_CHMOD4 ."</p>");
 				} else {
 					$htaccess_options = $this->input['user']['htaccess'];
 					$content = '# Web Optimizer options';
@@ -491,7 +486,7 @@ ExpiresDefault \"access plus 10 years\"
 /* check for web.optimizer.php existence */
 				$fp = fopen($this->input['user']['webo_cachedir'] . 'web.optimizer.php', 'r');
 				if (!$fp) {
-					$this->error("<p>Please sure that you have installed Web Optimizer into " . $this->input['user']['webo_cachedir'] . ".</p>");
+					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->input['user']['webo_cachedir'] . ".</p>");
 				} else {
 					$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 					$fp = @fopen($index, "r");
@@ -544,14 +539,14 @@ ExpiresDefault \"access plus 10 years\"
 		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 775);
 		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/jpegtran', 775);
 		
-		$page_variables = array("title" => "Installation stage 3",
+		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,
 								"page" => $this->input['page'],
-								"message" => "Configuration saved",
+								"message" => _WEBO_SPLASH3_CONFSAVED,
 								"auto_rewrite" => $auto_rewrite,
 								"cms_version" => $cms_version);
 /* Show the install page */
-		$this->view->render("admin_container",$page_variables);
+		$this->view->render("admin_container", $page_variables);
 
 	}
 
@@ -569,18 +564,18 @@ ExpiresDefault \"access plus 10 years\"
 			$fp = @fopen($option_file, 'w');
 			if(!$fp) {
 /* unable to open file for writing */
-				$this->error('<p>Unable to open the config file for writing. Please change the config.php file so that is it writable.</p>
-								<p>You can usually do this from your FTP client. Just navigate to <strong>' . $option_file .'</strong> , right click the file, and look for a Properties or CHMOD option. Set to 777, or "write".</p>
-								<p>Once you have done so, please refresh this page.</p>');
+				$this->error('<p>'. _WEBO_SPLASH3_CONFIGERROR .'</p>
+								<p>' . _WEBO_SPLASH3_CONFIGERROR2 . $option_file . _WEBO_SPLASH3_CONFIGERROR3 .'.</p>
+								<p>'. _WEBO_SPLASH3_CONFIGERROR4 .'</p>');
 			} else {
 /* write the file */
 				fwrite($fp, $content);
 				fclose($fp);
-				return "Saved " . $option_name;
+				return _WEBO_SPLASH2_SAVED . " " . $option_name;
 			}
 	
 		} else {
-			$this->error('Config file does not exist. Please download the full script from http://www.aciddrop.com');
+			$this->error(_WEBO_SPLASH3_CONFIGERROR5);
 		}
 	
 	}
@@ -595,9 +590,9 @@ ExpiresDefault \"access plus 10 years\"
 			($this->input['user']['password'] != $this->compress_options['password'])) {
 			
 			if(!empty($this->input['user']['username'])) {
-				$this->error('Login failed');
+				$this->error(_WEBO_LOGIN_FAILED);
 			} else {
-				$this->error('You need to be logged in to view this page');
+				$this->error(_WEBO_LOGIN_ACCESS);
 			}
 			
 		}
@@ -611,24 +606,20 @@ ExpiresDefault \"access plus 10 years\"
 	function manage_password() {
 /* If posting a username and pass, md5 encode */
 	if(!empty($this->input['user']['username'])) {
-		 
 			$this->input['user']['username'] = md5($this->input['user']['username']);
-			$this->input['user']['password'] = md5($this->input['user']['password']);	
+			$this->input['user']['password'] = md5($this->input['user']['password']);
 /* If the pass isn't there, write it */
 		 if(empty($this->compress_options['username']) && empty($this->compress_options['password'])) {
-		 		 
 			$save = $this->save_option('[\'username\']',($this->input['user']['username']));
 			$save .= "<br/>" . $this->save_option('[\'password\']',($this->input['user']['password']));	
-			$save .= "<br />Logged you in";
+			$save .= "<br />" . _WEBO_LOGIN_LOGGED;
 			$this->save = $save;
 /* Set Web Optimizer Actuve */
 			$this->save_option('[\'active\']',1);
 /* Update */
 			$this->compress_options['username'] = $this->input['user']['username'];
 			$this->compress_options['password'] = $this->input['user']['password'];
-		 
-		 }			
-							
+		 }
 	}
 /* If passing a username and pass, don't md5 encode */
 		if(!empty($this->input['user']['_username'])) {
@@ -644,7 +635,7 @@ ExpiresDefault \"access plus 10 years\"
 	**/		
 	function error($string) {
 		$page_variables = array(
-			"title" => "Oopps! Something went wrong",
+			"title" => _WEBO_ERROR_ERROR,
 			"paths" => $this->view->paths,
 			"error" => $string,
 			"page" => 'error'
@@ -659,7 +650,7 @@ ExpiresDefault \"access plus 10 years\"
 	* 
 	**/		
 	function regex_escape($string) {
-		return  addcslashes($string,'\^$.[]|()?*+{}');
+		return addcslashes($string,'\^$.[]|()?*+{}');
 	}
 
 	/**

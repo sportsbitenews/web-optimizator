@@ -1,59 +1,43 @@
 <?php if(!empty($message)) { ?>
 <div class="success"><?php echo $message ?></div><?php } ?>
 
-<h1>Installation - Stage 3</h1>
+<h1><?php echo _WEBO_SPLASH3_TITLE ?></h1>
 
-<p>Your configuration options have been successfully saved.</p>
+<p><?php echo _WEBO_SPLASH3_SAVED ?></p>
 
-<!-- h2>Verify test page is working correctly</h2>
-
-<p>This installation comes with a test page. You should now check the test page is working correctly.</p>
-
-<p>Click this link <a href="test_page/compress_me.php" target="_blank">to view the test page</a>.</p>
-
-<h2>What should you see on the test page?</h2>
-
-<p>
-<ul>
-	<li>Under "<strong>Standard Horizontal Slide</strong>" you should be able to slide the red block. </li>
-	<li>Under "<strong>Is the CSS still working?</strong>" each phrase should be a different colour, and have a different background (removed has a white background)</li>
-	<li>View the source of the page and you should see the links to the compressed javascript and CSS</li>
-	<li>Look in the cache directories what we have specified in the install. You should see the compressed JavaScript and CSS files there.</li>
-</ul>
-</p -->
 <?php
 
 	if ($auto_rewrite) {
 
 ?>
-<h2>Your configuration has been successfully saved</h2>
+<h2><?php echo _WEBO_SPLASH3_REWRITE ?></h2>
 
-<p>You website based on <?php echo $cms_version ?> has been patched. You can <a href="<?php echo $paths['relative']['document_root'] ?>">check the result here</a>.</p>
+<p><?php echo _WEBO_SPLASH3_REWRITE_DESCRIPTION . $cms_version . _WEBO_SPLASH3_REWRITE_DESCRIPTION2 . $paths['absolute']['document_root'] . _WEBO_SPLASH3_REWRITE_DESCRIPTION3 ?></p>
 <?php
 	
 	} else {
 	
 ?>
-<h2>That's working. OK now what?</h2>
+<h2><?php echo _WEBO_SPLASH3_WORKING ?></h2>
 
-<p>Now should should add the Web Optimizer code to your own PHP page. This is made a lot easier if you have one PHP file that serves every page in your site. In a Wordpress blog, for example, this would be the <strong>wp-blog-header.php</strong> file. Because <strong>wp-blog-header.php</strong> is accessed for every page, we just have to modify that file. If you have different PHP files serving different pages, then you will need to modify each of those pages.</p>
+<p><?php echo _WEBO_SPLASH3_ADD ?></p>
 
-<h3>How to modify your PHP file</h3>
+<h3><?php echo _WEBO_SPLASH3_MODIFY ?></h3>
 
-<p>Let's say we are modifying the wp-blog-header.php of a Wordpress blog. (This is just an example: if you want to add Web Optimizer to Wordpress you can use the Web Optimizer WP plugin). At the very top of the page you might see something like this:
+<p><?php echo _WEBO_SPLASH3_WP ?></p>
 <p>
 		<span class="red">&lt;?php</span><br />
 		  if (! isset($wp_did_header)):<br />
 		  <span class="red">?&gt;</span><br />
 </p>
-<p>We need to add in the Web Optimizer code <strong>before</strong> that. So you would add this to the very top of the page:
+<p><?php echo _WEBO_SPLASH3_CODE ?></p>
 <p>
 	  <span class="red">&lt;?php</span><br />
 	  <span class="green">require</span>(<span class="red">'<?php echo $paths['full']['current_directory'] ?>web.optimizer.php'</span>);<br />
 	  <span class="red">?&gt;</span><br />
 </p>
 </p>
-<p>Finally, we must then add one more line of code to the very bottom of the page as follows:
+<p><?php echo _WEBO_SPLASH3_FINALLY ?></p>
 <p>
 	  <span class="red">&lt;?php</span><br />
 	  $web_optimizer->finish();<br />
@@ -65,16 +49,16 @@
 	}
 
 ?>
-<h2>Now for some testing...</h2>
+<h2><?php echo _WEBO_SPLASH3_TESTING ?></h2>
 
-<p>That's all you have to do. We recommend testing this out on a non-live site first, and then playing with the options to get optimal performance. To change the options you can:
+<p><?php echo _WEBO_SPLASH3_NOTLIVE ?></p>
 <ul>
-		<li>Manually edit the config.php file here: <?php echo($paths['full']['current_directory']) ?>config.php</li>
-		<li>Just run this install again. It will remember your current options.</li>
+		<li><?php echo _WEBO_SPLASH3_MANUALLY . $paths['full']['document_root'] . preg_replace("/^\//", "", $paths['relative']['current_directory']) ._WEBO_SPLASH3_MANUALLY2 ?></li>
+		<li><?php echo _WEBO_SPLASH3_AGAIN . $paths['relative']['current_directory'] . _WEBO_SPLASH3_AGAIN2 ?></li>
 </ul>
 </p>
-<h2>Extra security</h2>
+<h2><?php echo _WEBO_SPLASH3_SECURITY ?></h2>
 
-<p>Although the package installs a username and password to access the install, you can also delete <?php echo($paths['full']['current_directory']) ?>install.php for extra security.</p>
+<p><?php echo _WEBO_SPLASH3_ALTHOUGH . $paths['full']['document_root'] . preg_replace("/^\//", "", $paths['relative']['current_directory']) . _WEBO_SPLASH3_ALTHOUGH2 ?></p>
 
-<form action="<?php echo $paths['relative']['document_root'] ?>" method="get"><p><input type="submit" value="Finish installation"/></p></form>
+<form action="<?php echo $paths['relative']['document_root'] ?>" method="get"><p><input type="submit" value="<?php echo _WEBO_SPLASH3_FINISH ?>" title="<?php echo _WEBO_SPLASH3_FINISH ?>" /></p></form>

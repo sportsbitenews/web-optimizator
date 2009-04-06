@@ -1,6 +1,6 @@
 1. Installer: 1 php file or full archive. Several languages / OSes.
- a) Checks for curl -- and download / create all necessary files
- b) If no curl -- ask to download full archive 
++a) Checks for curl -- and download / create all necessary files
++b) If no curl -- ask to download full archive 
  c) Delete temporary directories
 +d) Uninstaller
  e) Auto-updater
@@ -8,7 +8,7 @@
 2. System check
 +a) .htaccess posibility
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
- c) PHP (other languages) libs: gzhandler , etc.
++c) PHP (other languages) libs: gzencode, curl , etc.
 
 3. Configurator: config.php -- number of options
 +a) CSS / JS merging

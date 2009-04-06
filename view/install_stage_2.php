@@ -1,24 +1,24 @@
 <?php if(!empty($message)) { ?><div class="success"><?php echo $message ?></div><?php } ?>
 
-<h1>Installation - Stage 2</h1>
+<h1><?php echo _WEBO_SPLASH2_TITLE ?></h1>
 <form method="post" enctype="multipart/form-data" action="">
-	<input type="submit" name="submit" value="Next..." />	
+	<input type="submit" name="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>" />
 
-	<p>Compression options</p>
+	<p><?php echo _WEBO_SPLASH2_OPTIONS ?></p>
 
 	<fieldset>
-		<legend>Cache Directories</legend>
-			<label>Your JavaScript will be cached in</label>
+		<legend><?php echo _WEBO_SPLASH2_CACHE ?></legend>
+			<label><?php echo _WEBO_SPLASH2_CACHE_JS ?></label>
 				<div class="info">
-				<input type="text" name="user[javascript_cachedir]" class="long_text" value="<?php echo $javascript_cachedir ?>" />
+				<input name="user[javascript_cachedir]" class="long_text" value="<?php echo $javascript_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_JS ?>" />
 				</div>
-			<label>Your CSS will be cached in</label>
+			<label><?php echo _WEBO_SPLASH2_CACHE_CSS ?></label>
 				<div class="info">
-				<input type="text" name="user[css_cachedir]" class="long_text" value="<?php echo $css_cachedir ?>" />
+				<input name="user[css_cachedir]" class="long_text" value="<?php echo $css_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_CSS ?>" />
 				</div>
-			<label>Web Optimizer is located in</label>
+			<label><?php echo _WEBO_SPLASH2_INSTALLDIR ?></label>
 				<div class="info">
-				<input type="text" name="user[webo_cachedir]" class="long_text" value="<?php echo $webo_cachedir ?>" />
+				<input name="user[webo_cachedir]" class="long_text" value="<?php echo $webo_cachedir ?>" title="<?php echo _WEBO_SPLASH2_INSTALLDIR ?>" />
 				</div>
 	</fieldset>
 
@@ -38,13 +38,13 @@
 							<?php if ($option == 'ignore_list') { ?>
 
 							<div class="info">
-							Please separate with space: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
+							<?php echo _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
 							</div>
 
 							<?php } else { ?>
 							<div class="info">
-							Yes: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="radio">
-							No: <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="0" <?php if(empty($value)) { ?>checked="checked"<?php } ?> class="radio">				
+							<?php echo _WEBO_SPLASH2_YES ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="radio">
+							<?php echo _WEBO_SPLASH2_NO ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" type="radio" value="0" <?php if(empty($value)) { ?>checked="checked"<?php } ?> class="radio">
 							</div>	
 							
 							<?php }
@@ -56,10 +56,9 @@
 				}
 			} ?>	
 			
-		<input type="submit" name="submit" value="Next..." />	
+		<input type="submit" name="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>" />
 		<input type="hidden" name="page" value="install_stage_3" />
-		
 		<input type="hidden" name="user[_username]" value="<?php echo $compress_options['username'] ?>" />
 		<input type="hidden" name="user[_password]" value="<?php echo $compress_options['password'] ?>" />	
-	
+
 </form>
