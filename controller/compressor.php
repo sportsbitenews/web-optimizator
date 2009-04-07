@@ -735,6 +735,9 @@ class compressor {
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
+			if (!isset($src[1])) {
+				$src[1] = false;
+			}
 			if(!$src[1] && !$options['unobtrusive'] && !$options['external_scripts'] || (!empty($excluded_scripts) && in_array(preg_replace("/.*\//", "", $src[1]), $excluded_scripts))) {
 				unset($external_array[$key]);
 			}
@@ -797,7 +800,7 @@ class compressor {
 			if (!empty($value['file'])) {
 				preg_match("!" . $options['src'] . "=['\"](.*?)['\"]!is", $value['file'], $src);
 			}
-			if (empty($value['file']) || !$src[1]) {
+			if (empty($value['file']) || empty($src) || !$src[1]) {
 					unset($external_array[$key]);
 			}
 		}			
@@ -1153,7 +1156,7 @@ class compressor {
 /* Set new data uri */
 					$data_uri = ('data:' . $mime . ';base64,' . $base64);
 /* Find the element this refers to */
-					$regex = "([a-z0-9\s\.\:#_\-@]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
+					$regex = "([a-z0-9\s\.\:#_\-@,]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
 					preg_match_all("/" . $regex . "/is", $content, $elements);
 /* IE only conditional style */
 					if(is_array($elements[1])) {
@@ -1164,8 +1167,11 @@ class compressor {
 * as far as IE8 supports data:URI -- it's actual only for this old stuff
 * unfortunately both selectors don't work with comma, only as different chunks
 **/
-							$this->ie_only_css[] = "* html " . $selector . "{background-image:url(" . $original_file . ")}";
-							$this->ie_only_css[] = "*+html " . $selector . "{background-image:url(" . $original_file . ")}";
+							$selectors = explode(',', $selector);
+							$ie6_selector = implode(', * html ', $selectors);
+							$ie7_selector = implode(', *+html ', $selectors);
+							$this->ie_only_css[] = "* html " . $ie6_selector . "{background-image:url(" . $original_file . ")}";
+							$this->ie_only_css[] = "*+html " . $ie7_selector . "{background-image:url(" . $original_file . ")}";
 /**
 * of course we can try to use mhtml: protocol for IE7- but there is an issue with IE7@Vista that doens't support it correctly
 * so due to compatibility issues only external images, no embedded ones
