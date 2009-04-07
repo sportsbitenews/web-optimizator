@@ -694,8 +694,12 @@ class compressor {
 						$src = trim($src, '\'" ');
 					}
 					if ($src) {
+						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
+/* start recursion */
 						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/", $this->resolve_css_imports($src), $content);
+/* return remembed directory */
+						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
 				}
 			}
@@ -717,9 +721,9 @@ class compressor {
 
 		if (!empty($matches)) {
 			foreach($matches as $match) {
-				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[0])),
+				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[2])),
 										'content' => preg_replace("/(<script[^>]*>|<\/script>)/i", "", $match[0]),
-										'source' => $match[0]);
+										'source' => $match[2]);
 			}
 		} else {
 			$external_array = "";

@@ -493,20 +493,20 @@ ExpiresDefault \"access plus 10 years\"
 					if ($fp) {
 						$content_saved = '';
 						while ($index_string = fgets($fp)) {
-							$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+							$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
 						}
 /* fix for Joomla 1.0 */
 						if (preg_match("/Joomla 1\.0/", $cms_version)) {
-							$content_saved = preg_replace("/(initGzip\(\);\r?\n)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+							$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for Joomla 1.5.0 */
 						} elseif (preg_match("/Joomla 1\.5\.0/", $cms_version)) {
-							$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+							$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/i", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 /* fix for Joomla 1.5+ */
 						} elseif (preg_match("/Joomla 1\.[56789]/", $cms_version)) {
-							$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+							$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 						} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-							$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+							$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 						} else {
 							$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
 						}

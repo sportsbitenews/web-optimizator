@@ -119,25 +119,26 @@ class css_sprites {
 				if (empty($back) || $back == 'none') {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 					$key_fixed = $this->fix_css3_selectors($key);
-					if ($this->media[$import][$key_fixed]) {
-						$back = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
-						if (empty($image['width'])) {
-							$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
+					if (!empty($this->media[$import][$key_fixed])) {
+						if (!empty($this->media[$import][$key_fixed]['background-image'])) {
+							$back = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
+							if (empty($image['width'])) {
+								$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
+							}
+							if (empty($image['height'])) {
+								$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
+							}
+							if (empty($back)) {
+								$back = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
+							}
 						}
-						if (empty($image['height'])) {
-							$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
-						}
-						if (empty($back)) {
-							$back = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
-						}
-					} else {
-						unset($this->media[$import][$key]);
 					}
 				}
 /* exclude files from ignore list */
-				if (empty($this->ignore_list) || !in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
+				if (!empty($this->ignore_list) && in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
 					unset($this->media[$import][$key]);
 				}
+
 /* re-check background image existence */
 				if (!empty($back) && $back != 'none') {
 
@@ -190,6 +191,7 @@ class css_sprites {
 						unset($this->media[$import][$key]);
 					}
 				}
+
 			}
 
 		}
@@ -652,16 +654,10 @@ __________________
 				if ($fullcolor) {
 					$back = @imagecolorallocate($this->sprite_raw, 255, 255, 255);
 				} else {
-					$back = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
-					@imagecolortransparent($this->sprite_raw, $back);
+					$back = @imagecolorallocatealpha($this->sprite_raw, 0, 0, 0, 127);
 				}
-
+				@imagecolortransparent($this->sprite_raw, $back);
 				@imagefill($this->sprite_raw, 0, 0, $back);
-/* starting point for some cases */
-				if ($type == 3) {
-					$x = $this->css_images[$this->sprite]['x'];
-					$y = 0;
-				}
 /* to nadle 32bit alpha transparent images */
 				$this->alpha_enabled = 0;
 /* loop in all given CSS images */
@@ -818,7 +814,7 @@ __________________
 					$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
 					@imagejpeg($this->sprite_raw, $this->sprite, 80);
 					if (is_file($this->root_dir . 'libs/php/jpegtran')) {
-						shell_exec($this->root_dir . 'libs/php/jpegtran -copy none -perfect -optimize ' . $this->sprite . ' > jpegtran.'. $this->timestamp .'.jpg');
+						@shell_exec($this->root_dir . 'libs/php/jpegtran -copy none -perfect -optimize ' . $this->sprite . ' > jpegtran.'. $this->timestamp .'.jpg');
 						if (is_file('jpegtran.'. $this->timestamp .'.jpg') && filesize('jpegtran.'. $this->timestamp .'.jpg')) {
 							if (filesize('jpegtran.'. $this->timestamp .'.jpg') < filesize($this->sprite)) {
 								copy('jpegtran.'. $this->timestamp .'.jpg', $this->sprite);
@@ -835,7 +831,7 @@ __________________
 					@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
 /* additional optimization via pngcrush */
 					if (is_file($this->root_dir . 'libs/php/pngcrush')) {
-						shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite . ' pngout.'. $this->timestamp .'.png');
+						@shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite . ' pngout.'. $this->timestamp .'.png');
 						if (is_file('pngout.'. $this->timestamp .'.png')) {
 							if (filesize('pngout.'. $this->timestamp .'.png') < filesize($this->sprite)) {
 								copy('pngout.'. $this->timestamp .'.png', $this->sprite);

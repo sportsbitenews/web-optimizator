@@ -12,7 +12,7 @@
 ?>
 <h2><?php echo _WEBO_SPLASH3_REWRITE ?></h2>
 
-<p><?php echo _WEBO_SPLASH3_REWRITE_DESCRIPTION . $cms_version . _WEBO_SPLASH3_REWRITE_DESCRIPTION2 . $paths['absolute']['document_root'] . _WEBO_SPLASH3_REWRITE_DESCRIPTION3 ?></p>
+<p><?php echo _WEBO_SPLASH3_REWRITE_DESCRIPTION . $cms_version . _WEBO_SPLASH3_REWRITE_DESCRIPTION2 . $paths['relative']['document_root'] . _WEBO_SPLASH3_REWRITE_DESCRIPTION3 ?></p>
 <?php
 	
 	} else {
