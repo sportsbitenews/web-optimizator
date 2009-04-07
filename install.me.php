@@ -38,6 +38,7 @@
 					return;
 				}
 			} else {
+				@chmod($directory, 0775);
 				@chdir($directory);
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
@@ -52,6 +53,8 @@
 			@curl_close($ch);
 			@fclose($fp);
 		}
+/* set correct rights for a new file */
+		@chmod($install_directory . '/' . $file, 0664);
 /* return to the initial directory */
 	}
 
@@ -63,7 +66,7 @@
 			die();
 		} else {
 /* try to make current directory writable */
-			@chmod("./", 775);
+			@chmod("./", 0775);
 			@mkdir($install_directory);
 			if (is_dir($install_directory)) {
 /* get list of files */
