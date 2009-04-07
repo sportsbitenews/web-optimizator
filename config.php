@@ -11,9 +11,9 @@ $compress_options['css_cachedir'] = "";
 $compress_options['webo_cachedir'] = "";
 ## Comma separated list of JS Libraries to include
 $compress_options['js_libraries'] = "";
-$compress_options['unobtrusive']['on'] = "1";
-$compress_options['external_scripts']['on'] = "0";
-## Ignore list
+$compress_options['unobtrusive']['on'] = "0";
+$compress_options['external_scripts']['on'] = "1";
+## Ignore list, files separated by space
 $compress_options['external_scripts']['ignore_list'] = "";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
@@ -42,6 +42,7 @@ $compress_options['data_uris']['on'] = "1";
 $compress_options['css_sprites']['enabled'] = "1";
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
 $compress_options['css_sprites']['aggressive'] = "0";
+## Ignore list, files separated by space
 $compress_options['css_sprites']['ignore_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";

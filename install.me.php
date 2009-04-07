@@ -1,5 +1,17 @@
 <?php
 
+// ==============================================================================================
+// Licensed under the MIT
+// ==============================================================================================
+// @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
+// @version    0.3.5
+// @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
+// ==============================================================================================
+// To install Web Optimizer please copy this file to the document root, make document root
+// writable for your web server (or create writable web-optimizer directory) and go
+// to /install.me.php in your browser.
+// ==============================================================================================
+
 	$loaded_modules = @get_loaded_extensions();
 	$install_directory = 'web-optimizer';
 	$download_package = 'download Web Optimizer full package at <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>.';
@@ -25,6 +37,8 @@
 				} else {
 					return;
 				}
+			} else {
+				@chdir($directory);
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
 		}
@@ -57,7 +71,9 @@
 				if (is_file($install_directory . '/files')) {
 					$files = split("\r?\n", file_get_contents($install_directory . '/files'));
 					foreach ($files as $file) {
-						download($file, $install_directory);
+						if (!empty($file)) {
+							download($file, $install_directory);
+						}
 					}
 /* check if download was succsessful */
 					if (is_file($install_directory . '/index.php')) {
@@ -82,10 +98,10 @@
 	}
 
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Web Optimizer Install</title>
+</head>
 <body>
 <h1>We have some problems during Web Optimizer installation</h1>
 <p><?php echo $error ?></p>

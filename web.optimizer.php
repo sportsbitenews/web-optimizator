@@ -4,7 +4,7 @@
 // ==============================================================================================
 // @author     Leon Chevalier (http://www.aciddrop.com)
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.3.4
+// @version    0.3.5
 // @copyright  Copyright &copy; 2008-2009 Leon Chevalier, Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 

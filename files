@@ -12,6 +12,8 @@ libs/css/ie.css
 libs/css/reset.css
 libs/css/typography.css
 libs/js/yass.loader.js
+libs/php/lang/en.php
+libs/php/lang/ru.php
 libs/php/class.csstidy.php
 libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
