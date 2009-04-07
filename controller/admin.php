@@ -24,7 +24,7 @@ class admin {
 			$this->$key = $value;
 		}
 /* Set name of options file */
-		$this->options_file = "config.php";
+		$this->options_file = "config.webo.php";
 		require_once($this->options_file);
 		$this->compress_options = $compress_options;
 /* Make sure login valid */
@@ -304,7 +304,7 @@ class admin {
 		}
 		$loaded_modules = @get_loaded_extensions();
 /* Create the options file */
-		$this->options_file = "config.php";
+		$this->options_file = "config.webo.php";
 		if(!empty($this->input['submit'])) {
 /* Save the options	*/
 			foreach($this->input['user'] AS $key=>$option) {
@@ -488,46 +488,69 @@ ExpiresDefault \"access plus 10 years\"
 				if (!$fp) {
 					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->input['user']['webo_cachedir'] . ".</p>");
 				} else {
-					$index = $this->view->paths['absolute']['document_root'] . 'index.php';
-					$fp = @fopen($index, "r");
-					if ($fp) {
-						$content_saved = '';
-						while ($index_string = fgets($fp)) {
-							$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
-						}
-/* fix for Joomla 1.0 */
-						if (preg_match("/Joomla 1\.0/", $cms_version)) {
-							$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
-/* fix for Joomla 1.5.0 */
-						} elseif (preg_match("/Joomla 1\.5\.0/", $cms_version)) {
-							$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/i", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
-/* fix for Joomla 1.5+ */
-						} elseif (preg_match("/Joomla 1\.[56789]/", $cms_version)) {
-							$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
-						} elseif (substr($content_saved, 0, 2) == '<?') {
-/* add require block */
-							$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
-						} else {
-							$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
-						}
-						if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
-/* add finish block */
-							$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
-						} else {
-/* fix for Drupal / Joomla on not-closed ?> */
-							if (substr($cms_version, 0, 6) == 'Drupal' || (preg_match("/Joomla 1\.[56789]/", $cms_version) && !preg_match("/Joomla 1\.5\.0/", $cms_version))) {
-								$content_saved .= '$web_optimizer->finish();';
-							} else {
-								$content_saved .= '<?php $web_optimizer->finish(); ?>';
+/* dirty hack for PHP-Nuke */
+					if ($cms_version == 'PHP-Nuke') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
+						$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						$footer_content = @file_get_contents($footer);
+						if (!empty($mainfile_content) && !empty($footer_content)) {
+							$fp = @fopen($mainfile, "w");
+							if ($fp) {
+/* update main PHP-Nuke file */
+								@fwrite($fp, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
+								@fclose($fp);
+								$fp = @fopen($footer, "w");
+								if ($fp) {
+/* update footer */
+									@fwrite($fp, preg_replace("/(\s*ob_en_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $mainfile_content)));
+									@fclose($fp);
+									$auto_rewrite = 1;
+								}
 							}
 						}
-						fclose($fp);
-						$fp = @fopen($index, "w");
+					} else {
+						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
+						$fp = @fopen($index, "r");
 						if ($fp) {
-							fwrite($fp, $content_saved);
+							$content_saved = '';
+							while ($index_string = fgets($fp)) {
+								$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
+							}
+/* fix for Joomla 1.0 */
+							if (preg_match("/Joomla 1\.0/", $cms_version)) {
+								$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+/* fix for Joomla 1.5.0 */
+							} elseif (preg_match("/Joomla 1\.5\.0/", $cms_version)) {
+								$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/i", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+/* fix for Joomla 1.5+ */
+							} elseif (preg_match("/Joomla 1\.[56789]/", $cms_version)) {
+								$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+							} elseif (substr($content_saved, 0, 2) == '<?') {
+/* add require block */
+								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+							} else {
+								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
+							}
+							if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
+/* add finish block */
+								$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
+							} else {
+/* fix for Drupal / Joomla on not-closed ?> */
+								if (substr($cms_version, 0, 6) == 'Drupal' || (preg_match("/Joomla 1\.[56789]/", $cms_version) && !preg_match("/Joomla 1\.5\.0/", $cms_version))) {
+								$content_saved .= '$web_optimizer->finish();';
+								} else {
+									$content_saved .= '<?php $web_optimizer->finish(); ?>';
+								}
+							}
 							fclose($fp);
-							$auto_rewrite = 1;
-						}	
+							$fp = @fopen($index, "w");
+							if ($fp) {
+								fwrite($fp, $content_saved);
+								fclose($fp);
+								$auto_rewrite = 1;
+							}
+						}
 					}
 
 				}
@@ -692,13 +715,18 @@ ExpiresDefault \"access plus 10 years\"
 			return 'Joomla ' . $joomla_version;
 /* Joomla 1.0 */
 		} elseif (is_dir($root . 'includes')) {
-			define('_VALID_MOS', 1);
-			$joomla_version = '1.0';
-			if (is_file($root . 'includes/version.php')) {
-				require($root . 'includes/version.php');
-				$joomla_version = $_VERSION->RELEASE;
+/* for PHP-Nuke 8.0 */
+			if (is_file($root . 'modules/Journal/copyright.php') && is_file($root . 'footer.php') && is_file($root . 'mainfile.php')) {
+				return 'PHP-Nuke 8.0';
+			} else {
+				define('_VALID_MOS', 1);
+				$joomla_version = '1.0';
+				if (is_file($root . 'includes/version.php')) {
+					require($root . 'includes/version.php');
+					$joomla_version = $_VERSION->RELEASE;
+				}
+				return 'Joomla ' . $joomla_version;
 			}
-			return 'Joomla ' . $joomla_version;
 /* Typo 3 */
 		} elseif (is_dir($root . 'typo3conf')) {
 			$TYPO3_CONF_VARS = array('SYS' => array('compat_version' => '4.2'));
@@ -706,6 +734,9 @@ ExpiresDefault \"access plus 10 years\"
 				require($root . 'typo3conf/localconf.php');
 			}
 			return 'Typo3 ' . $TYPO3_CONF_VARS['SYS']['compat_version'];
+/* Simpla */
+		} elseif (is_file($root . 'Storefront.class.php')) {
+			return 'Simpla';
 		}
 		
 		return 'CMS 42';

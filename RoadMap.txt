@@ -10,7 +10,7 @@
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
 +c) PHP (other languages) libs: gzencode, curl , etc.
 
-3. Configurator: config.php -- number of options
+3. Configurator: config.webo.php -- number of options
 +a) CSS / JS merging
 +b) CSS / JS gzip
 +c) CSS /JS compressing options
@@ -80,7 +80,8 @@
  f) WebGUI
  g) Plone
  h) Xoops
- i) PHP Nuke
++i) PHP Nuke 8.0
++j) Simpla
 
 12. Localization
 +a) English

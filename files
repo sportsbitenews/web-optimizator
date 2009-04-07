@@ -35,7 +35,7 @@ view/install_set_password.php
 view/install_stage_1.php
 view/install_stage_2.php
 view/install_stage_3.php
-config.php
+config.webo.php
 files
 index.php
 install.php

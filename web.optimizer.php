@@ -17,7 +17,7 @@ require_once("libs/php/user_agent.php");
 require_once("libs/php/css.sprites.php");
 
 /* We need to know the config */
-require_once("config.php");
+require_once("config.webo.php");
 
 /* Con. the view library */
 $view = new compressor_view();

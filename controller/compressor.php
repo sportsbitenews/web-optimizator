@@ -28,7 +28,7 @@ class compressor {
 	}
 	
 	/**
-	* Options are read from config.php
+	* Options are read from config.webo.php
 	**/
 	function set_options() {
 /* Set paths with new options */
@@ -218,11 +218,12 @@ class compressor {
 		}
 /* find variants */
 		foreach($matches[0] AS $link) {
-			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@",$link,$variants,PREG_SET_ORDER); //|media
+			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@i",$link,$variants,PREG_SET_ORDER); //|media
 			if(is_array($variants)) {
 				$media = "all";
 				$marker = "";
 				foreach($variants AS $variant_type) {
+					$variant_type[1] = strtolower($variant_type[1]);
 					switch ($variant_type[1]) {
 						case "rel":
 							$marker .= $variant_type[2];
@@ -239,7 +240,7 @@ class compressor {
 			$return['media_all'][$href] = $media;
 /* Sub this new marker into the link */
 			$marker = str_replace(" ", "", $marker);
-			$new_link = preg_replace("@type=('|\")(.*?)('|\")@","type=$1" . "%%MARK%%" . "$3", $link);
+			$new_link = preg_replace("@type=('|\")(.*?)('|\")@i", "type=$1" . "%%MARK%%" . "$3", $link);
 			$new_link = str_replace("%%MARK%%", md5($marker), $new_link);
 			$this->content = str_replace($link, $new_link, $this->content);
 			$return['real_type'] = $marker;
@@ -476,7 +477,7 @@ class compressor {
 		    $new_script_array = array();
 /* combine external and inline scripts */
 		    foreach ($_script_array as $key => $value) {
-				if ($value['content']) {
+				if (!empty($value['content'])) {
 					$new_script_array[++$counter] = $value;
 				} else {
 					$new_script_array[$counter]['content'] .= "\n" . preg_replace("/(^<script[^>]*>|<\/script>$)/is", "", $value['source']);
@@ -697,7 +698,7 @@ class compressor {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/", $this->resolve_css_imports($src), $content);
+						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/i", $this->resolve_css_imports($src), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
@@ -721,9 +722,9 @@ class compressor {
 
 		if (!empty($matches)) {
 			foreach($matches as $match) {
-				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/", "$1", $match[2])),
-										'content' => preg_replace("/(<script[^>]*>|<\/script>)/i", "", $match[0]),
-										'source' => $match[2]);
+				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/\r?\n/", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/i", "$1", $match[0]))),
+										'content' => preg_replace("/(<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0]),
+										'source' => $match[0]);
 			}
 		} else {
 			$external_array = "";
@@ -732,6 +733,7 @@ class compressor {
 		if (empty($external_array)) {
 			return $source;
 		}
+/* strange thing: array is filled even if string is empty */
 		$excluded_scripts = split("\\\s+", $options['external_scripts_exclude']);
 /* Remove empty sources and any externally linked files */
 		foreach($external_array AS $key => $value) {
@@ -742,7 +744,7 @@ class compressor {
 			if (!isset($src[1])) {
 				$src[1] = false;
 			}
-			if(!$src[1] && !$options['unobtrusive'] && !$options['external_scripts'] || (!empty($excluded_scripts) && in_array(preg_replace("/.*\//", "", $src[1]), $excluded_scripts))) {
+			if(empty($src[1]) && !$options['unobtrusive'] && !$options['external_scripts'] || (!empty($excluded_scripts[0]) && in_array(preg_replace("/.*\//", "", $src[1]), $excluded_scripts))) {
 				unset($external_array[$key]);
 			}
 			if (strlen($src[1])> 7 && strcasecmp(substr($src[1],0,7),'http://') == 0) {
@@ -762,7 +764,7 @@ class compressor {
 					}
 				}
 			}
-			if (!$options['unobtrusive'] || !$value['content']) {
+			if ((!$options['unobtrusive'] && !$options['external_scripts']) || empty($value['content'])) {
 				if ($options['ext'] == 'css') {
 /* recursively resolve @import in files */
 					$external_array[$key]['content'] = (empty($options['media_all'][$src[1]]) ? "" : "@media " . $options['media_all'][$src[1]] . "{") . 
