@@ -81,9 +81,9 @@
  g) Plone
  h) Xoops
  i) PHP Nuke
- 
- 12. Localization
-  a) English
-  b) Russian
-  c) German
-  d) Jewish
+
+12. Localization
++a) English
++b) Russian
+ c) German
+ d) Jewish

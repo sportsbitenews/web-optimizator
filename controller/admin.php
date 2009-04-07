@@ -536,8 +536,8 @@ ExpiresDefault \"access plus 10 years\"
 
 		}
 /* try to set some libs executable */
-		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 775);
-		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/jpegtran', 775);
+		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 0775);
+		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/jpegtran', 0775);
 		
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,
