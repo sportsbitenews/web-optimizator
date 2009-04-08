@@ -390,8 +390,8 @@ __________________
 					$I = $J = 0;
 					$width = $image[1] + $image[3] + $image[5];
 					$height = $image[2] + $image[4] + $image[6];
-					$shift_x = $image[1];
-					$shift_y = $image[2];
+					$shift_x = $image[3];
+					$shift_y = $image[4];
 /* to remember the most 'full' place for new image */
 					$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
