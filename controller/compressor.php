@@ -477,7 +477,7 @@ class compressor {
 		    $new_script_array = array();
 /* combine external and inline scripts */
 		    foreach ($_script_array as $key => $value) {
-				if (!empty($value['content'])) {
+				if (!empty($value['content']) && !empty($value['file'])) {
 					$new_script_array[++$counter] = $value;
 				} else {
 					$new_script_array[$counter]['content'] .= "\n" . preg_replace("/(^<script[^>]*>|<\/script>$)/is", "", $value['source']);

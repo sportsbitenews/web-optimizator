@@ -107,7 +107,7 @@ define(_WEBO_SPLASH3_TITLE, 'Установка - шаг третий');
 define(_WEBO_SPLASH3_SAVED, 'Ваши настройки были успешно сохранены.');
 define(_WEBO_SPLASH3_REWRITE, 'Ускорение сайта проведено успешно');
 define(_WEBO_SPLASH3_REWRITE_DESCRIPTION, 'Ваш сайт, использующий ');
-define(_WEBO_SPLASH3_REWRITE_DESCRIPTION2, ' был успешно ускорен. Вы можете <a href="');
+define(_WEBO_SPLASH3_REWRITE_DESCRIPTION2, ', был успешно ускорен. Вы можете <a href="');
 define(_WEBO_SPLASH3_REWRITE_DESCRIPTION3, '">проверить получившийся результат</a>.');
 define(_WEBO_SPLASH3_WORKING, 'Вроде все работает. А дальше?');
 define(_WEBO_SPLASH3_ADD, 'Вы должны добавить вызов Веб Оптимизатора в ваши серверные скрипты. Это будет значительно проще, если у вас есть 1 файл, которые обслуживает все остальные страницы, таким образом вам нужно будет изменить только его.');
@@ -120,7 +120,7 @@ define(_WEBO_SPLASH3_NOTLIVE, 'На самом деле у вас довольно большой простор дейс
 define(_WEBO_SPLASH3_MANUALLY, 'Вручную изменить файл <code>config.php</code>, находящийся по этому пути: <code>');
 define(_WEBO_SPLASH3_MANUALLY2, 'config.php</code>');
 define(_WEBO_SPLASH3_AGAIN, 'И <a href="');
-define(_WEBO_SPLASH3_AGAIN2, '">запустить установку заново</a>. Все новые опции будут автоматически загружены, проверены и сохранены..');
+define(_WEBO_SPLASH3_AGAIN2, '">запустить установку заново</a>. Все новые опции будут автоматически загружены, проверены и сохранены.');
 define(_WEBO_SPLASH3_SECURITY, 'Дополнительная безопасность');
 define(_WEBO_SPLASH3_ALTHOUGH, 'Хотя при установке и конфигурировании используется логин и пароль, вы можете удалить <code>');
 define(_WEBO_SPLASH3_ALTHOUGH2, 'install.php</code> для обеспечения дополнительной безопасности вашего сайта.');

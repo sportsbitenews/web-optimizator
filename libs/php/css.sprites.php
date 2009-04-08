@@ -49,6 +49,8 @@ class css_sprites {
 /* standartize all background values from input */
 					if (preg_match("/background/", $key)) {
 						foreach (split(",", $tags) as $tag) {
+/* fix for hiden :link selectors */
+							$tag = preg_replace("/:link/", "", $tag);
 /* create new item (array) if required */
 							if (!empty($this->media[$import][$tag])) {
 								$this->media[$import][$tag] = array();
@@ -388,6 +390,8 @@ __________________
 					$I = $J = 0;
 					$width = $image[1] + $image[3] + $image[5];
 					$height = $image[2] + $image[4] + $image[6];
+					$shift_x = $image[1];
+					$shift_y = $image[2];
 /* to remember the most 'full' place for new image */
 					$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
@@ -444,6 +448,9 @@ __________________
 					$ordered_images[$key][3] = $added_images[$image[0]][0];
 					$ordered_images[$key][4] = $added_images[$image[0]][1];
 				}
+/* remember initial background-position */
+				$ordered_images[$key][5] = $shift_x;
+				$ordered_images[$key][6] = $shift_y;
 				$matrix_x += $minimal_x;
 				$matrix_y += $minimal_y;
 			}
@@ -474,6 +481,8 @@ __________________
 				$y = $y - $height - $final_y;
 				$image[3] = $x - $width;
 				$image[4] = $y + $final_y;
+				$image[5] = $final_x;
+				$image[6] = $final_y;
 				$j = $y;
 				while (!$matrix[$i][$j] && $j>0) {
 					$j--;
@@ -668,6 +677,9 @@ __________________
 					$height = $image[2];
 					$final_x = $image[3];
 					$final_y = $image[4];
+/* re-use of shifts -- to restore initial background-position */
+					$shift_x = $image[5];
+					$shift_y = $image[6];
 					$import = $image[7];
 					$key = $image[8];
 /* for added to repeat-x / repeat-y image with no-repeat */
@@ -726,8 +738,8 @@ __________________
 									break;
 /* the most complicated case */
 								case 4:
-									$css_left = -$final_x;
-									$css_top = -$final_y;
+									$css_left = -$final_x + $shift_x;
+									$css_top = -$final_y + $shift_y;
 									$css_repeat = 'no-repeat';
 									@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 									break;

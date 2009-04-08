@@ -503,7 +503,7 @@ ExpiresDefault \"access plus 10 years\"
 								$fp = @fopen($footer, "w");
 								if ($fp) {
 /* update footer */
-									@fwrite($fp, preg_replace("/(\s*ob_en_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $mainfile_content)));
+									@fwrite($fp, preg_replace("/global /", 'global \$web_optimizer,', preg_replace("/(\s*ob_end_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content))));
 									@fclose($fp);
 									$auto_rewrite = 1;
 								}
@@ -717,7 +717,7 @@ ExpiresDefault \"access plus 10 years\"
 		} elseif (is_dir($root . 'includes')) {
 /* for PHP-Nuke 8.0 */
 			if (is_file($root . 'modules/Journal/copyright.php') && is_file($root . 'footer.php') && is_file($root . 'mainfile.php')) {
-				return 'PHP-Nuke 8.0';
+				return 'PHP-Nuke';
 			} else {
 				define('_VALID_MOS', 1);
 				$joomla_version = '1.0';

@@ -74,7 +74,7 @@
 11. Default CMS-compatibility
 +a) Wordpress (2.7.1)
 +b) Joomla (1.0.15, 1.5.0, 1.5.10)
-+c) Drupal (6.10)
++c) Drupal (6.10, 5.16)
  d) Bitrix
 +e) Typo3 (4.2)
  f) WebGUI
