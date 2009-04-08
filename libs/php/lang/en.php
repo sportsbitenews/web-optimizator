@@ -118,8 +118,8 @@ define(_WEBO_SPLASH3_CODE, 'We need to add in the Web Optimizer code <strong>bef
 define(_WEBO_SPLASH3_FINALLY, 'Finally, we must then add one more line of code to the very bottom of the page as follows:');
 define(_WEBO_SPLASH3_TESTING, 'Now for some testing...');
 define(_WEBO_SPLASH3_NOTLIVE, 'That\'s all you have to do. We recommend testing this out on a non-live site first, and then playing with the options to get optimal performance. To change the options you can:');
-define(_WEBO_SPLASH3_MANUALLY, 'Manually edit the <code>config.php</code> file here: <code>');
-define(_WEBO_SPLASH3_MANUALLY2, 'config.php</code>');
+define(_WEBO_SPLASH3_MANUALLY, 'Manually edit the <code>config.webo.php</code> file here: <code>');
+define(_WEBO_SPLASH3_MANUALLY2, 'config.webo.php</code>');
 define(_WEBO_SPLASH3_AGAIN, 'Just <a href="');
 define(_WEBO_SPLASH3_AGAIN2, '">run this install again</a>. It will remember your current options.');
 define(_WEBO_SPLASH3_SECURITY, 'Extra security');
@@ -136,7 +136,7 @@ define(_WEBO_SPLASH3_HTACCESS_CHMOD3, 'Please sure that the root of your website
 define(_WEBO_SPLASH3_HTACCESS_CHMOD4, 'Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.');
 define(_WEBO_SPLASH3_HTACCESS_CHMOD5, 'Please sure that you have installed Web Optimizer into');
 define(_WEBO_SPLASH3_CONFSAVED, 'Configuration saved');
-define(_WEBO_SPLASH3_CONFIGERROR, 'Unable to open the config file for writing. Please change the config.php file so that is it writable.');
+define(_WEBO_SPLASH3_CONFIGERROR, 'Unable to open the config file for writing. Please change the <code>config.webo.php</code> file so that is it writable.');
 define(_WEBO_SPLASH3_CONFIGERROR2, 'You can usually do this from your FTP client. Just navigate to <strong>');
 define(_WEBO_SPLASH3_CONFIGERROR3, '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 777, or "write"');
 define(_WEBO_SPLASH3_CONFIGERROR4, 'Once you have done so, please refresh this page.');

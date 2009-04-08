@@ -117,8 +117,8 @@ define(_WEBO_SPLASH3_CODE, 'Вы должны добавить код Веб Оптимизатора <strong>до</
 define(_WEBO_SPLASH3_FINALLY, 'И после этого нужно завершить вызов Веб Оптимизатора следующим образом (в самом низу кода страницы):');
 define(_WEBO_SPLASH3_TESTING, 'Теперь немного тестирования...');
 define(_WEBO_SPLASH3_NOTLIVE, 'На самом деле у вас довольно большой простор действий. Вы можете провести любые изменения в конфигурации Веб Оптимизатора (но лучше это проводить на тестовом сайте) для достижения оптимальной производительности. Для изменения настроек нужно:');
-define(_WEBO_SPLASH3_MANUALLY, 'Вручную изменить файл <code>config.php</code>, находящийся по этому пути: <code>');
-define(_WEBO_SPLASH3_MANUALLY2, 'config.php</code>');
+define(_WEBO_SPLASH3_MANUALLY, 'Вручную изменить файл <code>config.webo.php</code>, находящийся по этому пути: <code>');
+define(_WEBO_SPLASH3_MANUALLY2, 'config.webo.php</code>');
 define(_WEBO_SPLASH3_AGAIN, 'И <a href="');
 define(_WEBO_SPLASH3_AGAIN2, '">запустить установку заново</a>. Все новые опции будут автоматически загружены, проверены и сохранены.');
 define(_WEBO_SPLASH3_SECURITY, 'Дополнительная безопасность');
@@ -135,7 +135,7 @@ define(_WEBO_SPLASH3_HTACCESS_CHMOD3, 'Пожалуйста, убедитесь, что корневая папка
 define(_WEBO_SPLASH3_HTACCESS_CHMOD4, 'Выполните для директории CHMOD 775, или создайте в корне файл <code>.htaccess</code>, доступный для записи для вашего веб-сервера, или разрешите запись для текущего файла <code>.htaccess</code> (CHMOD 664).');
 define(_WEBO_SPLASH3_HTACCESS_CHMOD5, 'Пожалуйста, убедитесь, что Веб ОPlease sure that you have installed Web Optimizer into');
 define(_WEBO_SPLASH3_CONFSAVED, 'Конфигурация сохранена');
-define(_WEBO_SPLASH3_CONFIGERROR, 'Невозможно открыть на запись конфигурационный файл. Пожалуйста, измените права доступа для файла <code>config.php</code> Веб Оптимизатора, чтобы он был доступен на запись для вашего веб-сервера.');
+define(_WEBO_SPLASH3_CONFIGERROR, 'Невозможно открыть на запись конфигурационный файл. Пожалуйста, измените права доступа для файла <code>config.webo.php</code> Веб Оптимизатора, чтобы он был доступен на запись для вашего веб-сервера.');
 define(_WEBO_SPLASH3_CONFIGERROR2, 'Вы это можете сделать при помощи вашего FTP-клиента. Для этого просто перейдите в директорию <strong>');
 define(_WEBO_SPLASH3_CONFIGERROR3, '</strong> , затем зайдите в свойства файла или выполните CHMOD. Установите в 775, или "write"');
 define(_WEBO_SPLASH3_CONFIGERROR4, 'После того, как вы устраните эту проблему, пожалуйста, перезагрузите страницу.');
