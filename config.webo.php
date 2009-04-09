@@ -14,9 +14,10 @@ $compress_options['js_libraries'] = "";
 $compress_options['unobtrusive']['on'] = "0";
 $compress_options['external_scripts']['on'] = "1";
 ## Ignore list, files separated by space
-$compress_options['external_scripts']['ignore_list'] = "";
+$compress_options['external_scripts']['ignore_list'] = "tiny_mce.js";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
+$compress_options['minify']['with_jsmin'] = "1";
 $compress_options['minify']['with_packer'] = "0";
 $compress_options['minify']['with_yui'] = "0";
 $compress_options['minify']['page'] = "1";

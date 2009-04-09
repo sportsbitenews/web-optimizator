@@ -526,6 +526,9 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for Joomla 1.5+ */
 							} elseif (preg_match("/Joomla 1\.[56789]/", $cms_version)) {
 								$content_saved = preg_replace("/(\\\$mainframe->render\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+/* fix for Joostina */
+							} elseif (preg_match("/Joostina/", $cms_version)) {
+								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -533,12 +536,17 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
 							}
 							if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
+/* small fix for Joostina */
+									if (substr($cms_version, 0, 8) == 'Joostina') {
+										$content_saved = preg_replace("/(exit\(\);)/", '$web_optimizer->finish();\n' . "$1");
+									} else {
 /* add finish block */
-								$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
+										$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
+									}
 							} else {
 /* fix for Drupal / Joomla on not-closed ?> */
 								if (substr($cms_version, 0, 6) == 'Drupal' || (preg_match("/Joomla 1\.[56789]/", $cms_version) && !preg_match("/Joomla 1\.5\.0/", $cms_version))) {
-								$content_saved .= '$web_optimizer->finish();';
+									$content_saved .= '$web_optimizer->finish();';
 								} else {
 									$content_saved .= '<?php $web_optimizer->finish(); ?>';
 								}
@@ -713,19 +721,21 @@ ExpiresDefault \"access plus 10 years\"
 				}
 			}
 			return 'Joomla ' . $joomla_version;
-/* Joomla 1.0 */
 		} elseif (is_dir($root . 'includes')) {
 /* for PHP-Nuke 8.0 */
 			if (is_file($root . 'modules/Journal/copyright.php') && is_file($root . 'footer.php') && is_file($root . 'mainfile.php')) {
 				return 'PHP-Nuke';
+/* Joomla 1.0, Joostina */
 			} else {
 				define('_VALID_MOS', 1);
 				$joomla_version = '1.0';
+				$joomla_title = 'Joomla!';
 				if (is_file($root . 'includes/version.php')) {
 					require($root . 'includes/version.php');
-					$joomla_version = $_VERSION->RELEASE;
+					$joomla_version = empty($_VERSION->CMS_ver) ? ($_VERSION->RELEASE . '.' . $_VERSION->DEV_LEVEL) : $_VERSION->CMS_ver;
+					$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
 				}
-				return 'Joomla ' . $joomla_version;
+				return $joomla_title . ' ' . $joomla_version;
 			}
 /* Typo 3 */
 		} elseif (is_dir($root . 'typo3conf')) {
@@ -737,8 +747,11 @@ ExpiresDefault \"access plus 10 years\"
 /* Simpla */
 		} elseif (is_file($root . 'Storefront.class.php')) {
 			return 'Simpla';
+/* Etomate 1.0 */
+		} elseif (is_file($root . 'manager/includes/version.inc.php')) {
+			require($root . 'manager/includes/version.inc.php');
+			return 'Etomate ' . $release;
 		}
-		
 		return 'CMS 42';
 	}
 

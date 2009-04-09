@@ -13,7 +13,7 @@
 3. Configurator: config.webo.php -- number of options
 +a) CSS / JS merging
 +b) CSS / JS gzip
-+c) CSS /JS compressing options
++c) CSS / JS compressing options
 +d) .htaccess enabling
 +e) data:URI
 +f) auto CSS Sprites (+jpegtran / pngcrush)
@@ -31,7 +31,7 @@
 
 4. Merging
 +a) Base CSS / JS merging
-+b) @media support for CSS merging
++b) @media support for CSS merging (skip @media all)
 +c) @import support for CSS merging
 +d) Unobtrusive JS with YASS modules loader
  e) Unobtrusive ads blocks inside page
@@ -73,18 +73,20 @@
 
 11. Default CMS-compatibility
 +a) Wordpress (2.7.1)
-+b) Joomla (1.0.15, 1.5.0, 1.5.10)
++b) Joomla (1.0.15, 1.5.0, 1.5.10), Joostina (1.2)
 +c) Drupal (6.10, 5.16)
  d) Bitrix
 +e) Typo3 (4.2)
  f) WebGUI
  g) Plone
  h) Xoops
-+i) PHP Nuke 8.0
++i) PHP Nuke (8.0)
 +j) Simpla
++k) Etomate (1.1)
 
 12. Localization
 +a) English
 +b) Russian
  c) German
  d) Jewish
+ e) Ukranian

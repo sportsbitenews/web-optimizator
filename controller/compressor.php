@@ -45,7 +45,7 @@ class compressor {
 				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
-				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : $this->options['minify']['with_packer'] ? 'packer' : 'jsmin',
+				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"external_scripts" => $this->options['external_scripts']['on'],
@@ -220,7 +220,7 @@ class compressor {
 		foreach($matches[0] AS $link) {
 			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@i",$link,$variants,PREG_SET_ORDER); //|media
 			if(is_array($variants)) {
-				$media = "all";
+				$media = "";
 				$marker = "";
 				foreach($variants AS $variant_type) {
 					$variant_type[1] = strtolower($variant_type[1]);
@@ -237,6 +237,8 @@ class compressor {
 					}
 				}
 			}
+/* skip @media all -- can lead to broken CSS in WebKit */
+			$media = $media == "all" ? "" : $media;
 			$return['media_all'][$href] = $media;
 /* Sub this new marker into the link */
 			$marker = str_replace(" ", "", $marker);
@@ -436,20 +438,26 @@ class compressor {
 	*
 	**/
 	function include_bundle ($source, $newfile, $handlers, $cachedir, $include) {
-/* if no unobtrusive logic */
-		if (!$include) {
-/* move to top */
-			$source = preg_replace("!<head([^>]+)?>!is", "$0 \n" . $newfile . "\n", $source);
+		switch ($include) {
+/* if no unobtrusive logic and no external JS, move to top */
+			default:
+				$source = preg_replace("!<head([^>]+)?>!is", "$0 \n" . $newfile . "\n", $source);
+				break;
+/* no unobtrusive but external scripts exist, avoid excluded scripts */
+			case 1:
+				$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
+				break;
 /* else use unobtrusive loader */
-		} else {
-			if (preg_match("/var yass_modules/i", $source)) {
-				$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["' 
-					. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
-			} else {
-				$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) 
-					.'","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" 
-					. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
-			}
+			case 2:
+				if (preg_match("/var yass_modules/i", $source)) {
+					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["' 
+						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
+				} else {
+					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) 
+						.'","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://" 
+						. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
+				}
+				break;
 		}
 		return $source;
 	}
@@ -473,15 +481,15 @@ class compressor {
 				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
 			}
 		} elseif ($options['external_scripts']) {
-		    $counter = -1;
+		    $counter = 0;
 		    $new_script_array = array();
 /* combine external and inline scripts */
 		    foreach ($_script_array as $key => $value) {
 				if (!empty($value['content']) && !empty($value['file'])) {
-					$new_script_array[++$counter] = $value;
+					$new_script_array[$counter++] = $value;
 				} else {
-					$new_script_array[$counter]['content'] .= "\n" . preg_replace("/(^<script[^>]*>|<\/script>$)/is", "", $value['source']);
-					$source = str_replace($value['source'], "", $source);
+					$new_script_array[($counter > 0 ? $counter - 1 : 0)]['content'] .= "\n" . $value['content'];
+					$source = str_replace($value['content'], "", $source);
 				}
 		    }
 		    $_script_array = $new_script_array;
@@ -492,8 +500,8 @@ class compressor {
 /* patch from xandrx */
 		$_script_array_files = array();
 		foreach ($_script_array as $value) {
-			if (!empty($value['file'])) {
-				$_script_array_files[] = $value['file'];
+			if (!empty($value['content'])) {
+				$_script_array_files[] = $value['content'];
 			}
 		}
 /* get options string */
@@ -505,13 +513,13 @@ class compressor {
 				$optstring .= '_' . $value;
 			}
 		}
-/* Get the cache hash */
-		$cache_file = md5(implode("_", $_script_array_files) . $datestring . $optstring . $handlers);
+/* Get the cache hash, restrict by 10 symbols */
+		$cache_file = substr(md5(implode("_", $_script_array_files) . $datestring . $optstring . $handlers), 0, 10);
 		$cache_file = urlencode($cache_file);
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
-			$external_array = $this->get_file_locations($external_array, $options);
+			$external_array = $this->get_file_locations($_script_array, $options);
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
@@ -522,11 +530,11 @@ class compressor {
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
 			return $source;
 		}
 /* If the file didn't exist, continue ... */
-		$external_array = $this->get_file_locations($external_array, $options);
+		$external_array = $this->get_file_locations($_script_array, $options);
 /* Create file */
 		$contents = "";
 		if(is_array($external_array)) {
@@ -562,7 +570,7 @@ class compressor {
 				if ($options['minify_with'] == 'packer') {
 					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
 					$contents = $this->packer->pack();
-				} else {
+				} elseif ($options['minify_with'] == 'jsmin') {
 					$this->jsmin = new JSMin($contents);
 					$contents = $this->jsmin->minify($contents);
 				}
@@ -584,7 +592,7 @@ class compressor {
 					chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['ext'] == 'js' && $options['unobtrusive'] ? 1 : 0);
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
 					$this->process_report['scripts'][] = array(
 						'type' => $options['header'] . " " . @$options['rel'],
 						'from' => $external_array,
@@ -722,9 +730,11 @@ class compressor {
 
 		if (!empty($matches)) {
 			foreach($matches as $match) {
-				$external_array[] = array('file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/\r?\n/", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/i", "$1", $match[0]))),
-										'content' => preg_replace("/(<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0]),
-										'source' => $match[0]);
+				$external_array[] = array(
+					'file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/\r?\n/", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/i", "$1", $match[0]))),
+					'content' => preg_replace("/\n+/", "\n", preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0])),
+					'source' => $match[0]
+				);
 			}
 		} else {
 			$external_array = "";
@@ -737,7 +747,7 @@ class compressor {
 		$excluded_scripts = split("\\\s+", $options['external_scripts_exclude']);
 /* Remove empty sources and any externally linked files */
 		foreach($external_array AS $key => $value) {
-			$regex = "!" . $options['src'] . "=['\"](.*?)['\"]!is";
+			$regex = "!" . $options['src'] . "=['\"](.*?)(\?.*)?['\"]!is";
 /* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
@@ -1033,7 +1043,7 @@ class compressor {
 		if(!empty($matches[0])) {
 			$head = $matches[0];
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', $head);
+			$head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $head));
 			return $head;
 		}
 	}
@@ -1140,10 +1150,10 @@ class compressor {
 		
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
 		if(count($matches[1]) > 0) {
-
-			$matches[1] = array_unique($matches[1]); //Unique
+/* Unique */
+			$matches[1] = array_unique($matches[1]);
 			foreach($matches[1] AS $key=>$file) {
-			
+
 				$original_file = trim($file);
 				if (preg_match("/^webo[ixy\.]/", $file)) {
 					$file_path = $path['cachedir'] . '/' . $file;
@@ -1184,8 +1194,7 @@ class compressor {
 **/
 						}
 					}
-				
-				//Replace
+/* Replace */
 					$content = str_replace($original_file, $data_uri, $content);
 				}
 				
