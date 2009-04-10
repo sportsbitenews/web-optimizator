@@ -80,59 +80,84 @@ class admin {
 	* 
 	**/	
 	function install_stage_1() {
-		if (!empty($this->input['uninstall'])) {
+/* express install */
+		if (!empty($this->input['express'])) {
+			$this->view->set_paths();
+/* remember username and password */
+			$username = $this->input['user']['username'];
+			$password = $this->input['user']['password'];
+/* load default options */
+			$this->input['user'] = $this->compress_options;
+/* calculate directories */
+			$this->input['user']['javascript_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
+			$this->input['user']['css_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
+			$this->input['user']['webo_cachedir'] = $this->view->paths['full']['current_directory'];
+			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
+/* restore username and password */
+			$this->input['user']['password'] = $password;
+			$this->input['user']['username'] = $username;
+/* enable auto-rewrite */
+			$this->input['user']['auto_rewrite']['enabled']['on'] = 1;
+			$this->input['submit'] = 1;
+/* switch View page */
+			$this->input['page'] = 'install_stage_3';
+/* render final page */
+			$this->install_stage_3();
+		} else {
+			if (!empty($this->input['uninstall'])) {
 /* remove instances of Web Optimizer from index.php */
-			$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
-			$fp = @fopen($index, "r");
-			if ($fp) {
-				$content_saved = '';
-				while ($index_string = fgets($fp)) {
-					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
-				}
-				fclose($fp);
-				$fp = @fopen($index, "w");
+				$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
+				$fp = @fopen($index, "r");
 				if ($fp) {
-					fwrite($fp, $content_saved);
-					fclose($fp);
-				}
-			}
-/* remove rules from .htaccess */
-			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-			if (is_file($htaccess)) {
-				$fp = @fopen($htaccess, 'r');
-				if ($fp) {
-					$stop_saving = 0;
 					$content_saved = '';
-					while ($htaccess_string = fgets($fp)) {
-						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
-							$stop_saving = 1;
-						}
-						if (!$stop_saving && $htaccess_string != "\n") {
-							$content_saved .= $htaccess_string;
-						}
-						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
-							$stop_saving = 0;
-						}
+					while ($index_string = fgets($fp)) {
+						$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
 					}
 					fclose($fp);
-					$fp = @fopen($htaccess, "w");
+					$fp = @fopen($index, "w");
 					if ($fp) {
 						fwrite($fp, $content_saved);
 						fclose($fp);
 					}
 				}
+/* remove rules from .htaccess */
+				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+				if (is_file($htaccess)) {
+					$fp = @fopen($htaccess, 'r');
+					if ($fp) {
+						$stop_saving = 0;
+						$content_saved = '';
+						while ($htaccess_string = fgets($fp)) {
+							if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
+								$stop_saving = 1;
+							}
+							if (!$stop_saving && $htaccess_string != "\n") {
+								$content_saved .= $htaccess_string;
+							}
+							if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
+								$stop_saving = 0;
+							}
+						}
+						fclose($fp);
+						$fp = @fopen($htaccess, "w");
+						if ($fp) {
+							fwrite($fp, $content_saved);
+							fclose($fp);
+						}
+					}
+				}
 			}
-		}
-		$page_variables = array(
-			"title" => _WEBO_SPLASH1_WELCOME,
-			"paths" => $this->view->paths,
-			"page" => $this->input['page'],
-			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
-			"compress_options" => $this->compress_options,
-			"uninstall" => empty($this->input['uninstall']) ? null : $this->input['uninstall']
-		);
+			$page_variables = array(
+				"title" => _WEBO_SPLASH1_WELCOME,
+				"paths" => $this->view->paths,
+				"page" => $this->input['page'],
+				"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
+				"compress_options" => $this->compress_options,
+				"uninstall" => empty($this->input['uninstall']) ? null : $this->input['uninstall']
+			);
 /* Show the install page */
-		$this->view->render("admin_container", $page_variables);
+			$this->view->render("admin_container", $page_variables);
+		}
 	}
 	
 	/**
@@ -152,7 +177,7 @@ class admin {
 			$save = $this->save_option('[\'document_root\']', $_SERVER['DOCUMENT_ROOT']);
 		}
 /* Set paths with the new document root */
-		$this->view->set_paths();
+		$this->view->set_paths($this->input['user']['document_root']);
 /* check for Apache installation */
 		if (function_exists('apache_get_modules')) {
 			$apache_modules = apache_get_modules();
@@ -259,6 +284,7 @@ class admin {
 			"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
 			"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
 			"webo_cachedir" => $this->view->paths['full']['current_directory'],
+			"document_root" => $this->view->paths['full']['document_root'],
 			"options" => $options,
 			"compress_options" => $this->compress_options
 		);
@@ -340,7 +366,7 @@ class admin {
 /* additional check for .htaccess -- need to open exact file */
 			if ($this->input['user']['htaccess']['enabled'] && !empty($apache_modules)) {
 
-				$this->view->set_paths();
+				$this->view->set_paths($this->input['user']['document_root']);
 /* first of all just cut current Web Optimizer options from .htaccess */
 				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
 				if (is_file($htaccess)) {
@@ -636,22 +662,22 @@ ExpiresDefault \"access plus 10 years\"
 	**/		
 	function manage_password() {
 /* If posting a username and pass, md5 encode */
-	if(!empty($this->input['user']['username'])) {
+		if(!empty($this->input['user']['username'])) {
 			$this->input['user']['username'] = md5($this->input['user']['username']);
 			$this->input['user']['password'] = md5($this->input['user']['password']);
 /* If the pass isn't there, write it */
-		 if(empty($this->compress_options['username']) && empty($this->compress_options['password'])) {
-			$save = $this->save_option('[\'username\']',($this->input['user']['username']));
-			$save .= "<br/>" . $this->save_option('[\'password\']',($this->input['user']['password']));	
-			$save .= "<br />" . _WEBO_LOGIN_LOGGED;
-			$this->save = $save;
+			if(empty($this->compress_options['username']) && empty($this->compress_options['password'])) {
+				$save = $this->save_option('[\'username\']',($this->input['user']['username']));
+				$save .= "<br/>" . $this->save_option('[\'password\']',($this->input['user']['password']));	
+				$save .= "<br />" . _WEBO_LOGIN_LOGGED;
+				$this->save = $save;
 /* Set Web Optimizer Actuve */
-			$this->save_option('[\'active\']',1);
+				$this->save_option('[\'active\']',1);
 /* Update */
-			$this->compress_options['username'] = $this->input['user']['username'];
-			$this->compress_options['password'] = $this->input['user']['password'];
-		 }
-	}
+				$this->compress_options['username'] = $this->input['user']['username'];
+				$this->compress_options['password'] = $this->input['user']['password'];
+			}
+		}
 /* If passing a username and pass, don't md5 encode */
 		if(!empty($this->input['user']['_username'])) {
 			$this->input['user']['username'] = ($this->input['user']['_username']);

@@ -33,7 +33,7 @@ class compressor {
 	function set_options() {
 /* Set paths with new options */
 		$this->options['document_root'] = !empty($this->options['document_root']) ? $this->options['document_root'] : '';
-		$this->view->set_paths();
+		$this->view->set_paths($this->options['document_root']);
 /* Set ignore file */
 		if(!empty($this->options['ignore_list'])) {
 			$this->ignore(trim($this->options['ignore_list']));
@@ -1322,42 +1322,44 @@ class compressor {
 	}
 /* download remote files to include */
     function get_remote_file ($options, $file) {
-		chdir($options['cachedir']);
-		$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
+		if (function_exists('curl_init')) {
+			chdir($options['cachedir']);
+			$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
 /* prevent download more than 1 time a day */
-		if (is_file($return_filename)) {
-			if (filemtime($return_filename) + 86400 > time()) {
-				return $return_filename;
-			}
-		}
-/* try to download remote file */
-		$ch = curl_init($file);
-		$fp = fopen($return_filename, "w");
-		if ($fp && $ch) {
-			curl_setopt($ch, CURLOPT_FILE, $fp);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
-			curl_exec($ch);
-			curl_close($ch);
-			fclose($fp);
-/* try to replace background images to local ones */
-			$contents = @file_get_contents($return_filename);
-			if ($contents) {
-				$fp = @fopen($return_filename, "w");
-				if ($fp) {
-/* make external URLs safe */
-					$contents = preg_replace("/(url\(\s*['\"]?)(https?:\/\/)/", "$1/$2", $contents);
-/* replace relative URLs */
-					$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
-/* remove slash before https? */
-					$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
-/* replace absolute URLs */
-					$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
-					fwrite($fp, $contents);
-					fclose($fp);
+			if (is_file($return_filename)) {
+				if (filemtime($return_filename) + 86400 > time()) {
+					return $return_filename;
 				}
 			}
-			return $return_filename;
+/* try to download remote file */
+			$ch = @curl_init($file);
+			$fp = @fopen($return_filename, "w");
+			if ($fp && $ch) {
+				@curl_setopt($ch, CURLOPT_FILE, $fp);
+				@curl_setopt($ch, CURLOPT_HEADER, 0);
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
+				@curl_exec($ch);
+				@curl_close($ch);
+				@fclose($fp);
+/* try to replace background images to local ones */
+				$contents = @file_get_contents($return_filename);
+				if ($contents) {
+					$fp = @fopen($return_filename, "w");
+					if ($fp) {
+/* make external URLs safe */
+						$contents = preg_replace("/(url\(\s*['\"]?)(https?:\/\/)/", "$1/$2", $contents);
+/* replace relative URLs */
+						$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
+/* remove slash before https? */
+						$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
+/* replace absolute URLs */
+						$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+						fwrite($fp, $contents);
+						fclose($fp);
+					}
+				}
+				return $return_filename;
+			}
 		}
 		return false;
     }		

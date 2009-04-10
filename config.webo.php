@@ -9,6 +9,7 @@ $compress_options['password'] = "";
 $compress_options['javascript_cachedir'] = "";
 $compress_options['css_cachedir'] = "";
 $compress_options['webo_cachedir'] = "";
+$compress_options['document_root'] = "";
 ## Comma separated list of JS Libraries to include
 $compress_options['js_libraries'] = "";
 $compress_options['unobtrusive']['on'] = "0";

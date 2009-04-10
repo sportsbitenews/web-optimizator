@@ -6,7 +6,7 @@
  **/
 
 /* general layout */
-define(_WEBO_CHARSET, "windows-1251");
+define(_WEBO_CHARSET, 'windows-1251');
 define(_WEBO_GENERAL_TITLE, 'Конфигурация Веб Оптимизатора');
 
 /* error layout */
@@ -46,6 +46,7 @@ define(_WEBO_SPLASH1_FULLPATH, 'Полный путь к корню сайта:');
 define(_WEBO_SPLASH1_NOTICE, 'Корень сайта &mdash; это директория на жестком диске, в которой находятся и откуда отдаются все ваши HTML-файлы. Если вы понятия не имеете, о чем идет речь, то лучше оставить указанный выше путь. Для этого просто нажмите кнопку <strong>Далее...</strong>.');
 define(_WEBO_SPLASH1_INCORRECT, '<strong>Если указанный путь отображен неверно</strong>, пожалуйста, введите правильный вариант.');
 define(_WEBO_SPLASH1_NEXT, 'Далее...');
+define(_WEBO_SPLASH1_EXPRESS, 'Быстрая установка');
 
 /* Second splash -- set options */
 define(_WEBO_SPLASH2_TITLE, 'Установка - шаг второй');
@@ -55,6 +56,7 @@ define(_WEBO_SPLASH2_CACHE, 'Директории кэширования');
 define(_WEBO_SPLASH2_CACHE_JS, 'JavaScript-файлы будут располагаться в');
 define(_WEBO_SPLASH2_CACHE_CSS, 'CSS-файлы будут располагаться в');
 define(_WEBO_SPLASH2_INSTALLDIR, 'Веб Оптимизатор расположен в');
+define(_WEBO_SPLASH2_DOCUMENTROOT, 'Сайт расположен в');
 define(_WEBO_SPLASH2_SPACE, 'Пожалуйста, через пробел:');
 define(_WEBO_SPLASH2_YES, 'Да:');
 define(_WEBO_SPLASH2_NO, 'Нет:');

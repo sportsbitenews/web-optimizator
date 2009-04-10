@@ -74,7 +74,7 @@
 				if (is_file($install_directory . '/files')) {
 					$files = split("\r?\n", file_get_contents($install_directory . '/files'));
 					foreach ($files as $file) {
-						if (!empty($file)) {
+						if (!empty($file) && !is_file($install_directory . '/' . $file)) {
 							download($file, $install_directory);
 						}
 					}

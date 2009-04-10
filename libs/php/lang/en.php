@@ -46,6 +46,7 @@ define(_WEBO_SPLASH1_FULLPATH, 'Your full path to document root:');
 define(_WEBO_SPLASH1_NOTICE, 'Your document root is the root folder that your HTML files are served from. If you don\'t know what it is, it\'s probably the path above. Just click <strong>Next...</strong> below.');
 define(_WEBO_SPLASH1_INCORRECT, '<strong>Is the above path incorrect</strong>, please enter the correct path.');
 define(_WEBO_SPLASH1_NEXT, 'Next...');
+define(_WEBO_SPLASH1_EXPRESS, 'Express install');
 
 /* Second splash -- set options */
 define(_WEBO_SPLASH2_TITLE, 'Installation - Stage 2');
@@ -55,6 +56,7 @@ define(_WEBO_SPLASH2_CACHE, 'Cache Directories');
 define(_WEBO_SPLASH2_CACHE_JS, 'Your JavaScript will be cached in');
 define(_WEBO_SPLASH2_CACHE_CSS, 'Your CSS will be cached in');
 define(_WEBO_SPLASH2_INSTALLDIR, 'Web Optimizer is located in');
+define(_WEBO_SPLASH2_DOCUMENTROOT, 'Website is located in');
 define(_WEBO_SPLASH2_SPACE, 'Please separate with space:');
 define(_WEBO_SPLASH2_YES, 'Yes:');
 define(_WEBO_SPLASH2_NO, 'No:');

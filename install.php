@@ -8,12 +8,12 @@ require("controller/admin.php");
 require("libs/php/view.php");
 
 /* include language file */
+require("libs/php/lang/en.php");
 $language = preg_replace("/[-,;].*/", "", $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 if (is_file("libs/php/lang/". $language .".php")) {
 	require("libs/php/lang/" . $language . ".php");
-} else {
-	require("libs/php/lang/en.php");
 }
+
 /* set encoding via header */
 header("Content-Type: text/html; charset=" . _WEBO_CHARSET);
 

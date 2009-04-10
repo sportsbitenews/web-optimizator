@@ -20,6 +20,10 @@
 				<div class="info">
 				<input name="user[webo_cachedir]" class="long_text" value="<?php echo $webo_cachedir ?>" title="<?php echo _WEBO_SPLASH2_INSTALLDIR ?>" />
 				</div>
+			<label><?php echo _WEBO_SPLASH2_DOCUMENTROOT ?></label>
+				<div class="info">
+				<input name="user[document_root]" class="long_text" value="<?php echo $document_root ?>" title="<?php echo _WEBO_SPLASH2_DOCUMENTROOT ?>" />
+				</div>
 	</fieldset>
 
 			<?php foreach($options AS $key=>$type) {

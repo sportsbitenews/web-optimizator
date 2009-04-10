@@ -15,7 +15,7 @@
 				<div class="info">
 				<input type="password" name="user[password]" id="user[password]" class="long_text" title="<?php echo _WEBO_LOGIN_ENTERPASSWORD ?>"/>
 				</div>	
-			
+		<input type="submit" name="express" value="<?php echo _WEBO_SPLASH1_EXPRESS ?>" title="<?php echo _WEBO_SPLASH1_EXPRESS ?>"/>
 		<input type="submit" name="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>"/>
 		<input type="hidden" name="page" value="install_stage_1" />
 </fieldset>
