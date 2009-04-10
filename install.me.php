@@ -4,7 +4,7 @@
 // Licensed under the MIT
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.3.5
+// @version    0.3.6
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 // To install Web Optimizer please copy this file to the document root, make document root
@@ -31,14 +31,14 @@
 		while (preg_match("/\//", $dir)) {
 			$directory = preg_replace("/\/.*/", "", $dir);
 			if (!is_dir($directory)) {
-				@mkdir($directory, 0775);
+				@mkdir($directory, 0755);
 				if (is_dir($directory)) {
 					@chdir($directory);
 				} else {
 					return;
 				}
 			} else {
-				@chmod($directory, 0775);
+				@chmod($directory, 0755);
 				@chdir($directory);
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
@@ -54,7 +54,7 @@
 			@fclose($fp);
 		}
 /* set correct rights for a new file */
-		@chmod($install_directory . '/' . $file, 0664);
+		@chmod($install_directory . '/' . $file, 0644);
 /* return to the initial directory */
 	}
 
@@ -65,8 +65,11 @@
 			header("Location: web-optimizer/");
 			die();
 		} else {
-/* try to make current directory writable */
-			@chmod("./", 0775);
+			@mkdir($install_directory);
+			if (!is_dir($install_directory)) {
+/* try to make current directory writable for group */
+				@chmod("./", 0775);
+			}
 			@mkdir($install_directory);
 			if (is_dir($install_directory)) {
 /* get list of files */
