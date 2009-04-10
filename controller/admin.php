@@ -564,7 +564,7 @@ ExpiresDefault \"access plus 10 years\"
 							if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
 /* small fix for Joostina */
 									if (substr($cms_version, 0, 8) == 'Joostina') {
-										$content_saved = preg_replace("/(exit\(\);)/", '$web_optimizer->finish();\n' . "$1");
+										$content_saved = preg_replace("/(exit\(\);\r?\n\?>)/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 									} else {
 /* add finish block */
 										$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
