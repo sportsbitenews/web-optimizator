@@ -12,8 +12,10 @@ class css_sprites {
 	* Sets the options
 	**/
 	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg = 0, $aggressive = 0, $ignore_list = '') {
-
-		require_once('class.csstidy.php');
+/* safely check for CSS Tidy */
+		if (!class_exists('csstidy')) {
+			require_once('class.csstidy.php');
+		}
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($root_dir . 'libs/php/css.template.tpl');

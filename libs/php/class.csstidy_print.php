@@ -156,13 +156,19 @@ class csstidy_print
 		}
         $in_at_out = '';
         $out =& $output;
+/* to cut @media all from output */
+		$media_all = 0;
 
         foreach ($this->tokens as $key => $token)
         {
             switch ($token[0])
             {
                 case AT_START:
-                    $out .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
+					if ($this->_htmlsp($token[1], $plain) == '@media all') {
+						$media_all = 1;
+					} else {
+						$out .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
+					}
                     $out =& $in_at_out;
                     break;
 
@@ -196,7 +202,11 @@ class csstidy_print
                     $out =& $output;
                     $out .= $template[10] . str_replace("\n", "\n" . $template[10], $in_at_out);
                     $in_at_out = '';
-                    $out .= $template[9];
+					if ($media_all) {
+						$media_all = 0;
+					} else {
+						$out .= $template[9];
+					}
                     break;
 
                 case COMMENT:

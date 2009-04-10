@@ -1347,13 +1347,13 @@ class compressor {
 					$fp = @fopen($return_filename, "w");
 					if ($fp) {
 /* make external URLs safe */
-						$contents = preg_replace("/(url\(\s*['\"]?)(https?:\/\/)/", "$1/$2", $contents);
+						$contents = preg_replace("/(url\(\s*['\"]?)(mhtml:|data:|https?:\/\/)/", "$1/$2", $contents);
 /* replace relative URLs */
 						$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
 /* remove slash before https? */
 						$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
 /* replace absolute URLs */
-						$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+						$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(data:|mhtml:|https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
 						fwrite($fp, $contents);
 						fclose($fp);
 					}
