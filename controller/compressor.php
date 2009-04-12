@@ -528,9 +528,6 @@ class web_optimizer {
 		    }
 		    $_script_array = $new_script_array;
 		}
-		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage += 1);
-		}
 /* Get date string for making hash */
 		$datestring = $this->get_file_dates($_script_array, $options);
 /* patch from xandrx */
@@ -552,9 +549,6 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5(implode("_", $_script_array_files) . $datestring . $optstring . $handlers), 0, 10);
 		$cache_file = urlencode($cache_file);
-		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage += 1);
-		}
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
@@ -593,28 +587,26 @@ class web_optimizer {
 					$contents .=  $file_contents;
 				}
 			}
-			header('Stage: ' . $this->web_optimizer_stage);
 			if ($options['css_sprites']) {
 /* start new PHP process to create CSS Sprites */
-				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 35) {
-					header('Location: optimizing.php?web_optimizer_stage=35&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 30) {
+					header('Location: optimizing.php?web_optimizer_stage=30&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 /* prepare first 4 Sprites */
-				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 50) {
+				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 40) {
 					$options['css_sprites_partly'] = 1;
 					$this->convert_css_sprites($contents, $options);
-					header('Location: optimizing.php?web_optimizer_stage=50&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					header('Location: optimizing.php?web_optimizer_stage=40&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 				} else {
 /* Create CSS Sprites in CSS dir */
 					$contents = $this->convert_css_sprites($contents, $options);
 				}
 			}
-			header('Stage: ' . $this->web_optimizer_stage);
 			if ($options['data_uris']) {
 /* start new PHP process to create data:URI */
-				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 60) {
-					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 50) {
+					header('Location: optimizing.php?web_optimizer_stage=50&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 /* prepare base64 strings */
 				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 70) {
@@ -641,6 +633,9 @@ class web_optimizer {
 					$this->jsmin = new JSMin($contents);
 					$contents = $this->jsmin->minify($contents);
 				}
+				if ($this->web_optimizer_stage) {
+					$this->write_progress($this->web_optimizer_stage += 3);
+				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS
@@ -649,9 +644,6 @@ class web_optimizer {
 /* Allow for gzipping and headers */
 			if($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] . $contents;
-			}
-			if ($this->web_optimizer_stage) {
-				$this->write_progress($this->web_optimizer_stage += 3);
 			}
 			if($contents) {
 /* Write to cache and display */
@@ -854,9 +846,6 @@ class web_optimizer {
 				} else {
 					$external_array[$key]['content'] = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : false;
 				}
-			}
-			if ($this->web_optimizer_stage) {
-				$this->write_progress($this->web_optimizer_stage += 2);
 			}
 		}
 /* Remove ignored files */
@@ -1216,7 +1205,7 @@ class web_optimizer {
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'], 
 			'current_dir' => $options['cachedir'],
-			'website_root' => $this->view->paths['absolute']['document_root'], 
+			'website_root' => $this->view->paths['full']['document_root'], 
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'], 
 			'aggressive' => $options['aggressive'],
 			'ignore_list' => $options['css_sprites_exclude'],
@@ -1272,7 +1261,6 @@ class web_optimizer {
 /* Unique */
 			$matches[1] = array_unique($matches[1]);
 			foreach($matches[1] AS $key=>$file) {
-
 				$original_file = trim($file);
 				if (preg_match("/^webo[ixy\.]/", $file)) {
 					$file_path = $path['cachedir'] . '/' . $file;
@@ -1321,9 +1309,11 @@ class web_optimizer {
 /* Replace */
 					$content = str_replace($original_file, $data_uri, $content);
 				}
-				
 			}					
 			
+		}
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage += 5);
 		}
 /* Add IE only css */
 		if(!empty($this->ie_only_css)) {

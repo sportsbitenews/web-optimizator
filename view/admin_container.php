@@ -50,5 +50,5 @@ color: #006600
 <body>
 <a href="http://webo.name/"><img src="images/php_speedy_logo_small.gif" alt="Web Optimizer" border="0" /></a>
 <?php require($page.".php") ?>
-</body>
+<script type="text/javascript" src="libs/js/yass.loader.js"></script></body>
 </html>
