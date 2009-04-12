@@ -5,16 +5,21 @@
  * Gzips and minifies the JavaScript and CSS within the head tags of a page. 
  * Can also gzip and minify the page itself
  **/
-class compressor {
+class web_optimizer {
 
 	/**
 	* Constructor
 	* Sets the options and defines the gzip headers
 	**/
-	function compressor($options = false) {
+	function web_optimizer($options = false) {
 		if(!empty($options['skip_startup'])) {
 			return;
 		}	
+/* initialize chained optimization */
+		$this->web_optimizer_stage = round($_GET['web_optimizer_stage']);	
+		$this->username = htmlspecialchars($_GET['username']);
+		$this->password = htmlspecialchars($_GET['password']);
+		$this->auto_rewrite = round($_GET['auto_rewrite']);
 /* Allow merging of other classes with this one */
 		foreach($options AS $key=>$value) {
 			$this->$key = $value;
@@ -26,7 +31,19 @@ class compressor {
 /* Start things off */
 		$this->start();
 	}
-	
+
+	/**
+	* Write installation progress to JavaScript file
+	* 
+	**/	
+	function write_progress ($progress) {
+		$fp = @fopen('progress.js', "w");
+		if ($fp) {
+			@fwrite($fp, 'window.progress=' . $progress);
+			@fclose($fp);
+		}
+	}
+
 	/**
 	* Options are read from config.webo.php
 	**/
@@ -84,11 +101,8 @@ class compressor {
 			}
 			$this->options[$key] = $option;			
 		}
-
 		$this->options['show_timer'] = false; //time the javascript and css compression?	
-
-	}	
-
+	}
 	
 	/**
 	* Start saving the output buffer
@@ -126,7 +140,7 @@ class compressor {
 	* Do work and return output buffer
 	*
 	**/	
-	function finish($content=false) {
+	function finish($content = false) {
 
 		$this->runtime = $this->startTimer();
 		$this->times['start_compress'] = $this->returnTime($this->runtime);
@@ -135,12 +149,15 @@ class compressor {
 		} else {
 			$this->content = $content;
 		}
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
+		}
 /* Run the functions specified in options */
 		if(is_array($this->options)) {
 			foreach($this->options AS $func => $option) {
 				if(method_exists($this,$func)) {
 					if(!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires'])) {
-						$this->$func($option,$func);
+						$this->$func($option, $func);
 					}
 				}
 			}
@@ -148,20 +165,28 @@ class compressor {
 /* Delete old cache files */
 		if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
 /* Make a string with the names of the compressed files */
-			$this->compressed_files_string = implode("",$this->compressed_files);
+			$this->compressed_files_string = implode("", $this->compressed_files);
+		}
+		if (!empty($this->web_optimizer_stage)) {
+			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
 		}
 /* Delete any files that don't match the string	 */
 		if(!empty($this->options['cleanup']['on'])) {
 			$this->do_cleanup();
 		}
-	
 		$this->times['end'] = $this->returnTime($this->runtime);
+/* redirect to installation page if chained optimization */
+		if (!empty($this->web_optimizer_stage)) {
+			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
+			header('Location: ../index.php?page=install_stage_3&submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled][on]=" . $this->auto_rewrite);
+			die();
+		}
 /* Echo content to the browser */
 		if(empty($this->supress_output)) {
 			if(!empty($this->return_content)) {
 				return $this->content;
 			} else {
-			echo $this->content;
+				echo $this->content;
 			}
 		}
 
@@ -292,6 +317,9 @@ class compressor {
 	*
 	**/		
 	function page($options, $type) {
+		if (!empty($this->web_optimizer_stage)) {
+			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 88 ? 88 : $this->web_optimizer_stage);
+		}
 /* Minify page itself */
 		if(!empty($options['minify'])) {
 			$this->content = $this->trimwhitespace($this->content);		
@@ -410,6 +438,9 @@ class compressor {
 		$cachedir = $options['cachedir'];
 /* Get array of scripts */
 		$this->script_array = $this->get_script_array($source, $options);
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage += 1);
+		}
 /* prepare JS w/o src for merging in unobtrusive way */
 		if ($options['unobtrusive'] && !empty($this->script_array) && is_array($this->script_array)) {
 			$postloader = array();
@@ -467,6 +498,9 @@ class compressor {
 	*
 	**/
 	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage += 1);
+		}
 		$handlers = '';
 		$_script_array = array();
 /* If only one script found */
@@ -494,9 +528,11 @@ class compressor {
 		    }
 		    $_script_array = $new_script_array;
 		}
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage += 1);
+		}
 /* Get date string for making hash */
 		$datestring = $this->get_file_dates($_script_array, $options);
-
 /* patch from xandrx */
 		$_script_array_files = array();
 		foreach ($_script_array as $value) {
@@ -516,6 +552,9 @@ class compressor {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5(implode("_", $_script_array_files) . $datestring . $optstring . $handlers), 0, 10);
 		$cache_file = urlencode($cache_file);
+		if ($this->web_optimizer_stage) {
+			$this->write_progress($this->web_optimizer_stage += 1);
+		}
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
 /* Put in locations and remove certain scripts */
@@ -531,6 +570,9 @@ class compressor {
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
 			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
+			if ($this->web_optimizer_stage) {
+				$this->write_progress($this->web_optimizer_stage += 2);
+			}
 			return $source;
 		}
 /* If the file didn't exist, continue ... */
@@ -551,13 +593,38 @@ class compressor {
 					$contents .=  $file_contents;
 				}
 			}
+			header('Stage: ' . $this->web_optimizer_stage);
 			if ($options['css_sprites']) {
+/* start new PHP process to create CSS Sprites */
+				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 35) {
+					header('Location: optimizing.php?web_optimizer_stage=35&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					die();
+/* prepare first 4 Sprites */
+				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 50) {
+					$options['css_sprites_partly'] = 1;
+					$this->convert_css_sprites($contents, $options);
+					header('Location: optimizing.php?web_optimizer_stage=50&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					die();
+				} else {
 /* Create CSS Sprites in CSS dir */
-				$contents = $this->convert_css_sprites($contents, $options);
+					$contents = $this->convert_css_sprites($contents, $options);
+				}
 			}
+			header('Stage: ' . $this->web_optimizer_stage);
 			if ($options['data_uris']) {
-/* CSS background images to data URIs */
-				$contents = $this->convert_css_bgr_to_data($contents, $options);
+/* start new PHP process to create data:URI */
+				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 60) {
+					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					die();
+/* prepare base64 strings */
+				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 70) {
+					$this->prepare_css_bgr_to_data($contents, $options);
+					header('Location: optimizing.php?web_optimizer_stage=70&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					die();
+				} else {
+/* CSS background images to data URIs (after base64 strings have been prepared) */
+					$contents = $this->convert_css_bgr_to_data($contents, $options);
+				}
 			}
 			if (is_array($handler_array)) {
 				$external_array = array_merge($external_array, $handler_array);
@@ -583,6 +650,9 @@ class compressor {
 			if($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] . $contents;
 			}
+			if ($this->web_optimizer_stage) {
+				$this->write_progress($this->web_optimizer_stage += 3);
+			}
 			if($contents) {
 /* Write to cache and display */
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
@@ -600,7 +670,9 @@ class compressor {
 					);
 				}
 			}
-
+			if ($this->web_optimizer_stage) {
+				$this->write_progress($this->web_optimizer_stage += 2);
+			}
 		}
 		return preg_replace("/@@@marker@@@/", "", $source);
 	}
@@ -783,7 +855,9 @@ class compressor {
 					$external_array[$key]['content'] = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : false;
 				}
 			}
-
+			if ($this->web_optimizer_stage) {
+				$this->write_progress($this->web_optimizer_stage += 2);
+			}
 		}
 /* Remove ignored files */
 		if(!empty($this->ignore_files)) {
@@ -1139,15 +1213,60 @@ class compressor {
 	**/
 	function convert_css_sprites ($content, $options) {
 		chdir($options['cachedir']);
-		$css_sprites = new css_sprites($content, $options['cachedir'], $options['installdir'], $this->view->paths['absolute']['document_root'], $options['truecolor_in_jpeg'], $options['aggressive'], $options['css_sprites_exclude']);
+		$css_sprites = new css_sprites($content, array(
+			'root_dir' => $options['installdir'], 
+			'current_dir' => $options['cachedir'],
+			'website_root' => $this->view->paths['absolute']['document_root'], 
+			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'], 
+			'aggressive' => $options['aggressive'],
+			'ignore_list' => $options['css_sprites_exclude'],
+			'partly' => $options['css_sprites_partly']
+		));
 		return $css_sprites->process();
+	}
+
+	/**
+	* prepare base64 strings for data URIs
+	**/
+	function prepare_css_bgr_to_data($content, $path) {
+		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
+		if(count($matches[1]) > 0) {
+/* Unique */
+			$matches[1] = array_unique($matches[1]);
+			foreach($matches[1] AS $key=>$file) {
+				$original_file = trim($file);
+				if (preg_match("/^webo[ixy\.]/", $file)) {
+					$file_path = $path['cachedir'] . '/' . $file;
+				} else {
+/* Get full path */
+					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);
+					$file_path = trim($file_path);
+				}
+				if (is_file($file_path)) {
+/* Get mime type */
+					$mime = $this->get_mimetype($file_path);
+/* Get file contents */
+					$contents = @file_get_contents($file_path);
+/* Base64 encode contents */
+					$base64 = base64_encode($contents); 
+/* Set new data uri */
+					$data_uri = ('data:' . $mime . ';base64,' . $base64);
+/* write prepared base64 to file */
+					$fp = @fopen($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
+					if ($fp) {
+						@fwrite($fp, $data_uri);
+						@fclose($fp);
+					}
+				}
+			}
+		}
 	}
 
 	/**
 	* Take CSS background images and convert to data URIs
 	**/
 	function convert_css_bgr_to_data($content, $path) {
-		
+
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
 		if(count($matches[1]) > 0) {
 /* Unique */
@@ -1163,14 +1282,19 @@ class compressor {
 					$file_path = trim($file_path);
 				}
 				if (is_file($file_path)) {
+					$data_uri = @file_get_contents($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
+					@unlink($path['cachedir'] . '/' . md5($file_path) . '.base64');
+/* try to get prepared base64 string */
+					if (empty($data_uri)) {
 /* Get mime type */
-					$mime = $this->get_mimetype($file_path);
+						$mime = $this->get_mimetype($file_path);
 /* Get file contents */
-					$contents = @file_get_contents($file_path);
+						$contents = @file_get_contents($file_path);
 /* Base64 encode contents */
-					$base64   = base64_encode($contents); 
+						$base64 = base64_encode($contents); 
 /* Set new data uri */
-					$data_uri = ('data:' . $mime . ';base64,' . $base64);
+						$data_uri = ('data:' . $mime . ';base64,' . $base64);
+					}
 /* Find the element this refers to */
 					$regex = "([a-z0-9\s\.\:#_\-@,]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
 					preg_match_all("/" . $regex . "/is", $content, $elements);
@@ -1184,8 +1308,8 @@ class compressor {
 * unfortunately both selectors don't work with comma, only as different chunks
 **/
 							$selectors = explode(',', $selector);
-							$ie6_selector = implode(', * html ', $selectors);
-							$ie7_selector = implode(', *+html ', $selectors);
+							$ie6_selector = implode(',* html ', $selectors);
+							$ie7_selector = implode(',*+html ', $selectors);
 							$this->ie_only_css[] = "* html " . $ie6_selector . "{background-image:url(" . $original_file . ")}";
 							$this->ie_only_css[] = "*+html " . $ie7_selector . "{background-image:url(" . $original_file . ")}";
 /**
@@ -1337,7 +1461,7 @@ class compressor {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);

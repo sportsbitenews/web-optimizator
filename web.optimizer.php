@@ -53,7 +53,7 @@ if (substr(phpversion(), 0, 1) == 4) {
 }
 
 /* Con. the compression controller */
-$web_optimizer = new compressor(array('view'=>$view,
+$web_optimizer = new web_optimizer(array('view'=>$view,
 	'options' => $compress_options,
 	'user_agent' => $user_agent)
 );

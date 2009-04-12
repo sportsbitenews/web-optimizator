@@ -25,6 +25,9 @@ if(empty($_GET['page'])) {
 
 /* Merge _GET and _POST */
 $input = array_merge($_GET, $_POST);
+if (!empty($input['page'])) {
+	$input['page'] = htmlspecialchars($input['page']);
+}
 
 /* Con. the view library */
 $view = new compressor_view();

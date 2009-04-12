@@ -1,10 +1,10 @@
 1. Installer: 1 php file or full archive. Several languages / OSes.
 +a) Checks for curl -- and download / create all necessary files
 +b) If no curl -- ask to download full archive 
- c) Delete temporary directories
++c) Delete temporary files and directories
 +d) Uninstaller
  e) Auto-updater
- f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
++f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
 
 2. System check
 ?a) .htaccess posibility
@@ -29,6 +29,7 @@
 +o) External and inline JS / external CSS merging
 +p) List of protected from merging files -- really required!
 +r) List of protected from merging imgages (for CSS Sprites)
+ s) Multiple hosts
 
 4. Merging
 +a) Base CSS / JS merging
@@ -57,6 +58,7 @@
  c) EdgeCast
  d) ?
  e) NGENIX
+ f) Check for multiple static hosts possibility and apply them
 
 8. Server cache integration
 +a) Raw files (cache directory)

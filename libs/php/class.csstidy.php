@@ -23,8 +23,16 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
+ * @conributor Nikolay Matsievsky (http://webo.in/) 2009
  */
 
+ /**
+ * Defines ctype functions if required
+ *
+ * @version 1.0
+ */
+require_once('class.csstidy_ctype.php');
+ 
 /**
  * Various CSS data needed for correct optimisations etc.
  *

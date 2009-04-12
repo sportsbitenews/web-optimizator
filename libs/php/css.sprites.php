@@ -11,14 +11,14 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $current_dir, $root_dir, $website_root, $truecolor_in_jpeg = 0, $aggressive = 0, $ignore_list = '') {
+	function css_sprites ($css_code, $options) {
 /* safely check for CSS Tidy */
 		if (!class_exists('csstidy')) {
 			require_once('class.csstidy.php');
 		}
 /* convert CSS code to hash */
 		$this->css = new csstidy();
-		$this->css->load_template($root_dir . 'libs/php/css.template.tpl');
+		$this->css->load_template($options['root_dir'] . 'libs/php/css.template.tpl');
 		$this->css->parse($css_code);
 /* array for global media@ distribution */
 		$this->media = array();
@@ -27,15 +27,17 @@ class css_sprites {
 /* timestamp for CSS Sprites files */
 		$this->timestamp = '';
 /* set directories */
-		$this->current_dir = $current_dir;
+		$this->current_dir = $options['current_dir'];
 		$this->root_dir = $root_dir;
-		$this->website_root = $website_root;
+		$this->website_root = $options['website_root'];
 /* output True Color images in JPEG (or PNG24) */
-		$this->truecolor_in_jpeg = $truecolor_in_jpeg;
+		$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
 /* use aggressive logic for repeat-x/y */
-		$this->aggressive = $aggressive;
-/* list of excluded from CSS SPrites files */
-		$this->ignore_list = split("\\\s+", $ignore_list);
+		$this->aggressive = $options['aggressive'];
+/* list of excluded from CSS Sprites files */
+		$this->ignore_list = split("\\\s+", $options['ignore_list']);
+/* part or full process */
+		$this->partly = $options['partly'];
 	}
 	/**
 	* Main function
@@ -298,10 +300,15 @@ __________________
 		$this->merge_sprites(5);
 		$this->sprite = 'webob.'. $this->timestamp .'.png';
 		$this->merge_sprites(6);
+/* create first part of CSS Sprites */
+		if ($this->partly) {
+			return '';
+		} else {
 /* only then try to combine all possible images into the last one */
-		$this->sprite = 'webo.'. $this->timestamp .'.png';
-		$this->merge_sprites(4);
-		return html_entity_decode($this->css->print->formatted());
+			$this->sprite = 'webo.'. $this->timestamp .'.png';
+			$this->merge_sprites(4);
+			return html_entity_decode($this->css->print->formatted());
+		}
 	}
 /* download requested image */
 	function get_image () {
@@ -331,7 +338,7 @@ __________________
 						curl_setopt($ch, CURLOPT_FILE, $fp);
 						curl_setopt($ch, CURLOPT_HEADER, 0);
 						curl_setopt($ch, CURLOPT_REFERER, $protocol . $host);
-						curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizator; Speed Up Your Website; http://webo.in/) Firefox 3.0.7");
+						curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
 						curl_exec($ch);
 						curl_close($ch);
 						fclose($fp);
@@ -417,10 +424,10 @@ __________________
 					}
 					if ($no_space) {
 /* re-count minimal square with linear enlargement */
-						if ($width * $matrix_y < $minimal_square) {
+						if ($width * $matrix_y <= $minimal_square) {
 							$I = $matrix_x;
 							$J = 0;
-						} elseif ($height * $matrix_x < $minimal_square) {
+						} elseif ($height * $matrix_x <= $minimal_square) {
 							$I = 0;
 							$J = $matrix_y;
 						}
