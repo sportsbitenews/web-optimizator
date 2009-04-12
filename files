@@ -1,6 +1,7 @@
 cache/yass.loader.js
 controller/admin.php
 controller/compressor.php
+images/loadbar.png
 images/php_speedy_footer_link.png
 images/php_speedy_logo.gif
 images/php_speedy_logo_medium.gif
@@ -11,10 +12,12 @@ libs/css/grid.png
 libs/css/ie.css
 libs/css/reset.css
 libs/css/typography.css
+libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php
 libs/php/lang/ru.php
 libs/php/class.csstidy.php
+libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
 libs/php/css.sprites.php
@@ -36,7 +39,6 @@ view/install_stage_1.php
 view/install_stage_2.php
 view/install_stage_3.php
 config.webo.php
-files
 index.php
 install.php
 MIT-LICENSE.txt
