@@ -303,6 +303,9 @@ class admin {
 		if (in_array('mod_headers', $apache_modules)) {
 			$apache_modules_enabled[] = 'mod_headers';
 		}
+		if (in_array('mod_setenvif', $apache_modules)) {
+			$apache_modules_enabled[] = 'mod_setenvif';
+		}
 		$options = array(
 			'Minify' => $this->compress_options['minify'],
 			'GZIP' => $this->compress_options['gzip'],
@@ -443,7 +446,7 @@ class admin {
 					if(is_array($option)) {
 						foreach($option AS $option_name => $option_value) {
 							if (!empty($apache_modules)) {
-								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip'))) {
+								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif'))) {
 									$option_value = $option_value && in_array($option_name, $apache_modules);
 									$this->input['user'][$key][$option_name] = $option_value;
 								}
@@ -541,10 +544,12 @@ mod_gzip_item_include mime ^application/x-javascript$";
 							}
 						}
 						if ($htaccess_options['mod_deflate']) {
-							$content .= "
+							if ($htaccess_options['mod_setenvif']) {
+								$content .= "
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+							}
 							if ($this->input['user']['gzip']['page']) {
 								$content .= "
 AddOutputFilterByType DEFLATE text/html

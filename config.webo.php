@@ -52,5 +52,6 @@ $compress_options['htaccess']['mod_deflate'] = "1";
 $compress_options['htaccess']['mod_gzip'] = "1";
 $compress_options['htaccess']['mod_expires'] = "1";
 $compress_options['htaccess']['mod_headers'] = "1";
+$compress_options['htaccess']['mod_setenvif'] = "1";
 #########################################
 ?>
