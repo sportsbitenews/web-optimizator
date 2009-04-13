@@ -796,7 +796,7 @@ class web_optimizer {
 			foreach($matches as $match) {
 				$external_array[] = array(
 					'file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/\r?\n/", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/i", "$1", $match[0]))),
-					'content' => preg_replace("/\n+/", "\n", preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0])),
+					'content' => preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0]),
 					'source' => $match[0]
 				);
 			}
