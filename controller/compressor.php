@@ -1270,8 +1270,10 @@ class web_optimizer {
 					$file_path = trim($file_path);
 				}
 				if (is_file($file_path)) {
-					$data_uri = @file_get_contents($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
-					@unlink($path['cachedir'] . '/' . md5($file_path) . '.base64');
+					if (is_file($path['cachedir'] . '/' . md5($file_path) . '.base64')) {
+						$data_uri = @file_get_contents($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
+						@unlink($path['cachedir'] . '/' . md5($file_path) . '.base64');
+					}
 /* try to get prepared base64 string */
 					if (empty($data_uri)) {
 /* Get mime type */

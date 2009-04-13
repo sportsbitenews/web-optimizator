@@ -230,6 +230,10 @@ class css_sprites {
 							$this->css_images[$this->sprite]['y'] = 0;
 							$this->css_images[$this->sprite]['images'] = array();
 						}
+/* fast fix for recalculating Sprites from PNG to JPEG -- don't touch files themselves */
+						if (preg_match("/\.jpe?g/i", $this->css_image) && $this->truecolor_in_jpeg) {
+							$this->css_images[$this->sprite]['jpeg'] = 1;
+						}
 						$shift_x = $shift_y = $top = $left = 0;
 						$position = split(" ", $image['background-position']);
 						switch ($image['background-repeat']) {
@@ -524,8 +528,8 @@ __________________
 	function merge_sprites ($type) {
 
 		if ((!empty($this->css_images[$this->sprite]) || ($type == 4 && !empty($this->css_images['weboi.'. $this->timestamp .'.png'])))) {
-
-			$file_exists = is_file($this->sprite);
+/* avoid re-calculating of images to switch from PNG to JPEG */
+			$file_exists = is_file(preg_replace("/\.png$/i", empty($this->css_images[$this->sprite]['jpeg']) ? '.png' : '.jpg', $this->sprite));
 			$images_number = false;
 			if (!empty($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)])) {
 				$images_number = count($this->css_images[$this->sprite]['images']) && count($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)]['images']);

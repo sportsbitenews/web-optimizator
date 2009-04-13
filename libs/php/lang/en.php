@@ -26,6 +26,8 @@ define(_WEBO_LOGIN_UPGRADE, 'Upgrade');
 define(_WEBO_LOGIN_UPGRADENOTICE, 'Your can upgrade your version (');
 define(_WEBO_LOGIN_UPGRADENOTICE2, ') of Web Optimizer to latest one. Please enter your login and password in the form above and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
 define(_WEBO_LOGIN_UPGRADENOTICE3, '</strong>.');
+define(_WEBO_UPGRADE_SUCCESSFULL, 'You have successfully upgraded to the version ');
+define(_WEBO_UPGRADE_UNABLE, 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
 /* Uninstall */
 define(_WEBO_LOGIN_UNINSTALL, 'To remove Web Optimizer from your system please enter login and password in the form above and click <strong>Uninstall</strong>.');
 define(_WEBO_LOGIN_UNINSTALLME, 'Uninstall Web Optimizer');

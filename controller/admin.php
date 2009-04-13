@@ -47,7 +47,7 @@ class admin {
 			'install_upgrade' => 1
 		);
 /* inializa stage for chained optimization */
-		$this->web_optimizer_stage = round($_GET['web_optimizer_stage']);
+		$this->web_optimizer_stage = round($this->input['web_optimizer_stage']);
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 /* Show page */
@@ -101,7 +101,8 @@ class admin {
 				"page" => 'install_enter_password',
 				"version" => $this->version,
 				"version_new" => $this->version_new,
-				"version_new_exists" => $this->version_new_exists
+				"version_new_exists" => $this->version_new_exists,
+				"message" => empty($this->input['upgraded']) ? '' : _WEBO_UPGRADE_SUCCESSFULL . $this->version
 			);
 		} else {
 /* take document root from the options file */
@@ -150,7 +151,7 @@ class admin {
 				}
 			}
 /* redirect to the main page */
-			header("Location: index.php");
+			header("Location: index.php?upgraded=1");
 			die();
 		} else {
 			$this->error("<p>". _WEBO_UPGRADE_UNABLE ."</p>");
@@ -242,7 +243,7 @@ class admin {
 			$this->input['submit'] = 1;
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
-			$this->write_progress($this->web_optimizer_stage = 2);
+			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
 /* render final page */
 			$this->install_stage_3();
 		} else {
@@ -425,7 +426,7 @@ class admin {
 					unlink($dir."test");
 				}
 			}
-			$this->write_progress($this->web_optimizer_stage = 5);
+			$this->write_progress($this->web_optimizer_stage = 4);
 /* check for Apache installation */
 			if (function_exists('apache_get_modules')) {
 				$apache_modules = apache_get_modules();
@@ -467,7 +468,7 @@ class admin {
 						$this->save_option("['" . strtolower($key) . "']",$option);			
 					}
 				}
-				$this->write_progress($this->web_optimizer_stage = 10);
+				$this->write_progress($this->web_optimizer_stage = 5);
 /* additional check for .htaccess -- need to open exact file */
 				if ($this->input['user']['htaccess']['enabled'] && !empty($apache_modules)) {
 
@@ -609,7 +610,7 @@ ExpiresDefault \"access plus 10 years\"
 					}
 
 				}
-				$this->write_progress($this->web_optimizer_stage = 12);
+				$this->write_progress($this->web_optimizer_stage = 6);
 			}
 			$this->chained_load();
 		}
@@ -753,14 +754,16 @@ ExpiresDefault \"access plus 10 years\"
 	*
 	**/
 	function chained_load () {
-		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';	
+		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';
+		$this->write_progress(12);
 /* try to download main file */
 		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
+		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
 			$fp = @fopen($test_file, "w");
 			if ($fp) {
-				@fwrite($fp, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $contents . '<?php $web_optimizer->finish(); ?>');
+				@fwrite($fp, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>');
 				@fclose($fp);
 				$this->write_progress(14);
 				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled']['on']);
@@ -934,7 +937,7 @@ ExpiresDefault \"access plus 10 years\"
 /* Etomate 1.0 */
 		} elseif (is_file($root . 'manager/includes/version.inc.php')) {
 			require($root . 'manager/includes/version.inc.php');
-			return 'Etomate ' . $release;
+			return 'Etomite ' . $release;
 		}
 		return 'CMS 42';
 	}

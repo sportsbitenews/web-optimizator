@@ -85,7 +85,7 @@
  h) Xoops
 +i) PHP Nuke (8.0)
 +j) Simpla
-+k) Etomate (1.1)
++k) Etomite (1.1)
 
 12. Localization
 +a) English

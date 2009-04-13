@@ -1,3 +1,5 @@
+<?php if(!empty($message)) { ?><div class="success"><?php echo $message ?></div><?php } ?>
+
 <h1><?php echo _WEBO_LOGIN_TITLE ?></h1>
 
 <p><?php echo _WEBO_LOGIN_INSTALLED . $version . _WEBO_LOGIN_INSTALLED2 ?></p>
@@ -21,7 +23,7 @@
 <fieldset>
 	<legend><?php echo _WEBO_LOGIN_UPGRADE ?></legend>	
 	<p><?php echo _WEBO_LOGIN_UPGRADENOTICE . $version . _WEBO_LOGIN_UPGRADENOTICE2 . $version_new . _WEBO_LOGIN_UPGRADENOTICE3 ?></p>
-	<div><input type="submit" name="upgrade" value="<?php echo _WEBO_LOGIN_UPGRADE ?>" title="<?php echo _WEBO_LOGIN_UPGRADE ?>" onclick="this.disabled=true"/></div>
+	<div><input type="hidden" name="ujs" value="1"/><input type="submit" name="upgrade" value="<?php echo _WEBO_LOGIN_UPGRADE ?>" title="<?php echo _WEBO_LOGIN_UPGRADE ?>" onclick="this.disabled='disabled';this.form.ujs.id=this.form.ujs.name='upgrade';"/></div>
 </fieldset>
 <?php } ?>
 <fieldset>
