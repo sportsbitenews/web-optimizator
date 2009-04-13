@@ -43,6 +43,7 @@
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
 		}
+/* return to the initial directory */
 		@chdir($current_directory);
 		$fp = @fopen($install_directory . '/' . $file, "w");
 		if ($fp && $ch) {
@@ -55,7 +56,6 @@
 		}
 /* set correct rights for a new file */
 		@chmod($install_directory . '/' . $file, 0644);
-/* return to the initial directory */
 	}
 
 /* check for curl installed */

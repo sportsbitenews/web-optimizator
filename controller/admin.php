@@ -42,10 +42,14 @@ class admin {
 			'install_enter_password' => 1,
 			'install_stage_1' => 1,
 			'install_stage_2' => 1,
-			'install_stage_3' => 1
+			'install_stage_3' => 1,
+			'install_uninstall' => 1,
+			'install_upgrade' => 1
 		);
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round($_GET['web_optimizer_stage']);
+/* to check and download new Web Optimizer version */
+		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 /* Show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
 			$func = $this->input['page'];
@@ -81,9 +85,23 @@ class admin {
 		$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
 /* take document root from the options file */
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
+			$this->version = @file_get_contents('version');
+/* get the latest version */
+			$version_new_file = 'version.new';
+			$this->download($this->svn . 'version', $version_new_file);
+			if (is_file($version_new_file)) {
+				$this->version_new = @file_get_contents($version_new_file);
+				@unlink($version_new_file);
+			} else {
+				$this->version_new = $this->version;
+			}
+			$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
 			$page_variables = array(
 				"title" => _WEBO_LOGIN_TITLE,
-				"page" => 'install_enter_password'
+				"page" => 'install_enter_password',
+				"version" => $this->version,
+				"version_new" => $this->version_new,
+				"version_new_exists" => $this->version_new_exists
 			);
 		} else {
 /* take document root from the options file */
@@ -95,6 +113,107 @@ class admin {
 		}
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
+	}
+
+	/**
+	* Upgrade page
+	* 
+	**/	
+	function install_upgrade() {
+		$file = 'files';
+		$this->download($this->svn . $file, $file);
+		if (is_file($file)) {
+			$files = split("\r?\n", @file_get_contents($file));
+			foreach ($files as $file) {
+				if ($file != 'config.webo.php') {
+					$this->download($this->svn . $file, $file);
+				} else {
+					$this->download($this->svn . $file, $file . '.tmp');
+					if (is_file($file . '.tmp')) {
+/* include temporary file */
+						require_once($file . '.tmp');
+/* reqrite old options with existent values */
+						require($file);
+/* save all options to the current file */
+						foreach($compress_options AS $key => $option) {
+							if(is_array($option)) {
+								foreach($option AS $option_name => $option_value) {
+									$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+								}
+							} else {
+								$this->save_option("['" . strtolower($key) . "']", $option);
+							}
+						}
+/* delete temporary file */
+						@unlink($file . '.tmp');
+					}
+				}
+			}
+/* redirect to the main page */
+			header("Location: index.php");
+			die();
+		} else {
+			$this->error("<p>". _WEBO_UPGRADE_UNABLE ."</p>");
+		}
+	}
+
+	/**
+	* Uninstall page
+	* 
+	**/	
+	function install_uninstall() {
+/* remove instances of Web Optimizer from index.php */
+		$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
+		$fp = @fopen($index, "r");
+		if ($fp) {
+			$content_saved = '';
+			while ($index_string = fgets($fp)) {
+				$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+			}
+			fclose($fp);
+			$fp = @fopen($index, "w");
+			if ($fp) {
+				fwrite($fp, $content_saved);
+				fclose($fp);
+			} else {
+				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+			}
+/* remove rules from .htaccess */
+			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+			if (is_file($htaccess)) {
+				$fp = @fopen($htaccess, 'r');
+				if ($fp) {
+					$stop_saving = 0;
+					$content_saved = '';
+					while ($htaccess_string = fgets($fp)) {
+						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
+							$stop_saving = 1;
+						}
+						if (!$stop_saving && $htaccess_string != "\n") {
+							$content_saved .= $htaccess_string;
+						}
+						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
+							$stop_saving = 0;
+						}
+					}
+					fclose($fp);
+					$fp = @fopen($htaccess, "w");
+					if ($fp) {
+						fwrite($fp, $content_saved);
+						fclose($fp);
+					}
+				} else {
+					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/index.php</code></p>");
+				}
+			}
+		}
+		$this->page_variables = array(
+			"title" => _WEBO_SPLASH1_UNINSTALL,
+			"paths" => $this->view->paths,
+			"page" => 'install_uninstall',
+			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
+			"compress_options" => $this->compress_options
+		);
 	}
 
 	/**
@@ -128,58 +247,20 @@ class admin {
 			$this->install_stage_3();
 		} else {
 			if (!empty($this->input['uninstall'])) {
-/* remove instances of Web Optimizer from index.php */
-				$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
-				$fp = @fopen($index, "r");
-				if ($fp) {
-					$content_saved = '';
-					while ($index_string = fgets($fp)) {
-						$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
-					}
-					fclose($fp);
-					$fp = @fopen($index, "w");
-					if ($fp) {
-						fwrite($fp, $content_saved);
-						fclose($fp);
-					}
-				}
-/* remove rules from .htaccess */
-				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-				if (is_file($htaccess)) {
-					$fp = @fopen($htaccess, 'r');
-					if ($fp) {
-						$stop_saving = 0;
-						$content_saved = '';
-						while ($htaccess_string = fgets($fp)) {
-							if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
-								$stop_saving = 1;
-							}
-							if (!$stop_saving && $htaccess_string != "\n") {
-								$content_saved .= $htaccess_string;
-							}
-							if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
-								$stop_saving = 0;
-							}
-						}
-						fclose($fp);
-						$fp = @fopen($htaccess, "w");
-						if ($fp) {
-							fwrite($fp, $content_saved);
-							fclose($fp);
-						}
-					}
-				}
+				$this->install_uninstall();
+			} elseif (!empty($this->input['upgrade'])) {
+				$this->install_upgrade();
+			} else{
+				$this->page_variables = array(
+					"title" => _WEBO_SPLASH1_WELCOME,
+					"paths" => $this->view->paths,
+					"page" => $this->input['page'],
+					"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
+					"compress_options" => $this->compress_options
+				);
 			}
-			$page_variables = array(
-				"title" => _WEBO_SPLASH1_WELCOME,
-				"paths" => $this->view->paths,
-				"page" => $this->input['page'],
-				"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
-				"compress_options" => $this->compress_options,
-				"uninstall" => empty($this->input['uninstall']) ? null : $this->input['uninstall']
-			);
 /* Show the install page */
-			$this->view->render("admin_container", $page_variables);
+			$this->view->render("admin_container", $this->page_variables);
 		}
 	}
 	
@@ -642,15 +723,19 @@ ExpiresDefault \"access plus 10 years\"
 	}
 
 	/**
-	* Consequenty emulate different stages of optimization process
-	* To prevent initial delay for optimized website and PHP timeout
+	* Generic download function to get external files
+	*
 	**/
-	function chained_load () {
-		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';
+	function download ($remote_file, $local_file) {
 		if (function_exists('curl_init')) {
-/* try to download main file */
-			$ch = @curl_init('http://' . $_SERVER['HTTP_HOST'] . '/');
-			$fp = @fopen($test_file, "w");
+			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
+/* try to create local directory*/
+			if ($local_dir != $local_file && !is_dir($local_dir)) {
+				@mkdir($local_dir, 0755);
+			}
+/* start curl */
+			$ch = @curl_init($remote_file);
+			$fp = @fopen($local_file, "w");
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -660,6 +745,17 @@ ExpiresDefault \"access plus 10 years\"
 				@fclose($fp);
 			}
 		}
+	}
+
+	/**
+	* Consequenty emulate different stages of optimization process
+	* To prevent initial delay for optimized website and PHP timeout
+	*
+	**/
+	function chained_load () {
+		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';	
+/* try to download main file */
+		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
 			$fp = @fopen($test_file, "w");

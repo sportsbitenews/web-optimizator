@@ -24,12 +24,6 @@
 </fieldset>
 </form>
 <?php if ($display_progress) { ?>
-<style type="text/css">
-#loader{border:1px solid #656362;float:left}
-#loader, #bar{width:243px;background:url(images/loadbar.png) -243px 0;height:24px}
-#bar{display:block;width:0;background-position:0 0}
-#per{margin-left:250px;font-size:140%}
-</style>
 <div id="loader"><span id="bar"></span></div><div id="per"><span id="cent">0</span>%</div>
 <script type="text/javascript">var yass_modules=[["libs/js/yass.loadbar.js",""]];</script>
 <?php } ?>

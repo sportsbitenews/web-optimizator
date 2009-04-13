@@ -1,6 +1,6 @@
 <h1><?php echo _WEBO_LOGIN_TITLE ?></h1>
 
-<p><?php echo _WEBO_LOGIN_INSTALLED ?></p>
+<p><?php echo _WEBO_LOGIN_INSTALLED . $version . _WEBO_LOGIN_INSTALLED2 ?></p>
 
 <form method="post" enctype="multipart/form-data" action="">
 <fieldset>
@@ -17,6 +17,13 @@
 		<input type="hidden" name="page" value="install_stage_1" />
 		<input type="hidden" name="submit" value="1" />
 </fieldset>
+<?php if ($version_new_exists) { ?>
+<fieldset>
+	<legend><?php echo _WEBO_LOGIN_UPGRADE ?></legend>	
+	<p><?php echo _WEBO_LOGIN_UPGRADENOTICE . $version . _WEBO_LOGIN_UPGRADENOTICE2 . $version_new . _WEBO_LOGIN_UPGRADENOTICE3 ?></p>
+	<div><input type="submit" name="upgrade" value="<?php echo _WEBO_LOGIN_UPGRADE ?>" title="<?php echo _WEBO_LOGIN_UPGRADE ?>" onclick="this.disabled=true"/></div>
+</fieldset>
+<?php } ?>
 <fieldset>
 	<legend><?php echo _WEBO_SPLASH1_UNINSTALL ?></legend>	
 	<p><?php echo _WEBO_LOGIN_UNINSTALL ?></p>

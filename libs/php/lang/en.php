@@ -15,7 +15,8 @@ define(_WEBO_ERROR_ERROR, 'Oopps! Something went wrong');
 
 /* Enter login and password */
 define(_WEBO_LOGIN_TITLE, 'Enter your login details');
-define(_WEBO_LOGIN_INSTALLED, 'You have already installed Web Optimizer to this website. Please enter your login details below to get access to all settings:');
+define(_WEBO_LOGIN_INSTALLED, 'You have already installed Web Optimizer ');
+define(_WEBO_LOGIN_INSTALLED2, ' to this website. Please enter your login details below to get access to all settings:');
 define(_WEBO_LOGIN_USERNAME, 'Username');
 define(_WEBO_LOGIN_ENTERLOGIN, 'Enter your login');
 define(_WEBO_LOGIN_PASSWORD, 'Password');

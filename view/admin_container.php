@@ -44,6 +44,10 @@ color: #FF0000
 .green {
 color: #006600
 }
+#loader{border:1px solid #656362;float:left}
+#loader, #bar{width:243px;background:url(images/loadbar.png) -243px 0;height:24px}
+#bar{display:block;width:0;background-position:0 0}
+#per{margin-left:250px;font-size:140%}
 -->
 </style>
 </head>

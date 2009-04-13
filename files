@@ -38,6 +38,7 @@ view/install_set_password.php
 view/install_stage_1.php
 view/install_stage_2.php
 view/install_stage_3.php
+view/install_uninstall.php
 config.webo.php
 index.php
 install.php
