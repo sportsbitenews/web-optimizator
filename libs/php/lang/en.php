@@ -20,6 +20,12 @@ define(_WEBO_LOGIN_USERNAME, 'Username');
 define(_WEBO_LOGIN_ENTERLOGIN, 'Enter your login');
 define(_WEBO_LOGIN_PASSWORD, 'Password');
 define(_WEBO_LOGIN_ENTERPASSWORD, 'Enter password');
+/* Upgrade */
+define(_WEBO_LOGIN_UPGRADE, 'Upgrade');
+define(_WEBO_LOGIN_UPGRADENOTICE, 'Your can upgrade your version (');
+define(_WEBO_LOGIN_UPGRADENOTICE2, ') of Web Optimizer to latest one. Please enter your login and password in the form above and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
+define(_WEBO_LOGIN_UPGRADENOTICE3, '</strong>.');
+/* Uninstall */
 define(_WEBO_LOGIN_UNINSTALL, 'To remove Web Optimizer from your system please enter login and password in the form above and click <strong>Uninstall</strong>.');
 define(_WEBO_LOGIN_UNINSTALLME, 'Uninstall Web Optimizer');
 define(_WEBO_LOGIN_FAILED, 'Login failed');

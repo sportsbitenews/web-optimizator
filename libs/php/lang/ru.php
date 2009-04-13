@@ -20,6 +20,12 @@ define(_WEBO_LOGIN_USERNAME, 'Логин');
 define(_WEBO_LOGIN_ENTERLOGIN, 'Введите ваш логин');
 define(_WEBO_LOGIN_PASSWORD, 'Пароль');
 define(_WEBO_LOGIN_ENTERPASSWORD, 'Введите пароль');
+/* Upgrade */
+define(_WEBO_LOGIN_UPGRADE, 'Обновить');
+define(_WEBO_LOGIN_UPGRADENOTICE, 'Вы можете обновить вашу текущую версию Веб Оптимизатора (');
+define(_WEBO_LOGIN_UPGRADENOTICE2, ') до самой последней. Для этого введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Обновить</strong>. Веб Оптимизатор будет автоматически обновлен до версии <strong>');
+define(_WEBO_LOGIN_UPGRADENOTICE3, '</strong>.');
+/* Uninstall */
 define(_WEBO_LOGIN_UNINSTALL, 'Чтобы удалить Веб Оптимизатор, пожалуйста, введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Удалить</strong>.');
 define(_WEBO_LOGIN_UNINSTALLME, 'Удалить Веб Оптимизатор');
 define(_WEBO_LOGIN_FAILED, 'Неверно введен логин и(ли) пароль');
