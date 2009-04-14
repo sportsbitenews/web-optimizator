@@ -24,6 +24,8 @@ class web_optimizer {
 		foreach($options AS $key=>$value) {
 			$this->$key = $value;
 		}
+/* define head of the webpage for scripts / styles */
+		$this->head = '';
 /* Set options */
 		$this->set_options();
 /* Define the gzip headers */
@@ -231,19 +233,19 @@ class web_optimizer {
 	**/	
 	function css($options, $type) {
 
-		$head = $this->get_head($this->content);
+		$this->get_head($this->content);
 /* Need a head, HTML is out of the range */
-		if(!$head) {
+		if(empty($this->head)) {
 			return;
 		}
 /* Get links */
-		preg_match_all("!<link[^>]+stylesheet[^>]+>!is", $head, $matches);
+		preg_match_all("!<link[^>]+stylesheet[^>]*>!is", $this->head, $matches);
 		if(count($matches[0]) == 0) {
 			return;
 		}
 /* find variants */
 		foreach($matches[0] AS $link) {
-			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@i",$link,$variants,PREG_SET_ORDER); //|media
+			preg_match_all("@(rel|media|href)=[\"'](.*?)[\"']@i", $link, $variants,PREG_SET_ORDER); //|media
 			if(is_array($variants)) {
 				$media = "";
 				$marker = "";
@@ -267,22 +269,19 @@ class web_optimizer {
 			$return['media_all'][$href] = $media;
 /* Sub this new marker into the link */
 			$marker = str_replace(" ", "", $marker);
-			$new_link = preg_replace("@type=('|\")(.*?)('|\")@i", "type=$1" . "%%MARK%%" . "$3", $link);
-			$new_link = str_replace("%%MARK%%", md5($marker), $new_link);
-			$this->content = str_replace($link, $new_link, $this->content);
 			$return['real_type'] = $marker;
 			$media_types[md5($marker)] = $return;
 		}
 
 		$this->process_report['media_types'] = $media_types;
 /* Compress separately for each media type*/
-		foreach($media_types AS $key => $value) {
+		foreach ($media_types AS $key => $value) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
 					'installdir' => $options['installdir'],
 					'tag' => 'link',
-					'type' => $key,
+					'type' => 'text/css',
 					'ext' => 'css',
 					'src' => 'href',
 					'rel' => !empty($value['rel']) ? $value['rel'] : false,
@@ -299,15 +298,13 @@ class web_optimizer {
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'header' => $type,
-					'save_name' => $type.$value['real_type'],
+					'save_name' => $type . $value['real_type'],
 					'unobtrusive' => $options['unobtrusive'],
 					'external_scripts' => $options['external_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude']
 				),
 				$this->content
 			);
-/* Replace out the markers */
-			$this->content = str_replace($key, 'text/css', $this->content);
 		}
 
 	}
@@ -363,21 +360,21 @@ class web_optimizer {
 	*
 	**/	
 	function set_gzip_header() {
-		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip"))	{
+		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
 			$encoding = "x-gzip";
 		}
-		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) 	{
+		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
 			$encoding = "gzip";
-		}			
+		}
 		if(!empty($encoding)) {
 			header("Content-Encoding: ".$encoding);
 		}
-	}	
-	
+	}
+
 	/**
 	* Completely remove any JS scripts in the remove list
 	*
-	**/	
+	**/
 	function do_remove() {
 		if(empty($this->remove_files)) {
 			return;
@@ -402,19 +399,19 @@ class web_optimizer {
 			preg_match("@<!-- REMOVE IMMUNE -->(.*?)<!-- END REMOVE IMMUNE -->@is", $this->content, $match);
 			$_immune = $match[0];
 			$this->content = str_replace($_immune,'@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@', $this->content);
-			foreach($this->script_array AS $script) {			
+			foreach($this->script_array AS $script) {
 				foreach($this->remove_files AS $file) {
 					if(!empty($file) && !empty($script)) {
 						if(strstr($script,$file)) {
 /* Remove the scripts from the source if they are on the remove list */
-							$this->content = str_replace($script, "", $this->content);			
+							$this->content = str_replace($script, "", $this->content);
 							$this->process_report['notice'][$script] = array(
 								'from' => htmlspecialchars($script),
 								'notice' => 'The file was replaced by a standard library and removed'
 							);
-						}			
+						}
 					}
-				}			
+				}
 			}
 /* Put back */
 			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@", $_immune, $this->content);
@@ -590,6 +587,9 @@ class web_optimizer {
 				}
 			}
 			if ($options['css_sprites']) {
+				$options['css_sprites_partly'] = 0;
+				$remember_data_uri = $options['data_uris'];
+				$options['data_uris'] = 0;
 /* start new PHP process to create CSS Sprites */
 				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 30) {
 					header('Location: optimizing.php?web_optimizer_stage=30&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
@@ -600,19 +600,20 @@ class web_optimizer {
 					$this->convert_css_sprites($contents, $options);
 					header('Location: optimizing.php?web_optimizer_stage=40&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
-				} else {
+				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 60) {
 /* Create CSS Sprites in CSS dir */
+					$this->convert_css_sprites($contents, $options);
+/* start new PHP process to create data:URI */
+					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					die();
+				} else {
+/* we created all Sprites -- ready for data:URI */
+					$options['data_uris'] = $remember_data_uri;
 					$contents = $this->convert_css_sprites($contents, $options);
 				}
-			}
-			if ($options['data_uris']) {
+			} elseif ($options['data_uris']) {
+				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 70) {
 /* start new PHP process to create data:URI */
-				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 50) {
-					header('Location: optimizing.php?web_optimizer_stage=50&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
-					die();
-/* prepare base64 strings */
-				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 70) {
-					$this->prepare_css_bgr_to_data($contents, $options);
 					header('Location: optimizing.php?web_optimizer_stage=70&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 				} else {
@@ -640,20 +641,21 @@ class web_optimizer {
 				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) { //Minify CSS
+			if ($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) {
+/* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
 /* Allow for gzipping and headers */
-			if($options['gzip'] || $options['far_future_expires']) {
+			if ($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] . $contents;
 			}
-			if($contents) {
+			if (!empty($contents)) {
 /* Write to cache and display */
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
 					fwrite($fp, $contents);
 					fclose($fp);
 /* Set permissions, required by some hosts */
-					chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
+					@chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
@@ -672,7 +674,7 @@ class web_optimizer {
 	}
 
 	/**
-	* Replaces the script or css links in the source with a marker
+	* Replaces scripts calls or css links in the source with a marker
 	*
 	*/
 	function _remove_scripts($external_array, $source) {
@@ -680,7 +682,8 @@ class web_optimizer {
 			$keys = array_keys($external_array);
 			$maxKey = array_pop($keys);
 			foreach($external_array AS $key=>$value) {
-				if($key == $maxKey) { //Remove script
+/* Remove script */
+				if($key == $maxKey) {
 					$source = str_replace($value['source'], "@@@marker@@@", $source);
 				} else {
 					$source = str_replace($value['source'], "", $source);
@@ -788,10 +791,10 @@ class web_optimizer {
 	**/
 	function get_script_array($source, $options) {
 
-		$head = $this->get_head($source);
-		if ($head) {
+		$this->get_head($source);
+		if ($this->head) {
 			$regex = "!<" . $options['tag'] . "[^>]+" . ($options['type'] == 'text/javascript' ? "type\\s*=\\s*['\"](" . $options['type'] : "rel\\s*=\\s*['\"](" . $options['rel']) . ")['\"]([^>]*)>(.*?</" . $options['tag'] . ">)?!is";
-			preg_match_all($regex, $head, $matches, PREG_SET_ORDER);
+			preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
 		}
 
 		if (!empty($matches)) {
@@ -814,12 +817,12 @@ class web_optimizer {
 /* Remove empty sources and any externally linked files */
 		foreach($external_array AS $key => $value) {
 			$regex = "!" . $options['src'] . "=['\"](.*?)(\?.*)?['\"]!is";
-/* Make sure src element present */
 			preg_match($regex, $value['file'], $src);
-/* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
+/* Make sure src element present */
 			if (!isset($src[1])) {
 				$src[1] = false;
 			}
+/* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
 			if(empty($src[1]) && !$options['unobtrusive'] && !$options['external_scripts'] || (!empty($excluded_scripts[0]) && in_array(preg_replace("/.*\//", "", $src[1]), $excluded_scripts))) {
 				unset($external_array[$key]);
 			}
@@ -899,7 +902,7 @@ class web_optimizer {
 					'from'=>$current_src,
 					'notice'=>'The querystring was stripped from this script');
 			}
-			$current_src = $this->strip_querystring($current_src);						
+			$current_src = $this->strip_querystring($current_src);
 /* Make sure script exists */
 			if (file_exists($current_src)) {
 /* Make sure script has the correct extension */
@@ -1033,6 +1036,8 @@ class web_optimizer {
 		$txt = preg_replace('/\s+/', ' ', $txt);
 /* Remove comments */
 		$txt = preg_replace('/\/\*.*?\*\//', '', $txt);
+/* Remove ruments from optimization */
+		$txt = preg_replace('/<script[^>]+type=[\'"]text/javascript[\'"][^>]*><\/script>/i', '', $txt);
 		return $txt;
 	}
 
@@ -1103,13 +1108,16 @@ class web_optimizer {
 	* Gets the head part of the $source
 	* 
 	**/			
-	function get_head($source) {
-		preg_match("!<head([^>]+)?>.*?</head>!is", $source, $matches);
-		if(!empty($matches[0])) {
-			$head = $matches[0];
+	function get_head ($source) {
+		if (empty($this->head)) {
+/* hack for some templates (i.e. LiveStreet) */
+			$source = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $source);
+			preg_match("!<head([^>]+)?>.*?</head>!is", $source, $matches);
+			if (!empty($matches[0])) {
+				$this->head = $matches[0];
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $head));
-			return $head;
+				$this->head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->head));
+			}
 		}
 	}
 	
@@ -1211,15 +1219,17 @@ class web_optimizer {
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'], 
 			'aggressive' => $options['aggressive'],
 			'ignore_list' => $options['css_sprites_exclude'],
-			'partly' => $options['css_sprites_partly']
+			'partly' => $options['css_sprites_partly'],
+			'data_uris' => $options['data_uris']
 		));
 		return $css_sprites->process();
 	}
 
 	/**
-	* prepare base64 strings for data URIs
+	* Take CSS background images and convert to data URIs
 	**/
-	function prepare_css_bgr_to_data($content, $path) {
+	function convert_css_bgr_to_data($content, $path) {
+
 		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
 		if(count($matches[1]) > 0) {
 /* Unique */
@@ -1242,51 +1252,6 @@ class web_optimizer {
 					$base64 = base64_encode($contents); 
 /* Set new data uri */
 					$data_uri = ('data:' . $mime . ';base64,' . $base64);
-/* write prepared base64 to file */
-					$fp = @fopen($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
-					if ($fp) {
-						@fwrite($fp, $data_uri);
-						@fclose($fp);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	* Take CSS background images and convert to data URIs
-	**/
-	function convert_css_bgr_to_data($content, $path) {
-
-		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
-		if(count($matches[1]) > 0) {
-/* Unique */
-			$matches[1] = array_unique($matches[1]);
-			foreach($matches[1] AS $key=>$file) {
-				$original_file = trim($file);
-				if (preg_match("/^webo[ixy\.]/", $file)) {
-					$file_path = $path['cachedir'] . '/' . $file;
-				} else {
-/* Get full path */
-					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);
-					$file_path = trim($file_path);
-				}
-				if (is_file($file_path)) {
-					if (is_file($path['cachedir'] . '/' . md5($file_path) . '.base64')) {
-						$data_uri = @file_get_contents($path['cachedir'] . '/' . md5($file_path) . '.base64', "w");
-						@unlink($path['cachedir'] . '/' . md5($file_path) . '.base64');
-					}
-/* try to get prepared base64 string */
-					if (empty($data_uri)) {
-/* Get mime type */
-						$mime = $this->get_mimetype($file_path);
-/* Get file contents */
-						$contents = @file_get_contents($file_path);
-/* Base64 encode contents */
-						$base64 = base64_encode($contents); 
-/* Set new data uri */
-						$data_uri = ('data:' . $mime . ';base64,' . $base64);
-					}
 /* Find the element this refers to */
 					$regex = "([a-z0-9\s\.\:#_\-@,]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
 					preg_match_all("/" . $regex . "/is", $content, $elements);

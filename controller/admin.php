@@ -944,6 +944,9 @@ ExpiresDefault \"access plus 10 years\"
 		} elseif (is_file($root . 'manager/includes/version.inc.php')) {
 			require($root . 'manager/includes/version.inc.php');
 			return 'Etomite ' . $release;
+/* LiveStreet */
+		} elseif (is_file($root . 'classes/engine/Router.class.php')) {
+			return 'LiveStreet';
 		}
 		return 'CMS 42';
 	}

@@ -86,10 +86,11 @@
 +i) PHP Nuke (8.0)
 +j) Simpla
 +k) Etomite (1.1)
++l) LiveStreet (0.2)
 
 12. Localization
 +a) English
 +b) Russian
  c) German
  d) Jewish
- e) Ukranian
++e) Ukranian

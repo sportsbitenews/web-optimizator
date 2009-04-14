@@ -28,6 +28,8 @@ class css_sprites {
 		$this->aggressive = $options['aggressive'];
 /* list of excluded from CSS Sprites files */
 		$this->ignore_list = split("\\\s+", $options['ignore_list']);
+/* create data:URI based on parsed CSS file */
+		$this->data_uris = $options['data_uris'];
 /* part or full process */
 		$this->partly = $options['partly'];
 /* safely check for CSS Tidy */
@@ -323,11 +325,43 @@ __________________
 /* only then try to combine all possible images into the last one */
 			$this->sprite = 'webo.'. $this->timestamp .'.png';
 			$this->merge_sprites(4);
+/* finally convert CSS images to data:URI */
+			if (!empty($this->data_uris)) {
+				$this->css_to_data_uri();
+			}
 			return html_entity_decode($this->css->print->formatted());
 		}
 	}
+/* convert all CSS images to base64 */
+	function css_to_data_uri () {
+		foreach ($this->css->css as $import => $token) {
+			foreach ($token as $tags => $rule) {
+				foreach ($rule as $key => $value) {
+/* standartize all background values from input */
+					if (preg_match("/background/", $key)) {
+						$background = array();
+						if ($key == 'background') {
+/* resolve background property */
+							$background = $this->css->optimise->dissolve_short_bg($value);
+						} else {
+/* skip default properties */
+							$background[$key] = $value;
+						}
+						if (!empty($background['background-image'])) {
+							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
+/* convert image to base64 */
+							$this->get_image(1);
+							$background['background-position'] = 'url(' . $this->css_image . ')';
+						}
+						$this->css->css[$import][$key] = $this->css->optimise->merge_bg($background);
+					}
+				}
+			}
+		}
+	}
 /* download requested image */
-	function get_image () {
+	function get_image ($mode = 0) {
+		$image_saved = $this->css_image;
 /* handle cases with data:URI */
 		if (substr($this->css_image, 0, 5) == 'data:') {
 			$image_name = md5($this->css_image) . "." . preg_replace("/.*image\/([^;]*);base64.*/", "$1", $this->css_image);
@@ -363,18 +397,35 @@ __________________
 					$this->css_image = '';
 				}
 			} else {
-				$this->css_image = preg_match("/^\//", $this->css_image) ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;
+				if (!preg_match("/^webo[ixy\.]/", $this->css_image)) {
+					$this->css_image = preg_match("/^\//", $this->css_image) ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;
+				}
 			}
 		}
-		if (is_file($this->css_image)) {
+		switch ($mode) {
+/* data:URI */
+			case 1:
+				if (is_file($this->css_image)) {
+/* convert image to base64-string */
+					$this->css_image = 'data:image/' . (strtolower(preg_replace("/.*\./", "", $this->css_image))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+				} else {
+					$this->css_image = $image_saved;
+				}
+				return;
+				break;
+/* image dimensions */
+			default:
+				if (is_file($this->css_image)) {
 /* check for animation */
-			if (strtolower(preg_replace("/.*\./", "", $this->css_image)) == 'gif' && $this->is_animated_gif($this->css_image)) {
-				return array(0, 0);
-			}
+					if (strtolower(preg_replace("/.*\./", "", $this->css_image)) == 'gif' && $this->is_animated_gif($this->css_image)) {
+						return array(0, 0);
+					}
 /* get dimensions from downloaded image */
-			return getimagesize($this->css_image);
-		} else {
-			return array(0, 0);
+					return getimagesize($this->css_image);
+				} else {
+					return array(0, 0);
+				}
+				break;
 		}
 	}
 /* find places for images in complicated Sprite */
