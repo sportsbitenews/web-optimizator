@@ -322,7 +322,9 @@ class web_optimizer {
 		}
 /* Minify page itself */
 		if(!empty($options['minify'])) {
-			$this->content = $this->trimwhitespace($this->content);		
+			$this->content = $this->trimwhitespace($this->content);
+/* remove empty scripts after merging inline code */
+			$this->content = preg_replace("/<script type=['\"]text\/javascript['\"]><\/script>/i", "", $this->content);
 		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {

@@ -47,7 +47,8 @@ class admin {
 			'install_upgrade' => 1
 		);
 /* inializa stage for chained optimization */
-		$this->web_optimizer_stage = round($this->input['web_optimizer_stage']);
+		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
+		$this->display_progress = false;
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 /* Show page */
