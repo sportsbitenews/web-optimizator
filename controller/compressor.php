@@ -519,9 +519,13 @@ class web_optimizer {
 /* combine external and inline scripts */
 		    foreach ($_script_array as $key => $value) {
 				if (!empty($value['content']) && !empty($value['file'])) {
-					$new_script_array[$counter++] = $value;
+					$new_script_array[$counter]['content'] = (empty($new_script_array[$counter]['content']) ? '' : $new_script_array[$counter]['content'] . "\n") . $value['content'];
+					$new_script_array[$counter]['file'] = $value['file'];
+					$new_script_array[$counter]['source'] = $value['source'];
+					$counter++;
 				} else {
-					$new_script_array[($counter > 0 ? $counter - 1 : 0)]['content'] .= "\n" . $value['content'];
+					$ind = $counter > 0 ? $counter - 1 : 0;
+					$new_script_array[$ind]['content'] = (empty($new_script_array[$ind]['content']) ? '' : $new_script_array[$ind]['content'] . "\n") . $value['content'];
 					$source = str_replace($value['content'], "", $source);
 				}
 		    }
