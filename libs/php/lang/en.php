@@ -113,6 +113,36 @@ define('_WEBO_SPLASH2_AUTOCHANGE', 'Auto change /index.php');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Web Optimizer can add to your website based on ');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).
 									<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.');
+define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
+define('_WEBO_external_scripts_on', 'Enable external and inline scripts merging');
+define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
+define('_WEBO_minify_javascript', 'Combine JavaScript files');
+define('_WEBO_minify_with_jsmin', 'Minify with JSMin');
+define('_WEBO_minify_with_packer', 'Minify with Packer');
+define('_WEBO_minify_with_yui', 'Minify with YUI Compressor');
+define('_WEBO_minify_page', 'Minify and combine CSS files');
+define('_WEBO_minify_css', 'Minify HTML');
+define('_WEBO_gzip_javascript', 'Gzip JavaScript');
+define('_WEBO_gzip_css', 'Gzip CSS');
+define('_WEBO_gzip_page', 'Gzip HTML');
+define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
+define('_WEBO_far_future_expires_css', 'Cache CSS');
+define('_WEBO_far_future_expires_static', 'Cache static assets');
+define('_WEBO_footer_text', 'Add a link to Web Optimizer');
+define('_WEBO_footer_image', 'Add a Web Optimizer image');
+define('_WEBO_cleanup_on', 'Regularly delete old files');
+define('_WEBO_data_uris_on', 'Apply <code>data:URI</code>');
+define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
+define('_WEBO_css_sprites_truecolor_in_jpeg', 'Save truecolor images as JPEG');
+define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprites');
+define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
+define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
+define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
+define('_WEBO_htaccess_mod_deflate', 'Enable <code>mod_deflate</code>');
+define('_WEBO_htaccess_mod_gzip', 'Enable <code>mod_gzip</code>');
+define('_WEBO_htaccess_mod_expires', 'Enable <code>mod_expires</code>');
+define('_WEBO_htaccess_mod_headers', 'Enable <code>mod_headers</code>');
+define('_WEBO_htaccess_mod_setenvif', 'Enable <code>mod_setenvif</code>');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Installation - Stage 3');

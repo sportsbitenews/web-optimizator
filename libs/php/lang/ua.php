@@ -10,6 +10,36 @@
  _WEBO_UPGRADE_SUCCESSFULL
  _WEBO_UPGRADE_UNABLE
  _WEBO_SPLASH1_EXPRESS
+ _WEBO_unobtrusive_on
+ _WEBO_external_scripts_on
+ _WEBO_external_scripts_ignore_list
+ _WEBO_minify_javascript
+ _WEBO_minify_with_jsmin
+ _WEBO_minify_with_packer
+ _WEBO_minify_with_yui
+ _WEBO_minify_page
+ _WEBO_minify_css
+ _WEBO_gzip_javascript
+ _WEBO_gzip_css
+ _WEBO_gzip_page
+ _WEBO_far_future_expires_javascript
+ _WEBO_far_future_expires_css
+ _WEBO_far_future_expires_static
+ _WEBO_footer_text
+ _WEBO_footer_image
+ _WEBO_cleanup_on
+ _WEBO_data_uris_on
+ _WEBO_css_sprites_enabled
+ _WEBO_css_sprites_truecolor_in_jpeg
+ _WEBO_css_sprites_aggressive
+ _WEBO_css_sprites_extra_space
+ _WEBO_css_sprites_ignore_list
+ _WEBO_htaccess_enabled
+ _WEBO_htaccess_mod_deflate
+ _WEBO_htaccess_mod_gzip
+ _WEBO_htaccess_mod_expires
+ _WEBO_htaccess_mod_headers
+ _WEBO_htaccess_mod_setenvif
  **/
 
 /* general layout */

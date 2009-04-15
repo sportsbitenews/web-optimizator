@@ -112,6 +112,36 @@ define('_WEBO_SPLASH2_AUTOCHANGE', 'Автоматическое изменение /index.php');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимизавтор может автоматически внести требуемые изменения в основной файл вашего сайта, использующего ');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).
 									<br/>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.');
+define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
+define('_WEBO_external_scripts_on', 'Включить объединение внешних файлов');
+define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
+define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
+define('_WEBO_minify_with_jsmin', 'Минимизировать с помощью JSMin');
+define('_WEBO_minify_with_packer', 'Минимизировать с помощью Packer');
+define('_WEBO_minify_with_yui', 'Минимизировать с помощью YUI Compressor');
+define('_WEBO_minify_page', 'Минимизировать и объединить CSS-файлы');
+define('_WEBO_minify_css', 'Минимизировать HTML');
+define('_WEBO_gzip_javascript', 'Применить <code>gzip</code> для JavaScript');
+define('_WEBO_gzip_css', 'Применить <code>gzip</code> для CSS');
+define('_WEBO_gzip_page', 'Применить <code>gzip</code> для HTML');
+define('_WEBO_far_future_expires_javascript', 'Кэшировать JavaScript');
+define('_WEBO_far_future_expires_css', 'Кэшировать CSS');
+define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
+define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');
+define('_WEBO_footer_image', 'Добавить изображение Веб Оптимизатора');
+define('_WEBO_cleanup_on', 'Удалять старые файлы');
+define('_WEBO_data_uris_on', 'Применить <code>data:URI</code>');
+define('_WEBO_css_sprites_enabled', 'Применить CSS Sprites');
+define('_WEBO_css_sprites_truecolor_in_jpeg', 'Сохранять полноцветные изображения в JPEG');
+define('_WEBO_css_sprites_aggressive', '&laquo;Агрессивный&raquo; режим создания CSS Sprites');
+define('_WEBO_css_sprites_extra_space', 'Добавить свободное место в CSS Sprites');
+define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites файлы');
+define('_WEBO_htaccess_enabled', 'Включить <code>.htaccess</code>');
+define('_WEBO_htaccess_mod_deflate', 'Включить <code>mod_deflate</code>');
+define('_WEBO_htaccess_mod_gzip', 'Включить <code>mod_gzip</code>');
+define('_WEBO_htaccess_mod_expires', 'Включить <code>mod_expires</code>');
+define('_WEBO_htaccess_mod_headers', 'Включить <code>mod_headers</code>');
+define('_WEBO_htaccess_mod_setenvif', 'Включить <code>mod_setenvif</code>');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Установка - шаг третий');

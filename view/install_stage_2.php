@@ -37,7 +37,7 @@
 			
 						<?php foreach($type['value'] AS $option=>$value) { ?>
 
-							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo $key . " " . $option ?></label>
+							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?></label>
 
 							<?php if ($option == 'ignore_list') { ?>
 
