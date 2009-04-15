@@ -87,6 +87,10 @@ define('_WEBO_SPLASH2_EXTERNAL', 'Include external and inline scripts');
 define('_WEBO_SPLASH2_EXTERNAL_INFO', 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
 									<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.
 									<br/>You also can define a list of excluded files (i.e. ga.js, jquery.min.js, etc).');
+define('_WEBO_SPLASH2_MTIME', 'Don\'t check files mtime and content');
+define('_WEBO_SPLASH2_MTIME_INFO', 'Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.
+									<br/>It\'s not good from the server side optimization point of view so you can disable this check.
+									<br/>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.');
 define('_WEBO_SPLASH2_GZIP', 'Gzip Options');
 define('_WEBO_SPLASH2_GZIP_INFO', 'Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.
 									<br/>For larger sites, you should Gzip via the web server.');
@@ -116,6 +120,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_external_scripts_on', 'Enable external and inline scripts merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
+define('_WEBO_dont_check_file_mtime', 'Don\'t check files mtime');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_with_jsmin', 'Minify with JSMin');
 define('_WEBO_minify_with_packer', 'Minify with Packer');

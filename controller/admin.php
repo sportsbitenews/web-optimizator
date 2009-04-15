@@ -364,6 +364,11 @@ class admin {
 							'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
 							'value' => $this->compress_options['external_scripts']
 						),
+						'dont_check_file_mtime' => array(
+							'title' => _WEBO_SPLASH2_MTIME,
+							'intro' => _WEBO_SPLASH2_MTIME_INFO,
+							'value' => $this->compress_options['dont_check_file_mtime']						
+						),
 						'gzip'=>array(
 							'title' => _WEBO_SPLASH2_GZIP,
 							'intro' => _WEBO_SPLASH2_GZIP_INFO,
