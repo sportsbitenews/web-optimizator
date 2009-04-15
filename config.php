@@ -29,7 +29,7 @@ $compress_options['gzip']['css'] = "1";
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 $compress_options['far_future_expires']['static'] = "1";
-## On or off 
+## On or off
 $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer
 $compress_options['footer']['text'] = "1";
@@ -50,5 +50,7 @@ $compress_options['htaccess']['mod_deflate'] = "1";
 $compress_options['htaccess']['mod_gzip'] = "1";
 $compress_options['htaccess']['mod_expires'] = "1";
 $compress_options['htaccess']['mod_headers'] = "1";
+## Performance options
+$compress_options['dont_check_file_mtime'] = "1";
 #########################################
 ?>
