@@ -673,8 +673,8 @@ __________________
 						}
 					}
 				}
-				$added_height = 0;
-				$added_width = 0;
+				$this->css_images[$this->sprite]['addon_y'] = 0;
+				$this->css_images[$this->sprite]['addon_x'] = 0;
 				if ($type == 1) {
 					$no_dimensions = preg_replace("/x/", "xl", $this->sprite);
 /* add to the end of Sprite repeat-x w/o dimensions */
@@ -701,12 +701,12 @@ __________________
 								$counted_images[$image[0]] = 1;
 								$final_y = $image[4];
 								$image[3] = 0;
-								$image[4] = $added_height + $final_y;
-								$added_height += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
-								$this->css_images[$this->sprite]['y'] += $image[2] + $final_y + $image[6];
+								$image[4] = $this->css_images[$this->sprite]['addon_y'] + $final_y;
+								$this->css_images[$this->sprite]['addon_y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
+								$this->css_images[$this->sprite]['y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
 								$image[] = 1;
 								$this->css_images[$this->sprite]['images'][] = $image;
-								unset($this->css_images[$no_repeat][$key]);
+								unset($this->css_images[$no_repeat]['images'][$key]);
 							}
 						}
 					}
@@ -736,19 +736,17 @@ __________________
 							if ($image['height'] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
 								$counted_images[$image[0]] = 1;
 								$final_x = $image[3];
-								$image[3] = $added_width + $final_x;
-								$added_width += $image[1] + $final_x + $image[5];
+								$image[3] = $this->css_images[$this->sprite]['addon_x'] + $final_x;
+								$this->css_images[$this->sprite]['addon_x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
 								$this->css_images[$this->sprite]['x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
 								$image[] = 1;
 								$this->css_images[$this->sprite]['images'][] = $image;
-								unset($this->css_images[$no_repeat][$key]);
+								unset($this->css_images[$no_repeat]['images'][$key]);
 							}
 						}
 					}
 				}
 				$merged_selector = array();
-				$this->css_images[$this->sprite]['addon_y'] = 0;
-				$this->css_images[$this->sprite]['addon_x'] = 0;
 /* need to count placement for each image in array */
 				if ($type == 4) {
 					$this->css_images[$this->sprite] = $this->sprites_placement($this->css_images[$this->sprite], $this->css_images[preg_replace("/webo/", "weboi", $this->sprite)]);
@@ -879,7 +877,7 @@ __________________
 										break;
 /* repeat-y */
 									case 2:
-										$css_left = -$final_x - $added_width;
+										$css_left = -$final_x;
 										$css_top = 0;
 										if ($added) {
 											$css_repeat = 'no-repeat';
@@ -890,7 +888,7 @@ __________________
 											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 											$final_y = $height;
 /* semi-fix for bug with different height of repeating images, thx to xstroy */
-											while ($final_y < $this->css_images[$this->sprite]['y']) {
+											while ($final_y < $this->css_images[$this->sprite]['y'] && !$added) {
 												@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 												$final_y += $height;
 											}
@@ -899,7 +897,7 @@ __________________
 /* repeat-x */
 									case 1:
 										$css_left = 0;
-										$css_top = -$final_y - $added_height;
+										$css_top = -$final_y;
 										if ($added) {
 											$css_repeat = 'no-repeat';
 										} else {
@@ -908,7 +906,7 @@ __________________
 										if (!$file_exists) {
 											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 /* semi-fix for bug with different width of repeating images, thx to xstroy */
-											while ($final_x < $this->css_images[$this->sprite]['x']) {
+											while ($final_x < $this->css_images[$this->sprite]['x'] && !$added) {
 												@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 												$final_x += $width;
 											}
@@ -924,7 +922,7 @@ __________________
 							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
 								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->css->css[$import][$key]['background-color']) ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
-									(empty($css_left) ? '0 ' : $css_left . (is_numeric($css_left) ? 'px ' : ' ')). (empty($css_top) ? '0 ' : $css_top . (is_numeric($css_top) ? 'px ' : ' ')) . $css_repeat . ' ' .
+									(empty($css_left) ? '0' : $css_left . (is_numeric($css_left) ? 'px' : '')) . ' ' . (empty($css_top) ? '0' : $css_top . (is_numeric($css_top) ? 'px' : '')) . ' ' . $css_repeat . ' ' .
 									(!empty($this->css->css[$import][$key]['background-attachement']) ? $this->css->css[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
@@ -934,7 +932,7 @@ __________________
 						}
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
-						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import]) . "," . $key;
+						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
 						unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 
 					}
@@ -995,9 +993,12 @@ __________________
 						}
 						@imagedestroy($this->sprite_raw);
 					}
+/* don't touch webor / webob Sprites -- they will be included into the main one */
+					if ($type < 5) {
 /* add selector with final sprite */
-					foreach ($merged_selector as $import => $keys) {
-						$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';
+						foreach ($merged_selector as $import => $keys) {
+							$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';
+						}
 					}
 
 				}

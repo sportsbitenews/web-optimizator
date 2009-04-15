@@ -520,19 +520,33 @@ class web_optimizer {
 		} elseif ($options['external_scripts']) {
 		    $counter = 0;
 		    $new_script_array = array();
+/* flag not to merge only inline code */
+			$external_files_exist = 0;
+			$inline_scripts_to_remove = array();
 /* combine external and inline scripts */
 		    foreach ($_script_array as $key => $value) {
 				if (!empty($value['content']) && !empty($value['file'])) {
 					$new_script_array[$counter]['content'] = (empty($new_script_array[$counter]['content']) ? '' : $new_script_array[$counter]['content'] . "\n") . $value['content'];
 					$new_script_array[$counter]['file'] = $value['file'];
 					$new_script_array[$counter]['source'] = $value['source'];
+					$external_files_exist = 1;
 					$counter++;
 				} else {
 					$ind = $counter > 0 ? $counter - 1 : 0;
 					$new_script_array[$ind]['content'] = (empty($new_script_array[$ind]['content']) ? '' : $new_script_array[$ind]['content'] . "\n") . $value['content'];
-					$source = str_replace($value['content'], "", $source);
+					$inline_scripts_to_remove[] = $value['content'];
 				}
 		    }
+			$_script_array = array();
+/* remove inline scripts only if external files exist */
+			if ($external_files_exist) {
+				if (is_array($inline_scripts_to_remove)) {
+					foreach($inline_scripts_to_remove as $content) {
+/* handle crazy comments inside scripts -- this leaves a bit of empty strings in head */
+						$source = str_replace(preg_replace("/^(\r?\n)+|(\r?\n)+$/", "", $content), "", $source);
+					}
+				}
+			}
 		    $_script_array = $new_script_array;
 		}
 /* Get date string for making hash */
@@ -1043,9 +1057,9 @@ class web_optimizer {
 /* Compress whitespace */
 		$txt = preg_replace('/\s+/', ' ', $txt);
 /* Remove comments */
-		$txt = preg_replace('/\/\*.*?\*\//', '', $txt);
+		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
 /* Remove ruments from optimization */
-		$txt = preg_replace('/<script[^>]+type=[\'"]text/javascript[\'"][^>]*><\/script>/i', '', $txt);
+		$txt = preg_replace('/<script[^>]+type=[\'"]text/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
 		return $txt;
 	}
 
