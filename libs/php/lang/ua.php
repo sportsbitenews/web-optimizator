@@ -40,6 +40,7 @@
  _WEBO_htaccess_mod_expires
  _WEBO_htaccess_mod_headers
  _WEBO_htaccess_mod_setenvif
+ _WEBO_auto_rewrite_enabled
  **/
 
 /* general layout */

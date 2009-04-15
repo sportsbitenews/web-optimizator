@@ -142,6 +142,7 @@ define('_WEBO_htaccess_mod_gzip', '¬ключить <code>mod_gzip</code>');
 define('_WEBO_htaccess_mod_expires', '¬ключить <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', '¬ключить <code>mod_headers</code>');
 define('_WEBO_htaccess_mod_setenvif', '¬ключить <code>mod_setenvif</code>');
+define('_WEBO_auto_rewrite_enabled', '¬ключить авто-запись');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', '”становка - шаг третий');

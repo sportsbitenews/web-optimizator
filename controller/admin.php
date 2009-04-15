@@ -164,48 +164,75 @@ class admin {
 	* 
 	**/	
 	function install_uninstall() {
-/* remove instances of Web Optimizer from index.php */
-		$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
-		$fp = @fopen($index, "r");
-		if ($fp) {
-			$content_saved = '';
-			while ($index_string = fgets($fp)) {
-				$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
-			}
-			fclose($fp);
-			$fp = @fopen($index, "w");
-			if ($fp) {
-				fwrite($fp, $content_saved);
-				fclose($fp);
-			} else {
-				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
-			}
-/* remove rules from .htaccess */
-			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-			if (is_file($htaccess)) {
-				$fp = @fopen($htaccess, 'r');
+		$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+/* PHP-Nuke deletion */
+		if ($cms_version == 'PHP-Nuke') {
+			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
+			$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+			$mainfile_content = @file_get_contents($mainfile);
+			$footer_content = @file_get_contents($footer);
+			if (!empty($mainfile_content) && !empty($footer_content)) {
+				$fp = @fopen($mainfile, "w");
 				if ($fp) {
-					$stop_saving = 0;
-					$content_saved = '';
-					while ($htaccess_string = fgets($fp)) {
-						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
-							$stop_saving = 1;
-						}
-						if (!$stop_saving && $htaccess_string != "\n") {
-							$content_saved .= $htaccess_string;
-						}
-						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
-							$stop_saving = 0;
-						}
-					}
-					fclose($fp);
-					$fp = @fopen($htaccess, "w");
+/* update main PHP-Nuke file */
+					@fwrite($fp, preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+					@fclose($fp);
+					$fp = @fopen($footer, "w");
 					if ($fp) {
-						fwrite($fp, $content_saved);
-						fclose($fp);
+/* update footer */
+						@fwrite($fp, preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
+						@fclose($fp);
+					} else {
+						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/footer.php</code></p>");
 					}
 				} else {
-					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/index.php</code></p>");
+					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/mainfile.php</code></p>");
+				}
+			}
+		} else {
+/* remove instances of Web Optimizer from index.php */
+			$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
+			$fp = @fopen($index, "r");
+			if ($fp) {
+				$content_saved = '';
+				while ($index_string = fgets($fp)) {
+					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+				}
+				fclose($fp);
+				$fp = @fopen($index, "w");
+				if ($fp) {
+					fwrite($fp, $content_saved);
+					fclose($fp);
+				} else {
+					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+				}
+/* remove rules from .htaccess */
+				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+				if (is_file($htaccess)) {
+					$fp = @fopen($htaccess, 'r');
+					if ($fp) {
+						$stop_saving = 0;
+						$content_saved = '';
+						while ($htaccess_string = fgets($fp)) {
+							if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
+								$stop_saving = 1;
+							}
+							if (!$stop_saving && $htaccess_string != "\n") {
+								$content_saved .= $htaccess_string;
+							}
+							if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
+								$stop_saving = 0;
+							}
+						}
+						fclose($fp);
+						$fp = @fopen($htaccess, "w");
+						if ($fp) {
+							fwrite($fp, $content_saved);
+							fclose($fp);
+						}
+					} else {
+						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/index.php</code></p>");
+					}
 				}
 			}
 		}

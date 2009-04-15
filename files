@@ -16,6 +16,7 @@ libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php
 libs/php/lang/ru.php
+libs/php/lang/ua.php
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
