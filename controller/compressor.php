@@ -82,6 +82,7 @@ class web_optimizer {
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
+				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list']
@@ -217,6 +218,8 @@ class web_optimizer {
 				'header' => $type,
 				'css_sprites' => false,
 				'css_sprites_exclude' => false,
+				'aggressive' => false,
+				'css_sprites_extra_space' => false,
 				'data_uris' => false,
 				'save_name' => $type,
 				'unobtrusive' => $options['unobtrusive'],
@@ -292,6 +295,7 @@ class web_optimizer {
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 					'aggressive' => $options['aggressive'],
+					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
 					'minify' => $options['minify'],
@@ -592,7 +596,7 @@ class web_optimizer {
 			}
 			if ($options['css_sprites']) {
 				$options['css_sprites_partly'] = 0;
-				$remember_data_uri = $options['data_uris'];
+				$remembered_data_uri = $options['data_uris'];
 				$options['data_uris'] = 0;
 /* start new PHP process to create CSS Sprites */
 				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 30) {
@@ -612,7 +616,7 @@ class web_optimizer {
 					die();
 				} else {
 /* we created all Sprites -- ready for data:URI */
-					$options['data_uris'] = $remember_data_uri;
+					$options['data_uris'] = $remembered_data_uri;
 					$contents = $this->convert_css_sprites($contents, $options);
 				}
 			} elseif ($options['data_uris']) {
@@ -1224,6 +1228,7 @@ class web_optimizer {
 			'aggressive' => $options['aggressive'],
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
+			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris']
 		));
 		return $css_sprites->process();

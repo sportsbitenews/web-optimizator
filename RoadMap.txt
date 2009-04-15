@@ -29,6 +29,7 @@
 +o) External and inline JS / external CSS merging
 +p) List of protected from merging files -- really required!
 +r) List of protected from merging imgages (for CSS Sprites)
+ s) Fast check by filenames -- janvarev is responsible
 
 4. Merging
 +a) Base CSS / JS merging

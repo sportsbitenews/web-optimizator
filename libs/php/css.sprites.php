@@ -26,6 +26,8 @@ class css_sprites {
 		$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
 /* use aggressive logic for repeat-x/y */
 		$this->aggressive = $options['aggressive'];
+/* leave some space for combined Sprites to handle resized fonts */
+		$this->extra_space = $options['extra_space'];
 /* list of excluded from CSS Sprites files */
 		$this->ignore_list = split("\\\s+", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
@@ -458,8 +460,8 @@ __________________
 				if (empty($added_images[$image[0]])) {
 /* initial coordinates */
 					$I = $J = 0;
-					$width = $image[1] + $image[3] + $image[5];
-					$height = $image[2] + $image[4] + $image[6];
+					$width = $image[1] + $image[3] + $image[5] + ($this->extra_space ? 5 : 0);
+					$height = $image[2] + $image[4] + $image[6] + ($this->extra_space ? 5 : 0);
 					$shift_x = $image[3];
 					$shift_y = $image[4];
 /* to remember the most 'full' place for new image */
@@ -610,7 +612,8 @@ __________________
 				$fullcolor = 0;
 				if (is_array($this->css_images[$this->sprite]['images'])) {
 					foreach ($this->css_images[$this->sprite]['images'] as $key => $image) {
-						if (($type == 1 || $type == 2) && empty($counter_images[$image[0]])) {
+						$filename = $image[0];
+						if (($type == 1 || $type == 2 || $type == 5 || $type == 6) && empty($counter_images[$filename])) {
 							$width = $image[1];
 							$height = $image[2];
 							$final_x = $image[3];
@@ -618,6 +621,35 @@ __________________
 							$shift_x = $image[5];
 							$shift_y = $image[6];
 							switch ($type) {
+								case 6:
+/* glue image to the bottom edge */
+									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] + $final_x;
+									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] - $height;
+									$this->css_images[$this->sprite]['x'] += $width + $final_x + $shift_x + ($this->extra_space ? 5 : 0);
+									if ($height > $this->css_images[$this->sprite]['y']) {
+										$shift = $this->css_images[$this->sprite]['y'] - $height;
+										$this->css_images[$this->sprite]['y'] = $height;
+/* move current images futher to the new bottom */
+										foreach ($this->css_images[$this->sprite]['images'] as $k => $i) {
+											$this->css_images[$this->sprite]['images'][$k][4] += $shift;
+										}
+									}
+									break;
+									break;
+								case 5:
+/* glue image to the right edge */
+									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] - $width;
+									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
+									$this->css_images[$this->sprite]['y'] += $height + $final_y + $shift_y + ($this->extra_space ? 5 : 0);
+									if ($width > $this->css_images[$this->sprite]['x']) {
+										$shift = $this->css_images[$this->sprite]['x'] - $width;
+										$this->css_images[$this->sprite]['x'] = $width;
+/* move current images futher to the new right */
+										foreach ($this->css_images[$this->sprite]['images'] as $k => $i) {
+											$this->css_images[$this->sprite]['images'][$k][3] += $shift;
+										}
+									}
+									break;
 								case 1:
 									$this->css_images[$this->sprite]['images'][$key][3] = 0;
 									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
@@ -631,9 +663,9 @@ __________________
 									$this->css_images[$this->sprite]['y'] =  $height > $this->css_images[$this->sprite]['y'] ? $height : $this->css_images[$this->sprite]['y'];
 								break;
 							}
-							$counter_images[$image[0]] = 1;
+							$counter_images[$filename] = 1;
 						}
-						if (preg_match("/\.jpe?g/i", $image[0])) {
+						if (preg_match("/\.jpe?g/i", $filename)) {
 							$fullcolor = 1;
 						}
 					}
@@ -667,7 +699,7 @@ __________________
 								$final_y = $image[4];
 								$image[3] = 0;
 								$image[4] = $added_height + $final_y;
-								$added_height += $image[2] + $final_y + $image[6];
+								$added_height += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
 								$this->css_images[$this->sprite]['y'] += $image[2] + $final_y + $image[6];
 								$image[] = 1;
 								$this->css_images[$this->sprite]['images'][] = $image;
@@ -679,8 +711,12 @@ __________________
 				if ($type == 2) {
 					$no_dimensions = preg_replace("/y/", "yl", $this->sprite);
 /* add to the end of Sprite repeat-x w/o dimensions */
-					if (count($this->css_images[$no_dimensions]['images'])) {
-						$image = $this->css_images[$no_dimensions][0];
+					if (!empty($this->css_images[$no_dimensions]) && count($this->css_images[$no_dimensions]['images'])) {
+						foreach ($this->css_images[$no_dimensions]['images'] as $image) {
+							if (!empty($image)) {
+								continue;
+							}
+						}
 						$final_x = $image[3];
 						$image[3] += $this->css_images[$this->sprite]['x'];
 						$image[4] = 0;
@@ -699,7 +735,7 @@ __________________
 								$final_x = $image[3];
 								$image[3] = $added_width + $final_x;
 								$added_width += $image[1] + $final_x + $image[5];
-								$this->css_images[$this->sprite]['x'] += $image[1] + $final_x + $image[5];
+								$this->css_images[$this->sprite]['x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
 								$image[] = 1;
 								$this->css_images[$this->sprite]['images'][] = $image;
 								unset($this->css_images[$no_repeat][$key]);
