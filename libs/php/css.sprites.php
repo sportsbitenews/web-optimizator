@@ -287,11 +287,13 @@ class css_sprites {
 							case 'no-repeatr':
 								$left = 'right';
 								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+								$shift_y = !empty($image['height']) && $image['height'] > $height ? $image['height'] - $height : 0;
 								break;
 /* no-repeat case with 0 100% */
 							case 'no-repeatb':
 								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
 								$top = 'bottom';
+								$shift_y = !empty($image['width']) && $image['width'] > $height ? $image['width'] - $height : 0;
 								break;
 							}
 /* add image to CSS Sprite to merge. Overall picture looks like this:
@@ -353,9 +355,10 @@ __________________
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
 /* convert image to base64 */
 							$this->get_image(1);
-							$background['background-position'] = 'url(' . $this->css_image . ')';
+							if (!empty($this->css_image)) {
+								$this->css->css[$import][$tags]['background-image'] = 'url(' . $this->css_image . ')';
+							}
 						}
-						$this->css->css[$import][$key] = $this->css->optimise->merge_bg($background);
 					}
 				}
 			}
@@ -743,24 +746,32 @@ __________________
 						}
 					}
 				}
+				$merged_selector = array();
+				$this->css_images[$this->sprite]['addon_y'] = 0;
+				$this->css_images[$this->sprite]['addon_x'] = 0;
 /* need to count placement for each image in array */
 				if ($type == 4) {
 					$this->css_images[$this->sprite] = $this->sprites_placement($this->css_images[$this->sprite], $this->css_images[preg_replace("/webo/", "weboi", $this->sprite)]);
-					$this->css_images['addon_y'] = 0;
 					$sprite_right = preg_replace("/webo/", "webor", $this->sprite);
 /* add right Sprite to the right top corner */
 					if (is_file($sprite_right)) {
-						$this->css_images['x'] += $this->css_images[$sprite_right]['x'];
-						$this->css_images['y'] += $this->css_images[$sprite_right]['y'];
-						$this->css_images['addon_y'] += $this->css_images[$sprite_right]['y'];
+						$this->css_images[$this->sprite]['y'] += $this->css_images[$sprite_right]['y'];
+						$this->css_images[$this->sprite]['addon_y'] += $this->css_images[$sprite_right]['y'];
+/* change background image for the right Sprite selectors */
+						foreach ($this->css_images[$sprite_right]['images'] as $image) {
+							$merged_selector[$image[7]] = (empty($merged_selector[$image[7]]) ? "" : $merged_selector[$image[7]] . ",") . $image[8];
+						}
 					}
-					$this->css_images['addon_x'] = 0;
 					$sprite_bottom = preg_replace("/webo/", "webob", $this->sprite);
 /* add bottom Sprite to the bottom left corner */
 					if (is_file($sprite_bottom)) {
-						$this->css_images['x'] += $this->css_images[$sprite_bottom]['x'];
-						$this->css_images['y'] += $this->css_images[$sprite_bottom]['y'];
-						$this->css_images['addon_x'] += $this->css_images[$sprite_bottom]['x'];
+						$this->css_images[$this->sprite]['x'] += $this->css_images[$sprite_bottom]['x'];
+						$this->css_images[$this->sprite]['addon_x'] += $this->css_images[$sprite_bottom]['x'];
+/* change background image for the right Sprite selectors */
+						$merged_selector = array();
+						foreach ($this->css_images[$sprite_bottom]['images'] as $image) {
+							$merged_selector[$image[7]] = (empty($merged_selector[$image[7]]) ? "" : $merged_selector[$image[7]] . ",") . $image[8];
+						}
 					}
 				}
 				if (!$file_exists) {
@@ -772,7 +783,6 @@ __________________
 				}
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
-					$merged_selector = array();
 					if (!$file_exists) {
 /* fill sprite with transparent color */
 						$back = @imagecolorallocatealpha($this->sprite_raw, 0, 0, 0, 127);
@@ -787,8 +797,8 @@ __________________
 						$filename = empty($image[0]) ? '' : $image[0];
 						$width = empty($image[1]) ? 0 : $image[1];
 						$height = empty($image[2]) ? 0 : $image[2];
-						$final_x = empty($image[3]) ? 0 : $image[3];
-						$final_y = empty($image[4]) ? 0 : $image[4];
+						$final_x = (empty($image[3]) ? 0 : $image[3]) + $this->css_images[$this->sprite]['addon_x'];
+						$final_y = (empty($image[4]) ? 0 : $image[4]) + $this->css_images[$this->sprite]['addon_y'];
 /* re-use of shifts -- to restore initial background-position */
 						$shift_x = empty($image[5]) ? 0 : $image[5];
 						$shift_y = empty($image[6]) ? 0 : $image[6];
@@ -914,7 +924,7 @@ __________________
 							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
 								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->css->css[$import][$key]['background-color']) ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
-									($css_left ? $css_left . 'px ' : '0 '). ($css_top ? $css_top . 'px ' : '0 ') . $css_repeat . ' ' .
+									(empty($css_left) ? '0 ' : $css_left . (is_numeric($css_left) ? 'px ' : ' ')). (empty($css_top) ? '0 ' : $css_top . (is_numeric($css_top) ? 'px ' : ' ')) . $css_repeat . ' ' .
 									(!empty($this->css->css[$import][$key]['background-attachement']) ? $this->css->css[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
@@ -924,7 +934,7 @@ __________________
 						}
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
-						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import]) . $key . ",";
+						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import]) . "," . $key;
 						unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 
 					}
@@ -987,7 +997,7 @@ __________________
 					}
 /* add selector with final sprite */
 					foreach ($merged_selector as $import => $keys) {
-						$this->css->css[$import][preg_replace("/,$/", "", $keys)]['background-image'] = 'url('. $this->sprite .')';
+						$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';
 					}
 
 				}
