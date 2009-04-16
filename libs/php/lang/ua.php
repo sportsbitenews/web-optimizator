@@ -10,9 +10,12 @@
  _WEBO_UPGRADE_SUCCESSFULL
  _WEBO_UPGRADE_UNABLE
  _WEBO_SPLASH1_EXPRESS
+ _WEBO_SPLASH2_MTIME
+ _WEBO_SPLASH2_MTIME_INFO
  _WEBO_unobtrusive_on
  _WEBO_external_scripts_on
  _WEBO_external_scripts_ignore_list
+ _WEBO_dont_check_file_mtime'
  _WEBO_minify_javascript
  _WEBO_minify_with_jsmin
  _WEBO_minify_with_packer
@@ -44,7 +47,7 @@
  **/
 
 /* general layout */
-define('_WEBO_CHARSET, "windows-1251");
+define('_WEBO_CHARSET', "windows-1251");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація Веб Оптимізатора');
 
 /* error layout */

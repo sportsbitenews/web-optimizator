@@ -127,27 +127,17 @@ class admin {
 		if (is_file($file)) {
 			$files = split("\r?\n", @file_get_contents($file));
 			foreach ($files as $file) {
-				if ($file != 'config.webo.php') {
-					$this->download($this->svn . $file, $file);
-				} else {
-					$this->download($this->svn . $file, $file . '.tmp');
-					if (is_file($file . '.tmp')) {
-/* include temporary file */
-						require_once($file . '.tmp');
-/* reqrite old options with existent values */
-						require($file);
-/* save all options to the current file */
-						foreach($compress_options AS $key => $option) {
-							if(is_array($option)) {
-								foreach($option AS $option_name => $option_value) {
-									$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
-								}
-							} else {
-								$this->save_option("['" . strtolower($key) . "']", $option);
+				$this->download($this->svn . $file, $file);
+				if ($file == 'config.webo.php') {
+/* save all options to the new file -- rewrite default ones  */
+					foreach($compress_options AS $key => $option) {
+						if(is_array($option)) {
+							foreach($option AS $option_name => $option_value) {
+								$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
 							}
+						} else {
+							$this->save_option("['" . strtolower($key) . "']", $option);
 						}
-/* delete temporary file */
-						@unlink($file . '.tmp');
 					}
 				}
 			}
@@ -690,6 +680,9 @@ ExpiresDefault \"access plus 10 years\"
 						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
+						if (substr($cms_version, 0, 9) == 'vBulletin') {
+							$index = $this->view->paths['absolute']['document_root'] . 'include/functions.php';
+						}
 						$fp = @fopen($index, "r");
 						if ($fp) {
 							$content_saved = '';
@@ -708,13 +701,20 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for Joostina */
 							} elseif (preg_match("/Joostina/", $cms_version)) {
 								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+/* fix for vBulletin */
+							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+							
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 							} else {
 								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
 							}
-							if (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
+/* fix for vBulletin */
+							if (substr($cms_version, 0, 9) == 'vBulletin') {
+								$content_saved = preg_replace("/(flush\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+							} elseif (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
 /* small fix for Joostina */
 									if (substr($cms_version, 0, 8) == 'Joostina') {
 										$content_saved = preg_replace("/(exit\(\);\r?\n\?>)/", '$web_optimizer->finish();' . "\n$1", $content_saved);
@@ -814,13 +814,12 @@ ExpiresDefault \"access plus 10 years\"
 	* Saves an admin option
 	* 
 	**/
-	function save_option($option_name,$option_value) {
+	function save_option ($option_name, $option_value) {
 /* See if file exists */
-		$option_file = $this->view->paths['full']['current_directory'].$this->options_file;
-		if(file_exists($option_file)) {
-		
-			$content = file_get_contents($option_file);
-			$content = preg_replace("@(" . $this->regex_escape($option_name) . ") = \"(.*?)\"@is","$1 = \"" . $option_value . "\"",$content);
+		$option_file = $this->view->paths['full']['current_directory'] . $this->options_file;
+		if (file_exists($option_file)) {
+			$content = @file_get_contents($option_file);
+			$content = preg_replace("@(" . $this->regex_escape($option_name) . ") = \"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			$fp = @fopen($option_file, 'w');
 			if(!$fp) {
 /* unable to open file for writing */
@@ -829,15 +828,13 @@ ExpiresDefault \"access plus 10 years\"
 								<p>'. _WEBO_SPLASH3_CONFIGERROR4 .'</p>');
 			} else {
 /* write the file */
-				fwrite($fp, $content);
-				fclose($fp);
+				@fwrite($fp, $content);
+				@fclose($fp);
 				return _WEBO_SPLASH2_SAVED . " " . $option_name;
 			}
-	
 		} else {
 			$this->error(_WEBO_SPLASH3_CONFIGERROR5);
 		}
-	
 	}
 	
 	/**
@@ -950,6 +947,14 @@ ExpiresDefault \"access plus 10 years\"
 /* for PHP-Nuke 8.0 */
 			if (is_file($root . 'modules/Journal/copyright.php') && is_file($root . 'footer.php') && is_file($root . 'mainfile.php')) {
 				return 'PHP-Nuke';
+/* vBulletin */
+			} elseif (is_file($root . 'includes/class_core.php')) {
+				require($root . 'includes/class_core.php');
+				$vbulletin_version = '';
+				if (defined('FILE_VERSION')) {
+					$vbulletin_version = ' ' . FILE_VERSION;
+				}
+				return 'vBulletin' . $vbulletin_version;
 /* Joomla 1.0, Joostina */
 			} else {
 				define('_VALID_MOS', 1);

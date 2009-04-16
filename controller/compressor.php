@@ -538,7 +538,7 @@ class web_optimizer {
 				} else {
 					$ind = $counter > 0 ? $counter - 1 : 0;
 					$new_script_array[$ind]['content'] = (empty($new_script_array[$ind]['content']) ? '' : $new_script_array[$ind]['content'] . "\n") . $value['content'];
-					$inline_scripts_to_remove[] = $value['content'];
+					$inline_scripts_to_remove[] = $value['source'];
 				}
 			}
 			$_script_array = array();
@@ -547,7 +547,7 @@ class web_optimizer {
 				if (is_array($inline_scripts_to_remove)) {
 					foreach($inline_scripts_to_remove as $content) {
 /* handle crazy comments inside scripts -- this leaves a bit of empty strings in head */
-						$source = str_replace(preg_replace("/^(\r?\n)+|(\r?\n)+$/", "", $content), "", $source);
+						$source = str_replace($content, "", $source);
 					}
 				}
 			}
@@ -831,7 +831,7 @@ class web_optimizer {
 			foreach($matches as $match) {
 				$external_array[] = array(
 					'file' => preg_replace("/<script[^>]+>.*?<\/script>/i", "", preg_replace("/\r?\n/", "", preg_replace("/.*(" . $options['src'] . "\\s*=\\s*['\"](.+?)\\s*['\"]).*/i", "$1", $match[0]))),
-					'content' => preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]*>|<script[^>]*>|<\/script>)/i", "", $match[0]),
+					'content' => preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]*>|<script[^>]*>[\s\r\n]*|[\s\r\n]*<\/script>)/i", "", $match[0]),
 					'source' => $match[0]
 				);
 			}
@@ -874,15 +874,16 @@ class web_optimizer {
 					}
 				}
 			}
-			if ((!$options['unobtrusive'] && !$options['external_scripts']) || empty($value['content'])) {
-				if ($options['ext'] == 'css') {
+			$content_from_file = '';
+			if ($options['ext'] == 'css') {
 /* recursively resolve @import in files */
-					$external_array[$key]['content'] = (empty($options['media_all'][$src[1]]) ? "" : "@media " . $options['media_all'][$src[1]] . "{") .
-						$this->resolve_css_imports($src[1]) . (empty($options['media_all'][$src[1]]) ? "" : "}");
-				} else {
-					$external_array[$key]['content'] = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : false;
-				}
+				$content_from_file = (empty($options['media_all'][$src[1]]) ? "" : "@media " . $options['media_all'][$src[1]] . "{") .
+					$this->resolve_css_imports($src[1]) . (empty($options['media_all'][$src[1]]) ? "" : "}");
+			} else {
+				$content_from_file = ( ($file = $this->get_file_name($src[1])) && is_file($file)) ? file_get_contents($file) : '';
 			}
+/* don't rewrite existing content inside tags */
+			$external_array[$key]['content'] = (empty($external_array[$key]['content']) ? '' : $external_array[$key]['content']) . $content_from_file;
 		}
 /* Remove ignored files */
 		if(!empty($this->ignore_files)) {
