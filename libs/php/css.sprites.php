@@ -783,8 +783,7 @@ __________________
 /* for final sprite */
 					if (!$file_exists) {
 /* fill sprite with transparent color */
-						$back = @imagecolorallocatealpha($this->sprite_raw, 0, 0, 0, 127);
-						@imagecolortransparent($this->sprite_raw, $back);
+						$back = @imagecolortransparent($this->sprite_raw);
 						@imagefill($this->sprite_raw, 0, 0, $back);
 /* to nadle 32bit alpha transparent images */
 						$this->alpha_enabled = 0;
@@ -1043,8 +1042,7 @@ __________________
 	function create_new_raw () {
 		$new_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 		if ($new_raw) {
-			$back = @imagecolorallocatealpha($new_raw, 0, 0, 0, 127);
-			@imagecolortransparent($new_raw, $back);
+			$back = @imagecolortransparent($new_raw);
 			@imagefill($new_raw, 0, 0, $back);
 			@imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 			$this->sprite_raw = $new_raw;

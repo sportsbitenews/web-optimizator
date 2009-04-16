@@ -3,47 +3,7 @@
  * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
  * Contains all UA localization constants
  * Translated by Sergiy Andriychuk
- * new (=not translated) constants:
- _WEBO_LOGIN_UPGRADE
- _WEBO_LOGIN_UPGRADENOTICE
- _WEBO_LOGIN_UPGRADENOTICE2
- _WEBO_UPGRADE_SUCCESSFULL
- _WEBO_UPGRADE_UNABLE
- _WEBO_SPLASH1_EXPRESS
- _WEBO_SPLASH2_MTIME
- _WEBO_SPLASH2_MTIME_INFO
- _WEBO_unobtrusive_on
- _WEBO_external_scripts_on
- _WEBO_external_scripts_ignore_list
- _WEBO_dont_check_file_mtime'
- _WEBO_minify_javascript
- _WEBO_minify_with_jsmin
- _WEBO_minify_with_packer
- _WEBO_minify_with_yui
- _WEBO_minify_page
- _WEBO_minify_css
- _WEBO_gzip_javascript
- _WEBO_gzip_css
- _WEBO_gzip_page
- _WEBO_far_future_expires_javascript
- _WEBO_far_future_expires_css
- _WEBO_far_future_expires_static
- _WEBO_footer_text
- _WEBO_footer_image
- _WEBO_cleanup_on
- _WEBO_data_uris_on
- _WEBO_css_sprites_enabled
- _WEBO_css_sprites_truecolor_in_jpeg
- _WEBO_css_sprites_aggressive
- _WEBO_css_sprites_extra_space
- _WEBO_css_sprites_ignore_list
- _WEBO_htaccess_enabled
- _WEBO_htaccess_mod_deflate
- _WEBO_htaccess_mod_gzip
- _WEBO_htaccess_mod_expires
- _WEBO_htaccess_mod_headers
- _WEBO_htaccess_mod_setenvif
- _WEBO_auto_rewrite_enabled
+ * new (=not translated) constants: none
  **/
 
 /* general layout */
@@ -63,18 +23,19 @@ define('_WEBO_LOGIN_ENTERLOGIN', 'Введіть ваш логін');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введіть пароль');
 /* Upgrade */
-define('_WEBO_LOGIN_UPGRADE', 'Обновить');
-define('_WEBO_LOGIN_UPGRADENOTICE', 'Вы можете обновить вашу текущую версию Веб Оптимизатора (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') до самой последней. Для этого введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Обновить</strong>. Веб Оптимизатор будет автоматически обновлен до версии <strong>');
+define('_WEBO_LOGIN_UPGRADE', 'Обновити');
+define('_WEBO_LOGIN_UPGRADENOTICE', 'Ви можете обновити вашу поточну версію Веб Оптимізатора (');
+define('_WEBO_LOGIN_UPGRADENOTICE2', ') до найостаннішої. Для цього введіть ваш логін і пароль в формі вище і натисніть кнопку <strong>Поновити</strong>. Веб Оптимізатор буде автоматично обновлений до версії <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
-define('_WEBO_UPGRADE_SUCCESSFULL', 'Вы успешно обновились до версии ');
-define('_WEBO_UPGRADE_UNABLE', 'Не удается загрузить последнюю версию из репозитория. Пожалуйста, проверьте соединение сервера с интернетом и наличие установленного curl.');
+define('_WEBO_UPGRADE_SUCCESSFULL', 'Ви успішно обновились до версії ');
+define('_WEBO_UPGRADE_UNABLE', 'Не вдається завантажити останню версію з репозиторію. Будь-ласка, перевірте з\'єднання серверу з інтернетом та наявність встановленого curl.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'Щоб видалити Веб Оптимізатор, будь-ласка, введіть ваш логін та пароль у формі вище та натисніть кнопку <strong>Видалити</strong>.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Видалити Веб Оптимізатор');
 define('_WEBO_LOGIN_FAILED', 'Невірно введений логін та(або) пароль');
 define('_WEBO_LOGIN_ACCESS', 'Ця сторінка доступна тільки авторизованим користувачам');
 define('_WEBO_LOGIN_LOGGED', 'Увійшли в систему');
+define('_WEBO_SPLASH1_EXPRESS', 'Швидка установка');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Установка - обмеження доступу');
@@ -127,6 +88,10 @@ define('_WEBO_SPLASH2_EXTERNAL', 'Включить зовнішні JavaScript-файли і вбудовани
 define('_WEBO_SPLASH2_EXTERNAL_INFO', 'При активації цієї опції всі JavaScript-файли, які підключаються із зовнішніх сайтів, так само як і просто JavaScript-код, який знаходиться в секції <code>head</code> будуть об\'єднані в один файл, зменшені в розмірі і підключені відразу після CSS-файлу.
 									<br/>Це буде особливо корисно при використанні великої кількості модулів з різних сайтів, які не можуть бути підключені в &laquo;ненав\'язливому&raquo; режимі.
 									<br/>Ви також можете вказати імена файлів, які потрібно виключити із подібного об\'єднання (наприклад, ga.js, jquery.min.js і т.п.).');
+define('_WEBO_SPLASH2_MTIME', 'Не перевіряти час зміни та змісту файлів');
+define('_WEBO_SPLASH2_MTIME_INFO', 'Як правило, Веб Оптимізатор при кожному завантаженні сторінки перевіряє, чи змінились файли (який в них час зміни і який в них зміст), і на основі цієї інформації або дає лінки на існуючі статичні файли, або створює нові.
+                                    <br/>З точки зору серверної оптимізації більш оптимально не перевіряти кожного разу, чи змінились файли, а видяляти по факту самої зміни закешовану версію.
+                                    <br/>З включенням цієї опції вам буде необхідно самостійно управляти кешем Веб Оптимізатора, але при цьому на сервер не буде створюватися додаткове навантаження.');
 define('_WEBO_SPLASH2_GZIP', 'Налаштування архівування');
 define('_WEBO_SPLASH2_GZIP_INFO', 'Застосування <code>gzip</code>-стиснення дозволить на 80-85% зменшити розмір текстовых файлів.
 									<br/>Для завантажених сайтів рекомендуєтся налаштування <code>gzip</code>-стиснення перенести в конфігураційний файл сервера (або використовувати налаштування <code>.htaccess</code> нижче).');
@@ -153,6 +118,38 @@ define('_WEBO_SPLASH2_AUTOCHANGE', 'Автоматичне змінення /index.php');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимізавтор може автоматично внести потрібні зміни в основний файл вашого сайту, який використовує ');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (зміни будуть застосовані тільки для <code>/index.php</code>).
 									<br/>УВАГА: для деяких переревірених середовищ і малорозповсюджених CMS це може призвести до непрацездатності сайту.');
+define('_WEBO_unobtrusive_on', 'Включити &laquo;ненав\'язливий&raquo; JavaScript');
+define('_WEBO_external_scripts_on', 'Включити об\'єднання зовнішніх файлів');
+define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання файли');
+define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
+define('_WEBO_dont_check_file_mtime', 'Не перевіряти час зміни файлів');
+define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
+define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');
+define('_WEBO_minify_with_yui', 'Мінімізувати за допомогою YUI Compressor');
+define('_WEBO_minify_page', 'Мінімізувати і об\'єднати CSS-файли');
+define('_WEBO_minify_css', 'Мінімізувати HTML');
+define('_WEBO_gzip_javascript', 'Застосувати <code>gzip</code> для JavaScript');
+define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
+define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
+define('_WEBO_far_future_expires_javascript', 'Кешуровати JavaScript');
+define('_WEBO_far_future_expires_css', 'Кешуровати CSS');
+define('_WEBO_far_future_expires_static', 'Кешуровати статические файлы');
+define('_WEBO_footer_text', 'Додати посилання на Веб Оптимізатор');
+define('_WEBO_footer_image', 'Додати зображення Веб Оптимізатора');
+define('_WEBO_cleanup_on', 'Видаляти старі файли');
+define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
+define('_WEBO_css_sprites_enabled', 'Застосувати CSS Sprites');
+define('_WEBO_css_sprites_truecolor_in_jpeg', 'Зберігати повнокольорові зображення в JPEG');
+define('_WEBO_css_sprites_aggressive', '&laquo;Агресивний&raquo; режим створення CSS Sprites');
+define('_WEBO_css_sprites_extra_space', 'Додати вільне місце в CSS Sprites');
+define('_WEBO_css_sprites_ignore_list', 'Виключити із CSS Sprites файли');
+define('_WEBO_htaccess_enabled', 'Включити <code>.htaccess</code>');
+define('_WEBO_htaccess_mod_deflate', 'Включити <code>mod_deflate</code>');
+define('_WEBO_htaccess_mod_gzip', 'Включити <code>mod_gzip</code>');
+define('_WEBO_htaccess_mod_expires', 'Включити <code>mod_expires</code>');
+define('_WEBO_htaccess_mod_headers', 'Включити <code>mod_headers</code>');
+define('_WEBO_htaccess_mod_setenvif', 'Включити <code>mod_setenvif</code>');
+define('_WEBO_auto_rewrite_enabled', 'Включити авто-запис');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Установка - третій крок');
