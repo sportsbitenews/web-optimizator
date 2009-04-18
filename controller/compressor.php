@@ -488,7 +488,7 @@ class web_optimizer {
 /* else use unobtrusive loader */
 			case 2:
 				if (preg_match("/var yass_modules/i", $source)) {
-					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
+					$source = preg_replace('!(<script type="text\/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
@@ -609,7 +609,11 @@ class web_optimizer {
 /* Add media type header */
 						$file_contents = $this->add_media_header($file_contents, $info);
 					}
-					$contents .=  $file_contents;
+					$delimiter = '';
+					if ($options['header'] == "javascript") {
+						$delimiter = ';';
+					}
+					$contents .=  $file_contents . $delimiter;
 				}
 			}
 			if ($options['css_sprites']) {
@@ -1069,7 +1073,7 @@ class web_optimizer {
 /* Remove comments */
 		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
 /* Remove ruments from optimization */
-		$txt = preg_replace('/<script[^>]+type=[\'"]text/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
+		$txt = preg_replace('/<script[^>]+type=[\'"]text\/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
 		return $txt;
 	}
 
