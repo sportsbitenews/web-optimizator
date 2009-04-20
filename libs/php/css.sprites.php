@@ -410,7 +410,8 @@ __________________
 		switch ($mode) {
 /* data:URI */
 			case 1:
-				if (is_file($this->css_image)) {
+/* don't create data:URI greater than 32KB -- for IE8 */
+				if (@filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
 					$this->css_image = 'data:image/' . (strtolower(preg_replace("/.*\./", "", $this->css_image))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 				} else {
