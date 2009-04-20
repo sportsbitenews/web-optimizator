@@ -984,6 +984,12 @@ ExpiresDefault \"access plus 10 years\"
 /* LiveStreet */
 		} elseif (is_file($root . 'classes/engine/Router.class.php')) {
 			return 'LiveStreet';
+/* Santafox */
+		} elseif (is_file($root . 'ini.php')) {
+			require($root . 'ini.php');
+			if (defined('SANTAFOX_VERSION')) {
+				return 'Satafox ' . SANTAFOX_VERSION;
+			}
 		}
 		return 'CMS 42';
 	}
