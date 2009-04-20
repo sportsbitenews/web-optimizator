@@ -847,7 +847,7 @@ class web_optimizer {
 			return $source;
 		}
 /* strange thing: array is filled even if string is empty */
-		$excluded_scripts = split("\\\s+", $options['external_scripts_exclude']);
+		$excluded_scripts = split(" ", $options['external_scripts_exclude']);
 /* Remove empty sources and any externally linked files */
 		foreach($external_array AS $key => $value) {
 			$regex = "!" . $options['src'] . "=['\"](.*?)(\?.*)?['\"]!is";

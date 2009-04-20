@@ -29,7 +29,7 @@ class css_sprites {
 /* leave some space for combined Sprites to handle resized fonts */
 		$this->extra_space = $options['extra_space'];
 /* list of excluded from CSS Sprites files */
-		$this->ignore_list = split("\\\s+", $options['ignore_list']);
+		$this->ignore_list = split(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
 		$this->data_uris = $options['data_uris'];
 /* part or full process */
