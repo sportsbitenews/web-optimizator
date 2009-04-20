@@ -488,7 +488,7 @@ class web_optimizer {
 /* else use unobtrusive loader */
 			case 2:
 				if (preg_match("/var yass_modules/i", $source)) {
-					$source = preg_replace('!(<script type="text\/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
+					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)

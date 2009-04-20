@@ -411,9 +411,9 @@ __________________
 /* data:URI */
 			case 1:
 /* don't create data:URI greater than 32KB -- for IE8 */
-				if (@filesize($this->css_image) < 21800) {
+				if (is_file($this->css_image) && @filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
-					$this->css_image = 'data:image/' . (strtolower(preg_replace("/.*\./", "", $this->css_image))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+					$this->css_image = 'data:image/' . (strtolower(preg_replace("/.*\.([^\.])$/", "$1", $this->css_image))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 				} else {
 					$this->css_image = $image_saved;
 				}
@@ -783,12 +783,12 @@ __________________
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
 					if (!$file_exists) {
-						$back = @imagecolorallocate($this->sprite_raw, 255, 255, 255);
+						$this->background = @imagecolorallocate($this->sprite_raw, 255, 255, 255);
 /* fill sprite with white color */
-						@imagefill($this->sprite_raw, 0, 0, $back);
+						@imagefill($this->sprite_raw, 0, 0, $this->background);
 /* make this color transparent */
-						@imagecolortransparent($this->sprite_raw, $back);
-/* to nadle 32bit alpha transparent images */
+						@imagecolortransparent($this->sprite_raw, $this->background);
+/* to handle 32bit alpha transparent images */
 						$this->alpha_enabled = 0;
 					}
 /* loop in all given CSS images */
@@ -1045,11 +1045,15 @@ __________________
 	function create_new_raw () {
 		$new_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 		if ($new_raw) {
-			$back = @imagecolorallocate($new_raw, 255, 255, 255);
-			@imagefill($new_raw, 0, 0, $back);
-			@imagecolortransparent($new_raw, $back);
+			if ($this->alpha_enabled) {
+				$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255, 127);
+			} else {
+				$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255);
+			}
+			@imagefill($new_raw, 0, 0, $this->background);
 			@imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 			$this->sprite_raw = $new_raw;
+			@imagecolortransparent($this->sprite_raw, $this->background);
 			if ($this->alpha_enabled) {
 				@imagealphablending($this->sprite_raw, false);
 				@imagesavealpha($this->sprite_raw, true);
