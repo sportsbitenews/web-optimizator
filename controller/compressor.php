@@ -91,7 +91,8 @@ class web_optimizer {
 			),
 			"page" => array(
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
-				"minify" => $this->options['minify']['page']
+				"minify" => $this->options['minify']['page'],
+				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -751,7 +752,7 @@ class web_optimizer {
 	**/
 	function get_file_dates($files,$options) {
 /* option added by janvarev. Actually does a little -- we need to get all files' content before processing... */
-		if ($this->options['dont_check_file_mtime']) {
+		if (!empty($this->options['dont_check_file_mtime'])) {
 			return;
 		}
 		$files = $this->get_file_locations($files, $options);

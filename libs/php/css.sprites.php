@@ -383,13 +383,16 @@ __________________
 			$this->css_image = '';
 		} else {
 			if (preg_match("/http:\/\//", $this->css_image)) {
+				$cached = preg_replace("/.*\//", "", $this->css_image);
+/* check for cached version */
+				if (!is_file($cached)) {
 /* check for curl */
-				if (function_exists('curl_init')) {
+					if (function_exists('curl_init')) {
 /* try to download image */
-					$ch = curl_init($this->css_image);
-					$this->css_image = preg_replace("/.*\//", "", $this->css_image);
-					$fp = fopen($this->css_image, "w");
-					if ($fp && $ch) {
+						$ch = curl_init($this->css_image);
+						$this->css_image = $cached;
+						$fp = fopen($this->css_image, "w");
+						if ($fp && $ch) {
 						curl_setopt($ch, CURLOPT_FILE, $fp);
 						curl_setopt($ch, CURLOPT_HEADER, 0);
 						curl_setopt($ch, CURLOPT_REFERER, $protocol . $host);
@@ -397,9 +400,12 @@ __________________
 						curl_exec($ch);
 						curl_close($ch);
 						fclose($fp);
+						}
+					} else {
+						$this->css_image = '';
 					}
 				} else {
-					$this->css_image = '';
+					$this->css_image = $cached;
 				}
 			} else {
 				if (!preg_match("/^webo[ixy\.]/", $this->css_image)) {
@@ -797,8 +803,8 @@ __________________
 						$filename = empty($image[0]) ? '' : $image[0];
 						$width = empty($image[1]) ? 0 : $image[1];
 						$height = empty($image[2]) ? 0 : $image[2];
-						$final_x = (empty($image[3]) ? 0 : $image[3]) + $this->css_images[$this->sprite]['addon_x'];
-						$final_y = (empty($image[4]) ? 0 : $image[4]) + $this->css_images[$this->sprite]['addon_y'];
+						$final_x = empty($image[3]) ? 0 : $image[3];
+						$final_y = empty($image[4]) ? 0 : $image[4];
 /* re-use of shifts -- to restore initial background-position */
 						$shift_x = empty($image[5]) ? 0 : $image[5];
 						$shift_y = empty($image[6]) ? 0 : $image[6];
@@ -806,6 +812,10 @@ __________________
 						$key = empty($image[8]) ? '' : $image[8];
 /* for added to repeat-x / repeat-y image with no-repeat */
 						$added = empty($image[9]) ? 0 : $image[9];
+						if (empty($added)) {
+							$final_x += $this->css_images[$this->sprite]['addon_x'];
+							$final_y += $this->css_images[$this->sprite]['addon_y'];
+						}
 /* try to detect duplicates in this Sprite*/
 						$image_used = 0;
 						foreach ($this->css_images[$this->sprite]['images'] as $image) {
