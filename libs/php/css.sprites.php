@@ -180,14 +180,14 @@ class css_sprites {
 							}
 						}
 						if ($image['background-repeat'] == 'repeat-x') {
-							if (empty($image['height']) && !$this->aggressive) {
+							if ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
 								$repeat_key = 'repeat-xl';
 							} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'repeat';
 							}
 						}
 						if ($image['background-repeat'] == 'repeat-y') {
-							if (empty($image['width']) && !$this->aggressive) {
+							if ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
 								$repeat_key = 'repeat-yl';
 							} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'repeat';
@@ -789,7 +789,7 @@ __________________
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
 					if (!$file_exists) {
-						$this->background = @imagecolorallocate($this->sprite_raw, 255, 255, 255);
+						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
 /* fill sprite with white color */
 						@imagefill($this->sprite_raw, 0, 0, $this->background);
 /* make this color transparent */
@@ -1055,11 +1055,7 @@ __________________
 	function create_new_raw () {
 		$new_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 		if ($new_raw) {
-			if ($this->alpha_enabled) {
-				$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255, 127);
-			} else {
-				$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255);
-			}
+			$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255, 127);
 			@imagefill($new_raw, 0, 0, $this->background);
 			@imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 			$this->sprite_raw = $new_raw;
