@@ -812,7 +812,7 @@ __________________
 						$key = empty($image[8]) ? '' : $image[8];
 /* for added to repeat-x / repeat-y image with no-repeat */
 						$added = empty($image[9]) ? 0 : $image[9];
-						if (empty($added)) {
+						if (empty($added) || $type == 4) {
 							$final_x += $this->css_images[$this->sprite]['addon_x'];
 							$final_y += $this->css_images[$this->sprite]['addon_y'];
 						}
