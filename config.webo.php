@@ -23,8 +23,8 @@ $compress_options['minify']['javascript'] = "1";
 $compress_options['minify']['with_jsmin'] = "1";
 $compress_options['minify']['with_packer'] = "0";
 $compress_options['minify']['with_yui'] = "0";
-$compress_options['minify']['page'] = "1";
 $compress_options['minify']['css'] = "1";
+$compress_options['minify']['page'] = "1";
 ## Gzip options
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";
