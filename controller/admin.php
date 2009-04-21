@@ -130,7 +130,7 @@ class admin {
 				$this->download($this->svn . $file, $file);
 				if ($file == 'config.webo.php') {
 /* save all options to the new file -- rewrite default ones  */
-					foreach($compress_options AS $key => $option) {
+					foreach($this->compress_options AS $key => $option) {
 						if(is_array($option)) {
 							foreach($option AS $option_name => $option_value) {
 								$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
