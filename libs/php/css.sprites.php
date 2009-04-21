@@ -34,10 +34,6 @@ class css_sprites {
 		$this->data_uris = $options['data_uris'];
 /* part or full process */
 		$this->partly = $options['partly'];
-/* safely check for CSS Tidy */
-		if (!class_exists('csstidy')) {
-			require_once('class.csstidy.php');
-		}
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');

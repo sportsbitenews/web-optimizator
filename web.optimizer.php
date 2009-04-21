@@ -41,6 +41,9 @@ if (substr(phpversion(), 0, 1) == 5) {
 	if (!class_exists('JavaScriptPacker')) {
 		require_once('libs/php/packer5.php');
 	}
+	if (!class_exists('csstidy')) {
+		require_once('libs/php/class.csstidy.php');
+	}
 }
 
 if (substr(phpversion(), 0, 1) == 4) {
@@ -49,6 +52,9 @@ if (substr(phpversion(), 0, 1) == 4) {
 	}
 	if (!class_exists('JavaScriptPacker')) {
 		require_once('libs/php/packer4.php');
+	}
+	if (!class_exists('csstidy')) {
+		require_once('libs/php/class.csstidy4.php');
 	}
 }
 

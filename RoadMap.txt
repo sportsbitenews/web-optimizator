@@ -29,7 +29,7 @@
 +o) External and inline JS / external CSS merging
 +p) List of protected from merging files -- really required!
 +r) List of protected from merging imgages (for CSS Sprites)
- s) Fast check by filenames -- janvarev is responsible
+ s) Fast check by filenames -- supported only partly
 
 4. Merging
 +a) Base CSS / JS merging
@@ -89,6 +89,8 @@
 +j) Simpla
 +k) Etomite (1.1)
 +l) LiveStreet (0.2)
+ m) MODx
+ n) DataLife Engine
 
 12. Localization
 +a) English
