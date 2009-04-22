@@ -301,29 +301,7 @@ class admin {
 		}
 /* Set paths with the new document root */
 		$this->view->set_paths($this->input['user']['document_root']);
-/* check for Apache installation */
-		if (function_exists('apache_get_modules')) {
-			$apache_modules = apache_get_modules();
-		} else {
-/* if PHP installed as CGI module -- we don't need .htaccess */	
-			$apache_modules = array();
-		}
-		$apache_modules_enabled = array();
-		if (in_array('mod_expires', $apache_modules)) {
-			$apache_modules_enabled[] = 'mod_expires';
-		}
-		if (in_array('mod_gzip', $apache_modules)) {
-			$apache_modules_enabled[] = 'mod_gzip';
-		}
-		if (in_array('mod_deflate', $apache_modules)) {
-			$apache_modules_enabled[] = 'mod_deflate';
-		}
-		if (in_array('mod_headers', $apache_modules)) {
-			$apache_modules_enabled[] = 'mod_headers';
-		}
-		if (in_array('mod_setenvif', $apache_modules)) {
-			$apache_modules_enabled[] = 'mod_setenvif';
-		}
+		$this->get_modules();
 		$options = array(
 			'Minify' => $this->compress_options['minify'],
 			'GZIP' => $this->compress_options['gzip'],
@@ -381,7 +359,7 @@ class admin {
 						),
 						'htaccess' => array(
 							'title' => _WEBO_SPLASH2_HTACCESS,
-							'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $apache_modules_enabled),
+							'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules),
 							'value' => $this->compress_options['htaccess']
 						),
 						'cleanup' => array(
@@ -397,8 +375,8 @@ class admin {
 		);
 		$options['auto_rewrite'] = null;
 /* check /index.php to possiblity to rewrite it */
-		$fp = @fopen($this->input['user']['document_root'] . "index.php", "a+");
-		if ($fp) {
+		$index = $this->input['user']['document_root'] . "index.php";
+		if (is_readable($index) && is_writable($index)) {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
 				'title' => _WEBO_SPLASH2_AUTOCHANGE,
@@ -442,9 +420,9 @@ class admin {
 				$fp = @fopen($dir."test", 'w');
 				if(!$fp) {
 /* unable to open file for writing */
-				$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p>
-							<p>". _WEBO_SPLASH3_CANTWRITE3 ."</p>
-							<p>". _WEBO_SPLASH3_CANTWRITE4 ."</p>");
+					$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p>
+								<p>". _WEBO_SPLASH3_CANTWRITE3 ."</p>
+								<p>". _WEBO_SPLASH3_CANTWRITE4 ."</p>");
 				} else {
 /* write the file */
 					fwrite($fp, $content);
@@ -453,13 +431,7 @@ class admin {
 				}
 			}
 			$this->write_progress($this->web_optimizer_stage = 4);
-/* check for Apache installation */
-			if (function_exists('apache_get_modules')) {
-				$apache_modules = apache_get_modules();
-			} else {
-/* if PHP installed as CGI module -- we don't need .htaccess */	
-				$apache_modules = array();
-			}
+			$this->get_modules();
 			$loaded_modules = @get_loaded_extensions();
 /* Create the options file */
 			$this->options_file = "config.webo.php";
@@ -468,15 +440,15 @@ class admin {
 				foreach($this->input['user'] AS $key=>$option) {
 					if(is_array($option)) {
 						foreach($option AS $option_name => $option_value) {
-							if (!empty($apache_modules)) {
+							if (!empty($this->apache_modules)) {
 								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif'))) {
-									$option_value = $option_value && in_array($option_name, $apache_modules);
+									$option_value = $option_value && in_array($option_name, $this->apache_modules);
 									$this->input['user'][$key][$option_name] = $option_value;
 								}
 							}
 /* check for curl existence */
 							if ($key == 'external_scripts' && $option_name == 'on') {
-								if (!empty($apache_modules)) {
+								if (!empty($loaded_modules)) {
 									if (!in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
 										$this->input['user'][$key][$option_name] = 0;
 									}
@@ -496,7 +468,7 @@ class admin {
 				}
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* additional check for .htaccess -- need to open exact file */
-				if ($this->input['user']['htaccess']['enabled'] && !empty($apache_modules)) {
+				if ($this->input['user']['htaccess']['enabled'] && !empty($this->apache_modules)) {
 
 					$this->view->set_paths($this->input['user']['document_root']);
 /* first of all just cut current Web Optimizer options from .htaccess */
@@ -714,13 +686,13 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for vBulletin */
 							if (substr($cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/(flush\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
-							} elseif (substr($content_saved, strlen($content_saved) - 2, 2) == '?>') {
+							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($cms_version, 0, 8) == 'Joostina') {
-										$content_saved = preg_replace("/(exit\(\);\r?\n\?>)/", '$web_optimizer->finish();' . "\n$1", $content_saved);
+										$content_saved = preg_replace("/(exit\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 									} else {
 /* add finish block */
-										$content_saved = preg_replace("/ ?\?>$/", '\$web_optimizer->finish(); ?>', $content_saved);
+										$content_saved = preg_replace("/ ?\?>[\r\n\s]*$/", '\$web_optimizer->finish(); ?>', $content_saved);
 									}
 							} else {
 /* fix for Drupal / Joomla on not-closed ?> */
@@ -730,11 +702,11 @@ ExpiresDefault \"access plus 10 years\"
 									$content_saved .= '<?php $web_optimizer->finish(); ?>';
 								}
 							}
-							fclose($fp);
+							@fclose($fp);
 							$fp = @fopen($index, "w");
 							if ($fp) {
-								fwrite($fp, $content_saved);
-								fclose($fp);
+								@fwrite($fp, $content_saved);
+								@fclose($fp);
 								$auto_rewrite = 1;
 							}
 						}
@@ -759,6 +731,36 @@ ExpiresDefault \"access plus 10 years\"
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 
+	}
+
+	/**
+	* Get all loaded Apache modules and do some magic
+	*
+	**/
+	function get_modules () {
+	/* check for Apache installation */
+		if (function_exists('apache_get_modules')) {
+			$apache_modules = apache_get_modules();
+		} else {
+/* if PHP installed as CGI module -- we don't need .htaccess */	
+			$apache_modules = array();
+		}
+		$this->apache_modules = array();
+		if (in_array('mod_expires', $apache_modules)) {
+			$this->apache_modules[] = 'mod_expires';
+		}
+		if (in_array('mod_gzip', $apache_modules)) {
+			$this->apache_modules[] = 'mod_gzip';
+		}
+		if (in_array('mod_deflate', $apache_modules) && in_array('mod_filter', $apache_modules)) {
+			$this->apache_modules[] = 'mod_deflate';
+		}
+		if (in_array('mod_headers', $apache_modules)) {
+			$this->apache_modules[] = 'mod_headers';
+		}
+		if (in_array('mod_setenvif', $apache_modules)) {
+			$this->apache_modules[] = 'mod_setenvif';
+		}
 	}
 
 	/**

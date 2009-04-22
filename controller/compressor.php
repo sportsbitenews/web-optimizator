@@ -683,8 +683,8 @@ class web_optimizer {
 			if (!empty($contents)) {
 /* Write to cache and display */
 				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
-					fwrite($fp, $contents);
-					fclose($fp);
+					@fwrite($fp, $contents);
+					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
 /* Create the link to the new file */
@@ -1475,8 +1475,8 @@ class web_optimizer {
 						$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
 /* replace absolute URLs */
 						$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(data:|mhtml:|https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
-						fwrite($fp, $contents);
-						fclose($fp);
+						@fwrite($fp, $contents);
+						@fclose($fp);
 					}
 				}
 				return $return_filename;
