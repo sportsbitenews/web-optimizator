@@ -736,7 +736,7 @@ __________________
 					if (!empty($this->css_images[$no_repeat]['images'])) {
 /* try to find small no-repeat image to put before all repeat-y ones */
 						foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
-							if ($image['height'] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
+							if ($image[2] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
 								$counted_images[$image[0]] = 1;
 								$final_x = $image[3];
 								$image[3] = $this->css_images[$this->sprite]['addon_x'] + $final_x;
