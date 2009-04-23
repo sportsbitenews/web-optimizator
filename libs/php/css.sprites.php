@@ -347,12 +347,24 @@ __________________
 /* skip default properties */
 							$background[$key] = $value;
 						}
-						if (!empty($background['background-image'])) {
+						if (!empty($background['background-image']) && $background['background-image'] != 'none') {
+/* preserve IE6/7 selectors */
+							$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
+							$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
+							$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
+							$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $background['background-image'];
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
 /* convert image to base64 */
 							$this->get_image(1);
 							if (!empty($this->css_image)) {
-								$this->css->css[$import][$tags]['background-image'] = 'url(' . $this->css_image . ')';
+								if (empty($rule['background'])) {
+									$background = array();
+								} else {
+									$background = $this->css->optimise->dissolve_short_bg($rule['background']);
+								}
+								$background['background-image'] = 'url(' . $this->css_image . ')';
+								$background = $this->css->optimise->merge_bg($background);
+								$this->css->css[$import][$tags]['background'] = $background['background'];
 							}
 						}
 					}
@@ -415,7 +427,7 @@ __________________
 /* don't create data:URI greater than 32KB -- for IE8 */
 				if (is_file($this->css_image) && @filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
-					$this->css_image = 'data:image/' . (strtolower(preg_replace("/.*\.([^\.])$/", "$1", $this->css_image))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+					$this->css_image = 'data:image/' . (strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 				} else {
 					$this->css_image = $image_saved;
 				}
