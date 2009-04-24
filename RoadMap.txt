@@ -44,7 +44,7 @@
 +a) JSMin (PHP4/5)
 +b) CSS Tidy for CSS files (no rules merging)
 +c) Simple CSS minifier (if no CSS Sprites)
- d) YUI Compressor (if java exists) -- akira is responsible
++d) YUI Compressor (if java exists) -- akira is responsible
 +e) Packer for JS files
 
 6. Including

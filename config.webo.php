@@ -20,9 +20,9 @@ $compress_options['external_scripts']['ignore_list'] = "tiny_mce.js";
 $compress_options['dont_check_file_mtime']['on'] = "0";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
-$compress_options['minify']['with_jsmin'] = "1";
+$compress_options['minify']['with_jsmin'] = "0";
 $compress_options['minify']['with_packer'] = "0";
-$compress_options['minify']['with_yui'] = "0";
+$compress_options['minify']['with_yui'] = "1";
 $compress_options['minify']['css'] = "1";
 $compress_options['minify']['page'] = "1";
 ## Gzip options

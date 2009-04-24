@@ -3,16 +3,19 @@
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  *
  **/
+
+$basepath = dirname(__FILE__) . '/';
+
 /* We need these */
-require("controller/admin.php");
-require("libs/php/view.php");
+require($basepath . "controller/admin.php");
+require($basepath . "libs/php/view.php");
 
 /* include language file */
 $language = preg_replace("/[-,;].*/", "", $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-if (is_file("libs/php/lang/". $language .".php")) {
-	require("libs/php/lang/" . $language . ".php");
+if (is_file($basepath . "libs/php/lang/". $language .".php")) {
+	require($basepath . "libs/php/lang/" . $language . ".php");
 } else {
-	require("libs/php/lang/en.php");
+	require($basepath . "libs/php/lang/en.php");
 }
 
 /* set encoding via header */
@@ -33,5 +36,5 @@ if (!empty($input['page'])) {
 $view = new compressor_view();
 
 /* Con. the admin controller */
-new admin(array('view' => $view, 'input' => $input));
+new admin(array('view' => $view, 'input' => $input, 'basepath' => $basepath));
 ?>

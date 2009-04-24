@@ -359,6 +359,10 @@ __________________
 							if (!empty($this->css_image)) {
 								if (empty($rule['background'])) {
 									$background = array();
+									$background['background-color'] = $rule['background-color'];
+									$background['background-position'] = $rule['background-position'];
+									$background['background-repeat'] = $rule['background-repeat'];
+									$background['background-attachement'] = $rule['background-attachement'];
 								} else {
 									$background = $this->css->optimise->dissolve_short_bg($rule['background']);
 								}

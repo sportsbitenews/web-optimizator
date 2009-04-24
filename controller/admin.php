@@ -25,7 +25,7 @@ class admin {
 		}
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
-		require_once($this->options_file);
+		require_once($this->basepath . $this->options_file);
 		$this->compress_options = $compress_options;
 /* Make sure login valid */
 		$this->manage_password();
@@ -62,7 +62,7 @@ class admin {
 	* 
 	**/	
 	function write_progress ($progress, $init = false) {
-		$file = 'cache/progress.js';
+		$file = $this->basepath . 'cache/progress.js';
 		if ($this->display_progress || $init) {
 			$fp = @fopen($file, "w");
 			if ($fp) {
@@ -417,7 +417,7 @@ class admin {
 			);
 			$this->write_progress($this->web_optimizer_stage = 3);
 			foreach($test_dirs AS $name => $dir) {
-				$fp = @fopen($dir."test", 'w');
+				$fp = @fopen($dir . "test", 'w');
 				if(!$fp) {
 /* unable to open file for writing */
 					$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p>
@@ -436,6 +436,17 @@ class admin {
 /* Create the options file */
 			$this->options_file = "config.webo.php";
 			if(!empty($this->input['submit'])) {
+/* try to set some libs executable */
+				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/pngcrush', 0755);
+				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/jpegtran', 0755);
+				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
+/* chekc for YUI availability */
+				require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
+				if (!($YUI->check())) {
+					$this->input['user']['minify']['with_yui'] = 0;
+					$this->input['user']['minify']['with_jsmin'] = 1;
+				}
 /* Save the options	*/
 				foreach($this->input['user'] AS $key=>$option) {
 					if(is_array($option)) {
@@ -460,7 +471,7 @@ class admin {
 									$this->input['user'][$key][$option_name] = 0;
 								}
 							}
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']",$option_value);	
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']",$option_value);
 						}
 					} else {
 						$this->save_option("['" . strtolower($key) . "']",$option);			
@@ -469,7 +480,6 @@ class admin {
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* additional check for .htaccess -- need to open exact file */
 				if ($this->input['user']['htaccess']['enabled'] && !empty($this->apache_modules)) {
-
 					$this->view->set_paths($this->input['user']['document_root']);
 /* first of all just cut current Web Optimizer options from .htaccess */
 					$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
@@ -718,9 +728,6 @@ ExpiresDefault \"access plus 10 years\"
 
 		}
 		$this->write_progress($this->web_optimizer_stage = 99);
-/* try to set some libs executable */
-		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/pngcrush', 0755);
-		@chmod($this->view->paths['full']['current_directory'] . 'libs/php/jpegtran', 0755);
 		$this->write_progress($this->web_optimizer_stage = 100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,

@@ -39,7 +39,7 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$fp = @fopen('progress.js', "w");
+		$fp = @fopen($basepath . 'cache/progress.js', "w");
 		if ($fp) {
 			@fwrite($fp, 'window.progress=' . $progress);
 			@fclose($fp);
@@ -663,6 +663,9 @@ class web_optimizer {
 				if ($options['minify_with'] == 'packer') {
 					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
 					$contents = $this->packer->pack();
+				} elseif ($options['minify_with'] == 'yui') {
+					$this->yuicompressor = new YuiCompressor($options->cachedir, $options->installdir);
+					$contents = $this->yuicompressor->compress($contents);
 				} elseif ($options['minify_with'] == 'jsmin') {
 					$this->jsmin = new JSMin($contents);
 					$contents = $this->jsmin->minify($contents);
