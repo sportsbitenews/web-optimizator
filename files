@@ -15,10 +15,12 @@ libs/js/yass.loader.js
 libs/php/lang/en.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
+libs/php/class.csstidy4.php
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
+libs/php/class.yuicompressor.php
 libs/php/css.sprites.php
 libs/php/css.template.tpl
 libs/php/data.inc.php
@@ -30,6 +32,7 @@ libs/php/packer5.php
 libs/php/pngcrush
 libs/php/user_agent.php
 libs/php/view.php
+libs/yuicompressor/yuicompressor.jar
 view/admin_container.php
 view/error.php
 view/install_enter_password.php

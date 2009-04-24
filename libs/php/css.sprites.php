@@ -357,18 +357,7 @@ __________________
 /* convert image to base64 */
 							$this->get_image(1);
 							if (!empty($this->css_image)) {
-								if (empty($rule['background'])) {
-									$background = array();
-									$background['background-color'] = $rule['background-color'];
-									$background['background-position'] = $rule['background-position'];
-									$background['background-repeat'] = $rule['background-repeat'];
-									$background['background-attachement'] = $rule['background-attachement'];
-								} else {
-									$background = $this->css->optimise->dissolve_short_bg($rule['background']);
-								}
-								$background['background-image'] = 'url(' . $this->css_image . ')';
-								$background = $this->css->optimise->merge_bg($background);
-								$this->css->css[$import][$tags]['background'] = $background['background'];
+								$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" . $this->css_image . ")$1", $value);
 							}
 						}
 					}
