@@ -167,7 +167,8 @@ class css_sprites {
 							} elseif (!empty($image['width']) 
 								&& !empty($image['height'])
 								&& !preg_match("/em|%|auto/", $image['height'])
-								&& !preg_match("/em|%|auto/", $image['width'])) {
+								&& !preg_match("/em|%|auto/", $image['width'])
+								&& !preg_match("/right|center|(50|100)%/", $image['background-position'])) {
 								$repeat_key = 'no-repeat';
 							} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 								$repeat_key = 'no-repeati';
@@ -396,7 +397,6 @@ __________________
 						if ($fp && $ch) {
 						curl_setopt($ch, CURLOPT_FILE, $fp);
 						curl_setopt($ch, CURLOPT_HEADER, 0);
-						curl_setopt($ch, CURLOPT_REFERER, $protocol . $host);
 						curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
 						curl_exec($ch);
 						curl_close($ch);
