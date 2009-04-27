@@ -711,14 +711,22 @@ class web_optimizer {
 	}
 
 	/**
-	* Resursively resolve all @import in CSS files and get files content
+	* Resursively resolve all @import in CSS files and get files' content
+	* The second param marks inline styles case
 	*
 	**/
-	function resolve_css_imports ($src) {
+	function resolve_css_imports ($src, $inline = false) {
 		$content = false;
-		$file = $this->get_file_name($src);
-		if (is_file($file)) {
-			$content = file_get_contents($file);
+		$file = '';
+		if (!$inline) {
+			$file = $this->get_file_name($src);
+			if (is_file($file)) {
+				$content = @file_get_contents($file);
+			}
+		} else {
+			$content = $src;
+		}
+		if (is_file($file) || $inline) {
 /* new RegExp from xandrx */
 			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
 			if (is_array($imports)) {
@@ -855,7 +863,7 @@ class web_optimizer {
 					}
 				}
 				$content_from_file = '';
-				if (!empty($value['rel'])) {
+				if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
 					$content_from_file = (empty($value->media) ? "" : "@media " . $value->media . "{") .
 						$this->resolve_css_imports($value['file']) . (empty($value->media) ? "" : "}");
@@ -866,7 +874,11 @@ class web_optimizer {
 				if (empty($value['file']) && $key != $last_key) {
 /* glue inline and external content */
 					if ($this->options['javascript']['external_scripts']) {
-						$this->initial_files[$last_key]['content'] .= (empty($value['content']) ? '' : $value['content']);
+/* resolve @import from inline styles */
+						if ($value['tag'] == 'link') {
+							$value['content'] = $this->resolve_css_imports($value['content'], true);
+						}
+						$this->initial_files[$last_key]['content'] .= empty($value['content']) ? '' : $value['content'];
 /* null content not to include anywhere, we still have source code in 'source' */
 						$this->initial_files[$key]['content'] = '';
 					}
