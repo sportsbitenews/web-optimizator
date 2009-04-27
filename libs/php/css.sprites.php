@@ -349,15 +349,17 @@ __________________
 							$background[$key] = $value;
 						}
 						if (!empty($background['background-image']) && $background['background-image'] != 'none') {
-/* preserve IE6/7 selectors */
-							$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
-							$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
-							$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
-							$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $background['background-image'];
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
 /* convert image to base64 */
 							$this->get_image(1);
 							if (!empty($this->css_image)) {
+								if (substr($this->css_image, 0, 5) == 'data:') {
+/* preserve IE6/7 selectors */
+									$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
+									$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
+									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
+									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $background['background-image'];
+								}
 								$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" . $this->css_image . ")$1", $value);
 							}
 						}
