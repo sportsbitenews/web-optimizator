@@ -774,7 +774,7 @@ class web_optimizer {
 							$variant_type[1] = strtolower($variant_type[1]);
 							switch ($variant_type[1]) {
 								case "src":
-									$file['file'] = $variant_type[2];
+									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2];
 									break;
 								default:
 									$file[$variant_type[1]] = $variant_type[2];
@@ -802,7 +802,7 @@ class web_optimizer {
 							$variant_type[1] = strtolower($variant_type[1]);
 							switch ($variant_type[1]) {
 								case "href":
-									$file['file'] = $variant_type[2];
+									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2];
 									break;
 								default:
 /* skip media="all" to prevent Safari bug with @media all{} */
@@ -880,7 +880,7 @@ class web_optimizer {
 						if ($value['tag'] == 'link') {
 							$value['content'] = $this->resolve_css_imports($value['content'], true);
 						}
-						$this->initial_files[$last_key]['content'] .= $delimiter . empty($value['content']) ? '' : $value['content'];
+						$this->initial_files[$last_key]['content'] .= $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* null content not to include anywhere, we still have source code in 'source' */
 						$this->initial_files[$key]['content'] = '';
 					}
