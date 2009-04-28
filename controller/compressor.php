@@ -1127,36 +1127,25 @@ class web_optimizer {
 	*
 	**/
 	function convert_paths_to_absolute($content, $path) {
-
 		preg_match_all( "/url\(['\"]?(.*?)['\"]?\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
-			$counter = 0;
 			foreach($matches[1] AS $key=>$file) {
-/* Don't touch data URIs, external files or mhtml: */
-				if (preg_match("!(https?|data|mhtml):!is", $file)) {
+/* Don't touch data URIs, or mhtml:, or external files */
+				if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $_SERVER['HTTP_HOST'] ."!is", $file)) {
 					continue;
 				}
-				$file = trim($file);
-/* Not absolute */
-				if (substr($file, 0, 1) != "/") {
+				$absolute_path = $file;
+/* Not absolute or external */
+				if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 					$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
-					$absolute_path = (preg_match("!https?://!", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
-					$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!", "/", $absolute_path);
-					$marker = md5($counter);
-					$markers[$marker] = $absolute_path;
-					$content = str_replace($file, $marker, $content);
-					$counter++;
+					$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 				}
-			}
-		}
-		if(!empty($markers) && is_array($markers)) {
-/* Replace the markers for the real path */
-			foreach($markers AS $md5 => $real_path) {
-				$content = str_replace($md5, $real_path, $content);
+				$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
+/* replace path in initial CSS */
+				$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
 			}
 		}
 		return $content;
-
 	}
 
 	/**
