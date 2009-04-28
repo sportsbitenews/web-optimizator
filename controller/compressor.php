@@ -41,7 +41,7 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$fp = @fopen($basepath . 'cache/progress.js', "w");
+		$fp = @fopen($this->options['javascript']['cachedir'] . '/progress.js', "w");
 		if ($fp) {
 			@fwrite($fp, 'window.progress=' . $progress);
 			@fclose($fp);
@@ -235,7 +235,6 @@ class web_optimizer {
 				'aggressive' => false,
 				'css_sprites_extra_space' => false,
 				'data_uris' => false,
-				'save_name' => $type,
 				'unobtrusive' => $options['unobtrusive'],
 				'external_scripts' => $options['external_scripts'],
 				'external_scripts_exclude' => $options['external_scripts_exclude'],
@@ -280,7 +279,6 @@ class web_optimizer {
 				'minify_with' => $options['minify_with'],
 				'far_future_expires' => $options['far_future_expires'],
 				'header' => $type,
-				'save_name' => $type . $value['real_type'],
 				'unobtrusive' => $options['unobtrusive'],
 				'external_scripts' => $options['external_scripts'],
 				'external_scripts_exclude' => $options['external_scripts_exclude'],
@@ -740,7 +738,7 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = preg_replace("/@import[^;]+". $src  ."[^;]*;/i", $this->resolve_css_imports($src), $content);
+						$content = preg_replace("@\@import[^;]+". $src  ."[^;]*;@i", $this->resolve_css_imports($src), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
@@ -845,13 +843,13 @@ class web_optimizer {
 			if (!$tag || $value['tag'] == $tag) {
 				if (strlen($value['file'])> 7 && preg_match("/^https?:\/\//i", $value['file'])) {
 /* exclude files from the same host */
-					if(!preg_match("!". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
+					if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
 						if ($this->options['javascript']['external_scripts']) {
 /* get an external file */
-							$file = $this->get_remote_file($options, $src[1]);
+							$file = $this->get_remote_file($value['file']);
 							if (!empty($file)) {
-								$this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . "/" . $file;
+								$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
 							} else {
 								unset($this->initial_files[$key]);
 							}
@@ -870,6 +868,10 @@ class web_optimizer {
 				} else {
 					$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 				}
+				$delimiter = '';
+				if ($value['tag'] == 'script') {
+					$delimiter = ';';
+				}
 /* don't delete any detected scritps from array -- we need to clean up HTML page from them */
 				if (empty($value['file']) && $key != $last_key) {
 /* glue inline and external content */
@@ -878,13 +880,13 @@ class web_optimizer {
 						if ($value['tag'] == 'link') {
 							$value['content'] = $this->resolve_css_imports($value['content'], true);
 						}
-						$this->initial_files[$last_key]['content'] .= empty($value['content']) ? '' : $value['content'];
+						$this->initial_files[$last_key]['content'] .= $delimiter . empty($value['content']) ? '' : $value['content'];
 /* null content not to include anywhere, we still have source code in 'source' */
 						$this->initial_files[$key]['content'] = '';
 					}
 				} else {
 /* don't rewrite existing content inside script tags */
-					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $content_from_file;
+					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
 					$last_key = $key;
 				}
 			}
@@ -1071,12 +1073,12 @@ class web_optimizer {
 	function get_head () {
 		if (empty($this->head)) {
 /* hack for some templates (i.e. LiveStreet) */
-			$source = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
+			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
+/* Pull out the comment blocks, so as to avoid touching conditional comments */
+			$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content));
 			preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
 				$this->head = $matches[0];
-/* Pull out the comment blocks, so as to avoid touching conditional comments */
-				$this->head = preg_replace("@<!--.*?-->@is", '@@@COMPRESSOR:TRIM:HEADCOMMENT@@@', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->head));
 			}
 		}
 	}
@@ -1363,9 +1365,9 @@ class web_optimizer {
 	 * Downloads remote files to include
 	 *
 	 **/
-	function get_remote_file ($options, $file) {
+	function get_remote_file ($file) {
 		if (function_exists('curl_init')) {
-			chdir($options['cachedir']);
+			chdir($this->options['javascript']['cachedir']);
 			$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
 /* prevent download more than 1 time a day */
 			if (is_file($return_filename)) {
