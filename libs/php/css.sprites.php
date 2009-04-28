@@ -269,6 +269,9 @@ class css_sprites {
 							case 'no-repeat':
 								$shift_x = empty($image['width']) && $image['width'] > $width ? $image['width'] - $width : 0;
 								$shift_y = !empty($image['height']) && $image['height'] > $height ? $image['height'] - $height : 0;
+/* cut from initial image area marked with CSS rules */
+								$width = $image['width'] < $width ? $image['width'] : $width;
+								$height = $image['height'] < $height ? $image['height'] : $height;
 /* no-repeat case w/o dimensions -- icons -- should be placed like this:
 	*
    *
@@ -484,7 +487,16 @@ __________________
 					for ($i = 0; $i < $matrix_x; $i++) {
 						for ($j = 0; $j < $matrix_y; $j++) {
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
-							if (empty($matrix[$i][$j]) && empty($matrix[$i + $width]) && empty($matrix[$i][$j + $height]) && empty($matrix[$i + $width][$j]) && empty($matrix[$i + $width][$j + $height])) {
+							if (empty($matrix[$i][$j]) && 
+								empty($matrix[$i][$j + $height]) && 
+								empty($matrix[$i + $width][$j]) &&
+								empty($matrix[$i + $width][$j + $height]) &&
+/* additionally check 4 points in the middle of edges + 1 center point */
+								empty($matrix[$i + round($width/2)][$j]) &&
+								empty($matrix[$i][$j + round($height/2)]) &&
+								empty($matrix[$i + $width][$j + round($height/2)]) &&
+								empty($matrix[$i + round($width/2)][$j + $height]) &&
+								empty($matrix[$i + round($width/2)][$j + round($height/2)])) {
 /* and Sprite is big enough */
 								if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
 									$I = $i;
