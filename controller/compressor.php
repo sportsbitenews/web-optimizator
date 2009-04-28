@@ -774,7 +774,7 @@ class web_optimizer {
 							$variant_type[1] = strtolower($variant_type[1]);
 							switch ($variant_type[1]) {
 								case "src":
-									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2];
+									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2]);
 									break;
 								default:
 									$file[$variant_type[1]] = $variant_type[2];
@@ -802,7 +802,7 @@ class web_optimizer {
 							$variant_type[1] = strtolower($variant_type[1]);
 							switch ($variant_type[1]) {
 								case "href":
-									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2];
+									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2]);
 									break;
 								default:
 /* skip media="all" to prevent Safari bug with @media all{} */
