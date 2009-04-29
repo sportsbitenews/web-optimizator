@@ -705,12 +705,8 @@ ExpiresDefault \"access plus 10 years\"
 										$content_saved = preg_replace("/ ?\?>[\r\n\s]*$/", '\$web_optimizer->finish(); ?>', $content_saved);
 									}
 							} else {
-/* fix for Drupal / Joomla on not-closed ?> */
-								if (substr($cms_version, 0, 6) == 'Drupal' || (preg_match("/Joomla! 1\.[56789]/", $cms_version) && !preg_match("/Joomla! 1\.5\.0/", $cms_version))) {
-									$content_saved .= '$web_optimizer->finish();';
-								} else {
-									$content_saved .= '<?php $web_optimizer->finish(); ?>';
-								}
+/* fix for Drupal / Joomla / others on not-closed ?> */
+								$content_saved .= '$web_optimizer->finish();';
 							}
 							@fclose($fp);
 							$fp = @fopen($index, "w");

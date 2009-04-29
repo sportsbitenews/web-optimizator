@@ -14,20 +14,20 @@ class YuiCompressor {
 	}
 
 	public function compress($content, $type="js"){
-		file_put_contents($tmpname, $content);
+		@file_put_contents($tmpname, $content);
 		if(!file_exists($this->file)){
 			return $this->content;
 		}
 		if(!$this->check()){
 			return $content;
 		}
-		$content = shell_exec($this->command . ' ' . $this->jarfile . ' ' . $this->file);
-		unlink($this->file);
+		$content = @shell_exec($this->command . ' ' . $this->jarfile . ' ' . $this->file);
+		@unlink($this->file);
 		return $content; 
 	}
 
 	function check(){
-		$locate = shell_exec('whereis java');
+		$locate = @shell_exec('whereis java');
 		if(isset($locate) && is_executable($this->jarfile)){
 			return true;
 		}else{
