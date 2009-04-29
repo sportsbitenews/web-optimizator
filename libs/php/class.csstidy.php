@@ -276,7 +276,6 @@ function csstidy()
 	$this->settings['css_level'] = 'CSS2.1';
     $this->settings['preserve_css'] = false;
     $this->settings['timestamp'] = false;
-    $this->print = new csstidy_print($this);
     $this->optimise = new csstidy_optimise($this);
 }
 

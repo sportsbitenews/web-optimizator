@@ -276,8 +276,6 @@ function csstidy()
     $this->settings['preserve_css'] = false;
     $this->settings['timestamp'] = false;
 
-	$this->load_template('default');
-    $this->print = new csstidy_print($this);
     $this->optimise = new csstidy_optimise($this);
 }
 

@@ -157,21 +157,22 @@ class css_sprites {
 							if (!empty($image['height']) && !preg_match("/em|%|auto/", $image['height']) &&
 								((!empty($image['background-position']) && $image['background-position'] == '100% 0') ||
 									((!empty($image['background-position']) && preg_match("/right/", $image['background-position'])
-										&& !preg_match("/bottom|center|(50|100)%/", $image['background-position']))))) {
+										&& !preg_match("/bottom|center|%|em/", $image['background-position']))))) {
 								$repeat_key = 'no-repeatr';
 							} elseif (!empty($image['width']) && !preg_match("/em|%|auto/", $image['width']) &&
 									((!empty($image['background-position']) && $image['background-position'] == '0 100%') ||
 									((!empty($image['background-position']) && preg_match("/bottom/", $image['background-position'])
-										&& !preg_match("/right|center|(50|100)%/", $image['background-position']))))) {
+										&& !preg_match("/right|center|%|em/", $image['background-position']))))) {
 								$repeat_key = 'no-repeatb';
-							} elseif (!empty($image['width']) 
-								&& !empty($image['height'])
-								&& !preg_match("/em|%|auto/", $image['height'])
-								&& !preg_match("/em|%|auto/", $image['width'])
-								&& !preg_match("/right|center|(50|100)%/", $image['background-position'])) {
-								$repeat_key = 'no-repeat';
 							} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-								$repeat_key = 'no-repeati';
+								if (!empty($image['width']) &&
+										!empty($image['height']) &&
+										!preg_match("/em|%|auto/", $image['height']) &&
+										!preg_match("/em|%|auto/", $image['width'])) {
+									$repeat_key = 'no-repeat';
+								} else {
+									$repeat_key = 'no-repeati';
+								}
 							} else {
 								$repeat_key = 'repeat';
 							}

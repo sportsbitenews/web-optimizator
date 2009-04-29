@@ -1076,7 +1076,8 @@ class web_optimizer {
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 			$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content));
-			preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches);
+/* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
+			preg_match("!<head([^>]+)?>.*?</head>!is", preg_replace("@<!--.*?-->@is", '', $this->content), $matches);
 			if (!empty($matches[0])) {
 				$this->head = $matches[0];
 			}
