@@ -806,7 +806,7 @@ class web_optimizer {
 									break;
 								default:
 /* skip media="all" to prevent Safari bug with @media all{} */
-									if ($variant_type[1] != 'media' && !preg_match("/all/i", $variant_type[2])) {
+									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all/i", $variant_type[2]))) {
 										$file[$variant_type[1]] = $variant_type[2];
 									}
 									break;
@@ -863,8 +863,8 @@ class web_optimizer {
 				$content_from_file = '';
 				if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
-					$content_from_file = (empty($value->media) ? "" : "@media " . $value->media . "{") .
-						$this->resolve_css_imports($value['file']) . (empty($value->media) ? "" : "}");
+					$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+						$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
 				} else {
 					$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 				}

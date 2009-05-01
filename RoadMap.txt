@@ -91,6 +91,7 @@
 +l) LiveStreet (0.2)
  m) MODx
  n) DataLife Engine
++o) Zend Framework (after disabled rewrite)
 
 12. Localization
 +a) English

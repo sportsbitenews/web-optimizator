@@ -10,6 +10,11 @@ Installation
 ------------
 1. Download and UNZIP the Web Optimizer package into its own directory (if you haven't already).
 2. Point your browser to the Web Optimizer directory (/web-optimizer -- that you have just created)
+2a. If you are using advanced framework (such as CodeIgniter, Zend Framework, Symfony, etc) please disable default Rewrite rules to
+   setup Web Optimizer properly. I.e. comment these lines
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule .* index.php
+   in your .htaccess
 3. Follow the installation instructions. For Express Install please make sure that
  * website root is writable for your web server process or(and) there is writable .htaccess file
  * default cache folder (web-optimizer/cache) is writable for your web server process

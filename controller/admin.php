@@ -492,13 +492,13 @@ class admin {
 							$stop_saving = 0;
 							$content_saved = '';
 							while ($htaccess_string = fgets($fp)) {
-								if (preg_match("/# Web Optimizer options/",$htaccess_string)) {
+								if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
 									$stop_saving = 1;
 								}
 								if (!$stop_saving && $htaccess_string != "\n") {
 									$content_saved .= $htaccess_string;
 								}
-								if (preg_match("/# Web Optimizer end/",$htaccess_string)) {
+								if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
 									$stop_saving = 0;
 								}
 							}
@@ -615,7 +615,13 @@ ExpiresDefault \"access plus 10 years\"
 							}
 						}
 						$content .= "\n# Web Optimizer end";
-						fwrite($fp, $content_saved."\n".$content);
+/* define CMS */
+						$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+/* prevent rewrite to admin access on frameworks */
+						if ($cms_version == 'Zend Framework' || $cms_version == 'Symfony' || $cms_version == 'CodeIgniter') {
+							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
+						}
+						fwrite($fp, $content_saved . "\n" . $content);
 						fclose($fp);
 					}
 
@@ -630,7 +636,9 @@ ExpiresDefault \"access plus 10 years\"
 /* delete test file from chained optimization */
 			@unlink($this->input['user']['webo_cachedir'] . 'cache/optimizing.php');
 /* define CMS */
-			$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+			if (empty($cms_version)) {
+				$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+			}
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
 			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
@@ -995,6 +1003,9 @@ ExpiresDefault \"access plus 10 years\"
 			if (defined('SANTAFOX_VERSION')) {
 				return 'Satafox ' . SANTAFOX_VERSION;
 			}
+/* Zend Framework */
+		} elseif (is_file($root . '../application/configs/config.ini')) {
+			return 'Zend Framework';
 		}
 		return 'CMS 42';
 	}

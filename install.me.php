@@ -4,12 +4,18 @@
 // Licensed under the MIT
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.3.6
+// @version    0.4.2
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 // To install Web Optimizer please copy this file to the document root, make document root
 // writable for your web server (or create writable web-optimizer directory) and go
 // to /install.me.php in your browser.
+// ==============================================================================================
+// If you are using advanced framework (such as CodeIgniter, Zend Framework, Symfony, etc)
+// please disable default Rewrite rules to setup Web Optimizer properly. I.e. comment these lines
+// RewriteCond %{REQUEST_FILENAME} !-f
+// RewriteRule .* index.php
+// in your .htaccess
 // ==============================================================================================
 
 	$loaded_modules = @get_loaded_extensions();
