@@ -990,10 +990,15 @@ ExpiresDefault \"access plus 10 years\"
 /* Simpla */
 		} elseif (is_file($root . 'Storefront.class.php')) {
 			return 'Simpla';
-/* Etomate 1.0 */
+/* Etomate 1.0, MODx */
 		} elseif (is_file($root . 'manager/includes/version.inc.php')) {
 			require($root . 'manager/includes/version.inc.php');
-			return 'Etomite ' . $release;
+			if (empty($full_appname)) {
+				return 'Etomite ' . $release;
+			} else {
+/* MODx case */
+				return $full_appname;
+			}
 /* LiveStreet */
 		} elseif (is_file($root . 'classes/engine/Router.class.php')) {
 			return 'LiveStreet';

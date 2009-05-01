@@ -191,6 +191,8 @@ class web_optimizer {
 			header('Location: ../index.php?page=install_stage_3&submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled][on]=" . $this->auto_rewrite);
 			die();
 		}
+/* remove BOM */
+		$this->content = preg_replace("/﻿/", "", $this->content);
 /* Echo content to the browser */
 		if(empty($this->supress_output)) {
 			if(!empty($this->return_content)) {
@@ -724,6 +726,8 @@ class web_optimizer {
 		} else {
 			$content = $src;
 		}
+/* remove BOM */
+		$content = preg_replace("/﻿/", "", $content);
 		if (is_file($file) || $inline) {
 /* new RegExp from xandrx */
 			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
@@ -837,7 +841,11 @@ class web_optimizer {
 	*
 	**/
 	function get_script_content($tag = false) {
-		$last_key = 0;
+/* to get inline values */
+		$last_key = array();
+/* to get inline values on empty non-inline */
+		$last_key_flushed = array();
+		$stored_content = array();
 		foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 			if (!$tag || $value['tag'] == $tag) {
@@ -880,16 +888,32 @@ class web_optimizer {
 						if ($value['tag'] == 'link') {
 							$value['content'] = $this->resolve_css_imports($value['content'], true);
 						}
-						$this->initial_files[$last_key]['content'] .= $delimiter . (empty($value['content']) ? '' : $value['content']);
+						$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
+/* if we can't add to existing tag -- store for the future */
+						if (empty($last_key[$value['tag']])) {
+							$stored_content[$value['tag']] .= $text;
+							$last_key_flushed[$value['tag']] = $key;
+						} else {
+							$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
+						}
 /* null content not to include anywhere, we still have source code in 'source' */
 						$this->initial_files[$key]['content'] = '';
 					}
 				} else {
 /* don't rewrite existing content inside script tags */
 					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
-					$last_key = $key;
+/* add stored content before */
+					if (!empty($stored_content[$value['tag']])) {
+						$this->initial_files[$key]['content'] = $stored_content[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+						$stored_content[$value['tag']] = '';
+					}
+					$last_key[$value['tag']] = $key;
 				}
 			}
+		}
+/* check for stored content and flush it */
+		foreach ($stored_content as $tag => $stored) {
+			$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored;
 		}
 	}
 
