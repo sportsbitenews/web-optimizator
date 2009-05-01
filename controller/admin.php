@@ -701,13 +701,16 @@ ExpiresDefault \"access plus 10 years\"
 							} else {
 								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
 							}
+/* fix for DataLife Engine */
+							if (substr($cms_version, 0, 15) == 'DataLife Engine') {
+								$content_saved = preg_replace("/(GzipOut\s*\(\);)/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 /* fix for vBulletin */
-							if (substr($cms_version, 0, 9) == 'vBulletin') {
-								$content_saved = preg_replace("/(flush\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($cms_version, 0, 8) == 'Joostina') {
-										$content_saved = preg_replace("/(exit\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
+										$content_saved = preg_replace("/(exit\s*\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 									} else {
 /* add finish block */
 										$content_saved = preg_replace("/ ?\?>[\r\n\s]*$/", '\$web_optimizer->finish(); ?>', $content_saved);
@@ -1011,7 +1014,15 @@ ExpiresDefault \"access plus 10 years\"
 /* Zend Framework */
 		} elseif (is_file($root . '../application/configs/config.ini')) {
 			return 'Zend Framework';
+/* DataLife Engine */
+		} elseif (is_file($root . 'engine/data/config.php')) {
+			$config = array(
+				'version_id' => '8.0'
+			);
+			require($root . 'engine/data/config.php');
+			return 'DataLife Engine ' . $config['version_id'];
 		}
+
 		return 'CMS 42';
 	}
 

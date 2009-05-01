@@ -87,10 +87,10 @@
  h) Xoops
 +i) PHP Nuke (8.0)
 +j) Simpla
-+k) Etomite (1.1), (MODx 0.9)
++k) Etomite (1.1), MODx (0.9)
 +l) LiveStreet (0.2)
  m) Santafox (1.1)
- n) DataLife Engine
++n) DataLife Engine (8.0)
 +o) Zend Framework (after disabled rewrite)
 +p) vBulletin (3.8)
 
