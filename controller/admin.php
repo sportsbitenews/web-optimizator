@@ -427,7 +427,7 @@ class admin {
 /* write the file */
 					fwrite($fp, $content);
 					fclose($fp);
-					unlink($dir."test");
+					unlink($dir . "test");
 				}
 			}
 			$this->write_progress($this->web_optimizer_stage = 4);
@@ -440,17 +440,21 @@ class admin {
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/pngcrush', 0755);
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/jpegtran', 0755);
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
-/* chekc for YUI availability */
-				require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+/* check for YUI availability */
+				if (substr(phpversion(), 0, 1) == 4) {
+					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
+				} else {
+					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+				}
 				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
 				if (!($YUI->check())) {
 					$this->input['user']['minify']['with_yui'] = 0;
 					$this->input['user']['minify']['with_jsmin'] = 1;
 				}
 /* Save the options	*/
-				foreach($this->input['user'] AS $key=>$option) {
+				foreach($this->input['user'] as $key => $option) {
 					if(is_array($option)) {
-						foreach($option AS $option_name => $option_value) {
+						foreach($option as $option_name => $option_value) {
 							if (!empty($this->apache_modules)) {
 								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif'))) {
 									$option_value = $option_value && in_array($option_name, $this->apache_modules);
@@ -471,10 +475,10 @@ class admin {
 									$this->input['user'][$key][$option_name] = 0;
 								}
 							}
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']",$option_value);
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
 						}
 					} else {
-						$this->save_option("['" . strtolower($key) . "']",$option);			
+						$this->save_option("['" . strtolower($key) . "']", $option);			
 					}
 				}
 				$this->write_progress($this->web_optimizer_stage = 5);
@@ -503,9 +507,7 @@ class admin {
 								}
 							}
 							fclose($fp);
-
 						}
-
 					}
 
 					$fp = @fopen($htaccess, 'w');
@@ -835,7 +837,7 @@ ExpiresDefault \"access plus 10 years\"
 		$option_file = $this->view->paths['full']['current_directory'] . $this->options_file;
 		if (file_exists($option_file)) {
 			$content = @file_get_contents($option_file);
-			$content = preg_replace("@(" . $this->regex_escape($option_name) . ") = \"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
+			$content = preg_replace("@(" . $this->regex_escape($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			$fp = @fopen($option_file, 'w');
 			if(!$fp) {
 /* unable to open file for writing */

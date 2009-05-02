@@ -37,26 +37,6 @@ $view = new compressor_view();
 /* Con. the user agent library */
 $user_agent = new _webo_User_agent();
 
-/* Con. the js min library */
-if (substr(phpversion(), 0, 1) == 5) {
-/* JSMin */
-	if (!class_exists('JSMin')) {
-		require_once($basepath . 'libs/php/jsmin5.php');
-	}
-/* Dean Edwards Packer */
-	if (!class_exists('JavaScriptPacker')) {
-		require_once($basepath . 'libs/php/packer5.php');
-	}
-/* CSS Tidy */
-	if (!class_exists('csstidy')) {
-		require_once($basepath . 'libs/php/class.csstidy.php');
-	}
-/* YUI Compressor */
-	if (!class_exists('YuiCompressor')) {
-		require_once($basepath . "libs/php/class.yuicompressor.php");
-	}
-}
-
 if (substr(phpversion(), 0, 1) == 4) {
 /* JSMin */
 	if (!class_exists('JSMin')) {
@@ -73,6 +53,24 @@ if (substr(phpversion(), 0, 1) == 4) {
 /* YUI Compressor */
 	if (!class_exists('YuiCompressor')) {
 		require_once($basepath . "libs/php/class.yuicompressor4.php");
+	}
+/* if not PHP4 -- PHP5 by default */
+} else {
+/* JSMin */
+	if (!class_exists('JSMin')) {
+		require_once($basepath . 'libs/php/jsmin5.php');
+	}
+/* Dean Edwards Packer */
+	if (!class_exists('JavaScriptPacker')) {
+		require_once($basepath . 'libs/php/packer5.php');
+	}
+/* CSS Tidy */
+	if (!class_exists('csstidy')) {
+		require_once($basepath . 'libs/php/class.csstidy.php');
+	}
+/* YUI Compressor */
+	if (!class_exists('YuiCompressor')) {
+		require_once($basepath . "libs/php/class.yuicompressor.php");
 	}
 }
 

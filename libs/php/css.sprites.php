@@ -38,6 +38,8 @@ class css_sprites {
 		$this->css = new csstidy();
 		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
 		$this->css->parse($css_code);
+/* CSS rule to avoid overlapping of properties */
+		$this->none = 'none!important';
 	}
 	/**
 	* Main function
@@ -73,10 +75,14 @@ class css_sprites {
 										!($bg == 'background-size' && ($property == 'auto !important' || $property == 'auto')) &&
 										!($bg == 'background-repeat' && ($property == 'repeat !important' || $property == 'repeat'))) {
 
-										if ($bg == 'background-image' && $property == 'none !important') {
-											$property = 'none';
+										if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
+											$property = $this->none;
 										}
 										$this->media[$import][$tag][$bg] = $property;
+/* rewrite current background with strict none */
+										if ($property == $this->none) {
+											$this->css->css[$import][$tags]['background'] = $this->none;
+										}
 									}
 								}
 							} else {
@@ -122,7 +128,7 @@ class css_sprites {
 
 				$back = empty($image['background-image']) ? '' : $image['background-image'];
 
-				if (empty($back) || $back == 'none') {
+				if (empty($back) || $back == $this->none) {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 					$key_fixed = $this->fix_css3_selectors($key);
 					if (!empty($this->media[$import][$key_fixed])) {
@@ -146,7 +152,7 @@ class css_sprites {
 				}
 
 /* re-check background image existence */
-				if (!empty($back) && $back != 'none') {
+				if (!empty($back) && $back != $this->none) {
 
 					if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
 						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
@@ -224,8 +230,8 @@ class css_sprites {
 		foreach ($this->media as $import => $images) {
 
 			foreach ($images as $key => $image) {
-/* no initial CSS Sprites */
-				if (count($this->css_images[$image['background-image']]) < 2) {
+/* no initial CSS Sprites and valid background-image */
+				if (count($this->css_images[$image['background-image']]) < 2 && $image['background-image'] != $this->none) {
 					$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->timestamp .'.png';
 					$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
 					list($width, $height) = $this->get_image();
@@ -352,7 +358,7 @@ __________________
 /* skip default properties */
 							$background[$key] = $value;
 						}
-						if (!empty($background['background-image']) && $background['background-image'] != 'none') {
+						if (!empty($background['background-image'])) {
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
 /* convert image to base64 */
 							$this->get_image(1);
