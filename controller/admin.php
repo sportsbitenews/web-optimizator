@@ -489,8 +489,13 @@ class admin {
 /* additional check for .htaccess -- need to open exact file */
 				if ($this->input['user']['htaccess']['enabled'] && !empty($this->apache_modules)) {
 					$this->view->set_paths($this->input['user']['document_root']);
+/* write to the current dir or to document root */
+					if (empty($this->input['user']['htaccess']['local'])) {
 /* first of all just cut current Web Optimizer options from .htaccess */
-					$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+						$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+					} else {
+						$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+					}
 					if (is_file($htaccess)) {
 						$fp = @fopen($htaccess, 'r');
 						if (!$fp) {

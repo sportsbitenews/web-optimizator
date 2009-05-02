@@ -54,9 +54,11 @@ class css_sprites {
 				foreach ($rule as $key => $value) {
 /* standartize all background values from input */
 					if (preg_match("/background/", $key)) {
+/* rewrite current background with strict none */
+						if ($key == 'background' && $value == 'none') {
+							$this->css->css[$import][$tags]['background'] = $this->none;
+						}
 						foreach (split(",", $tags) as $tag) {
-/* fix for hiden :link selectors */
-							$tag = preg_replace("/:link/", "", $tag);
 /* create new item (array) if required */
 							if (!empty($this->media[$import][$tag])) {
 								$this->media[$import][$tag] = array();
@@ -79,10 +81,6 @@ class css_sprites {
 											$property = $this->none;
 										}
 										$this->media[$import][$tag][$bg] = $property;
-/* rewrite current background with strict none */
-										if ($property == $this->none) {
-											$this->css->css[$import][$tags]['background'] = $this->none;
-										}
 									}
 								}
 							} else {
@@ -217,12 +215,16 @@ class css_sprites {
 						unset($this->media[$import][$key]);
 					}
 				}
-/* merge params to form unique string. Should be rearranged alphabetically... */
-				if (!empty($this->media[$import][$key])) {
-					$this->timestamp .= $back . (empty($image['width']) ? '' :  $image['width']) . (empty($image['height']) ? '' : $image['height']) . $this->media[$import][$key]['background-repeat'];
-				}
-			}
 
+			}
+/* merge params to form unique string */
+			$sorted_selectors = $this->media[$import];
+/* rearrage by keys -- alphabetically */
+			ksort($sorted_selectors);
+			foreach ($sorted_selectors as $image) {
+				$this->timestamp .= (empty($image['background-image']) ? '' :  $image['background-image']) . (empty($image['width']) ? '' :  $image['width']) . (empty($image['height']) ? '' : $image['height']) . (empty($image['background-repeat']) ? '' :  $image['background-repeat']);
+			}
+			unset($sorted_selectors);
 		}
 /* convert timestamp to md5 hash */
 		$this->timestamp = substr(md5($this->timestamp), 0, 10);
@@ -726,7 +728,7 @@ __________________
 					if (!empty($this->css_images[$no_repeat]['images'])) {
 /* try to find small no-repeat image to put before all repeat-x ones */
 						foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
-							if ($image[1] <= $this->css_images[$this->sprite]['x'] && !$counted_images[$image[0]]) {
+							if ($image[1] <= $this->css_images[$this->sprite]['x'] && empty($counted_images[$image[0]])) {
 								$counted_images[$image[0]] = 1;
 								$final_y = $image[4];
 								$image[3] = 0;
@@ -762,7 +764,7 @@ __________________
 					if (!empty($this->css_images[$no_repeat]['images'])) {
 /* try to find small no-repeat image to put before all repeat-y ones */
 						foreach ($this->css_images[$no_repeat]['images'] as $key => $image) {
-							if ($image[2] <= $this->css_images[$this->sprite]['y'] && !$counted_images[$image[0]]) {
+							if ($image[2] <= $this->css_images[$this->sprite]['y'] && empty($counted_images[$image[0]])) {
 								$counted_images[$image[0]] = 1;
 								$final_x = $image[3];
 								$image[3] = $this->css_images[$this->sprite]['addon_x'] + $final_x;

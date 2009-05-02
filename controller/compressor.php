@@ -1166,7 +1166,7 @@ class web_optimizer {
 				$absolute_path = $file;
 /* Not absolute or external */
 				if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
-					$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
+					$full_path_to_image = $this->view->prevent_leading_slash($this->get_current_path()) . str_replace($this->view->get_basename($path['file']), "", $path['file']);
 					$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 				}
 				$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
