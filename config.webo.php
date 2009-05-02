@@ -47,6 +47,7 @@ $compress_options['css_sprites']['enabled'] = "1";
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
 $compress_options['css_sprites']['aggressive'] = "0";
 $compress_options['css_sprites']['extra_space'] = "1";
+$compress_options['css_sprites']['no_ie6'] = "0";
 ## Ignore list, files separated by space
 $compress_options['css_sprites']['ignore_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?

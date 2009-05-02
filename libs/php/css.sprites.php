@@ -34,6 +34,8 @@ class css_sprites {
 		$this->data_uris = $options['data_uris'];
 /* part or full process */
 		$this->partly = $options['partly'];
+/* exclude IE6 from CSS Sprites */
+		$this->no_ie6 = $options['no_ie6'];
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
@@ -989,6 +991,16 @@ __________________
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
 						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
+/* leave rules for IE6 */
+						if ($this->no_ie6) {
+/* should we preserve current IE6 hack for background? */
+							$this->css->css[$import]["* html " . $key]['background'] = 
+								(empty($this->css->css[$import][$key]['background-color']) ? '' : ($this->css->css[$import][$key]['background-color'] . " ")) . 
+								(empty($this->css->css[$import][$key]['background-image']) ? '' : ($this->css->css[$import][$key]['background-image'] . " ")) . 
+								(empty($this->css->css[$import][$key]['background-position']) ? '' : ($this->css->css[$import][$key]['background-position'] . " ")) . 
+								(empty($this->css->css[$import][$key]['background-repeat']) ? '' : ($this->css->css[$import][$key]['background-repeat'] . " ")) .
+								(empty($this->css->css[$import][$key]['background-attachement']) ? '' : $this->css->css[$import][$key]['background-attachement']);
+						}
 						unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 
 					}

@@ -88,6 +88,7 @@ class web_optimizer {
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
+				"no_ie6" => $this->options['css_sprites']['no_ie6'],
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['on'],
@@ -238,6 +239,7 @@ class web_optimizer {
 				'css_sprites' => false,
 				'css_sprites_exclude' => false,
 				'aggressive' => false,
+				'no_ie6' => false,
 				'css_sprites_extra_space' => false,
 				'data_uris' => false,
 				'unobtrusive' => $options['unobtrusive'],
@@ -277,6 +279,7 @@ class web_optimizer {
 				'css_sprites_exclude' => $options['css_sprites_exclude'],
 				'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 				'aggressive' => $options['aggressive'],
+				'no_ie6' => $options['no_ie6'],
 				'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 				'self_close' => true,
 				'gzip' => $options['gzip'],
@@ -778,6 +781,7 @@ class web_optimizer {
 					if(is_array($variants)) {
 						foreach($variants AS $variant_type) {
 							$variant_type[1] = strtolower($variant_type[1]);
+							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "src":
 									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2]);
@@ -806,6 +810,7 @@ class web_optimizer {
 					if(is_array($variants)) {
 						foreach($variants AS $variant_type) {
 							$variant_type[1] = strtolower($variant_type[1]);
+							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "href":
 									$file['file'] = preg_replace("/(\?|#).*/", "", $variant_type[2]);
@@ -883,7 +888,7 @@ class web_optimizer {
 					$delimiter = ';';
 				}
 /* don't delete any detected scritps from array -- we need to clean up HTML page from them */
-				if (empty($value['file']) && $key != $last_key) {
+				if (empty($value['file']) && $key != $last_key[$value['tag']]) {
 /* glue inline and external content */
 					if ($this->options['javascript']['external_scripts']) {
 /* resolve @import from inline styles */
@@ -1188,6 +1193,7 @@ class web_optimizer {
 			'website_root' => $this->view->paths['full']['document_root'],
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 			'aggressive' => $options['aggressive'],
+			'no_ie6' => $options['no_ie6'],
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
