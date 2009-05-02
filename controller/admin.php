@@ -390,10 +390,10 @@ class admin {
 			"paths" => $this->view->paths,
 			"page" => $this->input['page'],
 			"message" => $save,
-			"javascript_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
-			"css_cachedir" => $this->view->paths['full']['current_directory'] . 'cache/',
-			"webo_cachedir" => $this->view->paths['full']['current_directory'],
-			"document_root" => $this->view->paths['full']['document_root'],
+			"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
+			"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
+			"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
+			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
 			"options" => $options,
 			"compress_options" => $this->compress_options
 		);
@@ -441,13 +441,17 @@ class admin {
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/jpegtran', 0755);
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
 /* check for YUI availability */
-				if (substr(phpversion(), 0, 1) == 4) {
-					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
-				} else {
-					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+				$YUI_checked = 0;
+				if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
+					if (substr(phpversion(), 0, 1) == 4) {
+						require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
+					} else {
+						require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+					}
+					$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
+					$YUI_checked = $YUI->check();
 				}
-				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
-				if (!($YUI->check())) {
+				if (!$YUI_checked) {
 					$this->input['user']['minify']['with_yui'] = 0;
 					$this->input['user']['minify']['with_jsmin'] = 1;
 				}
