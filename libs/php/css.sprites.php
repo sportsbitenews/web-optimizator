@@ -100,14 +100,27 @@ class css_sprites {
 		foreach ($this->css->css as $import => $token) {
 			foreach ($token as $tags => $rule) {
 				foreach ($rule as $property => $value) {
-					if ($property == 'width' || $property == 'height') {
+					if ($property == 'width' || $property == 'height' || preg_match("/padding/i", $property)) {
 /* try to add all possible dimensial properties for selected tags with background */
 						foreach ($this->media as $imp => $images) {
 							foreach ($images as $key => $image) {
 								$fixed_key = $this->fix_css3_selectors($key);
 /* remove pseudo-selectors, i.e. :focus, :hover, etc*/
 								if (in_array($key, split(",", $tags)) || in_array($fixed_key, split(",", $tags))) {
-									$this->media[$imp][$key][$property] = $value;
+									if (preg_match("/padding/i", $property)) {
+										if ($property == 'padding') {
+											$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
+										} else {
+											$padding = array(
+												$property => $value
+											);
+										}
+										foreach ($padding as $prop => $val) {
+											$this->media[$imp][$key][$prop] = $val;
+										}
+									} else {
+										$this->media[$imp][$key][$property] = $value;
+									}
 								}
 							}
 						}
@@ -258,6 +271,13 @@ class css_sprites {
 						}
 						$shift_x = $shift_y = $top = $left = 0;
 						$position = empty($image['background-position']) ? array(0, 0) : split(" ", $image['background-position'] . " ");
+/* fix image dimensions with paddings */
+						$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
+							+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
+							+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
+						$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
+							+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
+							+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 						switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
 							case 'repeat-x':
@@ -265,19 +285,19 @@ class css_sprites {
 							case 'repeat-xl':
 								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
 /* shift for bottom left corner of the object */
-								$shift_y = !empty($image['height']) && $image['height'] > $height ? $image['height'] - $height : 0;
+								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 								break;
 /* repeat-y case */
 							case 'repeat-y':
 /* repeat-y case w/o dimensions - can be added safely only to the end of Sprite */
 							case 'repeat-yl':
 								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-								$shift_x = !empty($image['width']) && $image['width'] > $width ? $image['width'] - $width : 0;
+								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
 								break;
 /* no-repeat case w/ dimensions can be placed all together */
 							case 'no-repeat':
-								$shift_x = empty($image['width']) && $image['width'] > $width ? $image['width'] - $width : 0;
-								$shift_y = !empty($image['height']) && $image['height'] > $height ? $image['height'] - $height : 0;
+								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
+								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 /* cut from initial image area marked with CSS rules */
 								$width = $image['width'] < $width ? $image['width'] : $width;
 								$height = $image['height'] < $height ? $image['height'] : $height;
@@ -296,13 +316,13 @@ class css_sprites {
 							case 'no-repeatr':
 								$left = 'right';
 								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
-								$shift_y = !empty($image['height']) && $image['height'] > $height ? $image['height'] - $height : 0;
+								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 								break;
 /* no-repeat case with 0 100% */
 							case 'no-repeatb':
 								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
 								$top = 'bottom';
-								$shift_y = !empty($image['width']) && $image['width'] > $height ? $image['width'] - $height : 0;
+								$shift_y = $image['width'] > $height ? $image['width'] - $height : 0;
 								break;
 							}
 /* add image to CSS Sprite to merge. Overall picture looks like this:
