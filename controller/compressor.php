@@ -1,4 +1,7 @@
 <?php
+// add support for image optimization via smush.it 
+// http://smush.it/ws.php?img=http://smush.it/css/skin/screenshot.png
+// {"src":"http:\/\/smush.it\/css\/skin\/screenshot.png","src_size":2334,"dest":"results\/140e0340\/smush\/screenshot.png","dest_size":2261,"percent":"3.13","id":""}
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
@@ -472,11 +475,10 @@ class web_optimizer {
 		if(!is_array($external_array)) {
 			$external_array = array($external_array);
 		}
-/* merge and escape handlers array */
-		if (is_array($handler_array)) {
-			foreach ($handler_array as $ha) {
-				$handlers .= preg_replace("/\r?\n/", ";", preg_replace("/(<!--|\/\/-->)/", "", preg_replace('/"/', '\"', $ha['content']))) . ';';
-			}
+/* glue scripts' content / filenames */
+		$scripts_string = '';
+		foreach ($external_array as $script) {
+			$scripts_string .= $script['file'] . $script['content'];
 		}
 /* Get date string to make hash */
 		$datestring = $this->get_file_dates($external_array, $options);
@@ -490,7 +492,7 @@ class web_optimizer {
 			}
 		}
 /* Get the cache hash, restrict by 10 symbols */
-		$cache_file = substr(md5(implode("_", $external_array) . $datestring . $optstring . $handlers), 0, 10);
+		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 		$cache_file = urlencode($cache_file);
 /* Check if the cache file exists */
 		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
