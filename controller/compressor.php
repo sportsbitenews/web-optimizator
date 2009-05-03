@@ -679,8 +679,8 @@ class web_optimizer {
 	* In this way we can see if any changes have been made
 	**/
 	function get_file_dates($files, $options) {
-/* option added by janvarev. Actually does a little -- we need to get all files' content before processing... */
-		if (!empty($this->options['dont_check_file_mtime'])) {
+/* option added by janvarev */
+		if (!empty($options['dont_check_file_mtime'])) {
 			return;
 		}
 		$dates = false;

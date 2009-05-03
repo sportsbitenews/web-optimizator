@@ -892,6 +892,25 @@ __________________
 									case 'bmp':
 										$im = @imagecreatefromwbmp($filename);
 										break;
+									default:
+										$im = @imagecreatefromxbm($filename);
+										break;
+								}
+							}
+/* some images can have incorrect extension */
+							if (empty($im) && is_file($filename)) {
+								$im = @imagecreatefrompng($filename);
+								if (empty($im)) {
+									$im = @imagecreatefromjpeg($filename);
+								}
+								if (empty($im)) {
+									$im = @imagecreatefromgif($filename);
+								}
+								if (empty($im)) {
+									$im = @imagecreatefromwbmp($filename);
+								}
+								if (empty($im)) {
+									$im = @imagecreatefromxbm($filename);
 								}
 							}
 
