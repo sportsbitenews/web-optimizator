@@ -503,9 +503,6 @@ class web_optimizer {
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
-			if (is_array($handler_array)) {
-				$external_array = array_merge($external_array, $handler_array);
-			}
 			$source = $this->_remove_scripts($external_array, $source);
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
@@ -515,6 +512,12 @@ class web_optimizer {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
 			return $source;
+		}
+/* Include all libraries. Save ~1M if no compression */
+		foreach ($this->libraries as $klass => $library) {
+			if (!class_exists($klass)) {
+				require_once($this->view->paths['full']['document_root'] . 'libs/php/' . $library);
+			}
 		}
 /* If the file didn't exist, continue. Get files' content */
 		if (!empty($options['dont_check_file_mtime'])) {
@@ -579,9 +582,6 @@ class web_optimizer {
 /* CSS background images to data URIs (after base64 strings have been prepared) */
 					$contents = $this->convert_css_bgr_to_data($contents, $options);
 				}
-			}
-			if (is_array($handler_array)) {
-				$external_array = array_merge($external_array, $handler_array);
 			}
 			$source = $this->_remove_scripts($external_array, $source);
 		}
@@ -1087,7 +1087,7 @@ class web_optimizer {
 	*
 	**/
 	function get_current_path($trailing=false) {
-		$current_dir = $this->view->paths->relative->current_directory;
+		$current_dir = $this->view->paths['relative']['current_directory'];
 /* Remove trailing slash */
 		if($trailing) {
 			if(substr($current_dir,-1,1) == "/") {
@@ -1175,6 +1175,8 @@ class web_optimizer {
 					$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 				}
 				$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
+/* handle cases with ./ and relative path */
+				$absolute_path = preg_replace("/\/\.\//", "/" . preg_replace("/\/[^\/]+$/", "", preg_replace("https?:\/\/[^\/]+\/", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
 /* replace path in initial CSS */
 				$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
 			}
@@ -1186,6 +1188,12 @@ class web_optimizer {
 	* Convert all background image to CSS Sprites if possible
 	**/
 	function convert_css_sprites ($content, $options) {
+/* try to get and increase memory limit */
+		$memory_limit = round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit'))));
+/* 64M must enough for any operations with images. I hope... */
+		if ($memory_limit < 64000000) {
+			@ini_set('memory_limit', '64M');
+		}
 		chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'],
@@ -1197,7 +1205,8 @@ class web_optimizer {
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
-			'data_uris' => $options['data_uris']
+			'data_uris' => $options['data_uris'],
+			'memory_limited' => round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 1 : 0
 		));
 		return $css_sprites->process();
 	}

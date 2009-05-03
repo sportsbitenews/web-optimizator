@@ -37,46 +37,35 @@ $view = new compressor_view();
 /* Con. the user agent library */
 $user_agent = new _webo_User_agent();
 
+/* create libraries array -- include them only if we are really compressing */
+$libraries = array();
+
 if (substr(phpversion(), 0, 1) == 4) {
 /* JSMin */
-	if (!class_exists('JSMin')) {
-		require_once($basepath . 'libs/php/jsmin4.php');
-	}
+	$libraries['JSMin'] = 'jsmin4.php';
 /* Dean Edwards Packer */
-	if (!class_exists('JavaScriptPacker')) {
-		require_once($basepath . 'libs/php/packer4.php');
-	}
+	$libraries['JavaScriptPacker'] = 'packer4.php';
 /* CSS Tidy */
-	if (!class_exists('csstidy')) {
-		require_once($basepath . 'libs/php/class.csstidy4.php');
-	}
+	$libraries['csstidy'] = 'class.csstidy4.php';
 /* YUI Compressor */
-	if (!class_exists('YuiCompressor')) {
-		require_once($basepath . "libs/php/class.yuicompressor4.php");
-	}
+	$libraries['YuiCompressor'] = 'class.yuicompressor4.php';
 /* if not PHP4 -- PHP5 by default */
 } else {
 /* JSMin */
-	if (!class_exists('JSMin')) {
-		require_once($basepath . 'libs/php/jsmin5.php');
-	}
+	$libraries['JSMin'] = 'jsmin5.php';
 /* Dean Edwards Packer */
-	if (!class_exists('JavaScriptPacker')) {
-		require_once($basepath . 'libs/php/packer5.php');
-	}
+	$libraries['JavaScriptPacker'] = 'packer5.php';
 /* CSS Tidy */
-	if (!class_exists('csstidy')) {
-		require_once($basepath . 'libs/php/class.csstidy.php');
-	}
+	$libraries['csstidy'] = 'class.csstidy.php';
 /* YUI Compressor */
-	if (!class_exists('YuiCompressor')) {
-		require_once($basepath . "libs/php/class.yuicompressor.php");
-	}
+	$libraries['YuiCompressor'] = 'class.yuicompressor.php';
 }
 
 /* Con. the compression controller */
-$web_optimizer = new web_optimizer(array('view'=>$view,
+$web_optimizer = new web_optimizer(array(
+	'view' => $view,
 	'options' => $compress_options,
-	'user_agent' => $user_agent)
+	'user_agent' => $user_agent,
+	'libraries' => $libraries)
 );
 ?>
