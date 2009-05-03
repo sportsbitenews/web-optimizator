@@ -16,7 +16,7 @@ define('_WEBO_ERROR_ERROR', 'Щось пішло не так!');
 
 /* Enter login and password */
 define('_WEBO_LOGIN_TITLE', 'Введіть ваші авторизаційні дані');
-define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Веб Оптимизатор '.);
+define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Веб Оптимизатор ');
 define('_WEBO_LOGIN_INSTALLED2', ' вже встановлений. Будь-ласка, введіть ваш логін та пароль для доступу до всіх налаштувань:');
 define('_WEBO_LOGIN_USERNAME', 'Логін');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введіть ваш логін');

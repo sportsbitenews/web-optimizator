@@ -842,6 +842,8 @@ ExpiresDefault \"access plus 10 years\"
 	* 
 	**/
 	function save_option ($option_name, $option_value) {
+/* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
+		$option_value = preg_replace("/\\\/", '/', $option_value);
 /* See if file exists */
 		$option_file = $this->view->paths['full']['current_directory'] . $this->options_file;
 		if (file_exists($option_file)) {
