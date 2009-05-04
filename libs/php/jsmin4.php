@@ -261,7 +261,11 @@ class JSMin {
           }
 
         case '*':
-          $this->get();
+          $a = $this->get();
+/* fix for conditional compilation */
+		  if ($this->peek() === '@') {
+			return $c . $a;
+		  }
 
           for (;;) {
             switch($this->get()) {

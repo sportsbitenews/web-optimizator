@@ -516,7 +516,7 @@ class web_optimizer {
 /* Include all libraries. Save ~1M if no compression */
 		foreach ($this->libraries as $klass => $library) {
 			if (!class_exists($klass)) {
-				require_once($this->view->paths['full']['document_root'] . 'libs/php/' . $library);
+				require_once($options['installdir'] . 'libs/php/' . $library);
 			}
 		}
 /* If the file didn't exist, continue. Get files' content */
@@ -919,8 +919,8 @@ class web_optimizer {
 			}
 		}
 /* check for stored content and flush it */
-		foreach ($stored_content as $tag => $stored) {
-			$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored;
+		foreach ($stored as $tag => $stored_content) {
+			$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored_content;
 		}
 	}
 
@@ -1171,12 +1171,12 @@ class web_optimizer {
 				$absolute_path = $file;
 /* Not absolute or external */
 				if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
-					$full_path_to_image = $this->view->prevent_leading_slash($this->get_current_path()) . str_replace($this->view->get_basename($path['file']), "", $path['file']);
+					$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
 					$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 				}
 				$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
 /* handle cases with ./ and relative path */
-				$absolute_path = preg_replace("/\/\.\//", "/" . preg_replace("/\/[^\/]+$/", "", preg_replace("https?:\/\/[^\/]+\/", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
+				$absolute_path = preg_replace("!/./!", "/" . preg_replace("!/[^/]+$!", "", preg_replace("!https?://[^/]+/!", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
 /* replace path in initial CSS */
 				$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
 			}

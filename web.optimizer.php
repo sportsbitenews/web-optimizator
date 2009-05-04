@@ -21,10 +21,6 @@ if (!class_exists('compressor_view')) {
 if (!class_exists('_webo_User_agent')) {
 	require_once($basepath . "libs/php/user_agent.php");
 }
-/* Include this for CSS Sprites generating */
-if (!class_exists('css_sprites')) {
-	require_once($basepath . "libs/php/css.sprites.php");
-}
 
 /* We need to know the config */
 require_once($basepath . "config.webo.php");
@@ -39,6 +35,9 @@ $user_agent = new _webo_User_agent();
 
 /* create libraries array -- include them only if we are really compressing */
 $libraries = array();
+
+/* Include this for CSS Sprites generating */
+$libraries['css_sprites'] = 'css.sprites.php';
 
 if (substr(phpversion(), 0, 1) == 4) {
 /* JSMin */
