@@ -852,7 +852,7 @@ class web_optimizer {
 		$last_key = array();
 /* to get inline values on empty non-inline */
 		$last_key_flushed = array();
-		$stored_content = array();
+		$stored = array();
 		foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 			if (!$tag || $value['tag'] == $tag) {
@@ -898,7 +898,7 @@ class web_optimizer {
 						$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* if we can't add to existing tag -- store for the future */
 						if (empty($last_key[$value['tag']])) {
-							$stored_content[$value['tag']] .= $text;
+							$stored[$value['tag']] = $stored[$value['tag']] ? $stored[$value['tag']] . $text : $text;
 							$last_key_flushed[$value['tag']] = $key;
 						} else {
 							$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
@@ -910,9 +910,9 @@ class web_optimizer {
 /* don't rewrite existing content inside script tags */
 					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
 /* add stored content before */
-					if (!empty($stored_content[$value['tag']])) {
-						$this->initial_files[$key]['content'] = $stored_content[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
-						$stored_content[$value['tag']] = '';
+					if (!empty($stored[$value['tag']])) {
+						$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+						$stored[$value['tag']] = '';
 					}
 					$last_key[$value['tag']] = $key;
 				}
