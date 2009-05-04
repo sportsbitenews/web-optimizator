@@ -13,6 +13,7 @@ libs/css/typography.css
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php
+libs/php/lang/he.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
 libs/php/class.csstidy4.php
