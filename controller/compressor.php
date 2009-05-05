@@ -67,10 +67,10 @@ class web_optimizer {
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
-				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"far_future_expires" => $this->options['far_future_expires']['javascript'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
@@ -79,16 +79,17 @@ class web_optimizer {
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
-				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"far_future_expires" => $this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"no_ie6" => $this->options['css_sprites']['no_ie6'],
+				"memory_limited" => $this->options['css_sprites']['memory_limited'],
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['on'],
@@ -96,7 +97,7 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			),
 			"page" => array(
-				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			)
@@ -240,6 +241,7 @@ class web_optimizer {
 				'css_sprites_exclude' => false,
 				'aggressive' => false,
 				'no_ie6' => false,
+				'memory_limited' => false,
 				'css_sprites_extra_space' => false,
 				'data_uris' => false,
 				'unobtrusive' => $options['unobtrusive'],
@@ -280,6 +282,7 @@ class web_optimizer {
 				'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 				'aggressive' => $options['aggressive'],
 				'no_ie6' => $options['no_ie6'],
+				'memory_limited' => $options['memory_limited'],
 				'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 				'self_close' => true,
 				'gzip' => $options['gzip'],
@@ -995,7 +998,7 @@ class web_optimizer {
 
 			if(!empty($this->options[$type]['far_future_expires'])) {
 				$this->gzip_header[$type] .= '<?php
-				header("Cache-Control: must-revalidate");
+				header("Cache-Control: private");
 				header("' . $ExpStr . '");
 ?>';
 			}
@@ -1206,7 +1209,7 @@ class web_optimizer {
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris'],
-			'memory_limited' => round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 1 : 0
+			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1)
 		));
 		return $css_sprites->process();
 	}

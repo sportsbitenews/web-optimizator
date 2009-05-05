@@ -875,6 +875,11 @@ __________________
 								$background = $this->css->css[$image[7]][$image[8]]['background'];
 							}
 						}
+/* leave rules for IE6 */
+						if ($this->no_ie6) {
+/* should we preserve current IE6 hack for background? */
+							$this->css->css[$import]["* html " . $key]['background'] = $this->css->css[$import][$key]['background'];
+						}
 
 						if (!$image_used) {
 							if (!$file_exists) {
@@ -1001,9 +1006,9 @@ __________________
 
 							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
-								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->css->css[$import][$key]['background-color']) ? $this->css->css[$import][$key]['background-color'] . ' ' : '') .
+								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->media[$import][$key]['background-color']) ? $this->media[$import][$key]['background-color'] . ' ' : '') .
 									(empty($css_left) ? '0' : $css_left . (is_numeric($css_left) ? 'px' : '')) . ' ' . (empty($css_top) ? '0' : $css_top . (is_numeric($css_top) ? 'px' : '')) . ' ' . $css_repeat . ' ' .
-									(!empty($this->css->css[$import][$key]['background-attachement']) ? $this->css->css[$import][$key]['background-attachement'] . ' ' : ''));
+									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
 						} else {
@@ -1013,16 +1018,6 @@ __________________
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
 						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
-/* leave rules for IE6 */
-						if ($this->no_ie6) {
-/* should we preserve current IE6 hack for background? */
-							$this->css->css[$import]["* html " . $key]['background'] = 
-								(empty($this->css->css[$import][$key]['background-color']) ? '' : ($this->css->css[$import][$key]['background-color'] . " ")) . 
-								(empty($this->css->css[$import][$key]['background-image']) ? '' : ($this->css->css[$import][$key]['background-image'] . " ")) . 
-								(empty($this->css->css[$import][$key]['background-position']) ? '' : ($this->css->css[$import][$key]['background-position'] . " ")) . 
-								(empty($this->css->css[$import][$key]['background-repeat']) ? '' : ($this->css->css[$import][$key]['background-repeat'] . " ")) .
-								(empty($this->css->css[$import][$key]['background-attachement']) ? '' : $this->css->css[$import][$key]['background-attachement']);
-						}
 						unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 
 					}
