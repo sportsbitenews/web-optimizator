@@ -27,6 +27,11 @@
 </fieldset>
 <?php } ?>
 <fieldset>
+	<legend><?php echo _WEBO_SPLASH1_CLEAR ?></legend>	
+	<p><?php echo _WEBO_SPLASH1_CLEAR_CACHE ?></p>
+	<div><input type="submit" name="clear" value="<?php echo _WEBO_SPLASH1_CLEAR ?>" title="<?php echo _WEBO_SPLASH1_CLEAR ?>"/></div>
+</fieldset>
+<fieldset>
 	<legend><?php echo _WEBO_SPLASH1_UNINSTALL ?></legend>	
 	<p><?php echo _WEBO_LOGIN_UNINSTALL ?></p>
 	<div><input type="submit" name="uninstall" value="<?php echo _WEBO_SPLASH1_UNINSTALL ?>" title="<?php echo _WEBO_LOGIN_UNINSTALLME ?>"/></div>

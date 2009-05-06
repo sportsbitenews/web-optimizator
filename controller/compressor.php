@@ -110,8 +110,8 @@ class web_optimizer {
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
-				"cache" => $this->options['cache']['html'],
-				"cache_timeout" => $this->options['cache']['timeout']
+				"cache" => $this->options['far_future_expires']['html'],
+				"cache_timeout" => $this->options['far_future_expires']['timeout']
 			)
 		);
 /* overwrite other options array that we passed in */

@@ -34,6 +34,10 @@ define('_WEBO_LOGIN_UNINSTALLME', 'Удалить Веб Оптимизатор');
 define('_WEBO_LOGIN_FAILED', 'Неверно введен логин и(ли) пароль');
 define('_WEBO_LOGIN_ACCESS', 'Эта страница доступна только авторизованным пользователям');
 define('_WEBO_LOGIN_LOGGED', 'Вошли в систему');
+define('_WEBO_SPLASH1_CLEAR', 'Очистить кэш');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'Чтобы очистить кэш Веб Оптимизатора, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Очистить кэш</strong>. Все сохраненные копии созданных файлов будут удалены из кэширующей директории.');
+define('_WEBO_CLEAR_UNABLE', 'Не получается удалить некоторые файлы их кэширующих директорий');
+define('_WEBO_CLEAR_SUCCESSFULL', 'Все файлы были успешно удалены из кэша');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Установка - ограничение доступа');
@@ -132,6 +136,8 @@ define('_WEBO_gzip_page', 'Применить <code>gzip</code> для HTML');
 define('_WEBO_far_future_expires_javascript', 'Кэшировать JavaScript');
 define('_WEBO_far_future_expires_css', 'Кэшировать CSS');
 define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
+define('_WEBO_far_future_expires_html', 'Кэшировать созданные HTML-файлы');
+define('_WEBO_far_future_expires_timeout', 'Срок действия кэша для HTML-файлов в секундах');
 define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');
 define('_WEBO_footer_image', 'Добавить изображение Веб Оптимизатора');
 define('_WEBO_cleanup_on', 'Удалять старые файлы');
@@ -140,6 +146,8 @@ define('_WEBO_css_sprites_enabled', 'Применить CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Сохранять полноцветные изображения в JPEG');
 define('_WEBO_css_sprites_aggressive', '&laquo;Агрессивный&raquo; режим создания CSS Sprites');
 define('_WEBO_css_sprites_extra_space', 'Добавить свободное место в CSS Sprites');
+define('_WEBO_css_sprites_no_ie6', 'Исключить IE6 (через хаки) из процесса создания CSS Sprites');
+define('_WEBO_css_sprites_memory_limited', 'Ограничить использование памяти для PHP-процесса');
 define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites файлы');
 define('_WEBO_htaccess_enabled', 'Включить <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Включить <code>mod_deflate</code>');

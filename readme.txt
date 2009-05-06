@@ -15,6 +15,7 @@ Installation
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule .* index.php
    in your .htaccess
+2b. Or you can just try to go to /web-optimizer/index.php
 3. Follow the installation instructions. For Express Install please make sure that
  * website root is writable for your web server process or(and) there is writable .htaccess file
  * default cache folder (web-optimizer/cache) is writable for your web server process
@@ -25,9 +26,23 @@ Support and bug reports
 ----------------------
 Please submit support requests and bug reports via http://code.google.com/p/web-optimizator/
 
+Donate
+------------
+Please find all coordinates for donation here: http://sprites.in/donate/
+
 Upgrade issues
 ----------------------
 Auto-upgrade is included since version 0.3.8. Please just enter username and password at your Web Optimizer Admin interface and press
 'Upgrade'.
-Please note that on uprading from version 0.2 and below you need to replace in the last part in index.php file 'compressor' to
+Please note that on upgrading from version 0.2 and below you need to replace in the last part in index.php file 'compressor' to
 'web_optimizer'.
+
+Team
+----------------------
+A lot of different persons contributed to this project. Some of them:
+ * sunnybear (ported core, htaccess, CSS Sprites, other stuff)
+ * fade (design) 
+ * beshkenadze (YUI Compressor envelope)
+ * janvarev (files MTIME check)
+ * bazik.mail (test cases for CSS Sprites, CSS rules, JS logic, etc)
+ * sanjakl (data:URI CSS rules for old IE)

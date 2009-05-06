@@ -34,6 +34,10 @@ define('_WEBO_LOGIN_UNINSTALLME', 'Uninstall Web Optimizer');
 define('_WEBO_LOGIN_FAILED', 'Login failed');
 define('_WEBO_LOGIN_ACCESS', 'You need to be logged in to view this page');
 define('_WEBO_LOGIN_LOGGED', 'Logged you in');
+define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter login and password in the form above and press <strong>Clear cache</strong>. All saved versions of generated files will be deleted from the cache folder.');
+define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delere some files from cache directory');
+define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - set password');
@@ -120,7 +124,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_external_scripts_on', 'Enable external and inline scripts merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
-define('_WEBO_dont_check_file_mtime', 'Don\'t check files mtime');
+define('_WEBO_dont_check_file_mtime', 'Don\'t check files mtime (and content)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_with_jsmin', 'Minify with JSMin');
 define('_WEBO_minify_with_packer', 'Minify with Packer');
@@ -133,6 +137,8 @@ define('_WEBO_gzip_page', 'Gzip HTML');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
 define('_WEBO_far_future_expires_static', 'Cache static assets');
+define('_WEBO_far_future_expires_html', 'Cache generated HTML files');
+define('_WEBO_far_future_expires_timeout', 'Default timeout to cache HTML files, in seconds');
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
 define('_WEBO_cleanup_on', 'Regularly delete old files');
@@ -141,6 +147,8 @@ define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Save truecolor images as JPEG');
 define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprites');
 define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
+define('_WEBO_css_sprites_no_ie6', 'Exclude IE6 (via hacks) from CSS Sprites generation');
+define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage for PHP process');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Enable <code>mod_deflate</code>');

@@ -5,6 +5,14 @@
  * Translated by Sergiy Andriychuk
  * new (=not translated) constants: none
  **/
+ //_WEBO_SPLASH1_CLEAR
+ //_WEBO_SPLASH1_CLEAR_CACHE
+ //_WEBO_far_future_expires_timeout
+ //_WEBO_far_future_expires_html
+ //_WEBO_css_sprites_memory_limited
+ //_WEBO_css_sprites_no_ie6
+ //_WEBO_CLEAR_UNABLE
+ //_WEBO_CLEAR_SUCCESSFULL
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

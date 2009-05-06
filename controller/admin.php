@@ -103,7 +103,7 @@ class admin {
 				"version" => $this->version,
 				"version_new" => $this->version_new,
 				"version_new_exists" => $this->version_new_exists,
-				"message" => empty($this->input['upgraded']) ? '' : _WEBO_UPGRADE_SUCCESSFULL . $this->version
+				"message" => empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version
 			);
 		} else {
 /* take document root from the options file */
@@ -118,34 +118,42 @@ class admin {
 	}
 
 	/**
-	* Upgrade page
+	* Clear cache
 	* 
 	**/	
-	function install_upgrade() {
-		$file = 'files';
-		$this->download($this->svn . $file, $file);
-		if (is_file($file)) {
-			$files = split("\r?\n", @file_get_contents($file));
-			foreach ($files as $file) {
-				$this->download($this->svn . $file, $file);
-				if ($file == 'config.webo.php') {
-/* save all options to the new file -- rewrite default ones  */
-					foreach($this->compress_options AS $key => $option) {
-						if(is_array($option)) {
-							foreach($option AS $option_name => $option_value) {
-								$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
-							}
-						} else {
-							$this->save_option("['" . strtolower($key) . "']", $option);
-						}
+	function install_clear_cache() {
+		$success = false;
+		$deleted_css = true;
+		$deleted_js = true;
+		$restricted = array('.', '..', 'yass.loader.js');
+/* css cache */
+		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
+			while ($file = @readdir($dir)) {
+				if (!in_array($file, $restricted)) {
+					if (!@unlink($this->compress_options['css_cachedir'] . $file)) {
+						$deleted_css = false;
 					}
 				}
 			}
+			$success = true;
+		}
+/* css cache */
+		if ($dir = @opendir($this->compress_options['javascript_cachedir'])) {
+			while ($file = @readdir($dir)) {
+				if (!in_array($file, $restricted)) {
+					if (!@unlink($this->compress_options['javascript_cachedir'] . $file)) {
+						$deleted_js = false;
+					}
+				}
+			}
+			$success = true;
+		}
+		if ($success && $deleted_css && $deleted_js) {
 /* redirect to the main page */
-			header("Location: index.php?upgraded=1");
+			header("Location: index.php?cleared=1");
 			die();
 		} else {
-			$this->error("<p>". _WEBO_UPGRADE_UNABLE ."</p>");
+			$this->error("<p>". _WEBO_CLEAR_UNABLE ."</p>");
 		}
 	}
 
@@ -181,7 +189,7 @@ class admin {
 			}
 		} else {
 /* remove instances of Web Optimizer from index.php */
-			$index = preg_replace("/[^\/]+\/$/", "", $this->compress_options['webo_cachedir']) . 'index.php';
+			$index = $this->view->paths['full']['document_root'] . 'index.php';
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';
@@ -197,7 +205,11 @@ class admin {
 					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 				}
 /* remove rules from .htaccess */
-				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+				if (empty($this->options['htaccess']['local'])) {
+					$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+				} else {
+					$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+				}
 				if (is_file($htaccess)) {
 					$fp = @fopen($htaccess, 'r');
 					if ($fp) {
@@ -269,6 +281,8 @@ class admin {
 				$this->install_uninstall();
 			} elseif (!empty($this->input['upgrade'])) {
 				$this->install_upgrade();
+			} elseif (!empty($this->input['clear'])) {
+				$this->install_clear_cache();
 			} else{
 				$this->page_variables = array(
 					"title" => _WEBO_SPLASH1_WELCOME,
@@ -406,7 +420,7 @@ class admin {
 	* 
 	* 
 	**/	
-	function install_stage_3() {
+	function install_stage_3() {;
 /* if haven't completed chained optimization */
 		if ($this->web_optimizer_stage < 95) {
 /* Check we can write to the specified directory */

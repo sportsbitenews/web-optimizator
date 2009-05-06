@@ -39,10 +39,10 @@
 
 							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?></label>
 
-							<?php if ($option == 'ignore_list') { ?>
+							<?php if ($option == 'ignore_list' || $option == 'timeout') { ?>
 
 							<div class="info">
-							<?php echo _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
+							<?php echo $option == 'timeout' ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
 							</div>
 
 							<?php } else { ?>

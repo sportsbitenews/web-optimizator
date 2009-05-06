@@ -33,8 +33,8 @@ $compress_options['gzip']['css'] = "1";
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 $compress_options['far_future_expires']['static'] = "1";
-$compress_options['cache']['html'] = "0";
-$compress_options['cache']['timeout'] = "600";
+$compress_options['far_future_expires']['html'] = "0";
+$compress_options['far_future_expires']['timeout'] = "600";
 ## On or off 
 $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer
