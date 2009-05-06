@@ -668,8 +668,6 @@ __________________
 				$this->css_images[$this->sprite]['y'] = 0;
 /* recount x/y sizes for repeat-x / repeat-y / repeat icons -- we can have duplicated dimensions */
 				$counted_images = array();
-/* flag for full color (if JPEG is used) */
-				$fullcolor = 0;
 				if (is_array($this->css_images[$this->sprite]['images'])) {
 					foreach ($this->css_images[$this->sprite]['images'] as $key => $image) {
 						$filename = $image[0];
@@ -724,9 +722,6 @@ __________________
 								break;
 							}
 							$counter_images[$filename] = 1;
-						}
-						if (preg_match("/\.jpe?g/i", $filename)) {
-							$fullcolor = 1;
 						}
 					}
 				}
@@ -830,11 +825,7 @@ __________________
 					}
 				}
 				if (!$file_exists) {
-					if ($fullcolor) {
-						$this->sprite_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
-					} else {
-						$this->sprite_raw = @imagecreate($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
-					}
+					$this->sprite_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
 				}
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
@@ -895,7 +886,6 @@ __________________
 										break;
 									case 'jpg':
 									case 'jpeg':
-										$fullcolor = 1;
 										$im = @imagecreatefromjpeg($filename);
 										break;
 									case 'bmp':
@@ -924,15 +914,6 @@ __________________
 							}
 
 							if (!empty($im) || $file_exists) {
-								if (!$file_exists) {
-									$colors = @imagecolorsforindex($im, @imagecolorat($im, 0, 0));
-									$this->alpha_enabled = $this->alpha_enabled || !!$colors['alpha'];
-/* recount colors number, switch to fullcolor if more than 256 */
-									if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 || $colors['alpha']) {
-									$fullcolor = 1;
-										$this->create_new_raw();
-									}
-								}
 								switch ($type) {
 /* 0 100% case */
 									case 6:
@@ -1027,27 +1008,15 @@ __________________
 						if ($type == 4) {
 							if (is_file($sprite_right)) {
 								$im = @imagecreatefrompng($sprite_right);
-								if ($im) {
-									if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
-										$fullcolor = 1;
-										$this->create_new_raw();
-									}
-								}
 								@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
 							}
 							if (is_file($sprite_bottom)) {
 								$im = @imagecreatefrompng($sprite_bottom);
-								if ($im) {
-									if (@imagecolorstotal($im) + @imagecolorstotal($this->sprite_raw) > 256 && !$fullcolor) {
-										$fullcolor = 1;
-										$this->create_new_raw();
-									}
-								}
 								@imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
 							}
 						}
 /* output final sprite */
-						if ($this->truecolor_in_jpeg && $fullcolor) {
+						if ($this->truecolor_in_jpeg) {
 							$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
 							@imagejpeg($this->sprite_raw, $this->sprite, 80);
 							if (is_file($this->root_dir . 'libs/php/jpegtran')) {
@@ -1124,21 +1093,6 @@ __________________
 /* return CSS selector w/o CSS3 pseudo-addons */
 	function fix_css3_selectors ($key) {
 		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
-	}
-/* return copied full color Sprite from existent one */
-	function create_new_raw () {
-		$new_raw = @imagecreatetruecolor($this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
-		if ($new_raw) {
-			$this->background = @imagecolorallocatealpha($new_raw, 255, 255, 255, 127);
-			@imagefill($new_raw, 0, 0, $this->background);
-			@imagecopy($new_raw, $this->sprite_raw, 0, 0, 0, 0, $this->css_images[$this->sprite]['x'], $this->css_images[$this->sprite]['y']);
-			$this->sprite_raw = $new_raw;
-			@imagecolortransparent($this->sprite_raw, $this->background);
-			if ($this->alpha_enabled) {
-				@imagealphablending($this->sprite_raw, false);
-				@imagesavealpha($this->sprite_raw, true);
-			}
-		}
 	}
 }
 
