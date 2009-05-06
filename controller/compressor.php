@@ -37,7 +37,8 @@ class web_optimizer {
 		$this->set_gzip_headers();
 /* check if we can get out cached page */
 		if (!empty($this->options['page']['cache'])) {
-			$file = $this->options['javascript']['cachedir'] . '/' . $this->convert_request_uri($_SERVER['REQUEST_URI']);
+			$this->uri = $this->convert_request_uri();
+			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
 				$this->set_gzip_header();
 				echo @file_get_contents($file);
@@ -211,7 +212,7 @@ class web_optimizer {
 		$this->content = preg_replace("/﻿/", "", $this->content);
 /* check if we need to store cached page */
 		if (!empty($this->options['page']['cache'])) {
-			$file = $this->options['javascript']['cachedir'] . '/' . $this->convert_request_uri($_SERVER['REQUEST_URI']);
+			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
 			if (!is_file($file) || time() - filemtime($file) > $this->options['page']['cache_timeout']) {
 				$fp = @fopen($file, "w");
 				if ($fp) {
@@ -1020,7 +1021,7 @@ class web_optimizer {
 
 			if(!empty($this->options[$type]['far_future_expires'])) {
 				$this->gzip_header[$type] .= '<?php
-				header("Cache-Control: private");
+				header("Cache-Control: private, max-age=315360000");
 				header("' . $ExpStr . '");
 ?>';
 			}
@@ -1432,7 +1433,8 @@ class web_optimizer {
 	 * Converts REQUEST_URI to cached file name
 	 *
 	 **/
-	function convert_request_uri ($uri) {
+	function convert_request_uri () {
+		$uri = $_SERVER['REQUEST_URI'];
 /* replace / with - */
 		$uri = preg_replace("!/!", "#", $uri);
 /* replace ?, & with + */

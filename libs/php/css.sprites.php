@@ -615,12 +615,13 @@ __________________
 				$image[5] = $final_x;
 				$image[6] = $final_y;
 				$j = $y;
-				while (empty($matrix[$i][$j]) && $j>0) {
+/* check for 3 points: left, middle and right for the top border */
+				while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
 					$j--;
 				}
 /* remember minimal distance */
 				if ($distance > $y - $j - 1) {
-					$distance = $y - $j - 1;
+					$distance = $y - $j - 1 - $final_y;
 				}
 /* to separate new images from old ones */
 				$image[] = 1;
