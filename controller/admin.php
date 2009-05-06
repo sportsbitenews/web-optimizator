@@ -1048,6 +1048,9 @@ ExpiresDefault \"access plus 10 years\"
 			);
 			require($root . 'engine/data/config.php');
 			return 'DataLife Engine ' . $config['version_id'];
+/* CodeIgniter */
+		} elseif (is_file($root . 'system/codeigniter/CodeIgniter.php')) {
+			return 'CodeIgniter';
 		}
 
 		return 'CMS 42';

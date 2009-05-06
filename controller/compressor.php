@@ -1085,9 +1085,9 @@ class web_optimizer {
 /* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
 /* replace pre blocks */
-		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:PRE@@@",$_pre_blocks, $source);
+		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:PRE@@@", $_pre_blocks, $source);
 /* replace script blocks */
-		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@",$_script_blocks, $source);
+		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
 		return $source;
 	}
 

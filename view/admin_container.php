@@ -52,7 +52,7 @@ color: #006600
 </style>
 </head>
 <body>
-<a href="http://code.google.com/p/web-optimizator/"><img src="images/web.optimizer.logo.png" alt="Web Optimizer" border="0" width="755" height="124"/></a>
+<div><a href="http://code.google.com/p/web-optimizator/"><img src="images/web.optimizer.logo.png" alt="Web Optimizer" border="0" width="755" height="124"/></a></div>
 <?php require($page.".php") ?>
 <script type="text/javascript" src="libs/js/yass.loader.js"></script></body>
 </html>
