@@ -1051,6 +1051,9 @@ ExpiresDefault \"access plus 10 years\"
 /* CodeIgniter */
 		} elseif (is_file($root . 'system/codeigniter/CodeIgniter.php')) {
 			return 'CodeIgniter';
+/* Symfony */
+		} elseif (is_file($root . '../lib/symfony/config/config/settings.yml')) {
+			return 'Symfony';
 		}
 
 		return 'CMS 42';
