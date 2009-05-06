@@ -35,6 +35,15 @@ class web_optimizer {
 		$this->set_options();
 /* Define the gzip headers */
 		$this->set_gzip_headers();
+/* check if we can get out cached page */
+		if (!empty($this->options['page']['cache'])) {
+			$file = $this->options['javascript']['cachedir'] . '/' . $this->convert_request_uri($_SERVER['REQUEST_URI']);
+			if (is_file($file)) {
+				$this->set_gzip_header();
+				echo @file_get_contents($file);
+				die();
+			}
+		}
 /* Start things off */
 		$this->start();
 	}
@@ -99,7 +108,9 @@ class web_optimizer {
 			"page" => array(
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
-				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
+				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
+				"cache" => $this->options['cache']['html'],
+				"cache_timeout" => $this->options['cache']['timeout']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -198,6 +209,17 @@ class web_optimizer {
 		}
 /* remove BOM */
 		$this->content = preg_replace("/﻿/", "", $this->content);
+/* check if we need to store cached page */
+		if (!empty($this->options['page']['cache'])) {
+			$file = $this->options['javascript']['cachedir'] . '/' . $this->convert_request_uri($_SERVER['REQUEST_URI']);
+			if (!is_file($file) || time() - filemtime($file) > $this->options['page']['cache_timeout']) {
+				$fp = @fopen($file, "w");
+				if ($fp) {
+					@fwrite($fp, $this->content);
+					@fclose($fp);
+				}
+			}
+		}
 /* Echo content to the browser */
 		if(empty($this->supress_output)) {
 			if(!empty($this->return_content)) {
@@ -937,7 +959,7 @@ class web_optimizer {
 		$ExpStr = "Expires: " .
 		gmdate("D, d M Y H:i:s",
 		time() + $offset) . " GMT";
-		$types = array("css","javascript");
+		$types = array("css", "javascript");
 
 		foreach($types AS $type) {
 /* Always send etag */
@@ -1032,7 +1054,7 @@ class web_optimizer {
 		$txt = preg_replace('/\s+/', ' ', $txt);
 /* Remove comments */
 		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
-/* Remove ruments from optimization */
+/* Remove rudiments from optimization */
 		$txt = preg_replace('/<script[^>]+type=[\'"]text\/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
 		return $txt;
 	}
@@ -1404,6 +1426,18 @@ class web_optimizer {
 		$endtime = $mtime;
 		$totaltime = ($endtime - $starttime);
 		return $totaltime;
+	}
+
+	/**
+	 * Converts REQUEST_URI to cached file name
+	 *
+	 **/
+	function convert_request_uri ($uri) {
+/* replace / with - */
+		$uri = preg_replace("!/!", "#", $uri);
+/* replace ?, & with + */
+		$uri = preg_replace("!\?|&!", "+", $uri);
+		return $uri;
 	}
 
 	/**
