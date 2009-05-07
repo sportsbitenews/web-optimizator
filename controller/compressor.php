@@ -109,6 +109,7 @@ class web_optimizer {
 			"page" => array(
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
+				"remove_comments" => $this->options['minify']['html_comments'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
 				"cache" => $this->options['far_future_expires']['html'],
 				"cache_timeout" => $this->options['far_future_expires']['timeout']
@@ -470,7 +471,7 @@ class web_optimizer {
 		switch ($include) {
 /* if no unobtrusive logic and no external JS, move to top */
 			default:
-				$source = preg_replace("!<head([^>]+)?>!is", "$0 \n" . $newfile . "\n", $source);
+				$source = preg_replace("!<head([^>]+)?>!is", "$0" . $newfile, $source);
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
 			case 1:
@@ -800,7 +801,7 @@ class web_optimizer {
 					$file['tag'] = 'script';
 					$file['part'] = 'head';
 					$file['source'] = $match[0];
-					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\s\r\n]*|[\s\r\n]*<\/script>)/i", "", $match[0]);
+					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
 					$file['comment'] = '';
 					$file['file'] = '';
 					preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
@@ -830,7 +831,7 @@ class web_optimizer {
 					$file['tag'] = 'link';
 					$file['part'] = 'head';
 					$file['source'] = $match[0];
-					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]+>|<style[^>]*>[\s\r\n]*|[\s\r\n]*<\/style>)/i", "", $match[0]);
+					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
 					$file['comment'] = '';
 					preg_match_all("@(type|rel|media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
 					if(is_array($variants)) {
@@ -1053,7 +1054,7 @@ class web_optimizer {
 	function minify_text($txt) {
 /* Compress whitespace */
 		$txt = preg_replace('/\s+/', ' ', $txt);
-/* Remove comments */
+/* Remove simple comments */
 		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
 /* Remove rudiments from optimization */
 		$txt = preg_replace('/<script[^>]+type=[\'"]text\/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
@@ -1082,6 +1083,12 @@ class web_optimizer {
 							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+/* replace breaks with nothing for block tags */
+		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|pre|samp|script|select|sidebar|style|table|tbody|td|textarea|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source);
+/* replace breaks with space for inline tags */
+		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source);
+/* replace ' />' with '/>' */
+		$source = preg_replace("/\s\/>/", "/>", $source);
 /* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
 /* replace pre blocks */
@@ -1132,7 +1139,11 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content));
+			$this->content = preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
+/* Remove comments ?*/
+			if (!empty($this->options['page']['remove_comments'])) {
+				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
+			}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 			preg_match("!<head([^>]+)?>.*?</head>!is", preg_replace("@<!--.*?-->@is", '', $this->content), $matches);
 			if (!empty($matches[0])) {

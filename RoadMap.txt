@@ -98,6 +98,8 @@
 +n) DataLife Engine (8.0)
 +o) Zend Framework (after disabled rewrite)
 +p) vBulletin (3.8)
++r) Symfony (1.2)
++s) CodeIgniter (1.7), MaxSite (0.3)
 
 12. Localization
 +a) English

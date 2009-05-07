@@ -131,6 +131,7 @@ define('_WEBO_minify_with_packer', 'Minify with Packer');
 define('_WEBO_minify_with_yui', 'Minify with YUI Compressor');
 define('_WEBO_minify_css', 'Minify and combine CSS files');
 define('_WEBO_minify_page', 'Minify HTML');
+define('_WEBO_minify_html_comments', 'Remove HTML comments');
 define('_WEBO_gzip_javascript', 'Gzip JavaScript');
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_page', 'Gzip HTML');

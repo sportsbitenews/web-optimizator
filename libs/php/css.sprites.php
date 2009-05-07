@@ -250,7 +250,7 @@ class css_sprites {
 
 			foreach ($images as $key => $image) {
 /* no initial CSS Sprites and valid background-image */
-				if (count($this->css_images[$image['background-image']]) < 2 && $image['background-image'] != $this->none) {
+				if ($image['background-image'] != $this->none && count($this->css_images[$image['background-image']]) < 2) {
 					$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->timestamp .'.png';
 					$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
 					list($width, $height) = $this->get_image();

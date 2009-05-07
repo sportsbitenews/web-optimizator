@@ -11,6 +11,7 @@
  //_WEBO_far_future_expires_html
  //_WEBO_css_sprites_memory_limited
  //_WEBO_css_sprites_no_ie6
+ //_WEBO_minify_html_comments
  //_WEBO_CLEAR_UNABLE
  //_WEBO_CLEAR_SUCCESSFULL
 
