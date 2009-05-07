@@ -40,7 +40,9 @@ class web_optimizer {
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
-				$this->set_gzip_header();
+				if (!empty($this->options['page']['gzip'])) {
+					$this->set_gzip_header();
+				}
 				echo @file_get_contents($file);
 				die();
 			}
@@ -80,7 +82,7 @@ class web_optimizer {
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
-				"far_future_expires" => $this->options['far_future_expires']['javascript'],
+				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
@@ -92,7 +94,7 @@ class web_optimizer {
 				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
-				"far_future_expires" => $this->options['far_future_expires']['css'],
+				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
@@ -1083,12 +1085,14 @@ class web_optimizer {
 							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
-/* replace breaks with nothing for block tags */
-		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|pre|samp|script|select|sidebar|style|table|tbody|td|textarea|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source);
-/* replace breaks with space for inline tags */
-		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source);
-/* replace ' />' with '/>' */
-		$source = preg_replace("/\s\/>/", "/>", $source);
+/* replace breaks with nothing for block tags
+		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|pre|samp|script|select|sidebar|style|table|tbody|td|textarea|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source); */
+/* replace breaks with space for inline tags
+		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source); */
+/* replace ' />' with '/>'
+		$source = preg_replace("/\s\/>/", "/>", $source); */
+/* replace multiple spaces with single one 
+		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
 /* replace pre blocks */

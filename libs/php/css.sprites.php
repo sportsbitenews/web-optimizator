@@ -914,6 +914,11 @@ __________________
 							}
 
 							if (!empty($im) || $file_exists) {
+/* detect 32bit alpha images */
+								if (!$file_exists) {
+ 									$colors = @imagecolorsforindex($im, @imagecolorat($im, 0, 0)); 
+ 									$this->alpha_enabled = $this->alpha_enabled || !!$colors['alpha'];
+								}
 								switch ($type) {
 /* 0 100% case */
 									case 6:
