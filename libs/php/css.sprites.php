@@ -830,7 +830,7 @@ __________________
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
 					if (!$file_exists) {
-						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
+						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 126);
 /* fill sprite with white color */
 						@imagefill($this->sprite_raw, 0, 0, $this->background);
 /* make this color transparent */
@@ -916,8 +916,7 @@ __________________
 							if (!empty($im) || $file_exists) {
 /* detect 32bit alpha images */
 								if (!$file_exists) {
- 									$colors = @imagecolorsforindex($im, @imagecolorat($im, 0, 0)); 
- 									$this->alpha_enabled = $this->alpha_enabled || !!$colors['alpha'];
+ 									$this->get_alpha($im, $this->sprite);
 								}
 								switch ($type) {
 /* 0 100% case */
@@ -1014,10 +1013,12 @@ __________________
 							if (is_file($sprite_right)) {
 								$im = @imagecreatefrompng($sprite_right);
 								@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
+								$this->get_alpha($im, $sprite_right);
 							}
 							if (is_file($sprite_bottom)) {
 								$im = @imagecreatefrompng($sprite_bottom);
 								@imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
+								$this->get_alpha($im, $sprite_bottom);
 							}
 						}
 /* output final sprite */
@@ -1098,6 +1099,14 @@ __________________
 /* return CSS selector w/o CSS3 pseudo-addons */
 	function fix_css3_selectors ($key) {
 		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
+	}
+/* detect if image is transparent */
+	function get_alpha ($im, $sprite) {
+ 		$colors1 = @imagecolorsforindex($im, @imagecolorat($im, 0, 0)); 
+		$colors2 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, 0)); 
+		$colors3 = @imagecolorsforindex($im, @imagecolorat($im, 0, $this->css_images[$sprite]['y'] - 1)); 
+		$colors4 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, $this->css_images[$sprite]['y'] - 1)); 
+		$this->alpha_enabled = $this->alpha_enabled || !empty($colors1['alpha']) || !empty($colors2['alpha']) || !empty($colors3['alpha']) || !empty($colors4['alpha']);
 	}
 }
 
