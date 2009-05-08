@@ -35,8 +35,10 @@ class web_optimizer {
 		$this->set_options();
 /* Define the gzip headers */
 		$this->set_gzip_headers();
+/* HTML cache ? */
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . preg_match("/ /", "|", $this->options['page']['cache_ignore']) . "!", $_SERVER['REQUEST_URI']));
 /* check if we can get out cached page */
-		if (!empty($this->options['page']['cache'])) {
+		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
@@ -114,7 +116,8 @@ class web_optimizer {
 				"remove_comments" => $this->options['minify']['html_comments'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
 				"cache" => $this->options['far_future_expires']['html'],
-				"cache_timeout" => $this->options['far_future_expires']['timeout']
+				"cache_timeout" => $this->options['far_future_expires']['timeout'],
+				"cache_ignore" => $this->options['far_future_expires']['ignore_list'],
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -214,7 +217,7 @@ class web_optimizer {
 /* remove BOM */
 		$this->content = preg_replace("/﻿/", "", $this->content);
 /* check if we need to store cached page */
-		if (!empty($this->options['page']['cache'])) {
+		if (!empty($this->cache_me)) {
 			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
 			if (!is_file($file) || time() - filemtime($file) > $this->options['page']['cache_timeout']) {
 				$fp = @fopen($file, "w");

@@ -49,6 +49,8 @@ $compress_options['far_future_expires']['static'] = "1";
 $compress_options['far_future_expires']['html'] = "0";
 ## Cache timeout for generated HTML files
 $compress_options['far_future_expires']['timeout'] = "600";
+## Parts of ignore URL for HTML cache, separated by space
+$compress_options['far_future_expires']['ignore list'] = "";
 ## On or off 
 $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer

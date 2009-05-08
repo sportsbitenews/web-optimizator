@@ -493,7 +493,7 @@ __________________
 			$added_images = array();
 /* add images to this matrix one-by-one */
 			foreach ($css_images['images'] as $image) {
-				$square = $image[1] * $image[2];
+				$square = $image[1] * $image[1] + $image[2] * $image[2];
 				while (!empty($ordered_images[$square])) {
 /* increase square while we don't have unique key */
 					$square++;
@@ -1106,7 +1106,8 @@ __________________
 		$colors2 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, 0)); 
 		$colors3 = @imagecolorsforindex($im, @imagecolorat($im, 0, $this->css_images[$sprite]['y'] - 1)); 
 		$colors4 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, $this->css_images[$sprite]['y'] - 1)); 
-		$this->alpha_enabled = $this->alpha_enabled || !empty($colors1['alpha']) || !empty($colors2['alpha']) || !empty($colors3['alpha']) || !empty($colors4['alpha']);
+		$colors5 = @imagecolorsforindex($im, @imagecolorat($im, round($this->css_images[$sprite]['x']/2) - 1, round($this->css_images[$sprite]['y']/2) - 1)); 
+		$this->alpha_enabled = $this->alpha_enabled || !empty($colors1['alpha']) || !empty($colors2['alpha']) || !empty($colors3['alpha']) || !empty($colors4['alpha']) || !empty($colors5['alpha']);;
 	}
 }
 
