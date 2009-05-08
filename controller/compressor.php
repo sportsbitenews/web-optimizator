@@ -1,7 +1,4 @@
 <?php
-// add support for image optimization via smush.it 
-// http://smush.it/ws.php?img=http://smush.it/css/skin/screenshot.png
-// {"src":"http:\/\/smush.it\/css\/skin\/screenshot.png","src_size":2334,"dest":"results\/140e0340\/smush\/screenshot.png","dest_size":2261,"percent":"3.13","id":""}
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)

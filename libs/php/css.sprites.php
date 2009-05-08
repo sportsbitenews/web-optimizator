@@ -427,23 +427,8 @@ __________________
 				$cached = preg_replace("/.*\//", "", $this->css_image);
 /* check for cached version */
 				if (!is_file($cached)) {
-/* check for curl */
-					if (function_exists('curl_init')) {
-/* try to download image */
-						$ch = curl_init($this->css_image);
-						$this->css_image = $cached;
-						$fp = fopen($this->css_image, "w");
-						if ($fp && $ch) {
-						curl_setopt($ch, CURLOPT_FILE, $fp);
-						curl_setopt($ch, CURLOPT_HEADER, 0);
-						curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
-						curl_exec($ch);
-						curl_close($ch);
-						fclose($fp);
-						}
-					} else {
-						$this->css_image = '';
-					}
+					$this->download_file($this->css_image, $cached);
+					$this->css_image = is_file($cached) ? $cached : '';
 				} else {
 					$this->css_image = $cached;
 				}
@@ -830,13 +815,11 @@ __________________
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
 					if (!$file_exists) {
-						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 126);
+						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
 /* fill sprite with white color */
 						@imagefill($this->sprite_raw, 0, 0, $this->background);
 /* make this color transparent */
 						@imagecolortransparent($this->sprite_raw, $this->background);
-/* to handle 32bit alpha transparent images */
-						$this->alpha_enabled = 0;
 					}
 /* loop in all given CSS images */
 					foreach ($this->css_images[$this->sprite]['images'] as $image) {
@@ -914,10 +897,6 @@ __________________
 							}
 
 							if (!empty($im) || $file_exists) {
-/* detect 32bit alpha images */
-								if (!$file_exists) {
- 									$this->get_alpha($im, $this->sprite);
-								}
 								switch ($type) {
 /* 0 100% case */
 									case 6:
@@ -1013,44 +992,32 @@ __________________
 							if (is_file($sprite_right)) {
 								$im = @imagecreatefrompng($sprite_right);
 								@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
-								$this->get_alpha($im, $sprite_right);
 							}
 							if (is_file($sprite_bottom)) {
 								$im = @imagecreatefrompng($sprite_bottom);
 								@imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
-								$this->get_alpha($im, $sprite_bottom);
 							}
 						}
 /* output final sprite */
 						if ($this->truecolor_in_jpeg) {
 							$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
 							@imagejpeg($this->sprite_raw, $this->sprite, 80);
-							if (is_file($this->root_dir . 'libs/php/jpegtran')) {
-								@shell_exec($this->root_dir . 'libs/php/jpegtran -copy none -perfect -optimize ' . $this->sprite . ' > jpegtran.'. $this->timestamp .'.jpg');
-								if (is_file('jpegtran.'. $this->timestamp .'.jpg') && filesize('jpegtran.'. $this->timestamp .'.jpg')) {
-									if (filesize('jpegtran.'. $this->timestamp .'.jpg') < filesize($this->sprite)) {
-										@copy('jpegtran.'. $this->timestamp .'.jpg', $this->sprite);
-									}
-								}
-								@unlink('jpegtran.'. $this->timestamp .'.jpg');
-							}
 						} else {
 /* handling 32bit colors in PNG */
-							if ($this->alpha_enabled) {
-								@imagealphablending($this->sprite_raw, false);
-								@imagesavealpha($this->sprite_raw, true);
-							}
+							@imagealphablending($this->sprite_raw, false);
+							@imagesavealpha($this->sprite_raw, true);
 							@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
-/* additional optimization via pngcrush */
-							if (is_file($this->root_dir . 'libs/php/pngcrush')) {
-								@shell_exec($this->root_dir . 'libs/php/pngcrush -qz3 -brute -force -reduce -rem alla ' . $this->sprite . ' pngout.'. $this->timestamp .'.png');
-								if (is_file('pngout.'. $this->timestamp .'.png')) {
-									if (filesize('pngout.'. $this->timestamp .'.png') < filesize($this->sprite)) {
-										@copy('pngout.'. $this->timestamp .'.png', $this->sprite);
-									}
-									unlink('pngout.'. $this->timestamp .'.png');
-								}
+						}
+/* additional optimization via smush.it */
+						$tmp_file = $this->sprite . ".tmp";
+						$this->download_file("http://smush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $this->current_dir) . "/" . $this->sprite, $tmp_file);
+						if (is_file($tmp_file)) {
+							$str = @file_get_contents($tmp_file);
+							if (!preg_match("/['\"]error['\"]/i", $str)) {
+								$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
+								$this->download_file("http://smush.it/" . $optimized, $this->sprite);
 							}
+							@unlink($tmp_file);
 						}
 						@imagedestroy($this->sprite_raw);
 					}
@@ -1100,14 +1067,22 @@ __________________
 	function fix_css3_selectors ($key) {
 		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
 	}
-/* detect if image is transparent */
-	function get_alpha ($im, $sprite) {
- 		$colors1 = @imagecolorsforindex($im, @imagecolorat($im, 0, 0)); 
-		$colors2 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, 0)); 
-		$colors3 = @imagecolorsforindex($im, @imagecolorat($im, 0, $this->css_images[$sprite]['y'] - 1)); 
-		$colors4 = @imagecolorsforindex($im, @imagecolorat($im, $this->css_images[$sprite]['x'] - 1, $this->css_images[$sprite]['y'] - 1)); 
-		$colors5 = @imagecolorsforindex($im, @imagecolorat($im, round($this->css_images[$sprite]['x']/2) - 1, round($this->css_images[$sprite]['y']/2) - 1)); 
-		$this->alpha_enabled = $this->alpha_enabled || !empty($colors1['alpha']) || !empty($colors2['alpha']) || !empty($colors3['alpha']) || !empty($colors4['alpha']) || !empty($colors5['alpha']);;
+/* generic download function */
+	function download_file ($remote, $local) {
+/* check for curl */
+		if (function_exists('curl_init')) {
+/* try to download image */
+			$ch = curl_init($remote);
+			$fp = fopen($local, "w");
+			if ($fp && $ch) {
+				curl_setopt($ch, CURLOPT_FILE, $fp);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
+				curl_exec($ch);
+				curl_close($ch);
+				fclose($fp);
+			}
+		}
 	}
 }
 

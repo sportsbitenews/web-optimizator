@@ -27,7 +27,7 @@
  j) Source directories for CSS / JS files
 +k) Source PHP / HTML files to auto-change
  l) images optimization settings
- m) usage of auto-optimization solutions (smush.it)
++m) usage of auto-optimization solutions (smush.it)
  n) website load counter (via webo.in)
 +o) External and inline JS / external CSS merging
 +p) List of protected from merging files -- really required!
