@@ -158,6 +158,38 @@ class admin {
 	}
 
 	/**
+	* Upgrade page
+	*
+	**/     
+	function install_upgrade() {
+		$file = 'files';
+		$this->download($this->svn . $file, $file);
+		if (is_file($file)) {
+			$files = split("\r?\n", @file_get_contents($file));
+			foreach ($files as $file) {
+				$this->download($this->svn . $file, $file);
+				if ($file == 'config.webo.php') {
+/* save all options to the new file -- rewrite default ones  */
+					foreach($this->compress_options AS $key => $option) {
+						if(is_array($option)) {
+							foreach($option AS $option_name => $option_value) {
+								$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+							}
+						} else {
+							$this->save_option("['" . strtolower($key) . "']", $option);
+						}
+					}
+				}
+			}
+/* redirect to the main page */
+			header("Location: index.php?upgraded=1");
+			die();
+		} else {
+			$this->error("<p>". _WEBO_UPGRADE_UNABLE ."</p>");
+		}
+	}
+
+	/**
 	* Uninstall page
 	* 
 	**/	
