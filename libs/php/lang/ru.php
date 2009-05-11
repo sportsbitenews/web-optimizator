@@ -142,6 +142,7 @@ define('_WEBO_far_future_expires_css', 'Кэшировать CSS');
 define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
 define('_WEBO_far_future_expires_html', 'Кэшировать созданные HTML-файлы');
 define('_WEBO_far_future_expires_timeout', 'Срок действия кэша для HTML-файлов в секундах');
+define('_WEBO_far_future_expires_ignore_list', 'Список частей URL для исключения при кэшировании HTML');
 define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');
 define('_WEBO_footer_image', 'Добавить изображение Веб Оптимизатора');
 define('_WEBO_cleanup_on', 'Удалять старые файлы');

@@ -143,6 +143,7 @@ define('_WEBO_far_future_expires_css', 'Cache CSS');
 define('_WEBO_far_future_expires_static', 'Cache static assets');
 define('_WEBO_far_future_expires_html', 'Cache generated HTML files');
 define('_WEBO_far_future_expires_timeout', 'Default timeout to cache HTML files, in seconds');
+define('_WEBO_far_future_expires_ignore_list', 'List of parts of URLs to ignore from HTML caching');
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
 define('_WEBO_cleanup_on', 'Regularly delete old files');

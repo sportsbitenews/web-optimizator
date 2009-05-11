@@ -93,7 +93,7 @@
 +i) PHP Nuke (8.0)
 +j) Simpla
 +k) Etomite (1.1), MODx (0.9)
-+l) LiveStreet (0.2)
++l) LiveStreet (0.2, 0.3)
 +m) Santafox (1.1)
 +n) DataLife Engine (8.0)
 +o) Zend Framework (after disabled rewrite)
