@@ -74,6 +74,10 @@ $compress_options['css_sprites']['no_ie6'] = "0";
 $compress_options['css_sprites']['memory_limited'] = "1";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
 $compress_options['css_sprites']['ignore_list'] = "";
+## Parallel downloads
+$compress_options['parallel']['enabled'] = "1";
+## List of hosts for parallel downloads
+$compress_options['parallel']['allowed_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";

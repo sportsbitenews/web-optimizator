@@ -280,6 +280,25 @@ class admin {
 	}
 
 	/**
+	* Simple function to check multiple hosts possibility
+	* Returns lists of allowed hosts from given array
+	**/
+	function check_hosts ($hosts) {
+		$allowed_hosts = "";
+		foreach ($hosts as $host) {
+			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER[’SCRIPT_NAME’]) . "images/web.optimizer.logo.png";
+			$tmp_image = "image.tmp.png";
+/* try to get webo image from this host */
+			$this->download($webo_image, $tmp_image);
+			if (is_file($tmp_image)) {
+				$allowed_hosts .= $host . " ";
+				@unlink($tmp_image);
+			}
+		}
+		return trim($allowed_hosts);
+	}
+
+	/**
 	* 
 	* 
 	**/	
@@ -348,13 +367,22 @@ class admin {
 /* Set paths with the new document root */
 		$this->view->set_paths($this->input['user']['document_root']);
 		$this->get_modules();
+/* check for multiple hosts possibility */
+		$hosts = split(" ", $this->compress_options['parallel']['allowed_list']);
+		if (empty($hosts) || empty($hosts[0])) {
+/* load default list */
+			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+		}
+		$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
+
 		$options = array(
 			'Minify' => $this->compress_options['minify'],
 			'GZIP' => $this->compress_options['gzip'],
 			'htaccess' => $this->compress_options['htaccess'],
 			'css_sprites' => $this->compress_options['css_sprites'],
 			'Far_future_expires' => $this->compress_options['far_future_expires'],
-			'external_scripts' => $this->compress_options['external_scripts']
+			'external_scripts' => $this->compress_options['external_scripts'],
+			'parallel' => $this->compress_options['parallel']
 		);
 
 		$options = array('js_libraries'=>array(
@@ -402,6 +430,11 @@ class admin {
 							'title' => _WEBO_SPLASH2_DATAURI,
 							'intro' => _WEBO_SPLASH2_DATAURI_INFO,
 							'value' => $this->compress_options['data_uris']
+						),
+						'parallel' => array(
+							'title' => _WEBO_SPLASH2_PARALLEL,
+							'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
+							'value' => $this->compress_options['parallel']
 						),
 						'htaccess' => array(
 							'title' => _WEBO_SPLASH2_HTACCESS,
@@ -483,8 +516,6 @@ class admin {
 			$this->options_file = "config.webo.php";
 			if(!empty($this->input['submit'])) {
 /* try to set some libs executable */
-				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/pngcrush', 0755);
-				@chmod($this->input['user']['webo_cachedir'] . 'libs/php/jpegtran', 0755);
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
 /* check for YUI availability */
 				$YUI_checked = 0;
@@ -523,6 +554,13 @@ class admin {
 							if ($key == 'gzip') {
 								if (!function_exists('gzencode') && !$this->input['user']['htaccess']['enabled']) {
 									$this->input['user'][$key][$option_name] = 0;
+								}
+							}
+/* correct multiple hosts list */
+							if ($key == 'parallel' && $option_name == 'allowed_list') {
+								$hosts = split(" ", $option_value);
+								if (is_array($hosts)) {
+									$option_value = $this->check_hosts($hosts);
 								}
 							}
 							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);

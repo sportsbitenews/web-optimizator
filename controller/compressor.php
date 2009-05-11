@@ -115,6 +115,8 @@ class web_optimizer {
 				"cache" => $this->options['far_future_expires']['html'],
 				"cache_timeout" => $this->options['far_future_expires']['timeout'],
 				"cache_ignore" => $this->options['far_future_expires']['ignore_list'],
+				"parallel" => $this->options['parallel']['enabled'],
+				"parallel_hosts" => $this->options['parallel']['allowed_list']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -341,6 +343,10 @@ class web_optimizer {
 /* remove empty scripts after merging inline code */
 			$this->content = preg_replace("/<script type=['\"]text\/javascript['\"]><\/script>/i", "", $this->content);
 		}
+/* add multiple hosts */
+		if (!empty($options['parallel']) && !empty($options['parallel_hosts'])) {
+			$this->content = $this->add_multiple_hosts($this->content, split(" ", $options['parallel_hosts']));
+		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {
 			$content = $this->create_gz_compress($this->content);
@@ -352,7 +358,33 @@ class web_optimizer {
 	}
 
 	/**
-	* Return GZIP compressed content string with header
+	* Adds multiple hosts to HTML for images
+	*
+	**/
+	function add_multiple_hosts ($content, $hosts) {
+/* limit by 4 */
+		if (count($hosts) > 4) {
+			$hosts = array($hosts[0], $hosts[1], $hosts[2], $hosts[3]);
+		}
+		$count = count($hosts);
+		$replaced = array();
+		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
+		if (!empty($imgs)) {
+			foreach ($imgs as $image) {
+				$old_src = preg_replace("!^['\"\s]*(.*)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
+				if (empty($replaced[$old_src])) {
+					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $this->view->paths['full']['document_root'] . "index.php"));
+					$new_src = "http" . ($_SERVER['HTTPS'] ? "s" : "") . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
+					$content = str_replace($old_src, $new_src, $content);
+					$replaced[$old_src] = 1;
+				}
+			}
+		}
+		return $content;
+	}
+
+	/**
+	* Returns GZIP compressed content string with header
 	*
 	**/
 	function create_gz_compress($content) {
@@ -1198,28 +1230,39 @@ class web_optimizer {
 	}
 
 	/**
+	* Converts sinlge path to the absolute one
+	*
+	**/
+
+	function convert_path_to_absolute($file, $path) {
+/* Don't touch data URIs, or mhtml:, or external files */
+		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $_SERVER['HTTP_HOST'] ."!is", $file)) {
+			return false;
+		}
+		$absolute_path = $file;
+/* Not absolute or external */
+		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
+			$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
+			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
+		}
+		$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
+/* handle cases with ./ and relative path */
+		return preg_replace("!/./!", "/" . preg_replace("!/[^/]+$!", "", preg_replace("!https?://[^/]+/!", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
+	}
+
+	/**
 	* Finds background images in the CSS and converts their paths to absolute
 	*
 	**/
 	function convert_paths_to_absolute($content, $path) {
 		preg_match_all( "/url\(['\"]?(.*?)['\"]?\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
-			foreach($matches[1] AS $key=>$file) {
-/* Don't touch data URIs, or mhtml:, or external files */
-				if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $_SERVER['HTTP_HOST'] ."!is", $file)) {
-					continue;
-				}
-				$absolute_path = $file;
-/* Not absolute or external */
-				if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
-					$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
-					$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
-				}
-				$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
-/* handle cases with ./ and relative path */
-				$absolute_path = preg_replace("!/./!", "/" . preg_replace("!/[^/]+$!", "", preg_replace("!https?://[^/]+/!", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
+			foreach($matches[1] as $key => $file) {
+				$absolute_path = $this->convert_path_to_absolute($file, $path);
+				if (!empty($absolute_path)) {
 /* replace path in initial CSS */
-				$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
+					$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
+				}
 			}
 		}
 		return $content;

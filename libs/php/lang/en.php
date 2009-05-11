@@ -108,6 +108,9 @@ define('_WEBO_SPLASH2_SPRITES_INFO', 'It is possible to store CSS Background ima
 define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
 define('_WEBO_SPLASH2_DATAURI_INFO', 'It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests. 
 									<br/>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.');
+define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
+define('_WEBO_SPLASH2_PARALLEL_INFO', 'Web Optimzier can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server and load the overall page faster.
+									<br/>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically and starts serving content from them only after hosts are ready to do so.');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
 define('_WEBO_SPLASH2_HTACCESS_INFO', 'Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).
 									<br/>Available options: ');
@@ -151,6 +154,8 @@ define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
 define('_WEBO_css_sprites_no_ie6', 'Exclude IE6 (via hacks) from CSS Sprites generation');
 define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage for PHP process');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
+define('_WEBO_parallel_enabled', 'Enable multiple hosts');
+define('_WEBO_parallel_allowed_list', 'Allowed hosts');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Enable <code>mod_deflate</code>');
 define('_WEBO_htaccess_mod_gzip', 'Enable <code>mod_gzip</code>');
