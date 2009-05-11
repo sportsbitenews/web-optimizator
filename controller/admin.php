@@ -285,15 +285,16 @@ class admin {
 	**/
 	function check_hosts ($hosts) {
 		$allowed_hosts = "";
+		$etalon = @filesize("images/web.optimizer.logo.png");
 		foreach ($hosts as $host) {
 			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER[’SCRIPT_NAME’]) . "images/web.optimizer.logo.png";
 			$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
 			$this->download($webo_image, $tmp_image);
-			if (is_file($tmp_image)) {
+			if (@filesize($tmp_image) == $etalon) {
 				$allowed_hosts .= $host . " ";
-				@unlink($tmp_image);
 			}
+			@unlink($tmp_image);
 		}
 		return trim($allowed_hosts);
 	}
