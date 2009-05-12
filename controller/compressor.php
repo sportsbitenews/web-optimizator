@@ -542,7 +542,7 @@ class web_optimizer {
 /* glue scripts' content / filenames */
 		$scripts_string = '';
 		foreach ($external_array as $script) {
-			$scripts_string .= $script['file'] . $script['content'];
+			$scripts_string .= (empty($script['file']) ? '' : $script['file']) . (empty($script['content']) ? '' : $script['content']);
 		}
 /* Get date string to make hash */
 		$datestring = $this->get_file_dates($external_array, $options);
@@ -894,7 +894,7 @@ class web_optimizer {
 /* Remove empty sources and any externally linked files */
 		foreach($this->initial_files AS $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-			if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && !$this->options['javascript']['external_scripts'] || (!empty($excluded_scripts[0]) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
+			if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && !$this->options['javascript']['external_scripts'] || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
 				unset($this->initial_files[$key]);
 			}
 		}
@@ -917,7 +917,7 @@ class web_optimizer {
 		foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 			if (!$tag || $value['tag'] == $tag) {
-				if (strlen($value['file'])> 7 && preg_match("/^https?:\/\//i", $value['file'])) {
+				if (!empty($value['file']) && strlen($value['file']) > 7 && preg_match("/^https?:\/\//i", $value['file'])) {
 /* exclude files from the same host */
 					if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
@@ -937,19 +937,21 @@ class web_optimizer {
 					}
 				}
 				$content_from_file = '';
-				if ($value['tag'] == 'link') {
+				if (!empty($value['file'])) {
+					if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
-					$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-						$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
-				} else {
-					$content_from_file = @file_get_contents($this->get_file_name($value['file']));
+						$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+							$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
+					} else {
+						$content_from_file = @file_get_contents($this->get_file_name($value['file']));
+					}
 				}
 				$delimiter = '';
 				if ($value['tag'] == 'script') {
 					$delimiter = ';';
 				}
 /* don't delete any detected scritps from array -- we need to clean up HTML page from them */
-				if (empty($value['file']) && $key != $last_key[$value['tag']]) {
+				if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
 					if ($this->options['javascript']['external_scripts']) {
 /* resolve @import from inline styles */
@@ -959,7 +961,7 @@ class web_optimizer {
 						$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* if we can't add to existing tag -- store for the future */
 						if (empty($last_key[$value['tag']])) {
-							$stored[$value['tag']] = $stored[$value['tag']] ? $stored[$value['tag']] . $text : $text;
+							$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
 							$last_key_flushed[$value['tag']] = $key;
 						} else {
 							$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;

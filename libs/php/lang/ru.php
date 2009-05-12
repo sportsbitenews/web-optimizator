@@ -162,6 +162,7 @@ define('_WEBO_htaccess_mod_gzip', 'Включить <code>mod_gzip</code>');
 define('_WEBO_htaccess_mod_expires', 'Включить <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Включить <code>mod_headers</code>');
 define('_WEBO_htaccess_mod_setenvif', 'Включить <code>mod_setenvif</code>');
+define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
 define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
 
 /* Third splash -- end screen */

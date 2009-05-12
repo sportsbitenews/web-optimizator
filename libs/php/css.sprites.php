@@ -471,7 +471,7 @@ __________________
 		$matrix = array(array(0));
 		$css_images['x'] = $css_images['y'] = $matrix_x = $matrix_y = 0;
 /* check if we have initial no-repeat images */
-		if (is_array($css_images['images'])) {
+		if (!empty($css_images['images'])) {
 /* array for images ordered by square */
 			$ordered_images = array();
 /* to track duplicates */
@@ -578,7 +578,7 @@ __________________
 /* count initial shift (not to hurt current images) */
 		$shift = $matrix_y;
 /* need to add weboi Sprite to the main one */
-		if (count($css_icons['images'])) {
+		if (!empty($css_icons['images'])) {
 			foreach ($css_icons['images'] as $image) {
 				$shift += $image[2] + $image[4];
 			}
@@ -644,7 +644,7 @@ __________________
 			if (!empty($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)])) {
 				$images_number = count($this->css_images[$this->sprite]['images']) && count($this->css_images[preg_replace("/(x|y)/", "$1l", $this->sprite)]['images']);
 			} else {
-				$images_number = count($this->css_images[$this->sprite]['images']) > 1;
+				$images_number = empty($this->css_images[$this->sprite]) ? 0 : count($this->css_images[$this->sprite]['images']) > 1;
 			}
 
 			if ($images_number || $type == 4) {
@@ -653,7 +653,7 @@ __________________
 				$this->css_images[$this->sprite]['y'] = 0;
 /* recount x/y sizes for repeat-x / repeat-y / repeat icons -- we can have duplicated dimensions */
 				$counted_images = array();
-				if (is_array($this->css_images[$this->sprite]['images'])) {
+				if (!empty($this->css_images[$this->sprite]['images'])) {
 					foreach ($this->css_images[$this->sprite]['images'] as $key => $image) {
 						$filename = $image[0];
 						if (($type == 1 || $type == 2 || $type == 5 || $type == 6) && empty($counter_images[$filename])) {
@@ -786,7 +786,9 @@ __________________
 				$merged_selector = array();
 /* need to count placement for each image in array */
 				if ($type == 4) {
-					$this->css_images[$this->sprite] = $this->sprites_placement($this->css_images[$this->sprite], $this->css_images[preg_replace("/webo/", "weboi", $this->sprite)]);
+					$icons_sprite = preg_replace("/webo/", "weboi", $this->sprite);
+					$icons = empty($this->css_images[$icons_sprite]) ? array() : $this->css_images[$icons_sprite];
+					$this->css_images[$this->sprite] = $this->sprites_placement($this->css_images[$this->sprite], $icons);
 					$sprite_right = preg_replace("/webo/", "webor", $this->sprite);
 /* add right Sprite to the right top corner */
 					if (is_file($sprite_right)) {

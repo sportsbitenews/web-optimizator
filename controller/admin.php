@@ -287,7 +287,7 @@ class admin {
 		$allowed_hosts = "";
 		$etalon = @filesize("images/web.optimizer.logo.png");
 		foreach ($hosts as $host) {
-			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER[’SCRIPT_NAME’]) . "images/web.optimizer.logo.png";
+			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
 			$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
 			$this->download($webo_image, $tmp_image);
@@ -715,7 +715,7 @@ ExpiresDefault \"access plus 10 years\"
 						$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* prevent rewrite to admin access on frameworks */
 						if ($cms_version == 'Zend Framework' || $cms_version == 'Symfony' || $cms_version == 'CodeIgniter') {
-							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
+							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 						}
 						fwrite($fp, $content_saved . "\n" . $content);
 						fclose($fp);

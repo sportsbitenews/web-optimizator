@@ -163,6 +163,7 @@ define('_WEBO_htaccess_mod_gzip', 'Enable <code>mod_gzip</code>');
 define('_WEBO_htaccess_mod_expires', 'Enable <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Enable <code>mod_headers</code>');
 define('_WEBO_htaccess_mod_setenvif', 'Enable <code>mod_setenvif</code>');
+define('_WEBO_htaccess_local', 'Place <code>.htaccess</code> file locally (not to Document Root)');
 define('_WEBO_auto_rewrite_enabled', 'Enable auto-rewrite');
 
 /* Third splash -- end screen */

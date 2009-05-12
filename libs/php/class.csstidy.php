@@ -878,7 +878,7 @@ function explode_selectors()
  * @return bool
  * @version 1.02
  */
-function escaped(&$string,$pos)
+static function escaped(&$string,$pos)
 {
 	return !(@($string{$pos-1} != '\\') || csstidy::escaped($string,$pos-1));
 }
