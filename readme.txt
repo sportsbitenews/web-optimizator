@@ -33,16 +33,16 @@ Please find all coordinates for donation here: http://sprites.in/donate/
 Upgrade issues
 ----------------------
 Auto-upgrade is included since version 0.3.8. Please just enter username and password at your Web Optimizer Admin interface and press
-'Upgrade'.
+'Upgrade'. For auto-updgrade curl must be enabled on the server.
 Please note that on upgrading from version 0.2 and below you need to replace in the last part in index.php file 'compressor' to
 'web_optimizer'.
 
 Team
 ----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (ported core, htaccess, CSS Sprites, other stuff)
- * fade (design) 
+ * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, other stuff)
+ * fade (design)
+ * bazik (test cases for CSS Sprites, CSS rules, JS logic, etc)
  * beshkenadze (YUI Compressor envelope)
  * janvarev (files MTIME check)
- * bazik.mail (test cases for CSS Sprites, CSS rules, JS logic, etc)
  * sanjakl (data:URI CSS rules for old IE)
