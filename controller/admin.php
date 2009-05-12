@@ -1125,8 +1125,11 @@ ExpiresDefault \"access plus 10 years\"
 /* Symfony */
 		} elseif (is_file($root . '../lib/symfony/config/config/settings.yml')) {
 			return 'Symfony';
+/* Textpattern */
+		} elseif (is_file($root . 'textpattern/index.php')) {
+			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$thisversion\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'textpattern/index.php'))));
+			return 'Textpattern ' . $version;
 		}
-
 		return 'CMS 42';
 	}
 

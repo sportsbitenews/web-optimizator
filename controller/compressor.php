@@ -938,6 +938,14 @@ class web_optimizer {
 				}
 				$content_from_file = '';
 				if (!empty($value['file'])) {
+/* convert dynamic files to static ones */
+					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
+						$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file']));
+						$static_file = $this->get_remote_file($dynamic_file);
+						if (is_file($static_file)) {
+							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
+						}
+					}
 					if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
 						$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
