@@ -286,13 +286,21 @@ class admin {
 	function check_hosts ($hosts) {
 		$allowed_hosts = "";
 		$etalon = @filesize("images/web.optimizer.logo.png");
+		$etalon2 = @filesize("images/loadbar.png");
 		foreach ($hosts as $host) {
 			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
 			$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
 			$this->download($webo_image, $tmp_image);
 			if (@filesize($tmp_image) == $etalon) {
-				$allowed_hosts .= $host . " ";
+/* prevent 404 page with the same size */
+				$webo_image2 = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
+				$tmp_image2 = "image.tmp.png";
+				$this->download($webo_image2, $tmp_image2);
+				if (@filesize($tmp_image2) == $etalon2) {
+					$allowed_hosts .= $host . " ";
+				}
+				@unlink($tmp_image2);
 			}
 			@unlink($tmp_image);
 		}
@@ -878,12 +886,15 @@ ExpiresDefault \"access plus 10 years\"
 	*
 	**/
 	function download ($remote_file, $local_file) {
+		$gzip = false;
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
 /* try to create local directory*/
 			if ($local_dir != $local_file && !is_dir($local_dir)) {
 				@mkdir($local_dir, 0755);
 			}
+/* parse headers for content-encoding */
+			$local_file_headers = $local_file . ".headers";
 /* start curl */
 			$ch = @curl_init($remote_file);
 			$fp = @fopen($local_file, "w");
@@ -891,11 +902,18 @@ ExpiresDefault \"access plus 10 years\"
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
+				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_WRITEHEADER, $local_file_headers);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
 			}
+			if (is_file($local_file_headers)) {
+				$gzip = preg_match("/content-encoding:\s+gzip/is", preg_replace("/\r\n/", "", @file_get_contents($local_file_headers)));
+				@unlink($local_file_headers);
+			}
 		}
+		return $gzip;
 	}
 
 	/**
@@ -907,7 +925,11 @@ ExpiresDefault \"access plus 10 years\"
 		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';
 		$this->write_progress(12);
 /* try to download main file */
-		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
+		$gzipped = $this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
+/* disable gzip for HTML if already have it (in CMS or on the server) */
+		if ($gzipped) {
+			$this->save_option("['page']['gzip']", 0);
+		}
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
