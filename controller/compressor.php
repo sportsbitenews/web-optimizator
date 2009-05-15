@@ -1118,7 +1118,7 @@ class web_optimizer {
 /* Pull out the pre blocks */
 		preg_match_all("!<pre>.*?</pre>!is", $source, $match);
 		$_pre_blocks = $match[0];
-		$source = preg_replace("!<pre>.*?</pre>!is",
+		$source = preg_replace("!<pre[^>]*>.*?</pre>!is",
 							   '@@@COMPRESSOR:TRIM:PRE@@@', $source);
 /* Pull out the textarea blocks */
 		preg_match_all("!<textarea[^>]+>.*?</textarea>!is", $source, $match);
