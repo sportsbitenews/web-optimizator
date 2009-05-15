@@ -1111,19 +1111,19 @@ class web_optimizer {
 	**/
 	function trimwhitespace($source) {
 /* Pull out the script blocks */
-		preg_match_all("!<script[^>]+>.*?</script>!is", $source, $match);
+		preg_match_all("!<script[^>]*>.*?</script>!is", $source, $match);
 		$_script_blocks = $match[0];
-		$source = preg_replace("!<script[^>]+>.*?</script>!is",
+		$source = preg_replace("!<script[^>]*>.*?</script>!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* Pull out the pre blocks */
-		preg_match_all("!<pre>.*?</pre>!is", $source, $match);
+		preg_match_all("!<pre[^>]*>.*?</pre>!is", $source, $match);
 		$_pre_blocks = $match[0];
 		$source = preg_replace("!<pre[^>]*>.*?</pre>!is",
 							   '@@@COMPRESSOR:TRIM:PRE@@@', $source);
 /* Pull out the textarea blocks */
-		preg_match_all("!<textarea[^>]+>.*?</textarea>!is", $source, $match);
+		preg_match_all("!<textarea[^>]*>.*?</textarea>!is", $source, $match);
 		$_textarea_blocks = $match[0];
-		$source = preg_replace("!<textarea[^>]+>.*?</textarea>!is",
+		$source = preg_replace("!<textarea[^>]*>.*?</textarea>!is",
 							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
