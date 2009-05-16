@@ -940,7 +940,7 @@ class web_optimizer {
 				if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
 					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
-						$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file']));
+						$dynamic_file = preg_replace("/&amp;/", "&", "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file'])));
 						$static_file = $this->get_remote_file($dynamic_file);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;

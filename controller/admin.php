@@ -773,6 +773,23 @@ ExpiresDefault \"access plus 10 years\"
 								}
 							}
 						}
+					} elseif ($cms_version == 'phpBB') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						if (!empty($mainfile_content)) {
+							$fp = @fopen($mainfile, "w");
+							if ($fp) {
+/* remove any old strings regarding Web Optimizer */
+								$mainfile_content = preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+/* add class declaration */
+								$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
+/* add finish */
+								$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
+								@fwrite($fp, $mainfile_content);
+								@fclose($fp);
+								$auto_rewrite = 1;
+							}
+						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($cms_version, 0, 9) == 'vBulletin') {
@@ -1092,6 +1109,9 @@ ExpiresDefault \"access plus 10 years\"
 					$vbulletin_version = ' ' . FILE_VERSION;
 				}
 				return 'vBulletin' . $vbulletin_version;
+/* phpBB (3.0) */
+			} elseif (is_file($root . 'includes/functions_privmsgs.php')) {
+				return 'phpBB';
 /* Joomla 1.0, Joostina */
 			} else {
 				define('_VALID_MOS', 1);
