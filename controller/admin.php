@@ -721,8 +721,9 @@ ExpiresDefault \"access plus 10 years\"
 						$content .= "\n# Web Optimizer end";
 /* define CMS */
 						$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana');
 /* prevent rewrite to admin access on frameworks */
-						if ($cms_version == 'Zend Framework' || $cms_version == 'Symfony' || $cms_version == 'CodeIgniter') {
+						if (in_array($cms_version, $cms_frameworks)) {
 							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 						}
 						fwrite($fp, $content_saved . "\n" . $content);
@@ -1151,6 +1152,9 @@ ExpiresDefault \"access plus 10 years\"
 		} elseif (is_file($root . 'textpattern/index.php')) {
 			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$thisversion\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'textpattern/index.php'))));
 			return 'Textpattern ' . $version;
+/* Kohana */
+		} elseif (is_file($root . 'system/core/Kohana.php')) {
+			return 'Kohana';
 		}
 		return 'CMS 42';
 	}
