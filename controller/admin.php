@@ -721,7 +721,7 @@ ExpiresDefault \"access plus 10 years\"
 						$content .= "\n# Web Optimizer end";
 /* define CMS */
 						$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana');
+						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii');
 /* prevent rewrite to admin access on frameworks */
 						if (in_array($cms_version, $cms_frameworks)) {
 							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
@@ -1155,6 +1155,9 @@ ExpiresDefault \"access plus 10 years\"
 /* Kohana */
 		} elseif (is_file($root . 'system/core/Kohana.php')) {
 			return 'Kohana';
+/* Yii */
+		} elseif (is_file($root . '../framework/YiiBase.php')) {
+			return 'Yii';
 		}
 		return 'CMS 42';
 	}
