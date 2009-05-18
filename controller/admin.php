@@ -222,6 +222,10 @@ class admin {
 		} else {
 /* remove instances of Web Optimizer from index.php */
 			$index = $this->view->paths['full']['document_root'] . 'index.php';
+/* fix for phpBB */
+			if ($cms_version == 'phpBB') {
+				$index = $this->view->paths['full']['document_root'] . 'includes/functions.php';
+			}
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';

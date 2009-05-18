@@ -458,7 +458,7 @@ __________________
 						return array(0, 0);
 					}
 /* get dimensions from downloaded image */
-					return getimagesize($this->css_image);
+					return @getimagesize($this->css_image);
 				} else {
 					return array(0, 0);
 				}
@@ -1024,7 +1024,7 @@ __________________
 						@imagedestroy($this->sprite_raw);
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
-					if ($type < 5) {
+					if ($type < 5 && is_file($this->sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
 							$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';

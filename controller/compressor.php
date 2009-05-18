@@ -82,6 +82,7 @@ class web_optimizer {
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
+				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
@@ -94,6 +95,7 @@ class web_optimizer {
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
+				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
@@ -264,6 +266,7 @@ class web_optimizer {
 				'minify' => $options['minify'],
 				'minify_with' => $options['minify_with'],
 				'far_future_expires' => $options['far_future_expires'],
+				'far_future_expires_php' => $options['far_future_expires_php'],
 				'header' => $type,
 				'css_sprites' => false,
 				'css_sprites_exclude' => false,
@@ -317,6 +320,7 @@ class web_optimizer {
 				'minify' => $options['minify'],
 				'minify_with' => $options['minify_with'],
 				'far_future_expires' => $options['far_future_expires'],
+				'far_future_expires_php' => $options['far_future_expires_php'],
 				'header' => $type,
 				'unobtrusive' => $options['unobtrusive'],
 				'external_scripts' => $options['external_scripts'],
@@ -1064,7 +1068,7 @@ class web_optimizer {
 ?>';
 			}
 
-			if(!empty($this->options[$type]['far_future_expires'])) {
+			if(!empty($this->options[$type]['far_future_expires_php'])) {
 				$this->gzip_header[$type] .= '<?php
 				header("Cache-Control: private, max-age=315360000");
 				header("' . $ExpStr . '");

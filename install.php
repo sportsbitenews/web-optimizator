@@ -11,7 +11,7 @@ require($basepath . "controller/admin.php");
 require($basepath . "libs/php/view.php");
 
 /* include language file */
-$language = preg_replace("/[-,;].*/", "", $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+$language = preg_replace("/[-,;].*/", "", empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? '' : $_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 if (is_file($basepath . "libs/php/lang/". $language .".php")) {
 	require($basepath . "libs/php/lang/" . $language . ".php");
 } else {

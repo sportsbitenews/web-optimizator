@@ -1,7 +1,7 @@
 1. Installer: 1 php file or full archive. Several languages / OSes.
 +a) Checks for curl -- and download / create all necessary files
 +b) If no curl -- ask to download full archive 
-?c) Delete temporary files and directories
++c) Delete temporary files and directories
 +d) Uninstaller
 +e) Auto-updater
 +f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
@@ -22,7 +22,7 @@
 +e) data:URI
 +f) auto CSS Sprites (+jpegtran / pngcrush)
 +g) Caching headers (Expires, Cache-Control, Last-Modified)
- h) CDN integration options / Multiple hosts
+?h) CDN integration options / Multiple hosts
 +i) Cache directory
  j) Source directories for CSS / JS files
 +k) Source PHP / HTML files to auto-change
@@ -63,7 +63,7 @@
  c) EdgeCast
  d) ?
  e) NGENIX
- f) Check for multiple static hosts possibility and apply them
++f) Check for multiple static hosts possibility and apply them
 
 8. Server cache integration
 +a) Raw files (cache directory)
@@ -73,7 +73,7 @@
 
 9. Look and feel
 +a) Design
- b) Make up / clientside development -- yely is responsible
+ b) Make up / clientside development -- arestov is responsible
 
 10. Other languages porting
  a) Perl
@@ -98,8 +98,15 @@
 +n) DataLife Engine (8.0)
 +o) Zend Framework (after disabled rewrite)
 +p) vBulletin (3.8)
-+r) Symfony (1.2)
-+s) CodeIgniter (1.7), MaxSite (0.3)
++q) Symfony (1.2)
++r) CodeIgniter (1.7), MaxSite (0.3)
++s) Kohana (2.3)
++t) Yii (1.0)p
++u) phpBB (3.0)
+ w) IPB (2.6)
+ x) Explay (3.0)
+ y)
+ z) 
 
 12. Localization
 +a) English
@@ -107,4 +114,4 @@
  c) German
 +d) Hebrew
 +e) Ukranian
- f) ?
+ f) ?\\
