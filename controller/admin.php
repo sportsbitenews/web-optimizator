@@ -226,6 +226,10 @@ class admin {
 			if ($cms_version == 'phpBB') {
 				$index = $this->view->paths['full']['document_root'] . 'includes/functions.php';
 			}
+/* fix for IPB */
+			if ($cms_version == 'Invision Power Board') {
+				$index = $this->view->paths['full']['document_root'] . 'sources/classes/class_display.php';
+			}
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';
@@ -777,6 +781,7 @@ ExpiresDefault \"access plus 10 years\"
 								}
 							}
 						}
+/* another dirty hack for phpBB */
 					} elseif ($cms_version == 'phpBB') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 						$mainfile_content = @file_get_contents($mainfile);
@@ -789,6 +794,24 @@ ExpiresDefault \"access plus 10 years\"
 								$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
 /* add finish */
 								$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
+								@fwrite($fp, $mainfile_content);
+								@fclose($fp);
+								$auto_rewrite = 1;
+							}
+						}
+/* one more dirty hack for ipb */
+					} elseif ($cms_version == 'Invision Power Board') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						if (!empty($mainfile_content)) {
+							$fp = @fopen($mainfile, "w");
+							if ($fp) {
+/* remove any old strings regarding Web Optimizer */
+								$mainfile_content = preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+/* add class declaration */
+								$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
+/* add finish */
+								$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
 								@fwrite($fp, $mainfile_content);
 								@fclose($fp);
 								$auto_rewrite = 1;
@@ -1182,6 +1205,9 @@ ExpiresDefault \"access plus 10 years\"
 /* Yii */
 		} elseif (is_file($root . '../framework/YiiBase.php')) {
 			return 'Yii';
+/* Invision Power Board */
+		} elseif (is_file($root . 'sources/classes/class_display.php')) {
+			return 'Invision Power Board';
 		}
 		return 'CMS 42';
 	}
