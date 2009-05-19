@@ -1259,9 +1259,8 @@ class web_optimizer {
 			$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 		}
-		$absolute_path = preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
-/* handle cases with ./ and relative path */
-		return preg_replace("!/./!", "/" . preg_replace("!/[^/]+$!", "", preg_replace("!https?://[^/]+/!", "", $_SERVER['REQUEST_URI'])) . "/", $absolute_path);
+/* remove HTTP host from absolute URL */
+		return preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
 	}
 
 	/**
