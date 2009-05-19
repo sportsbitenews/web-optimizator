@@ -87,5 +87,7 @@ $compress_options['htaccess']['mod_headers'] = "1";
 $compress_options['htaccess']['mod_setenvif'] = "1";
 ## Use local directory with installed website
 $compress_options['htaccess']['local'] = "1";
+## Security options
+$compress_options['htaccess']['access'] = "1";
 #########################################
 ?>

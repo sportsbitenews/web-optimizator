@@ -21,21 +21,26 @@ define('_WEBO_LOGIN_USERNAME', 'Username');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Enter your login');
 define('_WEBO_LOGIN_PASSWORD', 'Password');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Enter password');
+define('_WEBO_SPLAHS1_PROTECTED', 'Protected mode');
+define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer installation is safely protected. You can configure it once more.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Your can upgrade your version (');
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') of Web Optimizer to latest one. Please enter your login and password in the form above and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
+define('_WEBO_LOGIN_UPGRADENOTICE4', ') of Web Optimizer to latest one &mdash; <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'You have successfully upgraded to the version ');
 define('_WEBO_UPGRADE_UNABLE', 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'To remove Web Optimizer from your system please enter login and password in the form above and click <strong>Uninstall</strong>.');
+define('_WEBO_LOGIN_UNINSTALL2', 'Web Optimizer can be simply disabled for your website. Just delete it.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Uninstall Web Optimizer');
 define('_WEBO_LOGIN_FAILED', 'Login failed');
 define('_WEBO_LOGIN_ACCESS', 'You need to be logged in to view this page');
 define('_WEBO_LOGIN_LOGGED', 'Logged you in');
 define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter login and password in the form above and press <strong>Clear cache</strong>. All saved versions of generated files will be deleted from the cache folder.');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter login and password in the form above and press <strong>Clear cache</strong>. ');
+define('_WEBO_SPLASH1_CLEAR_CACHE2', 'All saved versions of generated files will be deleted from the cache folder.');
 define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delere some files from cache directory');
 define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
 
@@ -164,6 +169,7 @@ define('_WEBO_htaccess_mod_expires', 'Enable <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Enable <code>mod_headers</code>');
 define('_WEBO_htaccess_mod_setenvif', 'Enable <code>mod_setenvif</code>');
 define('_WEBO_htaccess_local', 'Place <code>.htaccess</code> file locally (not to Document Root)');
+define('_WEBO_htaccess_access', 'Protect Web Optimizer installation via <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'Enable auto-rewrite');
 
 /* Third splash -- end screen */

@@ -21,21 +21,26 @@ define('_WEBO_LOGIN_USERNAME', 'Логин');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введите ваш логин');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введите пароль');
+define('_WEBO_SPLAHS1_PROTECTED', 'Защищенный режим');
+define('_WEBO_SPLAHS1_PROTECTED2', 'Веб Оптимизатор надежно защищен от внешнего доступа. Вы можете настроить его еще раз.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Вы можете обновить вашу текущую версию Веб Оптимизатора (');
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') до самой последней. Для этого введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Обновить</strong>. Веб Оптимизатор будет автоматически обновлен до версии <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
+define('_WEBO_LOGIN_UPGRADENOTICE4', ') до самой последней версии <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'Вы успешно обновились до версии ');
 define('_WEBO_UPGRADE_UNABLE', 'Не удается загрузить последнюю версию из репозитория. Пожалуйста, проверьте соединение сервера с интернетом и наличие установленного curl.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'Чтобы удалить Веб Оптимизатор, пожалуйста, введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Удалить</strong>.');
+define('_WEBO_LOGIN_UNINSTALL2', 'Веб Оптимизатор может быть отключен для вашего сайта. Для этого его нужно просто удалить.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Удалить Веб Оптимизатор');
 define('_WEBO_LOGIN_FAILED', 'Неверно введен логин и(ли) пароль');
 define('_WEBO_LOGIN_ACCESS', 'Эта страница доступна только авторизованным пользователям');
 define('_WEBO_LOGIN_LOGGED', 'Вошли в систему');
 define('_WEBO_SPLASH1_CLEAR', 'Очистить кэш');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'Чтобы очистить кэш Веб Оптимизатора, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Очистить кэш</strong>. Все сохраненные копии созданных файлов будут удалены из кэширующей директории.');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'Чтобы очистить кэш Веб Оптимизатора, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Очистить кэш</strong>. ');
+define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Все сохраненные копии созданных файлов будут удалены из кэширующей директории.');
 define('_WEBO_CLEAR_UNABLE', 'Не получается удалить некоторые файлы их кэширующих директорий');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Все файлы были успешно удалены из кэша');
 
@@ -163,6 +168,7 @@ define('_WEBO_htaccess_mod_expires', 'Включить <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Включить <code>mod_headers</code>');
 define('_WEBO_htaccess_mod_setenvif', 'Включить <code>mod_setenvif</code>');
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
+define('_WEBO_htaccess_access', 'Защитить установку Веб Оптимизатора с помощью <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
 
 /* Third splash -- end screen */

@@ -51,7 +51,9 @@ class admin {
 		$this->display_progress = false;
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
-/* Show page */
+/* if we use .htaccess*/
+		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
+/* show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
 			$func = $this->input['page'];
 			$this->$func();
@@ -103,6 +105,9 @@ class admin {
 				"version" => $this->version,
 				"version_new" => $this->version_new,
 				"version_new_exists" => $this->version_new_exists,
+				"protected" => $this->protected,
+				"username" => $this->compress_options['username'],
+				"password" => $this->compress_options['password'],
 				"message" => empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version
 			);
 		} else {
@@ -881,8 +886,10 @@ ExpiresDefault \"access plus 10 years\"
 				}
 
 			}
-
+/* secure Web Optimizer folder with .htpasswd */
+			$this->protect_installation();
 		}
+
 		$this->write_progress($this->web_optimizer_stage = 99);
 		$this->write_progress($this->web_optimizer_stage = 100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
@@ -1039,7 +1046,13 @@ ExpiresDefault \"access plus 10 years\"
 	**/		
 	function manage_password() {
 /* If posting a username and pass, md5 encode */
-		if(!empty($this->input['user']['username'])) {
+		if (!empty($this->input['user']['username'])) {
+/* write protected password to .htpasswd if required */
+			$fp = @fopen($this->basepath . '.htpasswd', "w");
+			if ($fp) {
+				@fwrite($fp, $this->input['user']['username'] . ":" . $this->encrypt_password($this->input['user']['password']));
+				@fclose($fp);
+			}
 			$this->input['user']['username'] = md5($this->input['user']['username']);
 			$this->input['user']['password'] = md5($this->input['user']['password']);
 /* If the pass isn't there, write it */
@@ -1056,7 +1069,7 @@ ExpiresDefault \"access plus 10 years\"
 			}
 		}
 /* If passing a username and pass, don't md5 encode */
-		if(!empty($this->input['user']['_username'])) {
+		if (!empty($this->input['user']['_username'])) {
 			$this->input['user']['username'] = ($this->input['user']['_username']);
 			$this->input['user']['password'] = ($this->input['user']['_password']);	
 		}
@@ -1082,9 +1095,80 @@ ExpiresDefault \"access plus 10 years\"
 	/**
 	* Make safe for regex
 	* 
-	**/		
+	**/
 	function regex_escape($string) {
 		return addcslashes($string,'\^$.[]|()?*+{}');
+	}
+
+	/**
+	* Protects Web OPtimizer folder via htpasswd
+	* 
+	**/
+	function protect_installation() {
+		$htaccess = $this->input['user']['webo_cachedir'] . '.htaccess';
+		$htaccess_content = @file_get_contents($htaccess);
+		$fp = @fopen($htaccess, "w");
+		if ($fp) {
+/* clean current content */
+			$htaccess_content = preg_replace("/# Web Optimizer protection.*Web Optimizer protection end/", "", $htaccess_content);
+			if (!empty($this->compress_options['htaccess']['access'])) {
+/* add secure protection via htpasswd */
+				$htaccess_content .= '
+# Web Optimizer protection
+AuthType Basic
+AuthName "Web Optimizer Administration Area"
+AuthUserFile ' . $this->input['user']['webo_cachedir'] . '.htpasswd
+require valid-user
+<Files ' . $this->input['user']['webo_cachedir'] . '.htpasswd>
+	Deny from all
+</Files>
+# Web Optimizer protection end';
+			}
+			@fwrite($fp, $htaccess_content);
+			@fclose($fp);
+		}
+	}
+	/**
+	* Creates password hash for htpasswd file
+	* thx to mikey_nich (at) hotmail . com
+	* 
+	**/
+	function encrypt_password($plainpasswd) {
+		$salt = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz0123456789"), 0, 8);
+		$len = strlen($plainpasswd);
+		$text = $plainpasswd . '$apr1$' . $salt;
+		$bin = pack("H32", md5($plainpasswd . $salt . $plainpasswd));
+		for($i = $len; $i > 0; $i -= 16) {
+			$text .= substr($bin, 0, min(16, $i));
+		}
+		for($i = $len; $i > 0; $i >>= 1) {
+			$text .= ($i & 1) ? chr(0) : $plainpasswd{0};
+		}
+		$bin = pack("H32", md5($text));
+		for($i = 0; $i < 1000; $i++) {
+			$new = ($i & 1) ? $plainpasswd : $bin;
+			if ($i % 3) {
+				$new .= $salt;
+			}
+			if ($i % 7) {
+				$new .= $plainpasswd;
+			}
+			$new .= ($i & 1) ? $bin : $plainpasswd;
+			$bin = pack("H32", md5($new));
+		}
+		for ($i = 0; $i < 5; $i++) {
+			$k = $i + 6;
+			$j = $i + 12;
+			if ($j == 16) {
+				$j = 5;
+			}
+			$tmp = $bin[$i].$bin[$k].$bin[$j].$tmp;
+		}
+		$tmp = chr(0).chr(0).$bin[11].$tmp;
+		$tmp = strtr(strrev(substr(base64_encode($tmp), 2)),
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+		"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+		return "$" . "apr1" . "$" . $salt . "$" . $tmp;
 	}
 
 	/**

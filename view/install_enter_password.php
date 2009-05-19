@@ -6,7 +6,15 @@
 
 <form method="post" enctype="multipart/form-data" action="">
 <fieldset>
-	<legend><?php echo _WEBO_NEW_USERDATA ?></legend>	
+<?php if ($protected) { ?>
+	<legend><?php echo _WEBO_SPLAHS1_PROTECTED ?></legend>
+	<p>
+		<input type="hidden" name="user[_username]" value="<?php echo $username ?>" />
+		<input type="hidden" name="user[_password]" value="<?php echo $password ?>" />
+		<?php echo _WEBO_SPLAHS1_PROTECTED2 ?>
+	</p>
+<?php } else { ?>
+	<legend><?php echo _WEBO_NEW_USERDATA ?></legend>
 			<label for="user[username]"><?php echo _WEBO_LOGIN_USERNAME ?></label>
 				<div class="info">
 				<input name="user[username]" id="user[username]" class="long_text" value="" title="<?php echo _WEBO_LOGIN_ENTERLOGIN ?>"/>
@@ -15,6 +23,7 @@
 				<div class="info">
 				<input type="password" id="user[password]" name="user[password]" class="long_text" value="" title="<?php echo _WEBO_LOGIN_ENTERPASSWORD ?>"/>
 				</div>	
+<?php } ?>
 		<input type="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>"/>
 		<input type="hidden" name="page" value="install_stage_1" />
 		<input type="hidden" name="submit" value="1" />
@@ -22,18 +31,18 @@
 <?php if ($version_new_exists) { ?>
 <fieldset>
 	<legend><?php echo _WEBO_LOGIN_UPGRADE ?></legend>	
-	<p><?php echo _WEBO_LOGIN_UPGRADENOTICE . $version . _WEBO_LOGIN_UPGRADENOTICE2 . $version_new . _WEBO_LOGIN_UPGRADENOTICE3 ?></p>
+	<p><?php echo _WEBO_LOGIN_UPGRADENOTICE . $version . ($protected ? _WEBO_LOGIN_UPGRADENOTICE4 : _WEBO_LOGIN_UPGRADENOTICE2) . $version_new . _WEBO_LOGIN_UPGRADENOTICE3 ?></p>
 	<div><input type="hidden" name="ujs" value="1"/><input type="submit" name="upgrade" value="<?php echo _WEBO_LOGIN_UPGRADE ?>" title="<?php echo _WEBO_LOGIN_UPGRADE ?>" onclick="this.disabled='disabled';this.form.ujs.id=this.form.ujs.name='upgrade';"/></div>
 </fieldset>
 <?php } ?>
 <fieldset>
 	<legend><?php echo _WEBO_SPLASH1_CLEAR ?></legend>	
-	<p><?php echo _WEBO_SPLASH1_CLEAR_CACHE ?></p>
+	<p><?php echo ($protected ? '' : _WEBO_SPLASH1_CLEAR_CACHE) . _WEBO_SPLASH1_CLEAR_CACHE2 ?></p>
 	<div><input type="submit" name="clear" value="<?php echo _WEBO_SPLASH1_CLEAR ?>" title="<?php echo _WEBO_SPLASH1_CLEAR ?>"/></div>
 </fieldset>
 <fieldset>
 	<legend><?php echo _WEBO_SPLASH1_UNINSTALL ?></legend>	
-	<p><?php echo _WEBO_LOGIN_UNINSTALL ?></p>
+	<p><?php echo ($protected ? _WEBO_LOGIN_UNINSTALL2 : _WEBO_LOGIN_UNINSTALL) ?></p>
 	<div><input type="submit" name="uninstall" value="<?php echo _WEBO_SPLASH1_UNINSTALL ?>" title="<?php echo _WEBO_LOGIN_UNINSTALLME ?>"/></div>
 </fieldset>
 </form>

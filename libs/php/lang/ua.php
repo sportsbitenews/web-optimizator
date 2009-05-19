@@ -5,15 +5,11 @@
  * Translated by Sergiy Andriychuk
  * new (=not translated) constants: none
  **/
- //_WEBO_SPLASH1_CLEAR
- //_WEBO_SPLASH1_CLEAR_CACHE
- //_WEBO_far_future_expires_timeout
- //_WEBO_far_future_expires_html
- //_WEBO_css_sprites_memory_limited
- //_WEBO_css_sprites_no_ie6
- //_WEBO_minify_html_comments
- //_WEBO_CLEAR_UNABLE
- //_WEBO_CLEAR_SUCCESSFULL
+ //_WEBO_LOGIN_UPGRADENOTICE4
+ //_WEBO_LOGIN_UNINSTALL2
+ //_WEBO_SPLAHS1_PROTECTED
+ //_WEBO_SPLAHS1_PROTECTED2
+ //_WEBO_htaccess_access
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
@@ -46,7 +42,8 @@ define('_WEBO_LOGIN_ACCESS', 'Ця сторінка доступна тільки авторизованим користув
 define('_WEBO_LOGIN_LOGGED', 'Увійшли в систему');
 define('_WEBO_SPLASH1_EXPRESS', 'Швидка установка');
 define('_WEBO_SPLASH1_CLEAR', 'Очистити кеш');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'Щоб очистити кеш Веб Оптимізатора, будь-ласка, введіть ваш логін і пароль та натисніть кнопку <strong>Очистити кеш</strong>. Всі збережені копії створених файлів будуть видалені з директорії для кешування.');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'Щоб очистити кеш Веб Оптимізатора, будь-ласка, введіть ваш логін і пароль та натисніть кнопку <strong>Очистити кеш</strong>. ');
+define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Всі збережені копії створених файлів будуть видалені з директорії для кешування.');
 define('_WEBO_CLEAR_UNABLE', 'Не виходить видалити деякі файли з директорії для кешування');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Всі файли були успішно видалені з кеша');
 
