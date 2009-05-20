@@ -1050,7 +1050,7 @@ class web_optimizer {
 						if ($version < 6)
 							$encoding = \'none\';
 
-						if ($version == 6 && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'EV1\'))
+						if ($version == 6 && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'SV1\'))
 							$encoding = \'none\';
 					}
 
