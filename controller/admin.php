@@ -53,6 +53,10 @@ class admin {
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 /* if we use .htaccess*/
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
+/* download counter */
+		if (!is_file($this->basepath . 'web-optimizer-counter')) {
+			$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
+		}
 /* show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
 			$func = $this->input['page'];
