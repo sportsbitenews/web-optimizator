@@ -1298,6 +1298,9 @@ require valid-user
 /* Invision Power Board */
 		} elseif (is_file($root . 'sources/classes/class_display.php')) {
 			return 'Invision Power Board';
+/* Simple Machines Forum */
+		} elseif (is_file($root . 'Sources/LogInOut.php')) {
+			return 'Simple Machines Forum';
 		}
 		return 'CMS 42';
 	}
