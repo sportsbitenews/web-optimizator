@@ -824,7 +824,7 @@ __________________
 						@imagecolortransparent($this->sprite_raw, $this->background);
 					}
 /* loop in all given CSS images */
-					foreach ($this->css_images[$this->sprite]['images'] as $image) {
+					foreach ($this->css_images[$this->sprite]['images'] as $image_key => $image) {
 
 						$filename = empty($image[0]) ? '' : $image[0];
 						$width = empty($image[1]) ? 0 : $image[1];
@@ -838,6 +838,8 @@ __________________
 						$key = empty($image[8]) ? '' : $image[8];
 /* for added to repeat-x / repeat-y image with no-repeat */
 						$added = empty($image[9]) ? 0 : $image[9];
+/* remember existing background */
+						$this->css_images[$this->sprite]['images'][$image_key][10] = $this->css->css[$import][$key]['background'];
 						if (empty($added) || $type == 4) {
 							$final_x += $this->css_images[$this->sprite]['addon_x'];
 							$final_y += $this->css_images[$this->sprite]['addon_y'];
@@ -985,8 +987,6 @@ __________________
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
 						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
-						unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
-
 					}
 					if (!$file_exists) {
 /* try to add right and bottom Sprites to the main one */
@@ -1023,11 +1023,23 @@ __________________
 						}
 						@imagedestroy($this->sprite_raw);
 					}
+/* finish deal with CSS */
 /* don't touch webor / webob Sprites -- they will be included into the main one */
 					if ($type < 5 && is_file($this->sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
 							$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';
+						}
+					}
+					foreach ($this->css_images[$this->sprite]['images'] as $image) {
+						$import = empty($image[7]) ? '' : $image[7];
+						$key = empty($image[8]) ? '' : $image[8];
+/* delete initial CSS rules only on success */
+						if (is_file($this->sprite)) {
+							unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-image'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
+/* otherwise restore background-image */
+						} else {
+							$this->css->css[$import][$key]['background'] = $image[10];
 						}
 					}
 

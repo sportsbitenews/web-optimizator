@@ -945,7 +945,7 @@ class web_optimizer {
 /* convert dynamic files to static ones */
 					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
 						$dynamic_file = preg_replace("/&amp;/", "&", "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file'])));
-						$static_file = $this->get_remote_file($dynamic_file);
+						$static_file = $this->get_remote_file($dynamic_file, $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
 						}
@@ -1517,7 +1517,7 @@ class web_optimizer {
 	 * Downloads remote files to include
 	 *
 	 **/
-	function get_remote_file ($file) {
+	function get_remote_file ($file, $tag = "link") {
 		if (function_exists('curl_init')) {
 			chdir($this->options['javascript']['cachedir']);
 			$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
@@ -1542,14 +1542,17 @@ class web_optimizer {
 				if ($contents) {
 					$fp = @fopen($return_filename, "w");
 					if ($fp) {
+/* replace only in CSS files */
+						if ($tag == 'link') {
 /* make external URLs safe */
-						$contents = preg_replace("/(url\(\s*['\"]?)(mhtml:|data:|https?:\/\/)/", "$1/$2", $contents);
+							$contents = preg_replace("/(url\(\s*['\"]?)(mhtml:|data:|https?:\/\/)/", "$1/$2", $contents);
 /* replace relative URLs */
-						$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
+							$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
 /* remove slash before https? */
-						$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
+							$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
 /* replace absolute URLs */
-						$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(data:|mhtml:|https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+							$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(data:|mhtml:|https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+						}
 						@fwrite($fp, $contents);
 						@fclose($fp);
 					}
