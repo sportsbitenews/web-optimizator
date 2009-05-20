@@ -608,7 +608,7 @@ class web_optimizer {
 					}
 					$delimiter = '';
 					if ($options['header'] == "javascript") {
-						$delimiter = ';';
+						$delimiter = ";\n";
 					}
 					$contents .=  $file_contents . $delimiter;
 				}
@@ -708,7 +708,7 @@ class web_optimizer {
 		if (is_array($external_array)) {
 			$keys = array_keys($external_array);
 			$maxKey = array_pop($keys);
-			foreach($external_array AS $key=>$value) {
+			foreach($external_array as $key=>$value) {
 /* Remove script */
 				if($key == $maxKey) {
 					$source = str_replace($value['source'], "@@@marker@@@", $source);
@@ -960,7 +960,7 @@ class web_optimizer {
 				}
 				$delimiter = '';
 				if ($value['tag'] == 'script') {
-					$delimiter = ';';
+					$delimiter = ";\n";
 				}
 /* don't delete any detected scritps from array -- we need to clean up HTML page from them */
 				if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
@@ -1050,7 +1050,7 @@ class web_optimizer {
 						if ($version < 6)
 							$encoding = \'none\';
 
-						if ($version == 6 && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'SV1\'))
+						if ($version == 6 && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'EV1\'))
 							$encoding = \'none\';
 					}
 
@@ -1189,7 +1189,7 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = preg_replace("/(<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
+			$this->content = preg_replace("/(\/\/\s*<!\[CDATA\[|<!-- \/\/ --><!\[CDATA\[|<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
