@@ -531,6 +531,8 @@ class admin {
 					unlink($dir . "test");
 				}
 			}
+/* copy unobtrusive loader library to cache directory */
+			@copy($this->input['user']['webo_cachedir'] . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
 			$this->write_progress($this->web_optimizer_stage = 4);
 			$this->get_modules();
 			$loaded_modules = @get_loaded_extensions();
@@ -1116,7 +1118,7 @@ ExpiresDefault \"access plus 10 years\"
 				$htaccess_content .= '
 # Web Optimizer protection
 AuthType Basic
-AuthName "Web Optimizer Administration Area"
+AuthName "Web Optimizer Installation"
 AuthUserFile ' . $this->input['user']['webo_cachedir'] . '.htpasswd
 require valid-user
 <Files ' . $this->input['user']['webo_cachedir'] . '.htpasswd>

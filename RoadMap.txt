@@ -8,6 +8,7 @@
 +g) Memory usage (maximum -- 32MB)
  h) Donate block
 +i) Cache cleaner
++j) Secure installation
 
 2. System check
 ?a) .htaccess posibility
@@ -63,7 +64,7 @@
  c) EdgeCast
  d) ?
  e) NGENIX
-+f) Check for multiple static hosts possibility and apply them
++f) Apply multiple static hosts if possible
 
 8. Server cache integration
 +a) Raw files (cache directory)
@@ -101,9 +102,9 @@
 +q) Symfony (1.2)
 +r) CodeIgniter (1.7), MaxSite (0.3)
 +s) Kohana (2.3)
-+t) Yii (1.0)p
++t) Yii (1.0)
 +u) phpBB (3.0)
- w) IPB (2.6)
++w) IPB (2.6)
  x) Explay (3.0)
  y)
  z) 
