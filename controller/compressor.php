@@ -546,7 +546,7 @@ class web_optimizer {
 /* glue scripts' content / filenames */
 		$scripts_string = '';
 		foreach ($external_array as $script) {
-			$scripts_string .= (empty($script['file']) ? '' : $script['file']) . (empty($script['content']) ? '' : $script['content']);
+			$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
 		}
 /* Get date string to make hash */
 		$datestring = $this->get_file_dates($external_array, $options);
@@ -944,7 +944,7 @@ class web_optimizer {
 				if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
 					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
-						$dynamic_file = preg_replace("/&amp;/", "&", "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file'])));
+						$dynamic_file = preg_replace("/&amp;/", "&", "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file']), true));
 						$static_file = $this->get_remote_file($dynamic_file, $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
@@ -1248,7 +1248,12 @@ class web_optimizer {
 	*
 	**/
 
-	function convert_path_to_absolute($file, $path) {
+	function convert_path_to_absolute($file, $path, $leave_querystring = false) {
+		$endfile = $path['file'];
+		if (!$leave_querystring) {
+			$file = $this->strip_querystring($file);
+			$endfile = $this->strip_querystring($endfile);
+		}
 /* Don't touch data URIs, or mhtml:, or external files */
 		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $_SERVER['HTTP_HOST'] ."!is", $file)) {
 			return false;
@@ -1256,7 +1261,7 @@ class web_optimizer {
 		$absolute_path = $file;
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
-			$full_path_to_image = str_replace($this->view->get_basename($path['file']), "", $path['file']);
+			$full_path_to_image = str_replace($this->view->get_basename($endfile), "", $endfile);
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 		}
 /* remove HTTP host from absolute URL */
@@ -1268,13 +1273,13 @@ class web_optimizer {
 	*
 	**/
 	function convert_paths_to_absolute($content, $path) {
-		preg_match_all( "/url\(['\"]?(.*?)['\"]?\)/is", $content, $matches);
+		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
 			foreach($matches[1] as $key => $file) {
 				$absolute_path = $this->convert_path_to_absolute($file, $path);
 				if (!empty($absolute_path)) {
 /* replace path in initial CSS */
-					$content = preg_replace("!url\(['\"]?" . $file . "['\"]?\)!", "url(" . $absolute_path . ")", $content);
+					$content = preg_replace("!url\s*\(\s*['\"]?" . $file . "['\"]?\s*\)!", "url(" . $absolute_path . ")", $content);
 				}
 			}
 		}
@@ -1504,8 +1509,8 @@ class web_optimizer {
 	 * Converts REQUEST_URI to cached file name
 	 *
 	 **/
-	function convert_request_uri () {
-		$uri = $_SERVER['REQUEST_URI'];
+	function convert_request_uri ($uri = false) {
+		$uri = $uri ? $uri : $_SERVER['REQUEST_URI'];
 /* replace / with - */
 		$uri = preg_replace("!/!", "#", $uri);
 /* replace ?, & with + */
@@ -1520,7 +1525,7 @@ class web_optimizer {
 	function get_remote_file ($file, $tag = "link") {
 		if (function_exists('curl_init')) {
 			chdir($this->options['javascript']['cachedir']);
-			$return_filename = preg_replace("/\?.*/", "", preg_replace("/.*\//", "", $file));
+			$return_filename = substr($this->convert_request_uri($file), 7, 250);
 /* prevent download more than 1 time a day */
 			if (is_file($return_filename)) {
 				if (filemtime($return_filename) + 86400 > time()) {
@@ -1544,14 +1549,8 @@ class web_optimizer {
 					if ($fp) {
 /* replace only in CSS files */
 						if ($tag == 'link') {
-/* make external URLs safe */
-							$contents = preg_replace("/(url\(\s*['\"]?)(mhtml:|data:|https?:\/\/)/", "$1/$2", $contents);
-/* replace relative URLs */
-							$contents = preg_replace("/(url\(\s*['\"]?)([^\/])/", "$1" . preg_replace("/[^\/]+$/", "", $file) . "$2", $contents);
-/* remove slash before https? */
-							$contents = preg_replace("/(url\(\s*['\"]?)\/(https?:\/\/)/", "$1$2", $contents);
-/* replace absolute URLs */
-							$contents = preg_replace("/(url\(\s*['\"]?)\//", "$1" . preg_replace("/(data:|mhtml:|https?:\/\/[^\/]+\/).*/", "$1", $file), $contents);
+/* correct background-images */
+							$contents = $this->convert_paths_to_absolute($contents, array('file' => $file));
 						}
 						@fwrite($fp, $contents);
 						@fclose($fp);
