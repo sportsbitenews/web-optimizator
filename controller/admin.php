@@ -407,6 +407,7 @@ class admin {
 			'htaccess' => $this->compress_options['htaccess'],
 			'css_sprites' => $this->compress_options['css_sprites'],
 			'Far_future_expires' => $this->compress_options['far_future_expires'],
+			'html_cache' => $this->compress_options['html_cache'],
 			'external_scripts' => $this->compress_options['external_scripts'],
 			'parallel' => $this->compress_options['parallel']
 		);
@@ -446,6 +447,11 @@ class admin {
 							'title' => _WEBO_SPLASH2_EXPIRES,
 							'intro' => _WEBO_SPLASH2_EXPIRES_INFO,
 							'value' => $this->compress_options['far_future_expires']
+						),
+						'html_cache' => array(
+							'title' => _WEBO_SPLASH2_HTMLCACHE,
+							'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
+							'value' => $this->compress_options['html_cache']
 						),
 						'css_sprites'=>array(
 							'title' => _WEBO_SPLASH2_SPRITES,

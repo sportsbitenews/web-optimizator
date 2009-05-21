@@ -33,7 +33,9 @@ class web_optimizer {
 /* Define the gzip headers */
 		$this->set_gzip_headers();
 /* HTML cache ? */
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . preg_match("/ /", "|", $this->options['page']['cache_ignore']) . "!", $_SERVER['REQUEST_URI']));
+		$excluded_html_pages = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['cache_ignore']));
+		$included_user_agents = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['allowed_user_agents']));
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!", $_SERVER['HTTP_USER_AGENT']));
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -114,9 +116,12 @@ class web_optimizer {
 				"minify" => $this->options['minify']['page'],
 				"remove_comments" => $this->options['minify']['html_comments'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
-				"cache" => $this->options['far_future_expires']['html'],
-				"cache_timeout" => $this->options['far_future_expires']['timeout'],
-				"cache_ignore" => $this->options['far_future_expires']['ignore_list'],
+				"clientside_cache" => $this->options['far_future_expires']['html'],
+				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
+				"cache" => $this->options['html_cache']['enabled'],
+				"cache_timeout" => $this->options['html_cache']['timeout'],
+				"cache_ignore" => $this->options['html_cache']['ignore_list'],
+				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'],
 				"parallel_hosts" => $this->options['parallel']['allowed_list']
 			)
@@ -338,6 +343,14 @@ class web_optimizer {
 	*
 	**/
 	function page($options, $type) {
+		if (empty($this->web_optimizer_stage) && $this->options['page']['clientside_cache']) {
+/* setting cache headers for HTML file */
+			@date_default_timezone_set(@date_default_timezone_get());
+			$ExpStr = gmdate("D, d M Y H:i:s",
+			time() + $this->options['page']['clientside_timeout']) . " GMT";
+			header("Cache-Control: private, max-age=" . $this->options['page']['clientside_timeout']);
+			header("Expires: " . $ExpStr);
+		}
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 88 ? 88 : $this->web_optimizer_stage);
 		}

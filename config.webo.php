@@ -45,12 +45,18 @@ $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 ## Cache static assets (images, flash, etc) -- only via .htaccess
 $compress_options['far_future_expires']['static'] = "1";
-## Cache generated HTML files
+## Send cache headers for HTML files?
 $compress_options['far_future_expires']['html'] = "0";
+## Default timeout of client side HTML files caching, in seconds
+$compress_options['far_future_expires']['html_timeout'] = "60";
+## Cache generated HTML files
+$compress_options['html_cache']['enabled'] = "0";
 ## Cache timeout for generated HTML files, in seconds
-$compress_options['far_future_expires']['timeout'] = "600";
+$compress_options['html_cache']['timeout'] = "600";
 ## Parts of ignore URL for HTML cache, separated by space
-$compress_options['far_future_expires']['ignore_list'] = "";
+$compress_options['html_cache']['ignore_list'] = "";
+## Parts of user agents to output cached HTML, separated by space
+$compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twitter";
 ## On or off 
 $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer

@@ -9,7 +9,13 @@
  //_WEBO_LOGIN_UNINSTALL2
  //_WEBO_SPLAHS1_PROTECTED
  //_WEBO_SPLAHS1_PROTECTED2
+ //_WEBO_SPLASH2_HTMLCACHE
+ //_WEBO_SPLASH2_HTMLCACHE_INFO
  //_WEBO_htaccess_access
+ //_WEBO_far_future_expires_html
+ //_WEBO_far_future_expires_html_timeout
+ //_WEBO_html_cache_ignore_list
+ //_WEBO_html_cache_allowed_list
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
@@ -144,8 +150,8 @@ define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
 define('_WEBO_far_future_expires_javascript', 'Кешуровати JavaScript');
 define('_WEBO_far_future_expires_css', 'Кешуровати CSS');
 define('_WEBO_far_future_expires_static', 'Кешуровати статические файлы');
-define('_WEBO_far_future_expires_html', 'Кешувати створені HTML-файли');
-define('_WEBO_far_future_expires_timeout', 'Термін дії кеша для HTML-файлів в секундах');
+define('_WEBO_html_cache_enabled', 'Кешувати створені HTML-файли');
+define('_WEBO_html_cache_timeout', 'Термін дії кеша в секундах');
 define('_WEBO_footer_text', 'Додати посилання на Веб Оптимізатор');
 define('_WEBO_footer_image', 'Додати зображення Веб Оптимізатора');
 define('_WEBO_cleanup_on', 'Видаляти старі файли');

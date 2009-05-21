@@ -106,6 +106,9 @@ define('_WEBO_SPLASH2_GZIP_INFO', 'Gzipping compresses the code via Gzip compres
 define('_WEBO_SPLASH2_EXPIRES', 'Far Future Expires Options');
 define('_WEBO_SPLASH2_EXPIRES_INFO', 'This adds an expires header to your JavaScipt and CSS files which ensures they are cached client-side by the browser.
 									<br/>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Cache HTML files');
+define('_WEBO_SPLASH2_HTMLCACHE_INFO', 'This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.
+									<br/>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', 'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
 									<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.
@@ -146,9 +149,12 @@ define('_WEBO_gzip_page', 'Gzip HTML');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
 define('_WEBO_far_future_expires_static', 'Cache static assets');
-define('_WEBO_far_future_expires_html', 'Cache generated HTML files');
-define('_WEBO_far_future_expires_timeout', 'Default timeout to cache HTML files, in seconds');
-define('_WEBO_far_future_expires_ignore_list', 'List of parts of URLs to ignore from HTML caching');
+define('_WEBO_far_future_expires_html', 'Cache HTML');
+define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');
+define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
+define('_WEBO_html_cache_timeout', 'Default timeout, in seconds');
+define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from caching');
+define('_WEBO_html_cache_allowed_list', 'List of parts of USER AGENTS (robots) to add to caching');
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
 define('_WEBO_cleanup_on', 'Regularly delete old files');

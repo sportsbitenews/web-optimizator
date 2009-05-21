@@ -105,6 +105,9 @@ define('_WEBO_SPLASH2_GZIP_INFO', 'Применение <code>gzip</code>-сжатия позволит 
 define('_WEBO_SPLASH2_EXPIRES', '&laquo;Вечное&raquo; кэширование');
 define('_WEBO_SPLASH2_EXPIRES_INFO', 'В результате работы этой настройки ко всем статическим файлам будут добавлены заголовки кэширования, позволяющие предоствратить их повторный запрос с сервера для одного и того же пользователя.
 									<br/>При изменении JavaScript- или CSS-файлов автоматически будут создаваться их новые минимизированные версии, что позволит &laquo;пробить&raquo; кэш в браузерах. Для картинок и других статических файлов рекомендуется использовать новое физическое имя при их изменении');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Кэшировать HTML-файлы');
+define('_WEBO_SPLASH2_HTMLCACHE_INFO', 'Веб Оптиизатор может кэшировать конечный HTML-код, чем предотвращает значительную работу на стороне сервера и уменьшает время создания страницы.
+									<br/>Внимание: при включении этой настройки вся логика, осуществляемая на сервере, будет недоступна. Страницы станут полностью статическими. Рекомендуется включать эту настройку, только если вы полностью уверены в последствиях.');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', 'Существует возможность объединить большинство фоновых изображений в CSS Sprites. Это существенно уменьшит число HTTP-запросов при загрузке сайта.
 									<br/>Эта техника полностью поддерживается всеми современными браузерами. Вы также можете переключиться в более агрессивный режим использования CSS Sprites, если вы уверены в корректности ваших CSS-правил.
@@ -145,9 +148,12 @@ define('_WEBO_gzip_page', 'Применить <code>gzip</code> для HTML');
 define('_WEBO_far_future_expires_javascript', 'Кэшировать JavaScript');
 define('_WEBO_far_future_expires_css', 'Кэшировать CSS');
 define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
-define('_WEBO_far_future_expires_html', 'Кэшировать созданные HTML-файлы');
-define('_WEBO_far_future_expires_timeout', 'Срок действия кэша для HTML-файлов в секундах');
-define('_WEBO_far_future_expires_ignore_list', 'Список частей URL для исключения при кэшировании HTML');
+define('_WEBO_far_future_expires_html', 'Кэшировать HTML');
+define('_WEBO_far_future_expires_html_timeout', 'Время клиентского кэша для HTML-файлов');
+define('_WEBO_html_cache_enabled', 'Кэшировать созданные HTML-файлы');
+define('_WEBO_html_cache_timeout', 'Срок действия кэша для в секундах');
+define('_WEBO_html_cache_ignore_list', 'Список частей URL для исключения при кэшировании');
+define('_WEBO_html_cache_allowed_list', 'Список частей USER AGENTS (роботов) для включения при кэшировании');
 define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');
 define('_WEBO_footer_image', 'Добавить изображение Веб Оптимизатора');
 define('_WEBO_cleanup_on', 'Удалять старые файлы');
