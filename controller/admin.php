@@ -1123,7 +1123,7 @@ ExpiresDefault \"access plus 10 years\"
 		if ($fp) {
 /* clean current content */
 			$htaccess_content = preg_replace("/# Web Optimizer protection.*Web Optimizer protection end/", "", $htaccess_content);
-			if (!empty($this->compress_options['htaccess']['access'])) {
+			if (!empty($this->compress_options['htaccess']['access']) || !empty($this->input['user']['htaccess']['access'])) {
 /* add secure protection via htpasswd */
 				$htaccess_content .= '
 # Web Optimizer protection

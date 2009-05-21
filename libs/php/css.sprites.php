@@ -839,8 +839,8 @@ __________________
 /* for added to repeat-x / repeat-y image with no-repeat */
 						$added = empty($image[9]) ? 0 : $image[9];
 /* remember existing background */
-						$this->css_images[$this->sprite]['images'][$image_key][10] = $this->css->css[$import][$key]['background'];
-						$this->css_images[$this->sprite]['images'][$image_key][11] = $this->css->css[$import][$key]['background-image'];
+						$this->css_images[$this->sprite]['images'][$image_key][10] = empty($this->css->css[$import][$key]['background']) ? '' : $this->css->css[$import][$key]['background'];
+						$this->css_images[$this->sprite]['images'][$image_key][11] = empty($this->css->css[$import][$key]['background-image']) ? '' : $this->css->css[$import][$key]['background-image'];
 						if (empty($added) || $type == 4) {
 							$final_x += $this->css_images[$this->sprite]['addon_x'];
 							$final_y += $this->css_images[$this->sprite]['addon_y'];
