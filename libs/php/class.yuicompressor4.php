@@ -16,7 +16,7 @@ class YuiCompressor {
 	function compress($content, $type="js"){
 		@file_put_contents($this->file, $content);
 		if(!file_exists($this->file)){
-			return $this->content;
+			return $content;
 		}
 		if(!$this->check()){
 			return $content;
