@@ -1306,7 +1306,7 @@ require valid-user
 			return 'Invision Power Board';
 /* Simple Machines Forum */
 		} elseif (is_file($root . 'Sources/LogInOut.php')) {
-			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", @file_get_contents($root . 'index.php')));
+			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'index.php'))));
 			return 'Simple Machines Forum' . (empty($version) ? '' : ' ' . $version);
 		}
 		return 'CMS 42';

@@ -104,9 +104,10 @@
 +s) Kohana (2.3)
 +t) Yii (1.0)
 +u) phpBB (3.0)
-+w) Invision Power Board (2.6)
- x) Explay (3.0)
-+y) Simple Machines Forum (1.1.8)
++v) Invision Power Board (2.6)
+ w) Explay (3.0)
++x) Simple Machines Forum (1.1.8)
+ y) 
  z) 
 
 12. Localization

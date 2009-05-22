@@ -56,7 +56,7 @@ $compress_options['html_cache']['timeout'] = "600";
 ## Parts of ignore URL for HTML cache, separated by space
 $compress_options['html_cache']['ignore_list'] = "";
 ## Parts of user agents to output cached HTML, separated by space
-$compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twitter";
+$compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 ## On or off 
 $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer
