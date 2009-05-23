@@ -11,11 +11,15 @@
  //_WEBO_SPLAHS1_PROTECTED2
  //_WEBO_SPLASH2_HTMLCACHE
  //_WEBO_SPLASH2_HTMLCACHE_INFO
+ //_WEBO_SPLASH2_CACHE_HTML
  //_WEBO_htaccess_access
  //_WEBO_far_future_expires_html
  //_WEBO_far_future_expires_html_timeout
  //_WEBO_html_cache_ignore_list
  //_WEBO_html_cache_allowed_list
+ //_WEBO_html_cache_flush_only
+ //_WEBO_html_cache_flush_size
+ //_WEBO_external_scripts_css
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

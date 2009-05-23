@@ -73,6 +73,7 @@ define('_WEBO_SPLASH2_OPTIONS', 'Настройки Веб Оптимизатора');
 define('_WEBO_SPLASH2_CACHE', 'Директории кэширования');
 define('_WEBO_SPLASH2_CACHE_JS', 'JavaScript-файлы будут располагаться в');
 define('_WEBO_SPLASH2_CACHE_CSS', 'CSS-файлы будут располагаться в');
+define('_WEBO_SPLASH2_CACHE_HTML', 'HTML-файлы будут располагаться в');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Веб Оптимизатор расположен в');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Сайт расположен в');
 define('_WEBO_SPLASH2_SPACE', 'Пожалуйста, через пробел:');
@@ -132,7 +133,8 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимизатор может автоматически вне
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).
 									<br/>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.');
 define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
-define('_WEBO_external_scripts_on', 'Включить объединение внешних файлов');
+define('_WEBO_external_scripts_on', 'Включить объединение внешних JavaScript-файлов');
+define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
 define('_WEBO_dont_check_file_mtime', 'Не проверять время изменения файлов');
@@ -152,6 +154,8 @@ define('_WEBO_far_future_expires_html', 'Кэшировать HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Время клиентского кэша для HTML-файлов');
 define('_WEBO_html_cache_enabled', 'Кэшировать созданные HTML-файлы');
 define('_WEBO_html_cache_timeout', 'Срок действия кэша для в секундах');
+define('_WEBO_html_cache_flush_only', 'Включить только быстрый сброс части документа');
+define('_WEBO_html_cache_flush_size', 'Размер сбрасываемой части документа (в байтах)');
 define('_WEBO_html_cache_ignore_list', 'Список частей URL для исключения при кэшировании');
 define('_WEBO_html_cache_allowed_list', 'Список частей USER AGENTS (роботов) для включения при кэшировании');
 define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');

@@ -122,7 +122,7 @@ class web_optimizer {
 				"memory_limited" => $this->options['css_sprites']['memory_limited'],
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
-				"external_scripts" => $this->options['external_scripts']['on'],
+				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			),
@@ -226,10 +226,6 @@ class web_optimizer {
 		}
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
-		}
-/* Delete any files that don't match the string	 */
-		if(!empty($this->options['cleanup']['on'])) {
-			$this->do_cleanup();
 		}
 		$this->times['end'] = $this->returnTime($this->runtime);
 /* redirect to installation page if chained optimization */
@@ -373,7 +369,7 @@ class web_optimizer {
 		$this->content = preg_replace("/﻿/", "", $this->content);
 /* strip from content flushed part */
 		if (!empty($this->flushed)) {
-			$this->content = substr($this->content, stripos($this->content, "</head>") + $options['flush_size'], strlen($this->content));
+			$this->content = substr($this->content, $options['flush_size'], strlen($this->content));
 		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {
@@ -391,7 +387,7 @@ class web_optimizer {
 				if ($fp) {
 					$content_to_write = $this->content;
 					if (!empty($options['flush'])) {
-						$content_to_write = substr($content_to_write, 0, stripos($content_to_write, "</head>") + $options['flush_size']);
+						$content_to_write = substr($content_to_write, 0, $options['flush_size']);
 					}
 					@fwrite($fp, $content_to_write);
 					@fclose($fp);
@@ -1237,31 +1233,6 @@ class web_optimizer {
 			preg_match("!<head([^>]+)?>.*?</head>!is", preg_replace("@<!--.*?-->@is", '', $this->content), $matches);
 			if (!empty($matches[0])) {
 				$this->head = $matches[0];
-			}
-		}
-	}
-
-	/**
-	* Removes old cache files
-	*
-	**/
-	function do_cleanup() {
-/* Get all directories */
-		foreach($this->options AS $key=>$value) {
-			if(!empty($value['cachedir'])) {
-				$active_dirs[] = $value['cachedir'];
-			}
-		}
-		if(!empty($active_dirs)) {
-			foreach($active_dirs AS $path) {
-			$files = $this->get_files_in_dir($path);
-				foreach($files AS $file) {
-					if (!strstr($this->compressed_files_string,$file)) {
-						if(file_exists($path . "/" . $file)) {
-							unlink($path . "/" . $file);
-						}
-					}
-				}
 			}
 		}
 	}

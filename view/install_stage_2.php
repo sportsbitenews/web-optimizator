@@ -16,6 +16,10 @@
 				<div class="info">
 				<input name="user[css_cachedir]" class="long_text" value="<?php echo $css_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_CSS ?>" />
 				</div>
+			<label><?php echo _WEBO_SPLASH2_CACHE_HTML ?></label>
+				<div class="info">
+				<input name="user[html_cachedir]" class="long_text" value="<?php echo $html_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_HTML ?>" />
+				</div>
 			<label><?php echo _WEBO_SPLASH2_INSTALLDIR ?></label>
 				<div class="info">
 				<input name="user[webo_cachedir]" class="long_text" value="<?php echo $webo_cachedir ?>" title="<?php echo _WEBO_SPLASH2_INSTALLDIR ?>" />
@@ -39,10 +43,10 @@
 
 							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?></label>
 
-							<?php if ($option == 'ignore_list' || $option == 'timeout' || $option == 'allowed_list') { ?>
+							<?php if ($option == 'ignore_list' || $option == 'timeout' || $option == 'allowed_list' || $options == 'flush_size') { ?>
 
 							<div class="info">
-							<?php echo $option == 'timeout' ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
+							<?php echo $option == 'timeout' || $options == 'flush_size' ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
 							</div>
 
 							<?php } else { ?>

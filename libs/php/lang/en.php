@@ -73,6 +73,7 @@ define('_WEBO_SPLASH2_OPTIONS', 'Compression options');
 define('_WEBO_SPLASH2_CACHE', 'Cache Directories');
 define('_WEBO_SPLASH2_CACHE_JS', 'Your JavaScript will be cached in');
 define('_WEBO_SPLASH2_CACHE_CSS', 'Your CSS will be cached in');
+define('_WEBO_SPLASH2_CACHE_HTML', 'Your HTML will be cached in');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer is located in');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Website is located in');
 define('_WEBO_SPLASH2_SPACE', 'Please separate with space:');
@@ -133,7 +134,8 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Web Optimizer can add to your website b
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).
 									<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
-define('_WEBO_external_scripts_on', 'Enable external and inline scripts merging');
+define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
+define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
 define('_WEBO_dont_check_file_mtime', 'Don\'t check files mtime (and content)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
@@ -153,6 +155,8 @@ define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_timeout', 'Default timeout, in seconds');
+define('_WEBO_html_cache_flush_only', 'Enable only earlier flush of content');
+define('_WEBO_html_cache_flush_size', 'Flush content size (in bytes)');
 define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from caching');
 define('_WEBO_html_cache_allowed_list', 'List of parts of USER AGENTS (robots) to add to caching');
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');

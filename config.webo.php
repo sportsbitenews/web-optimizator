@@ -21,6 +21,8 @@ $compress_options['js_libraries'] = "";
 $compress_options['unobtrusive']['on'] = "0";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
+## Merge inline styles in head and external CSS files
+$compress_options['external_scripts']['css'] = "1";
 ## Ignore list, files separated by space
 $compress_options['external_scripts']['ignore_list'] = "tiny_mce.js fckeditor.js";
 ## Performance options
@@ -58,7 +60,7 @@ $compress_options['html_cache']['timeout'] = "600";
 ## Flush head section with first N bytes of body?
 $compress_options['html_cache']['flush_only'] = "1";
 ## Flush size of HTML body
-$compress_options['html_cache']['flush_size'] = "200";
+$compress_options['html_cache']['flush_size'] = "1000";
 ## Parts of ignore URL for HTML cache, separated by space
 $compress_options['html_cache']['ignore_list'] = "";
 ## Parts of user agents to output cached HTML, separated by space
@@ -68,8 +70,6 @@ $compress_options['active'] = "1";
 ## Display a link back to Web Optimizer
 $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
-## Should Web Optimizer Clean Up the cache directory?
-$compress_options['cleanup']['on'] = "0";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer use CSS Sprites for background images?
