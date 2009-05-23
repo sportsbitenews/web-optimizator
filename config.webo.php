@@ -9,6 +9,8 @@ $compress_options['password'] = "";
 $compress_options['javascript_cachedir'] = "";
 ## Cache directory for CSS files
 $compress_options['css_cachedir'] = "";
+## Cache directory for HTML files
+$compress_options['html_cachedir'] = "";
 ## Web Optimizer installation directory
 $compress_options['webo_cachedir'] = "";
 ## Root directory of the website
@@ -50,9 +52,13 @@ $compress_options['far_future_expires']['html'] = "0";
 ## Default timeout of client side HTML files caching, in seconds
 $compress_options['far_future_expires']['html_timeout'] = "60";
 ## Cache generated HTML files
-$compress_options['html_cache']['enabled'] = "0";
+$compress_options['html_cache']['enabled'] = "1";
 ## Cache timeout for generated HTML files, in seconds
 $compress_options['html_cache']['timeout'] = "600";
+## Flush head section with first N bytes of body?
+$compress_options['html_cache']['flush_only'] = "1";
+## Flush size of HTML body
+$compress_options['html_cache']['flush_size'] = "200";
 ## Parts of ignore URL for HTML cache, separated by space
 $compress_options['html_cache']['ignore_list'] = "";
 ## Parts of user agents to output cached HTML, separated by space

@@ -32,20 +32,35 @@ class web_optimizer {
 		$this->set_options();
 /* Define the gzip headers */
 		$this->set_gzip_headers();
+/* Deal with flushed content or not? */
+		$this->flushed = false;
 /* HTML cache ? */
 		$excluded_html_pages = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['cache_ignore']));
 		$included_user_agents = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['allowed_user_agents']));
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!", $_SERVER['HTTP_USER_AGENT']));
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush']));
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
+			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
 				if (!empty($this->options['page']['gzip'])) {
 					$this->set_gzip_header();
 				}
-				echo @file_get_contents($file);
-				die();
+				if (empty($this->options['page']['flush'])) {
+					echo @file_get_contents($file);
+					die();
+/* content is a head part, flush it after */
+				} else {
+/* can't gzip twice via php, so flush only if gzip via php disabled */
+					if (empty($this->options['page']['gzip'])) {
+						$content = @file_get_contents($file);
+						if (!empty($content)) {
+							echo $content;
+							flush();
+							$this->flushed = true;
+						}
+					}
+				}
 			}
 		}
 /* Start things off */
@@ -112,6 +127,7 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			),
 			"page" => array(
+				"cachedir" => $this->options['html_cachedir'],
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
 				"remove_comments" => $this->options['minify']['html_comments'],
@@ -120,6 +136,8 @@ class web_optimizer {
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
 				"cache" => $this->options['html_cache']['enabled'],
 				"cache_timeout" => $this->options['html_cache']['timeout'],
+				"flush" => $this->options['html_cache']['flush_only'],
+				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'],
@@ -219,19 +237,6 @@ class web_optimizer {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
 			header('Location: ../index.php?page=install_stage_3&submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled][on]=" . $this->auto_rewrite);
 			die();
-		}
-/* remove BOM */
-		$this->content = preg_replace("/﻿/", "", $this->content);
-/* check if we need to store cached page */
-		if (!empty($this->cache_me)) {
-			$file = $this->options['javascript']['cachedir'] . '/' . $this->uri;
-			if (!is_file($file) || time() - filemtime($file) > $this->options['page']['cache_timeout']) {
-				$fp = @fopen($file, "w");
-				if ($fp) {
-					@fwrite($fp, $this->content);
-					@fclose($fp);
-				}
-			}
 		}
 /* Echo content to the browser */
 		if(empty($this->supress_output)) {
@@ -364,12 +369,33 @@ class web_optimizer {
 		if (!empty($options['parallel']) && !empty($options['parallel_hosts'])) {
 			$this->content = $this->add_multiple_hosts($this->content, split(" ", $options['parallel_hosts']));
 		}
+/* remove BOM */
+		$this->content = preg_replace("/﻿/", "", $this->content);
+/* strip from content flushed part */
+		if (!empty($this->flushed)) {
+			$this->content = substr($this->content, stripos($this->content, "</head>") + $options['flush_size'], strlen($this->content));
+		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {
 			$content = $this->create_gz_compress($this->content);
-			if($content) {
+			if (!empty($content)) {
 				$this->set_gzip_header();
 				$this->content = $content;
+			}
+		}
+/* check if we need to store cached page */
+		if (!empty($this->cache_me)) {
+			$file = $options['cachedir'] . '/' . $this->uri;
+			if (!is_file($file) || time() - filemtime($file) > $options['cache_timeout']) {
+				$fp = @fopen($file, "w");
+				if ($fp) {
+					$content_to_write = $this->content;
+					if (!empty($options['flush'])) {
+						$content_to_write = substr($content_to_write, 0, stripos($content_to_write, "</head>") + $options['flush_size']);
+					}
+					@fwrite($fp, $content_to_write);
+					@fclose($fp);
+				}
 			}
 		}
 	}
@@ -1202,7 +1228,7 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = preg_replace("/(\/\/\s*<!\[CDATA\[|<!-- \/\/ --><!\[CDATA\[|<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
+			$this->content = preg_replace("/(\/\/\]\]>|\/\/\s*<!\[CDATA\[|<!-- \/\/ --><!\[CDATA\[|<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
@@ -1537,7 +1563,11 @@ class web_optimizer {
 	 **/
 	function get_remote_file ($file, $tag = "link") {
 		if (function_exists('curl_init')) {
-			chdir($this->options['javascript']['cachedir']);
+			if ($tag == 'link') {
+				chdir($this->options['css']['cachedir']);
+			} else {
+				chdir($this->options['javascript']['cachedir']);
+			}
 			$return_filename = substr($this->convert_request_uri($file), 7, 250);
 /* prevent download more than 1 time a day */
 			if (is_file($return_filename)) {

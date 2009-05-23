@@ -130,10 +130,11 @@ class admin {
 	* Clear cache
 	* 
 	**/	
-	function install_clear_cache() {
+	function install_clear_cache($redirect = true) {
 		$success = false;
 		$deleted_css = true;
 		$deleted_js = true;
+		$deleted_html = true;
 		$restricted = array('.', '..', 'yass.loader.js');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
@@ -146,7 +147,7 @@ class admin {
 			}
 			$success = true;
 		}
-/* css cache */
+/* javascript cache */
 		if ($dir = @opendir($this->compress_options['javascript_cachedir'])) {
 			while ($file = @readdir($dir)) {
 				if (!in_array($file, $restricted)) {
@@ -157,10 +158,23 @@ class admin {
 			}
 			$success = true;
 		}
-		if ($success && $deleted_css && $deleted_js) {
+/* html cache */
+		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
+			while ($file = @readdir($dir)) {
+				if (!in_array($file, $restricted)) {
+					if (!@unlink($this->compress_options['html_cachedir'] . $file)) {
+						$deleted_html = false;
+					}
+				}
+			}
+			$success = true;
+		}
+		if ($success && $deleted_css && $deleted_js && $deleted_html) {
+			if ($redirect) {
 /* redirect to the main page */
-			header("Location: index.php?cleared=1");
-			die();
+				header("Location: index.php?cleared=1");
+				die();
+			}
 		} else {
 			$this->error("<p>". _WEBO_CLEAR_UNABLE ."</p>");
 		}
@@ -340,6 +354,7 @@ class admin {
 /* calculate directories */
 			$this->input['user']['javascript_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
 			$this->input['user']['css_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
+			$this->input['user']['html_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
 			$this->input['user']['webo_cachedir'] = $this->view->paths['full']['current_directory'];
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
 /* restore username and password */
@@ -503,6 +518,7 @@ class admin {
 			"message" => $save,
 			"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
 			"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
+			"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
 			"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
 			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
 			"options" => $options,
@@ -524,7 +540,8 @@ class admin {
 			$content = "Test";
 			$test_dirs = array(
 				'javascript' => $this->view->ensure_trailing_slash($this->input['user']['javascript_cachedir']),
-				'css' => $this->view->ensure_trailing_slash($this->input['user']['css_cachedir'])
+				'css' => $this->view->ensure_trailing_slash($this->input['user']['css_cachedir']),
+				'html' => $this->view->ensure_trailing_slash($this->input['user']['html_cachedir'])
 			);
 			$this->write_progress($this->web_optimizer_stage = 3);
 			foreach($test_dirs AS $name => $dir) {
@@ -758,6 +775,8 @@ ExpiresDefault \"access plus 10 years\"
 				}
 				$this->write_progress($this->web_optimizer_stage = 6);
 			}
+/* delete temporary files before chained installation */
+			$this->install_clear_cache(false);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);

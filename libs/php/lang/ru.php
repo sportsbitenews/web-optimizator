@@ -41,7 +41,7 @@ define('_WEBO_LOGIN_LOGGED', 'Вошли в систему');
 define('_WEBO_SPLASH1_CLEAR', 'Очистить кэш');
 define('_WEBO_SPLASH1_CLEAR_CACHE', 'Чтобы очистить кэш Веб Оптимизатора, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Очистить кэш</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Все сохраненные копии созданных файлов будут удалены из кэширующей директории.');
-define('_WEBO_CLEAR_UNABLE', 'Не получается удалить некоторые файлы их кэширующих директорий');
+define('_WEBO_CLEAR_UNABLE', 'Не получается удалить некоторые файлы из кэширующих директорий');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Все файлы были успешно удалены из кэша');
 
 /* Set login and password */
