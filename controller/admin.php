@@ -588,7 +588,7 @@ class admin {
 					if(is_array($option)) {
 						foreach($option as $option_name => $option_value) {
 							if (!empty($this->apache_modules)) {
-								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif'))) {
+								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime'))) {
 									$option_value = $option_value && in_array($option_name, $this->apache_modules);
 									$this->input['user'][$key][$option_name] = $option_value;
 								}
@@ -694,13 +694,13 @@ mod_gzip_item_include mime ^application/javascript$
 mod_gzip_item_include mime ^application/x-javascript$";
 							}
 						}
-						if ($htaccess_options['mod_deflate']) {
-							if ($htaccess_options['mod_setenvif']) {
-								$content .= "
+						if ($htaccess_options['mod_setenvif']) {
+							$content .= "
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
-							}
+						}
+						if ($htaccess_options['mod_deflate']) {
 							if ($this->input['user']['gzip']['page']) {
 								$content .= "
 AddOutputFilterByType DEFLATE text/html
@@ -716,6 +716,28 @@ AddOutputFilterByType DEFLATE text/css";
 AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript";
+							}
+/* try to add static gzip */
+						} else {
+							if ($htaccess_options['mod_mime']) {
+								$content .= "
+AddEncoding gzip .gz";
+							}
+							if ($htaccess_options['mod_rewrite']) {
+								if ($this->input['user']['gzip']['css']) {	
+									$content .= "
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]";
+								}
+								if ($this->input['user']['gzip']['css']) {	
+									$content .= "
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]";
+								}
 							}
 						}
 						if ($htaccess_options['mod_expires']) {

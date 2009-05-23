@@ -95,7 +95,7 @@ class web_optimizer {
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime']),
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
@@ -108,7 +108,7 @@ class web_optimizer {
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime']),
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
@@ -718,6 +718,10 @@ class web_optimizer {
 					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
+/* create static gzipped versions for static gzip in nginx, Apache */
+					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
+						@file_put_contents($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', gzencode($contents, 9, FORCE_GZIP));
+					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
