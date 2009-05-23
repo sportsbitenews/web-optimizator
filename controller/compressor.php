@@ -1091,8 +1091,15 @@ class web_optimizer {
 
 					if (isset($encoding) && $encoding != \'none\')
 					{
+						// try to get gzipped content from file
+						$content = @file_get_contents(__FILE__ . \'.gz\');
+						if (empty($content)) {
 						// Send compressed contents
-						$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+							$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+							@file_put_contents(__FILE__ . \'.gz\', $contents);
+						} else {
+							$contents = $content;
+						}
 						header ("Content-Encoding: " . $encoding);
 						header (\'Content-Length: \' . strlen($contents));
 					}
