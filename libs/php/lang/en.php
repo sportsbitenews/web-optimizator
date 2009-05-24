@@ -210,14 +210,14 @@ define('_WEBO_SPLASH3_CANTWRITE2', ' directory you specified. Please make sure t
 define('_WEBO_SPLASH3_CANTWRITE3', 'You can usually do this from your FTP client. Just navigate to the directory, right click and look for a Properties or CHMOD option.');
 define('_WEBO_SPLASH3_CANTWRITE4', 'Once you have done so, please refresh this page.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Please sure that the root of your website is readable and writable for your web server process.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Make CHMOD 775 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Make CHMOD 775 or CHMOD 777 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Please sure that the root of your website is writable for your web server process or there is a writable <code>.htaccess</code> file.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Make CHMOD 775 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664.');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Make CHMOD 775 or CHMOD 777 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Please sure that you have installed Web Optimizer into');
 define('_WEBO_SPLASH3_CONFSAVED', 'Configuration saved');
 define('_WEBO_SPLASH3_CONFIGERROR', 'Unable to open the config file for writing. Please change the <code>config.webo.php</code> file so that is it writable.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'You can usually do this from your FTP client. Just navigate to <strong>');
-define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 777, or "write"');
+define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 775, 777, or "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Once you have done so, please refresh this page.');
 define('_WEBO_SPLASH3_CONFIGERROR5', 'Config file does not exist. Please download the full script from <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 

@@ -200,17 +200,17 @@ define('_WEBO_SPLASH3_ALTHOUGH2', 'install.php</code> для забезпечення додатково
 define('_WEBO_SPLASH3_FINISH', 'Закінчити установку');
 define('_WEBO_SPLASH3_CANTWRITE', 'Не вдається записати у вказану вами директорію ');
 define('_WEBO_SPLASH3_CANTWRITE2', '. Будь-ласка, перевірте існування вашої директорії і доступ на її запис.');
-define('_WEBO_SPLASH3_CANTWRITE3', 'Ви можете зробити це також через свій FTP-клієнт. Для цього потрібно перейти в директорію, зайти в її властивості або виконати CHMOD 775.');
+define('_WEBO_SPLASH3_CANTWRITE3', 'Ви можете зробити це також через свій FTP-клієнт. Для цього потрібно перейти в директорію, зайти в її властивості або виконати CHMOD 775 aбо CHMOD 777.');
 define('_WEBO_SPLASH3_CANTWRITE4', 'Після того, як ви усунете цю проблему, будь-ласка, перезавантажте сторінку.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Будь-ласка, переконайтеся в тому, що коренева папка вашого сайту доступна для читання і запису для вашого веб-серверу.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Для цього виконайте CHMOD 775, або створіть в корені файл <code>.htaccess</code>, доступний для читання і запису для вашого веб-серверу, або дозвольте читання і запис для поточного файлу <code>.htaccess</code> (CHMOD 664).');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Для цього виконайте CHMOD 775, aбо CHMOD 777, або створіть в корені файл <code>.htaccess</code>, доступний для читання і запису для вашого веб-серверу, або дозвольте читання і запис для поточного файлу <code>.htaccess</code> (CHMOD 664).');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Будь-ласка, переконайтеся, що коренева папка вашого сайту доступна для запису для вашого веб-серверу або в ній існує доступний для запису файл <code>.htaccess</code>.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Виконайте для директорії CHMOD 775, або створіть в корені файл <code>.htaccess</code>, доступний для запису для вашого веб-серверу, або дозвольте запис для поточного файлу <code>.htaccess</code> (CHMOD 664).');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Виконайте для директорії CHMOD 775 aбо CHMOD 777, або створіть в корені файл <code>.htaccess</code>, доступний для запису для вашого веб-серверу, або дозвольте запис для поточного файлу <code>.htaccess</code> (CHMOD 664 aбо CHMOD 777).');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Будь-ласка, переконайтеся, що Веб Оптимізатор був проінстальований в');
 define('_WEBO_SPLASH3_CONFSAVED', 'Конфігурація збережена');
 define('_WEBO_SPLASH3_CONFIGERROR', 'Неможливо відкрити для запису конфігураційний файл. Будь-ласка, змініть права доступу для файлу <code>config.webo.php</code> Веб Оптимізатора, щоб він був доступний для запису для вашого веб-серверу.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Ви можете це зробити за допомогою вашого FTP-клієнта. Для цього просто перейдіть в директорію <strong>');
-define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , потім увійдіть до властивостей файлу або виконайте CHMOD. Встановіть у 775, або "write"');
+define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , потім увійдіть до властивостей файлу або виконайте CHMOD. Встановіть у 775 або 777, або "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Після того, як ви усунете цю проблему, будь-ласка, перезавантажте сторінку.');
 define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Веб Оптимізатор повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 

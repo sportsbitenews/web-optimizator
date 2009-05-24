@@ -43,17 +43,18 @@ class web_optimizer {
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
-				if (!empty($this->options['page']['gzip'])) {
+				$content = @file_get_contents($file);
+/* chec kif cached content if gzipped */
+				if (!empty($this->options['page']['gzip']) && substr($content, 0, 8) == "\x1f\x8b\x08\x00\x00\x00\x00\x00") {
 					$this->set_gzip_header();
 				}
 				if (empty($this->options['page']['flush'])) {
-					echo @file_get_contents($file);
+					echo $content;
 					die();
 /* content is a head part, flush it after */
 				} else {
 /* can't gzip twice via php, so flush only if gzip via php disabled */
 					if (empty($this->options['page']['gzip'])) {
-						$content = @file_get_contents($file);
 						if (!empty($content)) {
 							echo $content;
 							flush();
@@ -449,14 +450,14 @@ class web_optimizer {
 	*
 	**/
 	function set_gzip_header() {
-		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
+		if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
 			$encoding = "x-gzip";
 		}
-		if(strpos(" ".$_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
+		if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
 			$encoding = "gzip";
 		}
 		if(!empty($encoding)) {
-			header("Content-Encoding: ".$encoding);
+			header("Content-Encoding: " . $encoding);
 		}
 	}
 
