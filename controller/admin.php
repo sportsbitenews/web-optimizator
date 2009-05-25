@@ -131,11 +131,12 @@ class admin {
 	* 
 	**/	
 	function install_clear_cache($redirect = true) {
-		$success = false;
+/* if all directories haven't been set yet -- just success */
+		$success = false || (empty($this->compress_options['css_cachedir']) && empty($this->compress_options['javascript_cachedir']) && empty($this->compress_options['html_cachedir']));
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.js');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
