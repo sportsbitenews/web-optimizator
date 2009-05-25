@@ -325,7 +325,7 @@ class admin {
 			$this->download($webo_image, $tmp_image);
 			if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
-				$webo_image2 = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
+				$webo_image2 = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/loadbar.png";
 				$tmp_image2 = "image.tmp.png";
 				$this->download($webo_image2, $tmp_image2);
 				if (@filesize($tmp_image2) == $etalon2) {

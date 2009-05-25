@@ -413,7 +413,7 @@ class web_optimizer {
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				if (empty($replaced[$old_src])) {
-					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $this->view->paths['full']['document_root'] . "index.php"));
+					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $this->view->paths['absolute']['document_root'] . "index.php"));
 					$new_src = "http" . ($_SERVER['HTTPS'] ? "s" : "") . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;

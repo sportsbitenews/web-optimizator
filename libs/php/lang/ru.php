@@ -153,7 +153,7 @@ define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
 define('_WEBO_far_future_expires_html', 'Кэшировать HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Время клиентского кэша для HTML-файлов');
 define('_WEBO_html_cache_enabled', 'Кэшировать созданные HTML-файлы');
-define('_WEBO_html_cache_timeout', 'Срок действия кэша для в секундах');
+define('_WEBO_html_cache_timeout', 'Срок действия кэша в секундах');
 define('_WEBO_html_cache_flush_only', 'Включить только быстрый сброс части документа');
 define('_WEBO_html_cache_flush_size', 'Размер сбрасываемой части документа (в байтах)');
 define('_WEBO_html_cache_ignore_list', 'Список частей URL для исключения при кэшировании');
