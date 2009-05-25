@@ -429,7 +429,7 @@ class web_optimizer {
 	**/
 	function create_gz_compress($content) {
 
-		if(strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzcompress')) {
+		if(!empty($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzcompress')) {
 				$Size = strlen( $this->content );
 				$Crc = crc32( $this->content );
 				$content = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
@@ -450,14 +450,16 @@ class web_optimizer {
 	*
 	**/
 	function set_gzip_header() {
-		if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
-			$encoding = "x-gzip";
-		}
-		if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
-			$encoding = "gzip";
-		}
-		if(!empty($encoding)) {
-			header("Content-Encoding: " . $encoding);
+		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
+				$encoding = "x-gzip";
+			}
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
+				$encoding = "gzip";
+			}
+			if(!empty($encoding)) {
+				header("Content-Encoding: " . $encoding);
+			}
 		}
 	}
 
@@ -1076,14 +1078,15 @@ class web_optimizer {
 				function compress_output_option($contents) {
 
 					// Determine supported compression method
-					$gzip = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'gzip\');
-					$deflate = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'deflate\');
-
+					if (!empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])) {
+						$gzip = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'gzip\');
+						$deflate = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'deflate\');
+					}
 					// Determine used compression method
-					$encoding = $gzip ? \'gzip\' : ($deflate ? \'deflate\' : \'none\');
+					$encoding = !empty($gzip) ? \'gzip\' : (!empty($deflate) ? \'deflate\' : \'none\');
 
 					// Check for buggy versions of Internet Explorer
-					if (!strstr($_SERVER[\'HTTP_USER_AGENT\'], \'Opera\') &&
+					if (!empty($_SERVER[\'HTTP_USER_AGENT\']) && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'Opera\') &&
 						preg_match(\'/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i\', $_SERVER[\'HTTP_USER_AGENT\'], $matches)) {
 						$version = floatval($matches[1]);
 
