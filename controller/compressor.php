@@ -411,9 +411,10 @@ class web_optimizer {
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
-				$old_src = preg_replace("!^['\"\s]*(.*)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
-				if (empty($replaced[$old_src])) {
-					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $this->view->paths['absolute']['document_root'] . "index.php"));
+				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
+/* skip images on different hosts */
+				if ((!strpos($old_src, "://") || stripos($old_src, "://" . $_SERVER['HTTP_HOST'] . "/")) && empty($replaced[$old_src])) {
+					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 					$new_src = "http" . ($_SERVER['HTTPS'] ? "s" : "") . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;
