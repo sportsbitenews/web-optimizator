@@ -256,7 +256,7 @@ class web_optimizer {
 /* prepare list of files to process */
 		$script_files = array();
 		foreach ($this->initial_files as $file) {
-			if ($file['tag'] == 'script') {
+			if (!empty($file['tag']) && $file['tag'] == 'script') {
 				$script_files[] = $file;
 			}
 		}
@@ -300,7 +300,7 @@ class web_optimizer {
 /* prepare list of files to process */
 		$link_files = array();
 		foreach ($this->initial_files as $file) {
-			if ($file['tag'] == 'link') {
+			if (!empty($file['tag']) && $file['tag'] == 'link') {
 				$link_files[] = $file;
 			}
 		}

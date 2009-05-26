@@ -550,7 +550,7 @@ class csstidy_optimise
      * @return array
      * @version 1.0
      */
-    function explode_ws($sep,$string)
+    function explode_ws($sep, $string)
     {
         $status = 'st';
         $to = '';
@@ -663,13 +663,16 @@ class csstidy_optimise
             $str_value = csstidy::gvw_important($str_value);
         }
 
-        $str_value = csstidy_optimise::explode_ws(',',$str_value);
+        $str_value = csstidy_optimise::explode_ws(',', $str_value);
         for($i = 0; $i < count($str_value); $i++)
         {
             $have['clip'] = FALSE; $have['pos'] = FALSE;
             $have['color'] = FALSE; $have['bg'] = FALSE;
 
-            $str_value[$i] = csstidy_optimise::explode_ws(' ',trim($str_value[$i]));
+			if (is_array($str_value[$i])) {
+				$str_value[$i] = implode("", $str_value[$i]);
+			}
+            $str_value[$i] = csstidy_optimise::explode_ws(' ', trim($str_value[$i]));
 
             for($j = 0; $j < count($str_value[$i]); $j++)
             {

@@ -857,8 +857,10 @@ __________________
 						}
 /* leave rules for IE6 */
 						if ($this->no_ie6) {
+							if (!empty($this->css->css[$import][$key])) {
 /* should we preserve current IE6 hack for background? */
-							$this->css->css[$import]["* html " . $key]['background'] = $this->css->css[$import][$key]['background'];
+								$this->css->css[$import]["* html " . $key]['background'] = $this->css->css[$import][$key]['background'];
+							}
 						}
 
 						if (!$image_used) {
