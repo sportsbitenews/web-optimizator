@@ -44,7 +44,7 @@ class web_optimizer {
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
 			if (is_file($file)) {
 				$content = @file_get_contents($file);
-/* chec kif cached content if gzipped */
+/* check if cached content if gzipped */
 				if (!empty($this->options['page']['gzip']) && substr($content, 0, 8) == "\x1f\x8b\x08\x00\x00\x00\x00\x00") {
 					$this->set_gzip_header();
 				}
@@ -198,8 +198,6 @@ class web_optimizer {
 	**/
 	function finish($content = false) {
 
-		$this->runtime = $this->startTimer();
-		$this->times['start_compress'] = $this->returnTime($this->runtime);
 		if(!$content) {
 			$this->content = ob_get_clean();
 		} else {
@@ -228,7 +226,6 @@ class web_optimizer {
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
 		}
-		$this->times['end'] = $this->returnTime($this->runtime);
 /* redirect to installation page if chained optimization */
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
@@ -548,7 +545,7 @@ class web_optimizer {
 		switch ($include) {
 /* if no unobtrusive logic and no external JS, move to top */
 			default:
-				$source = preg_replace("!<head([^>]+)?>!is", "$0" . $newfile, $source);
+				$source = preg_replace("!<head[^>]*>!is", "$0" . $newfile, $source);
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
 			case 1:
@@ -556,12 +553,12 @@ class web_optimizer {
 				break;
 /* else use unobtrusive loader */
 			case 2:
-				if (preg_match("/var yass_modules/i", $source)) {
+				if (stripos($source, "var yass_modules")) {
 					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
-						.'","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://"
+						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://"
 						. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 				}
 				break;
@@ -619,7 +616,7 @@ class web_optimizer {
 		}
 /* Include all libraries. Save ~1M if no compression */
 		foreach ($this->libraries as $klass => $library) {
-			if (!class_exists($klass)) {
+			if (!class_exists($klass, false)) {
 				require_once($options['installdir'] . 'libs/php/' . $library);
 			}
 		}
@@ -815,7 +812,7 @@ class web_optimizer {
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = preg_replace("/(https?:\/\/".$_SERVER['HTTP_HOST']."|\?.*)/", "", $file);
+		$file = $this->strip_querystring(preg_replace("/https?:\/\/" . $_SERVER['HTTP_HOST'] . "/", "", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
 		} else {
@@ -892,7 +889,8 @@ class web_optimizer {
 							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "src":
-									$file['file'] = trim(preg_replace("/(\?|#).*/", "", $variant_type[2]));
+									$file['file'] = trim($this->strip_querystring($variant_type[2]));
+									$file['file_raw'] = $variant_type[2];
 									break;
 								default:
 									$file[$variant_type[1]] = $variant_type[2];
@@ -921,7 +919,8 @@ class web_optimizer {
 							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "href":
-									$file['file'] = trim(preg_replace("/(\?|#).*/", "", $variant_type[2]));
+									$file['file'] = trim($this->strip_querystring($variant_type[2]));
+									$file['file_raw'] = $variant_type[2];
 									break;
 								default:
 /* skip media="all" to prevent Safari bug with @media all{} */
@@ -964,7 +963,7 @@ class web_optimizer {
 		foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 			if (!$tag || $value['tag'] == $tag) {
-				if (!empty($value['file']) && strlen($value['file']) > 7 && preg_match("/^https?:\/\//i", $value['file'])) {
+				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
 					if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
@@ -987,8 +986,12 @@ class web_optimizer {
 				if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
 					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
-						$dynamic_file = preg_replace("/&amp;/", "&", "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute(preg_replace("/['\"]?\s.*/is", "", preg_replace("/.*(src|href)\s*=\s*['\"]?/is", "", $value['source'])), array('file' => $value['file']), true));
-						$static_file = $this->get_remote_file($dynamic_file, $value['tag']);
+						$dynamic_file = $value['file_raw'];
+/* touch only non-external scripts */
+						if (!strpos($dynamic_file, "://")) {
+							$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
+						}
+						$static_file = $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
 						}
@@ -1135,15 +1138,17 @@ class web_optimizer {
 	}
 
 	/**
-	* Returns a path or url without the querystring
+	* Returns a path or url without the querystring and anchor
 	*
 	**/
 	function strip_querystring($path) {
 		if ($commapos = strpos($path, '?')) {
-			return substr($path, 0, $commapos);
-		} else {
-			return $path;
+			$path = substr($path, 0, $commapos);
 		}
+		if ($numberpos = strpos($path, '#')) {
+			$path = substr($path, 0, $numberpos);
+		}		
+		return $path;
 	}
 
 	/**
@@ -1254,22 +1259,6 @@ class web_optimizer {
 	}
 
 	/**
-	* Returns list of files in a directory
-	*
-	**/
-	function get_files_in_dir($path) {
-/* open this directory */
-		$myDirectory = opendir($path);
-/* get each entry */
-		while($entryName = readdir($myDirectory)) {
-			$dirArray[] = $entryName;
-		}
-/* close directory */
-		closedir($myDirectory);
-		return $dirArray;
-	}
-
-	/**
 	* Converts sinlge path to the absolute one
 	*
 	**/
@@ -1341,7 +1330,7 @@ class web_optimizer {
 
 	/**
 	* Takes CSS background images and convert to data URIs
-	*
+	* very slow on large amount of data
 	**/
 	function convert_css_bgr_to_data($content, $path) {
 
@@ -1504,31 +1493,6 @@ class web_optimizer {
 			$type = 'text/html';
 		}
 		return $type;
-	}
-
-	/**
-	 * Starts script timing
-	 *
-	 **/
-	function startTimer() {
-		$mtime = microtime();
-		$mtime = explode(" ",$mtime);
-		$mtime = $mtime[1] + $mtime[0];
-		$starttime = $mtime;
-		return $starttime;
-	}
-
-	/**
-	 * Returns current time
-	 *
-	 **/
-	function returnTime($starttime) {
-		$mtime = microtime();
-		$mtime = explode(" ",$mtime);
-		$mtime = $mtime[1] + $mtime[0];
-		$endtime = $mtime;
-		$totaltime = ($endtime - $starttime);
-		return $totaltime;
 	}
 
 	/**
