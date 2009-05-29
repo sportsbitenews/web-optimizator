@@ -38,6 +38,8 @@ class css_sprites {
 		$this->no_ie6 = $options['no_ie6'];
 /* if there is a memory limit we need to restrict operating area for images */
 		$this->memory_limited = $options['memory_limited'];
+/* only compress CSS and convert images to data:URI */
+		$this->no_sprites = $options['no_css_sprites'];
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
@@ -50,286 +52,276 @@ class css_sprites {
 	* Process with given data
 	**/
 	function process() {
-
-		foreach ($this->css->css as $import => $token) {
+		
+		if (empty($this->no_sprites)) {
+			foreach ($this->css->css as $import => $token) {
 /* create array for selectors with background images */
-			$this->media[$import] = array();
-			foreach ($token as $tags => $rule) {
-				foreach ($rule as $key => $value) {
+				$this->media[$import] = array();
+				foreach ($token as $tags => $rule) {
+					foreach ($rule as $key => $value) {
 /* standartize all background values from input */
-					if (preg_match("/background/", $key)) {
+						if (preg_match("/background/", $key)) {
 /* rewrite current background with strict none */
-						if ($key == 'background' && $value == 'none') {
-							$this->css->css[$import][$tags]['background'] = $this->none;
-						}
-						foreach (split(",", $tags) as $tag) {
-/* create new item (array) if required */
-							if (!empty($this->media[$import][$tag])) {
-								$this->media[$import][$tag] = array();
+							if ($key == 'background' && $value == 'none') {
+								$this->css->css[$import][$tags]['background'] = $this->none;
 							}
-
-							if ($key == 'background') {
-/* resolve background property */
-								$background = $this->css->optimise->dissolve_short_bg($value);
-								foreach ($background as $bg => $property) {
-/* skip default properties */
-									if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left' || $property == 'top' || $property == 'left')) &&
-										!($bg == 'background-origin' && ($property == 'padding !important' || $property == 'padding')) &&
-										!($bg == 'background-color' && ($property == 'transparent !important' || $property == 'transparent')) &&
-										!($bg == 'background-clip' && ($property == 'border !important' || $property == 'border')) &&
-										!($bg == 'background-attachment' && ($property == 'scroll !important' || $property =='scroll')) &&
-										!($bg == 'background-size' && ($property == 'auto !important' || $property == 'auto')) &&
-										!($bg == 'background-repeat' && ($property == 'repeat !important' || $property == 'repeat'))) {
-
-										if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
-											$property = $this->none;
-										}
-										$this->media[$import][$tag][$bg] = $property;
-									}
+							foreach (split(",", $tags) as $tag) {
+/* create new item (array) if required */
+								if (!empty($this->media[$import][$tag])) {
+									$this->media[$import][$tag] = array();
 								}
-							} else {
+
+								if ($key == 'background') {
+/* resolve background property */
+									$background = $this->css->optimise->dissolve_short_bg($value);
+									foreach ($background as $bg => $property) {
 /* skip default properties */
-								if (!($key == 'background-position' &&
+										if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left' || $property == 'top' || $property == 'left')) &&
+											!($bg == 'background-origin' && ($property == 'padding !important' || $property == 'padding')) &&
+											!($bg == 'background-color' && ($property == 'transparent !important' || $property == 'transparent')) &&
+											!($bg == 'background-clip' && ($property == 'border !important' || $property == 'border')) &&
+											!($bg == 'background-attachment' && ($property == 'scroll !important' || $property =='scroll')) &&
+											!($bg == 'background-size' && ($property == 'auto !important' || $property == 'auto')) &&
+											!($bg == 'background-repeat' && ($property == 'repeat !important' || $property == 'repeat'))) {
+
+											if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
+												$property = $this->none;
+											}
+											$this->media[$import][$tag][$bg] = $property;
+										}
+									}
+								} else {
+/* skip default properties */
+									if (!($key == 'background-position' &&
 										($value == 'top left' || $value == 'left top' || $value == '0px 0px' || $value == '0 0' || $value == '0% 0%' || $value == 'top' || $value == 'left'))) {
 
-									$this->media[$import][$tag][$key] = $value;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-/* fill images arrays with possible dimensions */
-		foreach ($this->css->css as $import => $token) {
-			foreach ($token as $tags => $rule) {
-				foreach ($rule as $property => $value) {
-					if ($property == 'width' || $property == 'height' || preg_match("/padding/i", $property)) {
-/* try to add all possible dimensial properties for selected tags with background */
-						foreach ($this->media as $imp => $images) {
-							foreach ($images as $key => $image) {
-								$fixed_key = $this->fix_css3_selectors($key);
-/* remove pseudo-selectors, i.e. :focus, :hover, etc*/
-								if (in_array($key, split(",", $tags)) || in_array($fixed_key, split(",", $tags))) {
-									if (preg_match("/padding/i", $property)) {
-										if ($property == 'padding') {
-											$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
-										} else {
-											$padding = array(
-												$property => $value
-											);
-										}
-										foreach ($padding as $prop => $val) {
-											$this->media[$imp][$key][$prop] = $val;
-										}
-									} else {
-										$this->media[$imp][$key][$property] = $value;
+										$this->media[$import][$tag][$key] = $value;
 									}
 								}
 							}
 						}
-
 					}
-
 				}
-
 			}
-
-		}
-/* normalize array -- skip items w/o background (none or just color) */
-		foreach ($this->media as $import => $images) {
-
-			foreach ($images as $key => $image) {
-
-				$back = empty($image['background-image']) ? '' : $image['background-image'];
-
-				if (empty($back) || $back == $this->none) {
-/* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
-					$key_fixed = $this->fix_css3_selectors($key);
-					if (!empty($this->media[$import][$key_fixed])) {
-						if (!empty($this->media[$import][$key_fixed]['background-image'])) {
-							$back = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
-							if (empty($image['width']) && !empty($this->media[$import][$key_fixed]['width'])) {
-								$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
-							}
-							if (empty($image['height']) && !empty($this->media[$import][$key_fixed]['height'])) {
-								$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
-							}
-							if (empty($image['background-repeat']) && !empty($this->media[$import][$key_fixed]['background-repeat'])) {
-								$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
-							}
-						}
-					}
-				}
-/* exclude files from ignore list */
-				if (!empty($this->ignore_list) && in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
-					unset($this->media[$import][$key]);
-				}
-
-/* re-check background image existence */
-				if (!empty($back) && $back != $this->none) {
-
-					if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
-						$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
-					}
-					if (!empty($image['background-repeat'])) {
-						$repeat_key = $image['background-repeat'];
-						if ($image['background-repeat'] == 'no-repeat') {
-							if (!empty($image['height']) && !preg_match("/em|%|auto/", $image['height']) &&
-								((!empty($image['background-position']) && $image['background-position'] == '100% 0') ||
-									((!empty($image['background-position']) && preg_match("/right/", $image['background-position'])
-										&& !preg_match("/bottom|center|%|em/", $image['background-position']))))) {
-								$repeat_key = 'no-repeatr';
-							} elseif (!empty($image['width']) && !preg_match("/em|%|auto/", $image['width']) &&
-									((!empty($image['background-position']) && $image['background-position'] == '0 100%') ||
-									((!empty($image['background-position']) && preg_match("/bottom/", $image['background-position'])
-										&& !preg_match("/right|center|%|em/", $image['background-position']))))) {
-								$repeat_key = 'no-repeatb';
-							} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-								if (!empty($image['width']) &&
-										!empty($image['height']) &&
-										!preg_match("/em|%|auto/", $image['height']) &&
-										!preg_match("/em|%|auto/", $image['width'])) {
-									$repeat_key = 'no-repeat';
-								} else {
-									$repeat_key = 'no-repeati';
+/* fill images arrays with possible dimensions */
+			foreach ($this->css->css as $import => $token) {
+				foreach ($token as $tags => $rule) {
+					foreach ($rule as $property => $value) {
+						if ($property == 'width' || $property == 'height' || preg_match("/padding/i", $property)) {
+/* try to add all possible dimensial properties for selected tags with background */
+							foreach ($this->media as $imp => $images) {
+								foreach ($images as $key => $image) {
+									$fixed_key = $this->fix_css3_selectors($key);
+/* remove pseudo-selectors, i.e. :focus, :hover, etc*/
+									if (in_array($key, split(",", $tags)) || in_array($fixed_key, split(",", $tags))) {
+										if (preg_match("/padding/i", $property)) {
+											if ($property == 'padding') {
+												$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
+											} else {
+												$padding = array(
+													$property => $value
+												);
+											}
+											foreach ($padding as $prop => $val) {
+												$this->media[$imp][$key][$prop] = $val;
+											}
+										} else {
+											$this->media[$imp][$key][$property] = $value;
+										}
+									}
 								}
-							} else {
-								$repeat_key = 'repeat';
 							}
 						}
-						if ($image['background-repeat'] == 'repeat-x') {
-							if ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
-								$repeat_key = 'repeat-xl';
-							} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-								$repeat_key = 'repeat';
+					}
+				}
+			}
+/* normalize array -- skip items w/o background (none or just color) */
+			foreach ($this->media as $import => $images) {
+				foreach ($images as $key => $image) {
+					$back = empty($image['background-image']) ? '' : $image['background-image'];
+					if (empty($back) || $back == $this->none) {
+/* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
+						$key_fixed = $this->fix_css3_selectors($key);
+						if (!empty($this->media[$import][$key_fixed])) {
+							if (!empty($this->media[$import][$key_fixed]['background-image'])) {
+								$back = $this->media[$import][$key]['background-image'] = $this->media[$import][$key_fixed]['background-image'];
+								if (empty($image['width']) && !empty($this->media[$import][$key_fixed]['width'])) {
+									$image['width'] = $this->media[$import][$key]['width'] = $this->media[$import][$key_fixed]['width'];
+								}
+								if (empty($image['height']) && !empty($this->media[$import][$key_fixed]['height'])) {
+									$image['height'] = $this->media[$import][$key]['height'] = $this->media[$import][$key_fixed]['height'];
+								}
+								if (empty($image['background-repeat']) && !empty($this->media[$import][$key_fixed]['background-repeat'])) {
+									$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = $this->media[$import][$key_fixed]['background-repeat'];
+								}
 							}
 						}
-						if ($image['background-repeat'] == 'repeat-y') {
-							if ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
-								$repeat_key = 'repeat-yl';
-							} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-								$repeat_key = 'repeat';
-							}
-						}
-						if ($repeat_key == 'repeat') {
-							unset($this->media[$import][$key]);
-						} else {
-							$this->media[$import][$key]['background-repeat'] = $repeat_key;
-							if (empty($this->css_images[$repeat_key])) {
-								$this->css_images[$repeat_key] = 0;
-							}
-/* count different images with repeating options */
-							$this->css_images[$repeat_key]++;
-/* count selectors for every images -- to handle initial CSS Sprites */
-							if (empty($this->css_images[$back])) {
-								$this->css_images[$back] = array();
-							}
-							$this->css_images[$back][empty($image['background-position']) ? '' : $image['background-position']] = 1;
-						}
-/* disable images w/o background-repeat */
-					} else {
+					}
+/* exclude files from ignore list */
+					if (!empty($this->ignore_list) && in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
 						unset($this->media[$import][$key]);
 					}
-				}
-
-			}
-/* merge params to form unique string */
-			$sorted_selectors = $this->media[$import];
-/* rearrage by keys -- alphabetically */
-			ksort($sorted_selectors);
-			foreach ($sorted_selectors as $image) {
-				$this->timestamp .= (empty($image['background-image']) ? '' :  $image['background-image']) . (empty($image['width']) ? '' :  $image['width']) . (empty($image['height']) ? '' : $image['height']) . (empty($image['background-repeat']) ? '' :  $image['background-repeat']);
-			}
-			unset($sorted_selectors);
-		}
-/* convert timestamp to md5 hash */
-		$this->timestamp = substr(md5($this->timestamp), 0, 10);
-/* combine dimensional CSS Sprites */
-		foreach ($this->media as $import => $images) {
-
-			foreach ($images as $key => $image) {
-/* no initial CSS Sprites and valid background-image */
-				if (!empty($image['background-image']) && $image['background-image'] != $this->none && count($this->css_images[$image['background-image']]) < 2) {
-					$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->timestamp .'.png';
-					$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
-					list($width, $height) = $this->get_image();
-/* restrict images by ~64x64 if memory is limited */
-					if ($width && $height && (!$this->memory_limited || $width * $height < 4097)) {
-/* fix background-position & repeat for fixed images */
-						if (!empty($image['width']) && $width == $image['width'] && !empty($image['height']) && $height == $image['height']) {
+/* re-check background image existence */
+					if (!empty($back) && $back != $this->none) {
+						if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
 							$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
-/* but try to save existing position */
-							if (empty($image['background-position'])) {
-								$image['background-position'] = $this->media[$import][$key]['background-position'] = '0 0';
+						}
+						if (!empty($image['background-repeat'])) {
+							$repeat_key = $image['background-repeat'];
+							if ($image['background-repeat'] == 'no-repeat') {
+								if (!empty($image['height']) && !preg_match("/em|%|auto/", $image['height']) &&
+									((!empty($image['background-position']) && $image['background-position'] == '100% 0') ||
+										((!empty($image['background-position']) && preg_match("/right/", $image['background-position'])
+											&& !preg_match("/bottom|center|%|em/", $image['background-position']))))) {
+									$repeat_key = 'no-repeatr';
+								} elseif (!empty($image['width']) && !preg_match("/em|%|auto/", $image['width']) &&
+										((!empty($image['background-position']) && $image['background-position'] == '0 100%') ||
+										((!empty($image['background-position']) && preg_match("/bottom/", $image['background-position'])
+											&& !preg_match("/right|center|%|em/", $image['background-position']))))) {
+									$repeat_key = 'no-repeatb';
+								} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+									if (!empty($image['width']) &&
+											!empty($image['height']) &&
+											!preg_match("/em|%|auto/", $image['height']) &&
+											!preg_match("/em|%|auto/", $image['width'])) {
+										$repeat_key = 'no-repeat';
+									} else {
+										$repeat_key = 'no-repeati';
+									}
+								} else {
+									$repeat_key = 'repeat';
+								}
 							}
+							if ($image['background-repeat'] == 'repeat-x') {
+								if ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
+									$repeat_key = 'repeat-xl';
+								} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+									$repeat_key = 'repeat';
+								}
+							}
+							if ($image['background-repeat'] == 'repeat-y') {
+								if ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
+									$repeat_key = 'repeat-yl';
+								} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+									$repeat_key = 'repeat';
+								}
+							}
+							if ($repeat_key == 'repeat') {
+								unset($this->media[$import][$key]);
+							} else {
+								$this->media[$import][$key]['background-repeat'] = $repeat_key;
+								if (empty($this->css_images[$repeat_key])) {
+									$this->css_images[$repeat_key] = 0;
+								}
+/* count different images with repeating options */
+								$this->css_images[$repeat_key]++;
+/* count selectors for every images -- to handle initial CSS Sprites */
+								if (empty($this->css_images[$back])) {
+									$this->css_images[$back] = array();
+								}
+								$this->css_images[$back][empty($image['background-position']) ? '' : $image['background-position']] = 1;
+							}
+/* disable images w/o background-repeat */
+						} else {
+							unset($this->media[$import][$key]);
 						}
-						if (empty($this->css_images[$this->sprite])) {
-							$this->css_images[$this->sprite] = array();
-							$this->css_images[$this->sprite]['x'] = 0;
-							$this->css_images[$this->sprite]['y'] = 0;
-							$this->css_images[$this->sprite]['images'] = array();
-						}
+					}
+				}
+/* merge params to form unique string */
+				$sorted_selectors = $this->media[$import];
+/* rearrage by keys -- alphabetically */
+				ksort($sorted_selectors);
+				foreach ($sorted_selectors as $image) {
+					$this->timestamp .= (empty($image['background-image']) ? '' :  $image['background-image']) . (empty($image['width']) ? '' :  $image['width']) . (empty($image['height']) ? '' : $image['height']) . (empty($image['background-repeat']) ? '' :  $image['background-repeat']);
+				}
+				unset($sorted_selectors);
+			}
+/* convert timestamp to md5 hash */
+			$this->timestamp = substr(md5($this->timestamp), 0, 10);
+/* combine dimensional CSS Sprites */
+			foreach ($this->media as $import => $images) {
+				foreach ($images as $key => $image) {
+/* no initial CSS Sprites and valid background-image */
+					if (!empty($image['background-image']) && $image['background-image'] != $this->none && count($this->css_images[$image['background-image']]) < 2) {
+						$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->timestamp .'.png';
+						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						list($width, $height) = $this->get_image();
+/* restrict images by ~64x64 if memory is limited */
+						if ($width && $height && (!$this->memory_limited || $width * $height < 4097)) {
+/* fix background-position & repeat for fixed images */
+							if (!empty($image['width']) && $width == $image['width'] && !empty($image['height']) && $height == $image['height']) {
+								$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
+/* but try to save existing position */
+								if (empty($image['background-position'])) {
+									$image['background-position'] = $this->media[$import][$key]['background-position'] = '0 0';
+								}
+							}
+							if (empty($this->css_images[$this->sprite])) {
+								$this->css_images[$this->sprite] = array();
+								$this->css_images[$this->sprite]['x'] = 0;
+								$this->css_images[$this->sprite]['y'] = 0;
+								$this->css_images[$this->sprite]['images'] = array();
+							}
 /* fast fix for recalculating Sprites from PNG to JPEG -- don't touch files themselves */
-						if (preg_match("/\.jpe?g/i", $this->css_image) && $this->truecolor_in_jpeg) {
-							$this->css_images[$this->sprite]['jpeg'] = 1;
-						}
-						$shift_x = $shift_y = $top = $left = 0;
-						$position = empty($image['background-position']) ? array(0, 0) : split(" ", $image['background-position'] . " ");
+							if (preg_match("/\.jpe?g/i", $this->css_image) && $this->truecolor_in_jpeg) {
+								$this->css_images[$this->sprite]['jpeg'] = 1;
+							}
+							$shift_x = $shift_y = $top = $left = 0;
+							$position = empty($image['background-position']) ? array(0, 0) : split(" ", $image['background-position'] . " ");
 /* fix image dimensions with paddings */
-						$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
-							+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
-							+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
-						$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
-							+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
-							+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
-						switch ($image['background-repeat']) {
+							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
+								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
+								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
+							$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
+								+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
+								+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
+							switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
-							case 'repeat-x':
+								case 'repeat-x':
 /* repeat-x case w/o dimensions - can be added safely only to the end of Sprite */
-							case 'repeat-xl':
-								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+								case 'repeat-xl':
+									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
 /* shift for bottom left corner of the object */
-								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
-								break;
+									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
+									break;
 /* repeat-y case */
-							case 'repeat-y':
+								case 'repeat-y':
 /* repeat-y case w/o dimensions - can be added safely only to the end of Sprite */
-							case 'repeat-yl':
-								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
-								break;
+								case 'repeat-yl':
+									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
+									$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
+									break;
 /* no-repeat case w/ dimensions can be placed all together */
-							case 'no-repeat':
-								$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
-								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
+								case 'no-repeat':
+									$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
+									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 /* cut from initial image area marked with CSS rules */
-								$width = $image['width'] < $width ? $image['width'] : $width;
-								$height = $image['height'] < $height ? $image['height'] : $height;
+									$width = $image['width'] < $width ? $image['width'] : $width;
+									$height = $image['height'] < $height ? $image['height'] : $height;
 /* no-repeat case w/o dimensions -- icons -- should be placed like this:
 	*
    *
   *
  *
 */
-							case 'no-repeati':
+								case 'no-repeati':
 /* don't need any shift for icons -- they have enough room for any object */
-								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
-								break;
+									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
+									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+									break;
 /* no-repeat case with 100% 0 */
-							case 'no-repeatr':
-								$left = 'right';
-								$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
-								$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
-								break;
+								case 'no-repeatr':
+									$left = 'right';
+									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
+									break;
 /* no-repeat case with 0 100% */
-							case 'no-repeatb':
-								$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-								$top = 'bottom';
-								$shift_y = $image['width'] > $height ? $image['width'] - $height : 0;
-								break;
-							}
+								case 'no-repeatb':
+									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
+									$top = 'bottom';
+									$shift_y = $image['width'] > $height ? $image['width'] - $height : 0;
+									break;
+								}
 /* add image to CSS Sprite to merge. Overall picture looks like this:
 __________________
 |    left         |   <- outer borders belong to
@@ -340,29 +332,31 @@ __________________
 |            shift|
 |_________________|
 */
-						$this->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
+							$this->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
+						}
 					}
 				}
 			}
-
-		}
 /* merge simple cases: repeat-x/y */
-		$this->sprite = 'webox.'. $this->timestamp .'.png';
-		$this->merge_sprites(1);
-		$this->sprite = 'weboy.'. $this->timestamp .'.png';
-		$this->merge_sprites(2);
+			$this->sprite = 'webox.'. $this->timestamp .'.png';
+			$this->merge_sprites(1);
+			$this->sprite = 'weboy.'. $this->timestamp .'.png';
+			$this->merge_sprites(2);
 /* handle some specific cases -- 0 100% and 100% 0 images */
-		$this->sprite = 'webor.'. $this->timestamp .'.png';
-		$this->merge_sprites(5);
-		$this->sprite = 'webob.'. $this->timestamp .'.png';
-		$this->merge_sprites(6);
+			$this->sprite = 'webor.'. $this->timestamp .'.png';
+			$this->merge_sprites(5);
+			$this->sprite = 'webob.'. $this->timestamp .'.png';
+			$this->merge_sprites(6);
+		}
 /* create first part of CSS Sprites */
 		if ($this->partly) {
 			return '';
 		} else {
+			if (empty($this->no_sprites)) {
 /* only then try to combine all possible images into the last one */
-			$this->sprite = 'webo.'. $this->timestamp .'.png';
-			$this->merge_sprites(4);
+				$this->sprite = 'webo.'. $this->timestamp .'.png';
+				$this->merge_sprites(4);
+			}
 /* finally convert CSS images to data:URI */
 			if (!empty($this->data_uris)) {
 				$this->css_to_data_uri();

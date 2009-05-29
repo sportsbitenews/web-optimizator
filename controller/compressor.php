@@ -649,7 +649,7 @@ class web_optimizer {
 					$contents .=  $file_contents . $delimiter;
 				}
 			}
-			if ($options['css_sprites']) {
+			if ($options['css_sprites'] || $options['data_uris']) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
 				$options['data_uris'] = 0;
@@ -673,15 +673,6 @@ class web_optimizer {
 /* we created all Sprites -- ready for data:URI */
 					$options['data_uris'] = $remembered_data_uri;
 					$contents = $this->convert_css_sprites($contents, $options);
-				}
-			} elseif ($options['data_uris']) {
-				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 70) {
-/* start new PHP process to create data:URI */
-					header('Location: optimizing.php?web_optimizer_stage=70&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
-					die();
-				} else {
-/* CSS background images to data URIs (after base64 strings have been prepared) */
-					$contents = $this->convert_css_bgr_to_data($contents, $options);
 				}
 			}
 			$source = $this->_remove_scripts($external_array, $source);
@@ -1323,85 +1314,10 @@ class web_optimizer {
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris'],
-			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1)
+			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
+			'no_css_sprites' => !$options['css_sprites']
 		));
 		return $css_sprites->process();
-	}
-
-	/**
-	* Takes CSS background images and convert to data URIs
-	* very slow on large amount of data
-	**/
-	function convert_css_bgr_to_data($content, $path) {
-
-		preg_match_all( "/url\((.*?)\)/is",$content,$matches);
-		if(count($matches[1]) > 0) {
-/* Unique */
-			$matches[1] = array_unique($matches[1]);
-			foreach($matches[1] AS $key=>$file) {
-				$original_file = trim($file);
-				if (preg_match("/^webo[ixy\.]/", $file)) {
-					$file_path = $path['cachedir'] . '/' . $file;
-				} else {
-/* Get full path */
-					$file_path = $this->view->ensure_trailing_slash($this->view->paths['full']['document_root']) . $this->view->prevent_leading_slash($original_file);
-					$file_path = trim($file_path);
-				}
-				if (is_file($file_path)) {
-/* Get mime type */
-					$mime = $this->get_mimetype($file_path);
-/* Get file contents */
-					$contents = @file_get_contents($file_path);
-/* Base64 encode contents */
-					$base64 = base64_encode($contents);
-/* Set new data uri */
-					$data_uri = ('data:' . $mime . ';base64,' . $base64);
-/* Find the element this refers to */
-					$regex = "([a-z0-9\s\.\:#_\-@,]+)\{([^\}]+?" . str_replace("/","\/",str_replace(".","\.",$original_file)) ."[^\}]+?)\}";
-					preg_match_all("/" . $regex . "/is", $content, $elements);
-/* IE only conditional style */
-					if(is_array($elements[1])) {
-						foreach($elements[1] AS $selector) {
-/**
-* we need to use html * selector -- for IE6- browsers
-* and html+* selector -- for IE7 browser
-* as far as IE8 supports data:URI -- it's actual only for this old stuff
-* unfortunately both selectors don't work with comma, only as different chunks
-**/
-							$selectors = explode(',', $selector);
-							$ie6_selector = implode(',* html ', $selectors);
-							$ie7_selector = implode(',*+html ', $selectors);
-							$this->ie_only_css[] = "* html " . $ie6_selector . "{background-image:url(" . $original_file . ")}";
-							$this->ie_only_css[] = "*+html " . $ie7_selector . "{background-image:url(" . $original_file . ")}";
-/**
-* of course we can try to use mhtml: protocol for IE7- but there is an issue with IE7@Vista that doens't support it correctly
-* so due to compatibility issues only external images, no embedded ones
-**/
-						}
-					}
-/* Replace */
-					$content = str_replace($original_file, $data_uri, $content);
-				}
-			}
-
-		}
-		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage += 5);
-		}
-/* Add IE only css */
-		if(!empty($this->ie_only_css)) {
-			if (is_array($this->ie_only_css)) {
-				$this->ie_only_css_rules = implode("", $this->ie_only_css);
-/* add to previous @media */
-				if (substr($content, strlen($content) - 2, 2) == '}}') {
-					$content = preg_replace("/\}\}$/", "}". $this->ie_only_css_rules ."}", $content);
-				} else {
-					$content .= $this->ie_only_css_rules;
-				}
-			}
-		}
-		return $content;
-
 	}
 
 	/**

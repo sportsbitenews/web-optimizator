@@ -85,7 +85,7 @@ $compress_options['css_sprites']['no_ie6'] = "0";
 ## Restrict large Sprites creation on PHP memory limit
 $compress_options['css_sprites']['memory_limited'] = "1";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
-$compress_options['css_sprites']['ignore_list'] = "";
+$compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Parallel downloads
 $compress_options['parallel']['enabled'] = "1";
 ## List of hosts for parallel downloads
