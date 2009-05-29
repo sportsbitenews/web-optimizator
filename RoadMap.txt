@@ -51,7 +51,7 @@
 +c) Simple CSS minifier (if no CSS Sprites)
 +d) YUI Compressor (if java exists)
 +e) Packer for JS files
- f) Cached gzip for HTML / CSS / JS files
+?f) Cached gzip for HTML / CSS / JS files
 
 6. Including
 +a) Manual including 2 strings
@@ -74,7 +74,7 @@
 
 9. Look and feel
 +a) Design
- b) Make up / clientside development -- arestov is responsible
+ b) Make up / clientside development -- ? is responsible
 
 10. Other languages porting
  a) Perl
@@ -116,4 +116,4 @@
  c) German
 +d) Hebrew
 +e) Ukranian
- f) ?\\
+ f) ?

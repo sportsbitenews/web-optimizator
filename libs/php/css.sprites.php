@@ -839,12 +839,13 @@ __________________
 							$final_x += $this->css_images[$this->sprite]['addon_x'];
 							$final_y += $this->css_images[$this->sprite]['addon_y'];
 						}
-/* try to detect duplicates in this Sprite*/
+/* try to detect duplicates in this Sprite */
 						$image_used = 0;
 						foreach ($this->css_images[$this->sprite]['images'] as $image) {
 							if (!empty($image[7]) && !empty($image[8]) && !empty($this->media[$image[7]][$image[8]]) &&
 								!empty($this->media[$image[7]][$image[8]]['background']) &&
-								!empty($image[0]) && $image[0] == $filename) {
+								!empty($image[0]) && $image[0] == $filename &&
+								!empty($this->css->css[$image[7]][$image[8]]['background'])) {
 								$image_used = 1;
 								$background = $this->css->css[$image[7]][$image[8]]['background'];
 							}
