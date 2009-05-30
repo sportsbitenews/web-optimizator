@@ -1,3 +1,4 @@
+cache/
 controller/admin.php
 controller/compressor.php
 images/loadbar.png

@@ -20,6 +20,7 @@
  //_WEBO_html_cache_flush_only
  //_WEBO_html_cache_flush_size
  //_WEBO_external_scripts_css
+ //_WEBO_css_sprites_dimensions_limited
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
@@ -142,7 +143,7 @@ define('_WEBO_unobtrusive_on', 'Включити &laquo;ненав\'язливий&raquo; JavaScript
 define('_WEBO_external_scripts_on', 'Включити об\'єднання зовнішніх файлів');
 define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання файли');
 define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
-define('_WEBO_dont_check_file_mtime', 'Не перевіряти час зміни файлів');
+define('_WEBO_dont_check_file_mtime_on', 'Не перевіряти час зміни файлів');
 define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');
 define('_WEBO_minify_with_yui', 'Мінімізувати за допомогою YUI Compressor');

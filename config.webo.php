@@ -84,6 +84,8 @@ $compress_options['css_sprites']['extra_space'] = "1";
 $compress_options['css_sprites']['no_ie6'] = "0";
 ## Restrict large Sprites creation on PHP memory limit
 $compress_options['css_sprites']['memory_limited'] = "1";
+## Restrict large Sprites creation on GDlib failure, in pixels
+$compress_options['css_sprites']['dimensions_limited'] = "900";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
 $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Parallel downloads

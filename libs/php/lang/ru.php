@@ -137,7 +137,7 @@ define('_WEBO_external_scripts_on', 'Включить объединение внешних JavaScript-фай
 define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
-define('_WEBO_dont_check_file_mtime', 'Не проверять время изменения файлов');
+define('_WEBO_dont_check_file_mtime_on', 'Не проверять время изменения файлов');
 define('_WEBO_minify_with_jsmin', 'Минимизировать с помощью JSMin');
 define('_WEBO_minify_with_packer', 'Минимизировать с помощью Packer');
 define('_WEBO_minify_with_yui', 'Минимизировать с помощью YUI Compressor');
@@ -168,6 +168,7 @@ define('_WEBO_css_sprites_aggressive', '&laquo;Агрессивный&raquo; режим создания
 define('_WEBO_css_sprites_extra_space', 'Добавить свободное место в CSS Sprites');
 define('_WEBO_css_sprites_no_ie6', 'Исключить IE6 (через хаки) из процесса создания CSS Sprites');
 define('_WEBO_css_sprites_memory_limited', 'Ограничить использование памяти для PHP-процесса');
+define('_WEBO_css_sprites_dimensions_limited', 'Исключить изображения, если их линейный размер больше заданного');
 define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites файлы');
 define('_WEBO_parallel_enabled', 'Включить множественные хосты');
 define('_WEBO_parallel_allowed_list', 'Доступные хосты');

@@ -38,6 +38,8 @@ class css_sprites {
 		$this->no_ie6 = $options['no_ie6'];
 /* if there is a memory limit we need to restrict operating area for images */
 		$this->memory_limited = $options['memory_limited'];
+/* if there is initial images dimensional limit */
+		$this->dimensions_limited = $options['dimensions_limited'];
 /* only compress CSS and convert images to data:URI */
 		$this->no_sprites = $options['no_css_sprites'];
 /* convert CSS code to hash */
@@ -247,7 +249,7 @@ class css_sprites {
 						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
 						list($width, $height) = $this->get_image();
 /* restrict images by ~64x64 if memory is limited */
-						if ($width && $height && (!$this->memory_limited || $width * $height < 4097)) {
+						if ($width && $height && (!$this->memory_limited || $width * $height < 4097) && (empty($this->dimensions_limited) || ($width < $this->dimensions_limited && $height < $this->dimensions_limited))) {
 /* fix background-position & repeat for fixed images */
 							if (!empty($image['width']) && $width == $image['width'] && !empty($image['height']) && $height == $image['height']) {
 								$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';

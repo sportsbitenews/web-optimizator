@@ -121,6 +121,7 @@ class web_optimizer {
 				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"no_ie6" => $this->options['css_sprites']['no_ie6'],
 				"memory_limited" => $this->options['css_sprites']['memory_limited'],
+				"dimensions_limited" => $this->options['css_sprites']['dimensions_limited'],
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['css'],
@@ -277,6 +278,7 @@ class web_optimizer {
 				'aggressive' => false,
 				'no_ie6' => false,
 				'memory_limited' => false,
+				'dimensions_limited' => false,
 				'css_sprites_extra_space' => false,
 				'data_uris' => false,
 				'unobtrusive' => $options['unobtrusive'],
@@ -318,6 +320,7 @@ class web_optimizer {
 				'aggressive' => $options['aggressive'],
 				'no_ie6' => $options['no_ie6'],
 				'memory_limited' => $options['memory_limited'],
+				'dimensions_limited' => $options['dimensions_limited'],
 				'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 				'self_close' => true,
 				'gzip' => $options['gzip'],
@@ -1315,6 +1318,7 @@ class web_optimizer {
 			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
+			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites']
 		));
 		return $css_sprites->process();
