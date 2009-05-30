@@ -121,7 +121,7 @@ class web_optimizer {
 				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"no_ie6" => $this->options['css_sprites']['no_ie6'],
 				"memory_limited" => $this->options['css_sprites']['memory_limited'],
-				"dimensions_limited" => $this->options['css_sprites']['dimensions_limited'],
+				"dimensions_limited" => round($this->options['css_sprites']['dimensions_limited']),
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"external_scripts" => $this->options['external_scripts']['css'],
@@ -824,6 +824,15 @@ class web_optimizer {
 		$file = '';
 		if (!$inline) {
 			$file = $this->get_file_name($src);
+/* dynamic file */
+			if (preg_match("/\.(php|phtml)$/is", $file)) {
+				$dynamic_file = $src;
+/* touch only non-external scripts */
+				if (!strpos($dynamic_file, "://")) {
+					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
+				}
+				$file = $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
+			}
 			if (is_file($file)) {
 				$content = @file_get_contents($file);
 			}
@@ -846,7 +855,7 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = preg_replace("@\@import[^;]+". $src  ."[^;]*;@i", $this->resolve_css_imports($src), $content);
+						$content = preg_replace("@\@import[^;]+" . preg_replace("/\[\]\?\(\)\{\}\./", "\$1", $src)  . "[^;]*;@i", $this->resolve_css_imports($src), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
@@ -985,7 +994,7 @@ class web_optimizer {
 						if (!strpos($dynamic_file, "://")) {
 							$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
 						}
-						$static_file = $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), $value['tag']);
+						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
 						}
@@ -1422,7 +1431,7 @@ class web_optimizer {
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : $_SERVER['REQUEST_URI'];
 /* replace / with - */
-		$uri = preg_replace("!/!", "#", $uri);
+		$uri = preg_replace("!/!", "+", $uri);
 /* replace ?, & with + */
 		$uri = preg_replace("!\?|&!", "+", $uri);
 		return $uri;
@@ -1433,16 +1442,18 @@ class web_optimizer {
 	 *
 	 **/
 	function get_remote_file ($file, $tag = "link") {
-		if (function_exists('curl_init')) {
+		$current_directory = @getcwd();
+		if (function_exists('curl_init')) {	
 			if ($tag == 'link') {
 				chdir($this->options['css']['cachedir']);
 			} else {
 				chdir($this->options['javascript']['cachedir']);
 			}
-			$return_filename = substr($this->convert_request_uri($file), 7, 250);
+			$return_filename = 'wo' . md5($file);
 /* prevent download more than 1 time a day */
 			if (is_file($return_filename)) {
 				if (filemtime($return_filename) + 86400 > time()) {
+					chdir($current_directory);
 					return $return_filename;
 				}
 			}
@@ -1470,9 +1481,11 @@ class web_optimizer {
 						@fclose($fp);
 					}
 				}
+				chdir($current_directory);
 				return $return_filename;
 			}
 		}
+		chdir($current_directory);
 		return false;
 	}
 
