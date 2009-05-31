@@ -249,46 +249,48 @@ class web_optimizer {
 	*
 	**/
 	function javascript($options,$type) {
+		if (!empty($options['minify'])) {
 /* Remove any files in the remove list */
-		$this->do_remove();
+			$this->do_remove();
 /* prepare list of files to process */
-		$script_files = array();
-		foreach ($this->initial_files as $file) {
-			if (!empty($file['tag']) && $file['tag'] == 'script') {
-				$script_files[] = $file;
+			$script_files = array();
+			foreach ($this->initial_files as $file) {
+				if (!empty($file['tag']) && $file['tag'] == 'script') {
+					$script_files[] = $file;
+				}
 			}
+			$this->content = $this->do_compress(
+				array(
+					'cachedir' => $options['cachedir'],
+					'installdir' => $options['installdir'],
+					'tag' => 'script',
+					'type' => 'text/javascript',
+					'ext' => 'js',
+					'src' => 'src',
+					'self_close' => false,
+					'gzip' => $options['gzip'],
+					'minify' => $options['minify'],
+					'minify_with' => $options['minify_with'],
+					'far_future_expires' => $options['far_future_expires'],
+					'far_future_expires_php' => $options['far_future_expires_php'],
+					'header' => $type,
+					'css_sprites' => false,
+					'css_sprites_exclude' => false,
+					'aggressive' => false,
+					'no_ie6' => false,
+					'memory_limited' => false,
+					'dimensions_limited' => false,
+					'css_sprites_extra_space' => false,
+					'data_uris' => false,
+					'unobtrusive' => $options['unobtrusive'],
+					'external_scripts' => $options['external_scripts'],
+					'external_scripts_exclude' => $options['external_scripts_exclude'],
+					'dont_check_file_mtime' => $options['dont_check_file_mtime']
+				),
+				$this->content,
+				$script_files
+			);
 		}
-		$this->content = $this->do_compress(
-			array(
-				'cachedir' => $options['cachedir'],
-				'installdir' => $options['installdir'],
-				'tag' => 'script',
-				'type' => 'text/javascript',
-				'ext' => 'js',
-				'src' => 'src',
-				'self_close' => false,
-				'gzip' => $options['gzip'],
-				'minify' => $options['minify'],
-				'minify_with' => $options['minify_with'],
-				'far_future_expires' => $options['far_future_expires'],
-				'far_future_expires_php' => $options['far_future_expires_php'],
-				'header' => $type,
-				'css_sprites' => false,
-				'css_sprites_exclude' => false,
-				'aggressive' => false,
-				'no_ie6' => false,
-				'memory_limited' => false,
-				'dimensions_limited' => false,
-				'css_sprites_extra_space' => false,
-				'data_uris' => false,
-				'unobtrusive' => $options['unobtrusive'],
-				'external_scripts' => $options['external_scripts'],
-				'external_scripts_exclude' => $options['external_scripts_exclude'],
-				'dont_check_file_mtime' => $options['dont_check_file_mtime']
-			),
-			$this->content,
-			$script_files
-		);
 	}
 
 	/**
@@ -296,48 +298,49 @@ class web_optimizer {
 	*
 	**/
 	function css($options, $type) {
+		if (!empty($options['minify'])) {
 /* prepare list of files to process */
-		$link_files = array();
-		foreach ($this->initial_files as $file) {
-			if (!empty($file['tag']) && $file['tag'] == 'link') {
-				$link_files[] = $file;
+			$link_files = array();
+			foreach ($this->initial_files as $file) {
+				if (!empty($file['tag']) && $file['tag'] == 'link') {
+					$link_files[] = $file;
+				}
 			}
-		}
 /* Compress separately for each media type*/
-		$this->content = $this->do_compress(
-			array(
-				'cachedir' => $options['cachedir'],
-				'installdir' => $options['installdir'],
-				'tag' => 'link',
-				'type' => 'text/css',
-				'ext' => 'css',
-				'src' => 'href',
-				'rel' => 'stylesheet',
-				'data_uris' => $options['data_uris'],
-				'css_sprites' => $options['css_sprites'],
-				'css_sprites_exclude' => $options['css_sprites_exclude'],
-				'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
-				'aggressive' => $options['aggressive'],
-				'no_ie6' => $options['no_ie6'],
-				'memory_limited' => $options['memory_limited'],
-				'dimensions_limited' => $options['dimensions_limited'],
-				'css_sprites_extra_space' => $options['css_sprites_extra_space'],
-				'self_close' => true,
-				'gzip' => $options['gzip'],
-				'minify' => $options['minify'],
-				'minify_with' => $options['minify_with'],
-				'far_future_expires' => $options['far_future_expires'],
-				'far_future_expires_php' => $options['far_future_expires_php'],
-				'header' => $type,
-				'unobtrusive' => $options['unobtrusive'],
-				'external_scripts' => $options['external_scripts'],
-				'external_scripts_exclude' => $options['external_scripts_exclude'],
-				'dont_check_file_mtime' => $options['dont_check_file_mtime']
-			),
-			$this->content,
-			$link_files
-		);
-
+			$this->content = $this->do_compress(
+				array(
+					'cachedir' => $options['cachedir'],
+					'installdir' => $options['installdir'],
+					'tag' => 'link',
+					'type' => 'text/css',
+					'ext' => 'css',
+					'src' => 'href',
+					'rel' => 'stylesheet',
+					'data_uris' => $options['data_uris'],
+					'css_sprites' => $options['css_sprites'],
+					'css_sprites_exclude' => $options['css_sprites_exclude'],
+					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
+					'aggressive' => $options['aggressive'],
+					'no_ie6' => $options['no_ie6'],
+					'memory_limited' => $options['memory_limited'],
+					'dimensions_limited' => $options['dimensions_limited'],
+					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
+					'self_close' => true,
+					'gzip' => $options['gzip'],
+					'minify' => $options['minify'],
+					'minify_with' => $options['minify_with'],
+					'far_future_expires' => $options['far_future_expires'],
+					'far_future_expires_php' => $options['far_future_expires_php'],
+					'header' => $type,
+					'unobtrusive' => $options['unobtrusive'],
+					'external_scripts' => $options['external_scripts'],
+					'external_scripts_exclude' => $options['external_scripts_exclude'],
+					'dont_check_file_mtime' => $options['dont_check_file_mtime']
+				),
+				$this->content,
+				$link_files
+			);
+		}
 	}
 
 	/**
@@ -831,7 +834,7 @@ class web_optimizer {
 				if (!strpos($dynamic_file, "://")) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
 				}
-				$file = $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
+				$file = $this->options['css']['cachedir'] . '/' . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
 			}
 			if (is_file($file)) {
 				$content = @file_get_contents($file);
@@ -840,7 +843,7 @@ class web_optimizer {
 			$content = $src;
 		}
 /* remove BOM */
-		$content = preg_replace("/﻿/", "", $content);
+		$content = preg_replace("/&amp;/", "&", preg_replace("/﻿/", "", $content));
 		if (is_file($file) || $inline) {
 /* new RegExp from xandrx */
 			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
@@ -855,7 +858,7 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = preg_replace("@\@import[^;]+" . preg_replace("/\[\]\?\(\)\{\}\./", "\$1", $src)  . "[^;]*;@i", $this->resolve_css_imports($src), $content);
+						$content = str_replace($import[0], $this->resolve_css_imports($src), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
@@ -873,68 +876,72 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		if (!empty($this->head)) {
+			if (!empty($this->options['javascript']['minify'])) {
 /* find all scripts from head */
-			$regex = "!<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)([^>]*)>(.*?</script>)!is";
-			preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
-			if (!empty($matches)) {
-				foreach($matches as $match) {
-					$file = array();
-					$file['tag'] = 'script';
-					$file['part'] = 'head';
-					$file['source'] = $match[0];
-					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
-					$file['comment'] = '';
-					$file['file'] = '';
-					preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
-					if(is_array($variants)) {
-						foreach($variants AS $variant_type) {
-							$variant_type[1] = strtolower($variant_type[1]);
-							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
-							switch ($variant_type[1]) {
-								case "src":
-									$file['file'] = trim($this->strip_querystring($variant_type[2]));
-									$file['file_raw'] = $variant_type[2];
-									break;
-								default:
-									$file[$variant_type[1]] = $variant_type[2];
-									break;
+				$regex = "!<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)([^>]*)>(.*?</script>)!is";
+				preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				if (!empty($matches)) {
+					foreach($matches as $match) {
+						$file = array();
+						$file['tag'] = 'script';
+						$file['part'] = 'head';
+						$file['source'] = $match[0];
+						$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
+						$file['comment'] = '';
+						$file['file'] = '';
+						preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
+						if(is_array($variants)) {
+							foreach($variants AS $variant_type) {
+								$variant_type[1] = strtolower($variant_type[1]);
+								$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+								switch ($variant_type[1]) {
+									case "src":
+										$file['file'] = trim($this->strip_querystring($variant_type[2]));
+										$file['file_raw'] = $variant_type[2];
+										break;
+									default:
+										$file[$variant_type[1]] = $variant_type[2];
+										break;
+								}
 							}
 						}
+						$this->initial_files[] = $file;
 					}
-					$this->initial_files[] = $file;
 				}
 			}
+			if (!empty($this->options['css']['minify'])) {
 /* find all CSS links from head and inine styles */
-			$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)([^>]*)>|<style\\s+type\\s*=\\s*(\"text/css\"|'text/css'|text/css)([^>]*)>(.*?)</style>)!is";
-			preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
-			if (!empty($matches)) {
-				foreach($matches as $match) {
-					$file = array();
-					$file['tag'] = 'link';
-					$file['part'] = 'head';
-					$file['source'] = $match[0];
-					$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
-					$file['comment'] = '';
-					preg_match_all("@(type|rel|media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
-					if(is_array($variants)) {
-						foreach($variants AS $variant_type) {
-							$variant_type[1] = strtolower($variant_type[1]);
-							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
-							switch ($variant_type[1]) {
-								case "href":
-									$file['file'] = trim($this->strip_querystring($variant_type[2]));
-									$file['file_raw'] = $variant_type[2];
-									break;
-								default:
+				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)([^>]*)>|<style\\s+type\\s*=\\s*(\"text/css\"|'text/css'|text/css)([^>]*)>(.*?)</style>)!is";
+				preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				if (!empty($matches)) {
+					foreach($matches as $match) {
+						$file = array();
+						$file['tag'] = 'link';
+						$file['part'] = 'head';
+						$file['source'] = $match[0];
+						$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
+						$file['comment'] = '';
+						preg_match_all("@(type|rel|media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
+						if(is_array($variants)) {
+							foreach($variants AS $variant_type) {
+								$variant_type[1] = strtolower($variant_type[1]);
+								$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+								switch ($variant_type[1]) {
+									case "href":
+										$file['file'] = trim($this->strip_querystring($variant_type[2]));
+										$file['file_raw'] = $variant_type[2];
+										break;
+									default:
 /* skip media="all" to prevent Safari bug with @media all{} */
-									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all/i", $variant_type[2]))) {
-										$file[$variant_type[1]] = $variant_type[2];
-									}
-									break;
+										if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all/i", $variant_type[2]))) {
+											$file[$variant_type[1]] = $variant_type[2];
+										}
+										break;
+								}
 							}
 						}
+						$this->initial_files[] = $file;
 					}
-					$this->initial_files[] = $file;
 				}
 			}
 		}
@@ -943,7 +950,7 @@ class web_optimizer {
 /* Remove empty sources and any externally linked files */
 		foreach($this->initial_files AS $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-			if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && !$this->options['javascript']['external_scripts'] || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
+			if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && ((!$this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || (!$this->options['css']['external_scripts'] && $value['tag'] == 'link')) || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
 				unset($this->initial_files[$key]);
 			}
 		}
@@ -996,7 +1003,7 @@ class web_optimizer {
 						}
 						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), $value['tag']);
 						if (is_file($static_file)) {
-							$value['file'] = str_replace($this->view->paths['full']['document_root'], "", $this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . "/" . $static_file;
+							$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
 						}
 					}
 					if ($value['tag'] == 'link') {
@@ -1014,7 +1021,7 @@ class web_optimizer {
 /* don't delete any detected scritps from array -- we need to clean up HTML page from them */
 				if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
-					if ($this->options['javascript']['external_scripts']) {
+					if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
 /* resolve @import from inline styles */
 						if ($value['tag'] == 'link') {
 							$value['content'] = $this->resolve_css_imports($value['content'], true);
