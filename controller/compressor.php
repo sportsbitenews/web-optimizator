@@ -115,6 +115,7 @@ class web_optimizer {
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
+				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
@@ -317,6 +318,7 @@ class web_optimizer {
 					'src' => 'href',
 					'rel' => 'stylesheet',
 					'data_uris' => $options['data_uris'],
+					'image_optimization' => $options['image_optimization'],
 					'css_sprites' => $options['css_sprites'],
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
@@ -1333,6 +1335,7 @@ class web_optimizer {
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris'],
+			'image_optimization' => $options['image_optimization'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites']

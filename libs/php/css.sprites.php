@@ -42,6 +42,8 @@ class css_sprites {
 		$this->dimensions_limited = $options['dimensions_limited'];
 /* only compress CSS and convert images to data:URI */
 		$this->no_sprites = $options['no_css_sprites'];
+/* optimiza all CSS images via smush.it? */
+		$this->image_optimization = $options['image_optimization'];
 /* convert CSS code to hash */
 		$this->css = new csstidy();
 		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
@@ -438,9 +440,15 @@ __________________
 /* data:URI */
 			case 1:
 /* don't create data:URI greater than 32KB -- for IE8 */
-				if (is_file($this->css_image) && @filesize($this->css_image) < 21800) {
+				if (is_file($this->css_image)) {
+/* image optimization */
+					if ($this->image_optimization) {
+						$this->smushit($this->css_image);
+					}
+					if (@filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
-					$this->css_image = 'data:image/' . (strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+						$this->css_image = 'data:image/' . (strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+					}
 				} else {
 					$this->css_image = $image_saved;
 				}
@@ -1011,18 +1019,9 @@ __________________
 							@imagesavealpha($this->sprite_raw, true);
 							@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
 						}
-/* additional optimization via smush.it */
-						$tmp_file = $this->sprite . ".tmp";
-						$this->download_file("http://smush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $this->current_dir) . "/" . $this->sprite, $tmp_file);
-						if (is_file($tmp_file)) {
-							$str = @file_get_contents($tmp_file);
-							if (!preg_match("/['\"]error['\"]/i", $str)) {
-								$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
-								$this->download_file("http://smush.it/" . $optimized, $this->sprite);
-							}
-							@unlink($tmp_file);
-						}
 						@imagedestroy($this->sprite_raw);
+/* additional optimization via smush.it */
+						$this->smushit($this->sprite);
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
 					if ($type < 5 && is_file($this->sprite)) {
@@ -1098,6 +1097,19 @@ __________________
 				curl_close($ch);
 				fclose($fp);
 			}
+		}
+	}
+/* image optimization via smush.it */
+	function smushit ($file) {
+		$tmp_file = $file . ".tmp";
+		$this->download_file("http://smush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
+		if (is_file($tmp_file)) {
+			$str = @file_get_contents($tmp_file);
+			if (!preg_match("/['\"]error['\"]/i", $str)) {
+				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
+				$this->download_file("http://smush.it/" . $optimized, $file);
+			}
+			@unlink($tmp_file);
 		}
 	}
 }

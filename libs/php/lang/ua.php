@@ -21,6 +21,7 @@
  //_WEBO_html_cache_flush_size
  //_WEBO_external_scripts_css
  //_WEBO_css_sprites_dimensions_limited
+ //_WEBO_data_uris_smushit
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

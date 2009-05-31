@@ -163,6 +163,7 @@ define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
 define('_WEBO_cleanup_on', 'Regularly delete old files');
 define('_WEBO_data_uris_on', 'Apply <code>data:URI</code>');
+define('_WEBO_data_uris_smushit', 'Optimize all CSS images via smush.it');
 define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Save truecolor images as JPEG');
 define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprites');
