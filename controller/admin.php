@@ -362,7 +362,7 @@ class admin {
 			$this->input['user']['password'] = $password;
 			$this->input['user']['username'] = $username;
 /* enable auto-rewrite */
-			$this->input['user']['auto_rewrite']['enabled']['on'] = 1;
+			$this->input['user']['auto_rewrite']['enabled'] = 1;
 			$this->input['submit'] = 1;
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
@@ -589,7 +589,7 @@ class admin {
 					if(is_array($option)) {
 						foreach($option as $option_name => $option_value) {
 							if (!empty($this->apache_modules)) {
-								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime'))) {
+								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
 									$option_value = $option_value && in_array($option_name, $this->apache_modules);
 									$this->input['user'][$key][$option_name] = $option_value;
 								}
@@ -813,7 +813,7 @@ ExpiresDefault \"access plus 10 years\"
 			}
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
-			if ($this->input['user']['auto_rewrite']['enabled']['on']) {
+			if (!empty($this->input['user']['auto_rewrite']['enabled'])) {
 /* check for web.optimizer.php existence */
 				$fp = fopen($this->input['user']['webo_cachedir'] . 'web.optimizer.php', 'r');
 				if (!$fp) {
@@ -985,6 +985,12 @@ ExpiresDefault \"access plus 10 years\"
 		if (in_array('mod_setenvif', $apache_modules)) {
 			$this->apache_modules[] = 'mod_setenvif';
 		}
+		if (in_array('mod_mime', $apache_modules)) {
+			$this->apache_modules[] = 'mod_mime';
+		}
+		if (in_array('mod_rewrite', $apache_modules)) {
+			$this->apache_modules[] = 'mod_rewrite';
+		}
 	}
 
 	/**
@@ -1044,7 +1050,7 @@ ExpiresDefault \"access plus 10 years\"
 				@fwrite($fp, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>');
 				@fclose($fp);
 				$this->write_progress(14);
-				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled']['on']);
+				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled']);
 				exit();
 			}
 		}
