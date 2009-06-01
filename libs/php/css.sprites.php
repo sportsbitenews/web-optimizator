@@ -439,15 +439,16 @@ __________________
 		switch ($mode) {
 /* data:URI */
 			case 1:
-/* don't create data:URI greater than 32KB -- for IE8 */
-				if (is_file($this->css_image)) {
+				$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
+/* don't create data:URI greater than 32KB -- for IE8. Thx for htc for ali@ */
+				if (is_file($this->css_image) && $extensions != 'htc') {
 /* image optimization */
 					if ($this->image_optimization) {
 						$this->smushit($this->css_image);
 					}
 					if (@filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
-						$this->css_image = 'data:image/' . (strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)))) . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+						$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 					}
 				} else {
 					$this->css_image = $image_saved;
