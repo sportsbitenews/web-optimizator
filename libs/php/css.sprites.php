@@ -441,7 +441,7 @@ __________________
 			case 1:
 				$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
 /* don't create data:URI greater than 32KB -- for IE8. Thx for htc for ali@ */
-				if (is_file($this->css_image) && $extensions != 'htc') {
+				if (is_file($this->css_image) && $extension != 'htc') {
 /* image optimization */
 					if ($this->image_optimization) {
 						$this->smushit($this->css_image);
