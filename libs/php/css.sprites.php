@@ -443,7 +443,7 @@ __________________
 /* don't create data:URI greater than 32KB -- for IE8. Thx for htc for ali@ */
 				if (is_file($this->css_image) && $extension != 'htc') {
 /* image optimization */
-					if ($this->image_optimization) {
+					if ($this->image_optimization && !strpos($this->css_image, "/webo.")) {
 						$this->smushit($this->css_image);
 					}
 					if (@filesize($this->css_image) < 21800) {
