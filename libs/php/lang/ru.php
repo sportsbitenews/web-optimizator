@@ -133,6 +133,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимизатор может автоматически вне
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).
 									<br/>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.');
 define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
+define('_WEBO_unobtrusive_body', 'Вставить вызов объединенного JavaScript-файла перед <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Включить объединение внешних JavaScript-файлов');
 define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');

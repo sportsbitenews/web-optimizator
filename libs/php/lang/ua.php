@@ -22,6 +22,7 @@
  //_WEBO_external_scripts_css
  //_WEBO_css_sprites_dimensions_limited
  //_WEBO_data_uris_smushit
+ //_WEBO_unobtrusive_body
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

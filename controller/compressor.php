@@ -102,6 +102,7 @@ class web_optimizer {
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
 				"unobtrusive" => $this->options['unobtrusive']['on'],
+				"unobtrusive_body" => $this->options['unobtrusive']['body'],
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
@@ -125,6 +126,7 @@ class web_optimizer {
 				"dimensions_limited" => round($this->options['css_sprites']['dimensions_limited']),
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
+				"unobtrusive_body" => false,
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
@@ -284,6 +286,7 @@ class web_optimizer {
 					'css_sprites_extra_space' => false,
 					'data_uris' => false,
 					'unobtrusive' => $options['unobtrusive'],
+					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
@@ -335,6 +338,7 @@ class web_optimizer {
 					'far_future_expires_php' => $options['far_future_expires_php'],
 					'header' => $type,
 					'unobtrusive' => $options['unobtrusive'],
+					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
@@ -570,6 +574,10 @@ class web_optimizer {
 						. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 				}
 				break;
+/* add JavaScript calls before </body> */
+			case 3:
+				$source = preg_replace("!<\/body>!is", $newfile . "$0", $source);
+				break;
 		}
 		return $source;
 	}
@@ -616,7 +624,7 @@ class web_optimizer {
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0)));
 			if ($this->web_optimizer_stage) {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}

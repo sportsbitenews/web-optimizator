@@ -19,6 +19,8 @@ $compress_options['document_root'] = "";
 $compress_options['js_libraries'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
+## Add JS loader for all libraries right before </body>
+$compress_options['unobtrusive']['body'] = "0";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline styles in head and external CSS files

@@ -134,6 +134,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Web Optimizer can add to your website b
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).
 									<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
+define('_WEBO_unobtrusive_body', 'Include merged JavaScript file before <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
 define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
