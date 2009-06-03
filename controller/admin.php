@@ -219,16 +219,21 @@ class admin {
 	**/	
 	function install_uninstall() {
 		$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-/* PHP-Nuke deletion */
-		if ($cms_version == 'PHP-Nuke') {
-			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
-			$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+/* PHP-Nuke, Bitrix deletion */
+		if ($cms_version == 'PHP-Nuke' || $cms_version == 'Bitrix') {
+			if ($cms_version == 'Bitrix') {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
+			} else {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+			}
 			$mainfile_content = @file_get_contents($mainfile);
 			$footer_content = @file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 				$fp = @fopen($mainfile, "w");
 				if ($fp) {
-/* update main PHP-Nuke file */
+/* update header */
 					@fwrite($fp, preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
 					@fclose($fp);
 					$fp = @fopen($footer, "w");
@@ -237,10 +242,10 @@ class admin {
 						@fwrite($fp, preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
 						@fclose($fp);
 					} else {
-						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/footer.php</code></p>");
+						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $footer . "</code></p>");
 					}
 				} else {
-					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/mainfile.php</code></p>");
+					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $mainfile . "</code></p>");
 				}
 			}
 		} else {
@@ -489,11 +494,6 @@ class admin {
 							'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules),
 							'value' => $this->compress_options['htaccess']
 						),
-						'cleanup' => array(
-							'title' => _WEBO_SPLASH2_CLEANUP,
-							'intro' => _WEBO_SPLASH2_CLEANUP_INFO,
-							'value' => $this->compress_options['cleanup']
-						),
 						'footer' => array(
 							'title' => _WEBO_SPLASH2_FOOTER,
 							'intro' => _WEBO_SPLASH2_FOOTER_INFO,
@@ -676,7 +676,7 @@ mod_gzip_maximum_inmem_size 60000
 mod_gzip_min_http 1000
 mod_gzip_handle_methods GET POST
 mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
-mod_gzip_dechunk Yes";
+mod_gzip_dechunk No";
 							if ($this->input['user']['gzip']['page']) {
 								$content .= "
 mod_gzip_item_include mime ^text/html$
@@ -732,7 +732,7 @@ RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]";
 								}
-								if ($this->input['user']['gzip']['css']) {	
+								if ($this->input['user']['gzip']['javascript']) {	
 									$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
@@ -848,7 +848,7 @@ ExpiresDefault \"access plus 10 years\"
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* remove any old strings regarding Web Optimizer */
-								$mainfile_content = preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+								$mainfile_content = preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
 /* add class declaration */
 								$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
 /* add finish */
@@ -876,6 +876,27 @@ ExpiresDefault \"access plus 10 years\"
 								$auto_rewrite = 1;
 							}
 						}
+/* and for Bitrix */
+					} elseif ($cms_version == 'Bitrix') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
+						$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						$footer_content = @file_get_contents($footer);
+						if (!empty($mainfile_content) && !empty($footer_content)) {
+							$fp = @fopen($mainfile, "w");
+							if ($fp) {
+/* update header */
+								@fwrite($fp, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
+								@fclose($fp);
+								$fp = @fopen($footer, "w");
+								if ($fp) {
+/* update footer */
+									@fwrite($fp, preg_replace("/(echo\s*\\\$r;\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $footer_content)));
+									@fclose($fp);
+									$auto_rewrite = 1;
+								}
+							}
+						}						
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($cms_version, 0, 9) == 'vBulletin') {
@@ -1356,6 +1377,9 @@ require valid-user
 		} elseif (is_file($root . 'Sources/LogInOut.php')) {
 			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'index.php'))));
 			return 'Simple Machines Forum' . (empty($version) ? '' : ' ' . $version);
+/* Bitrix */
+		} elseif (is_dir($root . 'bitrix/')) {
+			return 'Bitrix';
 		}
 		return 'CMS 42';
 	}

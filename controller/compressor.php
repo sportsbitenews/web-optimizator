@@ -493,10 +493,6 @@ class web_optimizer {
 						if(strstr($script,$file)) {
 /* Remove the scripts from the source if they are on the remove list */
 							$this->content = str_replace($script, "", $this->content);
-							$this->process_report['notice'][$script] = array(
-								'from' => htmlspecialchars($script),
-								'notice' => 'The file was replaced by a standard library and removed'
-							);
 						}
 					}
 				}
@@ -733,11 +729,6 @@ class web_optimizer {
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
-					$this->process_report['scripts'][] = array(
-						'type' => $options['header'] . " " . @$options['rel'],
-						'from' => $external_array,
-						'to' => $cachedir . '/' . $cache_file . '.' . $options['ext']
-					);
 				}
 			}
 			if ($this->web_optimizer_stage) {
