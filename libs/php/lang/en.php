@@ -171,7 +171,7 @@ define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprite
 define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
 define('_WEBO_css_sprites_no_ie6', 'Exclude IE6 (via hacks) from CSS Sprites generation');
 define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage for PHP process');
-define('_WEBO_css_sprites_dimensions_limited', 'Exclude images greater given number in even one dimension');
+define('_WEBO_css_sprites_dimensions_limited', 'Exclude images greater given number in one dimension');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
 define('_WEBO_parallel_enabled', 'Enable multiple hosts');
 define('_WEBO_parallel_allowed_list', 'Allowed hosts');

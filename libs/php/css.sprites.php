@@ -409,7 +409,7 @@ __________________
 /* handle cases with data:URI */
 		if (substr($this->css_image, 0, 5) == 'data:') {
 			$image_name = md5($this->css_image) . "." . preg_replace("/.*image\/([^;]*);base64.*/", "$1", $this->css_image);
-			$fp = fopen($image_name , "w");
+			$fp = @fopen($image_name , "w");
 			if ($fp) {
 				fwrite($fp, base64_decode(preg_replace("/.*;base64,/", "", $this->css_image)));
 				fclose($fp);
@@ -701,14 +701,14 @@ __________________
 								case 1:
 									$this->css_images[$this->sprite]['images'][$key][3] = 0;
 									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
-									$this->css_images[$this->sprite]['x'] = $width > $this->css_images[$this->sprite]['x'] ? $width : $this->css_images[$this->sprite]['x'];
+									$this->css_images[$this->sprite]['x'] = $this->SCM($width, $this->css_images[$this->sprite]['x'] ? $this->css_images[$this->sprite]['x'] : 1);
 									$this->css_images[$this->sprite]['y'] += $height + $final_y + $shift_y;
 								break;
 								case 2:
 									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] + $final_x;
 									$this->css_images[$this->sprite]['images'][$key][4] = 0;
 									$this->css_images[$this->sprite]['x'] += $width + $final_x + $shift_x;
-									$this->css_images[$this->sprite]['y'] =  $height > $this->css_images[$this->sprite]['y'] ? $height : $this->css_images[$this->sprite]['y'];
+									$this->css_images[$this->sprite]['y'] = $this->SCM($height, $this->css_images[$this->sprite]['y'] ? $this->css_images[$this->sprite]['y'] : 1);
 								break;
 							}
 							$counter_images[$filename] = 1;
@@ -730,7 +730,7 @@ __________________
 						$image[3] = 0;
 						$image[4] = (empty($image[4]) ? 0 : $image[4]) + $this->css_images[$this->sprite]['y'];
 						$this->css_images[$this->sprite]['images'][] = $image;
-						$this->css_images[$this->sprite]['x'] = !empty($image[1]) && $image[1] > $this->css_images[$this->sprite]['x'] ? $image[1] : $this->css_images[$this->sprite]['x'];
+						$this->css_images[$this->sprite]['x'] = !empty($image[1]) && $image[1] > $this->css_images[$this->sprite]['x'] ? $this->SCM($image[1], $this->css_images[$this->sprite]['x']) : $this->css_images[$this->sprite]['x'];
 						$this->css_images[$this->sprite]['y'] += (empty($image[2]) ? 0 : $image[2]) + $final_y;
 						unset($this->css_images[$no_dimensions][0]);
 					}
@@ -767,7 +767,7 @@ __________________
 						$image[4] = 0;
 						$this->css_images[$this->sprite]['images'][] = $image;
 						$this->css_images[$this->sprite]['x'] += $image[1] + $final_x;
-						$this->css_images[$this->sprite]['y'] = $image[2] > $this->css_images[$this->sprite]['y'] ? $image[2] : $this->css_images[$this->sprite]['y'];
+						$this->css_images[$this->sprite]['y'] = !empty($image[2]) && $image[2] > $this->css_images[$this->sprite]['y'] ? $this->SCM($image[2], $this->css_images[$this->sprite]['y']) : $this->css_images[$this->sprite]['y'];
 						unset($this->css_images[$no_dimensions][0]);
 					}
 					$counted_images = array();
@@ -968,6 +968,7 @@ __________________
 										}
 										if (!$file_exists) {
 											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+											$final_x = $width;
 /* semi-fix for bug with different width of repeating images, thx to xstroy */
 											while ($final_x < $this->css_images[$this->sprite]['x'] && !$added) {
 												@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
@@ -1089,7 +1090,7 @@ __________________
 		if (function_exists('curl_init')) {
 /* try to download image */
 			$ch = curl_init($remote);
-			$fp = fopen($local, "w");
+			$fp = @fopen($local, "w");
 			if ($fp && $ch) {
 				curl_setopt($ch, CURLOPT_FILE, $fp);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1113,6 +1114,19 @@ __________________
 			@unlink($tmp_file);
 		}
 	}
+/* calculate smallest common multiple, NOK */
+	function SCM ($a, $b) {
+		$return = $a * $b;
+		while($a && $b) {
+			if ($a >= $b) {
+				$a = $a % $b;
+			} else {
+				$b = $b % $a;
+			}
+		}
+		return $return / ($a + $b);
+	}
+
 }
 
 ?>

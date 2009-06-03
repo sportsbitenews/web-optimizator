@@ -43,10 +43,10 @@
 
 							<label for="user[<?php echo $key ?>][<?php echo $option ?>]"><?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?></label>
 
-							<?php if ($option == 'dimensions_limited' || $option == 'ignore_list' || $option == 'timeout' || $option == 'allowed_list' || $options == 'flush_size') { ?>
+							<?php if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size')) { ?>
 
 							<div class="info">
-							<?php echo $option == 'dimensions_limited' || $option == 'timeout' || $options == 'flush_size' ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
+							<?php echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size') ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"/>
 							</div>
 
 							<?php } else { ?>
