@@ -373,8 +373,8 @@ __________________
 		foreach ($this->css->css as $import => $token) {
 			foreach ($token as $tags => $rule) {
 				foreach ($rule as $key => $value) {
-/* standartize all background values from input */
-					if (preg_match("/background/", $key)) {
+/* standartize all background values from input, skip IE6/7 hacks */
+					if (preg_match("/background/", $key) && !preg_match("/\*[\+ ]html/", $tags)) {
 						$background = array();
 						if ($key == 'background') {
 /* resolve background property */
@@ -385,13 +385,16 @@ __________________
 						}
 						if (!empty($background['background-image'])) {
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
+							$sprited = stripos($this->css_image, 'bo.' . $this->timestamp);
 /* convert image to base64 */
 							$this->get_image(1);
 							if (!empty($this->css_image)) {
 								if (substr($this->css_image, 0, 5) == 'data:') {
-/* preserve IE6/7 selectors */
-									$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
-									$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
+									if (empty($this->no_ie6) || !$sprited) {
+/* preserve IE6/7 selectors only if we are doing anything for IE6 */
+										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
+										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
+									}
 									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
 									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $background['background-image'];
 								}
@@ -985,9 +988,9 @@ __________________
 
 							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
-								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->media[$import][$key]['background-color']) ? $this->media[$import][$key]['background-color'] . ' ' : '') .
-									(empty($css_left) ? '0' : $css_left . (is_numeric($css_left) ? 'px' : '')) . ' ' . (empty($css_top) ? '0' : $css_top . (is_numeric($css_top) ? 'px' : '')) . ' ' . $css_repeat . ' ' .
-									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : ''));
+								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->media[$import][$key]['background-color']) && $this->media[$import][$key]['background-color'] != 'transparent') ? $this->media[$import][$key]['background-color'] . ' ' : '') .
+									(empty($css_left) || $css_left == 'left' ? '0' : ($css_left . (is_numeric($css_left) ? 'px' : ''))) . ' ' . (empty($css_top) || $css_top == 'top' ? '0' : ($css_top . (is_numeric($css_top) ? 'px' : ''))) . ' ' . $css_repeat . ' ' .
+									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : '');
 							}
 
 						} else {

@@ -146,7 +146,10 @@ class web_optimizer {
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'],
-				"parallel_hosts" => $this->options['parallel']['allowed_list']
+				"parallel_hosts" => $this->options['parallel']['allowed_list'],
+				"unobtrusive_informers" => $this->options['unobtrusive']['informers'],
+				"unobtrusive_counters" => $this->options['unobtrusive']['counters'],
+				"unobtrusive_ads" => $this->options['unobtrusive']['ads']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -377,6 +380,8 @@ class web_optimizer {
 		}
 /* remove BOM */
 		$this->content = preg_replace("/﻿/", "", $this->content);
+/* move informers, counters and ads before </body> */
+		$this->replace_informers($options);
 /* strip from content flushed part */
 		if (!empty($this->flushed)) {
 			$this->content = substr($this->content, $options['flush_size'], strlen($this->content));
@@ -645,7 +650,7 @@ class web_optimizer {
 		}
 /* Create file */
 		$contents = "";
-		if(is_array($external_array)) {
+		if (is_array($external_array)) {
 			foreach($external_array as $key => $info) {
 /* Get the code */
 				if ($file_contents = $info['content']) {
@@ -1204,8 +1209,8 @@ class web_optimizer {
 		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source);
 /* replace ' />' with '/>' */
 		$source = preg_replace("/\s\/>/", "/>", $source);
-/* replace multiple spaces with single one */
-		$source = preg_replace("/[\s\t\r\n]+/", " ", $source);
+/* replace multiple spaces with single one 
+		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
 /* replace pre blocks */
@@ -1231,6 +1236,54 @@ class web_optimizer {
 		}
 	}
 
+	/**
+	* Replaces one JS code in HTML with another
+	* Returns string to place before </body>
+	*
+	**/
+	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $inline = false) {
+		$return = '';
+		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
+		if (!empty($matches)) {
+			foreach ($matches as $key => $value) {
+				$this->content = str_replace($value[0], '<div id="' . $stuff . '_dst_' . $key . '"></div>', $this->content);
+				$return .= '<' . ($inline ? 'span' : 'div') . ' id="'.
+						$stuff .'_src_' . $key . 
+					'" style="display:none;' .
+						($height ? 'height:' . $height . 'px' : '') .
+					'">' .
+						$value[0] .
+					'</' . ($inline ? 'span' : 'div') . '>' .
+					'<script type="text/javascript">document.getElementById("' .
+						$stuff . '_dst_' . $key . '").innerHTML=document.getElementById("' .
+						$stuff . '_src_' . $key . '").innerHTML;document.body.removeChild(document.getElementById("' .
+						$stuff . '_dst_' . $key . '"))' .
+					'</script>';
+			}
+		}
+		return $return;
+	}
+
+	/**
+	* Moves all known informers before </body>
+	* Also handles counters and ads
+	* Leaves placeholders for them in content
+	*
+	**/
+	function replace_informers ($options) {
+		$before_body = '';
+		if (!empty($options['unobtrusive_informers'])) {
+/* Odnaknopka */
+			$before_body .= $this->replace_unobtrusive_generic("/<script\s*src=['\"]https?:\/\/odnaknopka.ru[^>]+><\/script>/is", 'odnaknopka', 16);
+		}
+		if (!empty($options['unobtrusive_counters'])) {
+/* LiveInternet */
+			$before_body .= $this->replace_unobtrusive_generic("/<!--LiveInternet counter-->.*?<!--\/LiveInternet-->/is", 'liveinternet', 31, true);
+		}
+		if (!empty($before_body)) {
+			$this->content = str_replace('</body>', $before_body . '</body>' , $this->content);
+		}
+	}
 
 	/**
 	* Gets the directory we are in
