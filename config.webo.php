@@ -37,6 +37,7 @@ $compress_options['minify']['with_jsmin'] = "0";
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
 $compress_options['minify']['with_yui'] = "1";
+## Minify CSS
 $compress_options['minify']['css'] = "1";
 ## Remove whitespaces
 $compress_options['minify']['page'] = "1";

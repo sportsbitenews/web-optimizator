@@ -1198,14 +1198,14 @@ class web_optimizer {
 							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
-/* replace breaks with nothing for block tags
-		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|pre|samp|script|select|sidebar|style|table|tbody|td|textarea|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source); */
-/* replace breaks with space for inline tags
-		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source); */
-/* replace ' />' with '/>'
-		$source = preg_replace("/\s\/>/", "/>", $source); */
-/* replace multiple spaces with single one 
-		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
+/* replace breaks with nothing for block tags */
+		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|samp|script|select|sidebar|style|table|tbody|td|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source);
+/* replace breaks with space for inline tags */
+		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source);
+/* replace ' />' with '/>' */
+		$source = preg_replace("/\s\/>/", "/>", $source);
+/* replace multiple spaces with single one */
+		$source = preg_replace("/[\s\t\r\n]+/", " ", $source);
 /* replace textarea blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
 /* replace pre blocks */
