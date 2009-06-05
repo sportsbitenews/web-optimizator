@@ -992,9 +992,9 @@ __________________
 
 							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
-								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", (!empty($this->media[$import][$key]['background-color']) && $this->media[$import][$key]['background-color'] != 'transparent') ? $this->media[$import][$key]['background-color'] . ' ' : '') .
+								$this->css->css[$import][$key]['background'] = preg_replace("/ $/", "", ((!empty($this->media[$import][$key]['background-color']) && $this->media[$import][$key]['background-color'] != 'transparent') ? $this->media[$import][$key]['background-color'] . ' ' : '') .
 									(empty($css_left) || $css_left == 'left' ? '0' : ($css_left . (is_numeric($css_left) ? 'px' : ''))) . ' ' . (empty($css_top) || $css_top == 'top' ? '0' : ($css_top . (is_numeric($css_top) ? 'px' : ''))) . ' ' . $css_repeat . ' ' .
-									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : '');
+									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
 						} else {
