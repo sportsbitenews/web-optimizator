@@ -23,6 +23,9 @@
  //_WEBO_css_sprites_dimensions_limited
  //_WEBO_data_uris_smushit
  //_WEBO_unobtrusive_body
+ //_WEBO_unobtrusive_informers
+ //_WEBO_unobtrusive_counters
+ //_WEBO_unobtrusive_ads
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

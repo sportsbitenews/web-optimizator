@@ -92,7 +92,8 @@ define('_WEBO_SPLASH2_MINIFY_INFO', 'Minifying removes whitespace and other unne
 define('_WEBO_SPLASH2_UNOBTRUSIVE', 'Make JavaScript unobtrusive');
 define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', 'Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.
 									<br/>This can significantly increase website load speed. But in some cases can break the client side logic (if it\'s not designed to handle in unobtrusive way).
-									<br/>Please be careful with this option &mdash; it can seriously hurt client side functionality.');
+									<br/>Please be careful with this option &mdash; it can seriously hurt client side functionality.
+									<br/>Also you can move all JavaScript calls before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.');
 define('_WEBO_SPLASH2_EXTERNAL', 'Include external and inline scripts');
 define('_WEBO_SPLASH2_EXTERNAL_INFO', 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
 									<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.
@@ -135,6 +136,9 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index
 									<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_unobtrusive_body', 'Include merged JavaScript file before <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_counters', 'Move counters calls before <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
 define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');

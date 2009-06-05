@@ -1272,13 +1272,26 @@ class web_optimizer {
 	**/
 	function replace_informers ($options) {
 		$before_body = '';
+/* Informers */
 		if (!empty($options['unobtrusive_informers'])) {
 /* Odnaknopka */
 			$before_body .= $this->replace_unobtrusive_generic("/<script\s*src=['\"]https?:\/\/odnaknopka.ru[^>]+><\/script>/is", 'odnaknopka', 16);
 		}
+/* Counters */
 		if (!empty($options['unobtrusive_counters'])) {
 /* LiveInternet */
 			$before_body .= $this->replace_unobtrusive_generic("/<!--LiveInternet counter-->.*?<!--\/LiveInternet-->/is", 'liveinternet', 31, true);
+/* Google Analytics */
+			$before_body .= $this->replace_unobtrusive_generic("/<script type=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}<\/script>/is", 'ga', 0, true);
+/* SpyLog */
+			$before_body .= $this->replace_unobtrusive_generic("/<!-- SpyLOG -->\r?\n<script.*?script>\r?\n<!--/ SpyLOG -->/is", 'spylog', 0, true);
+		}
+/* Advertisement */
+		if (!empty($options['unobtrusive_ads'])) {
+/* Yandex.Direct */
+			$before_body .= $this->replace_unobtrusive_generic("/<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?<\/script>/is", 'yadirect');
+/* Google AdWords */
+			$before_body .= $this->replace_unobtrusive_generic("/<script type=\"text/javascript\"><!--\n?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">\r?\n?<\/script>/is", 'gadwords');
 		}
 		if (!empty($before_body)) {
 			$this->content = str_replace('</body>', $before_body . '</body>' , $this->content);
