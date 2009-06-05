@@ -1255,10 +1255,9 @@ class web_optimizer {
 						$value[0] .
 					'</' . ($inline ? 'span' : 'div') . '>' .
 					'<script type="text/javascript">document.getElementById("' .
-						$stuff . '_dst_' . $key . '").innerHTML=document.getElementById("' .
-						$stuff . '_src_' . $key . '").innerHTML;document.body.removeChild(document.getElementById("' .
-						$stuff . '_dst_' . $key . '"))' .
-					'</script>';
+						$stuff . '_dst_' . $key . '").appendChild(document.getElementById("' .
+						$stuff . '_src_' . $key . '"));document.getElementById("' .
+						$stuff . '_src_' . $key . '").style.display="block"</script>';
 			}
 		}
 		return $return;
