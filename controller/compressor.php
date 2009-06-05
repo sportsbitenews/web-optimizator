@@ -938,8 +938,8 @@ class web_optimizer {
 										$file['file_raw'] = $variant_type[2];
 										break;
 									default:
-/* skip media="all" to prevent Safari bug with @media all{} */
-										if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all/i", $variant_type[2]))) {
+/* skip media="all|screen" to prevent Safari bug with @media all{} and @media screen{} */
+										if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen/i", $variant_type[2]))) {
 											$file[$variant_type[1]] = $variant_type[2];
 										}
 										break;

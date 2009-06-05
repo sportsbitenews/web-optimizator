@@ -384,6 +384,7 @@ __________________
 							$background[$key] = $value;
 						}
 						if (!empty($background['background-image'])) {
+							$background['background-image'] = preg_replace("/\s*!important\s*$/", "", $background['background-image']);
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
 							$sprited = stripos($this->css_image, 'bo.' . $this->timestamp);
 /* convert image to base64 */
@@ -452,6 +453,9 @@ __________________
 					if (@filesize($this->css_image) < 21800) {
 /* convert image to base64-string */
 						$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+					} else {
+/* just return absolute URL for image */
+						$this->css_image = str_replace($this->website_root, "", $this->css_image);
 					}
 				} else {
 					$this->css_image = $image_saved;
