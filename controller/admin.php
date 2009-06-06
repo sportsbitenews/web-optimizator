@@ -306,6 +306,11 @@ class admin {
 					}
 				}
 			}
+/* additional change of cache plugin */
+			if (preg_match("/Joomla! 1\.[56789]/", $cms_version)) {
+				$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file)));
+			}
 		}
 		$this->page_variables = array(
 			"title" => _WEBO_SPLASH1_UNINSTALL,
@@ -954,6 +959,11 @@ ExpiresDefault \"access plus 10 years\"
 								@fwrite($fp, $content_saved);
 								@fclose($fp);
 								$auto_rewrite = 1;
+							}
+/* additional change of cache plugin */
+							if (preg_match("/Joomla! 1\.[56789]/", $cms_version)) {
+								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+								@file_put_contents($cache_file, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->close();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file))));
 							}
 						}
 					}

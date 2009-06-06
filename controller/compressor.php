@@ -1204,9 +1204,9 @@ class web_optimizer {
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
 /* replace breaks with nothing for block tags */
-		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|samp|script|select|sidebar|style|table|tbody|td|tfoot|th|title|tr|ul|var)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3>", $source);
+		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|samp|script|select|sidebar|style|table|tbody|td|tfoot|th|title|tr|ul|var)([^>]*)>[\s\t\r\n]+/i", "$1$2$3>", $source);
 /* replace breaks with space for inline tags */
-		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)( [^>]+)?>[\s\t\r\n]+/i", "$1$2$3> ", $source);
+		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)([^>]*)>[\s\t\r\n]+/i", "$1$2$3> ", $source);
 /* replace ' />' with '/>' */
 		$source = preg_replace("/\s\/>/", "/>", $source);
 /* replace multiple spaces with single one 
@@ -1352,6 +1352,10 @@ class web_optimizer {
 		$absolute_path = $file;
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
+/* add relative directory. Need somehow parse current meta base... */
+			if (substr($endfile, 0, 1) != "/") {
+				$endfile = preg_replace("@([^\?&]+/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+			}
 			$full_path_to_image = str_replace($this->view->get_basename($endfile), "", $endfile);
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
 		}

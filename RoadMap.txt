@@ -17,11 +17,11 @@
 
 3. Configurator: config.webo.php -- number of options
 +a) CSS / JS merging
-+b) CSS / JS gzip
++b) HTML / CSS / JS gzip
 +c) CSS / JS compressing options (JSMin, Packer)
 +d) .htaccess enabling
 +e) data:URI
-+f) auto CSS Sprites (+jpegtran / pngcrush)
++f) auto CSS Sprites (+image optimization)
 +g) Caching headers (Expires, Cache-Control, Last-Modified)
 ?h) CDN integration options / Multiple hosts
 +i) Cache directory
@@ -31,19 +31,20 @@
 +m) usage of auto-optimization solutions (smush.it)
  n) website load counter (via webo.in)
 +o) External and inline JS / external CSS merging
-+p) List of protected from merging files -- really required!
-+r) List of protected from merging imgages (for CSS Sprites)
++p) List of protected from merging files
++r) List of protected from merging images (for CSS Sprites)
 +s) Fast check by filenames
 +t) HTML caching
++u) Unobtrusive loading
 
 4. Merging
 +a) Base CSS / JS merging
 +b) @media support for CSS merging (skip @media all)
 +c) @import support for CSS merging
 +d) Unobtrusive JS with YASS modules loader
- e) Unobtrusive ads blocks inside page
++e) Unobtrusive ads blocks inside page
 +f) External CSS /JS merging possibility
- g) Unobtrusive counters
++g) Unobtrusive counters
 
 5. Minifier / gzip
 +a) JSMin (PHP4/5)
@@ -51,7 +52,7 @@
 +c) Simple CSS minifier (if no CSS Sprites)
 +d) YUI Compressor (if java exists)
 +e) Packer for JS files
-?f) Cached gzip for HTML / CSS / JS files
++f) Cached gzip for CSS / JS files
 
 6. Including
 +a) Manual including 2 strings
@@ -86,7 +87,7 @@
 +a) Wordpress (2.7.1)
 +b) Joomla (1.0.15, 1.5.0, 1.5.9, 1.5.10), Joostina (1.2)
 +c) Drupal (6.10, 5.16)
- d) Bitrix
++d) Bitrix
 +e) Typo3 (4.2)
  f) WebGUI
  g) Plone
