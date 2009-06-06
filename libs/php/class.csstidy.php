@@ -561,6 +561,8 @@ function parse($string) {
                     $this->status = 'instr';
                     $this->str_char = $string{$i};
                     $this->from = 'is';
+					/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3"] */
+					$this->css3 = ($string{$i-1} == '=');
                 }
                 elseif($this->invalid_at && $string{$i} == ';')
                 {
@@ -794,10 +796,14 @@ function parse($string) {
             {
                 $this->status = $this->from;
                 if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property != 'content') {
-                    if ($this->str_char == '"' || $this->str_char == '\'') {
-						$this->cur_string = substr($this->cur_string, 1, -1);
-					} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] == '"' || $this->cur_string[1] == '\'')) /* () */ {
-						$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+					if (!$this->css3) {
+						if ($this->str_char == '"' || $this->str_char == '\'') {
+							$this->cur_string = substr($this->cur_string, 1, -1);
+						} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] == '"' || $this->cur_string[1] == '\'')) /* () */ {
+							$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+						}
+					} else {
+						$this->css3 = false;
 					}
                 }
                 if($this->from == 'iv')

@@ -1353,7 +1353,7 @@ class web_optimizer {
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
-			if (substr($endfile, 0, 1) != "/") {
+			if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
 				$endfile = preg_replace("@([^\?&]+/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
 			}
 			$full_path_to_image = str_replace($this->view->get_basename($endfile), "", $endfile);

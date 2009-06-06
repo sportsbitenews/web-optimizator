@@ -91,15 +91,11 @@ class compressor_view {
 	 * 
 	 **/	
 	 function prevent_leading_slash($path) {
-	 
 	 	if(substr($path,0,1) == "/" || substr($path,0,1) == "\\") {
-		$path = substr($path,1); 
-		}	 
-	 
+			$path = substr($path,1); 
+		}
 	 	return $path;
-	 
-	 }	 
-
+	 }
 	
 	/**
 	 * Renders a section of display code.
@@ -107,18 +103,14 @@ class compressor_view {
 	 **/	
 	function render ($file_name, $vars = array ())
 	{
-		//Set variable names
+/* Set variable names */
 		foreach ($vars AS $key => $val) {
 			$$key = $val;
 		}
-
 		if (file_exists ($this->paths['full']['view']."$file_name.php")) {
 			include ($this->paths['full']['view']."$file_name.php");
-			
-		 } else if (file_exists ("view/" . "$file_name.php")) {		 
-		 
-		 	include ("view/"."$file_name.php");					
-			
+		 } else if (file_exists ("view/" . "$file_name.php")) {
+		 	include ("view/"."$file_name.php");
 		 } else {			
 			echo "
 			<body style='font-family:verdana;font-size:11px'>
@@ -148,35 +140,27 @@ class compressor_view {
 	 * @param string $path The path to canonicalize
 	 * @return string Canonicalized path
 	 **/
-	
-	function realpath ($path)
-	{
+	function realpath ($path) {
 		$path = str_replace ('~', $_SERVER['DOCUMENT_ROOT'], $path);
-		if (function_exists ('realpath'))
+		if (function_exists ('realpath')) {
 			return realpath ($path);
-		else if (DIRECTORY_SEPARATOR == '/')
-		{
-	    // canonicalize
-	    $path = explode (DIRECTORY_SEPARATOR, $path);
-	    $newpath = array ();
-	    for ($i = 0; $i < sizeof ($path); $i++)
-			{
-				if ($path[$i] === '' || $path[$i] === '.')
+		} else if (DIRECTORY_SEPARATOR == '/') {
+/* canonicalize */
+			$path = explode (DIRECTORY_SEPARATOR, $path);
+			$newpath = array ();
+			for ($i = 0; $i < sizeof ($path); $i++) {
+				if ($path[$i] === '' || $path[$i] === '.') {
 					continue;
-					
-				if ($path[$i] === '..')
-				{
+				}
+				if ($path[$i] === '..') {
 					array_pop ($newpath);
 					continue;
 				}
-				
 				array_push ($newpath, $path[$i]);
-	    }
-	
-	    $finalpath = DIRECTORY_SEPARATOR.implode (DIRECTORY_SEPARATOR, $newpath);
-      return $finalpath;
+			}
+			$finalpath = DIRECTORY_SEPARATOR.implode (DIRECTORY_SEPARATOR, $newpath);
+			return $finalpath;
 		}
-		
 		return $path;
 	}	
 
@@ -185,14 +169,8 @@ class compressor_view {
 	 *
 	 **/	
 	function get_basename($filename) {
-	
-	$basename = preg_replace( '/^.+[\\\\\\/]/', '', $filename );
-	
-	return $basename;
-	
+		return preg_replace( '/^.+[\\\\\\/]/', '', $filename );
 	}
-	
-
 	
 }
 ?>
