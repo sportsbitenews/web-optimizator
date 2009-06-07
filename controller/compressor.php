@@ -867,7 +867,7 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = str_replace($import[0], $this->resolve_css_imports($src), $content);
+						$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src), array('file' => str_replace($this->view->paths['full']['document_root'], "/", $this->get_file_name($src)))), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
