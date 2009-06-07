@@ -49,6 +49,8 @@ $compress_options['minify']['css'] = "1";
 $compress_options['minify']['page'] = "1";
 ## Remove comments from HTML. Some JS counters can be broken
 $compress_options['minify']['html_comments'] = "0";
+## Shrink HTML code to 1 string, CPU intensive
+$compress_options['minify']['html_one_string'] = "0";
 ## Gzip options
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";

@@ -135,6 +135,7 @@ class web_optimizer {
 				"cachedir" => $this->options['html_cachedir'],
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"minify" => $this->options['minify']['page'],
+				"minify_aggressive" => $this->options['minify']['html_one_string'],
 				"remove_comments" => $this->options['minify']['html_comments'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
 				"clientside_cache" => $this->options['far_future_expires']['html'],
@@ -357,7 +358,7 @@ class web_optimizer {
 	*
 	**/
 	function page($options, $type) {
-		if (empty($this->web_optimizer_stage) && $this->options['page']['clientside_cache']) {
+		if (empty($this->web_optimizer_stage) && $options['clientside_cache']) {
 /* setting cache headers for HTML file */
 			@date_default_timezone_set(@date_default_timezone_get());
 			$ExpStr = gmdate("D, d M Y H:i:s",
@@ -1186,36 +1187,25 @@ class web_optimizer {
 	* Adapted from smarty code http://www.smarty.net/
 	**/
 	function trimwhitespace($source) {
-/* Pull out the script blocks */
-		preg_match_all("!<script[^>]*>.*?</script>!is", $source, $match);
+/* Pull out the script, textarea and pre blocks */
+		preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
 		$_script_blocks = $match[0];
 		$source = preg_replace("!<script[^>]*>.*?</script>!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
-/* Pull out the pre blocks */
-		preg_match_all("!<pre[^>]*>.*?</pre>!is", $source, $match);
-		$_pre_blocks = $match[0];
-		$source = preg_replace("!<pre[^>]*>.*?</pre>!is",
-							   '@@@COMPRESSOR:TRIM:PRE@@@', $source);
-/* Pull out the textarea blocks */
-		preg_match_all("!<textarea[^>]*>.*?</textarea>!is", $source, $match);
-		$_textarea_blocks = $match[0];
-		$source = preg_replace("!<textarea[^>]*>.*?</textarea>!is",
-							   '@@@COMPRESSOR:TRIM:TEXTAREA@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+/* one-strig-HTML takes about 20-50ms */
+		if (!empty($this->options['page']['minify_aggressive'])) {
 /* replace breaks with nothing for block tags */
-		$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|samp|script|select|sidebar|style|table|tbody|td|tfoot|th|title|tr|ul|var)([^>]*)>[\s\t\r\n]+/i", "$1$2$3>", $source);
+			$source = preg_replace("/[\s\t\r\n]*(<\/?)(!--|!DOCTYPE|address|area|audioscope|base|bgsound|blockquote|body|br|caption|center|col|colgroup|comment|dd|div|dl|dt|embed|fieldset|form|frame|frameset|h[123456]|head|hr|html|iframe|keygen|layer|legend|li|link|map|marquee|menu|meta|noembed|noframes|noscript|object|ol|optgroup|option|p|param|samp|script|select|sidebar|style|table|tbody|td|tfoot|th|title|tr|ul|var)([^>]*)>[\s\t\r\n]+/i", "$1$2$3>", $source);
 /* replace breaks with space for inline tags */
-		$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)([^>]*)>[\s\t\r\n]+/i", "$1$2$3> ", $source);
+			$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)([^>]*)>[\s\t\r\n]+/i", "$1$2$3> ", $source);
+		}
 /* replace ' />' with '/>' */
 		$source = preg_replace("/\s\/>/", "/>", $source);
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
-/* replace textarea blocks */
-		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:TEXTAREA@@@",$_textarea_blocks, $source);
-/* replace pre blocks */
-		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:PRE@@@", $_pre_blocks, $source);
-/* replace script blocks */
+/* replace script, textarea, pre blocks */
 		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
 		return $source;
 	}
@@ -1321,13 +1311,13 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = preg_replace("/(\/\/\]\]>|\/\/\s*<!\[CDATA\[|<!-- \/\/ --><!\[CDATA\[|<!\[CDATA\[\/\/><!--|\/\/--><!\]\]>)/i", "", $this->content);
+			$this->content = str_replace(array('//]]', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-			preg_match("!<head([^>]+)?>.*?</head>!is", preg_replace("@<!--.*?-->@is", '', $this->content), $matches);
+			preg_replace("@<!--.*?-->@is", '', preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches));
 			if (!empty($matches[0])) {
 				$this->head = $matches[0];
 			}
