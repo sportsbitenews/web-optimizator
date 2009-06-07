@@ -80,7 +80,7 @@ class css_sprites {
 									$background = $this->css->optimise->dissolve_short_bg($value);
 									foreach ($background as $bg => $property) {
 /* skip default properties */
-										if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left' || $property == 'top' || $property == 'left')) &&
+										if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left')) &&
 											!($bg == 'background-origin' && ($property == 'padding !important' || $property == 'padding')) &&
 											!($bg == 'background-color' && ($property == 'transparent !important' || $property == 'transparent')) &&
 											!($bg == 'background-clip' && ($property == 'border !important' || $property == 'border')) &&
@@ -91,14 +91,30 @@ class css_sprites {
 											if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
 												$property = $this->none;
 											}
+/* fix background-position: left|right -> left center|right center */
+											if ($bg == 'background-position' && ($property == 'left' || substr($property, 0, 1) == '0' || $property == 'right' || substr($property, 0, 3) == '100')) {
+												$property = $property . ' center';
+											}
+/* fix background-position: top|bottom -> center top|center bottom */
+											if ($bg == 'background-position' && ($property == 'top' || $property == 'bottom')) {
+												$property = 'center ' . $property;
+											}
 											$this->media[$import][$tag][$bg] = $property;
 										}
 									}
 								} else {
 /* skip default properties */
 									if (!($key == 'background-position' &&
-										($value == 'top left' || $value == 'left top' || $value == '0px 0px' || $value == '0 0' || $value == '0% 0%' || $value == 'top' || $value == 'left'))) {
-
+										($value == 'top left' ||
+											$value == 'left top' ||
+											substr($value, 0, 1) == '0' ||
+											$value == 'left' || 
+											$value == 'top'))) {
+/* fix background-position: right|bottom -> right center|center bottom */
+											if ($key == 'background-position') {
+												$value = ($value == 'right' ? 'right center' : ($value == 'bottom' ? 'center bottom' : $value));
+											}
+											$this->media[$import][$tag][$bg] = $property;										
 										$this->media[$import][$tag][$key] = $value;
 									}
 								}

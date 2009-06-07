@@ -26,6 +26,7 @@
  //_WEBO_unobtrusive_informers
  //_WEBO_unobtrusive_counters
  //_WEBO_unobtrusive_ads
+ //_WEBO_minify_html_one_string
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
