@@ -92,7 +92,7 @@ class css_sprites {
 												$property = $this->none;
 											}
 /* fix background-position: left|right -> left center|right center */
-											if ($bg == 'background-position' && ($property == 'left' || substr($property, 0, 1) == '0' || $property == 'right' || substr($property, 0, 3) == '100')) {
+											if ($bg == 'background-position' && ($property == 'left' || substr($property, 0, 1) == '0' || $property == 'right' || substr($property, 0, 3) == '100') && strlen($property) < 6) {
 												$property = $property . ' center';
 											}
 /* fix background-position: top|bottom -> center top|center bottom */
@@ -213,17 +213,17 @@ class css_sprites {
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-x') {
-								if ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
-									$repeat_key = 'repeat-xl';
-								} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+								if (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 									$repeat_key = 'repeat';
+								} elseif ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
+									$repeat_key = 'repeat-xl';
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-y') {
-								if ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
-									$repeat_key = 'repeat-yl';
-								} elseif (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+								if (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
 									$repeat_key = 'repeat';
+								} elseif ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
+									$repeat_key = 'repeat-yl';
 								}
 							}
 							if ($repeat_key == 'repeat') {
