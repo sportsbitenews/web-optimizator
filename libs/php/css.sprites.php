@@ -1114,7 +1114,7 @@ __________________
 		$this->download_file("http://smush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
 		if (is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
-			if (!preg_match("/['\"]error['\"]/i", $str)) {
+			if (!preg_match("/['\"]error['\"]/i", $str) && filesize($tmp_file)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
 				$this->download_file("http://smush.it/" . $optimized, $file);
 			}
