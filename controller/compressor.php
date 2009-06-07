@@ -852,6 +852,8 @@ class web_optimizer {
 /* remove BOM */
 		$content = preg_replace("/&amp;/", "&", preg_replace("/﻿/", "", $content));
 		if (is_file($file) || $inline) {
+/* remove commented @import. First of all glue CSS files, optimiza only secondly */
+			$content = preg_replace("!/\*\s*@import.*?\*/!is", "", $content);
 /* new RegExp from xandrx */
 			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
 			if (is_array($imports)) {
