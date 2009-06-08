@@ -114,7 +114,6 @@ class css_sprites {
 											if ($key == 'background-position') {
 												$value = ($value == 'right' ? 'right center' : ($value == 'bottom' ? 'center bottom' : $value));
 											}
-											$this->media[$import][$tag][$bg] = $property;										
 										$this->media[$import][$tag][$key] = $value;
 									}
 								}
