@@ -380,7 +380,7 @@ __________________
 			if (!empty($this->data_uris)) {
 				$this->css_to_data_uri();
 			}
-			return html_entity_decode($this->css->print->formatted());
+			return html_entity_decode($this->css->print->formatted(), ENT_QUOTES);
 		}
 	}
 /* convert all CSS images to base64 */

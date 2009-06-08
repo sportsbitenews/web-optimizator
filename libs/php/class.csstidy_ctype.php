@@ -23,7 +23,7 @@
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
- * @author Nikolay Matsievsky (http://webo.in/) 2009
+ * @author Nikolay Matsievsky (http://webo.name/) 2009
  * @version 1.0
  */
 

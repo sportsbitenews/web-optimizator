@@ -16,7 +16,6 @@ libs/php/lang/en.php
 libs/php/lang/he.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
-libs/php/class.csstidy4.php
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
