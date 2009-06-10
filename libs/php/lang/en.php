@@ -140,6 +140,7 @@ define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <c
 define('_WEBO_unobtrusive_counters', 'Move counters calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
+define('_WEBO_external_scripts_head_end', 'Force moving all merged scripts to <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
 define('_WEBO_dont_check_file_mtime_on', 'Don\'t check files mtime (and content)');

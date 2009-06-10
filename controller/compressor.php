@@ -37,7 +37,7 @@ class web_optimizer {
 /* HTML cache ? */
 		$excluded_html_pages = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['cache_ignore']));
 		$included_user_agents = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['allowed_user_agents']));
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush']));
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent();
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -104,6 +104,7 @@ class web_optimizer {
 				"unobtrusive" => $this->options['unobtrusive']['on'],
 				"unobtrusive_body" => $this->options['unobtrusive']['body'],
 				"external_scripts" => $this->options['external_scripts']['on'],
+				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
 			),
@@ -292,6 +293,7 @@ class web_optimizer {
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
+					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
 				),
@@ -626,7 +628,7 @@ class web_optimizer {
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0)));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['tag'] == 'script' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
 			if ($this->web_optimizer_stage) {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
@@ -1318,10 +1320,10 @@ class web_optimizer {
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
-/* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-			preg_replace("@<!--.*?-->@is", '', preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches));
+			preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
-				$this->head = $matches[0];
+/* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
+				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
 			}
 		}
 	}

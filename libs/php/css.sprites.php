@@ -92,7 +92,7 @@ class css_sprites {
 												$property = $this->none;
 											}
 /* fix background-position: left|right -> left center|right center */
-											if ($bg == 'background-position' && ($property == 'left' || substr($property, 0, 1) == '0' || $property == 'right' || substr($property, 0, 3) == '100') && strlen($property) < 6) {
+											if ($bg == 'background-position' && ($property == 'left' || !round($property) || $property == 'right' || round($property) == 100) && strlen($property) < 6) {
 												$property = $property . ' center';
 											}
 /* fix background-position: top|bottom -> center top|center bottom */
@@ -107,12 +107,14 @@ class css_sprites {
 									if (!($key == 'background-position' &&
 										($value == 'top left' ||
 											$value == 'left top' ||
-											substr($value, 0, 1) == '0' ||
-											$value == 'left' || 
-											$value == 'top'))) {
+											!round($value)))) {
+/* fix background-position: left|right -> left center|right center */
+											if ($key == 'background-position' && ($value == 'left' || !round($property) || $property == 'right' || round($property) == 100) && strlen($property) < 6) {
+												$property = $property . ' center';
+											}
 /* fix background-position: right|bottom -> right center|center bottom */
 											if ($key == 'background-position') {
-												$value = ($value == 'right' ? 'right center' : ($value == 'bottom' ? 'center bottom' : $value));
+												$value = ($value == 'top' ? 'center top' : ($value == 'bottom' ? 'center bottom' : $value));
 											}
 										$this->media[$import][$tag][$key] = $value;
 									}
@@ -885,7 +887,7 @@ __________________
 						}
 /* leave rules for IE6 */
 						if ($this->no_ie6) {
-							if (!empty($this->css->css[$import][$key])) {
+							if (!empty($this->css->css[$import][$key]) && !empty($this->css->css[$import][$key]['background'])) {
 /* should we preserve current IE6 hack for background? */
 								$this->css->css[$import]["* html " . $key]['background'] = $this->css->css[$import][$key]['background'];
 							}

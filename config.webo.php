@@ -29,6 +29,8 @@ $compress_options['unobtrusive']['counters'] = "0";
 $compress_options['unobtrusive']['ads'] = "0";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
+## Move merged scripts to </head>
+$compress_options['external_scripts']['head_end'] = "1";
 ## Merge inline styles in head and external CSS files
 $compress_options['external_scripts']['css'] = "1";
 ## Ignore list, files separated by space

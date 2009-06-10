@@ -139,6 +139,7 @@ define('_WEBO_unobtrusive_informers', 'Перенести вызовы JavaScript-информеров пе
 define('_WEBO_unobtrusive_counters', 'Перенести вызовы счетчиков перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Перенести рекламные вызовы (контекст и банеры) перед <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Включить объединение внешних JavaScript-файлов');
+define('_WEBO_external_scripts_head_end', 'Форсировать размещение объединенного JavaScript-файла перед <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
