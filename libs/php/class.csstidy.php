@@ -772,8 +772,8 @@ function parse($string) {
                 {
                     if($this->selector{0} === '@' && isset($at_rules[substr($this->selector,1)]) && $at_rules[substr($this->selector,1)] === 'iv')
                     {
-						/* adding quotes to charset, import, namespace */
-						$this->sub_value_arr[] = '"' . trim($this->sub_value) . '"';
+						/* quotes to charset, import, namespace can be added in template */
+						$this->sub_value_arr[] = trim($this->sub_value);
 
                         $this->status = 'is';
 
@@ -988,7 +988,7 @@ function explode_selectors()
  * @return bool
  * @version 1.02
  */
-function escaped(&$string,$pos)
+static function escaped(&$string,$pos)
 {
 	return !(@($string{$pos-1} !== '\\') || csstidy::escaped($string,$pos-1));
 }

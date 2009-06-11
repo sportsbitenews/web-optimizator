@@ -20,6 +20,7 @@ libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
+libs/php/class.csstidy4.php
 libs/php/class.yuicompressor4.php
 libs/php/class.yuicompressor.php
 libs/php/css.sprites.php
