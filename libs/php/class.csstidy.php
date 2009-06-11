@@ -772,8 +772,8 @@ function parse($string) {
                 {
                     if($this->selector{0} === '@' && isset($at_rules[substr($this->selector,1)]) && $at_rules[substr($this->selector,1)] === 'iv')
                     {
-						/* quotes to charset, import, namespace can be added in template */
-						$this->sub_value_arr[] = trim($this->sub_value);
+						/* Add quotes to charset, import, namespace */
+						$this->sub_value_arr[] = '"' . trim($this->sub_value) . '"';
 
                         $this->status = 'is';
 
