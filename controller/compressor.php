@@ -628,7 +628,7 @@ class web_optimizer {
 			$newfile = $this->get_new_file($options, $cache_file);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['tag'] == 'script' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'script' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
 			if ($this->web_optimizer_stage) {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
@@ -736,7 +736,7 @@ class web_optimizer {
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file);
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['ext'] == 'js' && $options['external_scripts'] ? 1 : 0));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
 				}
 			}
 			if ($this->web_optimizer_stage) {
