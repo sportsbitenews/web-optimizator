@@ -259,6 +259,13 @@ var $log = array();
 var $line = 1;
 
 /**
+ * Marks if we need to leave quotes for a string
+ * @var string
+ * @access private
+ */
+var $quoted_string = false;
+
+/**
  * Loads standard template and sets default settings
  * @access private
  * @version 1.3
@@ -1039,7 +1046,7 @@ function merge_css_blocks($media,$selector,$css_add)
  * @access public
  * @version 1.0
  */
-function is_important(&$value)
+static function is_important(&$value)
 {
 	return (!strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'],'',$value),-10,10),'!important'));
 }
@@ -1051,7 +1058,7 @@ function is_important(&$value)
  * @access public
  * @version 1.0
  */
-function gvw_important($value)
+static function gvw_important($value)
 {
 	if(csstidy::is_important($value))
 	{

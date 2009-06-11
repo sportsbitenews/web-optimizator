@@ -45,7 +45,7 @@ if (substr(phpversion(), 0, 1) == 4) {
 /* Dean Edwards Packer */
 	$libraries['JavaScriptPacker'] = 'packer4.php';
 /* CSS Tidy */
-	$libraries['csstidy'] = 'class.csstidy.php';
+	$libraries['csstidy'] = 'class.csstidy4.php';
 /* YUI Compressor */
 	$libraries['YuiCompressor'] = 'class.yuicompressor4.php';
 /* if not PHP4 -- PHP5 by default */
