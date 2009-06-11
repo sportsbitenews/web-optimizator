@@ -326,25 +326,29 @@ class admin {
 	* Returns lists of allowed hosts from given array
 	**/
 	function check_hosts ($hosts) {
-		$allowed_hosts = "";
-		$etalon = @filesize("images/web.optimizer.logo.png");
-		$etalon2 = @filesize("images/loadbar.png");
-		foreach ($hosts as $host) {
-			$webo_image = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
-			$tmp_image = "image.tmp.png";
+		$main_host = preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']);
+/* exclude local host case */
+		if (strpos($main_host, ".")) {
+			$allowed_hosts = "";
+			$etalon = @filesize("images/web.optimizer.logo.png");
+			$etalon2 = @filesize("images/loadbar.png");
+			foreach ($hosts as $host) {
+				$webo_image = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/web.optimizer.logo.png";
+				$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
-			$this->download($webo_image, $tmp_image);
-			if (@filesize($tmp_image) == $etalon) {
+				$this->download($webo_image, $tmp_image);
+				if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
-				$webo_image2 = "http://" . $host . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/loadbar.png";
-				$tmp_image2 = "image.tmp.png";
-				$this->download($webo_image2, $tmp_image2);
-				if (@filesize($tmp_image2) == $etalon2) {
-					$allowed_hosts .= $host . " ";
+					$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/loadbar.png";
+					$tmp_image2 = "image.tmp.png";
+					$this->download($webo_image2, $tmp_image2);
+					if (@filesize($tmp_image2) == $etalon2) {
+						$allowed_hosts .= $host . " ";
+					}
+					@unlink($tmp_image2);
 				}
-				@unlink($tmp_image2);
+				@unlink($tmp_image);
 			}
-			@unlink($tmp_image);
 		}
 		return trim($allowed_hosts);
 	}
