@@ -13,12 +13,13 @@ class YuiCompressor {
 		$this->file = $cachedir . time() . '.js';
 	}
 
-	public function compress($content, $type="js"){
+	public function compress($content, $type="js") {
 		@file_put_contents($this->file, $content);
-		if(!file_exists($this->file)){
+		if (!file_exists($this->file)) {
 			return $content;
 		}
-		if(!$this->check()){
+		if (!$this->check()) {
+			@unlink($this->file);
 			return $content;
 		}
 		$content = @shell_exec($this->command . ' ' . $this->jarfile . ' ' . $this->file);
@@ -26,11 +27,11 @@ class YuiCompressor {
 		return $content; 
 	}
 
-	function check(){
+	function check() {
 		$locate = @shell_exec('whereis java');
-		if(isset($locate) && is_executable($this->jarfile)){
+		if (isset($locate) && is_executable($this->jarfile)) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
