@@ -704,7 +704,7 @@ class web_optimizer {
 					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
 					$contents = $this->packer->pack();
 				} elseif ($options['minify_with'] == 'yui') {
-					$this->yuicompressor = new YuiCompressor($options->cachedir, $options->installdir);
+					$this->yuicompressor = new YuiCompressor($options['cachedir'], $options['installdir']);
 					$contents = $this->yuicompressor->compress($contents);
 				} elseif ($options['minify_with'] == 'jsmin') {
 					$this->jsmin = new JSMin($contents);
