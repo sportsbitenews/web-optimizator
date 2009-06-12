@@ -34,7 +34,7 @@ $compress_options['external_scripts']['head_end'] = "1";
 ## Merge inline styles in head and external CSS files
 $compress_options['external_scripts']['css'] = "1";
 ## Ignore list, files separated by space
-$compress_options['external_scripts']['ignore_list'] = "tiny_mce.js fckeditor.js";
+$compress_options['external_scripts']['ignore_list'] = "tiny_mce.js tiny_mce_gzip.php fckeditor.js";
 ## Performance options
 $compress_options['dont_check_file_mtime']['on'] = "1";
 ## Minify options

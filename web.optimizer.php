@@ -39,7 +39,9 @@ $libraries = array();
 /* Include this for CSS Sprites generating */
 $libraries['css_sprites'] = 'css.sprites.php';
 
-if (substr(phpversion(), 0, 1) == 4) {
+$compress_options['php'] = substr(phpversion(), 0, 1);
+
+if ($compress_options['php'] == 4) {
 /* JSMin */
 	$libraries['JSMin'] = 'jsmin4.php';
 /* Dean Edwards Packer */
