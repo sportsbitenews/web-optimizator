@@ -734,6 +734,10 @@ AddOutputFilterByType DEFLATE application/x-javascript";
 AddEncoding gzip .gz";
 						}
 						if ($htaccess_options['mod_rewrite']) {
+							$content .= "
+RewriteEngine On
+RewriteBase /
+";
 							if ($this->input['user']['gzip']['css']) {	
 								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
@@ -751,7 +755,7 @@ RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 <FilesMatch .*\.(js\.gz)$>
-    ForceType application/x-javascript
+	ForceType application/x-javascript
 </FilesMatch>";
 							}
 						}
