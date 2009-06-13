@@ -739,14 +739,20 @@ AddEncoding gzip .gz";
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]";
+RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
+<FilesMatch .*\.(css\.gz)$>
+	ForceType text/css
+</FilesMatch>";
 							}
 							if ($this->input['user']['gzip']['javascript']) {	
 								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]";
+RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
+<FilesMatch .*\.(js\.gz)$>
+    ForceType application/x-javascript
+</FilesMatch>";
 							}
 						}
 						if ($htaccess_options['mod_expires']) {
