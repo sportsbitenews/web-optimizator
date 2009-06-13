@@ -27,7 +27,7 @@ class web_optimizer {
 /* define head of the webpage for scripts / styles */
 		$this->head = '';
 /* define PHP version */
-		$this->php = $options['php'];
+		$this->php = $this->options['php'];
 /* number of external files calls to process */
 		$this->initial_files = array();
 /* Set options */

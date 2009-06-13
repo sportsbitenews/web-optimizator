@@ -727,6 +727,7 @@ AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript";
 							}
+						}
 /* try to add static gzip */
 						if ($htaccess_options['mod_mime']) {
 							$content .= "
