@@ -44,10 +44,12 @@ class css_sprites {
 		$this->no_sprites = $options['no_css_sprites'];
 /* optimiza all CSS images via smush.it? */
 		$this->image_optimization = $options['image_optimization'];
+		if (!empty($css_code)) {
 /* convert CSS code to hash */
-		$this->css = new csstidy();
-		$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
-		$this->css->parse($css_code);
+			$this->css = new csstidy();
+			$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
+			$this->css->parse($css_code);
+		}
 /* CSS rule to avoid overlapping of properties */
 		$this->none = 'none!important';
 	}
@@ -461,13 +463,14 @@ __________________
 /* data:URI */
 			case 1:
 				$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
-/* don't create data:URI greater than 32KB -- for IE8. Thx for htc for ali@ */
-				if (is_file($this->css_image) && $extension != 'htc') {
+/* Thx for htc for ali@ */
+				if (is_file($this->css_image) && !in_array($extension, array('htc', 'cur', 'eot', 'ttf'))) {
 /* image optimization */
 					if ($this->image_optimization && !strpos($this->css_image, "/webo.")) {
 						$this->smushit($this->css_image);
 					}
-					if (@filesize($this->css_image) < 21800) {
+/* don't create data:URI greater than 32KB -- for IE8 */
+					if (@filesize($this->css_image) < 24576) {
 /* convert image to base64-string */
 						$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 					} else {
