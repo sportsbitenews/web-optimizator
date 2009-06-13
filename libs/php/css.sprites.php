@@ -11,47 +11,49 @@ class css_sprites {
 	* Constructor
 	* Sets the options
 	**/
-	function css_sprites ($css_code, $options) {
+	function css_sprites ($css_code = '', $options = array()) {
 /* array for global media@ distribution */
 		$this->media = array();
 /* array for images from selectors */
 		$this->css_images = array();
 /* timestamp for CSS Sprites files */
 		$this->timestamp = '';
+		if (!empty($options)) {
 /* set directories */
-		$this->current_dir = $options['current_dir'];
-		$this->root_dir = $options['root_dir'];
-		$this->website_root = $options['website_root'];
+			$this->current_dir = $options['current_dir'];
+			$this->root_dir = $options['root_dir'];
+			$this->website_root = $options['website_root'];
 /* output True Color images in JPEG (or PNG24) */
-		$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
+			$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
 /* use aggressive logic for repeat-x/y */
-		$this->aggressive = $options['aggressive'];
+			$this->aggressive = $options['aggressive'];
 /* leave some space for combined Sprites to handle resized fonts */
-		$this->extra_space = $options['extra_space'];
+			$this->extra_space = $options['extra_space'];
 /* list of excluded from CSS Sprites files */
-		$this->ignore_list = split(" ", $options['ignore_list']);
+			$this->ignore_list = split(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
-		$this->data_uris = $options['data_uris'];
+			$this->data_uris = $options['data_uris'];
 /* part or full process */
-		$this->partly = $options['partly'];
+			$this->partly = $options['partly'];
 /* exclude IE6 from CSS Sprites */
-		$this->no_ie6 = $options['no_ie6'];
+			$this->no_ie6 = $options['no_ie6'];
 /* if there is a memory limit we need to restrict operating area for images */
-		$this->memory_limited = $options['memory_limited'];
+			$this->memory_limited = $options['memory_limited'];
 /* if there is initial images dimensional limit */
-		$this->dimensions_limited = $options['dimensions_limited'];
+			$this->dimensions_limited = $options['dimensions_limited'];
 /* only compress CSS and convert images to data:URI */
-		$this->no_sprites = $options['no_css_sprites'];
+			$this->no_sprites = $options['no_css_sprites'];
 /* optimiza all CSS images via smush.it? */
-		$this->image_optimization = $options['image_optimization'];
+			$this->image_optimization = $options['image_optimization'];
+/* CSS rule to avoid overlapping of properties */
+			$this->none = 'none!important';
+		}
 		if (!empty($css_code)) {
 /* convert CSS code to hash */
 			$this->css = new csstidy();
 			$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
 			$this->css->parse($css_code);
 		}
-/* CSS rule to avoid overlapping of properties */
-		$this->none = 'none!important';
 	}
 	/**
 	* Main function
