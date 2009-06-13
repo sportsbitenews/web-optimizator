@@ -1205,7 +1205,7 @@ class web_optimizer {
 /* Pull out the script, textarea and pre blocks */
 		preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
 		$_script_blocks = $match[0];
-		$source = preg_replace("!<script[^>]*>.*?</script>!is",
+		$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));

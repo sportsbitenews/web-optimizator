@@ -453,15 +453,15 @@ class admin {
 							'intro' => _WEBO_SPLASH2_MINIFY_INFO,
 							'value' => $this->compress_options['minify']
 						),
-						'unobtrusive' => array(
-							'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
-							'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
-							'value' => $this->compress_options['unobtrusive']
-						),
 						'external_scripts' => array(
 							'title' => _WEBO_SPLASH2_EXTERNAL,
 							'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
 							'value' => $this->compress_options['external_scripts']
+						),
+						'unobtrusive' => array(
+							'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
+							'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
+							'value' => $this->compress_options['unobtrusive']
 						),
 						'dont_check_file_mtime' => array(
 							'title' => _WEBO_SPLASH2_MTIME,
@@ -728,26 +728,24 @@ AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript";
 							}
 /* try to add static gzip */
-						} else {
-							if ($htaccess_options['mod_mime']) {
-								$content .= "
+						if ($htaccess_options['mod_mime']) {
+							$content .= "
 AddEncoding gzip .gz";
-							}
-							if ($htaccess_options['mod_rewrite']) {
-								if ($this->input['user']['gzip']['css']) {	
-									$content .= "
+						}
+						if ($htaccess_options['mod_rewrite']) {
+							if ($this->input['user']['gzip']['css']) {	
+								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]";
-								}
-								if ($this->input['user']['gzip']['javascript']) {	
-									$content .= "
+							}
+							if ($this->input['user']['gzip']['javascript']) {	
+								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]";
-								}
 							}
 						}
 						if ($htaccess_options['mod_expires']) {
