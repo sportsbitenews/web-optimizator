@@ -82,10 +82,6 @@ define('_WEBO_SPLASH2_NO', 'No:');
 define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists and it is your root directory.');
 /* Web Optimizer options */
-define('_WEBO_SPLASH2_JSLIB', 'JavaScript Libraries');
-define('_WEBO_SPLASH2_JSLIB_INFO', 'If your plugins or theme use a JavaScript library, it is advisable to let Web Optimizer handle where it is included.
-									<br/><br/>Web Optimizer has determined that the libraries below could be in use by your installation. It is recommended that you tick all the scripts to let Web Optimizer handle them.
-									<br/><br/>If your plugins or theme use a higher version or you are sure you don\'t use the library at all, leave unticked.');
 define('_WEBO_SPLASH2_MINIFY', 'Minify Options');
 define('_WEBO_SPLASH2_MINIFY_INFO', 'Minifying removes whitespace and other unnecessary characters.
 									<br/>Also you can choose the tool for CSS/JavaScript minification or obfuscation.');
@@ -180,7 +176,7 @@ define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage for PHP proces
 define('_WEBO_css_sprites_dimensions_limited', 'Exclude images greater given number in one dimension');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
 define('_WEBO_parallel_enabled', 'Enable multiple hosts');
-define('_WEBO_parallel_allowed_list', 'Allowed hosts');
+define('_WEBO_parallel_allowed_list', 'Allowed hosts, i.e. img i1 i2');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Enable <code>mod_deflate</code>');
 define('_WEBO_htaccess_mod_gzip', 'Enable <code>mod_gzip</code>');

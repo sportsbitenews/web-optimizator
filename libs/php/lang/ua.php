@@ -28,6 +28,8 @@
  //_WEBO_unobtrusive_ads
  //_WEBO_minify_html_one_string
  //_WEBO_external_scripts_head_end
+ //_WEBO_parallel_enabled
+ //_WEBO_parallel_allowed_list
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
