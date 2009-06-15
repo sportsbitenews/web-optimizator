@@ -15,8 +15,6 @@ $compress_options['html_cachedir'] = "";
 $compress_options['webo_cachedir'] = "";
 ## Root directory of the website
 $compress_options['document_root'] = "";
-## Comma separated list of JS Libraries to include
-$compress_options['js_libraries'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add JS loader for all libraries right before </body>

@@ -223,7 +223,7 @@ class web_optimizer {
 		if(is_array($this->options)) {
 			foreach($this->options AS $func => $option) {
 				if(method_exists($this,$func)) {
-					if(!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires'])) {
+					if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
 						$this->$func($option, $func);
 					}
 				}
@@ -429,12 +429,13 @@ class web_optimizer {
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		if (!empty($imgs)) {
+			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 /* skip images on different hosts */
 				if ((!strpos($old_src, "://") || stripos($old_src, "://" . $_SERVER['HTTP_HOST'] . "/") || stripos($old_src, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/")) && empty($replaced[$old_src])) {
 					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
-					$new_src = "http" . ($_SERVER['HTTPS'] ? "s" : "") . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
+					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;
 				}
