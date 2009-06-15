@@ -327,9 +327,9 @@ class admin {
 	**/
 	function check_hosts ($hosts) {
 		$main_host = preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']);
+		$allowed_hosts = "";
 /* exclude local host case */
 		if (strpos($main_host, ".")) {
-			$allowed_hosts = "";
 			$etalon = @filesize("images/web.optimizer.logo.png");
 			$etalon2 = @filesize("images/loadbar.png");
 			foreach ($hosts as $host) {
@@ -340,7 +340,7 @@ class admin {
 				if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
 					$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "images/loadbar.png";
-					$tmp_image2 = "image.tmp.png";
+					$tmp_image2 = "image.tmp2.png";
 					$this->download($webo_image2, $tmp_image2);
 					if (@filesize($tmp_image2) == $etalon2) {
 						$allowed_hosts .= $host . " ";
