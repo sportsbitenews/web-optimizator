@@ -54,6 +54,8 @@ class css_sprites {
 			$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
 			$this->css->parse($css_code);
 		}
+/* restrict square for large Sprites due to system limitations */
+		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", ini_get('memory_limit')))) - memory_get_usage()) / 10);
 	}
 	/**
 	* Main function
@@ -523,86 +525,89 @@ __________________
 			krsort($ordered_images);
 /* add images to matrix */
 			foreach ($ordered_images as $key => $image) {
-				$minimal_x = 0;
-				$minimal_y = 0;
+/* restrict square if no memory */
+				if ($matrix_x * $matrix_y <= $this->possible_square) {
+					$minimal_x = 0;
+					$minimal_y = 0;
 /* if this is a unique image */
-				if (empty($added_images[$image[0]])) {
+					if (empty($added_images[$image[0]])) {
 /* initial coordinates */
-					$I = $J = 0;
-					$width = $image[1] + $image[3] + $image[5] + ($this->extra_space ? 5 : 0);
-					$height = $image[2] + $image[4] + $image[6] + ($this->extra_space ? 5 : 0);
-					$shift_x = $image[3];
-					$shift_y = $image[4];
+						$I = $J = 0;
+						$width = $image[1] + $image[3] + $image[5] + ($this->extra_space ? 5 : 0);
+						$height = $image[2] + $image[4] + $image[6] + ($this->extra_space ? 5 : 0);
+						$shift_x = $image[3];
+						$shift_y = $image[4];
 /* to remember the most 'full' place for new image */
-					$minimal_square = $matrix_x * $matrix_y;
+						$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
-					$no_space = 1;
-					for ($i = 0; $i < $matrix_x; $i++) {
-						for ($j = 0; $j < $matrix_y; $j++) {
+						$no_space = 1;
+						for ($i = 0; $i < $matrix_x; $i++) {
+							for ($j = 0; $j < $matrix_y; $j++) {
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
-							if (empty($matrix[$i][$j]) && 
-								empty($matrix[$i][$j + $height]) && 
-								empty($matrix[$i + $width][$j]) &&
-								empty($matrix[$i + $width][$j + $height]) &&
+								if (empty($matrix[$i][$j]) && 
+									empty($matrix[$i][$j + $height]) && 
+									empty($matrix[$i + $width][$j]) &&
+									empty($matrix[$i + $width][$j + $height]) &&
 /* additionally check 4 points in the middle of edges + 1 center point */
-								empty($matrix[$i + round($width/2)][$j]) &&
-								empty($matrix[$i][$j + round($height/2)]) &&
-								empty($matrix[$i + $width][$j + round($height/2)]) &&
-								empty($matrix[$i + round($width/2)][$j + $height]) &&
-								empty($matrix[$i + round($width/2)][$j + round($height/2)])) {
+									empty($matrix[$i + round($width/2)][$j]) &&
+									empty($matrix[$i][$j + round($height/2)]) &&
+									empty($matrix[$i + $width][$j + round($height/2)]) &&
+									empty($matrix[$i + round($width/2)][$j + $height]) &&
+									empty($matrix[$i + round($width/2)][$j + round($height/2)])) {
 /* and Sprite is big enough */
-								if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
-									$I = $i;
-									$J = $j;
-									$i = $matrix_x;
-									$j = $matrix_y;
-									$no_space = 0;
-								} else {
-/* else try to remember this placement -- it can be the optimal one */
-									if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
-/* if this place is better and we haven't chosen placement yet */
-										$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
+									if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
 										$I = $i;
 										$J = $j;
+										$i = $matrix_x;
+										$j = $matrix_y;
+										$no_space = 0;
+									} else {
+/* else try to remember this placement -- it can be the optimal one */
+										if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
+/* if this place is better and we haven't chosen placement yet */
+											$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
+											$I = $i;
+											$J = $j;
+										}
 									}
 								}
 							}
 						}
-					}
-					if ($no_space) {
+						if ($no_space) {
 /* re-count minimal square with linear enlargement */
-						if ($width * $matrix_y <= $minimal_square) {
-							$I = $matrix_x;
-							$J = 0;
-						} elseif ($height * $matrix_x <= $minimal_square) {
-							$I = 0;
-							$J = $matrix_y;
+							if ($width * $matrix_y <= $minimal_square) {
+								$I = $matrix_x;
+								$J = 0;
+							} elseif ($height * $matrix_x <= $minimal_square) {
+								$I = 0;
+								$J = $matrix_y;
+							}
 						}
-					}
 /* calculate increase of matrix dimensions */
-					$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
-					$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
+						$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
+						$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
 /* fill matrix for this image */
-					for ($i = $I; $i < $I + $width; $i++) {
-						for ($j = $J; $j < $J + $height; $j++) {
-							$matrix[$i][$j] = 1;
+						for ($i = $I; $i < $I + $width; $i++) {
+							for ($j = $J; $j < $J + $height; $j++) {
+								$matrix[$i][$j] = 1;
+							}
 						}
-					}
 /* remember coordinates for this image, keep top/left */
-					$ordered_images[$key][3] = $I + $ordered_images[$key][3];
-					$ordered_images[$key][4] = $J + $ordered_images[$key][4];
+						$ordered_images[$key][3] = $I + $ordered_images[$key][3];
+						$ordered_images[$key][4] = $J + $ordered_images[$key][4];
 /* add images to processed */
-					$added_images[$image[0]] = array($I, $J);
-				} else {
+						$added_images[$image[0]] = array($I, $J);
+					} else {
 /* just copy calculated coordinates */
-					$ordered_images[$key][3] = $added_images[$image[0]][0];
-					$ordered_images[$key][4] = $added_images[$image[0]][1];
-				}
+						$ordered_images[$key][3] = $added_images[$image[0]][0];
+						$ordered_images[$key][4] = $added_images[$image[0]][1];
+					}
 /* remember initial background-position */
-				$ordered_images[$key][5] = $shift_x;
-				$ordered_images[$key][6] = $shift_y;
-				$matrix_x += $minimal_x;
-				$matrix_y += $minimal_y;
+					$ordered_images[$key][5] = $shift_x;
+					$ordered_images[$key][6] = $shift_y;
+					$matrix_x += $minimal_x;
+					$matrix_y += $minimal_y;
+				}
 			}
 			$css_images['images'] = $ordered_images;
 			$css_images['x'] = $matrix_x;
@@ -622,29 +627,32 @@ __________________
 			$y = $shift;
 /* creating 'steps' */
 			foreach ($css_icons['images'] as $image) {
-				$width = $image[1];
-				$height = $image[2];
-				$final_x = $image[3];
-				$final_y = $image[4];
-				$i = $x;
-				$x = $x + $width + $final_x;
-				$y = $y - $height - $final_y;
-				$image[3] = $x - $width;
-				$image[4] = $y + $final_y;
-				$image[5] = $final_x;
-				$image[6] = $final_y;
-				$j = $y;
+/* restrict square if no memory */
+				if ($x * ($shift - $distance) + $matrix_x * $matrix_y < $this->possible_square) {
+					$width = $image[1];
+					$height = $image[2];
+					$final_x = $image[3];
+					$final_y = $image[4];
+					$i = $x;
+					$x = $x + $width + $final_x;
+					$y = $y - $height - $final_y;
+					$image[3] = $x - $width;
+					$image[4] = $y + $final_y;
+					$image[5] = $final_x;
+					$image[6] = $final_y;
+					$j = $y;
 /* check for 3 points: left, middle and right for the top border */
-				while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
-					$j--;
-				}
+					while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
+						$j--;
+					}
 /* remember minimal distance */
-				if ($distance > $y - $j - 1) {
-					$distance = $y - $j - 1 - $final_y;
-				}
+					if ($distance > $y - $j - 1) {
+						$distance = $y - $j - 1 - $final_y;
+					}
 /* to separate new images from old ones */
-				$image[] = 1;
-				$css_images['images'][] = $image;
+					$image[] = 1;
+					$css_images['images'][] = $image;
+				}
 			}
 		}
 /* try to restore required pixels in the Sprite */
