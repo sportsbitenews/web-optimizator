@@ -7,7 +7,8 @@
 
 /* general layout */
 define('_WEBO_CHARSET', 'windows-1251');
-define('_WEBO_GENERAL_TITLE', 'Конфигурация Веб Оптимизатора');
+define('_WEBO_GENERAL_TITLE', 'Настройка Веб Оптимизатора');
+define('_WEBO_GENERAL_FOOTER', 'Быстрее молнии!');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Хмм... у нас возникла проблема');
@@ -16,7 +17,8 @@ define('_WEBO_ERROR_ERROR', 'Упс! Что-то не так');
 /* Enter login and password */
 define('_WEBO_LOGIN_TITLE', 'Авторизация');
 define('_WEBO_LOGIN_INSTALLED', 'Для этого сайта уже установлен Веб Оптимизатор ');
-define('_WEBO_LOGIN_INSTALLED2', '. Пожалуйста, введите ваш логин и пароль для доступа ко всем настройкам:');
+define('_WEBO_LOGIN_INSTALLED2', '. Пожалуйста, введите ваш логин и пароль для доступа ко всем настройкам и нажмите кнопку <strong>Далее</strong>.');
+define('_WEBO_LOGIN_INSTALLED3', '. Для доступа ко всем настройкам нажмите кнопку <strong>Далее</strong>.');
 define('_WEBO_LOGIN_USERNAME', 'Логин');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введите ваш логин');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
@@ -26,13 +28,13 @@ define('_WEBO_SPLAHS1_PROTECTED2', 'Веб Оптимизатор надежно защищен от внешнего 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Вы можете обновить вашу текущую версию Веб Оптимизатора (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') до самой последней. Для этого введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Обновить</strong>. Веб Оптимизатор будет автоматически обновлен до версии <strong>');
+define('_WEBO_LOGIN_UPGRADENOTICE2', ') до самой последней. Для этого введите ваш логин и пароль и нажмите кнопку <strong>Обновить</strong>. Веб Оптимизатор будет автоматически обновлен до версии <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_LOGIN_UPGRADENOTICE4', ') до самой последней версии <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'Вы успешно обновились до версии ');
 define('_WEBO_UPGRADE_UNABLE', 'Не удается загрузить последнюю версию из репозитория. Пожалуйста, проверьте соединение сервера с интернетом и наличие установленного curl.');
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'Чтобы удалить Веб Оптимизатор, пожалуйста, введите ваш логин и пароль в форме выше и нажмите кнопку <strong>Удалить</strong>.');
+define('_WEBO_LOGIN_UNINSTALL', 'Чтобы удалить Веб Оптимизатор, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Удалить</strong>.');
 define('_WEBO_LOGIN_UNINSTALL2', 'Веб Оптимизатор может быть отключен для вашего сайта. Для этого его нужно просто удалить.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Удалить Веб Оптимизатор');
 define('_WEBO_LOGIN_FAILED', 'Неверно введен логин и(ли) пароль');
@@ -52,6 +54,7 @@ define('_WEBO_NEW_ENTER', 'Установите ваш логин и пароль');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Удалить');
+define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Удаление');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование Веб Оптимизатора. Вы можете в любой момент установить его снова просто зайдя на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">страницу Веб Оптиизатора</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Мы будем рады видеть отзывы о системе на <a href="http://code.google.com/p/web-optimizator/">сайте Веб Оптимизатора</a>, вы также можете отправить <a href="http://code.google.com/p/web-optimizator/issues/list">любые проблемные вопросы</a>.');
@@ -61,9 +64,10 @@ define('_WEBO_SPLASH1_TITLE', 'Установка - шаг первый');
 define('_WEBO_SPLASH1_WELCOME', 'Добро пожаловать в установку Веб Оптимизатора!');
 define('_WEBO_SPLASH1_PATH', 'Настройка путей');
 define('_WEBO_SPLASH1_FULLPATH', 'Полный путь к корню сайта:');
-define('_WEBO_SPLASH1_NOTICE', 'Корень сайта &mdash; это директория на жестком диске, в которой находятся и откуда отдаются все ваши HTML-файлы. Если вы понятия не имеете, о чем идет речь, то лучше оставить указанный выше путь. Для этого просто нажмите кнопку <strong>Далее...</strong>.');
+define('_WEBO_SPLASH1_NOTICE', 'Корень сайта &mdash; это директория на жестком диске, в которой находятся и откуда отдаются все ваши HTML-файлы. Если вы понятия не имеете, о чем идет речь, то лучше оставить указанный выше путь. Для этого просто нажмите кнопку <strong>Далее</strong>.');
 define('_WEBO_SPLASH1_INCORRECT', '<strong>Если указанный путь отображен неверно</strong>, пожалуйста, введите правильный вариант.');
-define('_WEBO_SPLASH1_NEXT', 'Далее...');
+define('_WEBO_SPLASH1_NEXT', 'Далее');
+define('_WEBO_SPLASH1_BACK', 'Назад');
 define('_WEBO_SPLASH1_EXPRESS', 'Быстрая установка');
 
 /* Second splash -- set options */
@@ -83,61 +87,59 @@ define('_WEBO_SPLASH2_UNABLE', 'Невозможно открыть');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Пожалуйста, убедитесь, что такая директория существует и она располагается в корне сайта.');
 /* Web Optimizer options */
 define('_WEBO_SPLASH2_MINIFY', 'Настройки сжатия');
-define('_WEBO_SPLASH2_MINIFY_INFO', 'Сжатие удаляет из CSS- и JavaScript-файлов пробелы, переводы строк и другие ненужные символы.
-									<br/>Вы также можете выбрать один из нескольких инструментов минимизации или обфускации.
-									<br/>Подробнее о <a href="http://webo.in/articles/habrahabr/14-minifing-css/">сжатии CSS-</a> и <a href="http://webo.in/articles/habrahabr/11-minifing-javascript/">JavaScript-файлов</a>.');
-define('_WEBO_SPLASH2_EXTERNAL', 'Включить внешние JavaScript-файлы и встроенный код');
-define('_WEBO_SPLASH2_EXTERNAL_INFO', 'При активации этой настройки все JavaScript-файлы, подключаемые с внешних сайтов, равно как и просто JavaScript-код, находящийся в секции <code>head</code> будут объединены в один файл, уменьшены в размеры и подключены сразу после CSS-файла.
-									<br/>Это будет особенно полезно при использовании большого числа модулей с разных сайтов, которые не могут быть подключены в &laquo;ненавязчивом&raquo; режиме.
-									<br/>Вы также можете указать имена файлов, которые нужно исключить из подобного объединения (например, ga.js, jquery.min.js и т.д.).
-									<br/>Подробнее о <a href="http://webo.in/articles/habrahabr/50-fast-fast-javascript/">методах ускорения загрузки JavaScript</a>.');
+define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Сжатие удаляет из CSS- и JavaScript-файлов пробелы, переводы строк и другие ненужные символы.</p>
+									<p>Вы также можете выбрать один из нескольких инструментов минимизации или обфускации.</p>
+									<p><a href="http://webo.in/articles/habrahabr/14-minifing-css/">Сжатие CSS-</a> и <a href="http://webo.in/articles/habrahabr/11-minifing-javascript/">JavaScript-файлов</a>.</p>');
+define('_WEBO_SPLASH2_EXTERNAL', 'Включить внешние файлы');
+define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>При активации этой настройки все JavaScript-файлы, подключаемые с внешних сайтов, равно как и просто JavaScript-код, находящийся в секции <code>head</code> будут объединены в один файл, уменьшены в размеры и подключены сразу после CSS-файла.</p>
+									<p>Это будет особенно полезно при использовании большого числа модулей с разных сайтов, которые не могут быть подключены в &laquo;ненавязчивом&raquo; режиме.</p>
+									<p>Вы также можете указать имена файлов, которые нужно исключить из подобного объединения (например, ga.js jquery.min.js).</p>
+									<p><a href="http://webo.in/articles/habrahabr/50-fast-fast-javascript/">Методы ускорения загрузки JavaScript</a>.</p>');
 define('_WEBO_SPLASH2_UNOBTRUSIVE', '&laquo;Ненавязчивый&raquo; JavaScript');
-define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '&laquo;Ненавязчивые&raquo; JavaScript-файлы загружаются сразу после того, как страница отобразиться в браузере (на странице будет сформировано DOM-дерево).
-									<br/>Его использование может значительно увеличить скорость загрузки страницы для конечных пользователей. Но в некоторых случаях (при недостаточно аккуратном использовании JavaScript-библиотек) это может нарушить работоспособность вашего сайта.
-									<br/>Рекомендуется включать эту настройку только в случае полной уверенности в существующей клиентской логики.
-									<br/>Также возможно перенести все вызовы внешних JavaScript-файлов перед <code>&lt;/body&gt;</code>, что позволит отобразить содержимое сайта значительно быстрее.
-									<br/>Подробнее о технике <a href="http://webo.in/articles/all/04-unobtrusive-javascript-operation-clean-up/">&laquo;ненавязчивого&raquo; JavaScript</a>, <a href="http://webo.in/articles/habrahabr/44-unobtrusive-advertisements-basics/">&laquo;ненавязчивой&raquo; рекламе и счетчиках</a>, <a href="http://webo.in/articles/habrahabr/56-non-blocking-javascript/">блокирующих скриптах</a> и <a href="http://webo.in/articles/habrahabr/05-delayed-loading/">&laquo;отложенной&raquo; загрузке</a>');
-define('_WEBO_SPLASH2_MTIME', 'Не проверять время изменения и содержание файлов');
-define('_WEBO_SPLASH2_MTIME_INFO', 'Обычно Веб Оптимизатор при каждой загрузке страницы проверяет, изменились ли файлы (какое у них время изменение и какое в них содержание), и на основе этой информации либо дает ссылки на существующие статические файлы, либо создает новые.
-									<br/>С точки зрения серверной оптимизации более оптимально не проверять каждый раз, изменились ли файлы, а удалять по факту самого изменения закэшированную версию.
-									<br/>С включением этой настройки вам будет необходимо самостоятельно управлять кэшем Веб Оптимизатора, но при этом дополнительная нагрузка на сервер производиться не будет.
-									<br/>Подробнее о <a href="http://webo.in/articles/all/10-frontend-backend-balancing/">влиянии числа подключаемых файлов на скорость загрузки</a>.');
+define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>&laquo;Ненавязчивые&raquo; JavaScript-файлы загружаются сразу после того, как страница отобразиться в браузере. Его использование может значительно увеличить скорость загрузки страницы для конечных пользователей. Но в некоторых случаях это может нарушить работоспособность сайта.</p>
+									<p>Рекомендуется включать эту настройку только в случае полной уверенности в существующей клиентской логики.</p>
+									<p>Также возможно перенести все вызовы внешних JavaScript-файлов перед <code>&lt;/body&gt;</code>.</p>
+									<p><a href="http://webo.in/articles/all/04-unobtrusive-javascript-operation-clean-up/">Техника &laquo;ненавязчивого&raquo; JavaScript</a>, <a href="http://webo.in/articles/habrahabr/44-unobtrusive-advertisements-basics/">&laquo;ненавязчивая&raquo; реклама и счетчики</a>, <a href="http://webo.in/articles/habrahabr/56-non-blocking-javascript/">блокирующие скрипты</a> и <a href="http://webo.in/articles/habrahabr/05-delayed-loading/">&laquo;отложенная&raquo; загрузка</a>.</p>');
+define('_WEBO_SPLASH2_MTIME', 'Не проверять актуальность');
+define('_WEBO_SPLASH2_MTIME_INFO', '<p>Обычно Веб Оптимизатор при каждой загрузке страницы проверяет, изменились ли файлы (какое у них время изменение и какое в них содержание), и на основе этой информации либо дает ссылки на существующие статические файлы, либо создает новые.</p>
+									<p>С точки зрения серверной оптимизации более оптимально не проверять каждый раз, изменились ли файлы, а удалять по факту самого изменения закэшированную верси С включением этой настройки вам будет необходимо самостоятельно управлять кэшем Веб Оптимизатора.</p>
+									<p><a href="http://webo.in/articles/all/10-frontend-backend-balancing/">Влияние числа подключаемых файлов на скорость загрузки</a>.</p>');
 define('_WEBO_SPLASH2_GZIP', 'Настройки архивирования');
-define('_WEBO_SPLASH2_GZIP_INFO', 'Применение <code>gzip</code>-сжатия позволит на 80-85% уменьшить размер текстовых файлов.
-									<br/>Для нагруженных сайтов рекомендуется настройки <code>gzip</code>-сжатия перенести в конфигурационный файл сервера (или использовать настройки <code>.htaccess</code> ниже).
-									<br/>Подробнее о <a href="http://webo.in/articles/habrahabr/30-gzip-versus-broadband/">ресурсоемкости</a> и <a href="http://webo.in/articles/habrahabr/33-gzip-level-tool/">эффективности gzip-сжатия</a>.');
+define('_WEBO_SPLASH2_GZIP_INFO', '<p>Применение <code>gzip</code>-сжатия позволит на 80-85% уменьшить размер текстовых файлов.</p>
+									<p>Для нагруженных сайтов рекомендуется настройки <code>gzip</code>-сжатия перенести в конфигурационный файл сервера (или использовать настройки <code>.htaccess</code> ниже).</p>
+									<p><a href="http://webo.in/articles/habrahabr/30-gzip-versus-broadband/">Ресурсоемкость</a> и <a href="http://webo.in/articles/habrahabr/33-gzip-level-tool/">эффективность gzip-сжатия</a>.</p>');
 define('_WEBO_SPLASH2_EXPIRES', '&laquo;Вечное&raquo; кэширование');
-define('_WEBO_SPLASH2_EXPIRES_INFO', 'В результате работы этой настройки ко всем статическим файлам будут добавлены заголовки кэширования, позволяющие предотвратить их повторный запрос с сервера для одного и того же пользователя.
-									<br/>При изменении JavaScript- или CSS-файлов автоматически будут создаваться их новые минимизированные версии, что позволит &laquo;пробить&raquo; кэш в браузерах. Для картинок и других статических файлов рекомендуется использовать новое физическое имя при их изменениию.
-									<br/>Подробнее об <a href="http://webo.in/articles/all/http-caching/">технике</a> и <a href="http://webo.in/articles/habrahabr/15-yahoo-best-practices/#expires">эффективности</a> кэширования.');
+define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>В результате работы этой настройки ко всем статическим файлам будут добавлены заголовки кэширования, позволяющие предотвратить их повторный запрос с сервера для одного и того же пользователя.</p>
+									<p>При изменении JavaScript- или CSS-файлов автоматически будут создаваться их новые минимизированные версии, что позволит &laquo;пробить&raquo; кэш в браузерах. Для картинок и других статических файлов рекомендуется использовать новое физическое имя при их изменениию.</p>
+									<p><a href="http://webo.in/articles/all/http-caching/">Кэширование </a> и <a href="http://webo.in/articles/habrahabr/15-yahoo-best-practices/#expires">его эффективность</a>.</p>');
 define('_WEBO_SPLASH2_HTMLCACHE', 'Кэшировать HTML-файлы');
-define('_WEBO_SPLASH2_HTMLCACHE_INFO', 'Веб Оптиизатор может кэшировать конечный HTML-код, чем предотвращает значительную работу на стороне сервера и уменьшает время создания страницы.
-									<br/>Внимание: при включении этой настройки вся логика, осуществляемая на сервере, будет недоступна. Страницы станут полностью статическими. Рекомендуется включать эту настройку, только если вы полностью уверены в последствиях.
-									<br/>Подробнее о <a href="http://webo.in/articles/all/2009/16-content-flushing/">сбросе документа</a> и <a href="http://webo.in/articles/habrahabr/34-streaming-chunking-finding-end/">чанках</a>.');
+define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Веб Оптимизатор может кэшировать конечный HTML-код, чем предотвращает значительную работу на стороне сервера и уменьшает время создания страницы.</p>
+									<p>Внимание: при включении этой настройки вся логика, осуществляемая на сервере, будет недоступна. Страницы станут полностью статическими. Рекомендуется включать эту настройку, только если вы полностью уверены в последствиях.</p>
+									<p><a href="http://webo.in/articles/all/2009/16-content-flushing/">Быстрый сброс документа</a> и <a href="http://webo.in/articles/habrahabr/34-streaming-chunking-finding-end/">чанки</a>.</p>');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
-define('_WEBO_SPLASH2_SPRITES_INFO', 'Существует возможность объединить большинство фоновых изображений в CSS Sprites. Это существенно уменьшит число HTTP-запросов при загрузке сайта.
-									<br/>Эта техника полностью поддерживается всеми современными браузерами. Вы также можете переключиться в более агрессивный режим использования CSS Sprites, если вы уверены в корректности ваших CSS-правил.
-									<br/>Также можно задать набор изображений, которые будут исключены при создании CSS Sprites (например, logo.png, bg.gif и т.д.).
-									<br/>Подробнее о технике <a href="http://webo.in/articles/habrahabr/08-all-about-css-sprites/">CSS Sprites</a> и <a href="http://webo.in/articles/habrahabr/89-css-sprites-2.0/>ее автоматизации</a>.');
+define('_WEBO_SPLASH2_SPRITES_INFO', '<p>Существует возможность объединить большинство фоновых изображений в CSS Sprites. Это существенно уменьшит число HTTP-запросов при загрузке сайта.</p>
+									<p>Эта техника полностью поддерживается всеми современными браузерами. Вы также можете переключиться в более агрессивный режим использования CSS Sprites, если вы уверены в корректности ваших CSS-правил.</p>
+									<p>Также можно задать набор изображений, которые будут исключены при создании CSS Sprites (например, logo.png bg.gif).</p>
+									<p><a href="http://webo.in/articles/habrahabr/08-all-about-css-sprites/">Техника CSS Sprites</a> и <a href="http://webo.in/articles/habrahabr/89-css-sprites-2.0/">ее автоматизация</a>.</p>');
 define('_WEBO_SPLASH2_DATAURI', 'Data:URI');
-define('_WEBO_SPLASH2_DATAURI_INFO', 'Также возможно перевести все фоновые изображения в формат <code>data:URI</code> (base64-вид). Таким образом при загрузке дизайна сайта будет осуществлен только один HTTP-запрос &mdash; к файлу стилей.
-									<br/>Внимание: эта техника не поддерживается рядом браузеров (Internet Explorer до 7 версии включительно). Однако для них используются специальные CSS-правила, позволяющие загрузить обычные изображения. Также размер конечного CSS-файла может существенно увеличиться (за счет включения в него самих фоновых изображений).
-									<br/>Подробнее о технике <a href="http://webo.in/articles/habrahabr/29-all-about-data-url-images/"><code>data:URI</code></a> и <a href="http://webo.in/articles/habrahabr/69-total-image-optimization/">оптимизации изображений</a>.');
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Также возможно перевести все фоновые изображения в формат <code>data:URI</code> (base64-вид). Таким образом при загрузке дизайна сайта будет осуществлен только один HTTP-запрос &mdash; к файлу стилей.</p>
+									<p>Внимание: эта техника не поддерживается рядом браузеров (Internet Explorer до 7 версии включительно). Однако для них используются специальные CSS-правила, позволяющие загрузить обычные изображения. Также размер конечного CSS-файла может существенно увеличиться (за счет включения в него самих фоновых изображений).</p>
+									<p><a href="http://webo.in/articles/habrahabr/29-all-about-data-url-images/">Техника <code>data:URI</code></a> и <a href="http://webo.in/articles/habrahabr/69-total-image-optimization/">оптимизации изображений</a>.</p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Множественные хосты');
-define('_WEBO_SPLASH2_PARALLEL_INFO', 'Для ускорения процесса отображения страницы в некоторых случаях полезно добавить несколько хостов для статиченых файлов (изображений). В таком случае браузеры могут открыть больше параллельных соединений к основному серверу и показать страницу быстрее.
-									<br/>Внимание: для обеспечения работы данной настройки необходимо добавить в конфигурационный файл сервера несколько служебных псевдонимов для основного хоста, например: <code>i1.site.ru</code> <code>i2.site.ru</code> <code>i3.site.ru</code> <code>i4.site.ru</code>, &mdash; а также обеспечить их соответствующими записями в DNS (которые бы указывали для этих хостов на тот же IP-адрес). Веб Оптимизатор автоматически проверяет доступность заявленных хостов и только после этого начинает распределять по ним загрузку статических файлов.
-									<br/>Подробнее об <a href="http://webo.in/articles/habrahabr/32-parallel-downloads-optimization/">использовании параллельных загрузок</a>.');
+define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Для ускорения процесса отображения страницы в некоторых случаях полезно добавить несколько хостов для статических файлов (изображений), чтобы браузеры могут открыть больше параллельных соединений к серверу.</p>
+									<p>Внимание: для обеспечения работы данной настройки необходимо добавить в конфигурационный файл сервера несколько служебных псевдонимов для основного хоста, например: <code>i1.site.ru</code> <code>i2.site.ru</code> <code>i3.site.ru</code> <code>i4.site.ru</code>, &mdash; а также обеспечить их соответствующими записями в DNS (которые бы указывали для этих хостов на тот же IP-адрес).</p>
+									<p><a href="http://webo.in/articles/habrahabr/32-parallel-downloads-optimization/">Использование параллельных загрузок</a>.</p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Использование .htaccess');
-define('_WEBO_SPLASH2_HTACCESS_INFO', 'Большая часть настроек <code>gzip</code>-сжатия и кэширования могут быть записаны в конфигурационном файле вашего сервера для избежания дополнительной работы на стороне серверных скриптов. Это может быть проделано с помощью файла <code>.htaccess</code> (при необходимости вы можете впоследствии самостоятельно перенести все настройки в файл <code>httpd.cond</code>).
-									<br/>Подробнее об использовании <a href="http://webo.in/articles/all/mod-gzip-minify-on-fly/"><code>mod_gzip</code></a>, <a href="http://webo.in/articles/all/2009/12-faster-and-cheaper-with-gzip/"><code>mod_deflate</code></a> и <a href="http://webo.in/articles/habrahabr/07-gzip-all/"><code>mod_rewrite</code></a>.
-									<br/>Доступные модули: ');
+define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Большая часть настроек <code>gzip</code>-сжатия и кэширования могут быть записаны в конфигурационном файле вашего сервера для избежания дополнительной работы на стороне серверных скриптов. Это может быть проделано с помощью файла <code>.htaccess</code> (при необходимости вы можете впоследствии самостоятельно перенести все настройки в файл <code>httpd.cond</code>).</p>
+									<p><a href="http://webo.in/articles/all/mod-gzip-minify-on-fly/">Использование <code>mod_gzip</code></a>, <a href="http://webo.in/articles/all/2009/12-faster-and-cheaper-with-gzip/"><code>mod_deflate</code></a> и <a href="http://webo.in/articles/habrahabr/07-gzip-all/"><code>mod_rewrite</code></a>.</p>
+									<p>Доступные модули: ');
 define('_WEBO_SPLASH2_FOOTER', 'Логотип Веб Оптимизатора');
-define('_WEBO_SPLASH2_FOOTER_INFO', 'Веб Оптимизатор может добавить значок оптимизатора со ссылкой на сайт проекта. Это может быть как печать, так и ссылка, а также и то, и другое.
-									<br/>Включив эту настройку вы поддерживаете распространение Веб Оптимизатора в массы.');
-define('_WEBO_SPLASH2_AUTOCHANGE', 'Автоматическое изменение /index.php');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимизатор может автоматически внести требуемые изменения в основной файл вашего сайта, использующего ');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).
-									<br/>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.');
+define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Веб Оптимизатор может добавить значок оптимизатора со ссылкой на сайт проекта. Это может быть как печать, так и ссылка, а также и то, и другое.</p>
+									<p>Включив эту настройку вы поддерживаете распространение Веб Оптимизатора в массы.</p>');
+define('_WEBO_SPLASH2_AUTOCHANGE', 'Изменение /index.php');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Веб Оптимизатор может автоматически внести требуемые изменения в основной файл вашего сайта, использующего ');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).</p>
+									<p>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.</p>');
 define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
 define('_WEBO_unobtrusive_body', 'Вставить вызов объединенного JavaScript-файла перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Перенести вызовы JavaScript-информеров перед <code>&lt;/body&gt;</code>');
@@ -149,6 +151,7 @@ define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
 define('_WEBO_dont_check_file_mtime_on', 'Не проверять время изменения файлов');
+define('_WEBO_minify_with', 'Минимизировать JavaScript-файлы');
 define('_WEBO_minify_with_jsmin', 'Минимизировать с помощью JSMin');
 define('_WEBO_minify_with_packer', 'Минимизировать с помощью Packer');
 define('_WEBO_minify_with_yui', 'Минимизировать с помощью YUI Compressor');
@@ -183,7 +186,7 @@ define('_WEBO_css_sprites_no_ie6', 'Исключить IE6 (через хаки) из процесса созда
 define('_WEBO_css_sprites_memory_limited', 'Ограничить использование памяти для PHP-процесса');
 define('_WEBO_css_sprites_dimensions_limited', 'Исключить изображения, если их линейный размер больше заданного');
 define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites файлы');
-define('_WEBO_parallel_enabled', 'Включить множественные хосты, например, img i1 i2');
+define('_WEBO_parallel_enabled', 'Включить параллельные хосты, например, i1 i2');
 define('_WEBO_parallel_allowed_list', 'Доступные хосты');
 define('_WEBO_htaccess_enabled', 'Включить <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Включить <code>mod_deflate</code>');
@@ -199,6 +202,10 @@ define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
 define('_WEBO_SPLASH3_TITLE', 'Установка - шаг третий');
 define('_WEBO_SPLASH3_SAVED', 'Ваши настройки были успешно сохранены.');
 define('_WEBO_SPLASH3_REWRITE', 'Ускорение сайта проведено успешно');
+define('_WEBO_SPLASH3_REWRITE_SHORT', 'Ускорение сайта проведено');
+define('_WEBO_SPLASH3_MODIFY_SHORT', 'Необходимые изменения');
+define('_WEBO_SPLASH3_TESTING_SHORT', 'Дополнительное ускорение');
+define('_WEBO_SPLASH3_SECURITY_SHORT', 'Безопасность');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'Ваш сайт, использующий ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ', был успешно ускорен. Вы можете <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">проверить получившийся результат</a>.');

@@ -7,7 +7,8 @@
 
 /* general layout */
 define('_WEBO_CHARSET', 'latin-1');
-define('_WEBO_GENERAL_TITLE', 'Web Optimizer Admin');
+define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
+define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Hmmm...we have a problem');
@@ -52,6 +53,7 @@ define('_WEBO_NEW_ENTER', 'Enter your password for installation');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
+define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Uninstall');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Thank you for using Web Optimizer. You can install it once more later by visiting <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">Web Optimizer page</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Feel free to visit <a href="http://code.google.com/p/web-optimizator/">Web Optimizer website</a> and submit <a href="http://code.google.com/p/web-optimizator/issues/list">any related issues</a>.');
@@ -61,9 +63,10 @@ define('_WEBO_SPLASH1_TITLE', 'Installation - Stage 1');
 define('_WEBO_SPLASH1_WELCOME', 'Welcome to Web Optimizer installation!');
 define('_WEBO_SPLASH1_PATH', 'Path Information');
 define('_WEBO_SPLASH1_FULLPATH', 'Your full path to document root:');
-define('_WEBO_SPLASH1_NOTICE', 'Your document root is the root folder that your HTML files are served from. If you don\'t know what it is, it\'s probably the path above. Just click <strong>Next...</strong> below.');
+define('_WEBO_SPLASH1_NOTICE', 'Your document root is the root folder that your HTML files are served from. If you don\'t know what it is, it\'s probably the path above. Just click <strong>Next</strong> below.');
 define('_WEBO_SPLASH1_INCORRECT', '<strong>Is the above path incorrect</strong>, please enter the correct path.');
-define('_WEBO_SPLASH1_NEXT', 'Next...');
+define('_WEBO_SPLASH1_NEXT', 'Next');
+define('_WEBO_SPLASH1_BACK', 'Back');
 define('_WEBO_SPLASH1_EXPRESS', 'Express install');
 
 /* Second splash -- set options */
@@ -83,53 +86,50 @@ define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists and it is your root directory.');
 /* Web Optimizer options */
 define('_WEBO_SPLASH2_MINIFY', 'Minify Options');
-define('_WEBO_SPLASH2_MINIFY_INFO', 'Minifying removes whitespace and other unnecessary characters.
-									<br/>Also you can choose the tool for CSS/JavaScript minification or obfuscation.');
-define('_WEBO_SPLASH2_UNOBTRUSIVE', 'Make JavaScript unobtrusive');
-define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', 'Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.
-									<br/>This can significantly increase website load speed. But in some cases can break the client side logic (if it\'s not designed to handle in unobtrusive way).
-									<br/>Please be careful with this option &mdash; it can seriously hurt client side functionality.
-									<br/>Also you can move all JavaScript calls before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.');
-define('_WEBO_SPLASH2_EXTERNAL', 'Include external and inline scripts');
-define('_WEBO_SPLASH2_EXTERNAL_INFO', 'With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.
-									<br/>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.
-									<br/>You also can define a list of excluded files (i.e. ga.js, jquery.min.js, etc).');
-define('_WEBO_SPLASH2_MTIME', 'Don\'t check files mtime and content');
-define('_WEBO_SPLASH2_MTIME_INFO', 'Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.
-									<br/>It\'s not good from the server side optimization point of view so you can disable this check.
-									<br/>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.');
+define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Minifying removes whitespace and other unnecessary characters.</p>
+									<p>Also you can choose the tool for CSS/JavaScript minification or obfuscation.</p>');
+define('_WEBO_SPLASH2_UNOBTRUSIVE', '"Unobtrusive" JavaScript');
+define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.</p>
+									<p>This can significantly increase website load speed. But in some cases can break the client side logic (if it\'s not designed to handle in unobtrusive way).</p>
+									<p>Please be careful with this option &mdash; it can seriously hurt client side functionality.</p>
+									<p>Also you can move all JavaScript calls before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.</p>');
+define('_WEBO_SPLASH2_EXTERNAL', 'External and inline scripts');
+define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.</p>
+									<p>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
+									<p>You also can define a list of excluded files (i.e. ga.js jquery.min.js).</p>');
+define('_WEBO_SPLASH2_MTIME', 'Verify files mtime');
+define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.</p>
+									<p>It\'s not good from the server side optimization point of view so you can disable this check.</p>
+									<p>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.</p>');
 define('_WEBO_SPLASH2_GZIP', 'Gzip Options');
-define('_WEBO_SPLASH2_GZIP_INFO', 'Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.
-									<br/>For larger sites, you should Gzip via the web server.');
-define('_WEBO_SPLASH2_EXPIRES', 'Far Future Expires Options');
-define('_WEBO_SPLASH2_EXPIRES_INFO', 'This adds an expires header to your JavaScipt and CSS files which ensures they are cached client-side by the browser.
-									<br/>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.');
+define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.</p>
+									<o>For larger sites, you should Gzip via the web server.</p>');
+define('_WEBO_SPLASH2_EXPIRES', 'Far Future Expires');
+define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This adds an expires header to your JavaScipt and CSS files which ensures they are cached client-side by the browser.</p>
+									<p>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.</p>');
 define('_WEBO_SPLASH2_HTMLCACHE', 'Cache HTML files');
-define('_WEBO_SPLASH2_HTMLCACHE_INFO', 'This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.
-									<br/>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.');
+define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.</p>
+									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
-define('_WEBO_SPLASH2_SPRITES_INFO', 'It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.
-									<br/>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.
-									<br/>You also can define images to exclude from CSS Sprites creation (i.e. logo.png, bg.gif, etc).');
+define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.</p>
+									<p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p>
+									<p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif)</p>.');
 define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
-define('_WEBO_SPLASH2_DATAURI_INFO', 'It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests. 
-									<br/>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.');
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>t is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
+									<p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
-define('_WEBO_SPLASH2_PARALLEL_INFO', 'Web Optimzier can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server and load the overall page faster.
-									<br/>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically and starts serving content from them only after hosts are ready to do so.');
+define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimzier can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server.</p>
+									<p>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically and starts serving content from them only after hosts are ready to do so.</p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
-define('_WEBO_SPLASH2_HTACCESS_INFO', 'Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).
-									<br/>Available options: ');
-define('_WEBO_SPLASH2_CLEANUP', 'File cleanup');
-define('_WEBO_SPLASH2_CLEANUP_INFO', 'When you change your JavaScript or CSS Web Optimizer will automatically generate a new compressed file and remove any unused files from the directory.
-									<br/>However, if different pages in your site use different JavaScipt or CSS files Web Optimizer will get confused and cleanup files it shouldn\'t. In this case, you should turn off the cleanup process.');
+define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).</p>
+									<p>Available options: ');
 define('_WEBO_SPLASH2_FOOTER', 'Footer text');
-define('_WEBO_SPLASH2_FOOTER_INFO', 'Web Optimizer can add a link in your blog footer back to the Web Optimizer website. The link can be a text link, a small image link or both.
-									<br/>Please support Web Optimizer by enabling this.');
-define('_WEBO_SPLASH2_AUTOCHANGE', 'Auto change /index.php');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Web Optimizer can add to your website based on ');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).
-									<br/>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.');
+define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Web Optimizer can add a link in your blog footer back to the Web Optimizer website. The link can be a text link, a small image link or both.</p>
+									<p>Please support Web Optimizer by enabling this.</p>');
+define('_WEBO_SPLASH2_AUTOCHANGE', 'Changing /index.php');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer can add to your website based on ');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).</p>
+									<p>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.</p>');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_unobtrusive_body', 'Include merged JavaScript file before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <code>&lt;/body&gt;</code>');
@@ -141,6 +141,7 @@ define('_WEBO_external_scripts_css', 'Enable external and inline styles merging'
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
 define('_WEBO_dont_check_file_mtime_on', 'Don\'t check files mtime (and content)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
+define('_WEBO_minify_with', 'Minify JavaScript files');
 define('_WEBO_minify_with_jsmin', 'Minify with JSMin');
 define('_WEBO_minify_with_packer', 'Minify with Packer');
 define('_WEBO_minify_with_yui', 'Minify with YUI Compressor');
@@ -191,6 +192,10 @@ define('_WEBO_auto_rewrite_enabled', 'Enable auto-rewrite');
 define('_WEBO_SPLASH3_TITLE', 'Installation - Stage 3');
 define('_WEBO_SPLASH3_SAVED', 'Your configuration options have been successfully saved.');
 define('_WEBO_SPLASH3_REWRITE', 'Your configuration has been successfully saved');
+define('_WEBO_SPLASH3_REWRITE_SHORT', 'Acceleration completed');
+define('_WEBO_SPLASH3_MODIFY_SHORT', 'Required changes');
+define('_WEBO_SPLASH3_TESTING_SHORT', 'Additional speed up');
+define('_WEBO_SPLASH3_SECURITY_SHORT', 'More security');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'You website based on ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' has been patched. You can <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">check the result here</a>.');

@@ -8,7 +8,7 @@
 <body>
 <div class="b">
 <a href="http://code.google.com/p/web-optimizator/" class="a"></a>
-<h1>Настройка Веб Оптимизатора</h1>
+<h1><?php echo _WEBO_GENERAL_TITLE ?></h1>
 <?php require($page.".php") ?>
 </div>
 <blockquote><p>&copy; 2009<?php echo date("Y")>2009 ? '-' . date("Y") : '' ?> <a href="http://code.google.com/p/web-optimizator/">Web Optimizer</a>. <?php echo _WEBO_GENERAL_FOOTER ?></p></blockquote>
