@@ -442,13 +442,7 @@ class admin {
 			'parallel' => $this->compress_options['parallel']
 		);
 
-		$options = array('js_libraries'=>array(
-							'title' => _WEBO_SPLASH2_JSLIB,
-							'intro' => _WEBO_SPLASH2_JSLIB_INFO,
-							'key' => 'JS_Libraries',
-							'value' => $this->compress_options['js_libraries']
-						),
-						'minify'=>array(
+		$options = array('minify'=>array(
 							'title' => _WEBO_SPLASH2_MINIFY,
 							'intro' => _WEBO_SPLASH2_MINIFY_INFO,
 							'value' => $this->compress_options['minify']
