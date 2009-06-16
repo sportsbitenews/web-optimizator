@@ -1,29 +1,35 @@
-<h1><?php echo _WEBO_NEW_TITLE ?></h1>
-
-<p><?php echo _WEBO_NEW_PROTECT ?></p>
-
+<ul>
+<li><strong>1</strong></li>
+<li><a href="?page=install_stage_2" title="<?php echo _WEBO_SPLASH1_NEXT ?>" class="x">2</a></li>
+<li><a href="?page=install_stage_3" title="<?php echo _WEBO_SPLASH1_NEXT ?>" class="x">3</a></li>
+</ul>
+<h4>Web Optimizer <span><?php echo $version ?>/<b><?php echo $version_new ?></b></span></h4>
+</div>
+<p><sup><a href="?page=install_stage_2" title="<?php echo _WEBO_SPLASH1_NEXT ?>" class="x"></a></sup></p>
+<div class="c">
+<b></b><i></i><del></del><ins></ins>
+<h2><?php echo _WEBO_NEW_TITLE ?></h2>
+<div class="d u">
+<p class="e"><?php echo _WEBO_NEW_PROTECT ?></p>
 <form method="post" enctype="multipart/form-data" action="">
-
-<fieldset>
+<fieldset class="f">
 	<legend><?php echo _WEBO_NEW_USERDATA ?></legend>
-	
-			<label for="user[username]"><?php echo _WEBO_LOGIN_USERNAME ?></label>
-				<div class="info">
-				<input id="user[username]" name="user[username]" class="long_text" title="<?php echo _WEBO_LOGIN_ENTERLOGIN ?>"/>
-				</div>	
-			<label for="user[password]"><?php echo _WEBO_LOGIN_PASSWORD ?></label>
-				<div class="info">
-				<input type="password" name="user[password]" id="user[password]" class="long_text" title="<?php echo _WEBO_LOGIN_ENTERPASSWORD ?>"/>
-				</div>	
-		<input type="submit" name="express" id="express" value="<?php echo _WEBO_SPLASH1_EXPRESS ?>" title="<?php echo _WEBO_SPLASH1_EXPRESS ?>"/>
-		<input type="submit" name="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>"/>
+	<p>
+			<label for="user_username"><?php echo _WEBO_LOGIN_USERNAME ?></label>
+				<input id="user_username" name="user[username]" title="<?php echo _WEBO_LOGIN_ENTERLOGIN ?>"/>
+			<label for="user_password"><?php echo _WEBO_LOGIN_PASSWORD ?></label>
+				<input type="password" name="user[password]" id="user_password" title="<?php echo _WEBO_LOGIN_ENTERPASSWORD ?>"/>
+		<input type="submit" name="express" id="express" value="<?php echo _WEBO_SPLASH1_EXPRESS ?>" title="<?php echo _WEBO_SPLASH1_EXPRESS ?>" class="v"/>
+		<input type="submit" name="Submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" title="<?php echo _WEBO_SPLASH1_NEXT ?>" class="i"/>
 <?php if ($display_progress) { ?>
-		<input type="hidden" name="display_progress" value="1" />
+		<input type="hidden" name="display_progress" value="1"/>
 <?php } ?>
-		<input type="hidden" name="page" value="install_stage_1" />
+		<input type="hidden" name="page" value="install_stage_2"/>
+	</p>
 </fieldset>
 </form>
 <?php if ($display_progress) { ?>
 <div id="loader"><span id="bar"></span></div><div id="per"><span id="cent">0</span>%</div>
-<script type="text/javascript">var yass_modules=[["libs/js/yass.loadbar.js",""]];</script>
 <?php } ?>
+<b></b><i></i><del></del><ins></ins>
+</div>
