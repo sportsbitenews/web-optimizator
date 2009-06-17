@@ -318,7 +318,9 @@ class admin {
 			"paths" => $this->view->paths,
 			"page" => 'install_uninstall',
 			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
-			"compress_options" => $this->compress_options
+			"compress_options" => $this->compress_options,
+			"version" => $this->version,
+			"version_new" => $this->version_new
 		);
 	}
 
@@ -975,11 +977,11 @@ ExpiresDefault \"access plus 10 years\"
 				}
 
 			}
+			$this->write_progress($this->web_optimizer_stage = 99);
 /* secure Web Optimizer folder with .htpasswd */
 			$this->protect_installation();
 		}
 
-		$this->write_progress($this->web_optimizer_stage = 99);
 		$this->write_progress($this->web_optimizer_stage = 100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,
@@ -988,7 +990,9 @@ ExpiresDefault \"access plus 10 years\"
 								"auto_rewrite" => $auto_rewrite,
 								"cms_version" => $cms_version,
 								"username" => $this->input['user']['_username'],
-								"password" => $this->input['user']['_password']);
+								"password" => $this->input['user']['_password'],
+								"version" => $this->version,
+								"version_new" => $this->version_new);
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 

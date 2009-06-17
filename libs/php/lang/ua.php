@@ -3,12 +3,13 @@
  * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
  * Contains all UA localization constants
  * Translated by Sergiy Andriychuk
- * new (=not translated) constants: none
+ * new (=not translated) constants:
  **/
  //_WEBO_LOGIN_UPGRADENOTICE4
  //_WEBO_LOGIN_UNINSTALL2
  //_WEBO_SPLAHS1_PROTECTED
  //_WEBO_SPLAHS1_PROTECTED2
+ //_WEBO_SPLASH1_UNINSTALL_TITLE
  //_WEBO_SPLASH2_HTMLCACHE
  //_WEBO_SPLASH2_HTMLCACHE_INFO
  //_WEBO_SPLASH2_CACHE_HTML
@@ -30,6 +31,12 @@
  //_WEBO_external_scripts_head_end
  //_WEBO_parallel_enabled
  //_WEBO_parallel_allowed_list
+ //_WEBO_minify_with
+ //_WEBO_GENERAL_FOOTER
+ //_WEBO_SPLASH3_TOFILE
+ //_WEBO_SPLASH3_TOFILE2
+ //_WEBO_SPLASH3_AFTERSTRING
+ //_WEBO_SPLASH3_ADD
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");

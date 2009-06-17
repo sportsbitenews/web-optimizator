@@ -61,9 +61,9 @@
 								<?php echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"<?php echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? ' class="t"' : '' ?>/>
 							<?php } else { ?>
 								<?php if (strpos($option, 'ith_')) { ?>
-									<input type="radio" name="with" value="user[<?php echo $key ?>][<?php echo $option ?>]" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="r"/>
+										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>r<?php } else { ?>y<?php } ?>"><input type="radio" name="with" value="user[<?php echo $key ?>][<?php echo $option ?>]" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
 								<?php } else { ?>
-									<input type="checkbox" name="user[<?php echo $key ?>][<?php echo $option ?>]" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?> class="s"/>
+										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>s<?php } else { ?>w<?php } ?>"><input type="checkbox" name="user[<?php echo $key ?>][<?php echo $option ?>]" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
 								<?php } ?>
 								<?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?>
 							<?php } ?>
