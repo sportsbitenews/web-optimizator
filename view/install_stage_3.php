@@ -5,7 +5,7 @@
 </ul>
 <h4>Web Optimizer <span><?php echo $version ?>/<b><?php echo $version_new ?></b></span></h4>
 </div>
-<p><sub><a href="?page=install_stage_2" title="<?php echo _WEBO_SPLASH1_BACK ?>"></a></sub><sup><a href="/" title="<?php echo _WEBO_SPLASH1_NEXT ?>"></a></sup></p>
+<p><sub><a href="?page=install_stage_2" title="<?php echo _WEBO_SPLASH1_BACK ?>" class="x"></a></sub><sup><a href="/" title="<?php echo _WEBO_SPLASH1_NEXT ?>"></a></sup></p>
 <div class="c">
 <b></b><i></i><del></del><ins></ins>
 <?php if(!empty($message)) { ?><p class="m"><?php echo $message ?></p><?php } ?>

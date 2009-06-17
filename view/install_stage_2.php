@@ -24,6 +24,7 @@
 </ul>
 <form method="post" enctype="multipart/form-data" action="">
 	<fieldset id="dirs">
+	<input type="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" id="subm"/>
 		<h3><?php echo _WEBO_SPLASH2_CACHE ?></h3>
 			<label><?php echo _WEBO_SPLASH2_CACHE_JS ?>
 				<input name="user[javascript_cachedir]" value="<?php echo $javascript_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_JS ?>" size="40"/>
@@ -61,9 +62,9 @@
 								<?php echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : _WEBO_SPLASH2_SPACE ?> <input name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" size="40"<?php echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? ' class="t"' : '' ?>/>
 							<?php } else { ?>
 								<?php if (strpos($option, 'ith_')) { ?>
-										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>r<?php } else { ?>y<?php } ?>"><input type="radio" name="with" value="user[<?php echo $key ?>][<?php echo $option ?>]" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
+										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>r<?php } else { ?>y<?php } ?>"><input type="radio" name="with" value="<?php echo $key ?>#<?php echo $option ?>" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
 								<?php } else { ?>
-										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>s<?php } else { ?>w<?php } ?>"><input type="checkbox" name="user[<?php echo $key ?>][<?php echo $option ?>]" value="1" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
+										<a href="#<?php echo $key ?>" class="<?php if(empty($value)) { ?>s<?php } else { ?>w<?php } ?>"><input type="checkbox" name="user[<?php echo $key ?>][<?php echo $option ?>]" value="<?php echo $value ?>" <?php if(!empty($value)) { ?>checked="checked"<?php } ?>/></a>
 								<?php } ?>
 								<?php echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option) ?>
 							<?php } ?>

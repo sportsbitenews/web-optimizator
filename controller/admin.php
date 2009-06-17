@@ -491,8 +491,8 @@ class admin {
 /* make fake option for JavaScript minimization */
 				if (is_array($options['minify']['value'])) {
 					$javascript = array_shift($options['minify']['value']);
-					$with = $this->compress_options['minify']['with_jsmin'] || $this->compress_options['minify']['with_yui'] || $this->compress_options['minify']['with_packer'];
-					$options['minify']['value'] = array('javascript' => $shifted, 'with' => $with) + $options['minify']['value'];
+					$with = $this->compress_options['minify']['with_jsmin'] ? 'with_jsmin' : ($this->compress_options['minify']['with_yui'] ? 'with_yui' : ($this->compress_options['minify']['with_packer'] ? 'with_packer' : 0));
+					$options['minify']['value'] = array('javascript' => $javascript, 'with' => $with) + $options['minify']['value'];
 				}
 				$options['auto_rewrite'] = null;
 /* check /index.php to possiblity to rewrite it */
@@ -564,27 +564,29 @@ class admin {
 /* Create the options file */
 			$this->options_file = "config.webo.php";
 /* convert fake JavaScript minify option */
-			$this->input['user']['javascript']['with_jsmin'] = $this->input['user']['javascript']['with_jsmin'] && $this->input['user']['javascript']['with'];
-			$this->input['user']['javascript']['with_yui'] = $this->input['user']['javascript']['with_yui'] && $this->input['user']['javascript']['with'];
-			$this->input['user']['javascript']['with_packer'] = $this->input['user']['javascript']['with_packer'] && $this->input['user']['javascript']['with'];
-			$this->input['user']['javascript']['with'] = null;
+			$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
+			$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
+			$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+			$this->input['user']['minify']['with'] = null;
 			if(!empty($this->input['Submit'])) {
 /* try to set some libs executable */
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
+				if ($this->input['user']['minify']['with_yui']) {
 /* check for YUI availability */
-				$YUI_checked = 0;
-				if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
-					if (substr(phpversion(), 0, 1) == 4) {
-						require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
-					} else {
-						require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+					$YUI_checked = 0;
+					if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
+						if (substr(phpversion(), 0, 1) == 4) {
+							require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
+						} else {
+							require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+						}
+						$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
+						$YUI_checked = $YUI->check();
 					}
-					$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
-					$YUI_checked = $YUI->check();
-				}
-				if (!$YUI_checked) {
-					$this->input['user']['minify']['with_yui'] = 0;
-					$this->input['user']['minify']['with_jsmin'] = 1;
+					if (!$YUI_checked) {
+						$this->input['user']['minify']['with_yui'] = 0;
+						$this->input['user']['minify']['with_jsmin'] = 1;
+					}
 				}
 /* Save the options	*/
 				foreach($this->input['user'] as $key => $option) {
