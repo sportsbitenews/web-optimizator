@@ -24,7 +24,6 @@
 </ul>
 <form method="post" enctype="multipart/form-data" action="">
 	<fieldset id="dirs">
-	<input type="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" id="subm"/>
 		<h3><?php echo _WEBO_SPLASH2_CACHE ?></h3>
 			<label><?php echo _WEBO_SPLASH2_CACHE_JS ?>
 				<input name="user[javascript_cachedir]" value="<?php echo $javascript_cachedir ?>" title="<?php echo _WEBO_SPLASH2_CACHE_JS ?>" size="40"/>
@@ -41,8 +40,9 @@
 			<label><?php echo _WEBO_SPLASH2_DOCUMENTROOT ?>
 				<input name="user[document_root]" value="<?php echo $document_root ?>" title="<?php echo _WEBO_SPLASH2_DOCUMENTROOT ?>" size="40"/>
 			</label>
-		<input type="hidden" name="Submit" value="1" />
+		<input type="submit" value="<?php echo _WEBO_SPLASH1_NEXT ?>" class="i"/>
 		<input type="hidden" name="page" value="install_stage_3" />
+		<input type="hidden" name="Submit" value="1" />
 		<input type="hidden" name="user[_username]" value="<?php echo $compress_options['username'] ?>" />
 		<input type="hidden" name="user[_password]" value="<?php echo $compress_options['password'] ?>" />	
 	</fieldset>

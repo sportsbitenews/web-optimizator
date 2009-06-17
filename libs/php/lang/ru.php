@@ -212,7 +212,7 @@ define('_WEBO_SPLASH3_FINALLY', 'И после этого нужно завершить вызов Веб Оптимиз
 define('_WEBO_SPLASH3_TOFILE', 'В файл');
 define('_WEBO_SPLASH3_TOFILE2', 'В самое начало файла');
 define('_WEBO_SPLASH3_AFTERSTRING', 'после строки');
-define('_WEBO_SPLASH3_ADD', 'добавить');
+define('_WEBO_SPLASH3_ADD2', 'добавить');
 define('_WEBO_SPLASH3_TESTING', 'Теперь немного тестирования...');
 define('_WEBO_SPLASH3_NOTLIVE', 'На самом деле у вас довольно большой простор действий. Вы можете провести любые изменения в конфигурации Веб Оптимизатора (но лучше это проводить на тестовом сайте) для достижения оптимальной производительности. Для изменения настроек нужно:');
 define('_WEBO_SPLASH3_MANUALLY', 'Вручную изменить файл <code>config.webo.php</code>, находящийся по этому пути: <code>');

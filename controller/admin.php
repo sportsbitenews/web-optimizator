@@ -397,13 +397,15 @@ class admin {
 /* Save the options file */
 				if(!empty($this->input['user']['document_root'])) {
 					$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
+				} else {
+					$this->input['user']['document_root'] = $this->view->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
 				}
 /* check if we are using correct root directory */
 				if (!is_dir($_SERVER['DOCUMENT_ROOT'])) {
 					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 				}
 				if(!empty($this->input['Submit'])) {
-					$save = $this->save_option('[\'document_root\']', $_SERVER['DOCUMENT_ROOT']);
+					$save = $this->save_option('[\'document_root\']', $this->input['user']['document_root']);
 				}
 /* Set paths with the new document root */
 				$this->view->set_paths($this->input['user']['document_root']);
@@ -510,7 +512,6 @@ class admin {
 					"title" => _WEBO_SPLASH2_TITLE,
 					"paths" => $this->view->paths,
 					"page" => $this->input['page'],
-					"message" => $save,
 					"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
 					"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
 					"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
@@ -531,7 +532,7 @@ class admin {
 	* 
 	* 
 	**/	
-	function install_stage_3() {;
+	function install_stage_3() {
 /* if haven't completed chained optimization */
 		if ($this->web_optimizer_stage < 95) {
 /* Check we can write to the specified directory */
@@ -564,10 +565,12 @@ class admin {
 /* Create the options file */
 			$this->options_file = "config.webo.php";
 /* convert fake JavaScript minify option */
-			$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
-			$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
-			$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
-			$this->input['user']['minify']['with'] = null;
+			if (!empty($this->input['user']['minify']['with'])) {
+				$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
+				$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
+				$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+				$this->input['user']['minify']['with'] = null;
+			}
 			if(!empty($this->input['Submit'])) {
 /* try to set some libs executable */
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
@@ -826,7 +829,7 @@ ExpiresDefault \"access plus 10 years\"
 			}
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
-			if (!empty($this->input['user']['auto_rewrite']['enabled'])) {
+			if (!empty($this->input['user']['auto_rewrite']) && !empty($this->input['user']['auto_rewrite']['enabled'])) {
 /* check for web.optimizer.php existence */
 				$fp = fopen($this->input['user']['webo_cachedir'] . 'web.optimizer.php', 'r');
 				if (!$fp) {
@@ -989,8 +992,8 @@ ExpiresDefault \"access plus 10 years\"
 								"paths" => $this->view->paths,
 								"page" => $this->input['page'],
 								"message" => _WEBO_SPLASH3_CONFSAVED,
-								"auto_rewrite" => $auto_rewrite,
-								"cms_version" => $cms_version,
+								"auto_rewrite" => empty($auto_rewrite) ? 0 : 1,
+								"cms_version" => empty($cms_version) ? '' : $cms_version,
 								"username" => $this->input['user']['_username'],
 								"password" => $this->input['user']['_password'],
 								"version" => $this->version,
@@ -1093,7 +1096,9 @@ ExpiresDefault \"access plus 10 years\"
 				@fwrite($fp, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>');
 				@fclose($fp);
 				$this->write_progress(14);
-				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled']);
+				$this->input['user']['auto_rewrite'] = empty($this->input['user']['auto_rewrite']) ? array() : $this->input['user']['auto_rewrite'];
+				$this->input['user']['auto_rewrite']['enabled'] = empty($this->input['user']['auto_rewrite']['enabled']) ? 0 : 1;
+				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled'] );
 				exit();
 			}
 		}
@@ -1164,8 +1169,6 @@ ExpiresDefault \"access plus 10 years\"
 				$save .= "<br/>" . $this->save_option('[\'password\']',($this->input['user']['password']));	
 				$save .= "<br />" . _WEBO_LOGIN_LOGGED;
 				$this->save = $save;
-/* Set Web Optimizer Actuve */
-				$this->save_option('[\'active\']',1);
 /* Update */
 				$this->compress_options['username'] = $this->input['user']['username'];
 				$this->compress_options['password'] = $this->input['user']['password'];

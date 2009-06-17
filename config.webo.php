@@ -119,6 +119,6 @@ $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
 ## Enable auto-rewrite for index.php
-$compress_options['auto_rewrite']['enabled'] = "0";
+$compress_options['auto_rewrite']['enabled'] = "1";
 #########################################
 ?>

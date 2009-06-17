@@ -209,7 +209,7 @@ define('_WEBO_SPLASH3_FINALLY', 'Finally, we must then add one more line of code
 define('_WEBO_SPLASH3_TOFILE', 'To the file');
 define('_WEBO_SPLASH3_TOFILE2', 'To the very beginning of the file');
 define('_WEBO_SPLASH3_AFTERSTRING', 'after the string');
-define('_WEBO_SPLASH3_ADD', 'add');
+define('_WEBO_SPLASH3_ADD2', 'add');
 define('_WEBO_SPLASH3_TESTING', 'Now for some testing...');
 define('_WEBO_SPLASH3_NOTLIVE', 'That\'s all you have to do. We recommend testing this out on a non-live site first, and then playing with the options to get optimal performance. To change the options you can:');
 define('_WEBO_SPLASH3_MANUALLY', 'Manually edit the <code>config.webo.php</code> file here: <code>');
