@@ -574,7 +574,7 @@ class admin {
 			if(!empty($this->input['Submit'])) {
 /* try to set some libs executable */
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
-				if ($this->input['user']['minify']['with_yui']) {
+				if (!empty($this->input['user']['minify']['with_yui'])) {
 /* check for YUI availability */
 					$YUI_checked = 0;
 					if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
@@ -630,7 +630,7 @@ class admin {
 				}
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* additional check for .htaccess -- need to open exact file */
-				if ($this->input['user']['htaccess']['enabled'] && !empty($this->apache_modules)) {
+				if (!empty($this->input['user']['htaccess']['enabled']) && !empty($this->apache_modules)) {
 					$this->view->set_paths($this->input['user']['document_root']);
 /* write to the current dir or to document root */
 					if (empty($this->input['user']['htaccess']['local'])) {

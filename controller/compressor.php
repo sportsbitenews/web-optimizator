@@ -214,7 +214,7 @@ class web_optimizer {
 			$this->content = $content;
 		}
 /* skip RSS */
-		if (!strpos($content, "<rss version=")) {
+		if (!strpos($this->content, "<rss version=")) {
 			if ($this->web_optimizer_stage) {
 				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
 			}
@@ -244,13 +244,13 @@ class web_optimizer {
 				header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled]=" . $this->auto_rewrite);
 				die();
 			}
+		}
 /* Echo content to the browser */
-			if(empty($this->supress_output)) {
-				if(!empty($this->return_content)) {
-					return $this->content;
-				} else {
-					echo $this->content;
-				}
+		if(empty($this->supress_output)) {
+			if(!empty($this->return_content)) {
+				return $this->content;
+			} else {
+				echo $this->content;
 			}
 		}
 	}
