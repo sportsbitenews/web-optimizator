@@ -33,6 +33,19 @@ class admin {
 			'install_enter_password' => 1,
 			'install_set_password' => 1
 		);
+/* to check and download new Web Optimizer version */
+		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
+		$this->version = @file_get_contents('version');
+/* get the latest version */
+		$version_new_file = 'version.new';
+		$this->download($this->svn . 'version', $version_new_file);
+		if (is_file($version_new_file)) {
+			$this->version_new = @file_get_contents($version_new_file);
+			@unlink($version_new_file);
+		} else {
+			$this->version_new = $this->version;
+		}
+		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
 		if(empty($this->password_not_required[$this->input['page']])) {
 			$this->check_login();
 		}
@@ -48,25 +61,12 @@ class admin {
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
-/* to check and download new Web Optimizer version */
-		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 /* if we use .htaccess*/
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
 /* download counter */
 		if (!is_file($this->basepath . 'web-optimizer-counter')) {
 			$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
 		}
-		$this->version = @file_get_contents('version');
-/* get the latest version */
-		$version_new_file = 'version.new';
-		$this->download($this->svn . 'version', $version_new_file);
-		if (is_file($version_new_file)) {
-			$this->version_new = @file_get_contents($version_new_file);
-			@unlink($version_new_file);
-		} else {
-			$this->version_new = $this->version;
-		}
-		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
 /* show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
 			$func = $this->input['page'];
