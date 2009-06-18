@@ -1407,6 +1407,10 @@ require valid-user
 /* Bitrix */
 		} elseif (is_dir($root . 'bitrix/')) {
 			return 'Bitrix';
+/* cogear */
+		} elseif (is_file($root . 'gears/global/global.info')) {
+			$version = preg_replace("/group.*/", "", preg_replace("/.*version\s*=\s*/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'gears/global/global.info'))));
+			return 'cogear' . (empty($version) ? '' : ' ' . $version);
 		}
 		return 'CMS 42';
 	}
