@@ -208,50 +208,51 @@ class web_optimizer {
 	*
 	**/
 	function finish($content = false) {
-
 		if(!$content) {
 			$this->content = ob_get_clean();
 		} else {
 			$this->content = $content;
 		}
-		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
-		}
+/* skip RSS */
+		if (!strpos($content, "<rss version=")) {
+			if ($this->web_optimizer_stage) {
+				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
+			}
 /* find all files in head to process */
-		$this->get_script_array();
+			$this->get_script_array();
 /* Run the functions specified in options */
-		if(is_array($this->options)) {
-			foreach($this->options AS $func => $option) {
-				if(method_exists($this,$func)) {
-					if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
-						$this->$func($option, $func);
+			if(is_array($this->options)) {
+				foreach($this->options AS $func => $option) {
+					if(method_exists($this,$func)) {
+						if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
+							$this->$func($option, $func);
+						}
 					}
 				}
 			}
-		}
 /* Delete old cache files */
-		if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
+			if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
 /* Make a string with the names of the compressed files */
-			$this->compressed_files_string = implode("", $this->compressed_files);
-		}
-		if (!empty($this->web_optimizer_stage)) {
-			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
-		}
+				$this->compressed_files_string = implode("", $this->compressed_files);
+			}
+			if (!empty($this->web_optimizer_stage)) {
+				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
+			}
 /* redirect to installation page if chained optimization */
-		if (!empty($this->web_optimizer_stage)) {
-			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
-			header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled]=" . $this->auto_rewrite);
-			die();
-		}
+			if (!empty($this->web_optimizer_stage)) {
+				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
+				header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled]=" . $this->auto_rewrite);
+				die();
+			}
 /* Echo content to the browser */
-		if(empty($this->supress_output)) {
-			if(!empty($this->return_content)) {
-				return $this->content;
-			} else {
-				echo $this->content;
+			if(empty($this->supress_output)) {
+				if(!empty($this->return_content)) {
+					return $this->content;
+				} else {
+					echo $this->content;
+				}
 			}
 		}
-
 	}
 
 	/**
@@ -1346,7 +1347,10 @@ class web_optimizer {
 	**/
 
 	function convert_path_to_absolute($file, $path, $leave_querystring = false) {
-		$endfile = $path['file'];
+		$endfile = '';
+		if (!empty($path['file'])) {
+			$endfile = $path['file'];
+		}
 		if (!$leave_querystring) {
 			$file = $this->strip_querystring($file);
 			$endfile = $this->strip_querystring($endfile);
