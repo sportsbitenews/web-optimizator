@@ -28,8 +28,8 @@
 	</p>
 </fieldset>
 </form>
-<?php if ($display_progress) { ?>
-<div id="loader"><span id="bar"></span></div><div id="per"><span id="cent">0</span>%</div>
-<?php } ?>
 <b></b><i></i><del></del><ins></ins>
 </div>
+<?php if ($display_progress) { ?>
+<div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div>
+<?php } ?>

@@ -917,7 +917,7 @@ class web_optimizer {
 						if(is_array($variants)) {
 							foreach($variants AS $variant_type) {
 								$variant_type[1] = strtolower($variant_type[1]);
-								$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+								$variant_type[2] = !isset($variant_type[2]) ? (!isset($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 								switch ($variant_type[1]) {
 									case "src":
 										$file['file'] = trim($this->strip_querystring($variant_type[2]));
@@ -949,7 +949,7 @@ class web_optimizer {
 						if(is_array($variants)) {
 							foreach($variants AS $variant_type) {
 								$variant_type[1] = strtolower($variant_type[1]);
-								$variant_type[2] = isset($variant_type[2]) ? (isset($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+								$variant_type[2] = !isset($variant_type[2]) ? (!isset($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 								switch ($variant_type[1]) {
 									case "href":
 										$file['file'] = trim($this->strip_querystring($variant_type[2]));
@@ -1061,7 +1061,7 @@ class web_optimizer {
 /* null content not to include anywhere, we still have source code in 'source' */
 						$this->initial_files[$key]['content'] = '';
 					}
-				} else {
+				} elseif (!empty($content_from_file)) {
 /* don't rewrite existing content inside script tags */
 					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
 /* add stored content before */

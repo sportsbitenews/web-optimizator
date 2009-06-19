@@ -46,34 +46,31 @@
 ?><li><?php
 		if ($file['mode'] == 'start' && empty($file['location'])) {
 ?>
-<p><?php echo _WEBO_SPLASH3_TOFILE2 ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
-<p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
-<blockquote><pre>&lt;?php
-require('<?php echo $paths['full']['current_directory'] ?>web.optimizer.php');
-?&gt;</pre></blockquote>
+<p><?php echo _WEBO_SPLASH3_TOFILE2 ?> <code><?php echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'] ?></code> <?php echo _WEBO_SPLASH3_ADD2 ?>:</p>
+<textarea cols="80" rows="3">&lt;?php
+require('<?php echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) ?>web.optimizer.php');
+?&gt;</textarea>
 <?php
 		} elseif ($file['mode'] == 'finish' && $file['location'] == 'end') {
 ?>
-<p><?php echo _WEBO_SPLASH3_TOFILE3 ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
-<p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
-<blockquote><pre>$web_optimizer->finish();</pre></blockquote>
+<p><?php echo _WEBO_SPLASH3_TOFILE3 ?> <code><?php echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'] ?></code> <?php echo _WEBO_SPLASH3_ADD2 ?>:</p>
+<textarea cols="80" rows="2">$web_optimizer->finish();</textarea>
 <?php
 		} else {
 ?>
-<p><?php echo _WEBO_SPLASH3_TOFILE ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
-<p><?php echo _WEBO_SPLASH3_AFTERSTRING ?></p>
-<blockquote><pre><?php echo htmlspecialchars($paths['full']['current_directory'] . $file['location']) ?></pre></blockquote>
+<p><?php echo _WEBO_SPLASH3_TOFILE ?> <code><?php echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'] ?></code> <?php echo _WEBO_SPLASH3_AFTERSTRING ?></p>
+<textarea cols="80" rows="2"><?php echo htmlspecialchars(preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['location']) ?></textarea>
 <p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
-<blockquote><pre><?php 
+<textarea cols="80" rows="2"><?php 
 			if ($file['mode'] == 'start') {
-?>require('<?php echo $paths['full']['current_directory'] ?>web.optimizer.php');<?php
+?>require('<?php echo preg_replace("/\\/", "/", $paths['full']['current_directory']) ?>web.optimizer.php');<?php
 			} else {
 				if (!empty($file['global'])) {
 ?>global $web_optimizer;<?php
 				}
 ?>$web_optimizer->finish();<?php
 			}
-?></pre></blockquote>
+?></textarea>
 <?php
 		}
 ?></li><?php

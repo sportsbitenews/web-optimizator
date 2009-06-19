@@ -166,7 +166,7 @@ define('_WEBO_html_cache_timeout', 'Срок действия кэша в секундах');
 define('_WEBO_html_cache_flush_only', 'Включить только быстрый сброс части документа');
 define('_WEBO_html_cache_flush_size', 'Размер сбрасываемой части документа (в байтах)');
 define('_WEBO_html_cache_ignore_list', 'Список частей URL для исключения при кэшировании');
-define('_WEBO_html_cache_allowed_list', 'Список частей USER AGENTS (роботов) для включения при кэшировании');
+define('_WEBO_html_cache_allowed_list', 'Список USER AGENTS (роботов) для включения при кэшировании');
 define('_WEBO_footer_text', 'Добавить ссылку на Веб Оптимизатор');
 define('_WEBO_footer_image', 'Добавить изображение Веб Оптимизатора');
 define('_WEBO_data_uris_on', 'Применить <code>data:URI</code>');
@@ -176,7 +176,7 @@ define('_WEBO_css_sprites_truecolor_in_jpeg', 'Сохранять полноцветные изображени
 define('_WEBO_css_sprites_aggressive', '&laquo;Агрессивный&raquo; режим создания CSS Sprites');
 define('_WEBO_css_sprites_extra_space', 'Добавить свободное место в CSS Sprites');
 define('_WEBO_css_sprites_no_ie6', 'Исключить IE6 (через хаки) из процесса создания CSS Sprites');
-define('_WEBO_css_sprites_memory_limited', 'Ограничить использование памяти для PHP-процесса');
+define('_WEBO_css_sprites_memory_limited', 'Ограничить использование памяти');
 define('_WEBO_css_sprites_dimensions_limited', 'Исключить изображения, если их линейный размер больше заданного');
 define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites файлы');
 define('_WEBO_parallel_enabled', 'Включить параллельные хосты, например, i1 i2');
