@@ -36,14 +36,14 @@
 ?>
 <fieldset id="rewrite">
 <h3><?php echo _WEBO_SPLASH3_WORKING ?></h3>
-<p><?php echo _WEBO_SPLASH3_ADD ?></p>
+<p><?php echo _WEBO_SPLASH3_ADD . $cms_version . _WEBO_SPLASH3_ADD_ ?></p>
 </fieldset>
 <fieldset id="modify">
 <h3><?php echo _WEBO_SPLASH3_MODIFY ?></h3>
+<ol>
 <?php
 	foreach ($files_to_change as $file) {
-?>
-<?php
+?><li><?php
 		if ($file['mode'] == 'start' && empty($file['location'])) {
 ?>
 <p><?php echo _WEBO_SPLASH3_TOFILE2 ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
@@ -76,12 +76,9 @@ require('<?php echo $paths['full']['current_directory'] ?>web.optimizer.php');
 ?></pre></blockquote>
 <?php
 		}
-?>
-<?php
+?></li><?php
 	}
-?>
-</fieldset>
-<?php
+?></ol></fieldset><?php
 
 	}
 
