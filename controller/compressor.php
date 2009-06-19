@@ -949,7 +949,7 @@ class web_optimizer {
 						if(is_array($variants)) {
 							foreach($variants AS $variant_type) {
 								$variant_type[1] = strtolower($variant_type[1]);
-								$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+								$variant_type[2] = isset($variant_type[2]) ? (isset($variant_type[3]) ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
 								switch ($variant_type[1]) {
 									case "href":
 										$file['file'] = trim($this->strip_querystring($variant_type[2]));
