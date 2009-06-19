@@ -10,7 +10,7 @@ class admin {
 	* Sets the options and defines the gzip headers
 	**/
 	function admin ($options = null) {
-		if(!empty($options['skip_startup'])) {
+		if (!empty($options['skip_startup'])) {
 			return;
 		}
 		if (function_exists('date_default_timezone_set')) {
@@ -669,7 +669,7 @@ class admin {
 					} else {
 						$htaccess_options = $this->input['user']['htaccess'];
 						$content = '# Web Optimizer options';
-						if ($htaccess_options['mod_gzip']) {
+						if (!empty($htaccess_options['mod_gzip'])) {
 							$content .= "
 mod_gzip_on Yes
 mod_gzip_can_negotiate Yes
@@ -684,42 +684,42 @@ mod_gzip_min_http 1000
 mod_gzip_handle_methods GET POST
 mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
 mod_gzip_dechunk No";
-							if ($this->input['user']['gzip']['page']) {
+							if (!empty($this->input['user']['gzip']['page'])) {
 								$content .= "
 mod_gzip_item_include mime ^text/html$
 mod_gzip_item_include mime ^text/plain$
 mod_gzip_item_include mime ^image/x-icon$
 mod_gzip_item_include mime ^httpd/unix-directory$";
 							}
-							if ($this->input['user']['gzip']['css']) {
+							if (!empty($this->input['user']['gzip']['css'])) {
 								$content .= "
 mod_gzip_item_include mime ^text/css$";
 							}
-							if ($this->input['user']['gzip']['javascript']) {
+							if (!empty($this->input['user']['gzip']['javascript'])) {
 								$content .= "
 mod_gzip_item_include mime ^text/javascript$
 mod_gzip_item_include mime ^application/javascript$
 mod_gzip_item_include mime ^application/x-javascript$";
 							}
 						}
-						if ($htaccess_options['mod_setenvif']) {
+						if (!empty($htaccess_options['mod_setenvif'])) {
 							$content .= "
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
 						}
-						if ($htaccess_options['mod_deflate']) {
-							if ($this->input['user']['gzip']['page']) {
+						if (!empty($htaccess_options['mod_deflate'])) {
+							if (!empty($this->input['user']['gzip']['page'])) {
 								$content .= "
 AddOutputFilterByType DEFLATE text/html
 AddOutputFilterByType DEFLATE text/xml
 AddOutputFilterByType DEFLATE image/x-icon";
 							}
-							if ($this->input['user']['gzip']['css']) {
+							if (!empty($this->input['user']['gzip']['css'])) {
 								$content .= "
 AddOutputFilterByType DEFLATE text/css";
 							}
-							if ($this->input['user']['gzip']['javascript']) {
+							if (!empty($this->input['user']['gzip']['javascript'])) {
 								$content .= "
 AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE application/javascript
@@ -727,16 +727,16 @@ AddOutputFilterByType DEFLATE application/x-javascript";
 							}
 						}
 /* try to add static gzip */
-						if ($htaccess_options['mod_mime']) {
+						if (!empty($htaccess_options['mod_mime'])) {
 							$content .= "
 AddEncoding gzip .gz";
 						}
-						if ($htaccess_options['mod_rewrite']) {
+						if (!empty($htaccess_options['mod_rewrite'])) {
 							$content .= "
 RewriteEngine On
 RewriteBase /
 ";
-							if ($this->input['user']['gzip']['css']) {	
+							if (!empty($this->input['user']['gzip']['css'])) {
 								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
@@ -746,7 +746,7 @@ RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
 	ForceType text/css
 </FilesMatch>";
 							}
-							if ($this->input['user']['gzip']['javascript']) {	
+							if (!empty($this->input['user']['gzip']['javascript'])) {
 								$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
@@ -757,41 +757,41 @@ RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 </FilesMatch>";
 							}
 						}
-						if ($htaccess_options['mod_expires']) {
+						if (!empty($htaccess_options['mod_expires'])) {
 							$content .= "
 ExpiresActive On
 ExpiresDefault \"access plus 10 years\"
 <FilesMatch .*\.(php|phtml|shtml|html|xml)$>
 	ExpiresActive Off
 </FilesMatch>";
-							if (!$this->input['user']['far_future_expires']['css']) {
+							if (empty($this->input['user']['far_future_expires']['css'])) {
 								$content .= "
 <FilesMatch .*\.css$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
-							if (!$this->input['user']['far_future_expires']['javascript']) {
+							if (empty($this->input['user']['far_future_expires']['javascript'])) {
 								$content .= "
 <FilesMatch .*\.js$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
-							if (!$this->input['user']['far_future_expires']['static']) {
+							if (empty($this->input['user']['far_future_expires']['static'])) {
 								$content .= "
 <FilesMatch .*\.(bmp|png|gif|jpe?g|ico|swf|flv|pdf)$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
 						}
-						if ($htaccess_options['mod_headers']) {
-							if ($htaccess_options['mod_deflate'] || $htaccess_options['mod_gzip']) {
+						if (!empty($htaccess_options['mod_headers'])) {
+							if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
 								$content .= "
 <FilesMatch .*\.(css|js|php|phtml|shtml|html|xml)$>
 	Header append Vary User-Agent
 	Header append Cache-Control private
 </FilesMatch>";
 							}
-							if ($htaccess_options['mod_expires']) {
+							if (!empty($htaccess_options['mod_expires'])) {
 								$content .= "
 <FilesMatch \"\\.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$\">
 	Header unset Last-Modified
@@ -912,7 +912,7 @@ ExpiresDefault \"access plus 10 years\"
 									$auto_rewrite = 1;
 								}
 							}
-						}						
+						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($cms_version, 0, 9) == 'vBulletin') {
@@ -997,7 +997,8 @@ ExpiresDefault \"access plus 10 years\"
 								"username" => $this->input['user']['_username'],
 								"password" => $this->input['user']['_password'],
 								"version" => $this->version,
-								"version_new" => $this->version_new);
+								"version_new" => $this->version_new,
+								"files_to_change" => $this->system_files($cms_version));
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 
@@ -1282,7 +1283,7 @@ require valid-user
 	/**
 	* Get current PHP system info
 	* 
-	**/		
+	**/
 	function system_info($root) {
 /* Wordpress */
 		if (is_dir($root . 'wp-includes')) {
@@ -1415,5 +1416,179 @@ require valid-user
 		return 'CMS 42';
 	}
 
+	/**
+	* Get files & strings to change manually
+	* 
+	**/
+	function system_files ($cms_version = 'CMS 42') {
+		$cms_version = split(" ", $cms_version);
+		$files = array();
+		switch ($cms_version[0]) {
+			case 'Joomla!':
+/* Joomla 1.5 */
+				if (preg_match("/1\.[56789]/", $cms_version[1])) {
+					$files = array(
+						array(
+							'file' => 'index.php',
+							'mode' => 'start',
+							'location' => '$mainframe =& JFactory::getApplication(\'site\');'
+						),
+						$files[] = array(
+							'file' => 'index.php',
+							'mode' => 'finish',
+							'location' => 'end'
+						),
+						$files[] = array(
+							'file' => 'plugins/system/cache.php',
+							'mode' => 'finish',
+							'location' => 'echo JResponse::toString($mainframe->getCfg(\'gzip\'));',
+							'global' => 1
+						)
+					);
+/* Joomla 1.0 */
+				} else {
+					$files = array(
+						array(
+							'file' => 'index.php',
+							'mode' => 'start',
+							'location' => 'ob_end_clean();'
+						),
+						$files[] = array(
+							'file' => 'index.php',
+							'mode' => 'finish',
+							'location' => 'end'
+						)
+					);
+				}
+				break;
+/* Joostina */
+			case 'Joostina':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start',
+						'location' => 'joostina_api::check_host();'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'if($mosConfig_clearCache == 1 && $mosConfig_caching == 1) joostina_api::clearCache();'
+					)
+				);
+				break;
+/* vBulletin -- need to check */
+			case 'vBulletin':
+				$files = array(
+					array(
+						'file' => 'include/functions.php',
+						'mode' => 'start',
+						'location' => 'joostina_api::check_host();',
+						'global' => 1
+					),
+					array(
+						'file' => 'include/functions.php',
+						'mode' => 'finish',
+						'location' => 'flush();',
+						'global' => 1
+					)
+				);
+				break;
+/* DataLife Engine */
+			case 'DataLife':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'db->close ();'
+					)
+				);
+				break;
+/* Bitrix */
+			case 'Bitrix':
+				$files = array(
+					array(
+						'file' => 'bitrix/header.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'bitrix/modules/main/include/epilog_after.php',
+						'mode' => 'finish',
+						'location' => 'echo $r;'
+					)
+				);
+/* Invision Power Board */
+			case 'Invision':
+				$files = array(
+					array(
+						'file' => 'sources/classes/class_display.php',
+						'mode' => 'start',
+						'location' => '$this->ipsclass->skin[\'_wrapper\'] = preg_replace( "#htmldocument\.prototype#is", "HTMLDocument_prototype", $this->ipsclass->skin[\'_wrapper\'] );'
+					),
+					array(
+						'file' => 'sources/classes/class_display.php',
+						'mode' => 'finish',
+						'location' => 'print $this->ipsclass->skin[\'_wrapper\'];'
+					)
+				);
+				break;
+/* phpBB */
+			case 'phpBB':
+				$files = array(
+					array(
+						'file' => 'includes/functions.php',
+						'mode' => 'start',
+						'location' => 'function page_footer($run_cron = true) {'
+					),
+					array(
+						'file' => 'includes/functions.php',
+						'mode' => 'finish',
+						'location' => '$template->display(\'body\');'
+					)
+				);
+				break;
+/* PHP-Nuke */
+			case 'PHP-Nuke':
+				$files = array(
+					array(
+						'file' => 'mainfile.php',
+						'mode' => 'start',
+						'location' => 'unset($matches);'
+					),
+					array(
+						'file' => 'footer.php',
+						'mode' => 'finish',
+						'location' => 'echo "</body>\n</html>";'
+					)
+				);
+				break;
+/* all other systems */
+			default:
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'end'
+					)
+				);
+				break;
+		}
+/* return default value */
+		return $files;
+	}
+	
 }
+
+/*							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+							}*/
 ?>

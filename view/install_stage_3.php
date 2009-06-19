@@ -40,18 +40,46 @@
 </fieldset>
 <fieldset id="modify">
 <h3><?php echo _WEBO_SPLASH3_MODIFY ?></h3>
-<p><?php echo _WEBO_SPLASH3_WP ?></p>
-<blockquote><pre>&lt;?php
-if (! isset($wp_did_header)):
-?&gt;</pre></blockquote>
-<p><?php echo _WEBO_SPLASH3_CODE ?></p>
+<?php
+	foreach ($files_to_change as $file) {
+?>
+<?php
+		if ($file['mode'] == 'start' && empty($file['location'])) {
+?>
+<p><?php echo _WEBO_SPLASH3_TOFILE2 ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
+<p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
 <blockquote><pre>&lt;?php
 require('<?php echo $paths['full']['current_directory'] ?>web.optimizer.php');
 ?&gt;</pre></blockquote>
-<p><?php echo _WEBO_SPLASH3_FINALLY ?></p>
-<blockquote><pre>&lt;?php
-$web_optimizer->finish();
-?&gt;</pre></blockquote>
+<?php
+		} elseif ($file['mode'] == 'finish' && $file['location'] == 'end') {
+?>
+<p><?php echo _WEBO_SPLASH3_TOFILE3 ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
+<p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
+<blockquote><pre>$web_optimizer->finish();</pre></blockquote>
+<?php
+		} else {
+?>
+<p><?php echo _WEBO_SPLASH3_TOFILE ?> <code><?php echo $paths['full']['current_directory'] . $file['file'] ?></code></p>
+<p><?php echo _WEBO_SPLASH3_AFTERSTRING ?></p>
+<blockquote><pre><?php echo htmlspecialchars($paths['full']['current_directory'] . $file['location']) ?></pre></blockquote>
+<p><?php echo _WEBO_SPLASH3_ADD2 ?></p>
+<blockquote><pre><?php 
+			if ($file['mode'] == 'start') {
+?>require('<?php echo $paths['full']['current_directory'] ?>web.optimizer.php');<?php
+			} else {
+				if (!empty($file['global'])) {
+?>global $web_optimizer;<?php
+				}
+?>$web_optimizer->finish();<?php
+			}
+?></pre></blockquote>
+<?php
+		}
+?>
+<?php
+	}
+?>
 </fieldset>
 <?php
 

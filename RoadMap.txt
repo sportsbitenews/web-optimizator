@@ -75,7 +75,8 @@
 
 9. Look and feel
 +a) Design
- b) Make up / clientside development -- ? is responsible
++b) Make up
+ c) Clientside development
 
 10. Other languages porting
  a) Perl
@@ -101,7 +102,7 @@
 +o) Zend Framework (after disabled rewrite)
 +p) vBulletin (3.8)
 +q) Symfony (1.2)
-+r) CodeIgniter (1.7), MaxSite (0.3)
++r) CodeIgniter (1.7), MaxSite (0.3), cogear (1.0)
 +s) Kohana (2.3)
 +t) Yii (1.0)
 +u) phpBB (3.0)
