@@ -63,7 +63,7 @@ class css_sprites {
 	**/
 	function process() {
 		
-		if (empty($this->no_sprites)) {
+		if (empty($this->no_sprites) && !empty($this->css)) {
 			foreach ($this->css->css as $import => $token) {
 /* create array for selectors with background images */
 				$this->media[$import] = array();
@@ -376,7 +376,7 @@ __________________
 			$this->merge_sprites(6);
 		}
 /* create first part of CSS Sprites */
-		if ($this->partly) {
+		if ($this->partly || empty($this->css)) {
 			return '';
 		} else {
 			if (empty($this->no_sprites)) {
