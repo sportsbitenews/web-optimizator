@@ -1,12 +1,10 @@
 cache/
 controller/admin.php
 controller/compressor.php
-images/loadbar.png
-images/web.optimizer.logo.png
 libs/css/main.css
 libs/css/a.png
-libs/css/b.gif
 libs/css/b.png
+libs/css/c.png
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php

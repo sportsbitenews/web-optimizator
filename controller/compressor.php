@@ -75,9 +75,9 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$fp = @fopen($this->options['javascript']['cachedir'] . '/progress.js', "w");
+		$fp = @fopen($this->options['javascript']['cachedir'] . '/progress.html', "w");
 		if ($fp) {
-			@fwrite($fp, 'window.progress=' . $progress);
+			@fwrite($fp, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>');
 			@fclose($fp);
 		}
 	}
@@ -385,7 +385,7 @@ class web_optimizer {
 			$this->content = $this->add_multiple_hosts($this->content, split(" ", $options['parallel_hosts']));
 		}
 /* remove BOM */
-		$this->content = preg_replace("/﻿/", "", $this->content);
+		$this->content = str_replace("﻿", "", $this->content);
 /* move informers, counters and ads before </body> */
 		$this->replace_informers($options);
 /* strip from content flushed part */
@@ -784,7 +784,7 @@ class web_optimizer {
 	*
 	**/
 	function get_new_file($options, $cache_file, $not_modified=false) {
-		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->unify_dir_separator($options['cachedir'])));
+		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		$newfile = "<" . $options['tag'] . " type=\"" . $options['type'] . "\" $options[src]=\"/" . $this->view->prevent_leading_slash($relative_cachedir) ."/$cache_file." . $options['ext'] . "$not_modified\"";
 		if (!empty($options['rel'])) {
 			$newfile .= " rel=\"" . $options['rel'] . "\"";
@@ -865,7 +865,7 @@ class web_optimizer {
 			$content = $src;
 		}
 /* remove BOM */
-		$content = preg_replace("/&amp;/", "&", preg_replace("/﻿/", "", $content));
+		$content = str_replace(array('&amp;', '﻿'), array('&', '﻿'), $content);
 		if (is_file($file) || $inline) {
 /* remove commented @import. First of all glue CSS files, optimiza only secondly */
 			$content = preg_replace("!/\*\s*@import.*?\*/!is", "", $content);
@@ -1038,6 +1038,8 @@ class web_optimizer {
 						$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 					}
 				}
+/* remove BOM */
+				$content_from_file = str_replace('﻿', '', $content_from_file);
 				$delimiter = '';
 				if ($value['tag'] == 'script') {
 					$delimiter = ";\n";
@@ -1366,8 +1368,8 @@ class web_optimizer {
 			if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
 				$endfile = preg_replace("@([^\?&]+/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
 			}
-			$full_path_to_image = str_replace($this->view->get_basename($endfile), "", $endfile);
-			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->unify_dir_separator($full_path_to_image . $file)));
+			$full_path_to_image = preg_replace("@[^/]+^@", "", $endfile);
+			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->view->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->view->unify_dir_separator($full_path_to_image . $file)));
 		}
 /* remove HTTP host from absolute URL */
 		return preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
@@ -1419,18 +1421,6 @@ class web_optimizer {
 			'no_css_sprites' => !$options['css_sprites']
 		));
 		return $css_sprites->process();
-	}
-
-	/**
-	 * Unifies the sep
-	 *
-	**/
-	function unify_dir_separator($path) {
-		if (DIRECTORY_SEPARATOR != '/') {
-			return str_replace (DIRECTORY_SEPARATOR, '/', $path);
-		} else {
-			return $path;
-		}
 	}
 
 	/**

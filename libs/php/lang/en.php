@@ -65,7 +65,6 @@ define('_WEBO_SPLASH1_EXPRESS', 'Express install');
 
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Installation - Stage 2');
-define('_WEBO_SPLASH2_SAVED', 'Saved');
 define('_WEBO_SPLASH2_OPTIONS', 'Compression options');
 define('_WEBO_SPLASH2_CACHE', 'Cache Directories');
 define('_WEBO_SPLASH2_CACHE_JS', 'Your JavaScript will be cached in');
@@ -106,7 +105,8 @@ define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This adds an expires header to your Jav
 									<p><a href="http://developer.yahoo.com/performance/rules.html#expires">Add an Expires or a Cache-Control Header</a></p>');
 define('_WEBO_SPLASH2_HTMLCACHE', 'Cache HTML files');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.</p>
-									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>');
+									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>
+									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.</p>
 									<p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p>
@@ -115,7 +115,7 @@ define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background 
 define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
 define('_WEBO_SPLASH2_DATAURI_INFO', '<p>t is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
 									<p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p>
-									<p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a></p>');
+									<p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server.</p>
 									<p>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically.</p>

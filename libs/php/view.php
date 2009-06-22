@@ -2,6 +2,7 @@
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  * Very basic templating class
+ * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
  *
  **/
 class compressor_view {
@@ -22,11 +23,12 @@ class compressor_view {
 	 * Sets the paths
 	 * 
 	 **/	
-	function set_paths($document_root = null) {
-
-/* Save doc root, problems with Denwer, used more generic version (below)
-	$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
-	fix for PHP as CGI */
+	function set_paths ($document_root = null) {
+/* Save doc root, fix for PHP as CGI */
+		if (!getenv("SCRIPT_FILENAME") || !getenv("SCRIPT_NAME")) {
+			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+		}
+/* Avoiding problems with Denwer */
 		if (empty($this->paths['full']['document_root'])) {
 			if (empty($document_root)) {
 				$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
@@ -45,17 +47,15 @@ class compressor_view {
 			$this->paths['full']['current_directory'] = getcwd();
 		}
 
-		$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->paths['full']['current_directory']);
+		$this->paths['full']['current_directory'] = $this->unify_dir_separator($this->ensure_trailing_slash($this->paths['full']['current_directory']));
 /* Set the current relative path */
-		$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
+		$this->paths['relative']['current_directory'] = $this->unify_dir_separator(str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']));
 /* Set the root relative path */
 		$this->paths['relative']['document_root'] = preg_replace("/[^\/]+\/$/", "", $this->paths['relative']['current_directory']);
 /* set absolute root for some cases */
-		$this->paths['absolute']['document_root'] = $this->paths['full']['document_root'] . substr(preg_replace("/[^\/]+\/$/", "", $this->paths['relative']['current_directory']), 1);
+		$this->paths['absolute']['document_root'] = $this->unify_dir_separator($this->paths['full']['document_root'] . substr(preg_replace("/[^\/]+\/$/", "", $this->paths['relative']['current_directory']), 1));
 /* Set the view directory */
 		$this->paths['full']['view'] = $this->paths['full']['current_directory'] . "view/";
-/* Set the css directory */
-		$this->paths['relative']['css_directory'] = $this->paths['relative']['current_directory'] . "libs/css/";
 	}
 
 	/**
@@ -63,13 +63,10 @@ class compressor_view {
 	 * 
 	 **/	
 	 function ensure_trailing_slash($path) {
-	 
-	 	if(substr($path,-1,1) != "/") {
-		$path .= "/";
-		}	 
-	 
-	 	return $path;
-	 
+	 	if (substr($path,-1,1) != "/") {
+			$path .= "/";
+		}
+	 	return $path; 
 	 }
 
 	/**
@@ -77,13 +74,10 @@ class compressor_view {
 	 * 
 	 **/	
 	 function prevent_trailing_slash($path) {
-
 	 	if (substr($path,-1,1) == "/" || substr($path,-1,1) == "\\") {
 			$path = substr($path, 0, -1);
 		}
-
 	 	return $path;
-
 	 }
 	 
 	/**
@@ -101,8 +95,7 @@ class compressor_view {
 	 * Renders a section of display code.
 	 * 
 	 **/	
-	function render ($file_name, $vars = array ())
-	{
+	function render ($file_name, $vars = array ()) {
 /* Set variable names */
 		foreach ($vars AS $key => $val) {
 			$$key = $val;
@@ -111,26 +104,8 @@ class compressor_view {
 			include ($this->paths['full']['view']."$file_name.php");
 		 } else if (file_exists ("view/" . "$file_name.php")) {
 		 	include ("view/"."$file_name.php");
-		 } else {			
-			echo "
-			<body style='font-family:verdana;font-size:11px'>
-			<p>
-			Rendering of template $file_name.php failed. 
-			<br/>Debug info:		
-				<p>Looking for file in: 
-					<ul>
-						<li>" . $this->paths['full']['view']."$file_name.php" . "</li>
-						<li>" . "view/"."$file_name.php" ."</li>
-					</ul>			
-				</p>
-				<p>Server info:
-					<ul>
-						<li><strong>Document root:</strong> " . $_SERVER['DOCUMENT_ROOT'] . "</li>
-						<li><strong>Script name:</strong> " . $_SERVER['SCRIPT_NAME']."</li>
-					</ul>			
-				</p>				
-			</p>
-			</body>";
+		 } else {
+			echo "<body style='font-family:verdana;font-size:11px'><p>Rendering of template $file_name.php failed.<br/>Debug info:<p>Looking for file in: <ul><li>" . $this->paths['full']['view']."$file_name.php" . "</li><li>" . "view/"."$file_name.php" ."</li></ul></p><p>Server info: <ul><li><strong>Document root:</strong> " . $_SERVER['DOCUMENT_ROOT'] . "</li><li><strong>Script name:</strong> " . $_SERVER['SCRIPT_NAME']."</li></ul></p></p></body>";
 		 }
 	}
 
@@ -171,6 +146,17 @@ class compressor_view {
 	function get_basename($filename) {
 		return preg_replace( '/^.+[\\\\\\/]/', '', $filename );
 	}
-	
+
+	/**
+	 * Unifies the sep
+	 *
+	**/
+	function unify_dir_separator ($path) {
+		if (DIRECTORY_SEPARATOR != '/') {
+			return str_replace (DIRECTORY_SEPARATOR, '/', $path);
+		} else {
+			return $path;
+		}
+	}
 }
 ?>
