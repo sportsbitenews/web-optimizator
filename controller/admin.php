@@ -131,7 +131,7 @@ class admin {
 	* Clear cache
 	* 
 	**/	
-	function install_clear_cache($redirect = true) {
+	function install_clean_cache($redirect = true) {
 /* if all directories haven't been set yet -- just success */
 		$success = false || (empty($this->compress_options['css_cachedir']) && empty($this->compress_options['javascript_cachedir']) && empty($this->compress_options['html_cachedir']));
 		$deleted_css = true;
@@ -218,7 +218,7 @@ class admin {
 	* Uninstall page
 	* 
 	**/	
-	function install_uninstall() {
+	function install_uninstall($return = true) {
 		$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* PHP-Nuke, Bitrix deletion */
 		if ($cms_version == 'PHP-Nuke' || $cms_version == 'Bitrix') {
@@ -313,15 +313,17 @@ class admin {
 				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file)));
 			}
 		}
-		$this->page_variables = array(
-			"title" => _WEBO_SPLASH1_UNINSTALL,
-			"paths" => $this->view->paths,
-			"page" => 'install_uninstall',
-			"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
-			"compress_options" => $this->compress_options,
-			"version" => $this->version,
-			"version_new" => $this->version_new
-		);
+		if ($return) {
+			$this->page_variables = array(
+				"title" => _WEBO_SPLASH1_UNINSTALL,
+				"paths" => $this->view->paths,
+				"page" => 'install_uninstall',
+				"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
+				"compress_options" => $this->compress_options,
+				"version" => $this->version,
+				"version_new" => $this->version_new
+			);
+		}
 	}
 
 	/**
@@ -392,7 +394,7 @@ class admin {
 			} elseif (!empty($this->input['upgrade'])) {
 				$this->install_upgrade();
 			} elseif (!empty($this->input['clear'])) {
-				$this->install_clear_cache();
+				$this->install_clean_cache();
 			} else{
 /* Save the options file */
 				if(!empty($this->input['user']['document_root'])) {
@@ -815,7 +817,8 @@ ExpiresDefault \"access plus 10 years\"
 				$this->write_progress($this->web_optimizer_stage = 6);
 			}
 /* delete temporary files before chained installation */
-			$this->install_clear_cache(false);
+			$this->install_clean_cache(false);
+			$this->install_uninstall(false);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);

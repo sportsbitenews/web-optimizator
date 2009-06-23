@@ -50,7 +50,7 @@
 <p><?php
 				echo _WEBO_SPLASH3_TOFILE2;
 ?> <code><?php
-				echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'];
+				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_ADD2;
 ?>:</p><textarea cols="80" rows="3">&lt;?php
@@ -62,7 +62,7 @@ require('<?php
 ?><p><?php
 				echo _WEBO_SPLASH3_TOFILE3;
 ?> <code><?php
-				echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'];
+				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_ADD2;
 ?>:</p><textarea cols="80" rows="2">$web_optimizer->finish();</textarea><?php
@@ -70,11 +70,11 @@ require('<?php
 ?><p><?php
 				echo _WEBO_SPLASH3_TOFILE;
 ?> <code><?php
-				echo preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['file'];
+				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_AFTERSTRING;
 ?></p><textarea cols="80" rows="2"><?php
-				echo htmlspecialchars(preg_replace("/\\\/", "/", $paths['full']['current_directory']) . $file['location']);
+				echo htmlspecialchars(preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['location']);
 ?></textarea><p><?php
 				echo _WEBO_SPLASH3_ADD2;
 ?></p><textarea cols="80" rows="2"><?php 
