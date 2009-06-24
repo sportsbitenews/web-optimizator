@@ -74,7 +74,7 @@ require('<?php
 ?></code> <?php
 				echo _WEBO_SPLASH3_AFTERSTRING;
 ?></p><textarea cols="80" rows="2"><?php
-				echo htmlspecialchars(preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['location']);
+				echo $file['location'];
 ?></textarea><p><?php
 				echo _WEBO_SPLASH3_ADD2;
 ?></p><textarea cols="80" rows="2"><?php 
