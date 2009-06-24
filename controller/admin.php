@@ -386,6 +386,9 @@ class admin {
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
+/* check for multiple hosts possibility */
+			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+			$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($hosts);
 /* render final page */
 			$this->install_stage_3();
 		} else {
