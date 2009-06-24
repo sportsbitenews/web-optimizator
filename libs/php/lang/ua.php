@@ -66,7 +66,6 @@ define('_WEBO_SPLASH1_EXPRESS', 'Швидка установка');
 
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Установка - другий крок');
-define('_WEBO_SPLASH2_SAVED', 'Збережене налаштування: ');
 define('_WEBO_SPLASH2_OPTIONS', 'Налаштування Веб Оптимізатора');
 define('_WEBO_SPLASH2_CACHE', 'Директорії кешування');
 define('_WEBO_SPLASH2_CACHE_JS', 'JavaScript-файли будуть розміщуватися в');
@@ -79,6 +78,7 @@ define('_WEBO_SPLASH2_NO', 'Ні:');
 define('_WEBO_SPLASH2_UNABLE', 'Неможливо відкрити');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Будь-ласка, переконайтеся, що такая директорія існує і вона розміщена в корені сайту.');
 /* Web Optimizer options */
+define('_WEBO_SPLASH2_MINIFY', 'Настройки стискання');
 define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Стиснення видаляє із CSS- та JavaScript-файлів пробіли, переводи рядків та інші непотрібні символи.</p>
 									<p>Ви також можете обрати один із декількох інструментів мінімізації або обфускації.</p>
 									<p><a href="http://webo.in/articles/habrahabr/14-minifing-css/">Стиснення CSS-</a> та <a href="http://webo.in/articles/habrahabr/11-minifing-javascript/">JavaScript-файлів</a>.</p>');

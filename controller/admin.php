@@ -1130,7 +1130,6 @@ ExpiresDefault \"access plus 10 years\"
 /* write the file */
 				@fwrite($fp, $content);
 				@fclose($fp);
-				return _WEBO_SPLASH2_SAVED . " " . $option_name;
 			}
 		} else {
 			$this->error(_WEBO_SPLASH3_CONFIGERROR5);
