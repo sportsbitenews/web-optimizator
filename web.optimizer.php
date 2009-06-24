@@ -4,22 +4,38 @@
 // ==============================================================================================
 // @author     Leon Chevalier (http://www.aciddrop.com)
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.3.5
+// @version    0.5.0
 // @copyright  Copyright &copy; 2008-2009 Leon Chevalier, Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 
 $basepath = dirname(__FILE__) . '/';
+$compress_options['php'] = substr(phpversion(), 0, 1);
 
-if (!class_exists('compressor')) {
-	require_once($basepath . "controller/compressor.php");
-}
+if ($compress_options['php'] == 4) {
+	if (!class_exists('compressor')) {
+		require_once($basepath . "controller/compressor.php");
+	}
 /* Include this for path getting help */
-if (!class_exists('compressor_view')) {
-	require_once($basepath . "libs/php/view.php");
-}
+	if (!class_exists('compressor_view')) {
+		require_once($basepath . "libs/php/view.php");
+	}
 /* Include this for getting user agent */
-if (!class_exists('_webo_User_agent')) {
-	require_once($basepath . "libs/php/user_agent.php");
+	if (!class_exists('_webo_User_agent')) {
+		require_once($basepath . "libs/php/user_agent.php");
+	}
+/* skip __autoload for PPH5+ */
+} else {
+	if (!class_exists('compressor', false)) {
+		require_once($basepath . "controller/compressor.php");
+	}
+/* Include this for path getting help */
+	if (!class_exists('compressor_view', false)) {
+		require_once($basepath . "libs/php/view.php");
+	}
+/* Include this for getting user agent */
+	if (!class_exists('_webo_User_agent', false)) {
+		require_once($basepath . "libs/php/user_agent.php");
+	}	
 }
 
 /* We need to know the config */
@@ -38,8 +54,6 @@ $libraries = array();
 
 /* Include this for CSS Sprites generating */
 $libraries['css_sprites'] = 'css.sprites.php';
-
-$compress_options['php'] = substr(phpversion(), 0, 1);
 
 if ($compress_options['php'] == 4) {
 /* JSMin */
