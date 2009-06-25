@@ -409,10 +409,10 @@ __________________
 						if (!empty($background['background-image'])) {
 							$background['background-image'] = preg_replace("/\s*!important\s*$/", "", $background['background-image']);
 							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
-							$sprited = stripos($this->css_image, 'bo.' . $this->timestamp);
-/* convert image to base64 */
-							$this->get_image(1);
 							if (!empty($this->css_image)) {
+								$sprited = strpos($this->css_image, 'bo.' . $this->timestamp);
+/* convert image to base64 */
+								$this->get_image(1);							
 								if (substr($this->css_image, 0, 5) == 'data:') {
 									if (empty($this->no_ie6) || !$sprited) {
 /* preserve IE6/7 selectors only if we are doing anything for IE6 */

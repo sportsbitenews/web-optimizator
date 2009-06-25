@@ -923,6 +923,8 @@ ExpiresDefault \"access plus 10 years\"
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($cms_version, 0, 9) == 'vBulletin') {
 							$index = $this->view->paths['absolute']['document_root'] . 'include/functions.php';
+						} elseif ($cms_version == 'NetCat') {
+							$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 						}
 						$fp = @fopen($index, "r");
 						if ($fp) {
@@ -1313,7 +1315,15 @@ require valid-user
 		} elseif (is_dir($root . 'libraries')) {
 			$joomla_version = '1.5.0';
 			if (is_file($root . 'libraries/joomla/version.php')) {
-				require($root . 'libraries/joomla/version.php');
+				if (substr(phpversion(), 0, 1) == 4) {
+					if (!class_exists('JVersion')) {
+						require($root . 'libraries/joomla/version.php');
+					}
+				} else {
+					if (!class_exists('JVersion', false)) {
+						require($root . 'libraries/joomla/version.php');
+					}
+				}
 				$jv = new JVersion();
 				if ($jv) {
 					$joomla_version = $jv->RELEASE . '.' . $jv->DEV_LEVEL;
@@ -1401,7 +1411,7 @@ require valid-user
 		} elseif (is_file($root . 'system/core/Kohana.php')) {
 			return 'Kohana';
 /* Yii */
-		} elseif (is_file($root . '../framework/YiiBase.php')) {
+		} elseif (is_file($root . '../framework/YiiBase.php') || is_file($root . 'framework/YiiBase.php')) {
 			return 'Yii';
 /* Invision Power Board */
 		} elseif (is_file($root . 'sources/classes/class_display.php')) {
@@ -1417,6 +1427,9 @@ require valid-user
 		} elseif (is_file($root . 'gears/global/global.info')) {
 			$version = preg_replace("/group.*/", "", preg_replace("/.*version\s*=\s*/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'gears/global/global.info'))));
 			return 'cogear' . (empty($version) ? '' : ' ' . $version);
+/* NetCat */
+		} elseif (is_dir($root . 'netcat/')) {
+			return 'NetCat';
 		}
 		return 'CMS 42';
 	}
@@ -1567,6 +1580,20 @@ require valid-user
 						'file' => 'footer.php',
 						'mode' => 'finish',
 						'location' => 'echo "</body>\n</html>";'
+					)
+				);
+				break;
+/* NetCat */
+			case 'NetCat':
+				$files = array(
+					array(
+						'file' => 'netcat/require/e404.php',
+						'mode' => 'start',
+					),
+					array(
+						'file' => 'netcat/require/e404.php',
+						'mode' => 'finish',
+						'location' => 'end'
 					)
 				);
 				break;
