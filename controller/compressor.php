@@ -98,7 +98,7 @@ class web_optimizer {
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime']),
+				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
@@ -113,7 +113,7 @@ class web_optimizer {
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
-				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime']),
+				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],

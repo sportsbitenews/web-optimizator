@@ -1494,20 +1494,19 @@ require valid-user
 					)
 				);
 				break;
-/* vBulletin -- need to check */
+/* vBulletin */
 			case 'vBulletin':
 				$files = array(
 					array(
 						'file' => 'include/functions.php',
 						'mode' => 'start',
-						'location' => 'joostina_api::check_host();',
+						'location' => 'if (!is_demo_mode()) {',
 						'global' => 1
 					),
 					array(
 						'file' => 'include/functions.php',
 						'mode' => 'finish',
-						'location' => 'flush();',
-						'global' => 1
+						'location' => 'flush(); }',
 					)
 				);
 				break;
@@ -1574,12 +1573,13 @@ require valid-user
 					array(
 						'file' => 'mainfile.php',
 						'mode' => 'start',
-						'location' => 'unset($matches);'
+						'location' => 'unset($matches);',
 					),
 					array(
 						'file' => 'footer.php',
 						'mode' => 'finish',
-						'location' => 'echo "</body>\n</html>";'
+						'location' => 'echo "</body>\n</html>";',
+						'global' => 1
 					)
 				);
 				break;
@@ -1617,10 +1617,4 @@ require valid-user
 	}
 	
 }
-
-/*							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
-								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
-							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
-								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
-							}*/
 ?>
