@@ -33,7 +33,7 @@ Please find all coordinates for donation here: http://sprites.in/donate/
 Upgrade issues
 ----------------------
 Auto-upgrade is included since version 0.3.8. Please just enter username and password at your Web Optimizer Admin interface and press
-'Upgrade'. For auto-updgrade curl must be enabled on the server.
+'Upgrade'. For auto-upgrade curl must be enabled on the server.
 Please note that on upgrading from version 0.2 and below you need to replace in the last part in index.php file 'compressor' to
 'web_optimizer'.
 

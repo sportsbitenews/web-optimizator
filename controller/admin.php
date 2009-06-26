@@ -219,10 +219,12 @@ class admin {
 	* 
 	**/	
 	function install_uninstall($return = true) {
-		$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+		if (empty($this->cms_version)) {
+			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+		}
 /* PHP-Nuke, Bitrix deletion */
-		if ($cms_version == 'PHP-Nuke' || $cms_version == 'Bitrix') {
-			if ($cms_version == 'Bitrix') {
+		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix') {
+			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
 			} else {
@@ -253,11 +255,11 @@ class admin {
 /* remove instances of Web Optimizer from index.php */
 			$index = $this->view->paths['full']['document_root'] . 'index.php';
 /* fix for phpBB */
-			if ($cms_version == 'phpBB') {
+			if ($this->cms_version == 'phpBB') {
 				$index = $this->view->paths['full']['document_root'] . 'includes/functions.php';
 			}
 /* fix for IPB */
-			if ($cms_version == 'Invision Power Board') {
+			if ($this->cms_version == 'Invision Power Board') {
 				$index = $this->view->paths['full']['document_root'] . 'sources/classes/class_display.php';
 			}
 			$fp = @fopen($index, "r");
@@ -308,7 +310,7 @@ class admin {
 				}
 			}
 /* additional change of cache plugin */
-			if (preg_match("/Joomla! 1\.[56789]/", $cms_version)) {
+			if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 				$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file)));
 			}
@@ -809,10 +811,12 @@ ExpiresDefault \"access plus 10 years\"
 						}
 						$content .= "\n# Web Optimizer end";
 /* define CMS */
-						$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii');
+						if (empty($this->cms_version)) {
+							$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+						}
+						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
 /* prevent rewrite to admin access on frameworks */
-						if (in_array($cms_version, $cms_frameworks)) {
+						if (in_array($this->cms_version, $cms_frameworks)) {
 							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 						}
 						fwrite($fp, $content_saved . "\n" . $content);
@@ -829,8 +833,8 @@ ExpiresDefault \"access plus 10 years\"
 /* delete test file from chained optimization */
 			@unlink($this->input['user']['webo_cachedir'] . 'cache/optimizing.php');
 /* define CMS */
-			if (empty($cms_version)) {
-				$cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+			if (empty($this->cms_version)) {
+				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 			}
 /* try to auto-patch root /index.php */
 			$auto_rewrite = 0;
@@ -841,7 +845,7 @@ ExpiresDefault \"access plus 10 years\"
 					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->input['user']['webo_cachedir'] . ".</p>");
 				} else {
 /* dirty hack for PHP-Nuke */
-					if ($cms_version == 'PHP-Nuke') {
+					if ($this->cms_version == 'PHP-Nuke') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
 						$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
 						$mainfile_content = @file_get_contents($mainfile);
@@ -862,7 +866,7 @@ ExpiresDefault \"access plus 10 years\"
 							}
 						}
 /* another dirty hack for phpBB */
-					} elseif ($cms_version == 'phpBB') {
+					} elseif ($this->cms_version == 'phpBB') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
@@ -880,7 +884,7 @@ ExpiresDefault \"access plus 10 years\"
 							}
 						}
 /* one more dirty hack for ipb */
-					} elseif ($cms_version == 'Invision Power Board') {
+					} elseif ($this->cms_version == 'Invision Power Board') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
@@ -898,7 +902,7 @@ ExpiresDefault \"access plus 10 years\"
 							}
 						}
 /* and for Bitrix */
-					} elseif ($cms_version == 'Bitrix') {
+					} elseif ($this->cms_version == 'Bitrix') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 						$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
 						$mainfile_content = @file_get_contents($mainfile);
@@ -920,9 +924,9 @@ ExpiresDefault \"access plus 10 years\"
 						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
-						if (substr($cms_version, 0, 9) == 'vBulletin') {
+						if (substr($this->cms_version, 0, 9) == 'vBulletin') {
 							$index = $this->view->paths['absolute']['document_root'] . 'include/functions.php';
-						} elseif ($cms_version == 'NetCat') {
+						} elseif ($this->cms_version == 'NetCat') {
 							$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 						}
 						$fp = @fopen($index, "r");
@@ -932,19 +936,19 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
 							}
 /* fix for Joomla 1.0 */
-							if (preg_match("/Joomla! 1\.0/", $cms_version)) {
+							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for Joomla 1.5.0 */
-							} elseif (preg_match("/Joomla! 1\.5\.0/", $cms_version)) {
+							} elseif (preg_match("/Joomla! 1\.5\.0/", $this->cms_version)) {
 								$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/i", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 /* fix for Joomla 1.5+ */
-							} elseif (preg_match("/Joomla! 1\.[56789]/", $cms_version)) {
+							} elseif (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$content_saved = preg_replace("/(\\\$mainframe\s*=&\s*JFactory::getApplication\(['\"]site['\"]\);\r?\n)/i",  "$1" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 /* fix for Joostina */
-							} elseif (preg_match("/Joostina/", $cms_version)) {
+							} elseif (preg_match("/Joostina/", $this->cms_version)) {
 								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for vBulletin */
-							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 							
 							} elseif (substr($content_saved, 0, 2) == '<?') {
@@ -954,14 +958,14 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
 							}
 /* fix for DataLife Engine */
-							if (substr($cms_version, 0, 15) == 'DataLife Engine') {
+							if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
 								$content_saved = preg_replace("/(GzipOut\s*\(\);)/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 /* fix for vBulletin */
-							} elseif (substr($cms_version, 0, 9) == 'vBulletin') {
+							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
-									if (substr($cms_version, 0, 8) == 'Joostina') {
+									if (substr($this->cms_version, 0, 8) == 'Joostina') {
 										$content_saved = preg_replace("/(exit\s*\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
 									} else {
 /* add finish block */
@@ -979,7 +983,7 @@ ExpiresDefault \"access plus 10 years\"
 								$auto_rewrite = 1;
 							}
 /* additional change of cache plugin */
-							if (preg_match("/Joomla! 1\.[56789]/", $cms_version)) {
+							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 								@file_put_contents($cache_file, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->close();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file))));
 							}
@@ -1000,12 +1004,12 @@ ExpiresDefault \"access plus 10 years\"
 								"page" => $this->input['page'],
 								"message" => _WEBO_SPLASH3_CONFSAVED,
 								"auto_rewrite" => empty($auto_rewrite) ? 0 : 1,
-								"cms_version" => empty($cms_version) ? '' : $cms_version,
+								"cms_version" => empty($this->cms_version) ? '' : $this->cms_version,
 								"username" => $this->input['user']['_username'],
 								"password" => $this->input['user']['_password'],
 								"version" => $this->version,
 								"version_new" => $this->version_new,
-								"files_to_change" => $this->system_files($cms_version));
+								"files_to_change" => $this->system_files($this->cms_version));
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 
@@ -1352,7 +1356,19 @@ require valid-user
 				$joomla_version = '1.0';
 				$joomla_title = 'Joomla!';
 				if (is_file($root . 'includes/version.php')) {
-					require($root . 'includes/version.php');
+					if (substr(phpversion(), 0, 1) == 4) {
+						if (!class_exists('joomlaVersion')) {
+							require($root . 'includes/version.php');
+						} else {
+							$_VERSION = new joomlaVersion();
+						}
+					} else {
+						if (!class_exists('joomlaVersion', false)) {
+							require($root . 'includes/version.php');
+						} else {
+							$_VERSION = new joomlaVersion();
+						}
+					}
 					$joomla_version = empty($_VERSION->CMS_ver) ? ($_VERSION->RELEASE . '.' . $_VERSION->DEV_LEVEL) : $_VERSION->CMS_ver;
 					$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
 				}
@@ -1429,6 +1445,9 @@ require valid-user
 /* NetCat */
 		} elseif (is_dir($root . 'netcat/')) {
 			return 'NetCat';
+/* CakePHP */
+		} elseif (is_file($root . 'cake/VERSION.txt')) {
+			return 'CakePHP';
 		}
 		return 'CMS 42';
 	}
