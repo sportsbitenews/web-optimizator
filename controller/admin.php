@@ -950,7 +950,9 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for vBulletin */
 							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
-							
+/* fix for CMS Made Simple */							
+							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
+								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -963,6 +965,9 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for vBulletin */
 							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+/* fix for CMS Made Simple */
+							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
+								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -1455,6 +1460,12 @@ require valid-user
 		} elseif (is_file($root . '../../cake/VERSION.txt')) {
 			$this->save_option("['document_root']", $root);
 			return 'CakePHP';
+/* CMS Made Simple */
+		} elseif (is_file($root . 'version.php')) {
+			if (is_file($root . 'plugins/function.cms_version.php')) {
+				require_once($root . 'version.php');
+			}
+			return 'CMS Made Simple ' . $CMS_VERSION;
 		}
 		return 'CMS 42';
 	}
@@ -1619,6 +1630,21 @@ require valid-user
 						'file' => 'netcat/require/e404.php',
 						'mode' => 'finish',
 						'location' => 'end'
+					)
+				);
+				break;
+/* CMS Made Simple */
+			case 'CMS':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start',
+						'location' => 'header("Content-Type: " . $gCms->variables[\'content-type\'] . "; charset=" . (isset($pageinfo->template_encoding) && $pageinfo->template_encoding != \'\'?$pageinfo->template_encoding:get_encoding()));',
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'echo $html;'
 					)
 				);
 				break;
