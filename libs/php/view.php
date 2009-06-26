@@ -24,14 +24,16 @@ class compressor_view {
 	 * 
 	 **/	
 	function set_paths ($document_root = null) {
+		if (empty($document_root)) {
 /* Save doc root, fix for PHP as CGI */
-		if (!getenv("SCRIPT_FILENAME") || !getenv("SCRIPT_NAME")) {
-			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator($_SERVER['DOCUMENT_ROOT']));
+		} else {
+			$this->paths['full']['document_root'] = $document_root;
 		}
 /* Avoiding problems with Denwer */
-		if (empty($this->paths['full']['document_root'])) {
+		if (empty($this->paths['full']['document_root']) || !is_dir($this->paths['full']['document_root']) || !is_file($this->paths['full']['document_root'] . getenv("SCRIPT_NAME"))) {
 			if (empty($document_root)) {
-				$this->paths['full']['document_root'] = $this->ensure_trailing_slash(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME"))));
+				$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
 			} else {
 				$this->paths['full']['document_root'] = $document_root;
 			}

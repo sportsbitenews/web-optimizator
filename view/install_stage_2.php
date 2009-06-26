@@ -54,7 +54,7 @@
 	echo _WEBO_SPLASH2_DOCUMENTROOT;
 ?>" size="40"/></label><input type="submit" value="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="i"/><input type="hidden" name="page" value="install_stage_3"/><input type="hidden" name="Submit" value="1"/><input type="hidden" name="user[_username]" value="<?php
+?>" class="i" id="hideme"/><input type="hidden" name="page" value="install_stage_3"/><input type="hidden" name="Submit" value="1"/><input type="hidden" name="user[_username]" value="<?php
 	echo $compress_options['username'];
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $compress_options['password'];

@@ -399,21 +399,21 @@ class admin {
 			} elseif (!empty($this->input['clear'])) {
 				$this->install_clean_cache();
 			} else{
-/* Save the options file */
+/* Set paths with the new document root */
 				if(!empty($this->input['user']['document_root'])) {
-					$_SERVER['DOCUMENT_ROOT'] = $this->input['user']['document_root'];
+					$this->view->set_paths($this->input['user']['document_root']);
 				} else {
-					$this->input['user']['document_root'] = $this->view->ensure_trailing_slash($_SERVER['DOCUMENT_ROOT']);
+					$this->view->set_paths();
+					$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
 				}
 /* check if we are using correct root directory */
-				if (!is_dir($_SERVER['DOCUMENT_ROOT'])) {
+				if (!is_dir($this->input['user']['document_root'])) {
 					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 				}
+/* Save the options file */
 				if(!empty($this->input['Submit'])) {
 					$save = $this->save_option('[\'document_root\']', $this->input['user']['document_root']);
 				}
-/* Set paths with the new document root */
-				$this->view->set_paths($this->input['user']['document_root']);
 				$this->get_modules();
 /* check for multiple hosts possibility */
 				$hosts = split(" ", $this->compress_options['parallel']['allowed_list']);
@@ -634,6 +634,9 @@ class admin {
 					}
 				}
 				$this->write_progress($this->web_optimizer_stage = 5);
+/* delete temporary files before chained installation */
+				$this->install_clean_cache(false);
+				$this->install_uninstall(false);
 /* additional check for .htaccess -- need to open exact file */
 				if (!empty($this->input['user']['htaccess']['enabled']) && !empty($this->apache_modules)) {
 					$this->view->set_paths($this->input['user']['document_root']);
@@ -815,13 +818,9 @@ ExpiresDefault \"access plus 10 years\"
 						fwrite($fp, $content_saved . "\n" . $content);
 						fclose($fp);
 					}
-
 				}
-				$this->write_progress($this->web_optimizer_stage = 6);
 			}
-/* delete temporary files before chained installation */
-			$this->install_clean_cache(false);
-			$this->install_uninstall(false);
+			$this->write_progress($this->web_optimizer_stage = 6);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
