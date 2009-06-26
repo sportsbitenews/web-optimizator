@@ -1445,8 +1445,15 @@ require valid-user
 /* NetCat */
 		} elseif (is_dir($root . 'netcat/')) {
 			return 'NetCat';
-/* CakePHP */
+/* CakePHP, global root */
 		} elseif (is_file($root . 'cake/VERSION.txt')) {
+/* change document root to inner directory */
+			$this->view->paths['full']['document_root'] = $this->view->ensure_trailing_slash($this->view->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
+			$this->save_option("['document_root']", $this->view->paths['full']['document_root']);
+			return 'CakePHP';
+/* CakePHP, local root */
+		} elseif (is_file($root . '../../cake/VERSION.txt')) {
+			$this->save_option("['document_root']", $root);
 			return 'CakePHP';
 		}
 		return 'CMS 42';
