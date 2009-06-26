@@ -242,10 +242,10 @@ class admin {
 /* update footer */
 						@fwrite($fp, preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
 						@fclose($fp);
-					} else {
+					} elseif ($return) {
 						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $footer . "</code></p>");
 					}
-				} else {
+				} elseif ($return) {
 					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $mainfile . "</code></p>");
 				}
 			}
@@ -271,7 +271,7 @@ class admin {
 				if ($fp) {
 					fwrite($fp, $content_saved);
 					fclose($fp);
-				} else {
+				} elseif ($return) {
 					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 				}
 /* remove rules from .htaccess */
@@ -302,7 +302,7 @@ class admin {
 							fwrite($fp, $content_saved);
 							fclose($fp);
 						}
-					} else {
+					} elseif ($return) {
 						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/index.php</code></p>");
 					}
 				}

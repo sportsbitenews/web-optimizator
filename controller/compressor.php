@@ -130,6 +130,8 @@ class web_optimizer {
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
+				"parallel" => $this->options['parallel']['enabled'],
+				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
@@ -348,6 +350,8 @@ class web_optimizer {
 					'header' => $type,
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
+					'parallel' => $options['parallel']['enabled'],
+					'parallel_hosts' => $options['parallel']['allowed_list'],
 					'external_scripts' => $options['external_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
@@ -1418,7 +1422,8 @@ class web_optimizer {
 			'image_optimization' => $options['image_optimization'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
-			'no_css_sprites' => !$options['css_sprites']
+			'no_css_sprites' => !$options['css_sprites'],
+			'multiple_hosts' => empty($options['parallel']) ? array() : split(" ", $options['parallel_hosts'])
 		));
 		return $css_sprites->process();
 	}

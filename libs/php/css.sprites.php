@@ -45,6 +45,15 @@ class css_sprites {
 			$this->no_sprites = $options['no_css_sprites'];
 /* optimiza all CSS images via smush.it? */
 			$this->image_optimization = $options['image_optimization'];
+/* multiple hosts */
+			$this->multiple_hosts = $options['multiple_hosts'];
+			if (count($this->multiple_hosts) > 4) {
+				$this->multiple_hosts = array($this->multiple_hosts[0], $this->multiple_hosts[1], $this->multiple_hosts[2], $this->multiple_hosts[3]);
+			}
+/* number of multiple hosts */
+			$this->multiple_hosts_count = count($hosts);
+/* using HTTPS ?*/
+			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
 			$this->none = 'none!important';
 		}
@@ -384,8 +393,8 @@ __________________
 				$this->sprite = 'webo.'. $this->timestamp .'.png';
 				$this->merge_sprites(4);
 			}
-/* finally convert CSS images to data:URI */
-			if (!empty($this->data_uris)) {
+/* finally convert CSS images to data:URI and add mutiple hosts*/
+			if (!empty($this->data_uris) || !empty($this->multiple_hosts)) {
 				$this->css_to_data_uri();
 			}
 			return html_entity_decode($this->css->print->formatted(), ENT_QUOTES);
@@ -407,27 +416,53 @@ __________________
 							$background[$key] = $value;
 						}
 						if (!empty($background['background-image'])) {
-							$background['background-image'] = preg_replace("/\s*!important\s*$/", "", $background['background-image']);
-							$this->css_image = substr($background['background-image'], 4, strlen($background['background-image']) - 5);
+							$image = preg_replace("/\s*!important\s*$/", "", $background['background-image']);
+							$this->css_image = substr($image, 4, strlen($image) - 5);
 							if (!empty($this->css_image)) {
 								$sprited = strpos($this->css_image, 'bo.' . $this->timestamp);
+								if (!empty($this->data_uris)) {
 /* convert image to base64 */
-								$this->get_image(1);							
+									$this->get_image(1);
+								}
 								if (substr($this->css_image, 0, 5) == 'data:') {
+									$ie_image = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+										$this->distribute_image(substr($image, 4, strlen($image) - 5)) .
+										")$1", $image);
 									if (empty($this->no_ie6) || !$sprited) {
 /* preserve IE6/7 selectors only if we are doing anything for IE6 */
 										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
-										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $background['background-image'];
+										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $ie_image;
 									}
 									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
-									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $background['background-image'];
+									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $ie_image;
+/* skip images on different hosts */
+								} elseif (!$sprited) {
+									$this->css_image = $this->distribute_image($this->css_image);
 								}
-								$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" . $this->css_image . ")$1", $value);
+								$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+									$this->css_image .
+									")$1", $value);
 							}
 						}
 					}
 				}
 			}
+		}
+	}
+/* cdistribute image through multiple hosts */
+	function distribute_image ($image) {
+		if (!empty($this->multiple_hosts_count) &&
+			(!strpos($image, "://") ||
+				stripos($image, "://" . $_SERVER['HTTP_HOST'] . "/") ||
+				stripos($image, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/"))) {
+			return "http" . $this->https .
+				"://" .
+				$this->multiple_hosts[strlen($image)%$this->multiple_hosts_count] .
+				"." .
+				preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
+				$image;
+		} else {
+			return $image;
 		}
 	}
 /* download requested image */
