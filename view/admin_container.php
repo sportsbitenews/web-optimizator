@@ -8,7 +8,7 @@
 	echo _WEBO_GENERAL_TITLE;
 ?></h1><h4>Web Optimizer <span><?php
 	echo $version;
-?>/<b><?php
+?>/<b id="z"><?php
 	echo $version_new;
 ?></b></span></h4><?php
 	require($page.".php");
