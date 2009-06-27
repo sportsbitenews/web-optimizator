@@ -51,7 +51,7 @@ class css_sprites {
 				$this->multiple_hosts = array($this->multiple_hosts[0], $this->multiple_hosts[1], $this->multiple_hosts[2], $this->multiple_hosts[3]);
 			}
 /* number of multiple hosts */
-			$this->multiple_hosts_count = count($hosts);
+			$this->multiple_hosts_count = count($this->multiple_hosts);
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -394,7 +394,7 @@ __________________
 				$this->merge_sprites(4);
 			}
 /* finally convert CSS images to data:URI and add mutiple hosts*/
-			if (!empty($this->data_uris) || !empty($this->multiple_hosts)) {
+			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count)) {
 				$this->css_to_data_uri();
 			}
 			return html_entity_decode($this->css->print->formatted(), ENT_QUOTES);

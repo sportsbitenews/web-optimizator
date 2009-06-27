@@ -350,8 +350,8 @@ class web_optimizer {
 					'header' => $type,
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
-					'parallel' => $options['parallel']['enabled'],
-					'parallel_hosts' => $options['parallel']['allowed_list'],
+					'parallel' => $options['parallel'],
+					'parallel_hosts' => $options['parallel_hosts'],
 					'external_scripts' => $options['external_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
