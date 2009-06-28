@@ -51,7 +51,7 @@ class css_sprites {
 				$this->multiple_hosts = array($this->multiple_hosts[0], $this->multiple_hosts[1], $this->multiple_hosts[2], $this->multiple_hosts[3]);
 			}
 /* number of multiple hosts */
-			$this->multiple_hosts_count = count($this->multiple_hosts);
+			$this->multiple_hosts_count = count($this->multiple_hosts) && !empty($this->multiple_hosts[0]);
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */

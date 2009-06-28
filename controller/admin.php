@@ -312,7 +312,7 @@ class admin {
 /* additional change of cache plugin */
 			if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 				$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
-				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->close\(\);/", "", @file_get_contents($cache_file)));
+				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
 			}
 		}
 		if ($return) {
