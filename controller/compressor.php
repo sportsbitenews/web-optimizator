@@ -437,6 +437,7 @@ class web_optimizer {
 			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
+				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, old_src_param_pos, strlen($old_src)) : '';
 /* skip images on different hosts */
 				if ((!strpos($old_src, "://") || stripos($old_src, "://" . $_SERVER['HTTP_HOST'] . "/") || stripos($old_src, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/")) && empty($replaced[$old_src])) {
 					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
@@ -1334,7 +1335,7 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = str_replace(array('//]]', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
+			$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
