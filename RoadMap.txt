@@ -9,11 +9,14 @@
  h) Donate block
 +i) Cache cleaner
 +j) Secure installation
+ k) Saved traffic
 
 2. System check
 ?a) .htaccess posibility
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
 +c) PHP (other languages) libs: gzencode, curl , etc.
+ d) Current Web Optimizer status: installed or not
+ e) Current website gzip compression
 
 3. Configurator: config.webo.php -- number of options
 +a) CSS / JS merging
@@ -36,6 +39,7 @@
 +s) Fast check by filenames
 +t) HTML caching
 +u) Unobtrusive loading
+ v) Practial gain
 
 4. Merging
 +a) Base CSS / JS merging
@@ -86,7 +90,7 @@
 
 11. Default CMS-compatibility
 +a) Wordpress (2.7.1)
-+b) Joomla (1.0.15, 1.5.0, 1.5.9, 1.5.10), Joostina (1.2)
++b) Joomla (1.0.15, 1.5.0, 1.5.9, 1.5.10, 1.5.11), Joostina (1.2)
 +c) Drupal (6.10, 5.16)
 +d) Bitrix
 +e) Typo3 (4.2)
@@ -109,13 +113,19 @@
 +v) Invision Power Board (2.6)
  w) Explay (3.0)
 +x) Simple Machines Forum (1.1.8)
- y) 
- z) 
++y) CakePHP
++z) CMS Made Simple
++A) NetCat
 
 12. Localization
 +a) English
 +b) Russian
  c) German
-+d) Hebrew
+?d) Hebrew
 +e) Ukranian
  f) ?
+ 
+ 13) Plugin API
+  a) Possiblity to add plugin for any system
+  b) Joomla! 1.0 (Page Cache)
+  c) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)

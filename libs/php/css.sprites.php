@@ -219,10 +219,11 @@ class css_sprites {
 											&& !preg_match("/right|center|%|em/", $image['background-position']))))) {
 									$repeat_key = 'no-repeatb';
 								} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-									if (!empty($image['width']) &&
-											!empty($image['height']) &&
-											!preg_match("/em|%|auto/", $image['height']) &&
-											!preg_match("/em|%|auto/", $image['width'])) {
+									if ((!empty($image['width']) &&
+												!empty($image['height']) &&
+												!preg_match("/em|%|auto/", $image['height']) &&
+												!preg_match("/em|%|auto/", $image['width'])) ||
+											!empty($this->aggressive)) {
 										$repeat_key = 'no-repeat';
 									} else {
 										$repeat_key = 'no-repeati';
