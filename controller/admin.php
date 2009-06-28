@@ -752,7 +752,7 @@ RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
-<FilesMatch .*\.(css\.gz)$>
+<FilesMatch \.(css\.gz)$>
 	ForceType text/css
 </FilesMatch>";
 							}
@@ -762,7 +762,7 @@ RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
-<FilesMatch .*\.(js\.gz)$>
+<FilesMatch \.(js\.gz)$>
 	ForceType application/x-javascript
 </FilesMatch>";
 							}
@@ -771,24 +771,27 @@ RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 							$content .= "
 ExpiresActive On
 ExpiresDefault \"access plus 10 years\"
-<FilesMatch .*\.(php|phtml|shtml|html|xml)$>
+<FilesMatch \.(pdf|flv|swf|jpe?g|png|gif|bmp)$>
+	Cache-Control: public
+</FilesMatch>
+<FilesMatch \.(php|phtml|shtml|html|xml)$>
 	ExpiresActive Off
 </FilesMatch>";
 							if (empty($this->input['user']['far_future_expires']['css'])) {
 								$content .= "
-<FilesMatch .*\.css$>
+<FilesMatch \.css$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
 							if (empty($this->input['user']['far_future_expires']['javascript'])) {
 								$content .= "
-<FilesMatch .*\.js$>
+<FilesMatch \.js$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
 							if (empty($this->input['user']['far_future_expires']['static'])) {
 								$content .= "
-<FilesMatch .*\.(bmp|png|gif|jpe?g|ico|swf|flv|pdf)$>
+<FilesMatch \.(bmp|png|gif|jpe?g|ico|swf|flv|pdf)$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
@@ -796,14 +799,14 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($htaccess_options['mod_headers'])) {
 							if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
 								$content .= "
-<FilesMatch .*\.(css|js|php|phtml|shtml|html|xml)$>
+<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
 	Header append Vary User-Agent
 	Header append Cache-Control private
 </FilesMatch>";
 							}
 							if (!empty($htaccess_options['mod_expires'])) {
 								$content .= "
-<FilesMatch \"\\.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$\">
+<FilesMatch \.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$>
 	Header unset Last-Modified
 	FileETag MTime
 </FilesMatch>";
@@ -1510,7 +1513,7 @@ require valid-user
 						$files[] = array(
 							'file' => 'index.php',
 							'mode' => 'finish',
-							'location' => 'end'
+							'location' => 'initGzip();'
 						)
 					);
 				}

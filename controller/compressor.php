@@ -710,7 +710,10 @@ class web_optimizer {
 				} else {
 /* we created all Sprites -- ready for data:URI */
 					$options['data_uris'] = $remembered_data_uri;
-					$contents = $this->convert_css_sprites($contents, $options);
+					$minified_content = $this->convert_css_sprites($contents, $options);
+				}
+				if (!empty($minified_content)) {
+					$contents = $minified_content;
 				}
 			}
 			$source = $this->_remove_scripts($external_array, $source);
@@ -720,13 +723,16 @@ class web_optimizer {
 			if($options['header'] == "javascript" && $options['minify']) {
 				if ($options['minify_with'] == 'packer') {
 					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
-					$contents = $this->packer->pack();
-				} elseif ($options['minify_with'] == 'yui') {
+					$minified_content = $this->packer->pack();
+				} elseif ($options['minify_with'] == 'yui' ) {
 					$this->yuicompressor = new YuiCompressor($options['cachedir'], $options['installdir']);
-					$contents = $this->yuicompressor->compress($contents);
-				} elseif ($options['minify_with'] == 'jsmin') {
+					$minified_content = $this->yuicompressor->compress($contents);
+				} elseif ($options['minify_with'] == 'jsmin' || empty($minified_content)) {
 					$this->jsmin = new JSMin($contents);
-					$contents = $this->jsmin->minify($contents);
+					$minified_content = $this->jsmin->minify($contents);
+				}
+				if (!empty($minified_content)) {
+					$contents = $minified_content;
 				}
 				if ($this->web_optimizer_stage) {
 					$this->write_progress($this->web_optimizer_stage += 3);
@@ -836,7 +842,7 @@ class web_optimizer {
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = $this->strip_querystring(preg_replace("/https?:\/\/" . $_SERVER['HTTP_HOST'] . "/", "", $file));
+		$file = $this->strip_querystring(preg_replace("/https?:\/\/(www\.)?" . preg_replace("?^www\.?", "", $_SERVER['HTTP_HOST']) . "/", "", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
 		} else {
@@ -1006,7 +1012,7 @@ class web_optimizer {
 /* exclude files from the same host */
 					if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
-						if ($this->options['javascript']['external_scripts']) {
+						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
 							$file = $this->get_remote_file($value['file']);
 							if (!empty($file)) {
@@ -1335,7 +1341,9 @@ class web_optimizer {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
-			$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
+			if (!empty($this->options['javascript']['minify'])) {
+				$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
+			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
