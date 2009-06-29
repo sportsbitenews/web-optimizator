@@ -10,6 +10,7 @@
 +i) Cache cleaner
 +j) Secure installation
  k) Saved traffic
++l) Backup of changed files
 
 2. System check
 ?a) .htaccess posibility

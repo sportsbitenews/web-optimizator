@@ -551,6 +551,9 @@ class admin {
 			);
 			$this->write_progress($this->web_optimizer_stage = 3);
 			foreach($test_dirs AS $name => $dir) {
+				if (!is_dir($dir)) {
+					@mkdir($dir, 0755);
+				}
 				$fp = @fopen($dir . "test", 'w');
 				if(!$fp) {
 /* unable to open file for writing */
@@ -671,7 +674,8 @@ class admin {
 							fclose($fp);
 						}
 					}
-
+/* create backup */
+					@copy($htaccess, $htaccess . '.backup');
 					$fp = @fopen($htaccess, 'w');
 					if (!$fp) {
 						$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD3 ."</p>
@@ -854,11 +858,15 @@ ExpiresDefault \"access plus 10 years\"
 						$mainfile_content = @file_get_contents($mainfile);
 						$footer_content = @file_get_contents($footer);
 						if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* update main PHP-Nuke file */
 								@fwrite($fp, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
 								@fclose($fp);
+/* create backup */
+								@copy($footer, $footer . '.backup');
 								$fp = @fopen($footer, "w");
 								if ($fp) {
 /* update footer */
@@ -873,6 +881,8 @@ ExpiresDefault \"access plus 10 years\"
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* remove any old strings regarding Web Optimizer */
@@ -891,6 +901,8 @@ ExpiresDefault \"access plus 10 years\"
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* remove any old strings regarding Web Optimizer */
@@ -911,11 +923,15 @@ ExpiresDefault \"access plus 10 years\"
 						$mainfile_content = @file_get_contents($mainfile);
 						$footer_content = @file_get_contents($footer);
 						if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* update header */
 								@fwrite($fp, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
 								@fclose($fp);
+/* create backup */
+								@copy($footer, $footer . '.backup');
 								$fp = @fopen($footer, "w");
 								if ($fp) {
 /* update footer */
@@ -984,6 +1000,8 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved .= '$web_optimizer->finish();';
 							}
 							@fclose($fp);
+/* create backup */
+							@copy($index, $index . '.backup');
 							$fp = @fopen($index, "w");
 							if ($fp) {
 								@fwrite($fp, $content_saved);
@@ -1234,6 +1252,8 @@ ExpiresDefault \"access plus 10 years\"
 	function protect_installation() {
 		$htaccess = $this->input['user']['webo_cachedir'] . '.htaccess';
 		$htaccess_content = @file_get_contents($htaccess);
+/* create backup */
+		@copy($htaccess, $htaccess . '.backup');
 		$fp = @fopen($htaccess, "w");
 		if ($fp) {
 /* clean current content */
