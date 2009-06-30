@@ -43,7 +43,24 @@
 	echo _WEBO_SPLASH1_NEXT;
 ?>" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="i"/><input type="hidden" name="page" value="install_stage_2"/><input type="hidden" name="Submit" value="1"/></fieldset><?php
+?>" class="i"/><input type="hidden" name="page" value="install_stage_2"/><input type="hidden" name="Submit" value="1"/><?php
+	if ($saved_s) {
+?><p><label><?php
+		echo _WEBO_LOGIN_EFFICIENCY;
+?><strong><?php
+		echo $saved_s;
+?></strong> <?php
+		echo _WEBO_LOGIN_EFFICIENCY_S;
+		if ($saved_kb) {
+?>	(<?php
+			echo $saved_kb . _WEBO_LOGIN_EFFICIENCY_KB;
+?>, <?php
+			echo $saved_percent;
+?>%)<?php
+		}
+?></label></p><?php
+	}
+?></fieldset><?php
 	if ($version_new_exists) {
 ?><fieldset class="g"><p><?php
 		echo _WEBO_LOGIN_UPGRADENOTICE . $version . ($protected ? _WEBO_LOGIN_UPGRADENOTICE4 : _WEBO_LOGIN_UPGRADENOTICE2) . $version_new . _WEBO_LOGIN_UPGRADENOTICE3;

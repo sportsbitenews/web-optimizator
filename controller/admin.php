@@ -111,7 +111,7 @@ class admin {
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
 			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
-			if (is_file($index_check)) {
+			if (is_file($index_check) && @filesize($index_check)) {
 				$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
 				@unlink($index_check);
 			} else {
@@ -121,10 +121,29 @@ class admin {
 			if ($installed && is_file($index_before) && @filesize($index_before) && (!is_file($index_after) || !@filesize($index_after))) {
 /* if we have just downloaded initial grade - try to renew it */
 				if ($no_initial_grade) {
-					$this->download($this->webo_grade. '&refresh=on', 'index.after', 1);
+					$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
 /* try to get final optimization grade for the website */
 				} else {
 					$this->download($this->webo_grade, $index_after, 1);
+				}
+			}
+			$saved_kb = $saved_s = 0;
+			$before = @file_get_contents($index_before);
+			$after = @file_get_contents($index_after);
+			if (!empty($before) && !empty($after)) {
+				$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>'));
+				$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
+				$kb_before = substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>'));
+				$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
+				$saved_s = $s_before - $s_after;
+				$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
+				$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
+/* do not show negative numbers */
+				if ($saved_s < 0) {
+					$saved_s = $saved_kb = 0;
+				}
+				if ($saved_kb < 0) {
+					$saved_kb = 0;
 				}
 			}
 			$page_variables = array(
@@ -135,6 +154,9 @@ class admin {
 				"version_new_exists" => $this->version_new_exists,
 				"protected" => $this->protected,
 				"installed" => $installed,
+				"saved_kb" => $saved_kb,
+				"saved_s" => $saved_s,
+				"saved_percent" => $saved_percent,
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
 				"message" => empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version
@@ -1055,16 +1077,14 @@ ExpiresDefault \"access plus 10 years\"
 			$this->write_progress($this->web_optimizer_stage = 98);
 /* secure Web Optimizer folder with .htpasswd */
 			$this->protect_installation();
-			$index_before = 'index.before';
-			$index_after = 'index.after';
 /* try to get initial optimization grade for the website */
-			if (!is_file($index_before) || !filesize($index_before)) {
-				$this->download($this->webo_grade, $index_before, 1);
+			if (!is_file('index.before')) {
+				$this->download($this->webo_grade, 'index.before', 1);
 			}
 			$this->write_progress($this->web_optimizer_stage = 99);
 /* try to get final optimization grade for the website */
-			if ($auto_rewrite && is_file($index_before) && @filesize($index_before) && (!is_file($index_after) || !@filesize($index_after))) {
-				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
+			if ($auto_rewrite && is_file('index.before') && !is_file('index.after')) {
+				$this->download($this->webo_grade . '&refresh=on', 'index.after', 1);
 			}
 		}
 
@@ -1144,7 +1164,7 @@ ExpiresDefault \"access plus 10 years\"
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.11");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $local_file_headers);
-				@curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
