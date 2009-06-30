@@ -1353,6 +1353,8 @@ class web_optimizer {
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
 			}
+/* add Web Optimizer spot */
+			$this->content = str_replace('<head>', '<meta name="contributor" value="Web Optimizer"/></head>', $this->content);
 		}
 	}
 

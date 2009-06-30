@@ -987,6 +987,9 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for CMS Made Simple */
 							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+/* fix for Joomla! 1.0 */
+							} elseif (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
+								$content_saved = preg_replace("/(doGzip\(\);\r?\n)/i", '$web_optimizer->finish();' . "\n$1" , $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -1534,7 +1537,7 @@ require valid-user
 						$files[] = array(
 							'file' => 'index.php',
 							'mode' => 'finish',
-							'location' => 'initGzip();'
+							'location' => 'echo \'</pre>\';}'
 						)
 					);
 				}
