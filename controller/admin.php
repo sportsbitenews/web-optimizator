@@ -103,7 +103,7 @@ class admin {
 		$index_check = 'index.check';
 		$index_before = 'index.before';
 		$index_after = 'index.after';
-		$no_initial_grade = !is_file($index_before) || !@filesize($index_before);
+		$no_initial_grade = !@filesize($index_before);
 /* try to get reliminary optimization grade for the website */
 		if ($no_initial_grade) {
 			$this->download($this->webo_grade, $index_before, 1);
@@ -111,14 +111,14 @@ class admin {
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
 			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
-			if (is_file($index_check) && @filesize($index_check)) {
+			if (@filesize($index_check)) {
 				$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
 				@unlink($index_check);
 			} else {
 /* curl doesn't work -- can't check existence */
 				$installed = 1;
 			}
-			if ($installed && is_file($index_before) && @filesize($index_before) && (!is_file($index_after) || !@filesize($index_after))) {
+			if ($installed && @filesize($index_before) && !@filesize($index_after)) {
 /* if we have just downloaded initial grade - try to renew it */
 				if ($no_initial_grade) {
 					$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
@@ -360,9 +360,13 @@ class admin {
 					}
 				}
 			}
-/* additional change of cache plugin */
-			if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
-				$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+/* additional change of cache plugins */
+			if (stripos($this->cms_version, "Joomla!")) {
+				if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
+					$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+				} else {
+					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
+				}
 				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
 			}
 		}
@@ -1062,11 +1066,16 @@ ExpiresDefault \"access plus 10 years\"
 								@fclose($fp);
 								$auto_rewrite = 1;
 							}
-/* additional change of cache plugin */
+/* additional change of cache plugins */
 							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 								@copy($cache_file, $cache_file . '.backup');
 								@file_put_contents($cache_file, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+							}
+							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
+								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
+								@copy($cache_file, $cache_file . '.backup');
+								@file_put_contents($cache_file, preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
 							}
 						}
 					}
@@ -1077,14 +1086,16 @@ ExpiresDefault \"access plus 10 years\"
 			$this->write_progress($this->web_optimizer_stage = 98);
 /* secure Web Optimizer folder with .htpasswd */
 			$this->protect_installation();
+			$index_before = 'index.before';
+			$index_after = 'index.after';
 /* try to get initial optimization grade for the website */
-			if (!is_file('index.before')) {
-				$this->download($this->webo_grade, 'index.before', 1);
+			if (!@filesize($index_before )) {
+				$this->download($this->webo_grade, $index_before , 1);
 			}
 			$this->write_progress($this->web_optimizer_stage = 99);
 /* try to get final optimization grade for the website */
-			if ($auto_rewrite && is_file('index.before') && !is_file('index.after')) {
-				$this->download($this->webo_grade . '&refresh=on', 'index.after', 1);
+			if ($auto_rewrite && @filesize($index_before ) && !@filesize($index_after)) {
+				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
 			}
 		}
 
@@ -1575,12 +1586,12 @@ require valid-user
 							'mode' => 'start',
 							'location' => '$mainframe =& JFactory::getApplication(\'site\');'
 						),
-						$files[] = array(
+						array(
 							'file' => 'index.php',
 							'mode' => 'finish',
 							'location' => 'end'
 						),
-						$files[] = array(
+						array(
 							'file' => 'plugins/system/cache.php',
 							'mode' => 'finish',
 							'location' => 'echo JResponse::toString($mainframe->getCfg(\'gzip\'));',
@@ -1595,11 +1606,17 @@ require valid-user
 							'mode' => 'start',
 							'location' => 'ob_end_clean();'
 						),
-						$files[] = array(
+						array(
 							'file' => 'index.php',
 							'mode' => 'finish',
 							'location' => 'echo \'</pre>\';}'
-						)
+						),
+						array(
+							'file' => 'components/com_pagecache/pagecache.class.php',
+							'mode' => 'finish',
+							'location' => 'echo $data;',
+							'global' => 1
+						),
 					);
 				}
 				break;
