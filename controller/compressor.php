@@ -1354,7 +1354,7 @@ class web_optimizer {
 				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
 			}
 /* add Web Optimizer spot */
-			$this->content = str_replace('<head>', '<meta name="contributor" value="Web Optimizer"/></head>', $this->content);
+			$this->content = str_replace('<title', '<title lang="wo"', $this->content);
 		}
 	}
 
