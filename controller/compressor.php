@@ -386,7 +386,7 @@ class web_optimizer {
 		}
 /* add multiple hosts */
 		if (!empty($options['parallel']) && !empty($options['parallel_hosts'])) {
-			$this->content = $this->add_multiple_hosts($this->content, split(" ", $options['parallel_hosts']));
+			$this->content = $this->add_multiple_hosts($this->content, explode(" ", $options['parallel_hosts']));
 		}
 /* remove BOM */
 		$this->content = str_replace("﻿", "", $this->content);
@@ -981,7 +981,7 @@ class web_optimizer {
 			}
 		}
 /* strange thing: array is filled even if string is empty */
-		$excluded_scripts = split(" ", $this->options['javascript']['external_scripts_exclude']);
+		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 /* Remove empty sources and any externally linked files */
 		foreach($this->initial_files AS $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
@@ -1434,7 +1434,7 @@ class web_optimizer {
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites'],
-			'multiple_hosts' => empty($options['parallel']) ? array() : split(" ", $options['parallel_hosts'])
+			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts'])
 		));
 		return $css_sprites->process();
 	}

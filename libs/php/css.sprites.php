@@ -30,7 +30,7 @@ class css_sprites {
 /* leave some space for combined Sprites to handle resized fonts */
 			$this->extra_space = $options['extra_space'];
 /* list of excluded from CSS Sprites files */
-			$this->ignore_list = split(" ", $options['ignore_list']);
+			$this->ignore_list = explode(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
 			$this->data_uris = $options['data_uris'];
 /* part or full process */
@@ -87,7 +87,7 @@ class css_sprites {
 							if ($key == 'background' && $value == 'none') {
 								$this->css->css[$import][$tags]['background'] = $this->none;
 							}
-							foreach (split(",", $tags) as $tag) {
+							foreach (explode(",", $tags) as $tag) {
 /* create new item (array) if required */
 								if (!empty($this->media[$import][$tag])) {
 									$this->media[$import][$tag] = array();
@@ -152,7 +152,7 @@ class css_sprites {
 								foreach ($images as $key => $image) {
 									$fixed_key = $this->fix_css3_selectors($key);
 /* remove pseudo-selectors, i.e. :focus, :hover, etc*/
-									if (in_array($key, split(",", $tags)) || in_array($fixed_key, split(",", $tags))) {
+									if (in_array($key, explode(",", $tags)) || in_array($fixed_key, explode(",", $tags))) {
 										if (preg_match("/padding/i", $property)) {
 											if ($property == 'padding') {
 												$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
@@ -307,7 +307,7 @@ class css_sprites {
 								$this->css_images[$this->sprite]['jpeg'] = 1;
 							}
 							$shift_x = $shift_y = $top = $left = 0;
-							$position = empty($image['background-position']) ? array(0, 0) : split(" ", $image['background-position'] . " ");
+							$position = empty($image['background-position']) ? array(0, 0) : explode(" ", $image['background-position'] . " ");
 /* fix image dimensions with paddings */
 							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
 								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
@@ -434,11 +434,11 @@ __________________
 										")$1", $image);
 									if (empty($this->no_ie6) || !$sprited) {
 /* preserve IE6/7 selectors only if we are doing anything for IE6 */
-										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))] = array();
-										$this->css->css[$import]["* html " . implode(",* html ", split(",", $tags))]['background-image'] = $ie_image;
+										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))] = array();
+										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))]['background-image'] = $ie_image;
 									}
-									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))] = array();
-									$this->css->css[$import]["*+html " . implode(",*+html ", split(",", $tags))]['background-image'] = $ie_image;
+									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))] = array();
+									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))]['background-image'] = $ie_image;
 /* skip images on different hosts */
 								} elseif (!$sprited) {
 									$this->css_image = $this->distribute_image($this->css_image);

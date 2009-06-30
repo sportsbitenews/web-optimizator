@@ -239,7 +239,7 @@ class admin {
 		$file = 'files';
 		$this->download($this->svn . $file, $file);
 		if (is_file($file)) {
-			$files = split("\r?\n", @file_get_contents($file));
+			$files = preg_split("/\r?\n/", @file_get_contents($file));
 			foreach ($files as $file) {
 				$this->download($this->svn . $file, $file);
 				if ($file == 'config.webo.php') {
@@ -473,7 +473,7 @@ class admin {
 				}
 				$this->get_modules();
 /* check for multiple hosts possibility */
-				$hosts = split(" ", $this->compress_options['parallel']['allowed_list']);
+				$hosts = explode(" ", $this->compress_options['parallel']['allowed_list']);
 				if (empty($hosts) || empty($hosts[0])) {
 /* load default list */
 					$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
@@ -682,7 +682,7 @@ class admin {
 							}
 /* correct multiple hosts list */
 							if ($key == 'parallel' && $option_name == 'allowed_list') {
-								$hosts = split(" ", $option_value);
+								$hosts = explode(" ", $option_value);
 								if (is_array($hosts)) {
 									$option_value = $this->check_hosts($hosts);
 								}
@@ -1574,7 +1574,7 @@ require valid-user
 	* 
 	**/
 	function system_files ($cms_version = 'CMS 42') {
-		$cms_version = split(" ", $cms_version);
+		$cms_version = explode(" ", $cms_version);
 		$files = array();
 		switch ($cms_version[0]) {
 			case 'Joomla!':
