@@ -1102,10 +1102,10 @@ __________________
 						$this->smushit($this->sprite);
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
-					if ($type < 5 && is_file($this->sprite)) {
+					if (is_file($this->sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
-							$this->css->css[$import][$keys]['background-image'] = 'url('. $this->sprite .')';
+							$this->css->css[$import][$keys]['background-image'] = 'url('. preg_replace("/webo[rb]/", "webo", $this->sprite) .')';
 						}
 					}
 /* finish deal with CSS */
