@@ -63,6 +63,8 @@ class admin {
 		$this->display_progress = false;
 /* if we use .htaccess*/
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
+/* grade URL from webo.name */
+		$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
 /* download counter */
 		if (!is_file($this->basepath . 'web-optimizer-counter')) {
 			$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
@@ -98,14 +100,32 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
+		$index_check = 'index.check';
+		$index_before = 'index.before';
+		$index_after = 'index.after';
+		$no_initial_grade = !is_file($index_before) || !@filesize($index_before);
+/* try to get reliminary optimization grade for the website */
+		if ($no_initial_grade) {
+			$this->download($this->webo_grade, $index_before, 1);
+		}
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
-			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], 'check.index');
-			if (is_file('check.index')) {
-				$installed = strpos(@file_get_contents('check.index'), 'lang="wo"');
+			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
+			if (is_file($index_check)) {
+				$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
+				@unlink($index_check);
 			} else {
 /* curl doesn't work -- can't check existence */
 				$installed = 1;
+			}
+			if ($installed && is_file($index_before) && @filesize($index_before) && (!is_file($index_after) || !@filesize($index_after))) {
+/* if we have just downloaded initial grade - try to renew it */
+				if ($no_initial_grade) {
+					$this->download($this->webo_grade. '&refresh=on', 'index.after', 1);
+/* try to get final optimization grade for the website */
+				} else {
+					$this->download($this->webo_grade, $index_after, 1);
+				}
 			}
 			$page_variables = array(
 				"title" => _WEBO_LOGIN_TITLE,
@@ -226,6 +246,8 @@ class admin {
 	* 
 	**/	
 	function install_uninstall($return = true) {
+/* delete last optimization grade */
+		@unlink('index.after');
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
@@ -782,9 +804,6 @@ RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 							$content .= "
 ExpiresActive On
 ExpiresDefault \"access plus 10 years\"
-<FilesMatch \.(pdf|flv|swf|jpe?g|png|gif|bmp)$>
-	Cache-Control: public
-</FilesMatch>
 <FilesMatch \.(php|phtml|shtml|html|xml)$>
 	ExpiresActive Off
 </FilesMatch>";
@@ -817,6 +836,9 @@ ExpiresDefault \"access plus 10 years\"
 							}
 							if (!empty($htaccess_options['mod_expires'])) {
 								$content .= "
+<FilesMatch \.(pdf|flv|swf|jpe?g|png|gif|bmp)$>
+	Header append Cache-Control public
+</FilesMatch>
 <FilesMatch \.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$>
 	Header unset Last-Modified
 	FileETag MTime
@@ -1030,9 +1052,20 @@ ExpiresDefault \"access plus 10 years\"
 				}
 
 			}
-			$this->write_progress($this->web_optimizer_stage = 99);
+			$this->write_progress($this->web_optimizer_stage = 98);
 /* secure Web Optimizer folder with .htpasswd */
 			$this->protect_installation();
+			$index_before = 'index.before';
+			$index_after = 'index.after';
+/* try to get initial optimization grade for the website */
+			if (!is_file($index_before) || !filesize($index_before)) {
+				$this->download($this->webo_grade, $index_before, 1);
+			}
+			$this->write_progress($this->web_optimizer_stage = 99);
+/* try to get final optimization grade for the website */
+			if ($auto_rewrite && is_file($index_before) && @filesize($index_before) && (!is_file($index_after) || !@filesize($index_after))) {
+				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
+			}
 		}
 
 		$this->write_progress($this->web_optimizer_stage = 100);
@@ -1092,7 +1125,7 @@ ExpiresDefault \"access plus 10 years\"
 	* Generic download function to get external files
 	*
 	**/
-	function download ($remote_file, $local_file) {
+	function download ($remote_file, $local_file, $timeout = 60) {
 		$gzip = false;
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
@@ -1108,15 +1141,16 @@ ExpiresDefault \"access plus 10 years\"
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.11");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $local_file_headers);
+				@curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
 			}
 			if (is_file($local_file_headers)) {
-				$gzip = preg_match("/content-encoding:\s+gzip/is", preg_replace("/\r\n/", "", @file_get_contents($local_file_headers)));
+				$gzip = stripos(@file_get_contents($local_file_headers), 'content-encoding');
 				@unlink($local_file_headers);
 			}
 		}

@@ -9,14 +9,14 @@
  h) Donate block
 +i) Cache cleaner
 +j) Secure installation
- k) Saved traffic
+ k) Saved traffic / visitors' seconds
 +l) Backup of changed files
 
 2. System check
 ?a) .htaccess posibility
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
 +c) PHP (other languages) libs: gzencode, curl , etc.
- d) Current Web Optimizer status: installed or not
++d) Current Web Optimizer status: installed or not
  e) Current website gzip compression
 
 3. Configurator: config.webo.php -- number of options
@@ -103,7 +103,7 @@
 +k) Etomite (1.1), MODx (0.9)
 +l) LiveStreet (0.2, 0.3)
 +m) Santafox (1.1)
-+n) DataLife Engine (8.0)
++n) DataLife Engine (7.5, 8.0)
 +o) Zend Framework (after disabled rewrite)
 +p) vBulletin (3.8)
 +q) Symfony (1.2)
@@ -114,8 +114,8 @@
 +v) Invision Power Board (2.6)
  w) Explay (3.0)
 +x) Simple Machines Forum (1.1.8)
-+y) CakePHP
-+z) CMS Made Simple
++y) CakePHP (1.2.3)
++z) CMS Made Simple (1.6)
 +A) NetCat
 
 12. Localization
@@ -128,5 +128,5 @@
  
  13) Plugin API
   a) Possiblity to add plugin for any system
-  b) Joomla! 1.0 (Page Cache)
+  b) Joomla! 1.0 (Page Cache ?)
   c) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
