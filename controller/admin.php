@@ -98,10 +98,15 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
-/* check if we can display progress bar */
-		$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
-/* take document root from the options file */
 		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
+/* check for Web Optimizer existence on the website */
+			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], 'check.index');
+			if (is_file('check.index')) {
+				$installed = strpos(@file_get_contents('check.index'), 'lang="wo"');
+			} else {
+/* curl doesn't work -- can't check existence */
+				$installed = 1;
+			}
 			$page_variables = array(
 				"title" => _WEBO_LOGIN_TITLE,
 				"page" => 'install_enter_password',
@@ -109,12 +114,14 @@ class admin {
 				"version_new" => $this->version_new,
 				"version_new_exists" => $this->version_new_exists,
 				"protected" => $this->protected,
+				"installed" => $installed,
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
 				"message" => empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version
 			);
 		} else {
-/* take document root from the options file */
+/* check if we can display progress bar */
+			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
 			$page_variables = array(
 				"title" => _WEBO_NEW_ENTER,
 				"page" => 'install_set_password',

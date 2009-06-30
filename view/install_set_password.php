@@ -6,9 +6,9 @@
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins><h2><?php
 	echo _WEBO_NEW_TITLE;
-?></h2><div class="d u"><p class="e"><?php
+?></h2><div class="d u"><div class="e"><?php
 	echo _WEBO_NEW_PROTECT;
-?></p><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
+?></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;
 ?></legend><p><label for="user_username"><?php
 	echo _WEBO_LOGIN_USERNAME;

@@ -20,6 +20,11 @@ define('_WEBO_LOGIN_TITLE', 'Введіть ваші авторизаційні дані');
 define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Веб Оптимизатор ');
 define('_WEBO_LOGIN_INSTALLED2', ' вже встановлений. Будь-ласка, введіть ваш логін та пароль для доступу до всіх налаштувань:');
 define('_WEBO_LOGIN_INSTALLED3', '. Для доступу до всіх налаштувань натисніть кнопку <strong>Далі</strong>.');
+define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Внимание:</strong> не удается найти результат работы Веб Оптимизатора на сайте. Пожалуйста, проверьте наличие его вызовов в исходных файлах вашей веб-системы или проведите установку еще раз.');
+define('_WEBO_LOGIN_EFFICIENCY', 'Результат оптимизации: экономия');
+define('_WEBO_LOGIN_EFFICIENCY_KB', 'Кб');
+define('_WEBO_LOGIN_EFFICIENCY_S', 'с');
+define('_WEBO_LOGIN_EFFICIENCY_HIT', 'при показе страницы');
 define('_WEBO_LOGIN_USERNAME', 'Логін');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введіть ваш логін');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
@@ -48,7 +53,10 @@ define('_WEBO_CLEAR_SUCCESSFULL', 'Всі файли були успішно видалені з кеша');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Установка - обмеження доступу');
-define('_WEBO_NEW_PROTECT', 'Для забезпечення безпеки при подальшому використанні Веб Оптимізатора необхідно встановили пароль доступу.');
+define('_WEBO_NEW_PROTECT', '<p>Для забезпечення безпеки при подальшому використанні Веб Оптимізатора необхідно встановили пароль доступу.</p>
+							<p>Перед проведением установки, пожалуйста, убедитесь, что корневой <code>.htaccess</code> и файлы используемой веб-системы доступны на запись (при проведении Веб Оптимизатор также создает резерные копии).</p>
+							<p>Веб Оптимизатор может самостоятельно проверить доступные возможности вашего сервера и провести установку в автоматическом режиме. Для этого нужно выбрать <strong>&laquo;Быстрая установка&raquo;</strong>. В дальнейшем вы сможете изменить все сохраненные настройки, используя текущий интерфейс.</p>
+							<p>Если вы хотите настроить использование Веб Оптимизатора самостоятельно, то нужно выбрать <strong>&laquo;Далее&raquo;</strong>. Вы сможете проверить все настройки до их применения для вашего сайта.</p>');
 define('_WEBO_NEW_USERDATA', 'Ваш логін та пароль');
 define('_WEBO_NEW_ENTER', 'Встановіть ваш логін та пароль');
 
@@ -173,7 +181,7 @@ define('_WEBO_css_sprites_enabled', 'Застосувати CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Зберігати повнокольорові зображення в JPEG');
 define('_WEBO_css_sprites_aggressive', '&laquo;Агресивний&raquo; режим створення CSS Sprites');
 define('_WEBO_css_sprites_extra_space', 'Додати вільне місце в CSS Sprites');
-define('_WEBO_css_sprites_no_ie6', 'Виключити IE6 (через хаки) із процесу створення CSS Sprites');
+define('_WEBO_css_sprites_no_ie6', 'Виключити IE6 (через CSS-хаки)');
 define('_WEBO_css_sprites_memory_limited', 'Обмежити використання пам\'яті для PHP-процесу');
 define('_WEBO_css_sprites_dimensions_limited', 'Исключить изображения, если их линейный размер больше заданного');
 define('_WEBO_css_sprites_ignore_list', 'Виключити із CSS Sprites файли');

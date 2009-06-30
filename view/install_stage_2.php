@@ -73,7 +73,7 @@
 				if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size'))) {
 					echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 ?>.<?php
-					echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : _WEBO_SPLASH2_SPACE;
+					echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : ' ' . _WEBO_SPLASH2_SPACE;
 ?> <input name="user[<?php
 					echo $key;
 ?>][<?php

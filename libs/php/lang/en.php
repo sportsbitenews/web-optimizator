@@ -18,6 +18,12 @@ define('_WEBO_ERROR_ERROR', 'Oopps! Something went wrong');
 define('_WEBO_LOGIN_TITLE', 'Enter your login details');
 define('_WEBO_LOGIN_INSTALLED', 'You have already installed Web Optimizer ');
 define('_WEBO_LOGIN_INSTALLED2', ' to this website. Please enter your login details below to get access to all settings:');
+define('_WEBO_LOGIN_INSTALLED3', 'Please press \'Next\' to get access to all settings.');
+define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Attention:</strong> can\'t find result of Web Optimizer\'s efforts íon your website. Please check its calls existence in your web system source files or install Web Optimizer once more.');
+define('_WEBO_LOGIN_EFFICIENCY', 'Optimization results: saved');
+define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
+define('_WEBO_LOGIN_EFFICIENCY_S', 's');
+define('_WEBO_LOGIN_EFFICIENCY_HIT', 'per hit');
 define('_WEBO_LOGIN_USERNAME', 'Username');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Enter your login');
 define('_WEBO_LOGIN_PASSWORD', 'Password');
@@ -47,7 +53,10 @@ define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been dele
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - set password');
-define('_WEBO_NEW_PROTECT', 'We need to password protect this installation so only you have access.');
+define('_WEBO_NEW_PROTECT', '<p>Please enter login and password to protect this installation.</p>
+							<p>Before installation please check that root <code>.htaccess</code> and source files of your web system are writable (during installation Web Optimizer also creates backup of your files).</p>
+							<p>Web Optimizer can check all functions of your server and complete installation automatically. For this option please press <strong>"Express install"</strong>. On complete you can change any settings using this administative interface.</p>
+							<p>If your want to set up usage of Web Optimizer manually please press <strong>"Next"</strong>. You can check and set all settings before actual Web Optimizer installation on your website.</p>');
 define('_WEBO_NEW_USERDATA', 'Your username and password');
 define('_WEBO_NEW_ENTER', 'Enter your password for installation');
 
@@ -172,7 +181,7 @@ define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Save truecolor images as JPEG');
 define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprites');
 define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
-define('_WEBO_css_sprites_no_ie6', 'Exclude IE6 (via hacks) from CSS Sprites generation');
+define('_WEBO_css_sprites_no_ie6', 'Exclude IE6 (via CSS hacks)');
 define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage');
 define('_WEBO_css_sprites_dimensions_limited', 'Exclude images greater given number in one dimension');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');

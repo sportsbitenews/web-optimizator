@@ -14,7 +14,8 @@
 ?><h2><?php
 	echo _WEBO_LOGIN_TITLE
 ?></h2><div class="d"><p class="e"><?php
-	echo _WEBO_LOGIN_INSTALLED . $version . ($protected ? _WEBO_LOGIN_INSTALLED3 : _WEBO_LOGIN_INSTALLED2)
+	echo _WEBO_LOGIN_INSTALLED . $version . ($protected ? _WEBO_LOGIN_INSTALLED3 : _WEBO_LOGIN_INSTALLED2);
+	echo $installed ? '' : '<br/>' . _WEBO_LOGIN_NOTINSTALLED;
 ?></p><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><?php
 	if ($protected) {
 ?><legend><?php
