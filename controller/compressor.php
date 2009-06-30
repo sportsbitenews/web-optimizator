@@ -1107,7 +1107,7 @@ class web_optimizer {
 		foreach($types AS $type) {
 /* Always send etag */
 			$this->gzip_header[$type] = '<?php
-			$hash = md5($_SERVER[\'SCRIPT_FILENAME\']);
+			$hash = md5($_SERVER[\'SCRIPT_FILENAME\'])' . (empty($this->options[$type]['gzip']) ? '' : '.\'-gzip\'') . ';
 			header ("Etag: \"" . $hash . "\"");
 ?>';
 /* Send 304? */
@@ -1123,7 +1123,7 @@ class web_optimizer {
 
 ?>';
 /* ob_start ("ob_gzhandler"); */
-			if(!empty($this->options[$type]['gzip'])) {
+			if (!empty($this->options[$type]['gzip'])) {
 				$this->gzip_header[$type] .= '<?php
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
