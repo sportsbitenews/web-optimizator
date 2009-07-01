@@ -80,7 +80,7 @@ require('<?php
 ?></p><textarea cols="80" rows="2"><?php 
 				if ($file['mode'] == 'start') {
 ?>require('<?php
-					echo preg_replace("/\\/", "/", $paths['full']['current_directory']);
+					echo preg_replace("/\\\/", "/", $paths['full']['current_directory']);
 ?>web.optimizer.php');<?php
 				} else {
 					if (!empty($file['global'])) {
