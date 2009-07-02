@@ -98,26 +98,48 @@ class css_sprites {
 									$background = $this->css->optimise->dissolve_short_bg($value);
 									foreach ($background as $bg => $property) {
 /* skip default properties */
-										if (!($bg == 'background-position' && ($property == '0 0 !important' || $property == 'top left !important' || $property == '0 0' || $property == 'top left')) &&
-											!($bg == 'background-origin' && ($property == 'padding !important' || $property == 'padding')) &&
-											!($bg == 'background-color' && ($property == 'transparent !important' || $property == 'transparent')) &&
-											!($bg == 'background-clip' && ($property == 'border !important' || $property == 'border')) &&
-											!($bg == 'background-attachment' && ($property == 'scroll !important' || $property =='scroll')) &&
-											!($bg == 'background-size' && ($property == 'auto !important' || $property == 'auto')) &&
-											!($bg == 'background-repeat' && ($property == 'repeat !important' || $property == 'repeat'))) {
-
-											if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
-												$property = $this->none;
-											}
+										if (!($bg == 'background-position' &&
+												($property == '0 0 !important' ||
+												$property == 'top left !important' ||
+												$property == '0 0' ||
+												$property == 'top left')) &&
+											!($bg == 'background-origin' &&
+												($property == 'padding !important' ||
+												$property == 'padding')) &&
+											!($bg == 'background-color' &&
+												($property == 'transparent !important' ||
+												$property == 'transparent')) &&
+											!($bg == 'background-clip' &&
+												($property == 'border !important' ||
+												$property == 'border')) &&
+											!($bg == 'background-attachment' &&
+												($property == 'scroll !important' ||
+												$property =='scroll')) &&
+											!($bg == 'background-size' &&
+												($property == 'auto !important' ||
+												$property == 'auto')) &&
+											!($bg == 'background-repeat' &&
+												($property == 'repeat !important' ||
+												$property == 'repeat'))) {
+													if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
+														$property = $this->none;
+													}
 /* fix background-position: left|right -> left center|right center */
-											if ($bg == 'background-position' && ($property == 'left' || !round($property) || $property == 'right' || round($property) == 100) && strlen($property) < 6) {
-												$property = $property . ' center';
-											}
+													if ($bg == 'background-position' &&
+														($property == 'left' ||
+														!round($property) ||
+														$property == 'right' ||
+														round($property) == 100) &&
+														strlen($property) < 6) {
+															$property = $property . ' center';
+													}
 /* fix background-position: top|bottom -> center top|center bottom */
-											if ($bg == 'background-position' && ($property == 'top' || $property == 'bottom')) {
-												$property = 'center ' . $property;
-											}
-											$this->media[$import][$tag][$bg] = $property;
+													if ($bg == 'background-position' &&
+														($property == 'top' ||
+														$property == 'bottom')) {
+															$property = 'center ' . $property;
+													}
+													$this->media[$import][$tag][$bg] = $property;
 										}
 									}
 								} else {
@@ -127,8 +149,13 @@ class css_sprites {
 											$value == 'left top' ||
 											!round($value)))) {
 /* fix background-position: left|right -> left center|right center */
-											if ($key == 'background-position' && ($value == 'left' || !round($property) || $property == 'right' || round($property) == 100) && strlen($property) < 6) {
-												$property = $property . ' center';
+											if ($key == 'background-position' &&
+												($value == 'left' ||
+												!round($property) ||
+												$property == 'right' ||
+												round($property) == 100) &&
+												strlen($property) < 6) {
+													$property = $property . ' center';
 											}
 /* fix background-position: right|bottom -> right center|center bottom */
 											if ($key == 'background-position') {
@@ -170,6 +197,20 @@ class css_sprites {
 									}
 								}
 							}
+						}
+					}
+				}
+			}
+			$properties = array('background-image', 'background-position', 'background-repeat', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 
+'width', 'height');
+/* to remember already calculated selectors */
+			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array());
+/* try to restore property values from parent selectors */
+			foreach ($this->media as $import => $images) {
+				foreach ($images as $key => $image) {
+					foreach ($properties as $property) {
+						if (empty($image[$property]) && preg_match("@[a-zA-Z0-9][#\.\[][^#\.\[]+$@", $key)) {
+							$this->media[$import][$key][$property] = $this->restore_property($import, $key, $property);
 						}
 					}
 				}
@@ -1202,7 +1243,99 @@ __________________
 		}
 		return $return / ($a + $b);
 	}
-
+/* try to restore CSS property from some parent selectors for a given one */
+	function restore_property ($import, $selector, $property, $stage = 1) {
+		switch ($stage) {
+/* remove all attribute selectors */
+			case 1:
+				$regexp = '\[';
+				break;
+/* remove all class selectors */
+			case 2:
+				$regexp = '\.';
+				break;
+/* remove all identificator selectors */
+			case 3:
+				$regexp = '#';
+				break;
+/* already have removed all possibilities, exit */
+			case 4:
+				$regexp = null;
+				break;
+		}
+		if (!empty($regexp)) {
+			$restored_selectors = array();
+			if (empty($this->restored_selectors[$stage][$selector])) {
+/* clear selector for current stage */
+				$restored_selector = preg_replace("@([a-zA-Z0-9]+)" . $regexp . "[^" . $regexp . "]+$@", "$1", $selector);
+			} else {
+/* or get from calculated ones */
+				$restored_selectors = $this->restored_selectors[$stage][$selector];
+				if (is_array($restored_selectors)) {
+					$restored_selector = $restored_selectors[0];
+				}
+			}
+			if ($restored_selector != $selector) {
+				if (!count($restored_selectors)) {
+/* just copy existing element to this array */
+					if (!empty($this->css->css[$import][$restored_selector])) {
+						$restored_selectors[] = $restored_selector;
+					}
+/* and try to find any selectors containing calculated one */
+					$selectors = array_keys($this->css->css[$import]);
+					foreach ($selectors as $possible_selector) {
+						if (strpos($possible_selector, "," . $restored_selector) ||
+							strpos($possible_selector, ", " . $restored_selector) ||
+							strpos($possible_selector, $restored_selector . ",") ||
+							strpos($possible_selector, $restored_selector . " ,")) {
+								$restored_selectors[] = $possible_selector;
+						}
+					}
+				}
+/* there is no selectors in restored array */
+				if (is_array($restored_selectors) && count($restored_selectors)) {
+/* loop in all restored selectors */
+					foreach ($restored_selectors as $restored_selector) {
+/* try to resolve background shorthand */
+						if (strpos($property, "ackground") &&
+							empty($this->css->css[$import][$restored_selector][$property]) &&
+							!empty($this->css->css[$import][$restored_selector]['background'])) {
+								$background = $this->css->optimise->dissolve_short_bg($this->css->css[$import][$restored_selector]['background']);
+/* in resolved property these is no give key */
+								if (!empty($background[$property])) {
+									$return = $background[$property];
+								}
+/* try to resolve padding shorthand */
+						} elseif (strpos($property, "adding") &&
+							empty($this->css->css[$import][$restored_selector][$property]) &&
+							!empty($this->css->css[$import][$restored_selector][$property]['padding'])) {
+								$padding = $this->css->optimise->dissolve_4value_shorthands('padding', $this->css->css[$import][$restored_selector][$property]['padding']);
+/* in resolved property these is no give key */
+								if (!empty($padding[$property])) {
+									$return = $padding[$property];
+								}
+/* property is defined w/o shorthands */
+						} elseif (!empty($this->css->css[$import][$restored_selector][$property])) {
+							$return = $this->css->css[$import][$restored_selector][$property];
+						}
+					}
+/* remember restored selectors for future properties */
+					if (empty($this->restored_selectors[$stage][$selector])) {
+						$this->restored_selectors[$stage][$selector] = $restored_selectors;
+					}
+				}
+			}
+			if (empty($this->restored_selectors[$stage][$selector])) {
+				$this->restored_selectors[$stage][$selector] = 'No';
+			}
+			if (empty($return)) {
+				$return = $this->restore_property($import, $selector, $property, ++$stage);
+			}
+		} else {
+			$return = null;
+		}
+		return $return;
+	}
 }
 
 ?>

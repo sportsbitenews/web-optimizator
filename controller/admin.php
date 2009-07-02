@@ -186,7 +186,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.js');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
