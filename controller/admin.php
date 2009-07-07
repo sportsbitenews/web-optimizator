@@ -127,7 +127,7 @@ class admin {
 					$this->download($this->webo_grade, $index_after, 1);
 				}
 			}
-			$saved_kb = $saved_s = 0;
+			$saved_kb = $saved_s = $saved_percent = 0;
 			$before = @file_get_contents($index_before);
 			$after = @file_get_contents($index_after);
 			if (!empty($before) && !empty($after)) {

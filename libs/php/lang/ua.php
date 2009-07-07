@@ -3,7 +3,7 @@
  * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
  * Contains all UA localization constants
  * Translated by Sergiy Andriychuk
- *
+ * http://crazyyy.net.ua/2009/07/ustanovka-web-optimizer.html
  **/
 
 /* general layout */

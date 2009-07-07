@@ -26,6 +26,8 @@ class web_optimizer {
 		}
 /* define head of the webpage for scripts / styles */
 		$this->head = '';
+/* remember current time */
+		$this->time = time();
 /* define PHP version */
 		$this->php = $this->options['php'];
 /* number of external files calls to process */
@@ -44,7 +46,8 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
-			if (is_file($file) && time() - filemtime($file) < $this->options['page']['cache_timeout']) {
+			$timestamp = @filemtime($file);
+			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
 /* check if cached content if gzipped */
 				if (!empty($this->options['page']['gzip']) && substr($content, 0, 8) == "\x1f\x8b\x08\x00\x00\x00\x00\x00") {
@@ -371,7 +374,7 @@ class web_optimizer {
 /* setting cache headers for HTML file */
 			@date_default_timezone_set(@date_default_timezone_get());
 			$ExpStr = gmdate("D, d M Y H:i:s",
-			time() + $this->options['page']['clientside_timeout']) . " GMT";
+			$this->time + $this->options['page']['clientside_timeout']) . " GMT";
 			header("Cache-Control: private, max-age=" . $this->options['page']['clientside_timeout']);
 			header("Expires: " . $ExpStr);
 		}
@@ -407,7 +410,8 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] . '/' . $this->uri;
-			if (!is_file($file) || time() - filemtime($file) > $options['cache_timeout']) {
+			$timestamp = @filemtime($file);
+			if (!$timestamp || $this->time - $timestamp > $options['cache_timeout']) {
 				$fp = @fopen($file, "w");
 				if ($fp) {
 					$content_to_write = $this->content;
@@ -627,14 +631,15 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 		$cache_file = urlencode($cache_file);
+		$timestamp = @filemtime($cachedir . '/' . $cache_file . "." . $options['ext']);
 /* Check if the cache file exists */
-		if (file_exists($cachedir . '/' . $cache_file . ".$options[ext]")) {
+		if ($timestamp) {
 /* Put in locations and remove certain scripts */
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
 			$source = $this->_remove_scripts($external_array, $source);
-			$newfile = $this->get_new_file($options, $cache_file);
+			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
 			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
@@ -739,7 +744,7 @@ class web_optimizer {
 				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['header'] == "css" && $options['minify'] && !$options['css_sprites']) {
+			if ($options['header'] == "css" && $options['minify'] && !$options['css_sprites'] && !$options['data_uris']) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
@@ -759,7 +764,7 @@ class web_optimizer {
 						@file_put_contents($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', gzencode($contents, 9, FORCE_GZIP));
 					}
 /* Create the link to the new file */
-					$newfile = $this->get_new_file($options, $cache_file);
+					$newfile = $this->get_new_file($options, $cache_file, $this->time);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
 				}
 			}
@@ -767,7 +772,7 @@ class web_optimizer {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
 		}
-		return preg_replace("/@@@marker@@@/", "", $source);
+		return str_replace("@@@marker@@@", "", $source);
 	}
 
 	/**
@@ -794,17 +799,18 @@ class web_optimizer {
 	* Returns the filename for our new compressed file
 	*
 	**/
-	function get_new_file($options, $cache_file, $not_modified=false) {
+	function get_new_file($options, $cache_file, $timestamp = false) {
 		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
-		$newfile = "<" . $options['tag'] . " type=\"" . $options['type'] . "\" $options[src]=\"/" . $this->view->prevent_leading_slash($relative_cachedir) ."/$cache_file." . $options['ext'] . "$not_modified\"";
-		if (!empty($options['rel'])) {
-			$newfile .= " rel=\"" . $options['rel'] . "\"";
-		}
-		if(!empty($options['self_close'])) {
-			$newfile .= " />";
-		} else {
-			$newfile .= "></" . $options['tag'] . ">";
-		}
+		$newfile = '<' . $options['tag'] .
+			' type="' . $options['type'] . '" ' .
+			$options['src'] . '="/' .
+				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
+				$cache_file . '.' .
+				$options['ext'] .
+				($timestamp ? '?' . $timestamp : '') .
+			'"' .
+			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
+			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : ' />');
 		$this->compressed_files[] = $newfile;
 		return $newfile;
 	}
@@ -1101,13 +1107,13 @@ class web_optimizer {
 		$offset = 6000000 * 60 ;
 		$ExpStr = "Expires: " .
 		gmdate("D, d M Y H:i:s",
-		time() + $offset) . " GMT";
+		$this->time + $offset) . " GMT";
 		$types = array("css", "javascript");
 
 		foreach($types AS $type) {
 /* Always send etag */
 			$this->gzip_header[$type] = '<?php
-			$hash = md5($_SERVER[\'SCRIPT_FILENAME\'])' . (empty($this->options[$type]['gzip']) ? '' : '.\'-gzip\'') . ';
+			$hash = \'' . $this->time . (empty($this->options[$type]['gzip']) ? '' : '-gzip') . '\';
 			header ("Etag: \"" . $hash . "\"");
 ?>';
 /* Send 304? */
@@ -1207,8 +1213,6 @@ class web_optimizer {
 		$txt = preg_replace('/\s+/', ' ', $txt);
 /* Remove simple comments */
 		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
-/* Remove rudiments from optimization */
-		$txt = preg_replace('/<script[^>]+type=[\'"]text\/javascript[\'"][^>]*>(\r?\n)*<\/script>/i', '', $txt);
 		return $txt;
 	}
 
@@ -1544,12 +1548,11 @@ class web_optimizer {
 				chdir($this->options['javascript']['cachedir']);
 			}
 			$return_filename = 'wo' . md5($file);
+			$timestamp = @filemtime($return_filename);
 /* prevent download more than 1 time a day */
-			if (is_file($return_filename)) {
-				if (filemtime($return_filename) + 86400 > time()) {
-					chdir($current_directory);
-					return $return_filename;
-				}
+			if ($timestamp && $timestamp + 86400 > $this->time) {
+				chdir($current_directory);
+				return $return_filename;
 			}
 /* try to download remote file */
 			$ch = @curl_init($file);
