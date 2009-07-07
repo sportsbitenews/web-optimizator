@@ -46,7 +46,11 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
-			$timestamp = @filemtime($file);
+			if (file_exists($file)) {
+				$timestamp = @filemtime($file);
+			} else {
+				$timestamp = 0;
+			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
 /* check if cached content if gzipped */
@@ -92,6 +96,12 @@ class web_optimizer {
 /* Set paths with new options */
 		$this->options['document_root'] = !empty($this->options['document_root']) ? $this->options['document_root'] : '';
 		$this->view->set_paths($this->options['document_root']);
+/* Set local root if chained optimization */
+		if (!empty($this->web_optimizer_stage)) {
+			$this->view->paths['full']['current_directory'] = $this->view->paths['full']['document_root'];
+			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
+			$_SERVER['REQUEST_URI'] = '/';
+		}
 /* Set ignore file */
 		if(!empty($this->options['ignore_list'])) {
 			$this->ignore(trim($this->options['ignore_list']));
@@ -410,7 +420,11 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] . '/' . $this->uri;
-			$timestamp = @filemtime($file);
+			if (file_exists($file)) {
+				$timestamp = @filemtime($file);
+			} else {
+				$timestamp = 0;
+			}
 			if (!$timestamp || $this->time - $timestamp > $options['cache_timeout']) {
 				$fp = @fopen($file, "w");
 				if ($fp) {
@@ -631,7 +645,11 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 		$cache_file = urlencode($cache_file);
-		$timestamp = @filemtime($cachedir . '/' . $cache_file . "." . $options['ext']);
+		if (file_exists($cachedir . '/' . $cache_file . "." . $options['ext'])) {
+			$timestamp = @filemtime($cachedir . '/' . $cache_file . "." . $options['ext']);
+		} else {
+			$timestamp = 0;
+		}
 /* Check if the cache file exists */
 		if ($timestamp) {
 /* Put in locations and remove certain scripts */
@@ -1548,7 +1566,11 @@ class web_optimizer {
 				chdir($this->options['javascript']['cachedir']);
 			}
 			$return_filename = 'wo' . md5($file);
-			$timestamp = @filemtime($return_filename);
+			if (file_exists($return_filename)) {
+				$timestamp = @filemtime($return_filename);
+			} else {
+				$timestamp = 0;
+			}
 /* prevent download more than 1 time a day */
 			if ($timestamp && $timestamp + 86400 > $this->time) {
 				chdir($current_directory);

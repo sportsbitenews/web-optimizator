@@ -89,7 +89,7 @@ class css_sprites {
 							}
 							foreach (explode(",", $tags) as $tag) {
 /* create new item (array) if required */
-								if (!empty($this->media[$import][$tag])) {
+								if (empty($this->media[$import][$tag])) {
 									$this->media[$import][$tag] = array();
 								}
 
@@ -127,7 +127,7 @@ class css_sprites {
 /* fix background-position: left|right -> left center|right center */
 													if ($bg == 'background-position' &&
 														($property == 'left' ||
-														!round($property) ||
+														!round(str_replace(" ", "", $property)) ||
 														$property == 'right' ||
 														round($property) == 100) &&
 														strlen($property) < 6) {
@@ -147,11 +147,11 @@ class css_sprites {
 									if (!($key == 'background-position' &&
 										($value == 'top left' ||
 											$value == 'left top' ||
-											!round($value)))) {
+											!round(str_replace(" ", "", $value))))) {
 /* fix background-position: left|right -> left center|right center */
 											if ($key == 'background-position' &&
 												($value == 'left' ||
-												!round($property) ||
+												!round(str_replace(" ", "", $value)) ||
 												$property == 'right' ||
 												round($property) == 100) &&
 												strlen($property) < 6) {
@@ -161,7 +161,7 @@ class css_sprites {
 											if ($key == 'background-position') {
 												$value = ($value == 'top' ? 'center top' : ($value == 'bottom' ? 'center bottom' : $value));
 											}
-										$this->media[$import][$tag][$key] = $value;
+											$this->media[$import][$tag][$key] = $value;
 									}
 								}
 							}
@@ -287,6 +287,12 @@ class css_sprites {
 									$repeat_key = 'repeat-yl';
 								}
 							}
+/* count selectors for every images -- to handle initial CSS Sprites */
+							if (empty($this->css_images[$back])) {
+								$this->css_images[$back] = array();
+							}
+							$this->css_images[$back][empty($image['background-position']) ? 'no' : $image['background-position']] = 1;
+/* disable all unsupported cases */
 							if ($repeat_key == 'repeat') {
 								unset($this->media[$import][$key]);
 							} else {
@@ -300,7 +306,7 @@ class css_sprites {
 								if (empty($this->css_images[$back])) {
 									$this->css_images[$back] = array();
 								}
-								$this->css_images[$back][empty($image['background-position']) ? '' : $image['background-position']] = 1;
+								$this->css_images[$back][empty($image['background-position']) ? 'no' : $image['background-position']] = 1;
 							}
 /* disable images w/o background-repeat */
 						} else {
@@ -1251,18 +1257,52 @@ __________________
 		switch ($stage) {
 /* remove all attribute selectors */
 			case 1:
-				$regexp = '\[';
+				$regexp = '([a-zA-Z0-9]+)\[[^\[]+$';
+				$part = '$1';
 				break;
 /* remove all class selectors */
 			case 2:
-				$regexp = '\.';
+				$regexp = '([a-zA-Z0-9]+)\.[^\.]+$';
+				$part = '$1';
 				break;
 /* remove all identificator selectors */
 			case 3:
-				$regexp = '#';
+				$regexp = '([a-zA-Z0-9]+)#[^#]+$';
+				$part = '$1';
 				break;
-/* already have removed all possibilities, exit */
+/* remove 1 attribute selectors from start */
 			case 4:
+				$regexp = '^([a-zA-Z0-9]+)\[[^\[]+\s([a-zA-Z0-9]+)';
+				$part = '$2';
+				break;
+/* remove 1 class selectors from start */
+			case 5:
+				$regexp = '^([a-zA-Z0-9]+)\.[^\.]+\s([a-zA-Z0-9]+)';
+				$part = '$2';
+				break;
+/* remove 1 identificator selectors from start */
+			case 6:
+				$regexp = '^([a-zA-Z0-9]+)#[^#]+\s([a-zA-Z0-9]+)';
+				$part = '$3';
+				break;
+/* remove all attribute selectors from start */
+			case 7:
+				$regexp = '(^([a-zA-Z0-9]+)\[[^\[]+\s([a-zA-Z0-9]+))+';
+				$part = '$3';
+				break;
+/* remove all class selectors from start */
+			case 8:
+				$regexp = '^(([a-zA-Z0-9]+)\.[^\.]+\s([a-zA-Z0-9]+))+';
+				$part = '$3';
+				break;
+/* remove all identificator selectors from start */
+			case 9:
+				$regexp = '^(([a-zA-Z0-9]+)#[^#]+\s([a-zA-Z0-9]+))+';
+				$part = '$3';
+				break;
+
+/* already have removed all possibilities, exit */
+			case 10:
 				$regexp = null;
 				break;
 		}
@@ -1270,7 +1310,7 @@ __________________
 			$restored_selectors = array();
 			if (empty($this->restored_selectors[$stage][$selector])) {
 /* clear selector for current stage */
-				$restored_selector = preg_replace("@([a-zA-Z0-9]+)" . $regexp . "[^" . $regexp . "]+$@", "$1", $selector);
+				$restored_selector = preg_replace("@" . $regexp . "@", $part, $selector);
 			} else {
 /* or get from calculated ones */
 				$restored_selectors = $this->restored_selectors[$stage][$selector];
