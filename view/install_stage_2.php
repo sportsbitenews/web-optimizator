@@ -8,13 +8,16 @@
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins><h2><?php
 	echo _WEBO_SPLASH2_TITLE;
-?></h2><div class="d n"><ul><li><a href="#dirs" class="z"><?php
+?></h2><div class="d n" id="f"><ul><li><a href="#dirs" class="z" name="1"><?php
 	echo _WEBO_SPLASH2_CACHE;
 ?></a></li><?php
-	foreach($options AS $key=>$type) {
+	$count = 1;
+	foreach($options AS $key=>$type) {	
 		if(is_array($type['value'])) {
 ?><li><a href="#<?php
 			echo $key;
+?>" name="<?php
+			echo ++$count;
 ?>"><?php
 			echo $type['title'];
 ?></a></li><?php

@@ -1276,6 +1276,8 @@ __________________
 				$restored_selectors = $this->restored_selectors[$stage][$selector];
 				if (is_array($restored_selectors)) {
 					$restored_selector = $restored_selectors[0];
+				} else {
+					$restored_selector = $selector;
 				}
 			}
 			if ($restored_selector != $selector) {

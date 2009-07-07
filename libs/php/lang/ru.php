@@ -22,7 +22,7 @@ define('_WEBO_LOGIN_INSTALLED3', '. Для доступа ко всем настройкам нажмите кнопк
 define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Внимание:</strong> не удается найти результат работы Веб Оптимизатора. Пожалуйста, проверьте наличие его вызовов в исходных файлах вашей веб-системы или проведите установку еще раз.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Результат оптимизации при показе страницы:<br/>выигрыш');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Кб');
-define('_WEBO_LOGIN_EFFICIENCY_S', 'секунд');
+define('_WEBO_LOGIN_EFFICIENCY_S', 'секунды');
 define('_WEBO_LOGIN_USERNAME', 'Логин');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введите ваш логин');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');

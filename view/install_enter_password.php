@@ -46,7 +46,7 @@
 ?>" class="i"/><input type="hidden" name="page" value="install_stage_2"/><input type="hidden" name="Submit" value="1"/><?php
 	if ($saved_s) {
 ?><p><label><?php
-		echo _WEBO_LOGIN_EFFICIENCY;
+		echo _WEBO_LOGIN_EFFICIENCY . " ";
 ?><strong><?php
 		echo $saved_s;
 ?></strong> <?php
