@@ -68,7 +68,7 @@
 		echo _WEBO_LOGIN_UPGRADE;
 ?>" title="<?php
 		echo _WEBO_LOGIN_UPGRADE;
-?>" onclick="this.disabled='disabled';this.form.ujs.id=this.form.ujs.name='upgrade'"/></fieldset><?php
+?>" onclick="this.form.ujs.id=this.form.ujs.name='upgrade';this.form.submit();return false"/></fieldset><?php
 	}
 ?><fieldset class="h"><p><?php
 	echo ($protected ? '' : _WEBO_SPLASH1_CLEAR_CACHE) . _WEBO_SPLASH1_CLEAR_CACHE2;
