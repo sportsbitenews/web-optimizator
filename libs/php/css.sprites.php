@@ -331,7 +331,8 @@ class css_sprites {
 /* no initial CSS Sprites and valid background-image */
 					if (!empty($image['background-image']) && $image['background-image'] != $this->none && count($this->css_images[$image['background-image']]) < 2) {
 						$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->timestamp .'.png';
-						$this->css_image = substr($image['background-image'], 4, strlen($image['background-image']) - 5);
+						$img = trim(str_replace("!important", "", $image['background-image']));
+						$this->css_image = substr($img, 4, strlen($img) - 5);
 						list($width, $height) = $this->get_image();
 /* restrict images by ~64x64 if memory is limited */
 						if ($width && $height && (!$this->memory_limited || $width * $height < 4097) && (empty($this->dimensions_limited) || ($width < $this->dimensions_limited && $height < $this->dimensions_limited))) {
@@ -467,7 +468,7 @@ __________________
 							$background[$key] = $value;
 						}
 						if (!empty($background['background-image'])) {
-							$image = preg_replace("/\s*!important\s*$/", "", $background['background-image']);
+							$image = trim(str_replace("!important", "", $background['background-image']));
 							$this->css_image = substr($image, 4, strlen($image) - 5);
 							if (!empty($this->css_image)) {
 								$sprited = strpos($this->css_image, 'bo.' . $this->timestamp);

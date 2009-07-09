@@ -455,11 +455,11 @@ class web_optimizer {
 			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
-				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, old_src_param_pos, strlen($old_src)) : '';
+				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
 /* skip images on different hosts */
 				if ((!strpos($old_src, "://") || stripos($old_src, "://" . $_SERVER['HTTP_HOST'] . "/") || stripos($old_src, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/")) && empty($replaced[$old_src])) {
 					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
-					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src;
+					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;
 				}
@@ -1038,7 +1038,13 @@ class web_optimizer {
 /* don't get actual files' content if option isn't enabled */
 						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
-							$file = $this->get_remote_file($value['file']);
+							if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
+/* dynamic file */
+								$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']));
+/* static file */
+							} else {
+								$file = $this->get_remote_file($value['file']);
+							}
 							if (!empty($file)) {
 								$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
 							} else {
@@ -1060,7 +1066,7 @@ class web_optimizer {
 						if (!strpos($dynamic_file, "://")) {
 							$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
 						}
-						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), $value['tag']);
+						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
 						}
