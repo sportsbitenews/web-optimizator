@@ -1169,16 +1169,18 @@ ExpiresDefault \"access plus 10 years\"
 /* start curl */
 			$ch = @curl_init($remote_file);
 			$fp = @fopen($local_file, "w");
+			$fph = @fopen($local_file_headers, "w");
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.11");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
-				@curl_setopt($ch, CURLOPT_WRITEHEADER, $local_file_headers);
+				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
+				@fclose($fph);
 			}
 			if (is_file($local_file_headers)) {
 				$gzip = stripos(@file_get_contents($local_file_headers), 'content-encoding');
@@ -1200,7 +1202,7 @@ ExpiresDefault \"access plus 10 years\"
 		$gzipped = $this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 /* disable gzip for HTML if already have it (in CMS or on the server) */
 		if ($gzipped) {
-			$this->save_option("['page']['gzip']", 0);
+			$this->save_option("['gzip']['page']", 0);
 		}
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
