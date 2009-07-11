@@ -205,8 +205,9 @@ define('_WEBO_SPLASH3_SAVED', 'Ваші налаштування були успішно збережені.');
 define('_WEBO_SPLASH3_REWRITE', 'Прискорення сайтц проведено успішно');
 define('_WEBO_SPLASH3_REWRITE_SHORT', 'Прискорення сайту проведено');
 define('_WEBO_SPLASH3_MODIFY_SHORT', 'Необхідні зміни');
-define('_WEBO_SPLASH3_TESTING_SHORT', 'Додаткове прискорення');
+define('_WEBO_SPLASH3_TESTING_SHORT', 'Тестування');
 define('_WEBO_SPLASH3_SECURITY_SHORT', 'Безпека');
+define('_WEBO_SPLASH3_ADDITIONAL_SHORT', 'Додаткове прискорення');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'Ваш сайт, який використовує ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ', був успішно прискорений. Ви можете <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">перевірити результат, який вийшов</a>.');
@@ -244,5 +245,9 @@ define('_WEBO_SPLASH3_CONFIGERROR2', 'Ви можете це зробити за допомогою вашого F
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , потім увійдіть до властивостей файлу або виконайте CHMOD. Встановіть у 775 або 777, або "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Після того, як ви усунете цю проблему, будь-ласка, перезавантажте сторінку.');
 define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Веб Оптимізатор повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
-
+define('_WEBO_SPLASH3_ADDITIONAL', 'Настройка оптимального быстродействия');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Вы можете провести дополнительные изменения на вашем сайте, которые позволят использовать Веб Оптимизатор более эффективно. К числу таких изменений можно отнести:');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Вынесите все JavaScript- и CSS-файлы, требуемые для загрузки сайта, в <code>head</code>-секцию страницы.</strong> Это позволит Веб Оптимизатору управлять их объединением и сжатием.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Подключите множественные хосты для вашего сайта.</strong> Для этого в DNS необходимо указать <code>* IN A IP_адрес_вашего_сервера</code>, подключить соответствующие поддомены (например, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) и провести установку заново. Веб Оптимизатор самостоятельно обнаружил доступные хосты и распределит изображения по ним.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Вынесите все стили и скрипты, прописанные прямо в коде страницы, во внешние файлы.</strong> Во-первых, это позволит вам проще управлять изменениями вашего сайта. Во-вторых, это позволит Веб Оптимизатору объединить, минимизировать и закэшировать весь объем дополнительного кода, который требуется для правильного функционирования вашего сайта.');
 ?>

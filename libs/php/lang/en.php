@@ -204,8 +204,9 @@ define('_WEBO_SPLASH3_SAVED', 'Your configuration options have been successfully
 define('_WEBO_SPLASH3_REWRITE', 'Your configuration has been successfully saved');
 define('_WEBO_SPLASH3_REWRITE_SHORT', 'Acceleration completed');
 define('_WEBO_SPLASH3_MODIFY_SHORT', 'Required changes');
-define('_WEBO_SPLASH3_TESTING_SHORT', 'Additional speed up');
+define('_WEBO_SPLASH3_TESTING_SHORT', 'Testing');
 define('_WEBO_SPLASH3_SECURITY_SHORT', 'More security');
+define('_WEBO_SPLASH3_ADDITIONAL_SHORT', 'Additional speed up');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'You website based on ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' has been patched. You can <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">check the result here</a>.');
@@ -243,5 +244,9 @@ define('_WEBO_SPLASH3_CONFIGERROR2', 'You can usually do this from your FTP clie
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 775, 777, or "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Once you have done so, please refresh this page.');
 define('_WEBO_SPLASH3_CONFIGERROR5', 'Config file does not exist. Please download the full script from <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
-
+define('_WEBO_SPLASH3_ADDITIONAL', 'Optimal performance settings');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'You can apply additional changes to your website to let Web Optimizer work more efficiently. Please check the following:');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Move all required for your website JavaScript and CSS files to the <code>head</code> section.</strong> This will allow Web Optimizer to manage their merging and minifying.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Add multiple hosts for your website.</strong> You need to add to your DNS the following record <code>* IN A your_server_IP_address</code>, then add approproate subdomains (i.e. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) into your server configuration and install Web Optimizer once more. Web Optimizer automatically detects existing hosts (if not please add them manually) and distribute images through them.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Move all inline CSS and JavaScript to external files.</strong> First of all it make managing changes in your website design / bahavior simplier. Secondly this will allow Web Optimizer to merge, minify and cache all styles and scripts that are used on your website.');
 ?>

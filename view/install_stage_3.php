@@ -28,6 +28,8 @@
 	echo _WEBO_SPLASH3_TESTING_SHORT;
 ?></a></li><li><a href="#security"><?php
 	echo _WEBO_SPLASH3_SECURITY_SHORT;
+?></a></li><li><a href="#additional"><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_SHORT;
 ?></a></li></ul><form action="" method="post" enctype="multipart/form-data"><?php
 	if ($auto_rewrite) {
 ?><fieldset id="rewrite"><h3><?php
@@ -53,7 +55,7 @@
 				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_ADD2;
-?>:</p><textarea cols="80" rows="3">&lt;?php
+?>:</p><textarea cols="80" rows="2">&lt;?php
 require('<?php
 				echo preg_replace("/\\\/", "/", $paths['full']['current_directory']);
 ?>web.optimizer.php');
@@ -65,7 +67,7 @@ require('<?php
 				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_ADD2;
-?>:</p><textarea cols="80" rows="2">$web_optimizer->finish();</textarea><?php
+?>:</p><textarea cols="80" rows="1">$web_optimizer->finish();</textarea><?php
 			} else {
 ?><p><?php
 				echo _WEBO_SPLASH3_TOFILE;
@@ -73,7 +75,7 @@ require('<?php
 				echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
 ?></code> <?php
 				echo _WEBO_SPLASH3_AFTERSTRING;
-?></p><textarea cols="80" rows="2"><?php
+?></p><textarea cols="80" rows="1"><?php
 				echo $file['location'];
 ?></textarea><p><?php
 				echo _WEBO_SPLASH3_ADD2;
@@ -111,4 +113,14 @@ require('<?php
 	echo $username;
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $password;
-?>"/></fieldset></form><b></b><i></i><del></del><ins></ins></div>
+?>"/></fieldset><fieldset id="additional"><h3><?php
+	echo _WEBO_SPLASH3_ADDITIONAL;
+?></h3><p><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_INFO;
+?></p><ul><li><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_INFO_1;
+?></li><li><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_INFO_2;
+?></li><li><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_INFO_3;
+?></li></ul></fieldset></form><b></b><i></i><del></del><ins></ins></div>
