@@ -885,7 +885,7 @@ class web_optimizer {
 		if (!$inline) {
 			$file = $this->get_file_name($src);
 /* dynamic file */
-			if (preg_match("/\.(php|phtml)$/is", $file)) {
+			if (!preg_match("/\.css$/is", $file)) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
 				if (!strpos($dynamic_file, "://")) {
@@ -1038,7 +1038,7 @@ class web_optimizer {
 /* don't get actual files' content if option isn't enabled */
 						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
-							if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
+							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
 								$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']));
 /* static file */
@@ -1060,7 +1060,7 @@ class web_optimizer {
 				$content_from_file = '';
 				if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
-					if (preg_match("/\.(php|phtml)$/is", $value['file'])) {
+					if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 						$dynamic_file = $value['file_raw'];
 /* touch only non-external scripts */
 						if (!strpos($dynamic_file, "://")) {
