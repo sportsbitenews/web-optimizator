@@ -1029,7 +1029,7 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for UMI.CMS */							
 							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
-								$content_saved = preg_replace("/(sha1.*)(echo\s*\\\$res;)/", "$1" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$2", $content_saved);
+								$content_saved = preg_replace("/(sha1.*)\r?\n([\s\t]*echo\s*\\\$res;)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$2", $content_saved);
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -1050,7 +1050,7 @@ ExpiresDefault \"access plus 10 years\"
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 /* fix for UMI.CMS */							
 							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
-								$content_saved = preg_replace("/(sha1.*echo\s*\\\$res;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+								$content_saved = preg_replace("/(web\.optimizer.*\r?\n[\s\t]*echo\s*\\\$res;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($this->cms_version, 0, 8) == 'Joostina') {
