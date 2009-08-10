@@ -505,14 +505,13 @@ __________________
 	function distribute_image ($image) {
 		if (!empty($this->multiple_hosts_count) &&
 			(!strpos($image, "://") ||
-				stripos($image, "://" . $_SERVER['HTTP_HOST'] . "/") ||
-				stripos($image, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/"))) {
-			return "http" . $this->https .
-				"://" .
-				$this->multiple_hosts[strlen($image)%$this->multiple_hosts_count] .
-				"." .
-				preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
-				$image;
+				preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $image))) {
+					return "http" . $this->https .
+						"://" .
+						$this->multiple_hosts[strlen($image)%$this->multiple_hosts_count] .
+						"." .
+						preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
+						$image;
 		} else {
 			return $image;
 		}

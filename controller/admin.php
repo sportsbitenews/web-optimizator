@@ -361,7 +361,7 @@ class admin {
 				}
 			}
 /* additional change of cache plugins */
-			if (stripos($this->cms_version, "Joomla!")) {
+			if (strpos($this->cms_version, "Joomla!")) {
 				if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 				} else {
@@ -1183,7 +1183,7 @@ ExpiresDefault \"access plus 10 years\"
 				@fclose($fph);
 			}
 			if (is_file($local_file_headers)) {
-				$gzip = stripos(@file_get_contents($local_file_headers), 'content-encoding');
+				$gzip = preg_match('/content-encoding/i', @file_get_contents($local_file_headers));
 				@unlink($local_file_headers);
 			}
 		}

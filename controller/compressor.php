@@ -457,7 +457,7 @@ class web_optimizer {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
 /* skip images on different hosts */
-				if ((!strpos($old_src, "://") || stripos($old_src, "://" . $_SERVER['HTTP_HOST'] . "/") || stripos($old_src, "://www." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/")) && empty($replaced[$old_src])) {
+				if ((!strpos($old_src, "://") || preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $old_src)) && empty($replaced[$old_src])) {
 					$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
 					$content = str_replace($old_src, $new_src, $content);
