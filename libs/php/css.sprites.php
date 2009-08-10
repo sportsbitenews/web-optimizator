@@ -153,10 +153,10 @@ class css_sprites {
 											if ($key == 'background-position' &&
 												($value == 'left' ||
 												!round(str_replace(" ", "", $value)) ||
-												$property == 'right' ||
-												round($property) == 100) &&
-												strlen($property) < 6) {
-													$property = $property . ' center';
+												$value == 'right' ||
+												round($value) == 100) &&
+												strlen($value) < 6) {
+													$value = $value . ' center';
 											}
 /* fix background-position: right|bottom -> right center|center bottom */
 											if ($key == 'background-position') {

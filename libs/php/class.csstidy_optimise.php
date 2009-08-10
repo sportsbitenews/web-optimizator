@@ -726,7 +726,10 @@ class csstidy_optimise
         {
             $have['clip'] = false; $have['pos'] = false;
             $have['color'] = false; $have['bg'] = false;
-
+			
+			if (is_array($str_value[$i])) {
+				$str_value[$i] = $str_value[$i][0];
+			}
             $str_value[$i] = csstidy_optimise::explode_ws(' ',trim($str_value[$i]));
 
             for($j = 0; $j < count($str_value[$i]); $j++)
