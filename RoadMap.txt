@@ -117,6 +117,7 @@
 +y) CakePHP (1.2.3)
 +z) CMS Made Simple (1.6)
 +A) NetCat
++B) UMI.CMS
 
 12. Localization
 +a) English
