@@ -1027,6 +1027,9 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for CMS Made Simple */							
 							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+/* fix for UMI.CMS */							
+							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
+								$content_saved = preg_replace("/(sha1.*)(echo\s*\\\$res;)/", "$1" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$2", $content_saved);
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -1039,12 +1042,15 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for vBulletin */
 							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
 								$content_saved = preg_replace("/(flush\s*\(\);[\r\n\s\t]*\})/", "$1\n" . '$web_optimizer->finish();', $content_saved);
-/* fix for CMS Made Simple */
-							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
-								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 /* fix for Joomla! 1.0 */
 							} elseif (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$content_saved = preg_replace("/(doGzip\(\);\r?\n)/i", '$web_optimizer->finish();' . "\n$1" , $content_saved);
+/* fix for CMS Made Simple */
+							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
+								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+/* fix for UMI.CMS */							
+							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
+								$content_saved = preg_replace("/(sha1.*echo\s*\\\$res;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -1567,6 +1573,9 @@ require valid-user
 				require_once($root . 'version.php');
 			}
 			return 'CMS Made Simple ' . $CMS_VERSION;
+/* UMI.CMS */
+		} elseif (is_file($root . 'gw.php')) {
+			return 'UMI.CMS';
 		}
 		return 'CMS 42';
 	}
@@ -1752,6 +1761,21 @@ require valid-user
 						'file' => 'index.php',
 						'mode' => 'finish',
 						'location' => 'echo $html;'
+					)
+				);
+				break;
+/* UMI.CMS */
+			case 'UMI.CMS':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start',
+						'location' => 'header("ETag: \"" . sha1($res) . "\");',
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'echo $res;'
 					)
 				);
 				break;
