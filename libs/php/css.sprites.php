@@ -66,8 +66,9 @@ class css_sprites {
 			$this->css->load_template($this->root_dir . 'libs/php/css.template.tpl');
 			$this->css->parse($css_code);
 		}
+		$memory_available = function_exists('memory_get_usage') ? memory_get_usage() : 10000000;
 /* restrict square for large Sprites due to system limitations */
-		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", ini_get('memory_limit')))) - memory_get_usage()) / 10);
+		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", ini_get('memory_limit')))) - $memory_available) / 10);
 	}
 	/**
 	* Main function
