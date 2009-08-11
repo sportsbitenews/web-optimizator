@@ -445,7 +445,9 @@ class admin {
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
 /* check for multiple hosts possibility */
 			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-			$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($hosts);
+			if (!empty($this->input['user']['parallel']['check'])) {
+				$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($hosts);
+			}
 /* render final page */
 			$this->install_stage_3();
 		} else {
@@ -478,7 +480,9 @@ class admin {
 /* load default list */
 					$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
 				}
-				$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
+				if (!empty($this->input['user']['parallel']['check'])) {
+					$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
+				}
 
 				$options = array(
 					'Minify' => $this->compress_options['minify'],
@@ -684,7 +688,9 @@ class admin {
 							if ($key == 'parallel' && $option_name == 'allowed_list') {
 								$hosts = explode(" ", $option_value);
 								if (is_array($hosts)) {
-									$option_value = $this->check_hosts($hosts);
+									if (!empty($this->input['user']['parallel']['check'])) {
+										$option_value = $this->check_hosts($hosts);
+									}
 								}
 							}
 							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);

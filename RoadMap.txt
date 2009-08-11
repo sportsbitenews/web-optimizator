@@ -17,7 +17,7 @@
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
 +c) PHP (other languages) libs: gzencode, curl , etc.
 +d) Current Web Optimizer status: installed or not
- e) Current website gzip compression
++e) Current website gzip compression
 
 3. Configurator: config.webo.php -- number of options
 +a) CSS / JS merging
@@ -38,9 +38,9 @@
 +p) List of protected from merging files
 +r) List of protected from merging images (for CSS Sprites)
 +s) Fast check by filenames
-+t) HTML caching
++t) HTML caching (+ ETag)
 +u) Unobtrusive loading
- v) Practial gain
++v) Practial gain
 
 4. Merging
 +a) Base CSS / JS merging
@@ -58,6 +58,7 @@
 +d) YUI Compressor (if java exists)
 +e) Packer for JS files
 +f) Cached gzip for CSS / JS files
+ g) Check for gzip via cookie
 
 6. Including
 +a) Manual including 2 strings

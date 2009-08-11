@@ -186,6 +186,7 @@ define('_WEBO_css_sprites_memory_limited', 'Обмежити використання пам\'яті для P
 define('_WEBO_css_sprites_dimensions_limited', 'Исключить изображения, если их линейный размер больше заданного');
 define('_WEBO_css_sprites_ignore_list', 'Виключити із CSS Sprites файли');
 define('_WEBO_parallel_enabled', 'Включити паралельні хости, наприклад, i1 i2');
+define('_WEBO_parallel_check', 'Автоматически проверять доступность хостов');
 define('_WEBO_parallel_allowed_list', 'Доступні хости');
 define('_WEBO_htaccess_enabled', 'Включити <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Використовувати <code>mod_deflate</code>');

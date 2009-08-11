@@ -103,6 +103,8 @@ $compress_options['css_sprites']['dimensions_limited'] = "900";
 $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Parallel downloads
 $compress_options['parallel']['enabled'] = "1";
+## Check hosts availability or not?
+$compress_options['parallel']['check'] = "1";
 ## List of hosts for parallel downloads, i.e. img i1 i2
 $compress_options['parallel']['allowed_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?

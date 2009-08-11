@@ -185,6 +185,7 @@ define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage');
 define('_WEBO_css_sprites_dimensions_limited', 'Exclude images greater given number in one dimension');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
 define('_WEBO_parallel_enabled', 'Enable multiple hosts');
+define('_WEBO_parallel_check', 'Check hosts\' availability automatically');
 define('_WEBO_parallel_allowed_list', 'Allowed hosts, i.e. img i1 i2');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Use <code>mod_deflate</code>');
