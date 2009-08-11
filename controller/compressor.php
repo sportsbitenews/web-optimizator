@@ -53,6 +53,17 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
+				$hash = md5($content);
+/* check for return visits */
+				if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
+					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"')	 {
+/* return visit and no modifications, so do not send anything */
+					header ("HTTP/1.0 304 Not Modified");
+					header ("Content-Length: 0");
+					exit();
+				}
+/* set ETag, thx to merzmarkus */
+				header("ETag: \"" . $hash . "\"");
 /* check if cached content if gzipped */
 				if (!empty($this->options['page']['gzip']) && substr($content, 0, 8) == "\x1f\x8b\x08\x00\x00\x00\x00\x00") {
 					$this->set_gzip_header();
@@ -425,6 +436,8 @@ class web_optimizer {
 			} else {
 				$timestamp = 0;
 			}
+/* set ETag, thx to merzmarkus */
+			header("ETag: \"" . md5($this->content) . "\"");
 			if (!$timestamp || $this->time - $timestamp > $options['cache_timeout']) {
 				$fp = @fopen($file, "w");
 				if ($fp) {
