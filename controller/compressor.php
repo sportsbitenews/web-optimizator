@@ -1564,6 +1564,10 @@ class web_optimizer {
 	 *
 	 **/
 	function get_remote_file ($file, $tag = "link") {
+/* check if we already have this file */
+		if (preg_match("/\/wo[abcdef0-9]+$/", $file)) {
+			return preg_replace("/.*(wo[abcdef0-9]+$)/", "$1", $file);
+		}
 		$current_directory = @getcwd();
 		if (function_exists('curl_init')) {	
 			if ($tag == 'link') {

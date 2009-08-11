@@ -797,6 +797,7 @@ __________________
 /* glue image to the bottom edge */
 									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] + $final_x;
 									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] - $height;
+									$this->css_images[$this->sprite]['images'][$key][5] = $shift_x;
 									$this->css_images[$this->sprite]['x'] += $width + $final_x + $shift_x + ($this->extra_space ? 5 : 0);
 									if ($height > $this->css_images[$this->sprite]['y']) {
 										$shift = $this->css_images[$this->sprite]['y'] - $height;
@@ -812,6 +813,7 @@ __________________
 /* glue image to the right edge */
 									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] - $width;
 									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
+									$this->css_images[$this->sprite]['images'][$key][6] = $shift_y;
 									$this->css_images[$this->sprite]['y'] += $height + $final_y + $shift_y + ($this->extra_space ? 5 : 0);
 									if ($width > $this->css_images[$this->sprite]['x']) {
 										$shift = $this->css_images[$this->sprite]['x'] - $width;
@@ -1038,7 +1040,7 @@ __________________
 /* 0 100% case */
 									case 6:
 										$css_top = 'bottom';
-										$css_left = -$final_x;
+										$css_left = -$final_x + $shift_x;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
 											@imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
@@ -1046,7 +1048,7 @@ __________________
 										break;
 /* 100% 0 case */
 									case 5:
-										$css_top = -$final_y;
+										$css_top = -$final_y + $shift_y;
 										$css_left = 'right';
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
