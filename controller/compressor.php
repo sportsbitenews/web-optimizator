@@ -470,8 +470,8 @@ class web_optimizer {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
 /* skip images on different hosts */
-				if ((!strpos($old_src, "://") || preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $old_src)) && empty($replaced[$old_src])) {
-					$absolute_src = preg_replace("/https?:\/\/(www\.)?" . $_SERVER['HTTP_HOST'] . "/i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
+				if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src)) && empty($replaced[$old_src])) {
+					$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
 					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;
@@ -1414,7 +1414,7 @@ class web_optimizer {
 			$endfile = $this->strip_querystring($endfile);
 		}
 /* Don't touch data URIs, or mhtml:, or external files */
-		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $_SERVER['HTTP_HOST'] ."!is", $file)) {
+		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."!is", $file)) {
 			return false;
 		}
 		$absolute_path = $file;
@@ -1428,7 +1428,7 @@ class web_optimizer {
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->view->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->view->unify_dir_separator($full_path_to_image . $file)));
 		}
 /* remove HTTP host from absolute URL */
-		return preg_replace("!https?://". $_SERVER['HTTP_HOST'] ."/!i", "/", $absolute_path);
+		return preg_replace("!https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."/!i", "/", $absolute_path);
 	}
 
 	/**
