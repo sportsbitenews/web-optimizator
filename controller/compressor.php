@@ -182,7 +182,8 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'],
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'],
-				"unobtrusive_ads" => $this->options['unobtrusive']['ads']
+				"unobtrusive_ads" => $this->options['unobtrusive']['ads'],
+				"footer" => $this->options['footer']['image']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -425,7 +426,7 @@ class web_optimizer {
 		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-			$this->content = str_replace('</body>', '<script type="text/javascript" src="' . str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . '/wo.cookie.php"></script></body>', $this->content);
+			$this->content = preg_replace('!(</body>)!is', '<script type="text/javascript" src="' . str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . '/wo.cookie.php"></script>' . "$1", $this->content);
 		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {
@@ -1400,7 +1401,11 @@ class web_optimizer {
 				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
 			}
 /* add Web Optimizer spot */
-			$this->content = str_replace('<TITLE', '<TITLE lang="wo"', str_replace('<title', '<title lang="wo"', $this->content));
+			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' lang="wo"', $this->content);
+/* add Web Optimizer stamp */
+			if (!empty($this->options['page']['footer'])) {
+				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website"><img src="' . str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png" style="float:right;margin:-104px 4px -100px;width:100px;height:100px" alt="Web Optimizer: Speed Up Your Website"/></a>' . "$1", $this->content);
+			}
 		}
 	}
 
