@@ -161,6 +161,7 @@ define('_WEBO_minify_html_one_string', 'Shrink HTML to the one string');
 define('_WEBO_gzip_javascript', 'Gzip JavaScript');
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_page', 'Gzip HTML');
+define('_WEBO_gzip_cookie', 'Check for gzip possibility via cookies');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
 define('_WEBO_far_future_expires_static', 'Cache static assets');

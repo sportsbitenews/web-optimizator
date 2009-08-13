@@ -186,7 +186,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
@@ -628,6 +628,8 @@ class admin {
 			}
 /* copy unobtrusive loader library to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
+/* copy gzip check to cache directory */
+			@copy($this->input['user']['webo_cachedir'] . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
 			$this->write_progress($this->web_optimizer_stage = 4);
 			$this->get_modules();
 			$loaded_modules = @get_loaded_extensions();

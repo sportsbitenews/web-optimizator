@@ -55,6 +55,8 @@ $compress_options['minify']['html_one_string'] = "0";
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";
 $compress_options['gzip']['css'] = "1";
+## Check for gzip possibility via cookie
+$compress_options['gzip']['cookie'] = "1";
 ## Caching
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";

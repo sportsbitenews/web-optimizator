@@ -36,6 +36,8 @@ class web_optimizer {
 		$this->set_options();
 /* Define the gzip headers */
 		$this->set_gzip_headers();
+/* HTTPS or not ? */
+		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 /* HTML cache ? */
@@ -163,6 +165,7 @@ class web_optimizer {
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip_cookie" => $this->options['gzip']['cookie'],
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'],
 				"remove_comments" => $this->options['minify']['html_comments'],
@@ -420,6 +423,10 @@ class web_optimizer {
 		if (!empty($this->flushed)) {
 			$this->content = substr($this->content, $options['flush_size'], strlen($this->content));
 		}
+/* Add script to check gzip possibility */
+		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			$this->content = str_replace('</body>', '<script type="text/javascript" src="' . str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . '/wo.cookie.php"></script></body>', $this->content);
+		}
 /* Gzip page itself */
 		if(!empty($options['gzip'])) {
 			$content = $this->create_gz_compress($this->content);
@@ -465,14 +472,13 @@ class web_optimizer {
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		if (!empty($imgs)) {
-			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
 /* skip images on different hosts */
 				if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src)) && empty($replaced[$old_src])) {
 					$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
-					$new_src = "http" . $https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
+					$new_src = "http" . $this->https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
 					$content = str_replace($old_src, $new_src, $content);
 					$replaced[$old_src] = 1;
 				}
@@ -512,7 +518,7 @@ class web_optimizer {
 			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
 				$encoding = "x-gzip";
 			}
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
 				$encoding = "gzip";
 			}
 			if(!empty($encoding)) {
@@ -614,8 +620,7 @@ class web_optimizer {
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
-						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "http://"
-						. $_SERVER['HTTP_HOST'] . "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
+						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
 				}
 				break;
 /* add JavaScript calls before </body> */
@@ -1173,7 +1178,7 @@ class web_optimizer {
 
 					// Determine supported compression method
 					if (!empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])) {
-						$gzip = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'gzip\');
+						$gzip = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'gzip\') || !empty($_COOKIE[\'_wo_gzip\']);
 						$deflate = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'deflate\');
 					}
 					// Determine used compression method

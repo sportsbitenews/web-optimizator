@@ -58,7 +58,7 @@
 +d) YUI Compressor (if java exists)
 +e) Packer for JS files
 +f) Cached gzip for CSS / JS files
- g) Check for gzip via cookie
++g) Check for gzip via cookie
 
 6. Including
 +a) Manual including 2 strings
@@ -91,7 +91,7 @@
  d) ?
 
 11. Default CMS-compatibility
-+a) Wordpress (2.7.1)
++a) Wordpress (2.7.1, 2.8.4)
 +b) Joomla (1.0.15, 1.5.0, 1.5.9, 1.5.10, 1.5.11), Joostina (1.2)
 +c) Drupal (6.10, 5.16)
 +d) Bitrix
