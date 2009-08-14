@@ -367,7 +367,9 @@ class admin {
 				} else {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 				}
-				@file_put_contents($cache_file, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+				$fpc = @fopen($cache_file, 'wb');
+				@fwrite($fpc, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+				@fclose($fpc);
 			}
 		}
 		if ($return) {
@@ -1086,12 +1088,16 @@ ExpiresDefault \"access plus 10 years\"
 							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 								@copy($cache_file, $cache_file . '.backup');
-								@file_put_contents($cache_file, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+								$fpc = @fopen($cache_file, 'wb');
+								@fwrite($fpc, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+								@fclose($fpc);
 							}
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 								@copy($cache_file, $cache_file . '.backup');
-								@file_put_contents($cache_file, preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+								$fpc = @fopen($cache_file, 'wb');
+								@fwrite($fpc, preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+								@fclose($fpc);
 							}
 						}
 					}

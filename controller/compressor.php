@@ -791,14 +791,16 @@ class web_optimizer {
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
-				if ($fp = fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
+				if ($fp = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
 					@fwrite($fp, $contents);
 					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
-						@file_put_contents($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', gzencode($contents, 9, FORCE_GZIP));
+						$fpgz = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', 'wb');
+						@fwrite($fpgz, gzencode($contents, 9, FORCE_GZIP));
+						@fclose($fpgz);
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
@@ -1204,7 +1206,9 @@ class web_optimizer {
 						if (empty($content)) {
 						// Send compressed contents
 							$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
-							@file_put_contents(__FILE__ . \'.gz\', $contents);
+							$fp = @fopen(__FILE__ . \'.gz\', \'wb\');
+							@fwrite($fp, $contents);
+							@fclose($fp);
 						} else {
 							$contents = $content;
 						}
