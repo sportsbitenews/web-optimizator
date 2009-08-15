@@ -93,12 +93,12 @@ define('_WEBO_SPLASH2_UNOBTRUSIVE', '"Unobtrusive" JavaScript');
 define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.</p>
 									<p>This can significantly increase website load speed. But in some cases can break the client side logic. Please be careful with this option.</p>
 									<p>Also you can move all JavaScript calls before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.</p>
-									<p><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive JavaScript</a>, <a href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/">Non-blocking JavaScript Downloads</a>, <a href="http://dean.edwards.name/weblog/2005/09/busted/>The <code>window.onload</code> Problem - Solved!</a>, <a href="http://dean.edwards.name/weblog/2006/06/again/"><code>window.onload</code> (again)</a></p>');
+									<p><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive JavaScript</a>, <a href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/">Non-blocking JavaScript Downloads</a>, <a href="http://dean.edwards.name/weblog/2005/09/busted/">The <code>window.onload</code> Problem - Solved!</a>, <a href="http://dean.edwards.name/weblog/2006/06/again/"><code>window.onload</code> (again)</a></p>');
 define('_WEBO_SPLASH2_EXTERNAL', 'External and inline scripts');
 define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.</p>
 									<p>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
 									<p>You also can define a list of excluded files (i.e. ga.js jquery.min.js).</p>
-									<p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/>Serving JavaScript Fast</a></p>');
+									<p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/">Serving JavaScript Fast</a></p>');
 define('_WEBO_SPLASH2_MTIME', 'Verify files mtime');
 define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.</p>
 									<p>It\'s not good from the server side optimization point of view so you can disable this check.</p>
