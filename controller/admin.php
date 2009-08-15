@@ -645,6 +645,10 @@ class admin {
 				$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
 				$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
 				$this->input['user']['minify']['with'] = null;
+			} else {
+				$this->input['user']['minify']['with_jsmin'] = 0;
+				$this->input['user']['minify']['with_yui'] = 0;
+				$this->input['user']['minify']['with_packer'] = 0;
 			}
 			if(!empty($this->input['Submit'])) {
 /* try to set some libs executable */
