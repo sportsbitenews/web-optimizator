@@ -372,6 +372,17 @@ class admin {
 				@fclose($fpc);
 			}
 		}
+/* execute plugin-specific logic */
+		$plugins = explode(" ", $this->compress_options['plugins']);
+		if (is_array($plugins)) {
+			foreach ($plugins as $plugin) {
+				$plugin_file = $this->input['user']['webo_cachedir'] . 'plugins/' . $plugin . '.php';
+				if (is_file($plugin_file)) {
+					include($plugin_file);
+					$web_optimizer_plugin->onUninstall($this->view->paths['full']['document_root']);
+				}
+			}
+		}
 		if ($return) {
 			$this->page_variables = array(
 				"title" => _WEBO_SPLASH1_UNINSTALL,
@@ -892,6 +903,18 @@ ExpiresDefault \"access plus 10 years\"
 						if (empty($this->cms_version)) {
 							$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 						}
+/* look for plugins */
+						$plugins = array();
+						$dp = opendir($this->input['user']['webo_cachedir'] . 'plugins');
+						if ($dp) {
+							while (($file = readdir($dp)) !== false) {
+								if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-zA-Z]!", "", $this->cms_version)) {
+									$plugins[] = preg_replace("!\.php$!i", "", $file);
+								}
+							}
+						}
+						$this->save_option('plugins', implode(" ", $plugins));
+
 						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
 /* prevent rewrite to admin access on frameworks */
 						if (in_array($this->cms_version, $cms_frameworks)) {
@@ -1108,6 +1131,17 @@ ExpiresDefault \"access plus 10 years\"
 
 				}
 
+/* execute plugin-specific logic */
+				$plugins = explode(" ", $this->compress_options['plugins']);
+				if (is_array($plugins)) {
+					foreach ($plugins as $plugin) {
+						$plugin_file = $this->input['user']['webo_cachedir'] . 'plugins/' . $plugin . '.php';
+						if (is_file($plugin_file)) {
+							include($plugin_file);
+							$web_optimizer_plugin->onInstall($this->view->paths['full']['document_root']);
+						}
+					}
+				}
 			}
 			$this->write_progress($this->web_optimizer_stage = 98);
 /* secure Web Optimizer folder with .htpasswd */
