@@ -127,6 +127,7 @@ define('_WEBO_SPLASH2_DATAURI_INFO', '<p>t is possible to store CSS Background i
 define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server.</p>
 									<p>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically.</p>
+									<p>Before disabling auto-check you must make sure that host(s) do exist because otherwise HTTP GET runs into a 404 error.</p>
 									<p><a href="http://www.ajaxperformance.com/2006/12/18/circumventing-browser-connection-limits-for-fun-and-profit/">Circumventing browser connection limits for fun and profit</a></p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
 define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Most of gzip and cache options can be written for your website configuration (and avoid additional work). This can be done via <code>.htaccess</code> file (and you can later cut options from there and move to <code>httpd.cond</code> if it is required).</p>
