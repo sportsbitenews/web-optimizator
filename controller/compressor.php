@@ -1415,7 +1415,13 @@ class web_optimizer {
 			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' lang="wo"', $this->content);
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
-				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website"><img src="' . str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png" style="float:right;margin:-104px 4px -100px;width:100px;height:100px" alt="Web Optimizer: Speed Up Your Website"/></a>' . "$1", $this->content);
+				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
+				if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 6") || strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 5")) {
+					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
+				} else {
+					$background_style = 'background:url(' .  $background_image .')';
+				}
+				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'">&nbsp;</a>' . "$1", $this->content);
 			}
 		}
 	}
