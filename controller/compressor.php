@@ -799,8 +799,10 @@ class web_optimizer {
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', 'wb');
-						@fwrite($fpgz, gzencode($contents, 9, FORCE_GZIP));
-						@fclose($fpgz);
+						if ($fpgz) {
+							@fwrite($fpgz, gzencode($contents, 9, FORCE_GZIP));
+							@fclose($fpgz);
+						}
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
@@ -926,7 +928,7 @@ class web_optimizer {
 /* remove commented @import. First of all glue CSS files, optimiza only secondly */
 			$content = preg_replace("!/\*\s*@import.*?\*/!is", "", $content);
 /* new RegExp from xandrx */
-			preg_match_all('/@import\\s*(url)?\\s*\\(?([^;]+?)\\)?;/i', $content, $imports, PREG_SET_ORDER);
+			preg_match_all('!@import\s*(url)?\s*\(?([^;]+?)\)?;!i', $content, $imports, PREG_SET_ORDER);
 			if (is_array($imports)) {
 				foreach ($imports as $import) {
 					$src = false;
@@ -1090,6 +1092,8 @@ class web_optimizer {
 						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
 						if (is_file($static_file)) {
 							$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
+						} else {
+							unset($value['file']);
 						}
 					}
 					if ($value['tag'] == 'link') {
@@ -1207,8 +1211,10 @@ class web_optimizer {
 						// Send compressed contents
 							$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
 							$fp = @fopen(__FILE__ . \'.gz\', \'wb\');
-							@fwrite($fp, $contents);
-							@fclose($fp);
+							if ($fp) {
+								@fwrite($fp, $contents);
+								@fclose($fp);
+							}
 						} else {
 							$contents = $content;
 						}
@@ -1390,7 +1396,7 @@ class web_optimizer {
 	function get_head () {
 		if (empty($this->head)) {
 /* hack for some templates (i.e. LiveStreet) */
-			$this->content = preg_replace("!</head>((\r?\n)*<script.*)<body!is", "$1</head><body", $this->content);
+			$this->content = preg_replace("!(</head>)((\r?\n)*<script.*)(<body)!is", "$2$1$3", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 			if (!empty($this->options['javascript']['minify'])) {
 				$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);

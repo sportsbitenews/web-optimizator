@@ -368,8 +368,10 @@ class admin {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 				}
 				$fpc = @fopen($cache_file, 'wb');
-				@fwrite($fpc, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
-				@fclose($fpc);
+				if ($fpc) {
+					@fwrite($fpc, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+					@fclose($fpc);
+				}
 			}
 		}
 /* execute plugin-specific logic */
@@ -920,8 +922,10 @@ ExpiresDefault \"access plus 10 years\"
 						if (in_array($this->cms_version, $cms_frameworks)) {
 							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 						}
-						fwrite($fp, $content_saved . "\n" . $content);
-						fclose($fp);
+						if ($fp) {
+							@fwrite($fp, $content_saved . "\n" . $content);
+							@fclose($fp);
+						}
 					}
 				}
 			}
@@ -1116,15 +1120,19 @@ ExpiresDefault \"access plus 10 years\"
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 								@copy($cache_file, $cache_file . '.backup');
 								$fpc = @fopen($cache_file, 'wb');
-								@fwrite($fpc, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
-								@fclose($fpc);
+								if ($fpc) {
+									@fwrite($fpc, preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+									@fclose($fpc);
+								}
 							}
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 								@copy($cache_file, $cache_file . '.backup');
 								$fpc = @fopen($cache_file, 'wb');
-								@fwrite($fpc, preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
-								@fclose($fpc);
+								if ($fpc) {
+									@fwrite($fpc, preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file))));
+									@fclose($fpc);
+								}
 							}
 						}
 					}
