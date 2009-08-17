@@ -1421,7 +1421,7 @@ class web_optimizer {
 				} else {
 					$background_style = 'background:url(' .  $background_image .')';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'">&nbsp;</a>' . "$1", $this->content);
+				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></a>' . "$1", $this->content);
 			}
 		}
 	}
