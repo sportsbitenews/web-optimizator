@@ -1714,7 +1714,7 @@ require valid-user
 					array(
 						'file' => 'include/functions.php',
 						'mode' => 'start',
-						'location' => 'if (!is_demo_mode()) {',
+						'location' => '$output = process_replacement_vars($vartext);',
 						'global' => 1
 					),
 					array(
