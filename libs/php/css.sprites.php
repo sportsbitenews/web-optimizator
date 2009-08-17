@@ -1229,20 +1229,18 @@ __________________
 	}
 /* image optimization via smush.it */
 	function smushit ($file) {
-		if (0) {
-			$tmp_file = $file . ".tmp";
-			$this->download_file("http://smush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
-			if (is_file($tmp_file)) {
-				$str = @file_get_contents($tmp_file);
-				if (!preg_match("/['\"]error['\"]/i", $str) && filesize($tmp_file)) {
-					$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
-					if (!is_file($file . '.backup')) {
-						@copy($file, $file . '.backup');
-					}
-					$this->download_file("http://smush.it/" . $optimized, $file);
+		$tmp_file = $file . ".tmp";
+		$this->download_file("http://smushit.eperf.vip.ac4.yahoo.com/ysmush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
+		if (is_file($tmp_file)) {
+			$str = @file_get_contents($tmp_file);
+			if (!preg_match("/['\"]error['\"]/i", $str) && filesize($tmp_file)) {
+				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
+				if (!is_file($file . '.backup')) {
+					@copy($file, $file . '.backup');
 				}
-				@unlink($tmp_file);
+				$this->download_file("http://smush.it/" . $optimized, $file);
 			}
+			@unlink($tmp_file);
 		}
 	}
 /* calculate smallest common multiple, NOK */
