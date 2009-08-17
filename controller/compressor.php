@@ -717,16 +717,8 @@ class web_optimizer {
 			foreach($external_array as $key => $info) {
 /* Get the code */
 				if ($file_contents = $info['content']) {
-/* Mess with the CSS source */
-					if($options['header'] == "css") {
-/* Absolute paths */
-						$file_contents = $this->convert_paths_to_absolute($file_contents, $info);
-					}
-					$delimiter = '';
-					if ($options['header'] == "javascript") {
-						$delimiter = ";\n";
-					}
-					$contents .=  $file_contents . $delimiter;
+					$delimiter = $options['header'] == "javascript" ? ";\n" : "";
+					$contents .= $file_contents . $delimiter;
 				}
 			}
 			if ($options['css_sprites'] || $options['data_uris']) {
@@ -1100,6 +1092,8 @@ class web_optimizer {
 /* recursively resolve @import in files */
 						$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
 							$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
+/* convert CSS images' paths to absolute */
+						$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
 					} else {
 						$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 					}
@@ -1117,6 +1111,8 @@ class web_optimizer {
 /* resolve @import from inline styles */
 						if ($value['tag'] == 'link') {
 							$value['content'] = $this->resolve_css_imports($value['content'], true);
+/* convert CSS images' paths to absolute */
+							$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
 						}
 						$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* if we can't add to existing tag -- store for the future */
