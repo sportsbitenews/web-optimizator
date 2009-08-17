@@ -125,6 +125,7 @@ class web_optimizer {
 				"cachedir" => $this->options['javascript_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
+				"gzip_level" => round($this->options['gzip']['javascript_level']),
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
@@ -140,6 +141,7 @@ class web_optimizer {
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
 				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
+				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
@@ -165,6 +167,7 @@ class web_optimizer {
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
+				"gzip_level" => round($this->options['gzip']['page_level']),
 				"gzip_cookie" => $this->options['gzip']['cookie'],
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'],
@@ -310,6 +313,7 @@ class web_optimizer {
 					'src' => 'src',
 					'self_close' => false,
 					'gzip' => $options['gzip'],
+					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
@@ -371,6 +375,7 @@ class web_optimizer {
 					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
+					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
@@ -792,7 +797,7 @@ class web_optimizer {
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', 'wb');
 						if ($fpgz) {
-							@fwrite($fpgz, gzencode($contents, 9, FORCE_GZIP));
+							@fwrite($fpgz, gzencode($contents, $options['gzip_level'], FORCE_GZIP));
 							@fclose($fpgz);
 						}
 					}
@@ -1205,7 +1210,7 @@ class web_optimizer {
 						$content = @file_get_contents(__FILE__ . \'.gz\');
 						if (empty($content)) {
 						// Send compressed contents
-							$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip ? FORCE_GZIP : FORCE_DEFLATE);
 							$fp = @fopen(__FILE__ . \'.gz\', \'wb\');
 							if ($fp) {
 								@fwrite($fp, $contents);
