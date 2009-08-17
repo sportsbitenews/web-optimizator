@@ -910,12 +910,12 @@ ExpiresDefault \"access plus 10 years\"
 						$dp = opendir($this->input['user']['webo_cachedir'] . 'plugins');
 						if ($dp) {
 							while (($file = readdir($dp)) !== false) {
-								if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-zA-Z]!", "", $this->cms_version)) {
+								if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
 									$plugins[] = preg_replace("!\.php$!i", "", $file);
 								}
 							}
 						}
-						$this->save_option('plugins', implode(" ", $plugins));
+						$this->save_option("['plugins']", implode(" ", $plugins));
 
 						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
 /* prevent rewrite to admin access on frameworks */
