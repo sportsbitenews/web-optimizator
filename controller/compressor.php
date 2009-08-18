@@ -40,14 +40,20 @@ class web_optimizer {
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
+/* Remember current page encoding */
+		$this->encoding = '';
 /* HTML cache ? */
 		$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
 		$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
 		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent();
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
+/* check if cached content is gzipped */
+			if (!empty($this->options['page']['gzip'])) {
+				$this->set_gzip_header();
+			}
 			$this->uri = $this->convert_request_uri();
-			$file = $this->options['page']['cachedir'] . '/' . $this->uri;
+			$file = $this->options['page']['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -55,7 +61,7 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
-				$hash = md5($content);
+				$hash = md5($content) . (empty($this->encoding) ? '' : '-gzip');
 /* check for return visits */
 				if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"')	 {
@@ -66,10 +72,6 @@ class web_optimizer {
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
-/* check if cached content if gzipped */
-				if (!empty($this->options['page']['gzip']) && substr($content, 0, 8) == "\x1f\x8b\x08\x00\x00\x00\x00\x00") {
-					$this->set_gzip_header();
-				}
 				if (empty($this->options['page']['flush'])) {
 					echo $content;
 					die();
@@ -438,24 +440,27 @@ class web_optimizer {
 			$content = $this->create_gz_compress($this->content);
 			if (!empty($content)) {
 				$this->set_gzip_header();
-				$this->content = $content;
+				if (!empty($this->encoding)) {
+					$this->content = $content;
+				}
 			}
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
-			$file = $options['cachedir'] . '/' . $this->uri;
+			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
 				$timestamp = 0;
 			}
 /* set ETag, thx to merzmarkus */
-			header("ETag: \"" . md5($this->content) . "\"");
+			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-gzip') . "\"");
 			if (!$timestamp || $this->time - $timestamp > $options['cache_timeout']) {
 				$fp = @fopen($file, "w");
 				if ($fp) {
 					$content_to_write = $this->content;
-					if (!empty($options['flush'])) {
+/* can't write a part of gzipped file */
+					if (!empty($options['flush']) && empty($this->encoding)) {
 						$content_to_write = substr($content_to_write, 0, $options['flush_size']);
 					}
 					@fwrite($fp, $content_to_write);
@@ -522,13 +527,13 @@ class web_optimizer {
 	function set_gzip_header() {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
 			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
-				$encoding = "x-gzip";
+				$this->encoding = "x-gzip";
 			}
 			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
-				$encoding = "gzip";
+				$this->encoding = "gzip";
 			}
-			if(!empty($encoding)) {
-				header("Content-Encoding: " . $encoding);
+			if(!empty($this->encoding)) {
+				header("Content-Encoding: " . $this->encoding);
 			}
 		}
 	}
