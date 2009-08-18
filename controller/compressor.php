@@ -41,8 +41,8 @@ class web_optimizer {
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 /* HTML cache ? */
-		$excluded_html_pages = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['cache_ignore']));
-		$included_user_agents = preg_replace("/[!\^\$\|\(\)\[\]\{\}]/", "\$1", preg_replace("/ /", "|", $this->options['page']['allowed_user_agents']));
+		$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
+		$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
 		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent();
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
