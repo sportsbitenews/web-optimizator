@@ -146,7 +146,7 @@ class compressor_view {
 	 *
 	 **/	
 	function get_basename($filename) {
-		return preg_replace( '/^.+[\\\\\\/]/', '', $filename );
+		return preg_replace( '/^.*[\\\\\\/]/', '', $filename );
 	}
 
 	/**

@@ -100,7 +100,7 @@ $compress_options['css_sprites']['aggressive'] = "0";
 ## Add additional 5px to CSS Sprites
 $compress_options['css_sprites']['extra_space'] = "1";
 ## Exclude IE6 from CSS Sprites creation
-$compress_options['css_sprites']['no_ie6'] = "0";
+$compress_options['css_sprites']['no_ie6'] = "1";
 ## Restrict large Sprites creation on PHP memory limit
 $compress_options['css_sprites']['memory_limited'] = "1";
 ## Restrict large Sprites creation on GDlib failure, in pixels
