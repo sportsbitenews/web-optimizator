@@ -1576,7 +1576,9 @@ require valid-user
 		} elseif (is_file($root . 'ini.php')) {
 			require($root . 'ini.php');
 			if (defined('SANTAFOX_VERSION')) {
-				return 'Satafox ' . SANTAFOX_VERSION;
+				return 'Santafox ' . SANTAFOX_VERSION;
+			} else {
+				return 'Santafox';
 			}
 /* Zend Framework */
 		} elseif (is_file($root . '../application/configs/config.ini')) {

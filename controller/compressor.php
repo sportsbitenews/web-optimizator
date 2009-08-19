@@ -1454,7 +1454,7 @@ class web_optimizer {
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
 			if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
-				$endfile = preg_replace("@([^\?&]+/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+				$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
 			}
 			$full_path_to_image = preg_replace("@[^/]+$@", "", $endfile);
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->view->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->view->unify_dir_separator($full_path_to_image . $file)));
