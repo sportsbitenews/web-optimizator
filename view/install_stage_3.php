@@ -30,7 +30,7 @@
 	echo _WEBO_SPLASH3_SECURITY_SHORT;
 ?></a></li><li><a href="#additional"><?php
 	echo _WEBO_SPLASH3_ADDITIONAL_SHORT;
-?></a></li></ul><form action="" method="post" enctype="multipart/form-data"><?php
+?></a></li></ul><form action="?page=install_stage_2" method="post" enctype="multipart/form-data"><?php
 	if ($auto_rewrite) {
 ?><fieldset id="rewrite"><h3><?php
 		echo _WEBO_SPLASH3_REWRITE;

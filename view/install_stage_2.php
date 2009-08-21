@@ -23,7 +23,7 @@
 ?></a></li><?php
 		}
 	}
-?></ul><form method="post" enctype="multipart/form-data" action=""><fieldset id="dirs"><h3><?php
+?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3"><fieldset id="dirs"><h3><?php
 	echo _WEBO_SPLASH2_CACHE;
 ?></h3><label><?php
 	echo _WEBO_SPLASH2_CACHE_JS;
