@@ -18,7 +18,7 @@ define('_WEBO_ERROR_ERROR', 'Oopps! Something went wrong');
 define('_WEBO_LOGIN_TITLE', 'Enter your login details');
 define('_WEBO_LOGIN_INSTALLED', 'You have already installed Web Optimizer ');
 define('_WEBO_LOGIN_INSTALLED2', ' to this website. Please enter your login details below to get access to all settings:');
-define('_WEBO_LOGIN_INSTALLED3', 'Please press \'Next\' to get access to all settings.');
+define('_WEBO_LOGIN_INSTALLED3', '. Please press \'Next\' to get access to all settings.');
 define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Attention:</strong> can\'t find result of Web Optimizer\'s efforts íon your website. Please check its calls existence in your web system source files or install Web Optimizer once more.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Optimization results per hit:<br/>saved ');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
@@ -215,7 +215,8 @@ define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' has been patched. You can <a href
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">check the result here</a>.');
 define('_WEBO_SPLASH3_WORKING', 'That\'s working. OK now what?');
 define('_WEBO_SPLASH3_WORKING_REQUIRED', 'Required changes for ');
-define('_WEBO_SPLASH3_ADD', 'Now you <a href="#modify">should add the Web Optimizer code</a> to your own PHP page. This is made a lot easier if you have one PHP file that serves every page in your site. In a Wordpress blog, for example, this would be the <strong>wp-blog-header.php</strong> file. Because <strong>wp-blog-header.php</strong> is accessed for every page, we just have to modify that file. If you have different PHP files serving different pages, then you will need to modify each of those pages.');
+define('_WEBO_SPLASH3_ADD', 'Now you <a href="#modify">should add the Web Optimizer code</a> to your own PHP pages (');
+define('_WEBO_SPLASH3_ADD_', '). This is made a lot easier if you have one PHP file that serves every page in your site, so you need to change only it.');
 define('_WEBO_SPLASH3_MODIFY', 'How to modify your PHP file(s):');
 define('_WEBO_SPLASH3_TOFILE', 'To the file');
 define('_WEBO_SPLASH3_TOFILE2', 'To the very beginning of the file');
