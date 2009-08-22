@@ -96,7 +96,11 @@ class css_sprites {
 
 								if ($key == 'background') {
 /* resolve background property */
-									$background = $this->css->optimise->dissolve_short_bg($value);
+									if ($value == 'none') {
+										$background = array('background-image' => $this->none);
+									} else {
+										$background = $this->css->optimise->dissolve_short_bg($value);
+									}
 									foreach ($background as $bg => $property) {
 /* skip default properties */
 										if (!($bg == 'background-position' &&
@@ -238,10 +242,44 @@ class css_sprites {
 							}
 						}
 					}
+/* define a few of constants for image */
+					$img_has = array();
+/* Has image width? */
+					$img_has['width'] = !empty($image['width']);
+/* Has image height? */
+					$img_has['height'] = !empty($image['height']);
+/* Is image width given in absolute units? */
+					$img_has['abs_width'] = $img_has['width'] && !preg_match("/em|%|auto/", $image['width']);
+/* Is image height given in absolute units? */
+					$img_has['abs_height'] = $img_has['height'] && !preg_match("/em|%|auto/", $image['height']);
+/* Has image background-position? */
+					$img_has['position'] = !empty($image['background-position']);
+					if ($img_has['position']) {
+						$background_position = explode(" ", $image['background-position']);
+					} else {
+						$background_position = array(0, 0);
+					}
+/* Is image placed to the right? */
+					$img_has['pos_right'] = $img_has['position'] && in_array($background_position[0], array('right', '100%'));
+/* Is image placed to the bottom? */
+					$img_has['pos_bottom'] = $img_has['position'] && in_array($background_position[1], array('bottom', '100%'));
+/* Is image placed to the center? */
+					$img_has['pos_center'] = $img_has['position'] && (in_array($background_position[0], array('center', '50%')) || in_array($background_position[1], array('center', '50%')));
+/* Does image location depends on container size? */
+					$img_has['pos_float'] = $img_has['pos_center'] ||
+						($img_has['pos_right'] && preg_match("/%|em/", $background_position[1]) && round($background_position[1])) ||
+						($img_has['pos_bottom'] && preg_match("/%|em/", $background_position[0]) && round($background_position[0]));
+/* Does image have not absolute position? */
+					$img_has['pos_relative'] = $img_has['position'] && preg_match("/right|bottom|center|%|em/", $image['background-position']);
+/* Can we calculate background-posititon-x for this image? Thx to Steve Souders */
+					$img_has['pos_x_comp'] = (in_array($background_position[0], array('center', 'right')) || strpos($background_position[0], '%')) && $img_has['abs_width'];
+/* Can we calculate background-posititon-y for this image? */
+					$img_has['pos_y_comp'] = (in_array($background_position[1], array('center', 'bottom')) || strpos($background_position[1], '%')) && $img_has['abs_height'];
 /* exclude files from ignore list */
 					if (!empty($this->ignore_list) && in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
 						unset($this->media[$import][$key]);
 					}
+
 /* re-check background image existence */
 					if (!empty($back) && $back != $this->none) {
 						if (!empty($image['height']) && !empty($image['width']) && empty($image['background-repeat'])) {
@@ -250,41 +288,34 @@ class css_sprites {
 						if (!empty($image['background-repeat'])) {
 							$repeat_key = $image['background-repeat'];
 							if ($image['background-repeat'] == 'no-repeat') {
-								if (!empty($image['height']) && !preg_match("/em|%|auto/", $image['height']) &&
-									((!empty($image['background-position']) && $image['background-position'] == '100% 0') ||
-										((!empty($image['background-position']) && preg_match("/right/", $image['background-position'])
-											&& !preg_match("/bottom|center|%|em/", $image['background-position']))))) {
+								if ($img_has['abs_height'] && $img_has['pos_right'] && !$img_has['pos_float']) {
 									$repeat_key = 'no-repeatr';
-								} elseif (!empty($image['width']) && !preg_match("/em|%|auto/", $image['width']) &&
-										((!empty($image['background-position']) && $image['background-position'] == '0 100%') ||
-										((!empty($image['background-position']) && preg_match("/bottom/", $image['background-position'])
-											&& !preg_match("/right|center|%|em/", $image['background-position']))))) {
+								} elseif ($img_has['abs_width'] && $img_has['pos_bottom'] && !$img_has['pos_float']) {
 									$repeat_key = 'no-repeatb';
-								} elseif (empty($image['background-position']) || !preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
-									if ((!empty($image['width']) &&
-												!empty($image['height']) &&
-												!preg_match("/em|%|auto/", $image['height']) &&
-												!preg_match("/em|%|auto/", $image['width'])) ||
-											!empty($this->aggressive)) {
+								} elseif (!$img_has['pos_relative']) {
+									if (($img_has['abs_width'] && $img_has['abs_height']) || !empty($this->aggressive)) {
 										$repeat_key = 'no-repeat';
 									} else {
 										$repeat_key = 'no-repeati';
 									}
-								} else {
-									$repeat_key = 'repeat';
+/* if can't re-calculate background-position for absolute dimensions */
+								} elseif (!$img_has['pos_x_comp'] || !$img_has['pos_y_comp']) {
+											$repeat_key = 'repeat';
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-x') {
-								if (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+/* if can't re-calculate background-position for absolute dimensions */
+								if ($img_has['pos_relative'] && !$img_has['pos_y_comp']) {
 									$repeat_key = 'repeat';
-								} elseif ((empty($image['height']) || preg_match("/em|%|auto/", $image['height'])) && !$this->aggressive) {
+								} elseif (!$img_has['abs_height'] && !$this->aggressive) {
 									$repeat_key = 'repeat-xl';
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-y') {
-								if (!empty($image['background-position']) && preg_match("/right|bottom|center|%|em/", $image['background-position'])) {
+/* if can't re-calculate background-position for absolute dimensions */
+								if ($img_has['pos_relative'] && !$img_has['pos_x_comp']) {
 									$repeat_key = 'repeat';
-								} elseif ((empty($image['width']) || preg_match("/em|%|auto/", $image['width'])) && !$this->aggressive) {
+								} elseif (!$img_has['abs_width'] && !$this->aggressive) {
 									$repeat_key = 'repeat-yl';
 								}
 							}
@@ -337,6 +368,13 @@ class css_sprites {
 						list($width, $height) = $this->get_image();
 /* restrict images by ~64x64 if memory is limited */
 						if ($width && $height && (!$this->memory_limited || $width * $height < 4097) && (empty($this->dimensions_limited) || ($width < $this->dimensions_limited && $height < $this->dimensions_limited))) {
+/* fix image dimensions with paddings */
+							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
+								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
+								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
+							$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
+								+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
+								+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 /* fix background-position & repeat for fixed images */
 							if (!empty($image['width']) && $width == $image['width'] && !empty($image['height']) && $height == $image['height']) {
 								$image['background-repeat'] = $this->media[$import][$key]['background-repeat'] = 'no-repeat';
@@ -344,6 +382,23 @@ class css_sprites {
 								if (empty($image['background-position'])) {
 									$image['background-position'] = $this->media[$import][$key]['background-position'] = '0 0';
 								}
+							}
+/* calculate backround-position for image with relative position but absolute dimensions */
+							if (preg_match("/right|bottom|center|%/", $image['background-position'])) {
+								$position = explode(" ", preg_replace("/right|bottom/", "100%", str_replace("center", "50%", $image['background-position'])));
+								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100) . 'px';
+								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100) . 'px';
+								switch ($image['background-repeat']) {
+									case 'no-repeat':
+										$position[0] = $position_x;
+									case 'repeat-x':
+										$position[1] = $position_y;
+										break;
+									case 'repeat-y':
+										$position[0] = $position_x;
+										break;
+								}
+								$image['background-position'] =  $this->media[$import][$key]['background-position'] = implode(" ", $position);
 							}
 							if (empty($this->css_images[$this->sprite])) {
 								$this->css_images[$this->sprite] = array();
@@ -357,13 +412,6 @@ class css_sprites {
 							}
 							$shift_x = $shift_y = $top = $left = 0;
 							$position = empty($image['background-position']) ? array(0, 0) : explode(" ", $image['background-position'] . " ");
-/* fix image dimensions with paddings */
-							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
-								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
-								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
-							$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
-								+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
-								+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 							switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
 								case 'repeat-x':
@@ -827,12 +875,14 @@ __________________
 								case 1:
 									$this->css_images[$this->sprite]['images'][$key][3] = 0;
 									$this->css_images[$this->sprite]['images'][$key][4] = $this->css_images[$this->sprite]['y'] + $final_y;
+									$this->css_images[$this->sprite]['images'][$key][6] = $final_y;
 									$this->css_images[$this->sprite]['x'] = $this->SCM($width, $this->css_images[$this->sprite]['x'] ? $this->css_images[$this->sprite]['x'] : 1);
 									$this->css_images[$this->sprite]['y'] += $height + $final_y + $shift_y;
 								break;
 								case 2:
 									$this->css_images[$this->sprite]['images'][$key][3] = $this->css_images[$this->sprite]['x'] + $final_x;
 									$this->css_images[$this->sprite]['images'][$key][4] = 0;
+									$this->css_images[$this->sprite]['images'][$key][5] = $final_x;
 									$this->css_images[$this->sprite]['x'] += $width + $final_x + $shift_x;
 									$this->css_images[$this->sprite]['y'] = $this->SCM($height, $this->css_images[$this->sprite]['y'] ? $this->css_images[$this->sprite]['y'] : 1);
 								break;
@@ -1066,7 +1116,7 @@ __________________
 										break;
 /* repeat-y */
 									case 2:
-										$css_left = -$final_x;
+										$css_left = -$final_x + $shift_x;
 										$css_top = 0;
 										if ($added) {
 											$css_repeat = 'no-repeat';
@@ -1086,7 +1136,7 @@ __________________
 /* repeat-x */
 									case 1:
 										$css_left = 0;
-										$css_top = -$final_y;
+										$css_top = -$final_y + $shift_y;
 										if ($added) {
 											$css_repeat = 'no-repeat';
 										} else {
