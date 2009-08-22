@@ -4,7 +4,7 @@
 // ==============================================================================================
 // @author     Leon Chevalier (http://www.aciddrop.com)
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.5.0
+// @version    0.5.6
 // @copyright  Copyright &copy; 2008-2009 Leon Chevalier, Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 
@@ -19,10 +19,6 @@ if ($compress_options['php'] == 4) {
 	if (!class_exists('compressor_view')) {
 		require_once($basepath . "libs/php/view.php");
 	}
-/* Include this for getting user agent */
-	if (!class_exists('_webo_User_agent')) {
-		require_once($basepath . "libs/php/user_agent.php");
-	}
 /* skip __autoload for PPH5+ */
 } else {
 	if (!class_exists('compressor', false)) {
@@ -31,10 +27,6 @@ if ($compress_options['php'] == 4) {
 /* Include this for path getting help */
 	if (!class_exists('compressor_view', false)) {
 		require_once($basepath . "libs/php/view.php");
-	}
-/* Include this for getting user agent */
-	if (!class_exists('_webo_User_agent', false)) {
-		require_once($basepath . "libs/php/user_agent.php");
 	}	
 }
 
@@ -45,9 +37,6 @@ $compress_options['basepath'] = $basepath;
 
 /* Con. the view library */
 $view = new compressor_view();
-
-/* Con. the user agent library */
-$user_agent = new _webo_User_agent();
 
 /* create libraries array -- include them only if we are really compressing */
 $libraries = array();
@@ -80,7 +69,6 @@ if ($compress_options['php'] == 4) {
 $web_optimizer = new web_optimizer(array(
 	'view' => $view,
 	'options' => $compress_options,
-	'user_agent' => $user_agent,
 	'libraries' => $libraries)
 );
 ?>
