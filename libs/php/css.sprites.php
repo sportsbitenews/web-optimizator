@@ -1149,7 +1149,7 @@ __________________
 						}
 						@imagedestroy($this->sprite_raw);
 /* additional optimization via smush.it */
-						$this->smushit($this->sprite);
+						$this->smushit($this->current_dir . '/' . $this->sprite);
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
 					if (is_file($this->sprite)) {
@@ -1211,7 +1211,7 @@ __________________
 		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
 	}
 /* generic download function */
-	function download_file ($remote, $local) {
+	function download_file ($remote, $local, $referer = "") {
 /* check for curl */
 		if (function_exists('curl_init')) {
 /* try to download image */
@@ -1220,7 +1220,10 @@ __________________
 			if ($fp && $ch) {
 				curl_setopt($ch, CURLOPT_FILE, $fp);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
-				curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
+				curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.5.2");
+				if (!empty($referer)) {
+					curl_setopt($ch, CURLOPT_REFERER, $referer);
+				}
 				curl_exec($ch);
 				curl_close($ch);
 				fclose($fp);
@@ -1238,9 +1241,19 @@ __________________
 				if (!is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
-				$this->download_file("http://smush.it/" . $optimized, $file);
+				$this->download_file($optimized, $file, 'http://developer.yahoo.com/yslow/smushit/');
+				if (strpos(@file_get_contents($file)), "DOCTYPE") {
+					@copy($file . '.backup', $file);
+				}
 			}
 			@unlink($tmp_file);
+		}
+/* delay not to overload Yahoo! servers */
+		sleep(1);
+		if (!@filesize($file)) {
+/* if can't optimize file - try once more */
+			@copy($file . '.backup', $file);
+			$this->smushit($file);
 		}
 	}
 /* calculate smallest common multiple, NOK */
