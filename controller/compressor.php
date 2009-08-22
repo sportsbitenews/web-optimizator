@@ -1407,7 +1407,7 @@ class web_optimizer {
 	function get_head () {
 		if (empty($this->head)) {
 /* hack for some templates (i.e. LiveStreet) */
-			$this->content = preg_replace("!(</head>)((\r?\n)*<script.*)(<body)!is", "$2$1$3", $this->content);
+			$this->content = preg_replace("!(</head>)((\r?\n)*<script.*)(<body)!is", "$2$1$4", $this->content);
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 			if (!empty($this->options['javascript']['minify'])) {
 				$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
