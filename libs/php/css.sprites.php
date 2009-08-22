@@ -472,22 +472,22 @@ __________________
 							$image = trim(str_replace("!important", "", $background['background-image']));
 							$this->css_image = substr($image, 4, strlen($image) - 5);
 							if (!empty($this->css_image)) {
-								$sprited = strpos($this->css_image, 'bo.' . $this->timestamp);
+								$sprited = strpos($this->css_image, 'ebo.' . $this->timestamp);
 								if (!empty($this->data_uris)) {
 /* convert image to base64 */
 									$this->get_image(1);
 								}
 								if (substr($this->css_image, 0, 5) == 'data:') {
-									$ie_image = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+									$ie_image = preg_replace("/(.*)?url\([^\)]+\)(.*)?/", "$1url(" .
 										$this->distribute_image(substr($image, 4, strlen($image) - 5)) .
-										")$1", $image);
+										")$2", $value);
 									if (empty($this->no_ie6) || !$sprited) {
 /* preserve IE6/7 selectors only if we are doing anything for IE6 */
 										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))] = array();
-										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))]['background-image'] = $ie_image;
+										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))][$key] = $ie_image;
 									}
 									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))] = array();
-									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))]['background-image'] = $ie_image;
+									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))][$key] = $ie_image;
 /* skip images on different hosts */
 								} elseif (!$sprited) {
 									$this->css_image = $this->distribute_image($this->css_image);
