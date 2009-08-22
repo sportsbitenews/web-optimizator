@@ -6,7 +6,7 @@
 +e) Auto-updater
 +f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
 +g) Memory usage (maximum -- 32MB)
- h) Donate block
+ h) Donate / ads block
 +i) Cache cleaner
 +j) Secure installation
 +k) Saved traffic / visitors' seconds
@@ -31,9 +31,9 @@
 +i) Cache directory
  j) Source directories for CSS / JS files
 +k) Source PHP / HTML files to auto-change
- l) images optimization settings
++l) images optimization settings
 +m) usage of auto-optimization solutions (smush.it)
-?n) website load counter (via webo.in)
++n) website load counter (via webo.in)
 +o) External and inline JS / external CSS merging
 +p) List of protected from merging files
 +r) List of protected from merging images (for CSS Sprites)
@@ -49,7 +49,7 @@
 +d) Unobtrusive JS with YASS modules loader
 +e) Unobtrusive ads blocks inside page
 +f) External CSS /JS merging possibility
-+g) Unobtrusive counters
++g) Unobtrusive counters / ads / widgets
 
 5. Minifier / gzip
 +a) JSMin (PHP4/5)
@@ -86,8 +86,8 @@
 
 10. Other languages porting
  a) Perl
- b) Java
- c) Python
+?b) Java
+?c) Python
  d) ?
 
 11. Default CMS-compatibility
@@ -119,6 +119,7 @@
 +z) CMS Made Simple (1.6)
 +A) NetCat
 +B) UMI.CMS
+ C) ExpressionEngine
 
 12. Localization
 +a) English
@@ -129,5 +130,12 @@
  f) ?
  
  13) Plugin API
-  a) Possiblity to add plugin for any system
-  b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
+ +a) Possiblity to add plugin for any system
+ +b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
+  c) Drupal 5 (???)
+  d) Druapl 6 (???)
+ 
+ 14. Documentation
+ +a) Installation process
+ +b) Settings description
+ +c) Troubleshooter

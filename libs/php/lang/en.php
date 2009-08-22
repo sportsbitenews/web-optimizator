@@ -55,7 +55,8 @@ define('_WEBO_NEW_TITLE', 'Installation - set password');
 define('_WEBO_NEW_PROTECT', '<p>Please enter login and password to protect this installation.</p>
 							<p>Before installation please check that root <code>.htaccess</code> and source files of your web system are writable (during installation Web Optimizer also creates backup of your files).</p>
 							<p>Web Optimizer can check all functions of your server and complete installation automatically. For this option please press <strong>"Express install"</strong>. On complete you can change any settings using this administative interface.</p>
-							<p>If your want to set up usage of Web Optimizer manually please press <strong>"Next"</strong>. You can check and set all settings before actual Web Optimizer installation on your website.</p>');
+							<p>If your want to set up usage of Web Optimizer manually please press <strong>"Next"</strong>. You can check and set all settings before actual Web Optimizer installation on your website.</p>
+							<p><a href="http://code.google.com/p/web-optimizator/wiki/Installation">Web Optimizer installation process</a></p>');
 define('_WEBO_NEW_USERDATA', 'Your username and password');
 define('_WEBO_NEW_ENTER', 'Enter your password for installation');
 

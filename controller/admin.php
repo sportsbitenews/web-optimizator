@@ -840,7 +840,7 @@ RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
-<FilesMatch \.(css\.gz)$>
+<FilesMatch \.css\.gz$>
 	ForceType text/css
 </FilesMatch>";
 							}
@@ -850,7 +850,7 @@ RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
 RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
-<FilesMatch \.(js\.gz)$>
+<FilesMatch \.js\.gz$>
 	ForceType application/x-javascript
 </FilesMatch>";
 							}
