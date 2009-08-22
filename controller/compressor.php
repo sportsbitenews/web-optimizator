@@ -1114,7 +1114,7 @@ class web_optimizer {
 				if ($value['tag'] == 'script') {
 					$delimiter = ";\n";
 				}
-/* don't delete any detected scritps from array -- we need to clean up HTML page from them */
+/* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 				if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
 					if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
@@ -1138,14 +1138,19 @@ class web_optimizer {
 				} elseif (!empty($content_from_file)) {
 /* don't rewrite existing content inside script tags */
 					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
-/* add stored content before */
-					if (!empty($stored[$value['tag']])) {
+/* add stored content before, but leave styles stored */
+					if (!empty($stored[$value['tag']]) && $value['tag'] == 'script') {
 						$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
 						$stored[$value['tag']] = '';
 					}
 					$last_key[$value['tag']] = $key;
 				}
 			}
+		}
+/* glues all inline styles to the last CSS file */
+		if (!empty($last_key['link']) && !empty($stored['link'])) {
+			$this->initial_files[$last_key['link']]['content'] .= $delimiter . $stored['link'];
+			$stored['link'] = '';
 		}
 /* check for stored content and flush it */
 		foreach ($stored as $tag => $stored_content) {
