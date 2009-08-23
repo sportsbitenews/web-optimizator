@@ -29,7 +29,7 @@ class YuiCompressor {
 
 	function check() {
 		$locate = @shell_exec('whereis java');
-		if (isset($locate) && is_executable($this->jarfile)) {
+		if (isset($locate)) {
 			return true;
 		} else {
 			return false;

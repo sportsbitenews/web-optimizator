@@ -4,8 +4,4 @@
 	echo _WEBO_ERROR_TITLE;
 ?></h2><div class="d l"><div><p><?php
 	echo $error
-?><a href="javascript:history.back(1)" title="<?php
-	echo _WEBO_SPLASH1_BACK;
-?>"><?php
-	echo _WEBO_SPLASH1_BACK;
-?></a></p></div></div>
+?></p></div></div>

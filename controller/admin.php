@@ -186,7 +186,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
@@ -452,6 +452,8 @@ class admin {
 /* restore username and password */
 			$this->input['user']['password'] = $password;
 			$this->input['user']['username'] = $username;
+/* minify with YUI Compressor by default */
+			$this->input['user']['minify']['with'] = 'with_yui';
 /* enable auto-rewrite */
 			$this->input['user']['auto_rewrite']['enabled'] = 1;
 			$this->input['Submit'] = 1;
@@ -1129,7 +1131,7 @@ ExpiresDefault \"access plus 10 years\"
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(echo \\\$data)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+								$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
 								$fpc = @fopen($cache_file, 'wb');
 								if ($fpc) {
 									@fwrite($fpc, $content);
