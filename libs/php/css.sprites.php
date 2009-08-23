@@ -259,6 +259,7 @@ class css_sprites {
 					} else {
 						$background_position = array(0, 0);
 					}
+					$background_position[1] = empty($background_position[1]) ? 0 : $background_position[1];
 /* Is image placed to the right? */
 					$img_has['pos_right'] = $img_has['position'] && in_array($background_position[0], array('right', '100%'));
 /* Is image placed to the bottom? */
@@ -384,7 +385,7 @@ class css_sprites {
 								}
 							}
 /* calculate backround-position for image with relative position but absolute dimensions */
-							if (preg_match("/right|bottom|center|%/", $image['background-position'])) {
+							if (!empty($image['background-position']) && preg_match("/right|bottom|center|%/", $image['background-position'])) {
 								$position = explode(" ", preg_replace("/right|bottom/", "100%", str_replace("center", "50%", $image['background-position'])));
 								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100) . 'px';
 								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100) . 'px';
@@ -919,7 +920,7 @@ __________________
 								$counted_images[$image[0]] = 1;
 								$final_y = $image[4];
 								$image[3] = 0;
-								$image[4] = $this->css_images[$this->sprite]['addon_y'] + $final_y;
+								$image[4] = $this->css_images[$this->sprite]['addon_y'] + $final_y + $image[6];
 								$this->css_images[$this->sprite]['addon_y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
 								$this->css_images[$this->sprite]['y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
 								$image[] = 1;
@@ -954,7 +955,7 @@ __________________
 							if ($image[2] <= $this->css_images[$this->sprite]['y'] && empty($counted_images[$image[0]])) {
 								$counted_images[$image[0]] = 1;
 								$final_x = $image[3];
-								$image[3] = $this->css_images[$this->sprite]['addon_x'] + $final_x;
+								$image[3] = $this->css_images[$this->sprite]['addon_x'] + $final_x + $image[5];
 								$this->css_images[$this->sprite]['addon_x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
 								$this->css_images[$this->sprite]['x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
 								$image[] = 1;
@@ -1022,7 +1023,7 @@ __________________
 /* remember existing background */
 						$this->css_images[$this->sprite]['images'][$image_key][10] = empty($this->css->css[$import][$key]['background']) ? '' : $this->css->css[$import][$key]['background'];
 						$this->css_images[$this->sprite]['images'][$image_key][11] = empty($this->css->css[$import][$key]['background-image']) ? '' : $this->css->css[$import][$key]['background-image'];
-						if (empty($added) || $type == 4) {
+						if (!$added || $type == 4) {
 							$final_x += $this->css_images[$this->sprite]['addon_x'];
 							$final_y += $this->css_images[$this->sprite]['addon_y'];
 						}
@@ -1116,11 +1117,12 @@ __________________
 										break;
 /* repeat-y */
 									case 2:
-										$css_left = -$final_x + $shift_x;
+										$css_left = -$final_x;
 										$css_top = 0;
 										if ($added) {
 											$css_repeat = 'no-repeat';
 										} else {
+											$css_left += $shift_x;
 											$css_repeat = 'repeat-y';
 										}
 										if (!$file_exists) {
@@ -1136,10 +1138,11 @@ __________________
 /* repeat-x */
 									case 1:
 										$css_left = 0;
-										$css_top = -$final_y + $shift_y;
+										$css_top = -$final_y;
 										if ($added) {
 											$css_repeat = 'no-repeat';
 										} else {
+											$css_top += $shift_y;
 											$css_repeat = 'repeat-x';
 										}
 										if (!$file_exists) {
