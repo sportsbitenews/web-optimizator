@@ -1644,6 +1644,15 @@ require valid-user
 /* UMI.CMS */
 		} elseif (is_file($root . 'gw.php')) {
 			return 'UMI.CMS';
+		} elseif (is_file($root . 'path.php')) {
+			require_once($root . 'path.php');
+			define('EXT', '1');
+/* ExpressionEngine */
+			if (!empty($system_path)) {
+				require_once($root . $system_path . 'config.php');
+				$version = !empty($conf) && !empty($conf['app_version']) ? ' ' . preg_replace("!([0-9])([0-9])([0-9])$!", "$1.$2.$3", $conf['app_version']) : '';
+				return 'ExpressionEngine' . $version;
+			}
 		}
 		return 'CMS 42';
 	}
