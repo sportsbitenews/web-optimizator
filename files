@@ -26,7 +26,6 @@ libs/php/jsmin4.php
 libs/php/jsmin5.php
 libs/php/packer4.php
 libs/php/packer5.php
-libs/php/user_agent.php
 libs/php/view.php
 libs/yuicompressor/yuicompressor.jar
 view/admin_container.php
