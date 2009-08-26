@@ -628,14 +628,14 @@ class admin {
 /* Check we can write to the specified directories */
 			foreach($test_dirs AS $name => $dir) {
 				if (is_dir($dir)) {
-/* try to set to all cache folders 0644 permissions */
-					@chmod($dir, 0644);
-					if (substr(sprintf('%o', fileperms($dir)), -4) != '0644') {
+/* try to set to all cache folders 0755 permissions */
+					@chmod($dir, 0755);
+					if (substr(sprintf('%o', fileperms($dir)), -3) != '755') {
 						@rmdir($dir);
-						@mkdir($dir, 0644);
+						@mkdir($dir, 0755);
 					}
 				} else {
-					@mkdir($dir, 0644);
+					@mkdir($dir, 0755);
 				}
 				$fp = @fopen($dir . "test", 'w');
 				if(!$fp) {
