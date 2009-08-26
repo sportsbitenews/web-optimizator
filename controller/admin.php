@@ -618,7 +618,6 @@ class admin {
 	function install_stage_3() {
 /* if haven't completed chained optimization */
 		if ($this->web_optimizer_stage < 95) {
-/* Check we can write to the specified directory */
 			$content = "Test";
 			$test_dirs = array(
 				'javascript' => $this->view->ensure_trailing_slash($this->input['user']['javascript_cachedir']),
@@ -626,9 +625,17 @@ class admin {
 				'html' => $this->view->ensure_trailing_slash($this->input['user']['html_cachedir'])
 			);
 			$this->write_progress($this->web_optimizer_stage = 3);
+/* Check we can write to the specified directories */
 			foreach($test_dirs AS $name => $dir) {
-				if (!is_dir($dir)) {
-					@mkdir($dir, 0755);
+				if (is_dir($dir)) {
+/* try to set to all cache folders 0644 permissions */
+					@chmod($dir, 0644);
+					if (substr(sprintf('%o', fileperms($dir)), -4) != '0644') {
+						@rmdir($dir);
+						@mkdir($dir, 0644);
+					}
+				} else {
+					@mkdir($dir, 0644);
 				}
 				$fp = @fopen($dir . "test", 'w');
 				if(!$fp) {
