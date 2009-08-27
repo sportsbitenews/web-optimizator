@@ -692,6 +692,17 @@ class admin {
 						$this->input['user']['minify']['with_jsmin'] = 1;
 					}
 				}
+/* disable .htaccess if not Apache */
+				if (empty($this->apache_modules)) {
+					$this->input['user']['htaccess']['enabled'] = 0;
+					$this->input['user']['htaccess']['mod_deflate'] = 0;
+					$this->input['user']['htaccess']['mod_gzip'] = 0;
+					$this->input['user']['htaccess']['mod_expires'] = 0;
+					$this->input['user']['htaccess']['mod_mime'] = 0;
+					$this->input['user']['htaccess']['mod_headers'] = 0;
+					$this->input['user']['htaccess']['mod_setenvif'] = 0;
+					$this->input['user']['htaccess']['mod_rewrite'] = 0;
+				}
 /* Save the options	*/
 				foreach($this->input['user'] as $key => $option) {
 					if(is_array($option)) {
@@ -736,7 +747,7 @@ class admin {
 				$this->install_clean_cache(false);
 				$this->install_uninstall(false);
 /* additional check for .htaccess -- need to open exact file */
-				if (!empty($this->input['user']['htaccess']['enabled']) && !empty($this->apache_modules)) {
+				if (!empty($this->input['user']['htaccess']['enabled'])) {
 					$this->view->set_paths($this->input['user']['document_root']);
 /* write to the current dir or to document root */
 					if (empty($this->input['user']['htaccess']['local'])) {
@@ -914,29 +925,26 @@ ExpiresDefault \"access plus 10 years\"
 						if (empty($this->cms_version)) {
 							$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 						}
-/* look for plugins */
-						$plugins = array();
-						$dp = opendir($this->input['user']['webo_cachedir'] . 'plugins');
-						if ($dp) {
-							while (($file = readdir($dp)) !== false) {
-								if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
-									$plugins[] = preg_replace("!\.php$!i", "", $file);
-								}
-							}
-						}
-						$this->save_option("['plugins']", implode(" ", $plugins));
 
 						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
 /* prevent rewrite to admin access on frameworks */
 						if (in_array($this->cms_version, $cms_frameworks)) {
 							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 						}
-						if ($fp) {
-							@fwrite($fp, $content_saved . "\n" . $content);
-							@fclose($fp);
+						@fwrite($fp, $content_saved . "\n" . $content);
+						@fclose($fp);
+					}
+				}
+/* look for plugins */
+				$plugins = array();
+				if ($dp = opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
+					while (($file = readdir($dp)) !== false) {
+						if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
+							$plugins[] = preg_replace("!\.php$!i", "", $file);
 						}
 					}
 				}
+				$this->save_option("['plugins']", implode(" ", $plugins));|
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
 			$this->chained_load();

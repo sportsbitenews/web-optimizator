@@ -1199,6 +1199,13 @@ __________________
 							@imagealphablending($this->sprite_raw, false);
 							@imagesavealpha($this->sprite_raw, true);
 							@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
+/* try to re-save image on GDLib error */
+							if (!is_file($this->sprite)) {
+								@imagepng($this->sprite_raw, $this->sprite, 9);
+							}
+							if (!is_file($this->sprite)) {
+								@imagepng($this->sprite_raw, $this->sprite);
+							}
 						}
 						@imagedestroy($this->sprite_raw);
 /* additional optimization via smush.it */
