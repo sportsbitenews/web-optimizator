@@ -999,9 +999,12 @@ __________________
 				if (!empty($this->sprite_raw) || $file_exists) {
 /* for final sprite */
 					if (!$file_exists) {
+/* handling 32bit colors in PNG */
+						@imagealphablending($this->sprite_raw, false);
+						@imagesavealpha($this->sprite_raw, true);
 						$this->background = @imagecolorallocatealpha($this->sprite_raw, 255, 255, 255, 127);
 /* fill sprite with white color */
-						@imagefill($this->sprite_raw, 0, 0, $this->background);
+						@imagefilledrectangle($this->sprite_raw, 0, 0, $this->css_images[$this->sprite]['x']-1, $this->css_images[$this->sprite]['y']-1, $this->background);
 /* make this color transparent */
 						@imagecolortransparent($this->sprite_raw, $this->background);
 					}
@@ -1049,6 +1052,8 @@ __________________
 						if (!$image_used) {
 							if (!$file_exists) {
 								$im = null;
+/* flag semi-transparency, 0 - disabled, 1 - enabled */
+								$this->alpha = 0;
 /* try to copy initial image into sprite */
 								switch (strtolower(preg_replace("/.*\./", "", $filename))) {
 									case 'gif':
@@ -1056,6 +1061,9 @@ __________________
 										break;
 									case 'png':
 										$im = @imagecreatefrompng($filename);
+										if ($im && @imagecolorstotal($im) > 256) {
+											$this->alpha = 1;
+										}
 										break;
 									case 'jpg':
 									case 'jpeg':
@@ -1072,17 +1080,24 @@ __________________
 /* some images can have incorrect extension */
 							if (empty($im) && is_file($filename)) {
 								$im = @imagecreatefrompng($filename);
+								if ($im && @imagecolorstotal($im) > 256) {
+									$this->alpha = 1;
+								}
 								if (empty($im)) {
 									$im = @imagecreatefromjpeg($filename);
+									$this->alpha = 0;
 								}
 								if (empty($im)) {
 									$im = @imagecreatefromgif($filename);
+									$this->alpha = 0;
 								}
 								if (empty($im)) {
 									$im = @imagecreatefromwbmp($filename);
+									$this->alpha = 0;
 								}
 								if (empty($im)) {
 									$im = @imagecreatefromxbm($filename);
+									$this->alpha = 0;
 								}
 							}
 
@@ -1094,7 +1109,7 @@ __________________
 										$css_left = -$final_x + $shift_x;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											@imagecopy($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $this->css_images[$this->sprite]['y'] - $height, 0, 0, $width, $height);
 										}
 										break;
 /* 100% 0 case */
@@ -1103,7 +1118,7 @@ __________________
 										$css_left = 'right';
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $width, $final_y, 0, 0, $width, $height);
 										}
 										break;
 /* the most complicated case */
@@ -1112,7 +1127,7 @@ __________________
 										$css_top = -$final_y + $shift_y;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 										}
 										break;
 /* repeat-y */
@@ -1126,11 +1141,11 @@ __________________
 											$css_repeat = 'repeat-y';
 										}
 										if (!$file_exists) {
-											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 											$final_y = $height;
 /* semi-fix for bug with different height of repeating images, thx to xstroy */
 											while ($final_y < $this->css_images[$this->sprite]['y'] && !$added) {
-												@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+												$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 												$final_y += $height;
 											}
 										}
@@ -1146,11 +1161,11 @@ __________________
 											$css_repeat = 'repeat-x';
 										}
 										if (!$file_exists) {
-											@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 											$final_x = $width;
 /* semi-fix for bug with different width of repeating images, thx to xstroy */
 											while ($final_x < $this->css_images[$this->sprite]['x'] && !$added) {
-												@imagecopy($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+												$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
 												$final_x += $width;
 											}
 										}
@@ -1183,11 +1198,11 @@ __________________
 						if ($type == 4) {
 							if (is_file($sprite_right)) {
 								$im = @imagecreatefrompng($sprite_right);
-								@imagecopy($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
+								$this->imagecopymerge_alpha($this->sprite_raw, $im, $this->css_images[$this->sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
 							}
 							if (is_file($sprite_bottom)) {
 								$im = @imagecreatefrompng($sprite_bottom);
-								@imagecopy($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
+								$this->imagecopymerge_alpha($this->sprite_raw, $im, 0, $this->css_images[$this->sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
 							}
 						}
 /* output final sprite */
@@ -1195,9 +1210,6 @@ __________________
 							$this->sprite = preg_replace("/png$/", "jpg", $this->sprite);
 							@imagejpeg($this->sprite_raw, $this->sprite, 80);
 						} else {
-/* handling 32bit colors in PNG */
-							@imagealphablending($this->sprite_raw, false);
-							@imagesavealpha($this->sprite_raw, true);
 							@imagepng($this->sprite_raw, $this->sprite, 9, PNG_ALL_FILTERS);
 /* try to re-save image on GDLib error */
 							if (!is_file($this->sprite)) {
@@ -1456,6 +1468,59 @@ __________________
 			$return = null;
 		}
 		return $return;
+	}
+/** 
+ * PNG ALPHA CHANNEL SUPPORT for imagecopymerge(); 
+ * This is a function like imagecopymerge but it handle alpha channel well
+ * A fix to get a function like imagecopymerge WITH ALPHA SUPPORT 
+ * Main script by aiden dot mail at freemail dot hu 
+ * Transformed to imagecopymerge_alpha() by rodrigo dot polo at gmail dot com
+ **/ 
+	function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 100){
+		switch ($this->alpha) {
+			case 1:
+				$pct /= 100;
+/* Get image width and height */
+				$w = @imagesx($src_im);
+				$h = @imagesy($src_im);
+/* Turn alpha blending off */
+				@imagealphablending($src_im, false);
+/* Find the most opaque pixel in the image (the one with the smallest alpha value) */
+				$minalpha = 127;
+				for( $x = 0; $x < $w; $x++ ) {
+					for( $y = 0; $y < $h; $y++ ) {
+						$alpha = (@imagecolorat($src_im, $x, $y) >> 24) & 0xFF;
+						if ($alpha < $minalpha) {
+							$minalpha = $alpha;
+						}
+					}
+				}
+/* loop through image pixels and modify alpha for each */
+				for( $x = 0; $x < $w; $x++ ) {
+					for( $y = 0; $y < $h; $y++ ) {
+/* get current alpha value (represents the TRANSPARENCY!) */
+						$colorxy = @imagecolorat($src_im, $x, $y);
+						$alpha = ($colorxy >> 24) & 0xFF;
+/* calculate new alpha */
+						if ($minalpha !== 127) {
+							$alpha = 127 + 127 * $pct * ($alpha - 127) / (127 - $minalpha);
+						} else {
+							$alpha += 127 * $pct;
+						}
+/* get the color index with new alpha */
+						$alphacolorxy = @imagecolorallocatealpha($src_im, ($colorxy >> 16) & 0xFF, ($colorxy >> 8) & 0xFF, $colorxy & 0xFF, $alpha);
+/* set pixel with the new color + opacity */
+						if (!@imagesetpixel($src_im, $x, $y, $alphacolorxy)) {
+							return false;
+						}
+					}
+				}
+/* skip all logic for non-semitransparent images */
+			case 0:
+/* The image copy */
+				@imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
+				break;
+		}
 	}
 }
 
