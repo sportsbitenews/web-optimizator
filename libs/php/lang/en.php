@@ -166,6 +166,8 @@ define('_WEBO_gzip_page', 'Gzip HTML');
 define('_WEBO_gzip_cookie', 'Check for gzip possibility via cookies');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
+define('_WEBO_far_future_expires_images', 'Cache images');
+define('_WEBO_far_future_expires_video', 'Cache video files');
 define('_WEBO_far_future_expires_static', 'Cache static assets');
 define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');

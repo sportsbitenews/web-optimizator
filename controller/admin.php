@@ -894,9 +894,21 @@ ExpiresDefault \"access plus 10 years\"
 	ExpiresActive Off
 </FilesMatch>";
 							}
+							if (empty($this->input['user']['far_future_expires']['images'])) {
+								$content .= "
+<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
+	ExpiresActive Off
+</FilesMatch>";
+							}
+							if (empty($this->input['user']['far_future_expires']['video'])) {
+								$content .= "
+<FilesMatch \.(flv|wmf)$>
+	ExpiresActive Off
+</FilesMatch>";
+							}
 							if (empty($this->input['user']['far_future_expires']['static'])) {
 								$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico|swf|flv|pdf)$>
+<FilesMatch \.(swf|pdf|doc|rtf)$>
 	ExpiresActive Off
 </FilesMatch>";
 							}
@@ -911,10 +923,10 @@ ExpiresDefault \"access plus 10 years\"
 							}
 							if (!empty($htaccess_options['mod_expires'])) {
 								$content .= "
-<FilesMatch \.(pdf|flv|swf|jpe?g|png|gif|bmp)$>
+<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
 	Header append Cache-Control public
 </FilesMatch>
-<FilesMatch \.(ico|pdf|flv|swf|jpe?g|png|gif|bmp|js|css)$>
+<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
 	Header unset Last-Modified
 	FileETag MTime
 </FilesMatch>";
@@ -944,7 +956,7 @@ ExpiresDefault \"access plus 10 years\"
 						}
 					}
 				}
-				$this->save_option("['plugins']", implode(" ", $plugins));|
+				$this->save_option("['plugins']", implode(" ", $plugins));
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
 			$this->chained_load();

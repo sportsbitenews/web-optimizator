@@ -167,6 +167,8 @@ define('_WEBO_gzip_page', 'Применить <code>gzip</code> для HTML');
 define('_WEBO_gzip_cookie', 'Проверять возможность <code>gzip</code> через cookie');
 define('_WEBO_far_future_expires_javascript', 'Кэшировать JavaScript');
 define('_WEBO_far_future_expires_css', 'Кэшировать CSS');
+define('_WEBO_far_future_expires_images', 'Кэшировать изображения');
+define('_WEBO_far_future_expires_video', 'Кэшировать видео-файлы');
 define('_WEBO_far_future_expires_static', 'Кэшировать статические файлы');
 define('_WEBO_far_future_expires_html', 'Кэшировать HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Время клиентского кэша для HTML-файлов');

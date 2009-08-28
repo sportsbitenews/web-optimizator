@@ -166,6 +166,8 @@ define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
 define('_WEBO_gzip_cookie', 'Перевіряти можливість <code>gzip</code> через cookie');
 define('_WEBO_far_future_expires_javascript', 'Кешувати JavaScript');
 define('_WEBO_far_future_expires_css', 'Кешувати CSS');
+define('_WEBO_far_future_expires_images', 'Кешувати зображення');
+define('_WEBO_far_future_expires_video', 'Кешувати видео-файли');
 define('_WEBO_far_future_expires_static', 'Кешувати статичні файли');
 define('_WEBO_far_future_expires_html', 'Кешувати HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Час клієнтського кешу для HTML-файлів');

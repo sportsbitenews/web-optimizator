@@ -65,6 +65,8 @@ $compress_options['gzip']['css_level'] = "9";
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 ## Cache static assets (images, flash, etc) -- only via .htaccess
+$compress_options['far_future_expires']['images'] = "1";
+$compress_options['far_future_expires']['video'] = "1";
 $compress_options['far_future_expires']['static'] = "1";
 ## Send cache headers for HTML files?
 $compress_options['far_future_expires']['html'] = "0";
