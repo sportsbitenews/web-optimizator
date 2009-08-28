@@ -1543,6 +1543,9 @@ require valid-user
 /* phpBB (3.0) */
 			} elseif (is_file($root . 'includes/functions_privmsgs.php')) {
 				return 'phpBB';
+/* osCommerce (2.2) */
+			} elseif (is_file($root . 'includes/tld.txt')) {
+				return 'osCommerce';
 /* Joomla 1.0, Joostina */
 			} else {
 				define('_VALID_MOS', 1);
