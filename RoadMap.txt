@@ -98,7 +98,7 @@
 +e) Typo3 (4.2)
  f) WebGUI
  g) Plone
- h) Xoops
++h) XOOPS (2.3.3)
 +i) PHP Nuke (8.0)
 +j) Simpla
 +k) Etomite (1.1), MODx (0.9)
@@ -118,8 +118,13 @@
 +y) CakePHP (1.2.3)
 +z) CMS Made Simple (1.6)
 +A) NetCat
-+B) UMI.CMS
- C) ExpressionEngine
++B) UMI.CMS (2.7)
++C) ExpressionEngine (1.6.8)
++D) osCommerce (2.2)
+ E) PHP-Fusion (7.0)
+ F) MDPro
++G) Xaraya (1.1.5)
++H) Website Baker (2.8.0)
 
 12. Localization
 +a) English
@@ -127,15 +132,19 @@
  c) German
 ?d) Hebrew
 +e) Ukranian
- f) ?
+ f) Spanish
+ g) French
+ h) Italian
  
  13) Plugin API
  +a) Possiblity to add plugin for any system
  +b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
   c) Drupal 5 (???)
   d) Druapl 6 (???)
+  e) Wordpress 2
  
  14. Documentation
  +a) Installation process
  +b) Settings description
  +c) Troubleshooter
+ +d) Use cases

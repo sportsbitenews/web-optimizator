@@ -361,11 +361,13 @@ class admin {
 				}
 			}
 /* additional change of cache plugins */
-			if (strpos($this->cms_version, "Joomla!")) {
+			if (substr($this->cms_version, 0, 7) == "Joomla!" || substr($this->cms_version, 0, 5) == "XOOPS") {
 				if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
-				} else {
+				} elseif (substr($this->cms_version, 0, 7) == "Joomla!") {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
+				} else {
+					$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 				}
 				$fpc = @fopen($cache_file, 'wb');
 				if ($fpc) {
@@ -841,7 +843,8 @@ AddOutputFilterByType DEFLATE text/css";
 								$content .= "
 AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE application/javascript
-AddOutputFilterByType DEFLATE application/x-javascript";
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE text/x-js";
 							}
 						}
 /* try to add static gzip */
@@ -1159,6 +1162,16 @@ ExpiresDefault \"access plus 10 years\"
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 								@copy($cache_file, $cache_file . '.backup');
 								$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+								$fpc = @fopen($cache_file, 'wb');
+								if ($fpc) {
+									@fwrite($fpc, $content);
+									@fclose($fpc);
+								}
+							}
+							if (substr($this->cms_version, 0, 5) == 'XOOPS') {
+								$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
+								@copy($cache_file, $cache_file . '.backup');
+								$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
 								$fpc = @fopen($cache_file, 'wb');
 								if ($fpc) {
 									@fwrite($fpc, $content);
@@ -1501,13 +1514,11 @@ require valid-user
 	**/
 	function system_info($root) {
 /* Wordpress */
-		if (is_dir($root . 'wp-includes')) {
+		if (is_file($root . 'wp-includes/version.php')) {
 			$wp_version = '1.0.0';
-			if (is_file($root . 'wp-includes/version.php')) {
-				require($root . 'wp-includes/version.php');
-			}
+			require($root . 'wp-includes/version.php');
 			return 'Wordpress ' . $wp_version;
-		} elseif (is_dir($root . 'modules/system')) {
+		} elseif (is_file($root . 'modules/system/system.info')) {
 /* Drupal */
 			$drupal_version = '1.0.0';
 			$fp  = @fopen($root . 'modules/system/system.info', "r");
@@ -1683,6 +1694,16 @@ require valid-user
 				$version = !empty($conf) && !empty($conf['app_version']) ? ' ' . preg_replace("!([0-9])([0-9])([0-9])$!", "$1.$2.$3", $conf['app_version']) : '';
 				return 'ExpressionEngine' . $version;
 			}
+/* Xaraya 1.1.5 */
+		} elseif (is_file($root . 'var/config.system.php')) {
+			return 'Xaraya';
+/* XOOPS 2.3.3 */
+		} elseif (is_file($root . 'include/version.php')) {
+			require($root . 'include/version.php');
+			return defined(XOOPS_VERSION) ? XOOPS_VERSION : 'XOOPS';
+/* Website Baker 2.8 */
+		} elseif (is_file($root . 'account/preferences.php')) {
+			return 'Website Baker';
 		}
 		return 'CMS 42';
 	}
@@ -1883,6 +1904,26 @@ require valid-user
 						'file' => 'index.php',
 						'mode' => 'finish',
 						'location' => 'echo $res;'
+					)
+				);
+				break;
+/* XOOPS 2.3.3 */
+			case 'XOOPS':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start',
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'end'
+					),
+					array(
+						'file' => 'class/theme.php',
+						'mode' => 'finish',
+						'location' => '$this->render( null, null, $template );',
+						'global' => 1
 					)
 				);
 				break;

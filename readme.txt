@@ -4,7 +4,7 @@ Web Optimizer
 Web Optimizer is a PHP script that automatically speeds up your website by combining and compressing your JavaScript and CSS assets.
 It can also GZIP these assets, and the page itself (via PHP or .htaccess options). Also it applies CSS Sprites and data:URI techniques.
 Also it supports unobtrusive JavaScript conversion and a lot of other useful options.
-Web Optimizer was initially based on PHP Speedy.
+Average acceleration is 2,3 times. Web Optimizer was initially based on PHP Speedy.
 
 Installation
 ------------
@@ -40,14 +40,14 @@ Please note that on upgrading from version 0.2 and below you need to replace in 
 Known issues
 ----------------------
 There are several issues related to CSS Sprites usage. If you think that your template is broken or you system shows white screen -- 
-plase try to disable CSS Sprites in configuration. This will solve occured issue in 95% of cases. Also you can try to exclude some
+plase try to disable CSS Sprites in configuration. This will solve occured issue in 99% of cases. Also you can try to exclude some
 images from CSS Sprites generation.
 
 Team
 ----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, promotion, other stuff)
- * fade (design)
+ * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, promotion, investment raising, other stuff)
+ * fade (design, general usability)
  * bazik (test cases for CSS Sprites, CSS rules, JS logic, etc)
  * beshkenadze (YUI Compressor envelope)
  * janvarev (files MTIME check)
