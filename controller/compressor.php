@@ -16,7 +16,7 @@ class web_optimizer {
 			return;
 		}
 /* initialize chained optimization */
-		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
+		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(getenv('SCRIPT_NAME'), "optimizing.php") ? 0 : $_GET['web_optimizer_stage']);
 		$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
 		$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
 		$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
