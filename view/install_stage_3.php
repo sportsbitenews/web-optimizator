@@ -14,15 +14,13 @@
 	}
 ?><h2><?php
 	echo _WEBO_SPLASH3_TITLE;
-?></h2><div class="d n q"><ul>
-<li><a href="#rewrite" class="z"><?php
+?></h2><div class="d n q"><ul><li><a href="#rewrite" class="z"><?php
 	echo _WEBO_SPLASH3_REWRITE_SHORT;
 ?></a></li><?php
 	if (empty($auto_rewrite)) {
 ?><li><a href="#modify"><?php
 		echo _WEBO_SPLASH3_MODIFY_SHORT;
-?></a></li>
-<?php
+?></a></li><?php
 	}
 ?><li><a href="#testing"><?php
 	echo _WEBO_SPLASH3_TESTING_SHORT;
@@ -46,11 +44,10 @@
 		echo _WEBO_SPLASH3_MODIFY;
 ?></h3><ol><?php
 		foreach ($files_to_change as $file) {
-			if (is_file(preg_replace("/\\\/", "/", $paths['full']['current_directory']))) {
+			if (is_file(preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'])) {
 ?><li><?php
 				if ($file['mode'] == 'start' && empty($file['location'])) {
-?>
-<p><?php
+?><p><?php
 					echo _WEBO_SPLASH3_TOFILE2;
 ?> <code><?php
 					echo preg_replace("/\\\/", "/", $paths['full']['document_root']) . $file['file'];
@@ -81,14 +78,14 @@ require('<?php
 ?></textarea><p><?php
 					echo _WEBO_SPLASH3_ADD2;
 ?></p><textarea cols="80" rows="2"><?php 
+					if (!empty($file['global'])) {
+?>global $web_optimizer;<?php
+					}
 					if ($file['mode'] == 'start') {
 ?>require('<?php
 						echo preg_replace("/\\\/", "/", $paths['full']['current_directory']);
 ?>web.optimizer.php');<?php
 					} else {
-						if (!empty($file['global'])) {
-?>global $web_optimizer;<?php
-						}
 ?>$web_optimizer->finish();<?php
 					}
 ?></textarea><?php

@@ -8,7 +8,7 @@
 
 /* general layout */
 define('_WEBO_CHARSET', "windows-1251");
-define('_WEBO_GENERAL_TITLE', 'Конфігурація Веб Оптимізатора');
+define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
 
 /* error layout */
@@ -20,7 +20,7 @@ define('_WEBO_LOGIN_TITLE', 'Введіть ваші авторизаційні дані');
 define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Веб Оптимизатор ');
 define('_WEBO_LOGIN_INSTALLED2', ' вже встановлений. Будь-ласка, введіть ваш логін та пароль для доступу до всіх налаштувань:');
 define('_WEBO_LOGIN_INSTALLED3', '. Для доступу до всіх налаштувань натисніть кнопку <strong>Далі</strong>.');
-define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Увага:</strong> не вдається знайти результат роботи Веб Оптимізатора. Будь-ласка, перевірте наявність його викликів у файлах вашої веб-системи або проведіть установку ще раз.');
+define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Увага:</strong> не вдається знайти результат роботи Web Optimizer. Будь-ласка, перевірте наявність його викликів у файлах вашої веб-системи або проведіть установку ще раз.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Результат оптимізації при показі сторінки:<br/>виграш');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Кб');
 define('_WEBO_LOGIN_EFFICIENCY_S', 'секунд');
@@ -29,43 +29,43 @@ define('_WEBO_LOGIN_ENTERLOGIN', 'Введіть ваш логін');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введіть пароль');
 define('_WEBO_SPLAHS1_PROTECTED', 'Захищений режим');
-define('_WEBO_SPLAHS1_PROTECTED2', 'Веб Оптимізатор надійно захищає від зовнішнього доступу. Ви можете налаштувати його ще раз.');
+define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer надійно захищає від зовнішнього доступу. Ви можете налаштувати його ще раз.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновити');
-define('_WEBO_LOGIN_UPGRADENOTICE', 'Ви можете обновити вашу поточну версію Веб Оптимізатора (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') до найостаннішої. Для цього введіть ваш логін і пароль в формі вище і натисніть кнопку <strong>Поновити</strong>. Веб Оптимізатор буде автоматично обновлений до версії <strong>');
+define('_WEBO_LOGIN_UPGRADENOTICE', 'Ви можете обновити вашу поточну версію Web Optimizer (');
+define('_WEBO_LOGIN_UPGRADENOTICE2', ') до найостаннішої. Для цього введіть ваш логін і пароль в формі вище і натисніть кнопку <strong>Поновити</strong>. Web Optimizer буде автоматично обновлений до версії <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'Ви успішно обновились до версії ');
 define('_WEBO_UPGRADE_UNABLE', 'Не вдається завантажити останню версію з репозиторію. Будь-ласка, перевірте з\'єднання серверу з інтернетом та наявність встановленого curl.');
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'Щоб видалити Веб Оптимізатор, будь-ласка, введіть ваш логін та пароль у формі вище та натисніть кнопку <strong>Видалити</strong>.');
-define('_WEBO_LOGIN_UNINSTALL2', 'Для вашого сайту Веб Оптимізатор може бути відключений. Для цього його необхідно просто видалити.');
-define('_WEBO_LOGIN_UNINSTALLME', 'Видалити Веб Оптимізатор');
+define('_WEBO_LOGIN_UNINSTALL', 'Щоб видалити Web Optimizer, будь-ласка, введіть ваш логін та пароль у формі вище та натисніть кнопку <strong>Видалити</strong>.');
+define('_WEBO_LOGIN_UNINSTALL2', 'Для вашого сайту Web Optimizer може бути відключений. Для цього його необхідно просто видалити.');
+define('_WEBO_LOGIN_UNINSTALLME', 'Видалити Web Optimizer');
 define('_WEBO_LOGIN_FAILED', 'Невірно введений логін та(або) пароль');
 define('_WEBO_LOGIN_ACCESS', 'Ця сторінка доступна тільки авторизованим користувачам');
 define('_WEBO_LOGIN_LOGGED', 'Увійшли в систему');
 define('_WEBO_SPLASH1_CLEAR', 'Очистити кеш');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'Щоб очистити кеш Веб Оптимізатора, будь-ласка, введіть ваш логін і пароль та натисніть кнопку <strong>Очистити кеш</strong>. ');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'Щоб очистити кеш Web Optimizer, будь-ласка, введіть ваш логін і пароль та натисніть кнопку <strong>Очистити кеш</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Всі збережені копії створених файлів будуть видалені з директорії для кешування.');
 define('_WEBO_CLEAR_UNABLE', 'Не виходить видалити деякі файли з директорії для кешування');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Всі файли були успішно видалені з кеша');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Установка - обмеження доступу');
-define('_WEBO_NEW_PROTECT', '<p>Для забезпечення безпеки при подальшому використанні Веб Оптимізатора необхідно встановили пароль доступу.</p>
-							<p>Перед проведенням установки, будь-ласка, переконайтеся, що кореневий <code>.htaccess</code>і файли веб-системи, яка використовується, доступні на запис (при проведенні установки Веб Оптимізатор також створює резервні копії).</p>
-							<p>Веб Оптимізатор може самостійно перевірити доступні можливості вашего серверу і провести установку в автоматичному режимі. Для цього необхідно обрати <strong>&laquo;Швидка установка&raquo;</strong>. В подальшому ви зможете змінити всі збережені налаштування, використовуючи даний інтерфейс.</p>
-							<p>Якщо Ви хочете налаштувати використання Веб Оптимізатора самостійно, то необхідно обрати <strong>&laquo;Далі&raquo;</strong>. Ви зможете перевірити всі налаштування до їх застосування для вашого сайту.</p>
-							<p><a href="http://webo.in/articles/habrahabr/99-web-optimizer-installation-0.5/">Процес установки Веб Оптимізатора</a></p>');
+define('_WEBO_NEW_PROTECT', '<p>Для забезпечення безпеки при подальшому використанні Web Optimizer необхідно встановили пароль доступу.</p>
+							<p>Перед проведенням установки, будь-ласка, переконайтеся, що кореневий <code>.htaccess</code>і файли веб-системи, яка використовується, доступні на запис (при проведенні установки Web Optimizer також створює резервні копії).</p>
+							<p>Web Optimizer може самостійно перевірити доступні можливості вашего серверу і провести установку в автоматичному режимі. Для цього необхідно обрати <strong>&laquo;Швидка установка&raquo;</strong>. В подальшому ви зможете змінити всі збережені налаштування, використовуючи даний інтерфейс.</p>
+							<p>Якщо Ви хочете налаштувати використання Web Optimizer самостійно, то необхідно обрати <strong>&laquo;Далі&raquo;</strong>. Ви зможете перевірити всі налаштування до їх застосування для вашого сайту.</p>
+							<p><a href="http://webo.in/articles/habrahabr/99-web-optimizer-installation-0.5/">Процес установки Web Optimizer</a></p>');
 define('_WEBO_NEW_USERDATA', 'Ваш логін та пароль');
 define('_WEBO_NEW_ENTER', 'Встановіть ваш логін та пароль');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Видалити');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Видалення');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання Веб Оптимізатора. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">сторінку Веб Оптимізатора</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://code.google.com/p/web-optimizator/">сайті Веб Оптимізатора</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання Web Optimizer. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">сторінку Web Optimizer</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://code.google.com/p/web-optimizator/">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Тепер можна повернутися назад до <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашого сайту</a>.');
 define('_WEBO_SPLASH1_NEXT', 'Далі');
@@ -74,11 +74,11 @@ define('_WEBO_SPLASH1_EXPRESS', 'Швидка установка');
 
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Установка - другий крок');
-define('_WEBO_SPLASH2_OPTIONS', 'Налаштування Веб Оптимізатора');
+define('_WEBO_SPLASH2_OPTIONS', 'Налаштування Web Optimizer');
 define('_WEBO_SPLASH2_CACHE', 'Директорії кешування');
 define('_WEBO_SPLASH2_CACHE_JS', 'JavaScript-файли будуть розміщуватися в');
 define('_WEBO_SPLASH2_CACHE_CSS', 'CSS-файли будуть розміщуватися в');
-define('_WEBO_SPLASH2_INSTALLDIR', 'Веб Оптимізатор розміщений в');
+define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer розміщений в');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Сайт розміщений в');
 define('_WEBO_SPLASH2_SPACE', 'Будь-лайска, через пробіл:');
 define('_WEBO_SPLASH2_YES', 'Так:');
@@ -101,8 +101,8 @@ define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>&laquo;Ненав\'язливий&raquo; JavaSc
 									<p>Також існує можливість перенести всі виклики зовнішніх JavaScript-файлів перед <code>&lt;/body&gt;</code>.</p>
 									<p><a href="http://webo.in/articles/all/04-unobtrusive-javascript-operation-clean-up/">Техніка &laquo;ненав\'язливого&raquo; JavaScript</a>, <a href="http://webo.in/articles/habrahabr/44-unobtrusive-advertisements-basics/">&laquo;ненав\'язлива&raquo; реклама і лічильники</a>, <a href="http://webo.in/articles/habrahabr/56-non-blocking-javascript/">блокуючі скріпти</a> та <a href="http://webo.in/articles/habrahabr/05-delayed-loading/">&laquo;відкладене&raquo; завантаження</a>.</p>');
 define('_WEBO_SPLASH2_MTIME', 'Не перевіряти актуальність');
-define('_WEBO_SPLASH2_MTIME_INFO', '<p>Як правило, Веб Оптимізатор при кожному завантаженні сторінки перевіряє, чи змінились файли (час зміни та їх вміст), і на основі цієї інформації або дає лінки на існуючі статичні файли, або створює нові.</p>
-									<p>З точки зору серверної оптимізації більш оптимально буде не перевіряти кожного разу, чи змінились файли, а видаляти по факту самої зміни закешовану версію. Із включенням цієї настройки вам буде необхідно самостійно управляти кешем Веб Оптимізатора.</p>
+define('_WEBO_SPLASH2_MTIME_INFO', '<p>Як правило, Web Optimizer при кожному завантаженні сторінки перевіряє, чи змінились файли (час зміни та їх вміст), і на основі цієї інформації або дає лінки на існуючі статичні файли, або створює нові.</p>
+									<p>З точки зору серверної оптимізації більш оптимально буде не перевіряти кожного разу, чи змінились файли, а видаляти по факту самої зміни закешовану версію. Із включенням цієї настройки вам буде необхідно самостійно управляти кешем Web Optimizer.</p>
 									<p><a href="http://webo.in/articles/all/10-frontend-backend-balancing/">Вплив кількості файлов, що підключаються, на швидкість завантаження</a>.</p>');
 define('_WEBO_SPLASH2_GZIP', 'Настройки аархівування');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>Застосування <code>gzip</code>-стискання дозволить на 80-85% зменшити розмір текстових файлів.</p>
@@ -113,7 +113,7 @@ define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>В результаті роботи цієї настройки до в
 									<p>При зміні JavaScript- або CSS-файлів автоматично будуть створюватися їх нові мінімізовані версії, що дозволить &laquo;пробити&raquo; кеш в браузерах. Для малюнків та інших статичних файлів рекомендується використовувати нове фізичне ім\'я при їх зміні.</p>
 									<p><a href="http://webo.in/articles/all/http-caching/">Кешування </a> та <a href="http://webo.in/articles/habrahabr/15-yahoo-best-practices/#expires">його ефективність</a>.</p>');
 define('_WEBO_SPLASH2_HTMLCACHE', 'Кешувати HTML-файли');
-define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Веб Оптимізатор може кешувати кінцевий HTML-код, чим відвертає значну частину роботи на стороні сервера і зменшує час створення сторінки.</p>
+define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Web Optimizer може кешувати кінцевий HTML-код, чим відвертає значну частину роботи на стороні сервера і зменшує час створення сторінки.</p>
 									<p>Увага: при включенні цієї настройки вся логіка, що здійснюється на стороні серверу, буде недоступна. Сторінки стануть повністю статичними. Рекомендуєтся включати цю настройку, тільки якщо ви повністю впевнені у наслідках.</p>
 									<p><a href="http://webo.in/articles/all/2009/16-content-flushing/">Швидке скидання документу</a> та <a href="http://webo.in/articles/habrahabr/34-streaming-chunking-finding-end/">чанки</a>.</p>');
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
@@ -134,9 +134,9 @@ define('_WEBO_SPLASH2_HTACCESS', 'Використання .htaccess');
 define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Більша частина налаштувань <code>gzip</code>-стискання і кешування можуть бути записані в конфігураційному файлі вашого серверу для запобігання додаткової роботи на стороні серверних скриптів. Це може бути пророблено за допомогою файлу <code>.htaccess</code> (при необхідності ви можете пізніше самостійно перенести всі настройки в файл <code>httpd.cond</code>).</p>
 									<p><a href="http://webo.in/articles/all/mod-gzip-minify-on-fly/">Використання <code>mod_gzip</code></a>, <a href="http://webo.in/articles/all/2009/12-faster-and-cheaper-with-gzip/"><code>mod_deflate</code></a> та <a href="http://webo.in/articles/habrahabr/07-gzip-all/"><code>mod_rewrite</code></a>.</p>
 									<p>Доступні модулі: ');
-define('_WEBO_SPLASH2_FOOTER', 'Логотип Веб Оптимізатора');
+define('_WEBO_SPLASH2_FOOTER', 'Логотип Web Optimizer');
 define('_WEBO_SPLASH2_FOOTER_INFO', 'Веб Оптимізавтор може додати значок оптимізатора із посиланням на сайт проекту. Це може бути як печатка, так і посилання, а також і то, і інше.
-									<br/>Включивши цю опцію ви підтримаєте розповсюдження Веб Оптимізатора в маси.');
+									<br/>Включивши цю опцію ви підтримаєте розповсюдження Web Optimizer в маси.');
 define('_WEBO_SPLASH2_AUTOCHANGE', 'Автоматичне змінення /index.php');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимізавтор може автоматично внести потрібні зміни в основний файл вашого сайту, який використовує ');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (зміни будуть застосовані тільки для <code>/index.php</code>).
@@ -177,8 +177,8 @@ define('_WEBO_html_cache_flush_only', 'Включити тільки швидке скидання частини д
 define('_WEBO_html_cache_flush_size', 'Розмір частини документа, що скидається (в байтах)');
 define('_WEBO_html_cache_ignore_list', 'Перелік частин URL для виключення при кешуванні');
 define('_WEBO_html_cache_allowed_list', 'Список частин USER AGENTS (роботів) для включення при кешуванні');
-define('_WEBO_footer_text', 'Додати посилання на Веб Оптимізатор');
-define('_WEBO_footer_image', 'Додати зображення Веб Оптимізатора');
+define('_WEBO_footer_text', 'Додати посилання на Web Optimizer');
+define('_WEBO_footer_image', 'Додати зображення Web Optimizer');
 define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
 define('_WEBO_data_uris_smushit', 'Оптимізувати всі CSS-зображення через smush.it');
 define('_WEBO_css_sprites_enabled', 'Застосувати CSS Sprites');
@@ -201,7 +201,7 @@ define('_WEBO_htaccess_mod_setenvif', 'Використовувати <code>mod_setenvif</code>
 define('_WEBO_htaccess_mod_mime', 'Використовувати <code>mod_mime</code>');
 define('_WEBO_htaccess_mod_rewrite', 'Використовувати <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Розмістити <code>.htaccess</code> в локальній (не кореневій) директорії');
-define('_WEBO_htaccess_access', 'Захистити установку Веб Оптимізатора за допомогою <code>htpasswd</code>');
+define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'В\ключити авто-запис');
 
 /* Third splash -- end screen */
@@ -217,7 +217,7 @@ define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'Ваш сайт, який використовує ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ', був успішно прискорений. Ви можете <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">перевірити результат, який вийшов</a>.');
 define('_WEBO_SPLASH3_WORKING', 'Начебто все працює. А далі?');
-define('_WEBO_SPLASH3_ADD', 'Ви повинні <a href="#modify">додати виклик Веб Оптимізатора</a> до ваших серверних скриптів (');
+define('_WEBO_SPLASH3_ADD', 'Ви повинні <a href="#modify">додати виклик Web Optimizer</a> до ваших серверних скриптів (');
 define('_WEBO_SPLASH3_ADD_', '). Це буде значно простіше, якщо у вас є 1 файл, який обслуговує всі інші сторінки, таким чином вам потрібно буде змінити тільки його.');
 define('_WEBO_SPLASH3_MODIFY', 'Як потрібно змінити ваш файл');
 define('_WEBO_SPLASH3_TOFILE', 'У файл');
@@ -226,7 +226,7 @@ define('_WEBO_SPLASH3_TOFILE3', 'На кінець файлу');
 define('_WEBO_SPLASH3_AFTERSTRING', 'після пядка');
 define('_WEBO_SPLASH3_ADD2', 'додати');
 define('_WEBO_SPLASH3_TESTING', 'Тепер трохи тестування...');
-define('_WEBO_SPLASH3_NOTLIVE', 'Насправді у вас досить великий простір дій. Ви можете провести будь-які зміни в конфігурації Веб Оптимізатора (але краще їх проводити на тестовому сайті) для досягнення оптимальної продуктивності. Для змінення налаштувань потрібно:');
+define('_WEBO_SPLASH3_NOTLIVE', 'Насправді у вас досить великий простір дій. Ви можете провести будь-які зміни в конфігурації Web Optimizer (але краще їх проводити на тестовому сайті) для досягнення оптимальної продуктивності. Для змінення налаштувань потрібно:');
 define('_WEBO_SPLASH3_MANUALLY', 'Вручну змінити файл <code>config.webo.php</code>, який знаходиться за цим шляхом:<code>');
 define('_WEBO_SPLASH3_MANUALLY2', 'config.webo.php</code>');
 define('_WEBO_SPLASH3_AGAIN', 'І <a href="');
@@ -243,16 +243,16 @@ define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Будь-ласка, переконайтеся в тому, що кор
 define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Для цього виконайте CHMOD 775, aбо CHMOD 777, або створіть в корені файл <code>.htaccess</code>, доступний для читання і запису для вашого веб-серверу, або дозвольте читання і запис для поточного файлу <code>.htaccess</code> (CHMOD 664).');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Будь-ласка, переконайтеся, що коренева папка вашого сайту доступна для запису для вашого веб-серверу або в ній існує доступний для запису файл <code>.htaccess</code>.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Виконайте для директорії CHMOD 775 aбо CHMOD 777, або створіть в корені файл <code>.htaccess</code>, доступний для запису для вашого веб-серверу, або дозвольте запис для поточного файлу <code>.htaccess</code> (CHMOD 664 aбо CHMOD 777).');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Будь-ласка, переконайтеся, що Веб Оптимізатор був проінстальований в');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Будь-ласка, переконайтеся, що Web Optimizer був проінстальований в');
 define('_WEBO_SPLASH3_CONFSAVED', 'Конфігурація збережена');
-define('_WEBO_SPLASH3_CONFIGERROR', 'Неможливо відкрити для запису конфігураційний файл. Будь-ласка, змініть права доступу для файлу <code>config.webo.php</code> Веб Оптимізатора, щоб він був доступний для запису для вашого веб-серверу.');
+define('_WEBO_SPLASH3_CONFIGERROR', 'Неможливо відкрити для запису конфігураційний файл. Будь-ласка, змініть права доступу для файлу <code>config.webo.php</code> Web Optimizer, щоб він був доступний для запису для вашого веб-серверу.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Ви можете це зробити за допомогою вашого FTP-клієнта. Для цього просто перейдіть в директорію <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , потім увійдіть до властивостей файлу або виконайте CHMOD. Встановіть у 775 або 777, або "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Після того, як ви усунете цю проблему, будь-ласка, перезавантажте сторінку.');
-define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Веб Оптимізатор повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
+define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Web Optimizer повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 define('_WEBO_SPLASH3_ADDITIONAL', 'Налаштуваня оптимальної швидкодії');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Ви можете провести додаткові зміни на вашому сайті, які дозволять використовувати Веб Оптимізатор більш ефективно. До числа таких змін можна віднести:');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Винесіть всі JavaScript- і CSS-файли, необхідні для завантаження сайту, в <code>head</code>-секцію сторінки.</strong> Це дозволить Веб Оптимізатору управляти їх об\'єднанням і стисненням.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Підключіть множинні хости для вашого сайту.</strong> Для цього в DNS необхідно вказати <code>* IN A IP_адресу_вашого_серверу</code>, підключити відповідні піддомени (наприклад, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) і провести установку спочатку. Веб Оптимізатор самостійно виявить доступні хости і розподілить зображенням між ними.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Винесіть всі стилі і скрипти, прописані прямо в коді сторінки, у зовнішні файли.</strong> По-перше, це дозволить вам простіше управляти змінами на вашому сайті. По-друге, це дозволить Веб Оптимізатору об\'єднати, мінімізувати та закешувати весь об\'єм додаткового коду, який потрібний для правильного функціонування вашого сайту.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Ви можете провести додаткові зміни на вашому сайті, які дозволять використовувати Web Optimizer більш ефективно. До числа таких змін можна віднести:');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Винесіть всі JavaScript- і CSS-файли, необхідні для завантаження сайту, в <code>head</code>-секцію сторінки.</strong> Це дозволить Web Optimizer управляти їх об\'єднанням і стисненням.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Підключіть множинні хости для вашого сайту.</strong> Для цього в DNS необхідно вказати <code>* IN A IP_адресу_вашого_серверу</code>, підключити відповідні піддомени (наприклад, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) і провести установку спочатку. Web Optimizer самостійно виявить доступні хости і розподілить зображенням між ними.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Винесіть всі стилі і скрипти, прописані прямо в коді сторінки, у зовнішні файли.</strong> По-перше, це дозволить вам простіше управляти змінами на вашому сайті. По-друге, це дозволить Web Optimizer об\'єднати, мінімізувати та закешувати весь об\'єм додаткового коду, який потрібний для правильного функціонування вашого сайту.');
 ?>

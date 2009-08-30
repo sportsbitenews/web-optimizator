@@ -273,14 +273,17 @@ class admin {
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
-/* PHP-Nuke, Bitrix deletion */
-		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix') {
+/* PHP-Nuke, Bitrix, Open Slaed deletion */
+		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix' || substr($this->cms_version, 0, 10) == 'Open Slaed') {
 			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
-			} else {
+			} elseif ($this->cms_version == 'PHP-Nuke' ) {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+			} else {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
 			}
 			$mainfile_content = @file_get_contents($mainfile);
 			$footer_content = @file_get_contents($footer);
@@ -293,7 +296,7 @@ class admin {
 					$fp = @fopen($footer, "w");
 					if ($fp) {
 /* update footer */
-						@fwrite($fp, preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
+						@fwrite($fp, preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
 						@fclose($fp);
 					} elseif ($return) {
 						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $footer . "</code></p>");
@@ -317,7 +320,7 @@ class admin {
 			if ($fp) {
 				$content_saved = '';
 				while ($index_string = fgets($fp)) {
-					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/", "", $index_string);
+					$content_saved .= preg_replace("!(global \\\$web_optimizer|require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?!", "", $index_string);
 				}
 				fclose($fp);
 				$fp = @fopen($index, "w");
@@ -1035,8 +1038,6 @@ ExpiresDefault \"access plus 10 years\"
 							@copy($mainfile, $mainfile . '.backup');
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
-/* remove any old strings regarding Web Optimizer */
-								$mainfile_content = preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
 /* add class declaration */
 								$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
 /* add finish */
@@ -1058,14 +1059,41 @@ ExpiresDefault \"access plus 10 years\"
 							$fp = @fopen($mainfile, "w");
 							if ($fp) {
 /* update header */
-								@fwrite($fp, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
+								@fwrite($fp, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content));
 								@fclose($fp);
 /* create backup */
 								@copy($footer, $footer . '.backup');
 								$fp = @fopen($footer, "w");
 								if ($fp) {
 /* update footer */
-									@fwrite($fp, preg_replace("/(echo\s*\\\$r;\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $footer_content)));
+									@fwrite($fp, preg_replace("/(echo\s*\\\$r;\r?\n?)/", "$1\n" . '\$web_optimizer->finish();' . "\n", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $footer_content)));
+									@fclose($fp);
+									$auto_rewrite = 1;
+								}
+							}
+						}
+/* and for Open Slaed */
+					} elseif (substr($this->cms_version, 0, 10) == 'Open Slaed') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
+						$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						$footer_content = @file_get_contents($footer);
+						if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
+							$fp = @fopen($mainfile, "w");
+							if ($fp) {
+/* update mainfile */
+								@fwrite($fp, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content));
+								@fclose($fp);
+/* create backup */
+								@copy($footer, $footer . '.backup');
+								$fp = @fopen($footer, "w");
+								if ($fp) {
+/* update footer */
+									$footer_content = preg_replace('!(readfile\(\$cacheurl\);)!', "$1\n" . 'global $web_optimizer;$web_optimizer->finish();', $footer_content);
+									$footer_content = preg_replace('!(ob_end_flush\(\);)!', 'global $web_optimizer;$web_optimizer->finish();' . "\n$1", $footer_content);
+									@fwrite($fp, $footer_content);
 									@fclose($fp);
 									$auto_rewrite = 1;
 								}
@@ -1704,6 +1732,11 @@ require valid-user
 /* Website Baker 2.8 */
 		} elseif (is_file($root . 'account/preferences.php')) {
 			return 'Website Baker';
+/* Open Slaed 1.2 */
+		} elseif (is_file($root . 'config/config_global.php')) {
+			define('FUNC_FILE', 1);
+			require($root . 'config/config_global.php');
+			return 'Open Slaed' . (empty($conf['version']) ? '' : ' ' . $conf['version']);
 		}
 		return 'CMS 42';
 	}
@@ -1923,6 +1956,28 @@ require valid-user
 						'file' => 'class/theme.php',
 						'mode' => 'finish',
 						'location' => '$this->render( null, null, $template );',
+						'global' => 1
+					)
+				);
+				break;
+/* Open Slaed 1.2 */
+			case 'Open':
+				$files = array(
+					array(
+						'file' => 'function/function.php',
+						'mode' => 'start',
+						'location' => 'unset($_SESSION[$conf[\'user_c\']]);',
+						'global' => 1
+					),
+					array(
+						'file' => 'function/function.php',
+						'mode' => 'finish',
+						'location' => 'readfile($cacheurl);'
+					),
+					array(
+						'file' => 'function/function.php',
+						'mode' => 'finish',
+						'location' => 'echo pack(\'V\', $gzip_size);}}',
 						'global' => 1
 					)
 				);

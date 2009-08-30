@@ -125,6 +125,7 @@
  F) MDPro
 +G) Xaraya (1.1.5)
 +H) Website Baker (2.8.0)
++I) Open Slaed (1.2)
 
 12. Localization
 +a) English
