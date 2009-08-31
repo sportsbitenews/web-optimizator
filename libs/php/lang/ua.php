@@ -255,4 +255,41 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Ви можете провести додаткові зміни на в
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Винесіть всі JavaScript- і CSS-файли, необхідні для завантаження сайту, в <code>head</code>-секцію сторінки.</strong> Це дозволить Web Optimizer управляти їх об\'єднанням і стисненням.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Підключіть множинні хости для вашого сайту.</strong> Для цього в DNS необхідно вказати <code>* IN A IP_адресу_вашого_серверу</code>, підключити відповідні піддомени (наприклад, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) і провести установку спочатку. Web Optimizer самостійно виявить доступні хости і розподілить зображенням між ними.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Винесіть всі стилі і скрипти, прописані прямо в коді сторінки, у зовнішні файли.</strong> По-перше, це дозволить вам простіше управляти змінами на вашому сайті. По-друге, це дозволить Web Optimizer об\'єднати, мінімізувати та закешувати весь об\'єм додаткового коду, який потрібний для правильного функціонування вашого сайту.');
+
+/* System check info on the first screen */
+define('_WEBO_SYSTEM_CHECK', 'Проверяем конфигурацию системы...');
+define('_WEBO_SYSTEM_CHECK_ENABLED', 'есть');
+define('_WEBO_SYSTEM_CHECK_DISABLED', 'нет');
+define('_WEBO_SYSTEM_CHECK_WRITABLE', 'доступна');
+define('_WEBO_SYSTEM_CHECK_RESTRICTED', 'запрещена');
+define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'Конфигурация системы');
+define('_WEBO_SYSTEM_CHECK_VIA_JSMIN', 'через JSMin');
+define('_WEBO_SYSTEM_CHECK_VIA_YUI', 'через YUI Compressor');
+define('_WEBO_SYSTEM_CHECK_VIA_CSSTIDY', 'через CSS Tidy');
+define('_WEBO_SYSTEM_CHECK_VIA_PHP', 'через PHP');
+define('_WEBO_SYSTEM_CHECK_VIA_HTACCESS', 'через <code>.htaccess</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT', 'Поддержка <code>.htaccess</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS', 'Запись в <code>.htaccess</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', 'Поддержка <code>mod_rewrite</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', 'Поддержка <code>mod_gzip</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', 'Поддержка <code>mod_deflate</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', 'Поддержка <code>mod_expires</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', 'Поддержка <code>mod_headers</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', 'Поддержка <code>mod_mime</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_SETENVIF', 'Поддержка <code>mod_setenvif</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_PROTECTED', 'Ограничение доступа для установки');
+define('_WEBO_SYSTEM_CHECK_CSS_DIRECTORY', 'Запись в CSS-директорию');
+define('_WEBO_SYSTEM_CHECK_JAVASCRIPT_DIRECTORY', 'Запись в JavaScript-директорию');
+define('_WEBO_SYSTEM_CHECK_HTML_DIRECTORY', 'Запись в HTML-директорию');
+define('_WEBO_SYSTEM_CHECK_INDEX', 'Запись в файл <code>/index.php</code>');
+define('_WEBO_SYSTEM_CHECK_CONFIG', 'Запись в конфигурационный файл');
+define('_WEBO_SYSTEM_CHECK_GZIP', '<code>gzip</code> &laquo;на лету&raquo;');
+define('_WEBO_SYSTEM_CHECK_GZIP_STATIC', 'Поддержка статического <code>gzip</code>');
+define('_WEBO_SYSTEM_CHECK_CACHE', 'Клиентское кэширование');
+define('_WEBO_SYSTEM_CHECK_CSS_SPRITES', 'Поддержка CSS Sprites');
+define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Минимизация CSS');
+define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JavaScript');
+define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файлам');
+define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
+define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка системы');
 ?>

@@ -1,4 +1,10 @@
-<ul><li><a href="index.php" title="<?php
+<?php
+/**
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * Outputs final Stage 2 page
+ *
+ **/
+?><ul><li><a href="index.php" title="<?php
 	echo _WEBO_SPLASH1_BACK;
 ?>">1</a></li><li><strong>2</strong></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;

@@ -256,4 +256,41 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'You can apply additional changes to you
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Move all required for your website JavaScript and CSS files to the <code>head</code> section.</strong> This will allow Web Optimizer to manage their merging and minifying.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Add multiple hosts for your website.</strong> You need to add to your DNS the following record <code>* IN A your_server_IP_address</code>, then add approproate subdomains (i.e. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) into your server configuration and install Web Optimizer once more. Web Optimizer automatically detects existing hosts (if not please add them manually) and distribute images through them.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Move all inline CSS and JavaScript to external files.</strong> First of all it make managing changes in your website design / bahavior simplier. Secondly this will allow Web Optimizer to merge, minify and cache all styles and scripts that are used on your website.');
+
+/* System check info on the first screen */
+define('_WEBO_SYSTEM_CHECK', 'Checking system configuration...');
+define('_WEBO_SYSTEM_CHECK_ENABLED', 'enabled');
+define('_WEBO_SYSTEM_CHECK_DISABLED', 'disabled');
+define('_WEBO_SYSTEM_CHECK_WRITABLE', 'yes');
+define('_WEBO_SYSTEM_CHECK_RESTRICTED', 'no');
+define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'System info');
+define('_WEBO_SYSTEM_CHECK_VIA_JSMIN', 'via JSMin');
+define('_WEBO_SYSTEM_CHECK_VIA_YUI', 'via YUI Compressor');
+define('_WEBO_SYSTEM_CHECK_VIA_CSSTIDY', 'via CSS Tidy');
+define('_WEBO_SYSTEM_CHECK_VIA_PHP', 'via PHP');
+define('_WEBO_SYSTEM_CHECK_VIA_HTACCESS', 'via <code>.htaccess</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT', '<code>.htaccess</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS', '<code>.htaccess</code> is writable');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', '<code>mod_rewrite</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', '<code>mod_gzip</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', '<code>mod_expires</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', '<code>mod_headers</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', '<code>mod_mime</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_SETENVIF', '<code>mod_setenvif</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_PROTECTED', 'Protected mode for install');
+define('_WEBO_SYSTEM_CHECK_CSS_DIRECTORY', 'CSS folder is writable');
+define('_WEBO_SYSTEM_CHECK_JAVASCRIPT_DIRECTORY', 'JavaScript folder is writable');
+define('_WEBO_SYSTEM_CHECK_HTML_DIRECTORY', 'HTML folder is writable');
+define('_WEBO_SYSTEM_CHECK_INDEX', '<code>/index.php</code> is wratable');
+define('_WEBO_SYSTEM_CHECK_CONFIG', 'Configuration file is writable');
+define('_WEBO_SYSTEM_CHECK_GZIP', '<code>gzip</code> "on fly"');
+define('_WEBO_SYSTEM_CHECK_GZIP_STATIC', 'Static <code>gzip</code>');
+define('_WEBO_SYSTEM_CHECK_CACHE', 'Client side caching');
+define('_WEBO_SYSTEM_CHECK_CSS_SPRITES', 'CSS Sprites support');
+define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Minify for CSS');
+define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Minify for JavaScript');
+define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'External files access');
+define('_WEBO_SYSTEM_CHECK_HOSTS', 'Multiple hosts');
+define('_WEBO_SYSTEM_CHECK_CMS', 'Native CMS support');
 ?>

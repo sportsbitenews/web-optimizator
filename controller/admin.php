@@ -31,7 +31,8 @@ class admin {
 		$this->manage_password();
 		$this->password_not_required = array(
 			'install_enter_password' => 1,
-			'install_set_password' => 1
+			'install_set_password' => 1,
+			'system_check' => 1
 		);
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
@@ -56,18 +57,21 @@ class admin {
 			'install_stage_2' => 1,
 			'install_stage_3' => 1,
 			'install_uninstall' => 1,
-			'install_upgrade' => 1
+			'install_upgrade' => 1,
+			'system_check' => 1
 		);
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
 /* if we use .htaccess*/
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
+		if ($this->input['page'] != 'system_check') {
 /* grade URL from webo.name */
-		$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
+			$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
 /* download counter */
-		if (!is_file($this->basepath . 'web-optimizer-counter')) {
-			$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
+			if (!is_file($this->basepath . 'web-optimizer-counter')) {
+				$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
+			}
 		}
 /* show page */
 		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
@@ -75,6 +79,85 @@ class admin {
 			$this->$func();
 		}
 	}
+		/*
+		* Check system requirements for Web Optimizer
+		*
+		**/
+		function system_check () {
+/* get available Apache modules */
+			$this->get_modules();
+/* get PHP extensions */
+			$extensions = @get_loaded_extensions();
+/* get GDlib info */
+			$gd = @gd_info();
+			$gd = empty($gd) ? array() : $gd;
+/* set default paths */
+			$this->view->set_paths();
+/* calculate directories */
+			$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
+			$css_cachedir = empty($this->compress_options['css_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['css_cachedir'];
+			$html_cachedir = empty($this->compress_options['html_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['html_cachedir'];
+			$webo_cachedir = empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'];
+			$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
+/* check for YUI */
+			$YUI_available = 0;
+			if (is_file($webo_cachedir . 'libs/php/class.yuicompressor4.php') || is_file($webo_cachedir . 'libs/php/class.yuicompressor.php')) {
+				if (substr(phpversion(), 0, 1) == 4) {
+					require_once($webo_cachedir . 'libs/php/class.yuicompressor4.php');
+				} else {
+					require_once($webo_cachedir . 'libs/php/class.yuicompressor.php');
+				}
+				$YUI = new YuiCompressor($javascript_cachedir, $webo_cachedir);
+				$YUI_checked = $YUI->check();
+			}
+/* check if .htaccess is avaiable */
+			$htaccess_available = count($this->apache_modules) ? 1 : 0;
+/* download restricted file */
+			$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/js/yass.loadbar.js', $javascript_cachedir . 'yass.loadbar.js');
+			if (@filesize($javascript_cachedir . 'yass.loadbar.js') == @filesize($webo_cachedir . 'libs/js/yass.loadbar.js')) {
+				$htaccess_available = 0;
+			}
+			@unlink($javascript_cachedir . 'yass.loadbar.js');
+/* check for multiple hosts */
+			$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : $this->compress_options['parallel']['allowed_list'];
+			if (!empty($this->compress_options['parallel']['check'])) {
+				$hosts = $this->check_hosts($hosts);
+			}
+/* set variables */
+			$page_variables = array(
+				'javascript_writable' => is_writable($javascript_cachedir),
+				'javascript_cachedir' => $javascript_cachedir,
+				'css_writable' => is_writable($css_cachedir),
+				'css_cachedir' => $css_cachedir,
+				'html_writable' => is_writable($html_cachedir),
+				'html_cachedir' => $html_cachedir,
+				'htaccess_writable' => is_writable($document_root) || is_writable($document_root . '.htaccess'),
+				'htaccess' => $root_cachedir . '.htaccess',
+				'index_writable' => is_writable($document_root . 'index.php'),
+				'index' => $document_root . 'index.php',
+				'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
+				'config' => $webo_cachedir . 'config.webo.php',
+				'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
+				'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode'),
+				'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
+				'gd_full_support' => !empty($gd['GIF Read Support']) && !empty($gd['GIF Create Support']) && !empty($gd['JPG Support']) && !empty($gd['PNG Support']) && !empty($gd['WBMP Support']),
+				'yui_possibility' => empty($YUI_checked) ? 0 : 1,
+				'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
+				'htaccess_possibility' => $htaccess_available,
+				'mod_deflate' => in_array('mod_deflate', $this->apache_modules),
+				'mod_gzip' => in_array('mod_gzip', $this->apache_modules),
+				'mod_headers' => in_array('mod_headers', $this->apache_modules),
+				'mod_expires' => in_array('mod_expires', $this->apache_modules),
+				'mod_mime' => in_array('mod_mime', $this->apache_modules),
+				'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
+				'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
+				'protected_mode' => empty($this->protected) ? 0 : 1,
+				'cms' => $this->system_info($document_root),
+			);
+/* Output data */
+			$this->view->render("system_check", $page_variables);
+		}
+
 	/**
 	* Write installation progress to JavaScript file
 	* 
@@ -234,7 +317,7 @@ class admin {
 	/**
 	* Upgrade page
 	*
-	**/     
+	**/	 
 	function install_upgrade() {
 		$file = 'files';
 		$this->download($this->svn . $file, $file);

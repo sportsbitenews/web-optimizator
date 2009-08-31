@@ -6,6 +6,8 @@ libs/css/main.css
 libs/css/a.png
 libs/css/b.png
 libs/css/c.png
+libs/css/d.gif
+libs/js/.htaccess
 libs/js/wo.cookie.php
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
@@ -35,6 +37,7 @@ view/install_set_password.php
 view/install_stage_2.php
 view/install_stage_3.php
 view/install_uninstall.php
+view/system_check.php
 config.webo.php
 index.php
 install.php

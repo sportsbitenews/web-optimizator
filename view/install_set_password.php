@@ -1,4 +1,10 @@
-<ul><li><strong>1</strong></li><li><a href="?page=install_stage_2" title="<?php
+<?php
+/**
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * Outputs final Stage 1 page (before installation)
+ *
+ **/
+?><ul><li><strong>1</strong></li><li><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">2</a></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
@@ -8,7 +14,7 @@
 	echo _WEBO_NEW_TITLE;
 ?></h2><div class="d u"><div class="e"><?php
 	echo _WEBO_NEW_PROTECT;
-?></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
+?></div><div id="sc"><p>_WEBO_SYSTEM_CHECK</p></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;
 ?></legend><p><label for="user_username"><?php
 	echo _WEBO_LOGIN_USERNAME;
@@ -34,4 +40,4 @@
 	if ($display_progress) {
 ?><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div><?php
 	}
-?>
+?><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>

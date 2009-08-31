@@ -1,5 +1,11 @@
-<ul><li><strong>1</strong></li><li><a href="?page=install_stage_2" title="<?php
-	echo _WEBO_SPLASH1_NEXT;
+<?php
+/**
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * Outputs final Stage 1 page (after installation)
+ *
+ **/
+?><ul><li><strong>1</strong></li><li><a href="?page=install_stage_2" title="<?php
+		echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">2</a></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">3</a></li></ul></div><p><sup><a href="?page=install_stage_2" title="<?php
@@ -52,7 +58,7 @@
 ?></strong> <?php
 		echo _WEBO_LOGIN_EFFICIENCY_S;
 		if ($saved_kb) {
-?>	(<?php
+?>	  (<?php
 			echo $saved_kb . _WEBO_LOGIN_EFFICIENCY_KB;
 ?>, <?php
 			echo $saved_percent;
@@ -60,7 +66,7 @@
 		}
 ?></label></p><?php
 	}
-?></fieldset><?php
+?></fieldset><div><?php
 	if ($version_new_exists) {
 ?><fieldset class="g"><p><?php
 		echo _WEBO_LOGIN_UPGRADENOTICE . $version . ($protected ? _WEBO_LOGIN_UPGRADENOTICE4 : _WEBO_LOGIN_UPGRADENOTICE2) . $version_new . _WEBO_LOGIN_UPGRADENOTICE3;
@@ -82,4 +88,4 @@
 	echo _WEBO_SPLASH1_UNINSTALL;
 ?>" title="<?php
 	echo _WEBO_LOGIN_UNINSTALLME;
-?>" class="j"/></fieldset></form><b></b><i></i><del></del><ins></ins></div>
+?>" class="j"/></fieldset></div><div id="sc"><p>_WEBO_SYSTEM_CHECK</p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
