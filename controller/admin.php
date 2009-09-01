@@ -455,9 +455,10 @@ class admin {
 				} else {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 				}
+				$content = preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file));
 				$fpc = @fopen($cache_file, 'wb');
 				if ($fpc) {
-					@fwrite($fpc, preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+					@fwrite($fpc, $content);
 					@fclose($fpc);
 				}
 			}
