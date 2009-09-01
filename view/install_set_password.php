@@ -16,7 +16,7 @@
 	echo _WEBO_NEW_NOSCRIPT;
 ?></p></noscript><?php
 	echo _WEBO_NEW_PROTECT;
-?></div><div id="sc"><p>_WEBO_SYSTEM_CHECK</p></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
+?></div><div id="sc"><p><?php echo _WEBO_SYSTEM_CHECK ?></p></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;
 ?></legend><p><label for="user_username"><?php
 	echo _WEBO_LOGIN_USERNAME;

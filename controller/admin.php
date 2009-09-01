@@ -816,6 +816,7 @@ class admin {
 					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
 							$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? 0 : $this->input['user'][$key][$option_name];
+							$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
 						}
 					} else {
 						$this->input['user'][$option] = !isset($this->input['user'][$option]) ? 0 : $this->input['user'][$option];
@@ -825,7 +826,6 @@ class admin {
 				foreach($this->input['user'] as $key => $option) {
 					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
-							$option_value = empty($option_value) ? 0 : 1;
 							if (!empty($this->apache_modules)) {
 								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
 									$option_value = $option_value && in_array($option_name, $this->apache_modules);
