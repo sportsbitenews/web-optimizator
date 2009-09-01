@@ -448,14 +448,27 @@ class admin {
 			}
 /* additional change of cache plugins */
 			if (substr($this->cms_version, 0, 7) == "Joomla!" || substr($this->cms_version, 0, 5) == "XOOPS") {
+/* Joomla! 1.5 System-Cache plugin */
 				if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+/* Joomla! 1.0 PageCache component */
 				} elseif (substr($this->cms_version, 0, 7) == "Joomla!") {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
+/* XOOPS internal caching */
 				} else {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 				}
 				$content = preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file));
+				$fpc = @fopen($cache_file, 'wb');
+				if ($fpc) {
+					@fwrite($fpc, $content);
+					@fclose($fpc);
+				}
+			}
+/* Joomla! 1.0 System-Cache mambot */
+			if (substr($this->cms_version, 0, 7) == "Joomla!") {
+				$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
+				$content = preg_replace("/(\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));/", "", @file_get_contents($cache_file));
 				$fpc = @fopen($cache_file, 'wb');
 				if ($fpc) {
 					@fwrite($fpc, $content);
@@ -1280,7 +1293,7 @@ ExpiresDefault \"access plus 10 years\"
 							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+								$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
 								$fpc = @fopen($cache_file, 'wb');
 								if ($fpc) {
 									@fwrite($fpc, $content);
@@ -1288,9 +1301,19 @@ ExpiresDefault \"access plus 10 years\"
 								}
 							}
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
+/* PageCache component */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+								$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
+								$fpc = @fopen($cache_file, 'wb');
+								if ($fpc) {
+									@fwrite($fpc, $content);
+									@fclose($fpc);
+								}
+/* System-Cache mambot */
+								$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
+								@copy($cache_file, $cache_file . '.backup');
+								$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
 								$fpc = @fopen($cache_file, 'wb');
 								if ($fpc) {
 									@fwrite($fpc, $content);
@@ -1300,7 +1323,7 @@ ExpiresDefault \"access plus 10 years\"
 							if (substr($this->cms_version, 0, 5) == 'XOOPS') {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file)));
+								$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
 								$fpc = @fopen($cache_file, 'wb');
 								if ($fpc) {
 									@fwrite($fpc, $content);
@@ -1889,6 +1912,16 @@ require valid-user
 							'mode' => 'finish',
 							'location' => 'echo $data;',
 							'global' => 1
+						),
+						array(
+							'file' => 'mambots/system/cache.php',
+							'mode' => 'start',
+							'location' => 'initGzip();'
+						),
+						array(
+							'file' => 'mambots/system/cache.php',
+							'mode' => 'finish',
+							'location' => 'echo $content;'
 						),
 					);
 				}
