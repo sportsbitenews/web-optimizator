@@ -109,8 +109,7 @@ require('<?php
 	echo _WEBO_SPLASH3_MANUALLY . preg_replace("/\\\/", "/", $paths['full']['current_directory']) ._WEBO_SPLASH3_MANUALLY2;
 ?></li><li><?php
 	echo _WEBO_SPLASH3_AGAIN . $paths['relative']['current_directory'] . _WEBO_SPLASH3_AGAIN2;
-?></li></ul></fieldset>
-<fieldset id="security"><h3><?php
+?></li></ul></fieldset><fieldset id="security"><h3><?php
 	echo _WEBO_SPLASH3_SECURITY;
 ?></h3><p><?php
 	echo _WEBO_SPLASH3_ALTHOUGH . preg_replace("/\\\/", "/", $paths['full']['current_directory']) . _WEBO_SPLASH3_ALTHOUGH2;
