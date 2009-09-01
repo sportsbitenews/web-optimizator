@@ -117,7 +117,7 @@ class admin {
 			if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($webo_cachedir . 'css.sprites.php')) {
 				$htaccess_available = 0;
 			}
-			@unlink($javascript_cachedir . 'yass.loadbar.js');
+			@unlink($javascript_cachedir . 'htaccess.test');
 /* check for multiple hosts */
 			$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : $this->compress_options['parallel']['allowed_list'];
 			if (!empty($this->compress_options['parallel']['check'])) {

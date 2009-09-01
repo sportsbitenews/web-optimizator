@@ -1468,7 +1468,7 @@ class web_optimizer {
 		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."!is", $file)) {
 			return false;
 		}
-		$absolute_path = $file;
+		$absolute_path = preg_replace("!(https?://[^/]+/).*!", "$1", $path['file']) . $file;
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
@@ -1639,7 +1639,7 @@ class web_optimizer {
 			} else {
 				chdir($this->options['javascript']['cachedir']);
 			}
-			$return_filename = 'wo' . md5($file);
+			$return_filename = 'wo' . md5($file) . '.' . ($tag == 'link' ? 'css' : 'js');
 			if (file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
 			} else {
