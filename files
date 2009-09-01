@@ -7,13 +7,13 @@ libs/css/a.png
 libs/css/b.png
 libs/css/c.png
 libs/css/d.gif
-libs/js/.htaccess
 libs/js/wo.cookie.php
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
+libs/php/.htaccess
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php

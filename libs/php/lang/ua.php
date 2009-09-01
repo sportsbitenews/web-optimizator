@@ -289,7 +289,7 @@ define('_WEBO_SYSTEM_CHECK_GZIP_STATIC', 'Поддержка статического <code>gzip</cod
 define('_WEBO_SYSTEM_CHECK_CACHE', 'Клиентское кэширование');
 define('_WEBO_SYSTEM_CHECK_CSS_SPRITES', 'Поддержка CSS Sprites');
 define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Минимизация CSS');
-define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JavaScript');
+define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файлам');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка системы');

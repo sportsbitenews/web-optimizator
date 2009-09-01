@@ -113,8 +113,8 @@ class admin {
 /* check if .htaccess is avaiable */
 			$htaccess_available = count($this->apache_modules) ? 1 : 0;
 /* download restricted file */
-			$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/js/yass.loadbar.js', $javascript_cachedir . 'yass.loadbar.js');
-			if (@filesize($javascript_cachedir . 'yass.loadbar.js') == @filesize($webo_cachedir . 'libs/js/yass.loadbar.js')) {
+			$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
+			if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($webo_cachedir . 'css.sprites.php')) {
 				$htaccess_available = 0;
 			}
 			@unlink($javascript_cachedir . 'yass.loadbar.js');
@@ -132,7 +132,7 @@ class admin {
 				'html_writable' => is_writable($html_cachedir),
 				'html_cachedir' => $html_cachedir,
 				'htaccess_writable' => is_writable($document_root) || is_writable($document_root . '.htaccess'),
-				'htaccess' => $root_cachedir . '.htaccess',
+				'htaccess' => $document_root . '.htaccess',
 				'index_writable' => is_writable($document_root . 'index.php'),
 				'index' => $document_root . 'index.php',
 				'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
@@ -752,7 +752,7 @@ class admin {
 /* convert fake JavaScript minify option */
 			if (!empty($this->input['user']['minify']['with'])) {
 /* fix for accessibility */
-				if (strpos($this->input['with'], '#')) {
+				if (!empty($this->input['with']) && strpos($this->input['with'], '#')) {
 					$with = explode('#', $this->input['with']);
 					$this->input['user']['minify'][$with[1]] = 1;
 				} else {

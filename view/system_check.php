@@ -8,7 +8,7 @@ header("Content-Type: application/x-javascript");
 ?>document.getElementById('sc').innerHTML='<a href="javascript:s(1);"><?php
 	echo _WEBO_SYSTEM_CHECK_SYSTEM_INFO;
 ?></a><div id="si"><ul><li title="<?php
-	echo $css_directory;
+	echo $css_cachedir;
 ?>"><?php
 	echo _WEBO_SYSTEM_CHECK_CSS_DIRECTORY;
 ?> <?php
@@ -22,7 +22,7 @@ header("Content-Type: application/x-javascript");
 ?>]</em><?php
 	}
 ?></li><li title="<?php
-	echo $javascript_directory;
+	echo $javascript_cachedir;
 ?>"><?php
 	echo _WEBO_SYSTEM_CHECK_JAVASCRIPT_DIRECTORY;
 ?> <?php
@@ -36,7 +36,7 @@ header("Content-Type: application/x-javascript");
 ?>]</em><?php
 	}
 ?></li><li title="<?php
-	echo $html_directory;
+	echo $html_cachedir;
 ?>"><?php
 	echo _WEBO_SYSTEM_CHECK_HTML_DIRECTORY;
 ?> <?php
@@ -80,7 +80,7 @@ header("Content-Type: application/x-javascript");
 ?></li><li><?php
 	echo _WEBO_SYSTEM_CHECK_GZIP;
 ?> <?php
-	if ($htaccess_posibility && ($mod_deflate || $mod_gzip)) {
+	if ($htaccess_possibility && ($mod_deflate || $mod_gzip)) {
 ?><strong>[<?php
 		echo _WEBO_SYSTEM_CHECK_VIA_HTACCESS;
 ?>]</strong><?php
@@ -174,7 +174,7 @@ header("Content-Type: application/x-javascript");
 ?> <?php
 	if ($cms != 'CMS 42') {
 ?><strong>[<?php
-		echo _WEBO_SYSTEM_CHECK_ENABLED . ', ' . $cms;
+		echo $cms;
 ?>]</strong><?php
 	} else {
 ?><em>[<?php

@@ -290,7 +290,7 @@ define('_WEBO_SYSTEM_CHECK_GZIP_STATIC', 'Static <code>gzip</code>');
 define('_WEBO_SYSTEM_CHECK_CACHE', 'Client side caching');
 define('_WEBO_SYSTEM_CHECK_CSS_SPRITES', 'CSS Sprites support');
 define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Minify for CSS');
-define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Minify for JavaScript');
+define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Minify for JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'External files access');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Multiple hosts');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Native CMS support');
