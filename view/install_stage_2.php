@@ -76,43 +76,44 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option=>$value) {
+				if (!in_array($option, array('javascript_level', 'page_level', 'css_level'))) {
 ?><label><?php
-				if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size'))) {
-					echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
+					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size'))) {
+						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 ?>.<?php
-					echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : ' ' . _WEBO_SPLASH2_SPACE;
+						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? '' : ' ' . _WEBO_SPLASH2_SPACE;
 ?> <input name="user[<?php
-					echo $key;
-?>][<?php
-					echo $option;
-?>]" value="<?php
-					echo $value;
-?>" size="40"<?php
-					echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? ' class="t"' : '';
-?>/><?php
-				} else {
-?><a href="#<?php
-					echo $key;
-?>" class="<?php
-					if (strpos($option, 'ith_')) {
-						echo empty($value) ? 'r' : 'y';
-?>"><input type="radio" name="with" value="<?php
-						echo $key
-?>#<?php
-						echo $option;
-					} else {
-						echo empty($value) ? 's' : 'w';
-?>"><input type="checkbox" name="user[<?php
 						echo $key;
 ?>][<?php
 						echo $option;
+?>]" value="<?php
+						echo $value;
+?>" size="40"<?php
+						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size')) ? ' class="t"' : '';
+?>/><?php
+					} else {
+?><a href="#<?php
+						echo $key;
+?>" class="<?php
+						if (strpos($option, 'ith_')) {
+							echo empty($value) ? 'r' : 'y';
+?>"><input type="radio" name="with" value="<?php
+							echo $key
+?>#<?php
+							echo $option;
+						} else {
+							echo empty($value) ? 's' : 'w';
+?>"><input type="checkbox" name="user[<?php
+							echo $key;
+?>][<?php
+							echo $option;
 ?>]<?php
-					}
+						}
 ?>" <?php
-					echo empty($value) ? '' : 'checked="checked"';
+						echo empty($value) ? '' : 'checked="checked"';
 ?>/></a><?php
-					echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
-?><?php
+						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
+					}
 				}
 ?></label><?php
 			}

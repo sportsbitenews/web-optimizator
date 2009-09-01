@@ -64,7 +64,7 @@ class admin {
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
 /* if we use .htaccess*/
-		$this->protected = isset($_SERVER['PHP_AUTH_USER']);
+		$this->protected = isset($_SERVER['PHP_AUTH_USER']) && $this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
 		if ($this->input['page'] != 'system_check') {
 /* grade URL from webo.name */
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
@@ -763,26 +763,40 @@ class admin {
 			$loaded_modules = @get_loaded_extensions();
 /* Create the options file */
 			$this->options_file = "config.webo.php";
-/* convert fake JavaScript minify option */
-			if (!empty($this->input['user']['minify']['with'])) {
-/* fix for accessibility */
-				if (!empty($this->input['with']) && strpos($this->input['with'], '#')) {
-					$with = explode('#', $this->input['with']);
-					$this->input['user']['minify'][$with[1]] = 1;
-				} else {
-					$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
-					$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
-					$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
-				}
-				$this->input['user']['minify']['with'] = null;
-			} else {
-				$this->input['user']['minify']['with_jsmin'] = 0;
-				$this->input['user']['minify']['with_yui'] = 0;
-				$this->input['user']['minify']['with_packer'] = 0;
-			}
 			if(!empty($this->input['Submit'])) {
+/* convert fake JavaScript minify option */
+				if (!empty($this->input['user']['minify']['with'])) {
+/* fix for accessibility */
+					if (!empty($this->input['with']) && strpos($this->input['with'], '#')) {
+						$with = explode('#', $this->input['with']);
+						$this->input['user']['minify'][$with[1]] = 1;
+					} else {
+						$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
+						$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
+						$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+					}
+					$this->input['user']['minify']['with'] = null;
+				} else {
+					$this->input['user']['minify']['with_jsmin'] = 0;
+					$this->input['user']['minify']['with_yui'] = 0;
+					$this->input['user']['minify']['with_packer'] = 0;
+				}
 /* try to set some libs executable */
 				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
+/* Load pre-defined options */
+				foreach ($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'html_level'))) {
+								$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
+								$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
+								$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
+							}
+						}
+					} else {
+						$this->input['user'][$option] = !isset($this->input['user'][$option]) ? '' : $this->input['user'][$option];
+					}
+				}
 				if (!empty($this->input['user']['minify']['with_yui'])) {
 /* check for YUI availability */
 					$YUI_checked = 0;
@@ -810,17 +824,6 @@ class admin {
 					$this->input['user']['htaccess']['mod_headers'] = 0;
 					$this->input['user']['htaccess']['mod_setenvif'] = 0;
 					$this->input['user']['htaccess']['mod_rewrite'] = 0;
-				}
-/* Load pre-defined options */
-				foreach ($this->compress_options as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? 0 : $this->input['user'][$key][$option_name];
-							$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
-						}
-					} else {
-						$this->input['user'][$option] = !isset($this->input['user'][$option]) ? 0 : $this->input['user'][$option];
-					}
 				}
 /* Save the options	*/
 				foreach($this->input['user'] as $key => $option) {
