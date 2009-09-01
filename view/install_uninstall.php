@@ -4,7 +4,7 @@
  * Outputs uninstall page
  *
  **/
-?></div><p><sub><a href="javascript:history.back(1)" title="<?php
+?></div><p id="showme"><sub><a href="javascript:history.back(1)" title="<?php
 	echo _WEBO_SPLASH1_BACK;
 ?>"></a></sub></p><div class="c"><b></b><i></i><del></del><ins></ins><?php
 	if(!empty($message)) {

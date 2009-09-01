@@ -8,7 +8,7 @@
 		echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">2</a></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="x">3</a></li></ul></div><p><sup><a href="?page=install_stage_2" title="<?php
+?>" class="x">3</a></li></ul></div><p id="showme"><sup><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins>
 <?php
@@ -19,10 +19,12 @@
 	}
 ?><h2><?php
 	echo _WEBO_LOGIN_TITLE
-?></h2><div class="d"><p class="e"><?php
+?></h2><div class="d"><div class="e"><noscript><p><?php
+	echo _WEBO_NEW_NOSCRIPT;
+?></p></noscript><?php
 	echo _WEBO_LOGIN_INSTALLED . $version . ($protected ? _WEBO_LOGIN_INSTALLED3 : _WEBO_LOGIN_INSTALLED2);
 	echo $installed ? '' : '<br/>' . _WEBO_LOGIN_NOTINSTALLED;
-?></p><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><?php
+?></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><?php
 	if ($protected) {
 ?><legend><?php
 		echo _WEBO_SPLAHS1_PROTECTED;
@@ -88,4 +90,6 @@
 	echo _WEBO_SPLASH1_UNINSTALL;
 ?>" title="<?php
 	echo _WEBO_LOGIN_UNINSTALLME;
-?>" class="j"/></fieldset></div><div id="sc"><p>_WEBO_SYSTEM_CHECK</p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
+?>" class="j"/></fieldset></div><div id="sc"><p><?php 
+	echo _WEBO_SYSTEM_CHECK
+?></p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>

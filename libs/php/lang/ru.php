@@ -59,6 +59,7 @@ define('_WEBO_NEW_PROTECT', '<p>Для обеспечения безопасности при дальнейшем испо
 							<p><a href="http://webo.in/articles/habrahabr/99-web-optimizer-installation-0.5/">Процесс установки Web Optimizer</a></p>');
 define('_WEBO_NEW_USERDATA', 'Ваш логин и пароль');
 define('_WEBO_NEW_ENTER', 'Установите ваш логин и пароль');
+define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с приложением требуется включенный JavaScript!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Удалить');
@@ -254,7 +255,7 @@ define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфигурационный файл не найден. Пожалуйст
 define('_WEBO_SPLASH3_ADDITIONAL', 'Настройка оптимального быстродействия');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Вы можете провести дополнительные изменения на вашем сайте, которые позволят использовать Web Optimizer более эффективно. К числу таких изменений можно отнести:');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Вынесите все JavaScript- и CSS-файлы, требуемые для загрузки сайта, в <code>head</code>-секцию страницы.</strong> Это позволит Web Optimizer управлять их объединением и сжатием.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Подключите множественные хосты для вашего сайта.</strong> Для этого в DNS необходимо указать <code>* IN A IP_адрес_вашего_сервера</code>, подключить соответствующие поддомены (например, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) и провести установку заново. Web Optimizer самостоятельно обнаружил доступные хосты и распределит изображения по ним.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Подключите множественные хосты для вашего сайта.</strong> Для этого в DNS необходимо указать <code>* IN A IP_адрес_вашего_сервера</code>, подключить соответствующие поддомены (например, <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) и провести установку заново. Web Optimizer самостоятельно обнаружит доступные хосты и распределит изображения по ним.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Вынесите все стили и скрипты, прописанные прямо в коде страницы, во внешние файлы.</strong> Во-первых, это позволит вам проще управлять изменениями на вашем сайте. Во-вторых, это позволит Web Optimizer объединить, минимизировать и закэшировать весь объем дополнительного кода, который требуется для правильного функционирования вашего сайта.');
 
 /* System check info on the first screen */

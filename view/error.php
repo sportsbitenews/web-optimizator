@@ -4,7 +4,7 @@
  * Outputs error page
  *
  **/
-?></div><p><sub><a href="javascript:history.back(1)" title="<?php
+?></div><p id="showme"><sub><a href="javascript:history.back(1)" title="<?php
 	echo _WEBO_SPLASH1_BACK;
 ?>"></a></sub></p><div class="c p"><b></b><i></i><del></del><ins></ins><h2><?php
 	echo _WEBO_ERROR_TITLE;

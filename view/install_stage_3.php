@@ -8,7 +8,7 @@
 	echo _WEBO_SPLASH1_BACK;
 ?>">1</a></li><li><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_BACK;
-?>" class="x">2</a></li><li><strong>3</strong></li></ul></div><p><sub><a href="?page=install_stage_2" title="<?php
+?>" class="x">2</a></li><li><strong>3</strong></li></ul></div><p id="showme"><sub><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_BACK;
 ?>" class="x"></a></sub><sup><a href="/" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
@@ -34,7 +34,7 @@
 	echo _WEBO_SPLASH3_SECURITY_SHORT;
 ?></a></li><li><a href="#additional"><?php
 	echo _WEBO_SPLASH3_ADDITIONAL_SHORT;
-?></a></li></ul><form action="?page=install_stage_2" method="post" enctype="multipart/form-data"><?php
+?></a></li></ul><form action="?page=install_stage_2" method="post" enctype="multipart/form-data"><div class="n"><?php
 	if ($auto_rewrite) {
 ?><fieldset id="rewrite"><h3><?php
 		echo _WEBO_SPLASH3_REWRITE;
@@ -128,4 +128,4 @@ require('<?php
 	echo _WEBO_SPLASH3_ADDITIONAL_INFO_2;
 ?></li><li><?php
 	echo _WEBO_SPLASH3_ADDITIONAL_INFO_3;
-?></li></ul></fieldset></form><b></b><i></i><del></del><ins></ins></div>
+?></li></ul></fieldset></div></form><b></b><i></i><del></del><ins></ins></div>

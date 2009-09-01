@@ -195,7 +195,8 @@ class web_optimizer {
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'],
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'],
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'],
-				"footer" => $this->options['footer']['image']
+				"footer" => $this->options['footer']['image'],
+				"footer_link" => $this->options['footer']['text']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -1438,7 +1439,13 @@ class web_optimizer {
 				} else {
 					$background_style = 'background:url(' .  $background_image .')';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<a href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;display:block;text-decoration:none;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></a>' . "$1", $this->content);
+/* choose between link or span */
+				if (!empty($this->options['page']['footer_link'])) {
+					$el = 'a' ;
+				} else {
+					$el = 'span';
+				}
+				$this->content = preg_replace('!(</body>)!is', '<' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;display:block;text-decoration:none;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></' . $el . '>' . "$1", $this->content);
 			}
 		}
 	}

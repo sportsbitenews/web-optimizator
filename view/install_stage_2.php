@@ -8,7 +8,7 @@
 	echo _WEBO_SPLASH1_BACK;
 ?>">1</a></li><li><strong>2</strong></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="x">3</a></li></ul></div><p><sub><a href="index.php" title="<?php
+?>" class="x">3</a></li></ul></div><p id="showme"><sub><a href="index.php" title="<?php
 	echo _WEBO_SPLASH1_BACK;
 ?>"></a></sub><sup><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
@@ -29,7 +29,7 @@
 ?></a></li><?php
 		}
 	}
-?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3"><fieldset id="dirs"><h3><?php
+?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3"><div class="n"><fieldset id="dirs"><h3><?php
 	echo _WEBO_SPLASH2_CACHE;
 ?></h3><label><?php
 	echo _WEBO_SPLASH2_CACHE_JS;
@@ -61,9 +61,7 @@
 	echo $document_root;
 ?>" title="<?php
 	echo _WEBO_SPLASH2_DOCUMENTROOT;
-?>" size="40"/></label><input type="submit" value="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" class="i" id="hideme"/><input type="hidden" name="page" value="install_stage_3"/><input type="hidden" name="Submit" value="1"/><input type="hidden" name="user[_username]" value="<?php
+?>" size="40"/></label><input type="hidden" name="page" value="install_stage_3"/><input type="hidden" name="Submit" value="1"/><input type="hidden" name="user[_username]" value="<?php
 	echo $compress_options['username'];
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $compress_options['password'];
@@ -108,8 +106,7 @@
 						echo $key;
 ?>][<?php
 						echo $option;
-?>]" value="<?php
-						echo $value;
+?>]<?php
 					}
 ?>" <?php
 					echo empty($value) ? '' : 'checked="checked"';
@@ -122,4 +119,6 @@
 ?></fieldset><?php 
 		}
 	}
-?></form><b></b><i></i><del></del><ins></ins></div>
+?></div><p id="hideme"><input type="submit" value="<?php
+	echo _WEBO_SPLASH1_NEXT;
+?>" class="i"/></p></form><b></b><i></i><del></del><ins></ins></div>

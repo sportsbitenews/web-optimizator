@@ -751,9 +751,15 @@ class admin {
 			$this->options_file = "config.webo.php";
 /* convert fake JavaScript minify option */
 			if (!empty($this->input['user']['minify']['with'])) {
-				$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
-				$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
-				$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+/* fix for accessibility */
+				if (strpos($this->input['with'], '#')) {
+					$with = explode('#', $this->input['with']);
+					$this->input['user']['minify'][$with[1]] = 1;
+				} else {
+					$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
+					$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
+					$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+				}
 				$this->input['user']['minify']['with'] = null;
 			} else {
 				$this->input['user']['minify']['with_jsmin'] = 0;
@@ -791,10 +797,21 @@ class admin {
 					$this->input['user']['htaccess']['mod_setenvif'] = 0;
 					$this->input['user']['htaccess']['mod_rewrite'] = 0;
 				}
+/* Load pre-defined options */
+				foreach ($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? 0 : $this->input['user'][$key][$option_name];
+						}
+					} else {
+						$this->input['user'][$option] = !isset($this->input['user'][$option]) ? 0 : $this->input['user'][$option];
+					}
+				}
 /* Save the options	*/
 				foreach($this->input['user'] as $key => $option) {
-					if(is_array($option)) {
+					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
+							$option_value = empty($option_value) ? 0 : 1;
 							if (!empty($this->apache_modules)) {
 								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
 									$option_value = $option_value && in_array($option_name, $this->apache_modules);

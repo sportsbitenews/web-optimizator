@@ -59,6 +59,7 @@ define('_WEBO_NEW_PROTECT', '<p>Для забезпечення безпеки при подальшому використ
 							<p><a href="http://webo.in/articles/habrahabr/99-web-optimizer-installation-0.5/">Процес установки Web Optimizer</a></p>');
 define('_WEBO_NEW_USERDATA', 'Ваш логін та пароль');
 define('_WEBO_NEW_ENTER', 'Встановіть ваш логін та пароль');
+define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с приложением требуется включенный JavaScript!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Видалити');

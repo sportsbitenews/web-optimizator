@@ -68,7 +68,7 @@ class css_sprites {
 		}
 		$memory_available = function_exists('memory_get_usage') ? memory_get_usage() : 10000000;
 /* restrict square for large Sprites due to system limitations */
-		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", ini_get('memory_limit')))) - $memory_available) / 10);
+		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", ini_get('memory_limit')))) - $memory_available) / 15);
 	}
 	/**
 	* Main function

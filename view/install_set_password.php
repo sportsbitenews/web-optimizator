@@ -8,11 +8,13 @@
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">2</a></li><li><a href="?page=install_stage_3" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="x">3</a></li></ul></div><p><sup><a href="?page=install_stage_2" title="<?php
+?>" class="x">3</a></li></ul></div><p id="showme"><sup><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins><h2><?php
 	echo _WEBO_NEW_TITLE;
-?></h2><div class="d u"><div class="e"><?php
+?></h2><div class="d u"><div class="e"><noscript><p><?php
+	echo _WEBO_NEW_NOSCRIPT;
+?></p></noscript><?php
 	echo _WEBO_NEW_PROTECT;
 ?></div><div id="sc"><p>_WEBO_SYSTEM_CHECK</p></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;

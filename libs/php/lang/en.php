@@ -59,6 +59,7 @@ define('_WEBO_NEW_PROTECT', '<p>Please enter login and password to protect this 
 							<p><a href="http://code.google.com/p/web-optimizator/wiki/Installation">Web Optimizer installation process</a></p>');
 define('_WEBO_NEW_USERDATA', 'Your username and password');
 define('_WEBO_NEW_ENTER', 'Enter your password for installation');
+define('_WEBO_NEW_NOSCRIPT', 'For correct work JavaScript must be enabled!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
