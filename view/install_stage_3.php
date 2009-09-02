@@ -127,4 +127,6 @@ require('<?php
 	echo _WEBO_SPLASH3_ADDITIONAL_INFO_2;
 ?></li><li><?php
 	echo _WEBO_SPLASH3_ADDITIONAL_INFO_3;
+?></li><li><?php
+	echo _WEBO_SPLASH3_ADDITIONAL_INFO_4;
 ?></li></ul></fieldset></div></form><b></b><i></i><del></del><ins></ins></div>

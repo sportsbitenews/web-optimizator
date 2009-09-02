@@ -1380,6 +1380,13 @@ class web_optimizer {
 			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>@is", 'ga', 0, true);
 /* SpyLog */
 			$before_body .= $this->replace_unobtrusive_generic("@<!-- SpyLOG -->\r?\n<script.*?script>\r?\n<!--/ SpyLOG -->@is", 'spylog', 0, true);
+/* Rambler Top100 */
+			$before_body .= $this->replace_unobtrusive_generic("@<!-- begin of Top100 code -->.*?<!-- end of Top100 code -->@is", 'rambler', 0, true);
+/* Yandex.Metrica */
+			$before_body .= $this->replace_unobtrusive_generic("@<!-- Yandex.Metrika -->.*?<!-- Yandex.Metrika -->@is", 'metrica', 0, true);
+/* Rating@Mail.ru */
+			$before_body .= $this->replace_unobtrusive_generic("@<!--Rating@Mail.ru counter-->.*?<!--// Rating@Mail.ru counter-->@is", 'ratingmail', 31, true);
+
 		}
 /* Advertisement */
 		if (!empty($options['unobtrusive_ads'])) {
