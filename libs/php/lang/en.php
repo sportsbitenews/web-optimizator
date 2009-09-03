@@ -47,7 +47,7 @@ define('_WEBO_LOGIN_LOGGED', 'Logged you in');
 define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
 define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter username and password and press <strong>Clear cache</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'All saved versions of generated files will be deleted from the cache folder.');
-define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delere some files from cache directory');
+define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delete a number of files from cache directory');
 define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
 
 /* Set login and password */
@@ -273,12 +273,12 @@ define('_WEBO_SYSTEM_CHECK_VIA_PHP', 'via PHP');
 define('_WEBO_SYSTEM_CHECK_VIA_HTACCESS', 'via <code>.htaccess</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT', '<code>.htaccess</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS', '<code>.htaccess</code> is writable');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', '<code>mod_rewrite</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', '<code>mod_gzip</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> + <code>mod_filter</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', '<code>mod_expires</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', '<code>mod_headers</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', '<code>mod_mime</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', '<code>mod_rewrite</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', '<code>mod_gzip</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> + <code>mod_filter</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', '<code>mod_expires</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', '<code>mod_headers</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', '<code>mod_mime</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_SETENVIF', '<code>mod_setenvif</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_PROTECTED', 'Protected mode for install');
 define('_WEBO_SYSTEM_CHECK_CSS_DIRECTORY', 'CSS folder is writable');
