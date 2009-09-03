@@ -110,11 +110,11 @@ define('_WEBO_SPLASH2_GZIP', 'Настройки архивирования');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>Применение <code>gzip</code>-сжатия позволяет на 80-85% уменьшить размер текстовых файлов.</p>
 									<p>Для нагруженных сайтов рекомендуется настройки <code>gzip</code>-сжатия перенести в конфигурационный файл сервера (или использовать настройки <code>.htaccess</code> ниже).</p>
 									<p><a href="http://webo.in/articles/habrahabr/30-gzip-versus-broadband/">Ресурсоемкость</a> и <a href="http://webo.in/articles/habrahabr/33-gzip-level-tool/">эффективность gzip-сжатия</a>.</p>');
-define('_WEBO_SPLASH2_EXPIRES', '&laquo;Вечное&raquo; кэширование');
+define('_WEBO_SPLASH2_EXPIRES', 'Клиентское кэширование');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>В результате работы этой настройки ко всем статическим файлам будут добавлены заголовки кэширования, позволяющие предотвратить их повторный запрос с сервера для одного и того же пользователя.</p>
 									<p>При изменении JavaScript- или CSS-файлов автоматически будут создаваться их новые минимизированные версии, что позволит &laquo;пробить&raquo; кэш в браузерах. Для картинок и других статических файлов рекомендуется использовать новое физическое имя при их изменениии.</p>
 									<p><a href="http://webo.in/articles/all/http-caching/">Кэширование </a> и <a href="http://webo.in/articles/habrahabr/15-yahoo-best-practices/#expires">его эффективность</a>.</p>');
-define('_WEBO_SPLASH2_HTMLCACHE', 'Кэшировать HTML-файлы');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Серверное кэширование');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Web Optimizer может кэшировать конечный HTML-код, чем предотвращает значительную работу на стороне сервера и уменьшает время создания страницы.</p>
 									<p>Внимание: при включении этой настройки вся логика, осуществляемая на сервере, будет недоступна. Страницы станут полностью статическими. Рекомендуется включать эту настройку, только если вы полностью уверены в последствиях.</p>
 									<p><a href="http://webo.in/articles/all/2009/16-content-flushing/">Быстрый сброс документа</a> и <a href="http://webo.in/articles/habrahabr/34-streaming-chunking-finding-end/">HTTP-чанки</a>.</p>');
@@ -260,12 +260,12 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Подключите множественные хост
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Вынесите все стили и скрипты, прописанные прямо в коде страницы, во внешние файлы.</strong> Во-первых, это позволит вам проще управлять изменениями на вашем сайте. Во-вторых, это позволит Web Optimizer объединить, минимизировать и закэшировать весь объем дополнительного кода, который требуется для правильного функционирования вашего сайта.');
 
 /* System check info on the first screen */
-define('_WEBO_SYSTEM_CHECK', 'Проверяем конфигурацию системы...');
+define('_WEBO_SYSTEM_CHECK', 'Проверяем конфигурацию сервера...');
 define('_WEBO_SYSTEM_CHECK_ENABLED', 'есть');
 define('_WEBO_SYSTEM_CHECK_DISABLED', 'нет');
 define('_WEBO_SYSTEM_CHECK_WRITABLE', 'доступна');
 define('_WEBO_SYSTEM_CHECK_RESTRICTED', 'запрещена');
-define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'Конфигурация системы');
+define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'Конфигурация сервера');
 define('_WEBO_SYSTEM_CHECK_VIA_JSMIN', 'через JSMin');
 define('_WEBO_SYSTEM_CHECK_VIA_YUI', 'через YUI Compressor');
 define('_WEBO_SYSTEM_CHECK_VIA_CSSTIDY', 'через CSS Tidy');

@@ -918,7 +918,7 @@ class web_optimizer {
 		if (!$inline) {
 			$file = $this->get_file_name($src);
 /* dynamic file */
-			if (!preg_match("/\.css$/is", $file)) {
+			if (!preg_match("!\.css$!is", $file)) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
 				if (!strpos($dynamic_file, "://")) {

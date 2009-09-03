@@ -554,6 +554,12 @@ class admin {
 /* restore username and password */
 			$this->input['user']['password'] = $password;
 			$this->input['user']['username'] = $username;
+			if (empty($this->input['user']['_username'])) {
+				$this->input['user']['_username'] = $this->input['user']['username'];
+			}
+			if (empty($this->input['user']['_password'])) {
+				$this->input['user']['_password'] = $this->input['user']['password'];
+			}
 /* minify with YUI Compressor by default */
 			$this->input['user']['minify']['with'] = 'with_yui';
 /* enable auto-rewrite */
@@ -787,7 +793,7 @@ class admin {
 				foreach ($this->compress_options as $key => $option) {
 					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
-							if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'html_level'))) {
+							if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level'))) {
 								$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
 								$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
 								$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);

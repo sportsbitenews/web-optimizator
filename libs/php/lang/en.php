@@ -109,11 +109,11 @@ define('_WEBO_SPLASH2_GZIP', 'Gzip Options');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.</p>
 									<p>For larger sites, you should Gzip via the web server.</p>
 									<p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Make your site faster and cheaper to operate in one easy step</a></p>');
-define('_WEBO_SPLASH2_EXPIRES', 'Far Future Expires');
+define('_WEBO_SPLASH2_EXPIRES', 'Client Side Caching');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This option adds an expires header to your JavaScipt and CSS files which ensures that files are cached on the client-side by the browser.</p>
 									<p>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.</p>
 									<p><a href="http://developer.yahoo.com/performance/rules.html#expires">Add an Expires or a Cache-Control Header</a></p>');
-define('_WEBO_SPLASH2_HTMLCACHE', 'Cache HTML files');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Server Side Caching');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.</p>
 									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>
 									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
@@ -260,12 +260,12 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Add multiple hosts for your w
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Move all inline CSS and JavaScript to external files.</strong> First of all it make managing changes in your website design / bahavior simplier. Secondly this will allow Web Optimizer to merge, minify and cache all styles and scripts that are used on your website.');
 
 /* System check info on the first screen */
-define('_WEBO_SYSTEM_CHECK', 'Checking system configuration...');
+define('_WEBO_SYSTEM_CHECK', 'Checking server configuration...');
 define('_WEBO_SYSTEM_CHECK_ENABLED', 'enabled');
 define('_WEBO_SYSTEM_CHECK_DISABLED', 'disabled');
 define('_WEBO_SYSTEM_CHECK_WRITABLE', 'yes');
 define('_WEBO_SYSTEM_CHECK_RESTRICTED', 'no');
-define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'System info');
+define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'Server configuration');
 define('_WEBO_SYSTEM_CHECK_VIA_JSMIN', 'via JSMin');
 define('_WEBO_SYSTEM_CHECK_VIA_YUI', 'via YUI Compressor');
 define('_WEBO_SYSTEM_CHECK_VIA_CSSTIDY', 'via CSS Tidy');

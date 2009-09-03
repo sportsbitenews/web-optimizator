@@ -109,11 +109,11 @@ define('_WEBO_SPLASH2_GZIP', 'Opciones Gzip');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>El Gzipping comprime el c&oacute;digo a trav&eacute;s de compresi&oacute;n Gzip. Esto es recomendado solo para websites de peque&ntilde;a escala, y est&aacute; apagado predeterminadamente.</p>
 									<p>Para websites m&aacute;s grandes, usted deber&iacute;a efectuar Gzip por medio del web server.</p>
 									<p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Haga su website m&aacute;s r&aacute;pido y m&aacute;s barato de operar de un simple paso</a></p>');
-define('_WEBO_SPLASH2_EXPIRES', 'Expira a futuro');
+define('_WEBO_SPLASH2_EXPIRES', 'Client Side Cache');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>Esto, a&ntilde;ade un encabezado de expiraci&oacute;n a sus archivos de JavaScript y CSS lo que asegura que est&eacute;n almacenados en el Cache del browser del cliente.</p>
 									<p>Cuando usted cambia su JS o CSS, un nuevo nombre de archivo es generado y la &uacute;ltima versi&oacute;n es consecuentemente descargada y grabada en el Cache.</p>
 									<p><a href="http://developer.yahoo.com/performance/rules.html#expires">A&ntilde;ade una Expiraci&oacute;n o Encabezado de Cache-Control</a></p>');
-define('_WEBO_SPLASH2_HTMLCACHE', 'Archivos Cache de HTML');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Server Side Cache');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Esta opci&oacute;n permite al Web Optimizer a almacenar en la memoria Cache resultados HTML generados y prevenir mucho trabajo del lado del servidor para generar estos mismos.</p>
 									<p>Nota, con esta opci&oacute;n toda la l&oacute;gica dependiente del servidor se desactivar&aacute;. Todas las p&aacute;ginas ser&aacute;n completamente est&aacute;ticas. Por favor active esta opci&oacute;n solo si est&aacute; seguro.</p>
 									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> y <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
@@ -258,12 +258,12 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>A&ntilde;ada m&uacute;ltiples
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Mueva todo el CSS en linea y el JavaScript a archivos externos.</strong> Primeramente hace cambios de administraci&oacute;n en el dise&ntilde;o de su website / comportamiento m&aacute;s simpler. Segundo esto le permitira a Web Optimizer el fusionar, minimizar el ingresar en el Cache todos los estilos (styles) y Scripts que son usados en su website.');
 
 /* System check info on the first screen */
-define('_WEBO_SYSTEM_CHECK', 'Checking system configuration...');
+define('_WEBO_SYSTEM_CHECK', 'Checking serevr configuration...');
 define('_WEBO_SYSTEM_CHECK_ENABLED', 'enabled');
 define('_WEBO_SYSTEM_CHECK_DISABLED', 'disabled');
 define('_WEBO_SYSTEM_CHECK_WRITABLE', 'yes');
 define('_WEBO_SYSTEM_CHECK_RESTRICTED', 'no');
-define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'System info');
+define('_WEBO_SYSTEM_CHECK_SYSTEM_INFO', 'Server configuration');
 define('_WEBO_SYSTEM_CHECK_VIA_JSMIN', 'via JSMin');
 define('_WEBO_SYSTEM_CHECK_VIA_YUI', 'via YUI Compressor');
 define('_WEBO_SYSTEM_CHECK_VIA_CSSTIDY', 'via CSS Tidy');
