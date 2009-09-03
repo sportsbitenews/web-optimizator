@@ -30,6 +30,7 @@ libs/php/packer4.php
 libs/php/packer5.php
 libs/php/view.php
 libs/yuicompressor/yuicompressor.jar
+plugins/joomla15.php
 view/admin_container.php
 view/error.php
 view/install_enter_password.php

@@ -1072,8 +1072,8 @@ ExpiresDefault \"access plus 10 years\"
 				}
 /* look for plugins */
 				$plugins = array();
-				if ($dp = opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
-					while (($file = readdir($dp)) !== false) {
+				if ($dp = @opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
+					while (($file = @readdir($dp)) !== false) {
 						if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
 							$plugins[] = preg_replace("!\.php$!i", "", $file);
 						}

@@ -24,7 +24,7 @@ define('_WEBO_LOGIN_EFFICIENCY', 'Optimization results per hit:<br/>saved ');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
 define('_WEBO_LOGIN_EFFICIENCY_S', 'seconds');
 define('_WEBO_LOGIN_USERNAME', 'Username');
-define('_WEBO_LOGIN_ENTERLOGIN', 'Enter your login');
+define('_WEBO_LOGIN_ENTERLOGIN', 'Enter your username');
 define('_WEBO_LOGIN_PASSWORD', 'Password');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Enter password');
 define('_WEBO_SPLAHS1_PROTECTED', 'Protected mode');
@@ -32,27 +32,27 @@ define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer installation is safely protect
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Your can upgrade your version (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') of Web Optimizer to latest one. Please enter your login and password and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
+define('_WEBO_LOGIN_UPGRADENOTICE2', ') of Web Optimizer to latest one. Please enter your username and password and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_LOGIN_UPGRADENOTICE4', ') of Web Optimizer to latest one &mdash; <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'You have successfully upgraded to the version ');
 define('_WEBO_UPGRADE_UNABLE', 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'To remove Web Optimizer from your system please enter login and password and click <strong>Uninstall</strong>.');
+define('_WEBO_LOGIN_UNINSTALL', 'To remove Web Optimizer from your system please enter username and password and click <strong>Uninstall</strong>.');
 define('_WEBO_LOGIN_UNINSTALL2', 'Web Optimizer can be simply disabled for your website. Just delete it.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Uninstall Web Optimizer');
 define('_WEBO_LOGIN_FAILED', 'Login failed');
 define('_WEBO_LOGIN_ACCESS', 'You need to be logged in to view this page');
 define('_WEBO_LOGIN_LOGGED', 'Logged you in');
 define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter login and password and press <strong>Clear cache</strong>. ');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter username and password and press <strong>Clear cache</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'All saved versions of generated files will be deleted from the cache folder.');
 define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delere some files from cache directory');
 define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - set password');
-define('_WEBO_NEW_PROTECT', '<p>Please enter login and password to protect this installation.</p>
+define('_WEBO_NEW_PROTECT', '<p>Please enter username and password to protect this installation.</p>
 							<p>Before installation please check that root <code>.htaccess</code> and source files of your web system are writable (during installation Web Optimizer also creates backup of your files).</p>
 							<p>Web Optimizer can check all functions of your server and complete installation automatically. For this option please press <strong>"Express install"</strong>. On complete you can change any settings using this administative interface.</p>
 							<p>If your want to set up usage of Web Optimizer manually please press <strong>"Next"</strong>. You can check and set all settings before actual Web Optimizer installation on your website.</p>

@@ -1393,7 +1393,9 @@ class web_optimizer {
 /* Yandex.Direct */
 			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>@is", 'yadirect');
 /* Google AdWords */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\n?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">\r?\n?</script>@is", 'gadwords');
+			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">\r?\n?</script>@is", 'gadwords');
+/* Begun */
+			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>@is", 'begun');
 		}
 		if (!empty($before_body)) {
 			$this->content = str_replace('</body>', $before_body . '</body>' , $this->content);
