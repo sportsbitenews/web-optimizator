@@ -194,7 +194,7 @@ define('_WEBO_parallel_enabled', 'Включити паралельні хости, наприклад, i1 i2');
 define('_WEBO_parallel_check', 'Автоматично перевіряти доступність хостів');
 define('_WEBO_parallel_allowed_list', 'Доступні хости');
 define('_WEBO_htaccess_enabled', 'Включити <code>.htaccess</code>');
-define('_WEBO_htaccess_mod_deflate', 'Використовувати <code>mod_deflate</code>');
+define('_WEBO_htaccess_mod_deflate', 'Використовувати <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_htaccess_mod_gzip', 'Використовувати <code>mod_gzip</code>');
 define('_WEBO_htaccess_mod_expires', 'Використовувати <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Використовувати <code>mod_headers</code>');
@@ -274,7 +274,7 @@ define('_WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT', 'Поддержка <code>.htaccess</code>'
 define('_WEBO_SYSTEM_CHECK_HTACCESS', 'Запись в <code>.htaccess</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', 'Поддержка <code>mod_rewrite</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', 'Поддержка <code>mod_gzip</code>');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', 'Поддержка <code>mod_deflate</code>');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', 'Поддержка <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', 'Поддержка <code>mod_expires</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', 'Поддержка <code>mod_headers</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', 'Поддержка <code>mod_mime</code>');

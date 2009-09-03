@@ -110,7 +110,7 @@ define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping compresses the code via Gzip comp
 									<p>For larger sites, you should Gzip via the web server.</p>
 									<p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Make your site faster and cheaper to operate in one easy step</a></p>');
 define('_WEBO_SPLASH2_EXPIRES', 'Far Future Expires');
-define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This adds an expires header to your JavaScipt and CSS files which ensures they are cached client-side by the browser.</p>
+define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This option adds an expires header to your JavaScipt and CSS files which ensures that files are cached on the client-side by the browser.</p>
 									<p>When you change your JS or CSS, a new filename is generated and the latest version is therefore downloaded and cached.</p>
 									<p><a href="http://developer.yahoo.com/performance/rules.html#expires">Add an Expires or a Cache-Control Header</a></p>');
 define('_WEBO_SPLASH2_HTMLCACHE', 'Cache HTML files');
@@ -123,7 +123,7 @@ define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background 
 									<p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif).</p>
 									<p><a href="www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
 define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
-define('_WEBO_SPLASH2_DATAURI_INFO', '<p>t is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
 									<p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p>
 									<p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
@@ -194,7 +194,7 @@ define('_WEBO_parallel_enabled', 'Enable multiple hosts');
 define('_WEBO_parallel_check', 'Check hosts\' availability automatically');
 define('_WEBO_parallel_allowed_list', 'Allowed hosts, i.e. img i1 i2');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
-define('_WEBO_htaccess_mod_deflate', 'Use <code>mod_deflate</code>');
+define('_WEBO_htaccess_mod_deflate', 'Use <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_htaccess_mod_gzip', 'Use <code>mod_gzip</code>');
 define('_WEBO_htaccess_mod_expires', 'Use <code>mod_expires</code>');
 define('_WEBO_htaccess_mod_headers', 'Use <code>mod_headers</code>');
@@ -241,9 +241,9 @@ define('_WEBO_SPLASH3_CANTWRITE', 'Unable to write to the ');
 define('_WEBO_SPLASH3_CANTWRITE2', ' directory you specified. Please make sure the directory exists and is writable.');
 define('_WEBO_SPLASH3_CANTWRITE3', 'You can usually do this from your FTP client. Just navigate to the directory, right click and look for a Properties or CHMOD option.');
 define('_WEBO_SPLASH3_CANTWRITE4', 'Once you have done so, please refresh this page.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Please sure that the root of your website is readable and writable for your web server process.');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Please make sure that the root of your website is readable and writable for your web server process.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Make CHMOD 775 or CHMOD 777 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Please sure that the root of your website is writable for your web server process or there is a writable <code>.htaccess</code> file.');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Please make sure that the root of your website is writable for your web server process or there is a writable <code>.htaccess</code> file.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Make CHMOD 775 or CHMOD 777 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Please sure that you have installed Web Optimizer into');
 define('_WEBO_SPLASH3_CONFSAVED', 'Configuration saved');
@@ -275,7 +275,7 @@ define('_WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT', '<code>.htaccess</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS', '<code>.htaccess</code> is writable');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_REWRITE', '<code>mod_rewrite</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_GZIP', '<code>mod_gzip</code> support');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> + <code>mod_filter</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', '<code>mod_expires</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', '<code>mod_headers</code> support');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', '<code>mod_mime</code> support');
