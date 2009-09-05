@@ -626,7 +626,7 @@ class web_optimizer {
 		switch ($include) {
 /* if no unobtrusive logic and no external JS, move to top */
 			default:
-				$source = preg_replace("!<head[^>]*>!is", "$0" . $newfile, $source);
+				$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $newfile, $source);
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
 			case 1:
@@ -1433,7 +1433,7 @@ class web_optimizer {
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
-			preg_match("!<head([^>]+)?>.*?</head>!is", $this->content, $matches);
+			preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
