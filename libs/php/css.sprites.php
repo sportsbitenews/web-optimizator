@@ -152,17 +152,17 @@ class css_sprites {
 									if (!($key == 'background-position' &&
 										($value == 'top left' ||
 											$value == 'left top' ||
-											!round(str_replace(" ", "", $value))))) {
-/* fix background-position: left|right -> left center|right center */
+											round(str_replace(" ", "", $value))))) {
+/* fix background-position: left|right|center -> left center|right center|center center */
 											if ($key == 'background-position' &&
 												($value == 'left' ||
 												!round(str_replace(" ", "", $value)) ||
 												$value == 'right' ||
 												round($value) == 100) &&
-												strlen($value) < 6) {
+												strlen($value) < 6 || $value == 'center') {
 													$value = $value . ' center';
 											}
-/* fix background-position: right|bottom -> right center|center bottom */
+/* fix background-position: top|bottom -> center top|center bottom */
 											if ($key == 'background-position') {
 												$value = ($value == 'top' ? 'center top' : ($value == 'bottom' ? 'center bottom' : $value));
 											}

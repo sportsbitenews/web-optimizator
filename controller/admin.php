@@ -1778,28 +1778,29 @@ require valid-user
 			} elseif (is_file($root . 'includes/tld.txt')) {
 				return 'osCommerce';
 /* Joomla 1.0, Joostina */
-			} else {
+			} elseif (is_file($root . 'includes/version.php')) {
 				define('_VALID_MOS', 1);
 				$joomla_version = '1.0';
 				$joomla_title = 'Joomla!';
-				if (is_file($root . 'includes/version.php')) {
-					if (substr(phpversion(), 0, 1) == 4) {
-						if (!class_exists('joomlaVersion')) {
-							require($root . 'includes/version.php');
-						} else {
-							$_VERSION = new joomlaVersion();
-						}
+				if (substr(phpversion(), 0, 1) == 4) {
+					if (!class_exists('joomlaVersion')) {
+						require($root . 'includes/version.php');
 					} else {
-						if (!class_exists('joomlaVersion', false)) {
-							require($root . 'includes/version.php');
-						} else {
-							$_VERSION = new joomlaVersion();
-						}
+						$_VERSION = new joomlaVersion();
 					}
-					$joomla_version = empty($_VERSION->CMS_ver) ? ($_VERSION->RELEASE . '.' . $_VERSION->DEV_LEVEL) : $_VERSION->CMS_ver;
-					$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
+				} else {
+					if (!class_exists('joomlaVersion', false)) {
+						require($root . 'includes/version.php');
+					} else {
+						$_VERSION = new joomlaVersion();
+					}
 				}
+				$joomla_version = empty($_VERSION->CMS_ver) ? ($_VERSION->RELEASE . '.' . $_VERSION->DEV_LEVEL) : $_VERSION->CMS_ver;
+				$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
 				return $joomla_title . ' ' . $joomla_version;
+/* MaxDev Pro */
+			} else {
+				return 'MaxDev Pro';
 			}
 /* Typo 3 */
 		} elseif (is_dir($root . 'typo3conf')) {
