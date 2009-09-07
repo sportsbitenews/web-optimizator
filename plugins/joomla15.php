@@ -45,7 +45,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 			}
 			$config_file = $root . 'configuration.php';
 /* Enable System-Cache plugin and disable Debug plugin */
-			if (!class_exists('JConfig')) {
+			if (!class_exists('JConfig') && is_file($config_file)) {
 				include($config_file);
 			}
 			if (class_exists('JConfig')) {
