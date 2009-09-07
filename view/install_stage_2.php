@@ -114,8 +114,8 @@
 ?>/></a><?php
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 					}
-				}
 ?></label><?php
+				}
 			}
 ?></fieldset><?php 
 		}

@@ -32,7 +32,8 @@ class admin {
 		$this->password_not_required = array(
 			'install_enter_password' => 1,
 			'install_set_password' => 1,
-			'system_check' => 1
+			'system_check' => 1,
+			'install_change_password' => 1
 		);
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
@@ -47,7 +48,7 @@ class admin {
 			$this->version_new = $this->version;
 		}
 		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
-		if(empty($this->password_not_required[$this->input['page']])) {
+		if (empty($this->password_not_required[$this->input['page']]) && (empty($this->input['change']) || $this->input['page'] != 'install_stage_2')) {
 			$this->check_login();
 		}
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
@@ -58,7 +59,8 @@ class admin {
 			'install_stage_3' => 1,
 			'install_uninstall' => 1,
 			'install_upgrade' => 1,
-			'system_check' => 1
+			'system_check' => 1,
+			'install_change_password' => 1
 		);
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
@@ -79,84 +81,125 @@ class admin {
 			$this->$func();
 		}
 	}
-		/*
-		* Check system requirements for Web Optimizer
-		*
-		**/
-		function system_check () {
-/* get available Apache modules */
-			$this->get_modules();
-/* get PHP extensions */
-			$extensions = @get_loaded_extensions();
-/* get GDlib info */
-			$gd = @gd_info();
-			$gd = empty($gd) ? array() : $gd;
-/* set default paths */
-			$this->view->set_paths();
-/* calculate directories */
-			$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
-			$css_cachedir = empty($this->compress_options['css_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['css_cachedir'];
-			$html_cachedir = empty($this->compress_options['html_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['html_cachedir'];
-			$webo_cachedir = empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'];
-			$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
-/* check for YUI */
-			$YUI_available = 0;
-			if (is_file($webo_cachedir . 'libs/php/class.yuicompressor4.php') || is_file($webo_cachedir . 'libs/php/class.yuicompressor.php')) {
-				if (substr(phpversion(), 0, 1) == 4) {
-					require_once($webo_cachedir . 'libs/php/class.yuicompressor4.php');
-				} else {
-					require_once($webo_cachedir . 'libs/php/class.yuicompressor.php');
-				}
-				$YUI = new YuiCompressor($javascript_cachedir, $webo_cachedir);
-				$YUI_checked = $YUI->check();
-			}
-/* check if .htaccess is avaiable */
-			$htaccess_available = count($this->apache_modules) ? 1 : 0;
-/* download restricted file */
-			$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
-			if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($webo_cachedir . 'css.sprites.php')) {
-				$htaccess_available = 0;
-			}
-			@unlink($javascript_cachedir . 'htaccess.test');
-/* check for multiple hosts */
-			$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : $this->compress_options['parallel']['allowed_list'];
-			if (!empty($this->compress_options['parallel']['check'])) {
-				$hosts = $this->check_hosts($hosts);
-			}
-/* set variables */
-			$page_variables = array(
-				'javascript_writable' => is_writable($javascript_cachedir),
-				'javascript_cachedir' => $javascript_cachedir,
-				'css_writable' => is_writable($css_cachedir),
-				'css_cachedir' => $css_cachedir,
-				'html_writable' => is_writable($html_cachedir),
-				'html_cachedir' => $html_cachedir,
-				'htaccess_writable' => is_writable($document_root) || is_writable($document_root . '.htaccess'),
-				'htaccess' => $document_root . '.htaccess',
-				'index_writable' => is_writable($document_root . 'index.php'),
-				'index' => $document_root . 'index.php',
-				'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
-				'config' => $webo_cachedir . 'config.webo.php',
-				'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
-				'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode'),
-				'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
-				'gd_full_support' => !empty($gd['GIF Read Support']) && !empty($gd['GIF Create Support']) && !empty($gd['JPG Support']) && !empty($gd['PNG Support']) && !empty($gd['WBMP Support']),
-				'yui_possibility' => empty($YUI_checked) ? 0 : 1,
-				'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
-				'htaccess_possibility' => $htaccess_available,
-				'mod_deflate' => in_array('mod_deflate', $this->apache_modules),
-				'mod_gzip' => in_array('mod_gzip', $this->apache_modules),
-				'mod_headers' => in_array('mod_headers', $this->apache_modules),
-				'mod_expires' => in_array('mod_expires', $this->apache_modules),
-				'mod_mime' => in_array('mod_mime', $this->apache_modules),
-				'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
-				'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
-				'protected_mode' => empty($this->protected) ? 0 : 1,
-				'cms' => $this->system_info($document_root),
-			);
-/* Output data */
-			$this->view->render("system_check", $page_variables);
+
+	/*
+	* Change default password
+	*
+	**/
+	function install_change_password () {
+		if ($this->input['page'] != 'install_change_password') {
+			$this->input['user']['username'] = '';
+			$this->input['user']['password'] = '';
 		}
+		if (!empty($this->input['Submit']) && $this->input['page'] == 'install_change_password') {
+/* check old password */
+			if ($this->compress_options['password'] != $this->input['user']['password'] || $this->compress_options['username'] != $this->input['user']['username']) {
+				$this->error("<p>". _WEBO_LOGIN_FAILED ."</p>");
+/* empty password */
+			} elseif ($this->input['user']['password_new'] == '') {
+				$this->error("<p>". _WEBO_PASSWORD_EMPTY ."</p>");
+			} elseif ($this->input['user']['password_new'] != $this->input['user']['password_confirm']) {
+/* compare password and confirmation */
+				$this->error("<p>". _WEBO_PASSWORD_DIFFERENT ."</p>");
+			} else {
+				$this->input['user']['password'] = $this->input['user']['password_new'];
+/* rewrite password */
+				$this->manage_password(1);
+/* redirect to the main page */
+				header("Location: index.php?changed=1");
+			}
+		} else {
+			$page_variables = array(
+				"title" => _WEBO_PASSWORD_TITLE,
+				"page" => 'install_change_password',
+				"username" => htmlspecialchars($this->input['user']['username']),
+				"password" => htmlspecialchars($this->input['user']['password']),
+				"version" => $this->version,
+				"version_new" => $this->version_new
+			);
+			$this->view->render("admin_container", $page_variables);
+		}
+		die();
+	}
+
+	/*
+	* Check server requirements for Web Optimizer
+	*
+	**/
+	function system_check () {
+/* get available Apache modules */
+		$this->get_modules();
+/* get PHP extensions */
+		$extensions = @get_loaded_extensions();
+/* get GDlib info */
+		$gd = @gd_info();
+		$gd = empty($gd) ? array() : $gd;
+/* set default paths */
+		$this->view->set_paths();
+/* calculate directories */
+		$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
+		$css_cachedir = empty($this->compress_options['css_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['css_cachedir'];
+		$html_cachedir = empty($this->compress_options['html_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['html_cachedir'];
+		$webo_cachedir = empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'];
+		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
+/* check for YUI */
+		$YUI_available = 0;
+		if (is_file($webo_cachedir . 'libs/php/class.yuicompressor4.php') || is_file($webo_cachedir . 'libs/php/class.yuicompressor.php')) {
+			if (substr(phpversion(), 0, 1) == 4) {
+				require_once($webo_cachedir . 'libs/php/class.yuicompressor4.php');
+			} else {
+				require_once($webo_cachedir . 'libs/php/class.yuicompressor.php');
+			}
+			$YUI = new YuiCompressor($javascript_cachedir, $webo_cachedir);
+			$YUI_checked = $YUI->check();
+		}
+/* check if .htaccess is avaiable */
+		$htaccess_available = count($this->apache_modules) ? 1 : 0;
+/* download restricted file */
+		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
+		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($webo_cachedir . 'css.sprites.php')) {
+			$htaccess_available = 0;
+		}
+		@unlink($javascript_cachedir . 'htaccess.test');
+/* check for multiple hosts */
+		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : $this->compress_options['parallel']['allowed_list'];
+		if (!empty($this->compress_options['parallel']['check'])) {
+			$hosts = $this->check_hosts($hosts);
+		}
+/* set variables */
+		$page_variables = array(
+			'javascript_writable' => is_writable($javascript_cachedir),
+			'javascript_cachedir' => $javascript_cachedir,
+			'css_writable' => is_writable($css_cachedir),
+			'css_cachedir' => $css_cachedir,
+			'html_writable' => is_writable($html_cachedir),
+			'html_cachedir' => $html_cachedir,
+			'htaccess_writable' => is_writable($document_root) || is_writable($document_root . '.htaccess'),
+			'htaccess' => $document_root . '.htaccess',
+			'index_writable' => is_writable($document_root . 'index.php'),
+			'index' => $document_root . 'index.php',
+			'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
+			'config' => $webo_cachedir . 'config.webo.php',
+			'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
+			'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode'),
+			'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
+			'gd_full_support' => !empty($gd['GIF Read Support']) && !empty($gd['GIF Create Support']) && !empty($gd['JPG Support']) && !empty($gd['PNG Support']) && !empty($gd['WBMP Support']),
+			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
+			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
+			'htaccess_possibility' => $htaccess_available,
+			'mod_deflate' => in_array('mod_deflate', $this->apache_modules),
+			'mod_gzip' => in_array('mod_gzip', $this->apache_modules),
+			'mod_headers' => in_array('mod_headers', $this->apache_modules),
+			'mod_expires' => in_array('mod_expires', $this->apache_modules),
+			'mod_mime' => in_array('mod_mime', $this->apache_modules),
+			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
+			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
+			'protected_mode' => empty($this->protected) ? 0 : 1,
+			'cms' => $this->system_info($document_root),
+		);
+/* Output data */
+		$this->view->render("system_check", $page_variables);
+	}
 
 	/**
 	* Write installation progress to JavaScript file
@@ -218,15 +261,17 @@ class admin {
 				$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
 				$kb_before = substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>'));
 				$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
-				$saved_s = $s_before - $s_after;
-				$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
-				$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
+				if ($kb_before) {
+					$saved_s = $s_before - $s_after;
+					$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
+					$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
 /* do not show negative numbers */
-				if ($saved_s < 0) {
-					$saved_s = $saved_kb = 0;
-				}
-				if ($saved_kb < 0) {
-					$saved_kb = 0;
+					if ($saved_s < 0) {
+						$saved_s = $saved_kb = 0;
+					}
+					if ($saved_kb < 0) {
+						$saved_kb = 0;
+					}
 				}
 			}
 			$page_variables = array(
@@ -242,7 +287,7 @@ class admin {
 				"saved_percent" => $saved_percent,
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
-				"message" => empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version
+				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version) : _WEBO_PASSWORD_SUCCESSFULL
 			);
 		} else {
 /* check if we can display progress bar */
@@ -582,6 +627,8 @@ class admin {
 				$this->install_upgrade();
 			} elseif (!empty($this->input['clear'])) {
 				$this->install_clean_cache();
+			} elseif (!empty($this->input['change'])) {
+				$this->install_change_password();
 			} else{
 /* Set paths with the new document root */
 				if(!empty($this->input['user']['document_root'])) {
@@ -1540,7 +1587,7 @@ ExpiresDefault \"access plus 10 years\"
 	* Set the initial password
 	* 
 	**/		
-	function manage_password() {
+	function manage_password($rewrite = 0) {
 /* If posting a username and pass, md5 encode */
 		if (!empty($this->input['user']['username'])) {
 /* write protected password to .htpasswd if required */
@@ -1549,14 +1596,14 @@ ExpiresDefault \"access plus 10 years\"
 				@fwrite($fp, $this->input['user']['username'] . ":" . $this->encrypt_password($this->input['user']['password']));
 				@fclose($fp);
 			}
-			$this->input['user']['username'] = md5($this->input['user']['username']);
+			if (empty($rewrite)) {
+				$this->input['user']['username'] = md5($this->input['user']['username']);
+			}
 			$this->input['user']['password'] = md5($this->input['user']['password']);
 /* If the pass isn't there, write it */
-			if(empty($this->compress_options['username']) && empty($this->compress_options['password'])) {
-				$save = $this->save_option('[\'username\']',($this->input['user']['username']));
-				$save .= "<br/>" . $this->save_option('[\'password\']',($this->input['user']['password']));	
-				$save .= "<br />" . _WEBO_LOGIN_LOGGED;
-				$this->save = $save;
+			if ((empty($this->compress_options['username']) && empty($this->compress_options['password'])) || !empty($rewrite)) {
+				$this->save_option('[\'username\']', $this->input['user']['username']);
+				$this->save_option('[\'password\']', $this->input['user']['password']);
 /* Update */
 				$this->compress_options['username'] = $this->input['user']['username'];
 				$this->compress_options['password'] = $this->input['user']['password'];

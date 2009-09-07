@@ -73,6 +73,20 @@ define('_WEBO_SPLASH1_NEXT', 'Далі');
 define('_WEBO_SPLASH1_BACK', 'Назад');
 define('_WEBO_SPLASH1_EXPRESS', 'Швидка установка');
 
+/* Change password */
+define('_WEBO_PASSWORD_TITLE', 'Смена пароля');
+define('_WEBO_PASSWORD_INSTALLED', 'Для данного сайта уже установлен Web Optimizer. Вы можете сменить пароль доступа к его функциям администрирования: Изменения настроек, Удаления файлов из кэша, Обновления, Отключения и Удаления.');
+define('_WEBO_PASSWORD_OLD', 'Старый пароль');
+define('_WEBO_PASSWORD_ENTERPASSWORD', 'Введите старый пароль');
+define('_WEBO_PASSWORD_NEW', 'Новый пароль');
+define('_WEBO_PASSWORD_ENTERPASSWORDNEW', 'Введите новый пароль');
+define('_WEBO_PASSWORD_CONFIRM', 'Подтверждение пароля');
+define('_WEBO_PASSWORD_ENTERPASSWORDCONFIRM', 'Введите подтверждение для нового пароля');
+define('_WEBO_SPLASH1_SAVE', 'Сохранить');
+define('_WEBO_PASSWORD_DIFFERENT', 'Новый пароль и его подтверждение не совпадают');
+define('_WEBO_PASSWORD_EMPTY', 'Новый пароль не задан!');
+define('_WEBO_PASSWORD_SUCCESSFULL', 'Пароль успешно обновлен');
+
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Установка - другий крок');
 define('_WEBO_SPLASH2_OPTIONS', 'Налаштування Web Optimizer');
@@ -293,5 +307,5 @@ define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Минимизация CSS');
 define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файлам');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
-define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка системы');
+define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка CMS');
 ?>

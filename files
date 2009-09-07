@@ -11,6 +11,7 @@ libs/js/wo.cookie.php
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
 libs/php/lang/en.php
+libs/php/lang/es.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
 libs/php/.htaccess
@@ -33,6 +34,7 @@ libs/yuicompressor/yuicompressor.jar
 plugins/joomla15.php
 view/admin_container.php
 view/error.php
+view/install_change_password.php
 view/install_enter_password.php
 view/install_set_password.php
 view/install_stage_2.php

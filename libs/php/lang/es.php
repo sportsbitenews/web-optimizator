@@ -73,6 +73,20 @@ define('_WEBO_SPLASH1_NEXT', 'Siguiente');
 define('_WEBO_SPLASH1_BACK', 'Atr&aacute;s');
 define('_WEBO_SPLASH1_EXPRESS', 'Instalaci&oacute;n Express');
 
+/* Change password */
+define('_WEBO_PASSWORD_TITLE', 'Change password');
+define('_WEBO_PASSWORD_INSTALLED', 'There is Web Optimizer installed for the current website. You can change password to access to its functions: Settings changing, Cache clean-up, Upgrade, Disable and Delete.');
+define('_WEBO_PASSWORD_OLD', 'Old password');
+define('_WEBO_PASSWORD_ENTERPASSWORD', 'Enter old password');
+define('_WEBO_PASSWORD_NEW', 'New password');
+define('_WEBO_PASSWORD_ENTERPASSWORDNEW', 'Enter new password');
+define('_WEBO_PASSWORD_CONFIRM', 'New password confirmation');
+define('_WEBO_PASSWORD_ENTERPASSWORDCONFIRM', 'Enter confirmation for new password');
+define('_WEBO_SPLASH1_SAVE', 'Save');
+define('_WEBO_PASSWORD_DIFFERENT', 'New password and its confirmation are different');
+define('_WEBO_PASSWORD_EMPTY', 'New password isn\'t set!');
+define('_WEBO_PASSWORD_SUCCESSFULL', 'Password has been changed');
+
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Instalaci&oacute;n - Etapa 2');
 define('_WEBO_SPLASH2_OPTIONS', 'Opciones de compresi&oacute;n');

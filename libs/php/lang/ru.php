@@ -73,6 +73,20 @@ define('_WEBO_SPLASH1_NEXT', 'Далее');
 define('_WEBO_SPLASH1_BACK', 'Назад');
 define('_WEBO_SPLASH1_EXPRESS', 'Быстрая установка');
 
+/* Change password */
+define('_WEBO_PASSWORD_TITLE', 'Смена пароля');
+define('_WEBO_PASSWORD_INSTALLED', 'Для данного сайта уже установлен Web Optimizer. Вы можете сменить пароль доступа к его функциям администрирования: Изменения настроек, Удаление файлов из кэша, Обновления, Отключения и Удаления.');
+define('_WEBO_PASSWORD_OLD', 'Старый пароль');
+define('_WEBO_PASSWORD_ENTERPASSWORD', 'Введите старый пароль');
+define('_WEBO_PASSWORD_NEW', 'Новый пароль');
+define('_WEBO_PASSWORD_ENTERPASSWORDNEW', 'Введите новый пароль');
+define('_WEBO_PASSWORD_CONFIRM', 'Подтверждение пароля');
+define('_WEBO_PASSWORD_ENTERPASSWORDCONFIRM', 'Введите подтверждение для нового пароля');
+define('_WEBO_SPLASH1_SAVE', 'Сохранить');
+define('_WEBO_PASSWORD_DIFFERENT', 'Новый пароль и его подтверждение не совпадают');
+define('_WEBO_PASSWORD_EMPTY', 'Новый пароль не задан!');
+define('_WEBO_PASSWORD_SUCCESSFULL', 'Пароль успешно обновлен');
+
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_TITLE', 'Установка - шаг второй');
 define('_WEBO_SPLASH2_OPTIONS', 'Настройки Web Optimizer');
@@ -239,12 +253,12 @@ define('_WEBO_SPLASH3_ALTHOUGH2', 'install.php</code> для обеспечения дополнител
 define('_WEBO_SPLASH3_FINISH', 'Закончить установку');
 define('_WEBO_SPLASH3_CANTWRITE', 'Не удается записать в указанную вами директорию ');
 define('_WEBO_SPLASH3_CANTWRITE2', '. Пожалуйста, проверьте, что директория существует и доступна на запись.');
-define('_WEBO_SPLASH3_CANTWRITE3', 'Вы можете сделать это и из своего FTP-клиента. Для этого нужно перейти в директорию, зайти в ее свойства или выполнить CHMOD 775 или CHMOD 777.');
+define('_WEBO_SPLASH3_CANTWRITE3', 'Вы можете сделать это и из своего FTP-клиента. Для этого нужно перейти в директорию, зайти в ее свойства, или выполнить CHMOD 775, или CHMOD 777.');
 define('_WEBO_SPLASH3_CANTWRITE4', 'После того, как вы устраните эту проблему, пожалуйста, перезагрузите страницу.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Пожалуйста, убедитесь, что корневая папка вашего сайта доступна на чтение и запись для вашего веб-сервера.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Для этого выполните CHMOD 775 или CHMOD 777, или создайте в корне файл <code>.htaccess</code>, доступный для чтения и записи для вашего веб-сервера, или разрешите чтение и запись для текущего файла <code>.htaccess</code> (CHMOD 664 или CHMOD 777).');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Для этого выполните CHMOD 775, или CHMOD 777, или создайте в корне файл <code>.htaccess</code>, доступный для чтения и записи для вашего веб-сервера, или разрешите чтение и запись для текущего файла <code>.htaccess</code> (CHMOD 664 или CHMOD 777).');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Пожалуйста, убедитесь, что корневая папка вашего сайта доступна на запись для вашего веб-сервера или в ней существует доступный на запись файл <code>.htaccess</code>.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Выполните для директории CHMOD 775 или CHMOD 777, или создайте в корне файл <code>.htaccess</code>, доступный для записи для вашего веб-сервера, или разрешите запись для текущего файла <code>.htaccess</code> (CHMOD 664 или CHMOD 777).');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Выполните для директории CHMOD 775, или CHMOD 777, или создайте в корне файл <code>.htaccess</code>, доступный для записи для вашего веб-сервера, или разрешите запись для текущего файла <code>.htaccess</code> (CHMOD 664 или CHMOD 777).');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Пожалуйста, убедитесь, что Web Optimizer установлен в');
 define('_WEBO_SPLASH3_CONFSAVED', 'Конфигурация сохранена');
 define('_WEBO_SPLASH3_CONFIGERROR', 'Невозможно открыть на запись конфигурационный файл. Пожалуйста, измените права доступа для файла <code>config.webo.php</code> Web Optimizer, чтобы он был доступен на запись для вашего веб-сервера.');
@@ -294,5 +308,5 @@ define('_WEBO_SYSTEM_CHECK_CSS_MINIFY', 'Минимизация CSS');
 define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файлам');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
-define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка системы');
+define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка CMS');
 ?>

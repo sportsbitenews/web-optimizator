@@ -10,15 +10,14 @@
 	echo _WEBO_SPLASH1_NEXT;
 ?>" class="x">3</a></li></ul></div><p id="showme"><sup><a href="?page=install_stage_2" title="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins>
-<?php
+?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins><?php
 	if(!empty($message)) {
 ?><p class="m"><?php
 		echo $message;
 ?></p><?php
 	}
 ?><h2><?php
-	echo _WEBO_LOGIN_TITLE
+	echo _WEBO_LOGIN_TITLE;
 ?></h2><div class="d"><div class="e"><noscript><p><?php
 	echo _WEBO_NEW_NOSCRIPT;
 ?></p></noscript><?php
@@ -90,6 +89,10 @@
 	echo _WEBO_SPLASH1_UNINSTALL;
 ?>" title="<?php
 	echo _WEBO_LOGIN_UNINSTALLME;
-?>" class="j"/></fieldset></div><div id="sc"><p><?php 
+?>" class="j"/><p><input type="submit" name="change" value="<?php
+	echo _WEBO_PASSWORD_TITLE;
+?>" title="<?php
+	echo _WEBO_PASSWORD_TITLE;
+?>" class="k"/></p></fieldset></div><div id="sc"><p><?php 
 	echo _WEBO_SYSTEM_CHECK
 ?></p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
