@@ -1466,6 +1466,7 @@ class web_optimizer {
 
 	function convert_path_to_absolute($file, $path, $leave_querystring = false) {
 		$endfile = '';
+		$root = $this->view->unify_dir_separator($this->view->paths['full']['document_root']);
 		if (!empty($path['file'])) {
 			$endfile = $path['file'];
 		}
@@ -1477,7 +1478,10 @@ class web_optimizer {
 		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."!is", $file)) {
 			return false;
 		}
-		$absolute_path = preg_replace("!(https?://[^/]+/).*!", "$1", $path['file']) . $file;
+		$absolute_path = $file;
+		if (!preg_match("!^https?://!", $file)) {
+			$absolute_path = str_replace($root, "", preg_replace("!(https?://[^/]+/).*!", "$1", $path['file']) . $absolute_path);
+		}
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
@@ -1485,7 +1489,7 @@ class web_optimizer {
 				$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
 			}
 			$full_path_to_image = preg_replace("@[^/]+$@", "", $endfile);
-			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($this->view->unify_dir_separator($this->view->paths['full']['document_root']), "", $this->view->unify_dir_separator($full_path_to_image . $file)));
+			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($root, "", $this->view->unify_dir_separator($full_path_to_image . $file)));
 		}
 /* remove HTTP host from absolute URL */
 		return preg_replace("!https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."/!i", "/", $absolute_path);
