@@ -1321,9 +1321,13 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for CMS Made Simple */
 							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
-/* fix for UMI.CMS */							
+/* fix for UMI.CMS */
 							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
 								$content_saved = preg_replace("/(web\.optimizer.*\r?\n[\s\t]*echo\s*\\\$res;)/", "$1\n" . '$web_optimizer->finish();', $content_saved);
+/* fix for MaxDev */
+							} elseif (substr($this->cms_version, 0, 6) == 'MaxDev') {
+								$content_saved = preg_replace("/(\\\$output->PrintPage\(\);)/", "$1" . '$web_optimizer->finish();', $content_saved);
+								$content_saved = preg_replace("/(\}[\r\n\t\s]+)(exit;)/", "$1" . '$web_optimizer->finish();' . "$2", $content_saved);
 							} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 									if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -2170,6 +2174,25 @@ require valid-user
 						'mode' => 'finish',
 						'location' => 'echo pack(\'V\', $gzip_size);}}',
 						'global' => 1
+					)
+				);
+				break;
+/* MaxDev Pro */
+			case 'MaxDev':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => '$output->PrintPage();'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => 'exit;}'
 					)
 				);
 				break;
