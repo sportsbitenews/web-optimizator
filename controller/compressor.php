@@ -1147,18 +1147,18 @@ class web_optimizer {
 /* don't rewrite existing content inside script tags */
 					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
 /* add stored content before, but leave styles stored */
-					if (!empty($stored[$value['tag']]) && $value['tag'] == 'script') {
-						$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+					if (!empty($stored[$value['tag']])) {
+/* preserve order of merged content */
+						if ($last_key_flushed[$value['tag']] < $key) {
+							$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+						} else {
+							$this->initial_files[$key]['content'] .= $delimiter . $stored[$value['tag']];
+						}
 						$stored[$value['tag']] = '';
 					}
 					$last_key[$value['tag']] = $key;
 				}
 			}
-		}
-/* glues all inline styles to the last CSS file */
-		if (!empty($last_key['link']) && !empty($stored['link'])) {
-			$this->initial_files[$last_key['link']]['content'] .= $delimiter . $stored['link'];
-			$stored['link'] = '';
 		}
 /* check for stored content and flush it */
 		foreach ($stored as $tag => $stored_content) {
