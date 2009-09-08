@@ -1,10 +1,10 @@
 <?php
 
 // ==============================================================================================
-// Licensed under the MIT
+// Licensed under the W3C
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.4.2
+// @version    0.5.8
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 // To install Web Optimizer please copy this file to the document root, make document root

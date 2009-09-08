@@ -259,7 +259,7 @@ class web_optimizer {
 		}
 /* skip RSS */
 		if (!strpos($this->content, "<rss version=")) {
-			if ($this->web_optimizer_stage) {
+			if (!empty($this->web_optimizer_stage)) {
 				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
 			}
 /* find all files in head to process */

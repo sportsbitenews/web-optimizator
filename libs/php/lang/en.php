@@ -104,7 +104,8 @@ define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists an
 /* Web Optimizer options */
 define('_WEBO_SPLASH2_MINIFY', 'Minify Options');
 define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Minifying removes whitespace and other unnecessary characters.</p>
-									<p>Also you can choose the tool for CSS/JavaScript minification or obfuscation.</p>');
+									<p>Also you can choose the tool for CSS/JavaScript minification or obfuscation.</p>
+									<p>Please be careful while applying "Remove HTML comments" or "Shrink HTML" options. Former can lead to removing a number of counters (JavaScript code inside comments), latter - to additional server load on every page view.</p>');
 define('_WEBO_SPLASH2_UNOBTRUSIVE', '"Unobtrusive" JavaScript');
 define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.</p>
 									<p>This can significantly increase website load speed. But in some cases can break the client side logic. Please be careful with this option.</p>

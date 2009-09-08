@@ -104,7 +104,8 @@ define('_WEBO_SPLASH2_MAKESURE', '.<br/>Por favor aser&uacute;rese que el folder
 /* Web Optimizer options */
 define('_WEBO_SPLASH2_MINIFY', 'Opciones de minimizaci&oacute;n');
 define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Minimizaci&oacute;n borra todos los espacios en blanco y otros caracteres innecesarios.</p>
-									<p>Adem&aacute;s usted puede escoger la herramienta para la minimizaci&oacute;n de for CSS/JavaScript.</p>');
+									<p>Adem&aacute;s usted puede escoger la herramienta para la minimizaci&oacute;n de for CSS/JavaScript.</p>
+									<p>Please be careful while applying "Remove HTML comments" or "Shrink HTML" options. Former can lead to removing a number of counters (JavaScript code inside comments), latter - to additional server load on every page view.</p>');
 define('_WEBO_SPLASH2_UNOBTRUSIVE', 'JavaScript "no prominente"');
 define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>JavaScript no prominente ser&aacute; cargado luego de que todo el contenido haya aparecido en el browser.</p>
 									<p>Esto puede aumentar considerablemente la velocidad de carga de su website. Pero en algunos casos puede interferir con la l&oacute;gica del cliente. Por favor tome precauci&oacute;n con esta opci&oacute;n.</p>

@@ -187,8 +187,8 @@ class css_sprites {
 			}
 			$properties = array('background-image', 'background-position', 'background-repeat', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 
 'width', 'height');
-/* to remember already calculated selectors */
-			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array());
+/* to remember already calculated selectors, by stages */
+			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array(), 8 => array(), 9 => array());
 /* try to restore property values from parent selectors */
 			foreach ($this->media as $import => $images) {
 				foreach ($images as $key => $image) {
@@ -223,15 +223,15 @@ class css_sprites {
 					}
 /* define a few of constants for image */
 					$img_has = array();
-/* Has image width? */
+/* Does image have width? */
 					$img_has['width'] = !empty($image['width']);
-/* Has image height? */
+/* Does image have height? */
 					$img_has['height'] = !empty($image['height']);
 /* Is image width given in absolute units? */
 					$img_has['abs_width'] = $img_has['width'] && !preg_match("/em|%|auto/", $image['width']);
 /* Is image height given in absolute units? */
 					$img_has['abs_height'] = $img_has['height'] && !preg_match("/em|%|auto/", $image['height']);
-/* Has image background-position? */
+/* Does image have background-position? */
 					$img_has['position'] = !empty($image['background-position']);
 					if ($img_has['position']) {
 						$background_position = explode(" ", $image['background-position']);
@@ -245,7 +245,7 @@ class css_sprites {
 					$img_has['pos_bottom'] = $img_has['position'] && $background_position[1] == '100%';
 /* Is image placed to the center? */
 					$img_has['pos_center'] = $img_has['position'] && ($background_position[0] == '50%' || $background_position[1] == '50%');
-/* Does image location depends on container size? */
+/* Does image location depend on container size? */
 					$img_has['pos_float'] = $img_has['pos_center'] ||
 						($img_has['pos_right'] && preg_match("/%|em/", $background_position[1]) && round($background_position[1])) ||
 						($img_has['pos_bottom'] && preg_match("/%|em/", $background_position[0]) && round($background_position[0]));
@@ -365,7 +365,7 @@ class css_sprites {
 							}
 /* calculate backround-position for image with relative position but absolute dimensions */
 							if (!empty($image['background-position']) && preg_match("/right|bottom|center|%/", $image['background-position'])) {
-								$position = explode(" ", preg_replace("/right|bottom/", "100%", str_replace("center", "50%", $image['background-position'])));
+								$position = explode(" ", $image['background-position']);
 								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100) . 'px';
 								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100) . 'px';
 								switch ($image['background-repeat']) {
@@ -397,7 +397,7 @@ class css_sprites {
 								case 'repeat-x':
 /* repeat-x case w/o dimensions - can be added safely only to the end of Sprite */
 								case 'repeat-xl':
-									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+									$top = round($position[1]);
 /* shift for bottom left corner of the object */
 									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 									break;
@@ -405,7 +405,7 @@ class css_sprites {
 								case 'repeat-y':
 /* repeat-y case w/o dimensions - can be added safely only to the end of Sprite */
 								case 'repeat-yl':
-									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
+									$left = round($position[0]);
 									$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
 									break;
 /* no-repeat case w/ dimensions can be placed all together */
@@ -423,18 +423,18 @@ class css_sprites {
 */
 								case 'no-repeati':
 /* don't need any shift for icons -- they have enough room for any object */
-									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
-									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+									$left = round($position[0]);
+									$top = round($position[1]);
 									break;
 /* no-repeat case with 100% 0 */
 								case 'no-repeatr':
 									$left = 'right';
-									$top = ($position[0] == 'top' || $position[1] == 'top') ? 0 : round($position[1]);
+									$top = round($position[1]);
 									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 									break;
 /* no-repeat case with 0 100% */
 								case 'no-repeatb':
-									$left = ($position[0] == 'left' || $position[1] == 'left') ? 0 : round($position[0]);
+									$left = round($position[0]);
 									$top = 'bottom';
 									$shift_y = $image['width'] > $height ? $image['width'] - $height : 0;
 									break;

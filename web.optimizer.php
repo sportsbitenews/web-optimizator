@@ -1,11 +1,11 @@
 <?php
 // ==============================================================================================
-// Licensed under the MIT (MIT-LICENSE.txt)
+// Licensed under the W3C (W3C-LICENSE.txt)
 // ==============================================================================================
-// @author     Leon Chevalier (http://www.aciddrop.com)
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.5.6
-// @copyright  Copyright &copy; 2008-2009 Leon Chevalier, Nikolay Matsievsky, All Rights Reserved
+// @version    0.5.8
+// @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
+// initially based on PHP Speedy (Leon Chevalier, http://aciddrop.com)
 // ==============================================================================================
 
 $basepath = dirname(__FILE__) . '/';
