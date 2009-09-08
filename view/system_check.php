@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
  * Outputs JavaScript to update Stage 1 page with system requirements
  *
  **/

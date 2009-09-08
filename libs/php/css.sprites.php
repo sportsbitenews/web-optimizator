@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
  * Parses content, gets all CSS images, converts them to CSS Sprites.
  * Outputs minified (no sorting selectors) content
  *

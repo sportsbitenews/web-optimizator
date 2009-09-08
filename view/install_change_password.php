@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
  * Outputs page to change password
  *
  **/

@@ -2,7 +2,7 @@
 /**
  * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  * Very basic templating class
- * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
+ * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.name)
  *
  **/
 class compressor_view {
