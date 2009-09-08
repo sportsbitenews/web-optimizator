@@ -1479,9 +1479,6 @@ class web_optimizer {
 			return false;
 		}
 		$absolute_path = $file;
-		if (!preg_match("!^https?://!", $file)) {
-			$absolute_path = str_replace($root, "", preg_replace("!(https?://[^/]+/).*!", "$1", $path['file']) . $absolute_path);
-		}
 /* Not absolute or external */
 		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */

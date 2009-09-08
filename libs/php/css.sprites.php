@@ -1504,7 +1504,7 @@ __________________
 	function compute_background_position ($value) {
 /* step 1: restore half-value to full one */
 		$values = explode(" ", $value);
-		if (empty($values[1]) && $values[1] != '0') {
+		if (!isset($values[1])) {
 			switch ($values[0]) {
 				case 'top':
 				case 'bottom':
