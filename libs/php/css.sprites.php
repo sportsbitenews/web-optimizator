@@ -364,10 +364,15 @@ class css_sprites {
 								}
 							}
 /* calculate backround-position for image with relative position but absolute dimensions */
-							if (!empty($image['background-position']) && preg_match("/right|bottom|center|%/", $image['background-position'])) {
+							echo $image['background-position'] . "<br/>";
+							if (!empty($image['background-position']) && strpos($image['background-position'], '%')) {
+								$width_real = max($width, $image['width']);
+								$height_real = max($height, $image['height']);
 								$position = explode(" ", $image['background-position']);
-								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100) . 'px';
-								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100) . 'px';
+								$position_x = round(round($position[0]) * ($width_real - $width) / 100);
+								$position_x .= ($position_x ? 'px' : '');
+								$position_y = round(round($position[1]) * ($height_real - $height) / 100);
+								$position_y .= ($position_y ? 'px' : '');
 								switch ($image['background-repeat']) {
 									case 'no-repeat':
 										$position[0] = $position_x;
@@ -380,6 +385,7 @@ class css_sprites {
 								}
 								$image['background-position'] =  $this->media[$import][$key]['background-position'] = implode(" ", $position);
 							}
+							echo $image['background-position'] . "<br/>";
 							if (empty($this->css_images[$this->sprite])) {
 								$this->css_images[$this->sprite] = array();
 								$this->css_images[$this->sprite]['x'] = 0;
@@ -449,6 +455,7 @@ __________________
 |            shift|
 |_________________|
 */
+echo $this->css_image . " " . $width . " " . $height . " " . $left . " " . $top . " " . $shift_x . " " . $shift_y . " " . $import . " " . $key . "<br/>";
 							$this->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
 						}
 					}
