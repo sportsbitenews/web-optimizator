@@ -196,6 +196,7 @@ define('_WEBO_html_cache_allowed_list', 'Список USER AGENTS (роботов) для включе
 define('_WEBO_footer_text', 'Добавить ссылку на Web Optimizer');
 define('_WEBO_footer_image', 'Добавить изображение Web Optimizer');
 define('_WEBO_data_uris_on', 'Применить <code>data:URI</code>');
+define('_WEBO_data_uris_size', 'Максимальный размер изображения (в байтах)');
 define('_WEBO_data_uris_smushit', 'Оптимизировать все CSS-изображения через smush.it');
 define('_WEBO_css_sprites_enabled', 'Применить CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Сохранять полноцветные изображения в JPEG');

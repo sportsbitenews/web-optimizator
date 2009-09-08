@@ -91,6 +91,8 @@ $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
+## Maximum size of images to be converted, in bytes
+$compress_options['data_uris']['size'] = "24576";
 ## Optimiza all CSS images via smush.it?
 $compress_options['data_uris']['smushit'] = "0";
 ## Should Web Optimizer use CSS Sprites for background images?

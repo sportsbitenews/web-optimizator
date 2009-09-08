@@ -33,6 +33,8 @@ class css_sprites {
 			$this->ignore_list = explode(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
 			$this->data_uris = $options['data_uris'];
+/* max size of images to be converted */
+			$this->data_uris_size = $options['data_uris_size'];
 /* part or full process */
 			$this->partly = $options['partly'];
 /* exclude IE6 from CSS Sprites */
@@ -587,7 +589,7 @@ __________________
 						$this->smushit($this->css_image);
 					}
 /* don't create data:URI greater than 32KB -- for IE8 */
-					if (@filesize($this->css_image) < 24576) {
+					if (@filesize($this->css_image) < $this->data_uris_size) {
 /* convert image to base64-string */
 						$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 					} else {

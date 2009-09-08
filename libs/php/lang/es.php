@@ -193,6 +193,7 @@ define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&nt
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a Web Optimizer');
 define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
+define('_WEBO_data_uris_size', 'Maximum image size (in bytes)');
 define('_WEBO_data_uris_smushit', 'Optimiza todas las im&aacute;genes CSS via smush.it');
 define('_WEBO_css_sprites_enabled', 'AplicarSprites de CSS');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Graba im&aacute;genes truecolor como JPEG');
