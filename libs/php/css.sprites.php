@@ -368,9 +368,9 @@ class css_sprites {
 								$width_real = max($width, $image['width']);
 								$height_real = max($height, $image['height']);
 								$position = explode(" ", $image['background-position']);
-								$position_x = round(round($position[0]) * ($width_real - $width) / 100);
+								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100);
 								$position_x .= ($position_x ? 'px' : '');
-								$position_y = round(round($position[1]) * ($height_real - $height) / 100);
+								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100);
 								$position_y .= ($position_y ? 'px' : '');
 								switch ($image['background-repeat']) {
 									case 'no-repeat':
@@ -652,8 +652,9 @@ __________________
 					if (empty($added_images[$image[0]])) {
 /* initial coordinates */
 						$I = $J = 0;
-						$width = $image[1] + $image[3] + $image[5] + ($this->extra_space ? 5 : 0);
-						$height = $image[2] + $image[4] + $image[6] + ($this->extra_space ? 5 : 0);
+/* avoid affecting negative background-position to image placement, we have already counted it */
+						$width = $image[1] + ($image[3] > 0 ? $image[3] : 0) + $image[5] + ($this->extra_space && count($ordered_images) > 1 ? 5 : 0);
+						$height = $image[2] + ($image[4] > 0 ? $image[4] : 0) + $image[6] + ($this->extra_space && count($ordered_images) > 1 ? 5 : 0);
 						$shift_x = $image[3];
 						$shift_y = $image[4];
 /* to remember the most 'full' place for new image */
@@ -1110,7 +1111,7 @@ __________________
 										$css_top = -$final_y + $shift_y;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width, $height);
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
 										}
 										break;
 /* repeat-y */
@@ -1426,7 +1427,7 @@ __________________
 							empty($this->css->css[$import][$restored_selector][$property]) &&
 							!empty($this->css->css[$import][$restored_selector][$property]['padding'])) {
 								$padding = $this->css->optimise->dissolve_4value_shorthands('padding', $this->css->css[$import][$restored_selector][$property]['padding']);
-/* in resolved property these is no give key */
+/* in resolved property these is no given key */
 								if (!empty($padding[$property])) {
 									$return = $padding[$property];
 								}
@@ -1529,8 +1530,17 @@ __________________
 		if (!empty($values[1]) && substr($values[1], 0, 1) == '0') {
 			$values[1] = 0;
 		}
+/* step 3: switch bottom left to left bottom etc */
+		switch ($values[0]) {
+			case 'top':
+			case 'bottom':
+				$v = $values[0];
+				$values[0] = $values[1];
+				$values[1] = $v;
+				break;
+		}
 		$value = $values[0] . " " . $values[1];
-/* step 3: replace words with percent */
+/* step 4: replace words with percent */
 		$value = str_replace(array('left', 'top', 'center', 'bottom', 'right'), array(0, 0, '50%', '100%', '100%'), $value);
 		return $value;
 	}
