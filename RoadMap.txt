@@ -13,7 +13,7 @@
 +l) Backup of changed files
 
 2. System check
-?a) .htaccess posibility
++a) .htaccess posibility
 +b) .htaccess possible options (mod_rewrite / mod_deflate / mod_expires)
 +c) PHP (other languages) libs: gzencode, curl , etc.
 +d) Current Web Optimizer status: installed or not
@@ -88,7 +88,8 @@
  a) Perl
 ?b) Java
 ?c) Python
- d) ?
+ d) Ruby
+ e) ASP.NET
 
 11. Default CMS-compatibility
 +a) Wordpress (2.7.1, 2.8.4)
@@ -122,7 +123,7 @@
 +C) ExpressionEngine (1.6.8)
 +D) osCommerce (2.2)
  E) PHP-Fusion (7.0)
- F) MDPro
++F) MaxDev Pro (1.082)
 +G) Xaraya (1.1.5)
 +H) Website Baker (2.8.0)
 +I) Open Slaed (1.2)
@@ -133,7 +134,7 @@
  c) German
 ?d) Hebrew
 +e) Ukranian
- f) Spanish
++f) Spanish
  g) French
  h) Italian
  
@@ -141,7 +142,7 @@
  +a) Possiblity to add plugin for any system
  +b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
   c) Drupal 5 (???)
-  d) Druapl 6 (???)
+  d) Drupal 6 (???)
   e) Wordpress 2
  
  14. Documentation
@@ -149,3 +150,4 @@
  +b) Settings description
  +c) Troubleshooter
  +d) Use cases
+  e) Full .pdf

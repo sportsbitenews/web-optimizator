@@ -129,44 +129,21 @@ class css_sprites {
 													if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
 														$property = $this->none;
 													}
-/* fix background-position: left|right -> left center|right center */
-													if ($bg == 'background-position' &&
-														($property == 'left' ||
-														!round(str_replace(" ", "", $property)) ||
-														$property == 'right' ||
-														round($property) == 100) &&
-														strlen($property) < 6) {
-															$property = $property . ' center';
-													}
-/* fix background-position: top|bottom -> center top|center bottom */
-													if ($bg == 'background-position' &&
-														($property == 'top' ||
-														$property == 'bottom')) {
-															$property = 'center ' . $property;
+/* compute background-position to standard view */
+													if ($bg == 'background-position') {
+														$property = $this->compute_background_position($property);
 													}
 													$this->media[$import][$tag][$bg] = $property;
 										}
 									}
 								} else {
-/* skip default properties */
-									if (!($key == 'background-position' &&
-										($value == 'top left' ||
-											$value == 'left top' ||
-											round(str_replace(" ", "", $value))))) {
-/* fix background-position: left|right|center -> left center|right center|center center */
-											if ($key == 'background-position' &&
-												($value == 'left' ||
-												!round(str_replace(" ", "", $value)) ||
-												$value == 'right' ||
-												round($value) == 100) &&
-												strlen($value) < 6 || $value == 'center') {
-													$value = $value . ' center';
-											}
 /* fix background-position: top|bottom -> center top|center bottom */
-											if ($key == 'background-position') {
-												$value = ($value == 'top' ? 'center top' : ($value == 'bottom' ? 'center bottom' : $value));
-											}
-											$this->media[$import][$tag][$key] = $value;
+									if ($key == 'background-position') {
+										$value = $this->compute_background_position($value);
+									}
+/* skip default properties */
+									if ($key != 'background-position' || $value != '0 0') {
+										$this->media[$import][$tag][$key] = $value;
 									}
 								}
 							}
@@ -261,11 +238,11 @@ class css_sprites {
 					}
 					$background_position[1] = empty($background_position[1]) ? 0 : $background_position[1];
 /* Is image placed to the right? */
-					$img_has['pos_right'] = $img_has['position'] && in_array($background_position[0], array('right', '100%'));
+					$img_has['pos_right'] = $img_has['position'] && $background_position[0] == '100%';
 /* Is image placed to the bottom? */
-					$img_has['pos_bottom'] = $img_has['position'] && in_array($background_position[1], array('bottom', '100%'));
+					$img_has['pos_bottom'] = $img_has['position'] && $background_position[1] == '100%';
 /* Is image placed to the center? */
-					$img_has['pos_center'] = $img_has['position'] && (in_array($background_position[0], array('center', '50%')) || in_array($background_position[1], array('center', '50%')));
+					$img_has['pos_center'] = $img_has['position'] && ($background_position[0] == '50%' || $background_position[1] == '50%');
 /* Does image location depends on container size? */
 					$img_has['pos_float'] = $img_has['pos_center'] ||
 						($img_has['pos_right'] && preg_match("/%|em/", $background_position[1]) && round($background_position[1])) ||
@@ -273,9 +250,9 @@ class css_sprites {
 /* Does image have not absolute position? */
 					$img_has['pos_relative'] = $img_has['position'] && preg_match("/right|bottom|center|%|em/", $image['background-position']);
 /* Can we calculate background-posititon-x for this image? Thx to Steve Souders */
-					$img_has['pos_x_comp'] = (in_array($background_position[0], array('center', 'right')) || strpos($background_position[0], '%')) && $img_has['abs_width'];
+					$img_has['pos_x_comp'] = strpos($background_position[0], '%') && $img_has['abs_width'];
 /* Can we calculate background-posititon-y for this image? */
-					$img_has['pos_y_comp'] = (in_array($background_position[1], array('center', 'bottom')) || strpos($background_position[1], '%')) && $img_has['abs_height'];
+					$img_has['pos_y_comp'] = strpos($background_position[1], '%') && $img_has['abs_height'];
 /* exclude files from ignore list */
 					if (!empty($this->ignore_list) && in_array(preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5)), $this->ignore_list)) {
 						unset($this->media[$import][$key]);
@@ -301,7 +278,7 @@ class css_sprites {
 									}
 /* if can't re-calculate background-position for absolute dimensions */
 								} elseif (!$img_has['pos_x_comp'] || !$img_has['pos_y_comp']) {
-											$repeat_key = 'repeat';
+									$repeat_key = 'repeat';
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-x') {
@@ -1521,6 +1498,35 @@ __________________
 				@imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
 				break;
 		}
+	}
+/* fix background-position:	left|right|center -> 0 50%|100% 50%|50% 50%
+							top|bottom -> 50% 0|50% 100% */
+	function compute_background_position ($value) {
+/* step 1: restore half-value to full one */
+		$values = explode(" ", $value);
+		if (empty($values[1]) && $values[1] != '0') {
+			switch ($values[0]) {
+				case 'top':
+				case 'bottom':
+					$value = '50% ' . $value;
+					break;
+				default:
+					$value .= ' 50%';
+					break;
+			}
+		}
+/* step 2: convert 0px etc to absolute 0 */
+		$values = explode(" ", $value);
+		if (!empty($values[0]) && substr($values[0], 0, 1) == '0') {
+			$values[0] = 0;
+		}
+		if (!empty($values[1]) && substr($values[1], 0, 1) == '0') {
+			$values[1] = 0;
+		}
+		$value = $values[0] . " " . $values[1];
+/* step 3: replace words with percent */
+		$value = str_replace(array('left', 'top', 'center', 'bottom', 'right'), array(0, 0, '50%', '100%', '100%'), $value);
+		return $value;
 	}
 }
 
