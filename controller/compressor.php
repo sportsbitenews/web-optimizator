@@ -1387,7 +1387,7 @@ class web_optimizer {
 /* Yandex.Metrica */
 			$before_body .= $this->replace_unobtrusive_generic("@<!-- Yandex.Metrika -->.*?<!-- Yandex.Metrika -->@is", 'metrica', 0, true);
 /* Rating@Mail.ru */
-			$before_body .= $this->replace_unobtrusive_generic("@<!--Rating@Mail.ru counter-->.*?<!--// Rating@Mail.ru counter-->@is", 'ratingmail', 31, true);
+			$before_body .= $this->replace_unobtrusive_generic("@<!--Rating\@Mail.ru counter-->.*?<!--// Rating\@Mail.ru counter-->@is", 'ratingmail', 31, true);
 
 		}
 /* Advertisement */
@@ -1456,7 +1456,7 @@ class web_optimizer {
 				} else {
 					$el = 'span';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Speed Up Your Website" style="float:right;display:block;text-decoration:none;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></' . $el . '>' . "$1", $this->content);
+				$this->content = preg_replace('!(</body>)!is', '<' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="float:right;display:block;text-decoration:none;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></' . $el . '>' . "$1", $this->content);
 			}
 		}
 	}
@@ -1669,7 +1669,7 @@ class web_optimizer {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.7");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Faster than Lightning; http://web-optimizer.us/) Firefox 3.5.2");
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
