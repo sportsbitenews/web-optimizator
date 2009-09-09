@@ -68,7 +68,7 @@
 	if (in_array('curl', $loaded_modules) && function_exists('curl_init')) {
 /* check if directory already exists */
 		if (is_dir($install_directory) && is_file($install_directory . '/index.php')) {
-			header("Location: web-optimizer/");
+			header("Location: " . $install_directory . "/index.php");
 			die();
 		} else {
 			@mkdir($install_directory);
@@ -92,7 +92,7 @@
 /* remove current file */
 						@unlink(__FILE__);
 /* redirect to Web Optimizer installation */
-						header("Location: web-optimizer/");
+						header("Location: " . $install_directory . "/index.php");
 						die();
 					} else {
 						$error = $messages['connection_error'];
