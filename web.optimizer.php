@@ -35,6 +35,9 @@ require_once($basepath . "config.webo.php");
 /* define basepath */
 $compress_options['basepath'] = $basepath;
 
+/* buffer input stream or not */
+$compress_options['buffered'] = empty($not_buffered) ? 1 : 0;
+
 /* Con. the view library */
 $view = new compressor_view();
 

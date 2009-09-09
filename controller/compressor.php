@@ -30,6 +30,8 @@ class web_optimizer {
 		$this->time = time();
 /* define PHP version */
 		$this->php = $this->options['php'];
+/* skip buffering (need for integration as plugin) */
+		$this->buffered = $this->options['buffered'];
 /* number of external files calls to process */
 		$this->initial_files = array();
 /* Set options */
@@ -95,8 +97,10 @@ class web_optimizer {
 				}
 			}
 		}
+		if ($this->buffered) {
 /* Start things off */
-		$this->start();
+			$this->start();
+		}
 	}
 
 	/**
@@ -252,7 +256,7 @@ class web_optimizer {
 	*
 	**/
 	function finish($content = false) {
-		if(!$content) {
+		if (!$content) {
 			$this->content = ob_get_clean();
 		} else {
 			$this->content = $content;
@@ -289,13 +293,12 @@ class web_optimizer {
 				die();
 			}
 		}
-/* Echo content to the browser */
-		if(empty($this->supress_output)) {
-			if(!empty($this->return_content)) {
-				return $this->content;
-			} else {
-				echo $this->content;
-			}
+/* Return content to requestor */
+		if ($content) {
+			return $this->content;
+/* or echo content to the browser */
+		} else {
+			echo $this->content;
 		}
 	}
 
