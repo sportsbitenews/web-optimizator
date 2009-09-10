@@ -1298,8 +1298,10 @@ __________________
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://developer.yahoo.com/yslow/smushit/');
-				if (strpos(@file_get_contents($file), "DOCTYPE")) {
+				if (!@filesize($file) || strpos(@file_get_contents($file), "DOCTYPE")) {
 					@copy($file . '.backup', $file);
+				} else {
+					@unlink($file . '.backup');
 				}
 			}
 			@unlink($tmp_file);

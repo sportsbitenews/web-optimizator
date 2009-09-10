@@ -162,7 +162,7 @@ class admin {
 		}
 		@unlink($javascript_cachedir . 'htaccess.test');
 /* check for multiple hosts */
-		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : $this->compress_options['parallel']['allowed_list'];
+		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : explode(" ", $this->compress_options['parallel']['allowed_list']);
 		if (!empty($this->compress_options['parallel']['check'])) {
 			$hosts = $this->check_hosts($hosts);
 		}
@@ -556,22 +556,24 @@ class admin {
 		if (strpos($main_host, ".")) {
 			$etalon = @filesize("libs/css/a.png");
 			$etalon2 = @filesize("libs/css/c.png");
-			foreach ($hosts as $host) {
-				$webo_image = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/a.png";
-				$tmp_image = "image.tmp.png";
+			if (is_array($hosts)) {
+				foreach ($hosts as $host) {
+					$webo_image = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/a.png";
+					$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
-				$this->download($webo_image, $tmp_image);
-				if (@filesize($tmp_image) == $etalon) {
+					$this->download($webo_image, $tmp_image);
+					if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
-					$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/c.png";
-					$tmp_image2 = "image.tmp2.png";
-					$this->download($webo_image2, $tmp_image2);
-					if (@filesize($tmp_image2) == $etalon2) {
-						$allowed_hosts .= $host . " ";
+						$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/c.png";
+						$tmp_image2 = "image.tmp2.png";
+						$this->download($webo_image2, $tmp_image2);
+						if (@filesize($tmp_image2) == $etalon2) {
+							$allowed_hosts .= $host . " ";
+						}
+						@unlink($tmp_image2);
 					}
-					@unlink($tmp_image2);
+					@unlink($tmp_image);
 				}
-				@unlink($tmp_image);
 			}
 		}
 		return trim($allowed_hosts);
