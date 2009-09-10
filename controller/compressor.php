@@ -951,6 +951,9 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
+					if (strpos($src, "://")) {
+						$src = $this->get_remote_file($src);
+					}
 					if ($src) {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
