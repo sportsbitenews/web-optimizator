@@ -1532,14 +1532,12 @@ __________________
 		if (!empty($values[1]) && substr($values[1], 0, 1) == '0') {
 			$values[1] = 0;
 		}
-/* step 3: switch bottom left to left bottom etc */
-		switch ($values[0]) {
-			case 'top':
-			case 'bottom':
-				$v = $values[0];
-				$values[0] = $values[1];
-				$values[1] = $v;
-				break;
+/* step 3:	switch bottom left to left bottom etc 
+			switch 40px left to left 40px etc */
+		if (in_array($values[0], array('top, bottom')) || in_array($values[1], array('left', 'right'))) {
+			$v = $values[0];
+			$values[0] = $values[1];
+			$values[1] = $v;
 		}
 		$value = $values[0] . " " . $values[1];
 /* step 4: replace words with percent */

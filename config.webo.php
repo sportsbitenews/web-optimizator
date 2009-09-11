@@ -38,11 +38,11 @@ $compress_options['dont_check_file_mtime']['on'] = "1";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
 ## Minify JS with JSMin from Douglas Crockford
-$compress_options['minify']['with_jsmin'] = "0";
+$compress_options['minify']['with_jsmin'] = "1";
 ## Minify JS with Dean Edwards Packer
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
-$compress_options['minify']['with_yui'] = "1";
+$compress_options['minify']['with_yui'] = "0";
 ## Minify CSS
 $compress_options['minify']['css'] = "1";
 ## Remove whitespaces
