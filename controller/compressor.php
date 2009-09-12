@@ -1364,7 +1364,10 @@ class web_optimizer {
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
-				$this->content = str_replace($value[0], '<div id="' . $stuff . '_dst_' . $key . '"></div>', $this->content);
+/* count param for str_replace available only in PHP5 */
+				$pos = strpos($this->content, $value[0]);
+				$len = strlen($value[0]);
+				$this->content = substr($this->content, 0, $pos) . '<div id="' . $stuff . '_dst_' . $key . '"></div>' . substr($this->content, $pos + $len, strlen($this->content) - $len);
 				$return .= '<' . ($inline ? 'span' : 'div') . ' id="'.
 						$stuff .'_src_' . $key . 
 					'" style="display:none;' .
@@ -1415,7 +1418,7 @@ class web_optimizer {
 /* Yandex.Direct */
 			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>@is", 'yadirect');
 /* Google AdWords */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">\r?\n?</script>@is", 'gadwords');
+			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>@is", 'gadwords');
 /* Begun */
 			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>@is", 'begun');
 		}
