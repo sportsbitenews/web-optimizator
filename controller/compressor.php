@@ -1206,17 +1206,24 @@ class web_optimizer {
 		foreach($types AS $type) {
 /* Always send etag */
 			$this->gzip_header[$type] = '<?php
-			$hash = \'' . $this->time . (empty($this->options[$type]['gzip']) ? '' : '-gzip') . '\';
+			// Determine supported compression method
+			if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
+				$gzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE["_wo_gzip"]);
+				$deflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
+			}
+			// Determine used compression method
+			$encoding = !empty($gzip) ? "gzip" : (!empty($deflate) ? "deflate" : "none");
+			$hash = "' . $this->time .  '-" . $encoding;
 			header ("Etag: \"" . $hash . "\"");
 ?>';
 /* Send 304? */
 			$this->gzip_header[$type] .= '<?php
 
-			if (isset($_SERVER[\'HTTP_IF_NONE_MATCH\']) &&
-				stripslashes($_SERVER[\'HTTP_IF_NONE_MATCH\']) == \'"\' . $hash . \'"\')	 {
+			if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) &&
+				stripslashes($_SERVER["HTTP_IF_NONE_MATCH"]) == "\"" . $hash . "\"") {
 				// Return visit and no modifications, so do not send anything
 				header ("HTTP/1.0 304 Not Modified");
-				header (\'Content-Length: 0\');
+				header ("Content-Length: 0");
 				exit();
 			}
 
@@ -1226,35 +1233,26 @@ class web_optimizer {
 				$this->gzip_header[$type] .= '<?php
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
-
-					// Determine supported compression method
-					if (!empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])) {
-						$gzip = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'gzip\') || !empty($_COOKIE[\'_wo_gzip\']);
-						$deflate = strstr($_SERVER[\'HTTP_ACCEPT_ENCODING\'], \'deflate\');
-					}
-					// Determine used compression method
-					$encoding = !empty($gzip) ? \'gzip\' : (!empty($deflate) ? \'deflate\' : \'none\');
-
+					global $encoding, $gzip;
 					// Check for buggy versions of Internet Explorer
-					if (!empty($_SERVER[\'HTTP_USER_AGENT\']) && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'Opera\') &&
-						preg_match(\'/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i\', $_SERVER[\'HTTP_USER_AGENT\'], $matches)) {
+					if (!empty($_SERVER["HTTP_USER_AGENT"]) && !strstr($_SERVER["HTTP_USER_AGENT"], "Opera") &&
+						preg_match("/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i", $_SERVER["HTTP_USER_AGENT"], $matches)) {
 						$version = floatval($matches[1]);
 
 						if ($version < 6)
 							$encoding = \'none\';
-
-						if ($version == 6 && !strstr($_SERVER[\'HTTP_USER_AGENT\'], \'SV1\'))
+						if ($version == 6 && !strstr($_SERVER["HTTP_USER_AGENT"], "SV1"))
 							$encoding = \'none\';
 					}
 
-					if (isset($encoding) && $encoding != \'none\')
+					if (isset($encoding) && $encoding != "none")
 					{
 						// try to get gzipped content from file
-						$content = @file_get_contents(__FILE__ . \'.gz\');
+						$content = @file_get_contents(__FILE__ . ".gz");
 						if (empty($content)) {
 						// Send compressed contents
 							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip ? FORCE_GZIP : FORCE_DEFLATE);
-							$fp = @fopen(__FILE__ . \'.gz\', \'wb\');
+							$fp = @fopen(__FILE__ . ".gz", "wb");
 							if ($fp) {
 								@fwrite($fp, $contents);
 								@fclose($fp);
@@ -1263,7 +1261,7 @@ class web_optimizer {
 							$contents = $content;
 						}
 						header ("Content-Encoding: " . $encoding);
-						header (\'Content-Length: \' . strlen($contents));
+						header ("Content-Length: " . strlen($contents));
 					}
 
 					return $contents;
@@ -1272,7 +1270,7 @@ class web_optimizer {
 ?>';
 			}
 
-			if(!empty($this->options[$type]['far_future_expires_php'])) {
+			if (!empty($this->options[$type]['far_future_expires_php'])) {
 				$this->gzip_header[$type] .= '<?php
 				header("Cache-Control: private, max-age=315360000");
 				header("' . $ExpStr . '");
@@ -1282,7 +1280,6 @@ class web_optimizer {
 			$this->gzip_header[$type] .= '<?php
 				header("Content-type: text/' . $type .'; charset: UTF-8");
 ?>';
-
 
 		} // end FE
 	}
