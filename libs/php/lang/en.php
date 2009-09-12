@@ -6,7 +6,7 @@
  **/
 
 /* general layout */
-define('_WEBO_CHARSET', 'latin-1');
+define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
 

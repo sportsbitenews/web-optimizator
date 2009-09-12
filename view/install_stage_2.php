@@ -20,7 +20,7 @@
 	$count = 1;
 	foreach($options AS $key=>$type) {	
 		if(is_array($type['value'])) {
-?><li><a href="#<?php
+?><li><a href="#wo_<?php
 			echo $key;
 ?>" name="<?php
 			echo ++$count;
@@ -68,7 +68,7 @@
 ?>"/></fieldset><?php
 	foreach ($options AS $key => $type) {
 		if(is_array($type['value'])) {
-?><fieldset id="<?php
+?><fieldset id="wo_<?php
 			echo $key;
 ?>"><h3><?php
 			echo $type['title'];

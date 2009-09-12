@@ -7,7 +7,7 @@
  **/
 
 /* layout general */
-define('_WEBO_CHARSET', 'latin-1');
+define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
 
@@ -231,7 +231,7 @@ define('_WEBO_SPLASH3_ADDITIONAL_SHORT', 'Aceleraci&oacute;n adicional');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'Su website basado en ');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' instal&oacute; el patch. Usted puede <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">revisar el resultado aqu&iacute;</a>.');
-define('_WEBO_SPLASH3_WORKING', 'Est&aacute; funcionando. Muy bien, ¿Ahora que?');
+define('_WEBO_SPLASH3_WORKING', 'Est&aacute; funcionando. Muy bien, Ñ—Ahora que?');
 define('_WEBO_SPLASH3_WORKING_REQUIRED', 'Cambios requeridos para ');
 define('_WEBO_SPLASH3_ADD', 'Ahora usted <a href="#modify">debe a&ntilde;adir el c&oacute;digo de Web Optimizer</a> en sus propias p&aacute;ginas PHP (');
 define('_WEBO_SPLASH3_ADD_', '). Esto se efectua m&aacute;s f&aacute;cilmente si tiene un archivo PHP que sirva a todas las p&aacute;ginas en su website, as&iacute; que deba cambiarlo solo a este.');

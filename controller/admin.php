@@ -16,12 +16,14 @@ class admin {
 		if (function_exists('date_default_timezone_set')) {
 			date_default_timezone_set('Europe/Moscow');
 		}
-/* Ensure no caching */
-		header('Expires: ' . date("r"));
-		header("Cache-Control: no-store, no-cache, must-revalidate, private");	
-		header("Pragma: no-cache");	
-		foreach($options AS $key=>$value) {
+		foreach($options AS $key => $value) {
 			$this->$key = $value;
+		}
+		if (empty($this->skip_render)) {
+/* Ensure no caching */
+			header('Expires: ' . date("r"));
+			header("Cache-Control: no-store, no-cache, must-revalidate, private");	
+			header("Pragma: no-cache");
 		}
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
@@ -37,7 +39,7 @@ class admin {
 		);
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
-		$this->version = @file_get_contents('version');
+		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
 		$this->download($this->svn . 'version', $version_new_file);
@@ -48,7 +50,7 @@ class admin {
 			$this->version_new = $this->version;
 		}
 		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
-		if (empty($this->password_not_required[$this->input['page']]) && (empty($this->input['change']) || $this->input['page'] != 'install_stage_2')) {
+		if (empty($this->password_not_required[$this->input['page']]) && (empty($this->input['change']) || $this->input['page'] != 'install_stage_2') && empty($this->skip_render)) {
 			$this->check_login();
 		}
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
@@ -76,7 +78,7 @@ class admin {
 			}
 		}
 /* show page */
-		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page'])) {
+		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page']) && empty($this->skip_render)) {
 			$func = $this->input['page'];
 			$this->$func();
 		}
@@ -580,7 +582,7 @@ class admin {
 	}
 	
 	/**
-	* 
+	* Web Optimizer settings page
 	* 
 	**/	
 	function install_stage_2() {
@@ -632,144 +634,150 @@ class admin {
 			} elseif (!empty($this->input['change'])) {
 				$this->install_change_password();
 			} else{
-/* Set paths with the new document root */
-				if(!empty($this->input['user']['document_root'])) {
-					$this->view->set_paths($this->input['user']['document_root']);
-				} else {
-					$this->view->set_paths();
-					$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
-				}
-/* check if we are using correct root directory */
-				if (!is_dir($this->input['user']['document_root'])) {
-					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
-				}
-/* Save the options file */
-				if(!empty($this->input['Submit'])) {
-					$save = $this->save_option('[\'document_root\']', $this->input['user']['document_root']);
-				}
-				$this->get_modules();
-/* check for multiple hosts possibility */
-				$hosts = explode(" ", $this->compress_options['parallel']['allowed_list']);
-				if (empty($hosts) || empty($hosts[0])) {
-/* load default list */
-					$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-				}
-				if (!empty($this->input['user']['parallel']['check'])) {
-					$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
-				}
-
-				$options = array(
-					'Minify' => $this->compress_options['minify'],
-					'GZIP' => $this->compress_options['gzip'],
-					'htaccess' => $this->compress_options['htaccess'],
-					'css_sprites' => $this->compress_options['css_sprites'],
-					'Far_future_expires' => $this->compress_options['far_future_expires'],
-					'html_cache' => $this->compress_options['html_cache'],
-					'external_scripts' => $this->compress_options['external_scripts'],
-					'parallel' => $this->compress_options['parallel']
-				);
-				
-				$options = array('minify'=>array(
-							'title' => _WEBO_SPLASH2_MINIFY,
-							'intro' => _WEBO_SPLASH2_MINIFY_INFO,
-							'value' => $this->compress_options['minify']
-						),
-						'external_scripts' => array(
-							'title' => _WEBO_SPLASH2_EXTERNAL,
-							'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
-							'value' => $this->compress_options['external_scripts']
-						),
-						'unobtrusive' => array(
-							'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
-							'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
-							'value' => $this->compress_options['unobtrusive']
-						),
-						'dont_check_file_mtime' => array(
-							'title' => _WEBO_SPLASH2_MTIME,
-							'intro' => _WEBO_SPLASH2_MTIME_INFO,
-							'value' => $this->compress_options['dont_check_file_mtime']						
-						),
-						'gzip'=>array(
-							'title' => _WEBO_SPLASH2_GZIP,
-							'intro' => _WEBO_SPLASH2_GZIP_INFO,
-							'value' => $this->compress_options['gzip']
-						),
-						'far_future_expires'=>array(
-							'title' => _WEBO_SPLASH2_EXPIRES,
-							'intro' => _WEBO_SPLASH2_EXPIRES_INFO,
-							'value' => $this->compress_options['far_future_expires']
-						),
-						'html_cache' => array(
-							'title' => _WEBO_SPLASH2_HTMLCACHE,
-							'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
-							'value' => $this->compress_options['html_cache']
-						),
-						'css_sprites'=>array(
-							'title' => _WEBO_SPLASH2_SPRITES,
-							'intro' => _WEBO_SPLASH2_SPRITES_INFO,
-							'value' => $this->compress_options['css_sprites']
-						),
-						'data_uris' => array(
-							'title' => _WEBO_SPLASH2_DATAURI,
-							'intro' => _WEBO_SPLASH2_DATAURI_INFO,
-							'value' => $this->compress_options['data_uris']
-						),
-						'parallel' => array(
-							'title' => _WEBO_SPLASH2_PARALLEL,
-							'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
-							'value' => $this->compress_options['parallel']
-						),
-						'htaccess' => array(
-							'title' => _WEBO_SPLASH2_HTACCESS,
-							'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules) . '</p>',
-							'value' => $this->compress_options['htaccess']
-						),
-						'footer' => array(
-							'title' => _WEBO_SPLASH2_FOOTER,
-							'intro' => _WEBO_SPLASH2_FOOTER_INFO,
-							'value' => $this->compress_options['footer']
-						)
-				);
-/* make fake option for JavaScript minimization */
-				if (is_array($options['minify']['value'])) {
-					$javascript = array_shift($options['minify']['value']);
-					$with = $this->compress_options['minify']['with_jsmin'] ? 'with_jsmin' : ($this->compress_options['minify']['with_yui'] ? 'with_yui' : ($this->compress_options['minify']['with_packer'] ? 'with_packer' : 0));
-					$options['minify']['value'] = array('javascript' => $javascript, 'with' => $with) + $options['minify']['value'];
-				}
-				$options['auto_rewrite'] = null;
-/* check /index.php to possiblity to rewrite it */
-				$index = $this->input['user']['document_root'] . "index.php";
-				if (is_readable($index) && is_writable($index)) {
-/* if we can rewrite the file -- add auto-patch option */
-					$options['auto_rewrite'] = array(
-						'title' => _WEBO_SPLASH2_AUTOCHANGE,
-						'intro' => _WEBO_SPLASH2_AUTOCHANGE_INFO . $this->system_info($this->view->paths['absolute']['document_root']) . _WEBO_SPLASH2_AUTOCHANGE_INFO2,
-						'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
-					);
-				}
-
-				$this->page_variables = array(
-					"title" => _WEBO_SPLASH2_TITLE,
-					"paths" => $this->view->paths,
-					"page" => $this->input['page'],
-					"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
-					"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
-					"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
-					"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
-					"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
-					"options" => $options,
-					"version" => $this->version,
-					"version_new" => $this->version_new,
-					"compress_options" => $this->compress_options
-				);
+/* return page variables to render */
+				$this->get_options();
 			}
 /* Show the install page */
 			$this->view->render("admin_container", $this->page_variables);
 		}
 	}
+	
+	function get_options() {
+/* Set paths with the new document root */
+		if(!empty($this->input['user']['document_root'])) {
+			$this->view->set_paths($this->input['user']['document_root']);
+		} else {
+			$this->view->set_paths();
+			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
+		}
+/* check if we are using correct root directory */
+		if (!is_dir($this->input['user']['document_root'])) {
+			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+		}
+/* Save the options file */
+		if(!empty($this->input['Submit'])) {
+			$this->save_option('[\'document_root\']', $this->input['user']['document_root']);
+		}
+		$this->get_modules();
+/* check for multiple hosts possibility */
+		$hosts = explode(" ", $this->compress_options['parallel']['allowed_list']);
+		if (empty($hosts) || empty($hosts[0])) {
+/* load default list */
+			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+		}
+		if (!empty($this->input['user']['parallel']['check'])) {
+			$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
+		}
+
+		$options = array(
+			'Minify' => $this->compress_options['minify'],
+			'GZIP' => $this->compress_options['gzip'],
+			'htaccess' => $this->compress_options['htaccess'],
+			'css_sprites' => $this->compress_options['css_sprites'],
+			'Far_future_expires' => $this->compress_options['far_future_expires'],
+			'html_cache' => $this->compress_options['html_cache'],
+			'external_scripts' => $this->compress_options['external_scripts'],
+			'parallel' => $this->compress_options['parallel']
+		);
+				
+		$options = array(
+			'minify' => array(
+				'title' => _WEBO_SPLASH2_MINIFY,
+				'intro' => _WEBO_SPLASH2_MINIFY_INFO,
+				'value' => $this->compress_options['minify']
+			),
+			'external_scripts' => array(
+				'title' => _WEBO_SPLASH2_EXTERNAL,
+				'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
+				'value' => $this->compress_options['external_scripts']
+			),
+			'unobtrusive' => array(
+				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
+				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
+				'value' => $this->compress_options['unobtrusive']
+			),
+			'dont_check_file_mtime' => array(
+				'title' => _WEBO_SPLASH2_MTIME,
+				'intro' => _WEBO_SPLASH2_MTIME_INFO,
+				'value' => $this->compress_options['dont_check_file_mtime']						
+			),
+			'gzip' => array(
+				'title' => _WEBO_SPLASH2_GZIP,
+				'intro' => _WEBO_SPLASH2_GZIP_INFO,
+				'value' => $this->compress_options['gzip']
+			),
+			'far_future_expires' => array(
+				'title' => _WEBO_SPLASH2_EXPIRES,
+				'intro' => _WEBO_SPLASH2_EXPIRES_INFO,
+				'value' => $this->compress_options['far_future_expires']
+			),
+			'html_cache' => array(
+				'title' => _WEBO_SPLASH2_HTMLCACHE,
+				'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
+				'value' => $this->compress_options['html_cache']
+			),
+			'css_sprites' => array(
+				'title' => _WEBO_SPLASH2_SPRITES,
+				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
+				'value' => $this->compress_options['css_sprites']
+			),
+			'data_uris' => array(
+				'title' => _WEBO_SPLASH2_DATAURI,
+				'intro' => _WEBO_SPLASH2_DATAURI_INFO,
+				'value' => $this->compress_options['data_uris']
+			),
+			'parallel' => array(
+				'title' => _WEBO_SPLASH2_PARALLEL,
+				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
+				'value' => $this->compress_options['parallel']
+			),
+			'htaccess' => array(
+				'title' => _WEBO_SPLASH2_HTACCESS,
+				'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules) . '</p>',
+				'value' => $this->compress_options['htaccess']
+			),
+			'footer' => array(
+				'title' => _WEBO_SPLASH2_FOOTER,
+				'intro' => _WEBO_SPLASH2_FOOTER_INFO,
+				'value' => $this->compress_options['footer']
+			)
+		);
+/* make fake option for JavaScript minimization */
+		if (is_array($options['minify']['value'])) {
+			$javascript = array_shift($options['minify']['value']);
+			$with = $this->compress_options['minify']['with_jsmin'] ? 'with_jsmin' : ($this->compress_options['minify']['with_yui'] ? 'with_yui' : ($this->compress_options['minify']['with_packer'] ? 'with_packer' : 0));
+			$options['minify']['value'] = array('javascript' => $javascript, 'with' => $with) + $options['minify']['value'];
+		}
+		$options['auto_rewrite'] = null;
+/* check /index.php to possiblity to rewrite it */
+		$index = $this->input['user']['document_root'] . "index.php";
+		if (is_readable($index) && is_writable($index)) {
+/* if we can rewrite the file -- add auto-patch option */
+			$options['auto_rewrite'] = array(
+				'title' => _WEBO_SPLASH2_AUTOCHANGE,
+				'intro' => _WEBO_SPLASH2_AUTOCHANGE_INFO . $this->system_info($this->view->paths['absolute']['document_root']) . _WEBO_SPLASH2_AUTOCHANGE_INFO2,
+				'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
+			);
+		}
+
+		$this->page_variables = array(
+			"title" => _WEBO_SPLASH2_TITLE,
+			"paths" => $this->view->paths,
+			"page" => $this->input['page'],
+			"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
+			"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
+			"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
+			"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
+			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
+			"options" => $options,
+			"version" => $this->version,
+			"version_new" => $this->version_new,
+			"compress_options" => $this->compress_options
+		);
+	}
 
 	/**
-	* 
+	* Final stage
 	* 
 	**/	
 	function install_stage_3() {
