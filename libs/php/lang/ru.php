@@ -96,6 +96,7 @@ define('_WEBO_SPLASH2_CACHE_CSS', 'CSS-файлы будут располага�
 define('_WEBO_SPLASH2_CACHE_HTML', 'HTML-файлы будут располагаться в');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer расположен в');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Сайт расположен в');
+define('_WEBO_SPLASH2_HOST', 'Адрес сайта');
 define('_WEBO_SPLASH2_SPACE', 'Пожалуйста, через пробел:');
 define('_WEBO_SPLASH2_YES', 'Да:');
 define('_WEBO_SPLASH2_NO', 'Нет:');

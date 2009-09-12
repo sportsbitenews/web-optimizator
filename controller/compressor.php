@@ -12,17 +12,18 @@ class web_optimizer {
 	* Sets the options and defines the gzip headers
 	**/
 	function web_optimizer($options = false) {
-		if(!empty($options['skip_startup'])) {
-			return;
-		}
 /* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(getenv('SCRIPT_NAME'), "optimizing.php") ? 0 : $_GET['web_optimizer_stage']);
 		$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
 		$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
 		$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
-/* Allow merging of other classes with this one */
-		foreach($options AS $key=>$value) {
+/* allow merging of other classes with this one */
+		foreach ($options AS $key => $value) {
 			$this->$key = $value;
+		}
+/* disable any actions if not active */
+		if (empty($this->options['active'])) {
+			return;
 		}
 /* define head of the webpage for scripts / styles */
 		$this->head = '';
@@ -97,6 +98,8 @@ class web_optimizer {
 				}
 			}
 		}
+/* activate application */
+		$this->options['active'] = 1;
 		if ($this->buffered) {
 /* Start things off */
 			$this->start();
@@ -137,6 +140,7 @@ class web_optimizer {
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
+				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
 				"gzip_level" => round($this->options['gzip']['javascript_level']),
 				"minify" => $this->options['minify']['javascript'],
@@ -153,6 +157,7 @@ class web_optimizer {
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
+				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires']),
 				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
@@ -180,6 +185,7 @@ class web_optimizer {
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
+				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && !$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'],
 				"gzip_level" => round($this->options['gzip']['page_level']),
 				"gzip_cookie" => $this->options['gzip']['cookie'],
@@ -256,6 +262,10 @@ class web_optimizer {
 	*
 	**/
 	function finish($content = false) {
+/* disable any actions if not active */
+		if (empty($this->options['active'])) {
+			return;
+		}
 		if (!$content) {
 			$this->content = ob_get_clean();
 		} else {
@@ -321,6 +331,7 @@ class web_optimizer {
 				array(
 					'cachedir' => $options['cachedir'],
 					'installdir' => $options['installdir'],
+					'host' => $options['host'],
 					'tag' => 'script',
 					'type' => 'text/javascript',
 					'ext' => 'js',
@@ -372,6 +383,7 @@ class web_optimizer {
 				array(
 					'cachedir' => $options['cachedir'],
 					'installdir' => $options['installdir'],
+					'host' => $options['host'],
 					'tag' => 'link',
 					'type' => 'text/css',
 					'ext' => 'css',
@@ -859,7 +871,8 @@ class web_optimizer {
 		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
-			$options['src'] . '="/' .
+			$options['src'] . '="' .
+				(empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
 				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
 				$cache_file . '.' .
 				$options['ext'] .
@@ -1047,16 +1060,18 @@ class web_optimizer {
 		}
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
+		if (is_array($this->initial_files)) {
 /* Remove empty sources and any externally linked files */
-		foreach($this->initial_files AS $key => $value) {
+			foreach($this->initial_files AS $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-			if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && ((!$this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || (!$this->options['css']['external_scripts'] && $value['tag'] == 'link')) || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
-				unset($this->initial_files[$key]);
+				if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && ((!$this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || (!$this->options['css']['external_scripts'] && $value['tag'] == 'link')) || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
+					unset($this->initial_files[$key]);
+				}
 			}
-		}
 /* skip mining files' content if don't check MTIME */
-		if (!$this->options['javascript']['dont_check_file_mtime']) {
-			$this->get_script_content();
+			if (!$this->options['javascript']['dont_check_file_mtime']) {
+				$this->get_script_content();
+			}
 		}
 	}
 
@@ -1070,107 +1085,109 @@ class web_optimizer {
 /* to get inline values on empty non-inline */
 		$last_key_flushed = array();
 		$stored = array();
-		foreach($this->initial_files as $key => $value) {
+		if (is_array($this->initial_files)) {
+			foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
-			if (!$tag || $value['tag'] == $tag) {
-				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
+				if (!$tag || $value['tag'] == $tag) {
+					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
-					if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
+						if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
-						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+							if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
-							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
-								$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']));
+									$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']));
 /* static file */
+								} else {
+									$file = $this->get_remote_file($value['file']);
+								}
+								if (!empty($file)) {
+									$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
+								} else {
+									unset($this->initial_files[$key]);
+								}
 							} else {
-								$file = $this->get_remote_file($value['file']);
-							}
-							if (!empty($file)) {
-								$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
-							} else {
-								unset($this->initial_files[$key]);
-							}
-						} else {
-							if (empty($value['content'])) {
-								unset($this->initial_files[$key]);
+								if (empty($value['content'])) {
+									unset($this->initial_files[$key]);
+								}
 							}
 						}
 					}
-				}
-				$content_from_file = '';
-				if (!empty($value['file'])) {
+					$content_from_file = '';
+					if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
-					if (!preg_match("/\.(css|js)$/is", $value['file'])) {
-						$dynamic_file = $value['file_raw'];
+						if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+							$dynamic_file = $value['file_raw'];
 /* touch only non-external scripts */
-						if (!strpos($dynamic_file, "://")) {
-							$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
+							if (!strpos($dynamic_file, "://")) {
+								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
+							}
+							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
+							if (is_file($static_file)) {
+								$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
+							} else {
+								unset($value['file']);
+							}
 						}
-						$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
-						if (is_file($static_file)) {
-							$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
-						} else {
-							unset($value['file']);
-						}
-					}
-					if ($value['tag'] == 'link') {
-/* recursively resolve @import in files */
-						$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-							$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
-/* convert CSS images' paths to absolute */
-						$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
-					} else {
-						$content_from_file = @file_get_contents($this->get_file_name($value['file']));
-					}
-				}
-/* remove BOM */
-				$content_from_file = str_replace('﻿', '', $content_from_file);
-				$delimiter = '';
-				if ($value['tag'] == 'script') {
-					$delimiter = ";\n";
-				}
-/* don't delete any detected scripts from array -- we need to clean up HTML page from them */
-				if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
-/* glue inline and external content */
-					if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
-/* resolve @import from inline styles */
 						if ($value['tag'] == 'link') {
-							$value['content'] = $this->resolve_css_imports($value['content'], true);
+/* recursively resolve @import in files */
+							$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+								$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
-							$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
+							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
+						} else {
+							$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 						}
-						$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
+					}
+/* remove BOM */
+					$content_from_file = str_replace('﻿', '', $content_from_file);
+					$delimiter = '';
+					if ($value['tag'] == 'script') {
+						$delimiter = ";\n";
+					}
+/* don't delete any detected scripts from array -- we need to clean up HTML page from them */
+					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
+/* glue inline and external content */
+						if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
+/* resolve @import from inline styles */
+							if ($value['tag'] == 'link') {
+								$value['content'] = $this->resolve_css_imports($value['content'], true);
+/* convert CSS images' paths to absolute */
+								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
+						}
+							$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* if we can't add to existing tag -- store for the future */
-						if (empty($last_key[$value['tag']])) {
-							$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
-							$last_key_flushed[$value['tag']] = $key;
-						} else {
-							$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
-						}
+							if (empty($last_key[$value['tag']])) {
+								$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
+								$last_key_flushed[$value['tag']] = $key;
+							} else {
+								$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
+							}
 /* null content not to include anywhere, we still have source code in 'source' */
-						$this->initial_files[$key]['content'] = '';
-					}
-				} elseif (!empty($content_from_file)) {
-/* don't rewrite existing content inside script tags */
-					$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
-/* add stored content before, but leave styles stored */
-					if (!empty($stored[$value['tag']])) {
-/* preserve order of merged content */
-						if ($last_key_flushed[$value['tag']] < $key) {
-							$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
-						} else {
-							$this->initial_files[$key]['content'] .= $delimiter . $stored[$value['tag']];
+							$this->initial_files[$key]['content'] = '';
 						}
-						$stored[$value['tag']] = '';
+					} elseif (!empty($content_from_file)) {
+/* don't rewrite existing content inside script tags */
+						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
+/* add stored content before, but leave styles stored */
+						if (!empty($stored[$value['tag']])) {
+/* preserve order of merged content */
+							if ($last_key_flushed[$value['tag']] < $key) {
+								$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+							} else {
+								$this->initial_files[$key]['content'] .= $delimiter . $stored[$value['tag']];
+							}
+							$stored[$value['tag']] = '';
+						}
+						$last_key[$value['tag']] = $key;
 					}
-					$last_key[$value['tag']] = $key;
 				}
 			}
-		}
 /* check for stored content and flush it */
-		foreach ($stored as $tag => $stored_content) {
-			$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored_content;
+			foreach ($stored as $tag => $stored_content) {
+				$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored_content;
+			}
 		}
 	}
 

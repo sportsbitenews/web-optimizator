@@ -15,6 +15,8 @@ $compress_options['html_cachedir'] = "";
 $compress_options['webo_cachedir'] = "";
 ## Root directory of the website
 $compress_options['document_root'] = "";
+## Host name, to include before static resources
+$compress_options['host'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add JS loader for all libraries right before </body>
@@ -57,7 +59,7 @@ $compress_options['gzip']['page'] = "1";
 $compress_options['gzip']['css'] = "1";
 ## Check for gzip possibility via cookie
 $compress_options['gzip']['cookie'] = "1";
-## Gzip compression level for JS/HTML/CSS files
+## Compression level for JS/HTML/CSS files, works only in PHP
 $compress_options['gzip']['javascript_level'] = "9";
 $compress_options['gzip']['page_level'] = "9";
 $compress_options['gzip']['css_level'] = "9";
@@ -85,7 +87,7 @@ $compress_options['html_cache']['ignore_list'] = "";
 ## Parts of user agents to output cached HTML, separated by space
 $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 ## On or off 
-$compress_options['active'] = "1";
+$compress_options['active'] = "0";
 ## Display a link back to Web Optimizer
 $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";

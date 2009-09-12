@@ -37,6 +37,8 @@ class admin {
 			'system_check' => 1,
 			'install_change_password' => 1
 		);
+/* default multiple hosts */
+		$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 		$this->version = @file_get_contents($this->basepath . 'version');
@@ -164,7 +166,7 @@ class admin {
 		}
 		@unlink($javascript_cachedir . 'htaccess.test');
 /* check for multiple hosts */
-		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js') : explode(" ", $this->compress_options['parallel']['allowed_list']);
+		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? $this->default_hosts : explode(" ", $this->compress_options['parallel']['allowed_list']);
 		if (!empty($this->compress_options['parallel']['check'])) {
 			$hosts = $this->check_hosts($hosts);
 		}
@@ -600,6 +602,7 @@ class admin {
 			$this->input['user']['html_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
 			$this->input['user']['webo_cachedir'] = $this->view->paths['full']['current_directory'];
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
+			$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
 /* restore username and password */
 			$this->input['user']['password'] = $password;
 			$this->input['user']['username'] = $username;
@@ -617,10 +620,9 @@ class admin {
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
-/* check for multiple hosts possibility */
-			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+/* check for multiple hosts possibility */;
 			if (!empty($this->input['user']['parallel']['check'])) {
-				$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($hosts);
+				$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($this->default_hosts);
 			}
 /* render final page */
 			$this->install_stage_3();
@@ -650,6 +652,7 @@ class admin {
 			$this->view->set_paths();
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
 		}
+		$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
 /* check if we are using correct root directory */
 		if (!is_dir($this->input['user']['document_root'])) {
 			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
@@ -663,7 +666,7 @@ class admin {
 		$hosts = explode(" ", $this->compress_options['parallel']['allowed_list']);
 		if (empty($hosts) || empty($hosts[0])) {
 /* load default list */
-			$hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+			$hosts = $this->default_hosts;
 		}
 		if (!empty($this->input['user']['parallel']['check'])) {
 			$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
@@ -1002,13 +1005,19 @@ mod_gzip_item_include mime ^text/css$";
 								$content .= "
 mod_gzip_item_include mime ^text/javascript$
 mod_gzip_item_include mime ^application/javascript$
-mod_gzip_item_include mime ^application/x-javascript$";
+mod_gzip_item_include mime ^application/x-javascript$
+mod_gzip_item_include mime ^text/x-js$
+mod_gzip_item_include mime ^text/ecmascript$
+mod_gzip_item_include mime ^application/ecmascript$
+mod_gzip_item_include mime ^text/vbscript$
+mod_gzip_item_include mime ^text/fluffscript$";
 							}
 						}
 						if (!empty($htaccess_options['mod_setenvif'])) {
 							$content .= "
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch SV1; !no_gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
 						}
 						if (!empty($htaccess_options['mod_deflate'])) {
@@ -1027,7 +1036,11 @@ AddOutputFilterByType DEFLATE text/css";
 AddOutputFilterByType DEFLATE text/javascript
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
-AddOutputFilterByType DEFLATE text/x-js";
+AddOutputFilterByType DEFLATE text/x-js
+AddOutputFilterByType DEFLATE text/ecmascript
+AddOutputFilterByType DEFLATE application/ecmascript
+AddOutputFilterByType DEFLATE text/vbscript
+AddOutputFilterByType DEFLATE text/fluffscript";
 							}
 						}
 /* try to add static gzip */
@@ -1432,7 +1445,8 @@ ExpiresDefault \"access plus 10 years\"
 				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
 			}
 		}
-
+/* activate Web Optimizer */
+		$this->save_option('[\'active\']', 1);
 		$this->write_progress($this->web_optimizer_stage = 100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,

@@ -96,6 +96,7 @@ define('_WEBO_SPLASH2_CACHE_CSS', 'Su CSS ser&aacute; almacenado en');
 define('_WEBO_SPLASH2_CACHE_HTML', 'Su HTML ser&aacute; almacenado en');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer est&aacute; localizado en');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Website est&aacute; localizado en');
+define('_WEBO_SPLASH2_HOST', 'Website host is');
 define('_WEBO_SPLASH2_SPACE', 'Por favor separe con espacios:');
 define('_WEBO_SPLASH2_YES', 'Si:');
 define('_WEBO_SPLASH2_NO', 'No:');
