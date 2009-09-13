@@ -638,7 +638,7 @@ class admin {
 			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 		}
 /* Save the options file */
-		if(!empty($this->input['Submit'])) {
+		if(!empty($this->input['Submit']) && empty($this->skip_render)) {
 			$this->save_option('[\'document_root\']', $this->input['user']['document_root']);
 		}
 		$this->get_modules();
@@ -752,11 +752,120 @@ class admin {
 			"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
 			"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
 			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
+			"host" => empty($this->compress_options['host']) ? (empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) : $this->compress_options['host'],
 			"options" => $options,
 			"version" => $this->version,
 			"version_new" => $this->version_new,
 			"compress_options" => $this->compress_options
 		);
+	}
+
+	/**
+	* Save all options
+	**/
+	function set_options() {
+		$this->get_modules();
+		$loaded_modules = @get_loaded_extensions();
+/* convert fake JavaScript minify option */
+		if (!empty($this->input['user']['minify']['with'])) {
+/* fix for accessibility */
+			if (!empty($this->input['with']) && strpos($this->input['with'], '#')) {
+				$with = explode('#', $this->input['with']);
+				$this->input['user']['minify'][$with[1]] = 1;
+			} else {
+				$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
+				$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
+				$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
+			}
+			$this->input['user']['minify']['with'] = null;
+		} else {
+			$this->input['user']['minify']['with_jsmin'] = 0;
+			$this->input['user']['minify']['with_yui'] = 0;
+			$this->input['user']['minify']['with_packer'] = 0;
+		}
+/* try to set some libs executable */
+		@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
+/* Load pre-defined options */
+		foreach ($this->compress_options as $key => $option) {
+			if (is_array($option)) {
+				foreach($option as $option_name => $option_value) {
+					if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level'))) {
+						$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
+						$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
+						$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
+					}
+				}
+			} else {
+				$this->input['user'][$option] = !isset($this->input['user'][$option]) ? '' : $this->input['user'][$option];
+			}
+		}
+		if (!empty($this->input['user']['minify']['with_yui'])) {
+/* check for YUI availability */
+			$YUI_checked = 0;
+			if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
+				if (substr(phpversion(), 0, 1) == 4) {
+					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
+				} else {
+					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+				}
+				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
+				$YUI_checked = $YUI->check();
+			}
+			if (!$YUI_checked) {
+				$this->input['user']['minify']['with_yui'] = 0;
+				$this->input['user']['minify']['with_jsmin'] = 1;
+			}
+		}
+/* disable .htaccess if not Apache */
+		if (empty($this->apache_modules)) {
+			$this->input['user']['htaccess']['enabled'] = 0;
+			$this->input['user']['htaccess']['mod_deflate'] = 0;
+			$this->input['user']['htaccess']['mod_gzip'] = 0;
+			$this->input['user']['htaccess']['mod_expires'] = 0;
+			$this->input['user']['htaccess']['mod_mime'] = 0;
+			$this->input['user']['htaccess']['mod_headers'] = 0;
+			$this->input['user']['htaccess']['mod_setenvif'] = 0;
+			$this->input['user']['htaccess']['mod_rewrite'] = 0;
+		}
+/* Save the options	*/
+		foreach($this->input['user'] as $key => $option) {
+			if (is_array($option)) {
+				foreach($option as $option_name => $option_value) {
+					if (!empty($this->apache_modules)) {
+						if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
+							$option_value = $option_value && in_array($option_name, $this->apache_modules);
+							$this->input['user'][$key][$option_name] = $option_value;
+						}
+					}
+/* check for curl existence */
+					if ($key == 'external_scripts' && $option_name == 'on') {
+						if (!empty($loaded_modules)) {
+							if (!in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
+								$this->input['user'][$key][$option_name] = 0;
+							}
+						}
+					}
+/* check for gzencode existence */
+					if ($key == 'gzip') {
+						if (!function_exists('gzencode') && !$this->input['user']['htaccess']['enabled']) {
+							$this->input['user'][$key][$option_name] = 0;
+						}
+					}
+/* correct multiple hosts list */
+					if ($key == 'parallel' && $option_name == 'allowed_list') {
+						$hosts = explode(" ", $option_value);
+						if (is_array($hosts)) {
+							if (!empty($this->input['user']['parallel']['check'])) {
+								$option_value = $this->check_hosts($hosts);
+							}
+						}
+					}
+					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+				}
+			} else {
+				$this->save_option("['" . strtolower($key) . "']", $option);			
+			}
+		}
 	}
 
 	/**
@@ -805,111 +914,10 @@ class admin {
 /* copy stamp image to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
 			$this->write_progress($this->web_optimizer_stage = 4);
-			$this->get_modules();
-			$loaded_modules = @get_loaded_extensions();
 /* Create the options file */
 			$this->options_file = "config.webo.php";
 			if(!empty($this->input['Submit'])) {
-/* convert fake JavaScript minify option */
-				if (!empty($this->input['user']['minify']['with'])) {
-/* fix for accessibility */
-					if (!empty($this->input['with']) && strpos($this->input['with'], '#')) {
-						$with = explode('#', $this->input['with']);
-						$this->input['user']['minify'][$with[1]] = 1;
-					} else {
-						$this->input['user']['minify']['with_jsmin'] = ($this->input['user']['minify']['with'] == 'with_jsmin' ? 1 : 0);
-						$this->input['user']['minify']['with_yui'] = ($this->input['user']['minify']['with'] == 'with_yui' ? 1 : 0);
-						$this->input['user']['minify']['with_packer'] = ($this->input['user']['minify']['with'] == 'with_packer' ? 1 : 0);
-					}
-					$this->input['user']['minify']['with'] = null;
-				} else {
-					$this->input['user']['minify']['with_jsmin'] = 0;
-					$this->input['user']['minify']['with_yui'] = 0;
-					$this->input['user']['minify']['with_packer'] = 0;
-				}
-/* try to set some libs executable */
-				@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
-/* Load pre-defined options */
-				foreach ($this->compress_options as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level'))) {
-								$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
-								$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
-								$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
-							}
-						}
-					} else {
-						$this->input['user'][$option] = !isset($this->input['user'][$option]) ? '' : $this->input['user'][$option];
-					}
-				}
-				if (!empty($this->input['user']['minify']['with_yui'])) {
-/* check for YUI availability */
-					$YUI_checked = 0;
-					if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
-						if (substr(phpversion(), 0, 1) == 4) {
-							require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
-						} else {
-							require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
-						}
-						$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
-						$YUI_checked = $YUI->check();
-					}
-					if (!$YUI_checked) {
-						$this->input['user']['minify']['with_yui'] = 0;
-						$this->input['user']['minify']['with_jsmin'] = 1;
-					}
-				}
-/* disable .htaccess if not Apache */
-				if (empty($this->apache_modules)) {
-					$this->input['user']['htaccess']['enabled'] = 0;
-					$this->input['user']['htaccess']['mod_deflate'] = 0;
-					$this->input['user']['htaccess']['mod_gzip'] = 0;
-					$this->input['user']['htaccess']['mod_expires'] = 0;
-					$this->input['user']['htaccess']['mod_mime'] = 0;
-					$this->input['user']['htaccess']['mod_headers'] = 0;
-					$this->input['user']['htaccess']['mod_setenvif'] = 0;
-					$this->input['user']['htaccess']['mod_rewrite'] = 0;
-				}
-/* Save the options	*/
-				foreach($this->input['user'] as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							if (!empty($this->apache_modules)) {
-								if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
-									$option_value = $option_value && in_array($option_name, $this->apache_modules);
-									$this->input['user'][$key][$option_name] = $option_value;
-								}
-							}
-/* check for curl existence */
-							if ($key == 'external_scripts' && $option_name == 'on') {
-								if (!empty($loaded_modules)) {
-									if (!in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
-										$this->input['user'][$key][$option_name] = 0;
-									}
-								}
-							}
-/* check for gzencode existence */
-							if ($key == 'gzip') {
-								if (!function_exists('gzencode') && !$this->input['user']['htaccess']['enabled']) {
-									$this->input['user'][$key][$option_name] = 0;
-								}
-							}
-/* correct multiple hosts list */
-							if ($key == 'parallel' && $option_name == 'allowed_list') {
-								$hosts = explode(" ", $option_value);
-								if (is_array($hosts)) {
-									if (!empty($this->input['user']['parallel']['check'])) {
-										$option_value = $this->check_hosts($hosts);
-									}
-								}
-							}
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
-						}
-					} else {
-						$this->save_option("['" . strtolower($key) . "']", $option);			
-					}
-				}
+				$this->set_options();
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* delete temporary files before chained installation */
 				$this->install_clean_cache(false);
