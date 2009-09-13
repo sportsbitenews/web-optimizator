@@ -131,10 +131,6 @@ class web_optimizer {
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
 		}
-/* Set ignore file */
-		if(!empty($this->options['ignore_list'])) {
-			$this->ignore(trim($this->options['ignore_list']));
-		}
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
@@ -1211,9 +1207,10 @@ class web_optimizer {
 				$gzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE["_wo_gzip"]);
 				$xgzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip");
 				$deflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
+				$xdeflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate");
 			}
 			// Determine used compression method
-			$encoding = empty($gzip) ? (empty($deflate) ? (empty($xgzip) ? "none" : "x-gzip") : "deflate") : "gzip";
+			$encoding = empty($gzip) ? (empty($xgzip) ? (empty($deflate) ? (empty($xdeflate) ? "none" : "x-deflate") : "deflate") : "x-gzip") : "gzip";
 			$hash = "' . $this->time .  '-" . $encoding;
 			header ("Etag: \"" . $hash . "\"");
 ?>';

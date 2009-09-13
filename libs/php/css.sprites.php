@@ -1331,52 +1331,67 @@ __________________
 		switch ($stage) {
 /* remove all attribute selectors */
 			case 1:
-				$regexp = '([a-zA-Z0-9]+)\[[^\[]+$';
+				$regexp = '([a-zA-Z0-9]+)\[[^\[]+\]$';
 				$part = '$1';
 				break;
 /* remove all class selectors */
 			case 2:
-				$regexp = '([a-zA-Z0-9]+)\.[^\.]+$';
+				$regexp = '([a-zA-Z0-9]+)\.[^\.\s]+$';
 				$part = '$1';
 				break;
 /* remove all identificator selectors */
 			case 3:
-				$regexp = '([a-zA-Z0-9]+)#[^#]+$';
+				$regexp = '([a-zA-Z0-9]+)#[^#\s]+$';
 				$part = '$1';
 				break;
 /* remove 1 attribute selectors from start */
 			case 4:
-				$regexp = '^([a-zA-Z0-9]+)\[[^\[]+\s([a-zA-Z0-9]+)';
-				$part = '$2';
+				$regexp = '^([a-zA-Z0-9]+)\[[^\[]+\]\s([a-zA-Z0-9]+)';
+				$part = '$1 $2';
 				break;
 /* remove 1 class selectors from start */
 			case 5:
-				$regexp = '^([a-zA-Z0-9]+)\.[^\.]+\s([a-zA-Z0-9]+)';
-				$part = '$2';
+				$regexp = '^([a-zA-Z0-9]+)\.[^\.\s]+\s([a-zA-Z0-9]+)';
+				$part = '$1 $2';
 				break;
 /* remove 1 identificator selectors from start */
 			case 6:
-				$regexp = '^([a-zA-Z0-9]+)#[^#]+\s([a-zA-Z0-9]+)';
-				$part = '$3';
+				$regexp = '^([a-zA-Z0-9]+)#[^#\s]+\s([a-zA-Z0-9]+)';
+				$part = '$1 $2';
 				break;
 /* remove all attribute selectors from start */
 			case 7:
-				$regexp = '(^([a-zA-Z0-9]+)\[[^\[]+\s([a-zA-Z0-9]+))+';
-				$part = '$3';
+				$regexp = '([a-zA-Z0-9]+)\[[^\[]+\]';
+				$part = '$1';
 				break;
 /* remove all class selectors from start */
 			case 8:
-				$regexp = '^(([a-zA-Z0-9]+)\.[^\.]+\s([a-zA-Z0-9]+))+';
-				$part = '$3';
+				$regexp = '([a-zA-Z0-9]+)\.[^\.\s]+';
+				$part = '$1';
 				break;
 /* remove all identificator selectors from start */
 			case 9:
-				$regexp = '^(([a-zA-Z0-9]+)#[^#]+\s([a-zA-Z0-9]+))+';
-				$part = '$3';
+				$regexp = '#[^#\s]+';
+				$part = '$1';
+				break;
+/* remove the first tag */
+			case 10:
+				$regexp = '^[^\s]+\s';
+				$part = '';
+				break;
+/* remove the first 2 tags */
+			case 11:
+				$regexp = '^[^\s]+\s[^\s]+\s';
+				$part = '';
+				break;
+/* remove the first 3 tags */
+			case 12:
+				$regexp = '^[^\s]+\s[^\s]+\s[^\s]+\s';
+				$part = '';
 				break;
 
 /* already have removed all possibilities, exit */
-			case 10:
+			case 13:
 				$regexp = null;
 				break;
 		}

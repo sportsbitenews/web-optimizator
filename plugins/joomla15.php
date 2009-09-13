@@ -31,12 +31,12 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 			$content = @file_get_contents($virtuemart_file);
 			if (!empty($content)) {
 				$content = str_replace('$age = 3600;', '$age = 2592000;$etag = md5($fileout);', $content);
-				$content = str_replace('header( \'Cache-Control: max-age=\'.$age.\', must-revalidate\' );', 'header( \'Cache-Control: max-age=\'.$age);' .
-					'header(\'ETag: \'. $etag);' . 
-					'if ($_SERVER[\'HTTP_IF_NONE_MATCH\'] == $etag) {' .
+				$content = str_replace('header( \'Cache-Control: max-age=\'.$age.\', must-revalidate\' );', 'if ($_SERVER[\'HTTP_IF_NONE_MATCH\'] == $etag) {' .
 					'header( \'HTTP/1.0 304 Not Modified\' );' .
 					'header( \'Content-Length: 0\' );' .
-					'exit();}');
+					'exit();}' .
+					'header( \'Cache-Control: max-age=\'.$age);' .
+					'header(\'ETag: \'. $etag);');
 				$fp = @fopen($virtuemart_file, 'wb');
 				if ($fp) {
 					@fwrite($fp, $content);
