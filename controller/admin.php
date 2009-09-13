@@ -417,26 +417,8 @@ class admin {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
 			}
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
-			if (!empty($mainfile_content) && !empty($footer_content)) {
-				$fp = @fopen($mainfile, "w");
-				if ($fp) {
-/* update header */
-					@fwrite($fp, preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
-					@fclose($fp);
-					$fp = @fopen($footer, "w");
-					if ($fp) {
-/* update footer */
-						@fwrite($fp, preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content));
-						@fclose($fp);
-					} elseif ($return) {
-						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $footer . "</code></p>");
-					}
-				} elseif ($return) {
-					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>" . $mainfile . "</code></p>");
-				}
-			}
+			$this->cleanup_file($mainfile, $return);
+			$this->cleanup_file($footer, $return);
 		} else {
 /* remove instances of Web Optimizer from index.php */
 			$index = $this->view->paths['full']['document_root'] . 'index.php';
@@ -448,51 +430,37 @@ class admin {
 			if ($this->cms_version == 'Invision Power Board') {
 				$index = $this->view->paths['full']['document_root'] . 'sources/classes/class_display.php';
 			}
-			$fp = @fopen($index, "r");
-			if ($fp) {
-				$content_saved = '';
-				while ($index_string = fgets($fp)) {
-					$content_saved .= preg_replace("!(global \\\$web_optimizer|require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?!", "", $index_string);
-				}
-				fclose($fp);
-				$fp = @fopen($index, "w");
-				if ($fp) {
-					fwrite($fp, $content_saved);
-					fclose($fp);
-				} elseif ($return) {
-					$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
-				}
+			$this->cleanup_file($index, $return);
 /* remove rules from .htaccess */
-				if (empty($this->options['htaccess']['local'])) {
-					$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-				} else {
-					$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
-				}
-				if (is_file($htaccess)) {
-					$fp = @fopen($htaccess, 'r');
-					if ($fp) {
-						$stop_saving = 0;
-						$content_saved = '';
-						while ($htaccess_string = fgets($fp)) {
-							if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
-								$stop_saving = 1;
-							}
-							if (!$stop_saving && $htaccess_string != "\n") {
-								$content_saved .= $htaccess_string;
-							}
-							if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
-								$stop_saving = 0;
-							}
+			if (empty($this->options['htaccess']['local'])) {
+				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+			} else {
+				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+			}
+			if (is_file($htaccess)) {
+				$fp = @fopen($htaccess, 'r');
+				if ($fp) {
+					$stop_saving = 0;
+					$content_saved = '';
+					while ($htaccess_string = fgets($fp)) {
+						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
+							$stop_saving = 1;
 						}
-						fclose($fp);
-						$fp = @fopen($htaccess, "w");
-						if ($fp) {
-							fwrite($fp, $content_saved);
-							fclose($fp);
+						if (!$stop_saving && $htaccess_string != "\n") {
+							$content_saved .= $htaccess_string;
 						}
-					} elseif ($return) {
-						$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/index.php</code></p>");
+						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
+							$stop_saving = 0;
+						}
 					}
+					fclose($fp);
+					$fp = @fopen($htaccess, "w");
+					if ($fp) {
+						fwrite($fp, $content_saved);
+						fclose($fp);
+					}
+				} elseif ($return) {
+					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/.htaccess</code></p>");
 				}
 			}
 /* additional change of cache plugins */
@@ -507,22 +475,16 @@ class admin {
 				} else {
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 				}
-				$content = preg_replace("/global \\\$web_optimizer;\\\$web_optimizer->finish\(\);/", "", @file_get_contents($cache_file));
-				$fpc = @fopen($cache_file, 'wb');
-				if ($fpc) {
-					@fwrite($fpc, $content);
-					@fclose($fpc);
-				}
+				$this->cleanup_file($cache_file, $return);
 			}
-/* Joomla! 1.0 System-Cache mambot */
+/* Joomla! 1.0 System-Cache mambot, Joomla! 1.5 JRE change */
 			if (substr($this->cms_version, 0, 7) == "Joomla!") {
+/* System-Cache*/
 				$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
-				$content = preg_replace("/(\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));/", "", @file_get_contents($cache_file));
-				$fpc = @fopen($cache_file, 'wb');
-				if ($fpc) {
-					@fwrite($fpc, $content);
-					@fclose($fpc);
-				}
+				$this->cleanup_file($cache_file, $return);
+/* JRE */
+				$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
+				$this->cleanup_file($cache_file, $return);
 			}
 		}
 /* execute plugin-specific logic */
@@ -546,6 +508,24 @@ class admin {
 				"version" => $this->version,
 				"version_new" => $this->version_new
 			);
+		}
+	}
+
+	/**
+	* Delets Web Optimizer calls from a single file
+	**/
+	function cleanup_file ($file) {
+		if (is_file($file)) {
+/* clean content from Web Optimizer calls */
+			$content = preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));\r?\n?/", "", @file_get_contents($file));
+			$fpc = @fopen($cache_file, 'wb');
+/* write cleaned content */
+			if ($fpc) {
+				@fwrite($fpc, $content);
+				@fclose($fpc);
+			} elseif ($return) {
+				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $file ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+			}
 		}
 	}
 
@@ -1374,13 +1354,27 @@ ExpiresDefault \"access plus 10 years\"
 							}
 /* additional change of cache plugins */
 							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
-								$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
-								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
-								$fpc = @fopen($cache_file, 'wb');
-								if ($fpc) {
-									@fwrite($fpc, $content);
-									@fclose($fpc);
+/* System-Cache plugin */
+							$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
+								if (is_file($cache_file)) {
+									@copy($cache_file, $cache_file . '.backup');
+									$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
+									$fpc = @fopen($cache_file, 'wb');
+									if ($fpc) {
+										@fwrite($fpc, $content);
+										@fclose($fpc);
+									}
+								}
+/* JRE component */
+								$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
+								if (is_file($cache_file)) {
+									@copy($cache_file, $cache_file . '.backup');
+									$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$fpc = @fopen($cache_file, 'wb');
+									if ($fpc) {
+										@fwrite($fpc, $content);
+										@fclose($fpc);
+									}
 								}
 							}
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
@@ -1977,6 +1971,21 @@ require valid-user
 							'mode' => 'finish',
 							'location' => 'echo JResponse::toString($mainframe->getCfg(\'gzip\'));',
 							'global' => 1
+						),
+						array(
+							'file' => 'index.php',
+							'mode' => 'finish',
+							'location' => 'end'
+						),
+						array(
+							'file' => 'administrator/components/com_jrecache/includes/cache_handler.php',
+							'mode' => 'start',
+							'location' => 'fclose($handle);'
+						),
+						array(
+							'file' => 'administrator/components/com_jrecache/includes/cache_handler.php',
+							'mode' => 'finish',
+							'location' => 'echo $output;'
 						)
 					);
 /* Joomla 1.0 */
@@ -2008,6 +2017,16 @@ require valid-user
 							'mode' => 'finish',
 							'location' => 'echo $content;'
 						),
+						array(
+							'file' => 'administrator/components/com_jrecache/includes/cache_handler.php',
+							'mode' => 'start',
+							'location' => 'fclose($handle);'
+						),
+						array(
+							'file' => 'administrator/components/com_jrecache/includes/cache_handler.php',
+							'mode' => 'finish',
+							'location' => 'echo $output;'
+						)
 					);
 				}
 				break;

@@ -1209,10 +1209,11 @@ class web_optimizer {
 			// Determine supported compression method
 			if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
 				$gzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE["_wo_gzip"]);
+				$xgzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip");
 				$deflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
 			}
 			// Determine used compression method
-			$encoding = !empty($gzip) ? "gzip" : (!empty($deflate) ? "deflate" : "none");
+			$encoding = empty($gzip) ? (empty($deflate) ? (empty($xgzip) ? "none" : "x-gzip") : "deflate") : "gzip";
 			$hash = "' . $this->time .  '-" . $encoding;
 			header ("Etag: \"" . $hash . "\"");
 ?>';
@@ -1240,9 +1241,9 @@ class web_optimizer {
 						$version = floatval($matches[1]);
 
 						if ($version < 6)
-							$encoding = \'none\';
+							$encoding = "none";
 						if ($version == 6 && !strstr($_SERVER["HTTP_USER_AGENT"], "SV1"))
-							$encoding = \'none\';
+							$encoding = "none";
 					}
 
 					if (isset($encoding) && $encoding != "none")
@@ -1251,7 +1252,7 @@ class web_optimizer {
 						$content = @file_get_contents(__FILE__ . ".gz");
 						if (empty($content)) {
 						// Send compressed contents
-							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip || $x-gzip ? FORCE_GZIP : FORCE_DEFLATE);
 							$fp = @fopen(__FILE__ . ".gz", "wb");
 							if ($fp) {
 								@fwrite($fp, $contents);
