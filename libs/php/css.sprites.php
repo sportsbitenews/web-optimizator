@@ -1371,7 +1371,7 @@ __________________
 				break;
 /* remove all identificator selectors from start */
 			case 9:
-				$regexp = '#[^#\s]+';
+				$regexp = '([a-zA-Z0-9]+)#[^#\s]+';
 				$part = '$1';
 				break;
 /* remove the first tag */
