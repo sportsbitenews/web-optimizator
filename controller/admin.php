@@ -792,7 +792,7 @@ class admin {
 					if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level'))) {
 						$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
 						$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
-						$this->input['user'][$key][$option_name] = ($this->input['user'][$key][$option_name] == 'on' ? 1 : $this->input['user'][$key][$option_name]);
+						$this->input['user'][$key][$option_name] = (strcmp($this->input['user'][$key][$option_name], 'on') ? $this->input['user'][$key][$option_name] : 1);
 					}
 				}
 			} else {
