@@ -514,7 +514,7 @@ class admin {
 	/**
 	* Delets Web Optimizer calls from a single file
 	**/
-	function cleanup_file ($file) {
+	function cleanup_file ($file, $return) {
 		if (is_file($file)) {
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));\r?\n?/", "", @file_get_contents($file));
