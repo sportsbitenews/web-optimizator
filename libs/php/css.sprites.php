@@ -1359,17 +1359,17 @@ __________________
 				$regexp = '^([a-zA-Z0-9]+)#[^#\s]+\s([a-zA-Z0-9]+)';
 				$part = '$1 $2';
 				break;
-/* remove all attribute selectors from start */
+/* remove all attribute selectors */
 			case 7:
 				$regexp = '([a-zA-Z0-9]+)\[[^\[]+\]';
 				$part = '$1';
 				break;
-/* remove all class selectors from start */
+/* remove all class selectors */
 			case 8:
 				$regexp = '([a-zA-Z0-9]+)\.[^\.\s]+';
 				$part = '$1';
 				break;
-/* remove all identificator selectors from start */
+/* remove all identificator selectors */
 			case 9:
 				$regexp = '([a-zA-Z0-9]+)#[^#\s]+';
 				$part = '$1';

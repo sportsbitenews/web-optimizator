@@ -28,7 +28,7 @@ class web_optimizer {
 /* define head of the webpage for scripts / styles */
 		$this->head = '';
 /* remember current time */
-		$this->time = time();
+		$this->time = $_SERVER['REQUEST_TIME'];
 /* define PHP version */
 		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */
@@ -73,8 +73,10 @@ class web_optimizer {
 				$content = @file_get_contents($file);
 				$hash = md5($content) . (empty($this->encoding) ? '' : '-gzip');
 /* check for return visits */
-				if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"')	 {
+				if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
+					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') ||
+					(isset($_SERVER['HTTP_IF_MATCH']) &&
+					stripslashes($_SERVER['HTTP_IF_MATCH']) == '"' . $hash . '"')) {
 /* return visit and no modifications, so do not send anything */
 					header ("HTTP/1.0 304 Not Modified");
 					header ("Content-Length: 0");
@@ -469,16 +471,17 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
-			if (file_exists($file)) {
-				$timestamp = @filemtime($file);
-			} else {
-				$timestamp = 0;
-			}
+			$timestamp = @filemtime($file);
 /* set ETag, thx to merzmarkus */
 			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-gzip') . "\"");
-			if (!$timestamp || $this->time - $timestamp > $options['cache_timeout']) {
-				$fp = @fopen($file, "w");
+			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
+				$fp = @fopen($file, "a");
 				if ($fp) {
+/* block file from writing */
+					@flock($fp, LOCK_EX);
+/* erase content and move to the beginning */
+					@ftruncate($fp, 0);
+					@fseek($fp, 0);
 					$content_to_write = $this->content;
 /* can't write a part of gzipped file */
 					if (!empty($options['flush']) && empty($this->encoding)) {
@@ -1217,8 +1220,10 @@ class web_optimizer {
 /* Send 304? */
 			$this->gzip_header[$type] .= '<?php
 
-			if (isset($_SERVER["HTTP_IF_NONE_MATCH"]) &&
-				stripslashes($_SERVER["HTTP_IF_NONE_MATCH"]) == "\"" . $hash . "\"") {
+			if ((isset($_SERVER["HTTP_IF_NONE_MATCH"]) &&
+				stripslashes($_SERVER["HTTP_IF_NONE_MATCH"]) == "\"" . $hash . "\"") ||
+				(isset($_SERVER["HTTP_IF_MATCH"]) &&
+				stripslashes($_SERVER["HTTP_IF_MATCH"]) == "\"" . $hash . "\"")) {
 				// Return visit and no modifications, so do not send anything
 				header ("HTTP/1.0 304 Not Modified");
 				header ("Content-Length: 0");

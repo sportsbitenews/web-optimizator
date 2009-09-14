@@ -1146,6 +1146,8 @@ ExpiresDefault \"access plus 10 years\"
 				$this->save_option("['plugins']", implode(" ", $plugins));
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
+/* activate Web Optimizer */
+			$this->save_option('[\'active\']', 1);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
@@ -1447,8 +1449,6 @@ ExpiresDefault \"access plus 10 years\"
 				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
 			}
 		}
-/* activate Web Optimizer */
-		$this->save_option('[\'active\']', 1);
 		$this->write_progress($this->web_optimizer_stage = 100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,
