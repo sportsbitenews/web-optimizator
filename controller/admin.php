@@ -69,7 +69,7 @@ class admin {
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
-/* if we use .htaccess*/
+/* if we use .htaccess */
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']) && $this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
 		if ($this->input['page'] != 'system_check') {
 /* grade URL from webo.name */
@@ -397,7 +397,7 @@ class admin {
 	* Uninstall page
 	* 
 	**/	
-	function install_uninstall($return = true) {
+	function install_uninstall ($return = true) {
 /* delete last optimization grade */
 		@unlink('index.after');
 		if (empty($this->cms_version)) {
@@ -429,33 +429,9 @@ class admin {
 				$index = $this->view->paths['full']['document_root'] . 'sources/classes/class_display.php';
 			}
 			$this->cleanup_file($index, $return);
-/* remove rules from .htaccess */
-			if (empty($this->options['htaccess']['local'])) {
-				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-			} else {
-				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
-			}
-			if (is_file($htaccess)) {
-				$fp = @fopen($htaccess, 'r');
-				if ($fp) {
-					$stop_saving = 0;
-					$content_saved = '';
-					while ($htaccess_string = fgets($fp)) {
-						if (preg_match("/# Web Optimizer options/", $htaccess_string)) {
-							$stop_saving = 1;
-						}
-						if (!$stop_saving && $htaccess_string != "\n") {
-							$content_saved .= $htaccess_string;
-						}
-						if (preg_match("/# Web Optimizer end/", $htaccess_string)) {
-							$stop_saving = 0;
-						}
-					}
-					fclose($fp);
-					$this->write_file($htaccess, $content_saved, $return);
-				} elseif (!empty($return)) {
-					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/.htaccess</code></p>");
-				}
+			$content_saved = $this->clean_htaccess($return);
+			if (empty($this->error)) {
+				$this->write_file($htaccess, $content_saved, $return);	
 			}
 /* additional change of cache plugins */
 			if (substr($this->cms_version, 0, 7) == "Joomla!" || substr($this->cms_version, 0, 5) == "XOOPS") {
@@ -522,7 +498,7 @@ class admin {
 				$return = 0;
 			}
 		}
-		if ($return) {
+		if (!empty($return)) {
 			return $return;
 		}
 	}
@@ -872,41 +848,61 @@ class admin {
 			}
 		}
 	}
+
 	/**
-	* Checks and writes all optimized rules to htaccess file
+	* Returns actual .htaccess file name
+	**/
+	function detect_htaccess () {
+		if (empty($this->options['htaccess']['local'])) {
+			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+		} else {
+			$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+		}
+		return $htaccess;
+	}
+
+	/**
+	* Cleans all previous rules from .htaccess file content
+	**/
+	function clean_htaccess ($debug = false) {
+		$content_saved = '';
+		$htaccess = $this->detect_htaccess();
+/* remove rules from .htaccess */
+		if (is_file($htaccess)) {
+			$fp = @fopen($htaccess, 'r');		
+			if (!$fp) {
+				if (!empty($debug)) {
+					$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD2 . "</p>");
+				}
+			} else {
+				$stop_saving = 0;
+				while ($htaccess_string = fgets($fp)) {
+					if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
+						$stop_saving = 1;
+					}
+					if (!$stop_saving && $htaccess_string != "\n") {
+						$content_saved .= $htaccess_string;
+					}
+					if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
+						$stop_saving = 0;
+					}
+				}
+				fclose($fp);
+			}
+		}
+		return $content_saved;
+	}
+	
+	/**
+	* Checks and writes all optimized rules to .htaccess file
 	**/
 	function write_htaccess ($return = false) {
 /* additional check for .htaccess -- need to open exact file */
 		if (!empty($this->input['user']['htaccess']['enabled'])) {
 			$this->view->set_paths($this->input['user']['document_root']);
-/* write to the current dir or to document root */
-			if (empty($this->input['user']['htaccess']['local'])) {
-/* first of all just cut current Web Optimizer options from .htaccess */
-				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-			} else {
-				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
-			}
-			if (is_file($htaccess)) {
-				$fp = @fopen($htaccess, 'r');
-				if (!$fp) {
-					$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD2 . "</p>");
-				} else {
-					$stop_saving = 0;
-					$content_saved = '';
-					while ($htaccess_string = fgets($fp)) {
-						if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
-							$stop_saving = 1;
-						}
-						if (!$stop_saving && $htaccess_string != "\n") {
-							$content_saved .= $htaccess_string;
-						}
-						if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
-							$stop_saving = 0;
-						}
-					}
-					fclose($fp);
-				}
-			}
+/* delete previous Web Optimizer rules */
+			$content_saved = $this->clean_htaccess(!$return);
+			$htaccess = $this->detect_htaccess();
 /* create backup */
 			@copy($htaccess, $htaccess . '.backup');
 			$htaccess_options = $this->input['user']['htaccess'];
@@ -1078,7 +1074,7 @@ ExpiresDefault \"access plus 10 years\"
 				$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 			}
 			$ret = $this->write_file($htaccess, $content, 1);
-			if (empty($ret) && empty($return)) {
+			if (empty($ret) && !empty($return)) {
 				$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD3 . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD4 . "</p>");
 			} elseif (!empty($return)) {
 				return $ret;
@@ -1088,7 +1084,7 @@ ExpiresDefault \"access plus 10 years\"
 			return 1;
 		}
 	}
-	
+
 	/**
 	* Final stage
 	* 
@@ -1138,7 +1134,7 @@ ExpiresDefault \"access plus 10 years\"
 /* delete temporary files before chained installation */
 				$this->install_clean_cache(0);
 				$this->install_uninstall(0);
-				$this->write_htaccess();
+				$this->write_htaccess(0);
 /* look for plugins */
 				$plugins = array();
 				if ($dp = @opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
@@ -1152,7 +1148,7 @@ ExpiresDefault \"access plus 10 years\"
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
 /* activate Web Optimizer */
-			$this->save_option('[\'active\']', 1);
+			$this->save_option("['active']", 1);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
@@ -1539,7 +1535,8 @@ ExpiresDefault \"access plus 10 years\"
 	* Saves an admin option
 	* 
 	**/
-	function save_option ($option_name, $option_value) {
+	function save_option ($option_name, $option_value, $debug = true) {
+		$return = 0;
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		$option_value = preg_replace("/\/\//", "/", preg_replace("/\\\/", '/', $option_value));
 /* See if file exists */
@@ -1547,13 +1544,18 @@ ExpiresDefault \"access plus 10 years\"
 		if (file_exists($option_file)) {
 			$content = @file_get_contents($option_file);
 			$content = preg_replace("@(" . $this->regex_escape($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-			$return = $this->write_file($option_file, $content, 1);
-			if(empty($return)) {
+			$ret = $this->write_file($option_file, $content, $debug);
+			if (!empty($debug) && empty($ret)) {
 /* unable to open file for writing */
 				$this->error('<p>' . _WEBO_SPLASH3_CONFIGERROR .'</p><p>' . _WEBO_SPLASH3_CONFIGERROR2 . $option_file . _WEBO_SPLASH3_CONFIGERROR3 . '.</p><p>'. _WEBO_SPLASH3_CONFIGERROR4 . '</p>');
+			} elseif (!empty($ret)) {
+				$return = 1;
 			}
-		} else {
+		} elseif ($debug) {
 			$this->error(_WEBO_SPLASH3_CONFIGERROR5);
+		}
+		if (empty($debug)) {
+			return $return;
 		}
 	}
 	
