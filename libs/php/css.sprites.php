@@ -188,7 +188,7 @@ class css_sprites {
 			$properties = array('background-image', 'background-position', 'background-repeat', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 
 'width', 'height');
 /* to remember already calculated selectors, by stages */
-			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array(), 8 => array(), 9 => array());
+			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array(), 8 => array(), 9 => array(), 10 => array(), 11 => array(), 12 => array());
 /* try to restore property values from parent selectors */
 			foreach ($this->media as $import => $images) {
 				foreach ($images as $key => $image) {

@@ -13,7 +13,7 @@ class web_optimizer {
 	**/
 	function web_optimizer($options = false) {
 /* initialize chained optimization */
-		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(getenv('SCRIPT_NAME'), "optimizing.php") ? 0 : $_GET['web_optimizer_stage']);
+		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(@getenv('SCRIPT_NAME'), "ptimizing.php") ? 0 : $_GET['web_optimizer_stage']);
 		$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
 		$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
 		$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
@@ -807,7 +807,7 @@ class web_optimizer {
 				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['header'] == "css" && $options['minify'] && !$options['css_sprites'] && !$options['data_uris']) {
+			if ($options['header'] == "css" && !empty($options['minify']) && empty($options['css_sprites']) && empty($options['data_uris'])) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
@@ -1241,11 +1241,10 @@ class web_optimizer {
 					if (!empty($_SERVER["HTTP_USER_AGENT"]) && !strstr($_SERVER["HTTP_USER_AGENT"], "Opera") &&
 						preg_match("/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i", $_SERVER["HTTP_USER_AGENT"], $matches)) {
 						$version = floatval($matches[1]);
-
-						if ($version < 6)
-							$encoding = "none";
-						if ($version == 6 && !strstr($_SERVER["HTTP_USER_AGENT"], "SV1"))
-							$encoding = "none";
+						// IE6- can loose first 2048 bytes of gzipped content, code from Bitrix
+						if ($version < 7) {
+							$contents = str_repeat(" ", 2048) . "\r\n" . $contents;
+						}
 					}
 
 					if (isset($encoding) && $encoding != "none")
@@ -1302,14 +1301,20 @@ class web_optimizer {
 	}
 
 	/**
-	* Strips whitespace and comments from a text string
+	* Minifies CSS - removes unnecessary symbols
 	*
 	**/
-	function minify_text($txt) {
-/* Compress whitespace */
-		$txt = preg_replace('/\s+/', ' ', $txt);
+	function minify_text ($txt) {
+/* Remove line breaks */
+		$txt = preg_replace('!\t?\r?\n?!', '', $txt);
 /* Remove simple comments */
-		$txt = preg_replace("/<!--\/\/-->/", "", preg_replace('/\/\*.*?\*\//', '', $txt));
+		$txt = preg_replace('!/\*.*?\*/!', '', $txt);
+/* Compress whitespaces */
+		$txt = str_replace('  ', ' ', $txt);
+/* Remove spaces for }, {, ;, ,: */
+		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
+/* Remove excessive symbols */
+		$txt = str_replace(array(' 0px', ':0px', ';}', ':0 0 0 0', ':0.', ' 0.'), array(' 0', ':0', '}', ':0', ':.', ' .'), $txt);
 		return $txt;
 	}
 
@@ -1672,21 +1677,21 @@ class web_optimizer {
 			return preg_replace("/.*(wo[abcdef0-9]+$)/", "$1", $file);
 		}
 		$current_directory = @getcwd();
+/* dirty fix for buggy getcwd call */
+		if ($current_directory == '/') {
+			$current_directory = $this->options['css']['installdir'];
+		}
 		if (function_exists('curl_init')) {	
 			if ($tag == 'link') {
-				chdir($this->options['css']['cachedir']);
+				@chdir($this->options['css']['cachedir']);
 			} else {
-				chdir($this->options['javascript']['cachedir']);
+				@chdir($this->options['javascript']['cachedir']);
 			}
 			$return_filename = 'wo' . md5($file) . '.' . ($tag == 'link' ? 'css' : 'js');
-			if (file_exists($return_filename)) {
-				$timestamp = @filemtime($return_filename);
-			} else {
-				$timestamp = 0;
-			}
+			$timestamp = @filemtime($return_filename);
 /* prevent download more than 1 time a day */
-			if ($timestamp && $timestamp + 86400 > $this->time) {
-				chdir($current_directory);
+			if (!empty($timestamp) && $timestamp + 86400 > $this->time) {
+				@chdir($current_directory);
 				return $return_filename;
 			}
 /* try to download remote file */
@@ -1717,7 +1722,7 @@ class web_optimizer {
 				return $return_filename;
 			}
 		}
-		chdir($current_directory);
+		@chdir($current_directory);
 		return false;
 	}
 

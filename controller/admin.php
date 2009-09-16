@@ -212,10 +212,8 @@ class admin {
 	function write_progress ($progress, $init = false) {
 		$file = $this->basepath . 'cache/progress.html';
 		if ($this->display_progress || $init) {
-			$fp = @fopen($file, "w");
-			if ($fp) {
-				@fwrite($fp, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>');
-				@fclose($fp);
+			$return = $this->write_file($file, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>', 1);
+			if (!empty($return)) {
 				if ($progress == 100) {
 					@unlink($file);
 				}
@@ -454,12 +452,8 @@ class admin {
 						}
 					}
 					fclose($fp);
-					$fp = @fopen($htaccess, "w");
-					if ($fp) {
-						fwrite($fp, $content_saved);
-						fclose($fp);
-					}
-				} elseif ($return) {
+					$this->write_file($htaccess, $content_saved, $return);
+				} elseif (!empty($return)) {
 					$this->error("<p>". _WEBO_SPLASH3_CANTWRITE ."<code>/.htaccess</code></p>");
 				}
 			}
@@ -498,7 +492,7 @@ class admin {
 				}
 			}
 		}
-		if ($return) {
+		if (!empty($return)) {
 			$this->page_variables = array(
 				"title" => _WEBO_SPLASH1_UNINSTALL,
 				"paths" => $this->view->paths,
@@ -512,20 +506,35 @@ class admin {
 	}
 
 	/**
+	* Writes content to file
+	**/
+	function write_file ($file, $content, $return = false) {
+		if (function_exists('file_put_contents')) {
+			$return = @file_put_contents($file, $content);
+		} else {
+			$fp = @fopen($file, "w");
+			if ($fp) {
+				fwrite($fp, $content);
+				fclose($fp);
+				$return = 1;
+			} elseif ($return) {
+				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $file ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+				$return = 0;
+			}
+		}
+		if ($return) {
+			return $return;
+		}
+	}
+
+	/**
 	* Delets Web Optimizer calls from a single file
 	**/
-	function cleanup_file ($file, $return) {
+	function cleanup_file ($file, $return = false) {
 		if (is_file($file)) {
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));\r?\n?/", "", @file_get_contents($file));
-			$fpc = @fopen($cache_file, 'wb');
-/* write cleaned content */
-			if ($fpc) {
-				@fwrite($fpc, $content);
-				@fclose($fpc);
-			} elseif ($return) {
-				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $file ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
-			}
+			$this->write_file($cache_file, $content, $return);
 		}
 	}
 
@@ -636,10 +645,6 @@ class admin {
 /* check if we are using correct root directory */
 		if (!is_dir($this->input['user']['document_root'])) {
 			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
-		}
-/* Save the options file */
-		if(!empty($this->input['Submit']) && empty($this->skip_render)) {
-			$this->save_option('[\'document_root\']', $this->input['user']['document_root']);
 		}
 		$this->get_modules();
 /* check for multiple hosts possibility */
@@ -867,7 +872,223 @@ class admin {
 			}
 		}
 	}
-
+	/**
+	* Checks and writes all optimized rules to htaccess file
+	**/
+	function write_htaccess ($return = false) {
+/* additional check for .htaccess -- need to open exact file */
+		if (!empty($this->input['user']['htaccess']['enabled'])) {
+			$this->view->set_paths($this->input['user']['document_root']);
+/* write to the current dir or to document root */
+			if (empty($this->input['user']['htaccess']['local'])) {
+/* first of all just cut current Web Optimizer options from .htaccess */
+				$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+			} else {
+				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+			}
+			if (is_file($htaccess)) {
+				$fp = @fopen($htaccess, 'r');
+				if (!$fp) {
+					$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD2 . "</p>");
+				} else {
+					$stop_saving = 0;
+					$content_saved = '';
+					while ($htaccess_string = fgets($fp)) {
+						if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
+							$stop_saving = 1;
+						}
+						if (!$stop_saving && $htaccess_string != "\n") {
+							$content_saved .= $htaccess_string;
+						}
+						if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
+							$stop_saving = 0;
+						}
+					}
+					fclose($fp);
+				}
+			}
+/* create backup */
+			@copy($htaccess, $htaccess . '.backup');
+			$htaccess_options = $this->input['user']['htaccess'];
+			$content = '# Web Optimizer options';
+			if (!empty($htaccess_options['mod_gzip'])) {
+				$content .= "
+mod_gzip_on Yes
+mod_gzip_can_negotiate Yes
+mod_gzip_static_suffix .gz
+AddEncoding gzip .gz
+mod_gzip_update_static No
+mod_gzip_keep_workfiles No
+mod_gzip_minimum_file_size 500
+mod_gzip_maximum_file_size 5000000
+mod_gzip_maximum_inmem_size 60000
+mod_gzip_min_http 1000
+mod_gzip_handle_methods GET POST
+mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
+mod_gzip_dechunk No";
+				if (!empty($this->input['user']['gzip']['page'])) {
+					$content .= "
+mod_gzip_item_include mime ^text/html$
+mod_gzip_item_include mime ^text/plain$
+mod_gzip_item_include mime ^image/x-icon$
+mod_gzip_item_include mime ^httpd/unix-directory$";
+				}
+				if (!empty($this->input['user']['gzip']['css'])) {
+					$content .= "
+mod_gzip_item_include mime ^text/css$";
+				}
+				if (!empty($this->input['user']['gzip']['javascript'])) {
+					$content .= "
+mod_gzip_item_include mime ^text/javascript$
+mod_gzip_item_include mime ^application/javascript$
+mod_gzip_item_include mime ^application/x-javascript$
+mod_gzip_item_include mime ^text/x-js$
+mod_gzip_item_include mime ^text/ecmascript$
+mod_gzip_item_include mime ^application/ecmascript$
+mod_gzip_item_include mime ^text/vbscript$
+mod_gzip_item_include mime ^text/fluffscript$";
+				}
+			}
+			if (!empty($htaccess_options['mod_setenvif'])) {
+				$content .= "
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch SV1; !no_gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+			}
+			if (!empty($htaccess_options['mod_deflate'])) {
+				if (!empty($this->input['user']['gzip']['page'])) {
+					$content .= "
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE image/x-icon";
+				}
+				if (!empty($this->input['user']['gzip']['css'])) {
+					$content .= "
+AddOutputFilterByType DEFLATE text/css";
+				}
+				if (!empty($this->input['user']['gzip']['javascript'])) {
+					$content .= "
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE text/x-js
+AddOutputFilterByType DEFLATE text/ecmascript
+AddOutputFilterByType DEFLATE application/ecmascript
+AddOutputFilterByType DEFLATE text/vbscript
+AddOutputFilterByType DEFLATE text/fluffscript";
+				}
+			}
+/* try to add static gzip */
+			if (!empty($htaccess_options['mod_mime'])) {
+				$content .= "
+AddEncoding gzip .gz";
+			}
+			if (!empty($htaccess_options['mod_rewrite'])) {
+				$content .= "
+RewriteEngine On
+RewriteBase /
+";
+				if (!empty($this->input['user']['gzip']['css'])) {
+					$content .= "
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
+<FilesMatch \.css\.gz$>
+	ForceType text/css
+</FilesMatch>";
+				}
+				if (!empty($this->input['user']['gzip']['javascript'])) {
+					$content .= "
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
+<FilesMatch \.js\.gz$>
+	ForceType application/x-javascript
+</FilesMatch>";
+				}
+			}
+			if (!empty($htaccess_options['mod_expires'])) {
+				$content .= "
+ExpiresActive On
+ExpiresDefault \"access plus 10 years\"
+<FilesMatch \.(php|phtml|shtml|html|xml)$>
+	ExpiresActive Off
+</FilesMatch>";
+				if (empty($this->input['user']['far_future_expires']['css'])) {
+					$content .= "
+<FilesMatch \.css$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
+				if (empty($this->input['user']['far_future_expires']['javascript'])) {
+					$content .= "
+<FilesMatch \.js$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
+				if (empty($this->input['user']['far_future_expires']['images'])) {
+					$content .= "
+<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
+				if (empty($this->input['user']['far_future_expires']['video'])) {
+					$content .= "
+<FilesMatch \.(flv|wmf)$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
+				if (empty($this->input['user']['far_future_expires']['static'])) {
+					$content .= "
+<FilesMatch \.(swf|pdf|doc|rtf)$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
+			}
+			if (!empty($htaccess_options['mod_headers'])) {
+				if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
+					$content .= "
+<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
+	Header append Vary User-Agent
+	Header append Cache-Control private
+</FilesMatch>";
+				}
+				if (!empty($htaccess_options['mod_expires'])) {
+					$content .= "
+<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
+	Header append Cache-Control public
+</FilesMatch>
+<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
+	Header unset Last-Modified
+	FileETag MTime
+</FilesMatch>";
+				}
+			}
+			$content .= "\n# Web Optimizer end";
+/* define CMS */
+			if (empty($this->cms_version)) {
+				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+			}
+			$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
+/* prevent rewrite to admin access on frameworks */
+			if (in_array($this->cms_version, $cms_frameworks)) {
+				$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
+			}
+			$ret = $this->write_file($htaccess, $content, 1);
+			if (empty($ret) && empty($return)) {
+				$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD3 . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD4 . "</p>");
+			} elseif (!empty($return)) {
+				return $ret;
+			}
+		}
+		if (!empty($return)) {
+			return 1;
+		}
+	}
+	
 	/**
 	* Final stage
 	* 
@@ -894,16 +1115,11 @@ class admin {
 				} else {
 					@mkdir($dir, 0755);
 				}
-				$fp = @fopen($dir . "test", 'w');
-				if(!$fp) {
+				$return = $this->write_file($dir . "test", $content, 1);
+				if (!$return) {
 /* unable to open file for writing */
-					$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p>
-								<p>". _WEBO_SPLASH3_CANTWRITE3 ."</p>
-								<p>". _WEBO_SPLASH3_CANTWRITE4 ."</p>");
+					$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p><p>". _WEBO_SPLASH3_CANTWRITE3 ."</p><p>". _WEBO_SPLASH3_CANTWRITE4 . "</p>");
 				} else {
-/* write the file */
-					fwrite($fp, $content);
-					fclose($fp);
 					unlink($dir . "test");
 				}
 			}
@@ -920,220 +1136,9 @@ class admin {
 				$this->set_options();
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* delete temporary files before chained installation */
-				$this->install_clean_cache(false);
-				$this->install_uninstall(false);
-/* additional check for .htaccess -- need to open exact file */
-				if (!empty($this->input['user']['htaccess']['enabled'])) {
-					$this->view->set_paths($this->input['user']['document_root']);
-/* write to the current dir or to document root */
-					if (empty($this->input['user']['htaccess']['local'])) {
-/* first of all just cut current Web Optimizer options from .htaccess */
-						$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
-					} else {
-						$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
-					}
-					if (is_file($htaccess)) {
-						$fp = @fopen($htaccess, 'r');
-						if (!$fp) {
-							$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD ."</p>
-											<p>". _WEBO_SPLASH3_HTACCESS_CHMOD2 ."</p>");
-						} else {
-							$stop_saving = 0;
-							$content_saved = '';
-							while ($htaccess_string = fgets($fp)) {
-								if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
-									$stop_saving = 1;
-								}
-								if (!$stop_saving && $htaccess_string != "\n") {
-									$content_saved .= $htaccess_string;
-								}
-								if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
-									$stop_saving = 0;
-								}
-							}
-							fclose($fp);
-						}
-					}
-/* create backup */
-					@copy($htaccess, $htaccess . '.backup');
-					$fp = @fopen($htaccess, 'w');
-					if (!$fp) {
-						$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD3 ."</p>
-										<p>". _WEBO_SPLASH3_HTACCESS_CHMOD4 ."</p>");
-					} else {
-						$htaccess_options = $this->input['user']['htaccess'];
-						$content = '# Web Optimizer options';
-						if (!empty($htaccess_options['mod_gzip'])) {
-							$content .= "
-mod_gzip_on Yes
-mod_gzip_can_negotiate Yes
-mod_gzip_static_suffix .gz
-AddEncoding gzip .gz
-mod_gzip_update_static No
-mod_gzip_keep_workfiles No
-mod_gzip_minimum_file_size 500
-mod_gzip_maximum_file_size 5000000
-mod_gzip_maximum_inmem_size 60000
-mod_gzip_min_http 1000
-mod_gzip_handle_methods GET POST
-mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
-mod_gzip_dechunk No";
-							if (!empty($this->input['user']['gzip']['page'])) {
-								$content .= "
-mod_gzip_item_include mime ^text/html$
-mod_gzip_item_include mime ^text/plain$
-mod_gzip_item_include mime ^image/x-icon$
-mod_gzip_item_include mime ^httpd/unix-directory$";
-							}
-							if (!empty($this->input['user']['gzip']['css'])) {
-								$content .= "
-mod_gzip_item_include mime ^text/css$";
-							}
-							if (!empty($this->input['user']['gzip']['javascript'])) {
-								$content .= "
-mod_gzip_item_include mime ^text/javascript$
-mod_gzip_item_include mime ^application/javascript$
-mod_gzip_item_include mime ^application/x-javascript$
-mod_gzip_item_include mime ^text/x-js$
-mod_gzip_item_include mime ^text/ecmascript$
-mod_gzip_item_include mime ^application/ecmascript$
-mod_gzip_item_include mime ^text/vbscript$
-mod_gzip_item_include mime ^text/fluffscript$";
-							}
-						}
-						if (!empty($htaccess_options['mod_setenvif'])) {
-							$content .= "
-BrowserMatch ^Mozilla/4 gzip-only-text/html
-BrowserMatch ^Mozilla/4\.0[678] no-gzip
-BrowserMatch SV1; !no_gzip
-BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
-						}
-						if (!empty($htaccess_options['mod_deflate'])) {
-							if (!empty($this->input['user']['gzip']['page'])) {
-								$content .= "
-AddOutputFilterByType DEFLATE text/html
-AddOutputFilterByType DEFLATE text/xml
-AddOutputFilterByType DEFLATE image/x-icon";
-							}
-							if (!empty($this->input['user']['gzip']['css'])) {
-								$content .= "
-AddOutputFilterByType DEFLATE text/css";
-							}
-							if (!empty($this->input['user']['gzip']['javascript'])) {
-								$content .= "
-AddOutputFilterByType DEFLATE text/javascript
-AddOutputFilterByType DEFLATE application/javascript
-AddOutputFilterByType DEFLATE application/x-javascript
-AddOutputFilterByType DEFLATE text/x-js
-AddOutputFilterByType DEFLATE text/ecmascript
-AddOutputFilterByType DEFLATE application/ecmascript
-AddOutputFilterByType DEFLATE text/vbscript
-AddOutputFilterByType DEFLATE text/fluffscript";
-							}
-						}
-/* try to add static gzip */
-						if (!empty($htaccess_options['mod_mime'])) {
-							$content .= "
-AddEncoding gzip .gz";
-						}
-						if (!empty($htaccess_options['mod_rewrite'])) {
-							$content .= "
-RewriteEngine On
-RewriteBase /
-";
-							if (!empty($this->input['user']['gzip']['css'])) {
-								$content .= "
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{HTTP_USER_AGENT} !Konqueror
-RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
-<FilesMatch \.css\.gz$>
-	ForceType text/css
-</FilesMatch>";
-							}
-							if (!empty($this->input['user']['gzip']['javascript'])) {
-								$content .= "
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{HTTP_USER_AGENT} !Konqueror
-RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
-<FilesMatch \.js\.gz$>
-	ForceType application/x-javascript
-</FilesMatch>";
-							}
-						}
-						if (!empty($htaccess_options['mod_expires'])) {
-							$content .= "
-ExpiresActive On
-ExpiresDefault \"access plus 10 years\"
-<FilesMatch \.(php|phtml|shtml|html|xml)$>
-	ExpiresActive Off
-</FilesMatch>";
-							if (empty($this->input['user']['far_future_expires']['css'])) {
-								$content .= "
-<FilesMatch \.css$>
-	ExpiresActive Off
-</FilesMatch>";
-							}
-							if (empty($this->input['user']['far_future_expires']['javascript'])) {
-								$content .= "
-<FilesMatch \.js$>
-	ExpiresActive Off
-</FilesMatch>";
-							}
-							if (empty($this->input['user']['far_future_expires']['images'])) {
-								$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
-	ExpiresActive Off
-</FilesMatch>";
-							}
-							if (empty($this->input['user']['far_future_expires']['video'])) {
-								$content .= "
-<FilesMatch \.(flv|wmf)$>
-	ExpiresActive Off
-</FilesMatch>";
-							}
-							if (empty($this->input['user']['far_future_expires']['static'])) {
-								$content .= "
-<FilesMatch \.(swf|pdf|doc|rtf)$>
-	ExpiresActive Off
-</FilesMatch>";
-							}
-						}
-						if (!empty($htaccess_options['mod_headers'])) {
-							if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
-								$content .= "
-<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
-	Header append Vary User-Agent
-	Header append Cache-Control private
-</FilesMatch>";
-							}
-							if (!empty($htaccess_options['mod_expires'])) {
-								$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
-	Header append Cache-Control public
-</FilesMatch>
-<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
-	Header unset Last-Modified
-	FileETag MTime
-</FilesMatch>";
-							}
-						}
-						$content .= "\n# Web Optimizer end";
-/* define CMS */
-						if (empty($this->cms_version)) {
-							$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-						}
-
-						$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
-/* prevent rewrite to admin access on frameworks */
-						if (in_array($this->cms_version, $cms_frameworks)) {
-							$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
-						}
-						@fwrite($fp, $content_saved . "\n" . $content);
-						@fclose($fp);
-					}
-				}
+				$this->install_clean_cache(0);
+				$this->install_uninstall(0);
+				$this->write_htaccess();
 /* look for plugins */
 				$plugins = array();
 				if ($dp = @opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
@@ -1176,20 +1181,14 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
-							$fp = @fopen($mainfile, "w");
-							if ($fp) {
 /* update main PHP-Nuke file */
-								@fwrite($fp, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)));
-								@fclose($fp);
+							$return1 = $this->write_file($mainfile, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)), 1);
 /* create backup */
-								@copy($footer, $footer . '.backup');
-								$fp = @fopen($footer, "w");
-								if ($fp) {
+							@copy($footer, $footer . '.backup');
 /* update footer */
-									@fwrite($fp, preg_replace("/global /", 'global \$web_optimizer,', preg_replace("/(\s*ob_end_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content))));
-									@fclose($fp);
-									$auto_rewrite = 1;
-								}
+							$return2 = $this->write_file($footer, preg_replace("/global /", 'global \$web_optimizer,', preg_replace("/(\s*ob_end_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content))), 1);
+							if (!empty($return1) && !empty($return2)) {
+								$auto_rewrite = 1;
 							}
 						}
 /* another dirty hack for phpBB */
@@ -1199,16 +1198,14 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($mainfile_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
-							$fp = @fopen($mainfile, "w");
-							if ($fp) {
 /* remove any old strings regarding Web Optimizer */
-								$mainfile_content = preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+							$mainfile_content = preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
 /* add class declaration */
-								$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
+							$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
 /* add finish */
-								$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
-								@fwrite($fp, $mainfile_content);
-								@fclose($fp);
+							$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
+							$return = $this->write_file($mainfile, $mainfile_content, 1);
+							if (!empty($return)) {
 								$auto_rewrite = 1;
 							}
 						}
@@ -1219,14 +1216,12 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($mainfile_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
-							$fp = @fopen($mainfile, "w");
-							if ($fp) {
 /* add class declaration */
-								$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
+							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
 /* add finish */
-								$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
-								@fwrite($fp, $mainfile_content);
-								@fclose($fp);
+							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
+							$return = $this->write_file($mainfile, $mainfile_content, 1);
+							if (!empty($return)) {
 								$auto_rewrite = 1;
 							}
 						}
@@ -1239,20 +1234,14 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
-							$fp = @fopen($mainfile, "w");
-							if ($fp) {
 /* update header */
-								@fwrite($fp, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content));
-								@fclose($fp);
+							$return1 = $this->write_file($mainfile, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
-								@copy($footer, $footer . '.backup');
-								$fp = @fopen($footer, "w");
-								if ($fp) {
+							@copy($footer, $footer . '.backup');
 /* update footer */
-									@fwrite($fp, preg_replace("/(echo\s*\\\$r;\r?\n?)/", "$1\n" . '\$web_optimizer->finish();' . "\n", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $footer_content)));
-									@fclose($fp);
-									$auto_rewrite = 1;
-								}
+							$return2 = $this->write_file($footer, preg_replace("/(echo\s*\\\$r;\r?\n?)/", "$1\n" . '\$web_optimizer->finish();' . "\n", preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", $footer_content)), 1);
+							if (!empty($return1) && !empty($return2)) {
+								$auto_rewrite = 1;
 							}
 						}
 /* and for Open Slaed */
@@ -1264,22 +1253,16 @@ ExpiresDefault \"access plus 10 years\"
 						if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
-							$fp = @fopen($mainfile, "w");
-							if ($fp) {
 /* update mainfile */
-								@fwrite($fp, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content));
-								@fclose($fp);
+							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
-								@copy($footer, $footer . '.backup');
-								$fp = @fopen($footer, "w");
-								if ($fp) {
+							@copy($footer, $footer . '.backup');
+							$footer_content = preg_replace('!(readfile\(\$cacheurl\);)!', "$1\n" . 'global $web_optimizer;$web_optimizer->finish();', $footer_content);
+							$footer_content = preg_replace('!(ob_end_flush\(\);)!', 'global $web_optimizer;$web_optimizer->finish();' . "\n$1", $footer_content);
 /* update footer */
-									$footer_content = preg_replace('!(readfile\(\$cacheurl\);)!', "$1\n" . 'global $web_optimizer;$web_optimizer->finish();', $footer_content);
-									$footer_content = preg_replace('!(ob_end_flush\(\);)!', 'global $web_optimizer;$web_optimizer->finish();' . "\n$1", $footer_content);
-									@fwrite($fp, $footer_content);
-									@fclose($fp);
-									$auto_rewrite = 1;
-								}
+							$return2 = $this->write_file($footer, $footer_content, 1);
+							if (!empty($return1) && !empty($return2)) {
+								$auto_rewrite = 1;
 							}
 						}
 					} else {
@@ -1356,10 +1339,8 @@ ExpiresDefault \"access plus 10 years\"
 							@fclose($fp);
 /* create backup */
 							@copy($index, $index . '.backup');
-							$fp = @fopen($index, "w");
-							if ($fp) {
-								@fwrite($fp, $content_saved);
-								@fclose($fp);
+							$return = $this->write_file($index, $content_saved, 1);
+							if (!empty($return)) {
 								$auto_rewrite = 1;
 							}
 /* additional change of cache plugins */
@@ -1369,52 +1350,38 @@ ExpiresDefault \"access plus 10 years\"
 								if (is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
-									$fpc = @fopen($cache_file, 'wb');
-									if ($fpc) {
-										@fwrite($fpc, $content);
-										@fclose($fpc);
-									}
+									$this->write_file($cache_file, $content);
 								}
 /* JRE component */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
 								if (is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
-									$fpc = @fopen($cache_file, 'wb');
-									if ($fpc) {
-										@fwrite($fpc, $content);
-										@fclose($fpc);
-									}
+									$this->write_file($cache_file, $content);
 								}
 							}
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 /* PageCache component */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
-								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
-								$fpc = @fopen($cache_file, 'wb');
-								if ($fpc) {
-									@fwrite($fpc, $content);
-									@fclose($fpc);
+								if (is_file($cache_file)) {
+									@copy($cache_file, $cache_file . '.backup');
+									$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$this->write_file($cache_file, $content);
 								}
 /* System-Cache mambot */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
-								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
-								$fpc = @fopen($cache_file, 'wb');
-								if ($fpc) {
-									@fwrite($fpc, $content);
-									@fclose($fpc);
+								if (is_file($cache_file)) {
+									@copy($cache_file, $cache_file . '.backup');
+									$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$this->write_file($cache_file, $content);
 								}
 							}
 							if (substr($this->cms_version, 0, 5) == 'XOOPS') {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
-								@copy($cache_file, $cache_file . '.backup');
-								$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
-								$fpc = @fopen($cache_file, 'wb');
-								if ($fpc) {
-									@fwrite($fpc, $content);
-									@fclose($fpc);
+								if (is_file($cache_file)) {
+									@copy($cache_file, $cache_file . '.backup');
+									$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$this->write_file($cache_file, $content);
 								}
 							}
 						}
@@ -1557,10 +1524,8 @@ ExpiresDefault \"access plus 10 years\"
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
-			$fp = @fopen($test_file, "w");
-			if ($fp) {
-				@fwrite($fp, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>');
-				@fclose($fp);
+			$return = $this->write_file($test_file, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>', 1);
+			if (!empty($return)) {
 				$this->write_progress(14);
 				$this->input['user']['auto_rewrite'] = empty($this->input['user']['auto_rewrite']) ? array() : $this->input['user']['auto_rewrite'];
 				$this->input['user']['auto_rewrite']['enabled'] = empty($this->input['user']['auto_rewrite']['enabled']) ? 0 : 1;
@@ -1582,16 +1547,10 @@ ExpiresDefault \"access plus 10 years\"
 		if (file_exists($option_file)) {
 			$content = @file_get_contents($option_file);
 			$content = preg_replace("@(" . $this->regex_escape($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-			$fp = @fopen($option_file, 'w');
-			if(!$fp) {
+			$return = $this->write_file($option_file, $content, 1);
+			if(empty($return)) {
 /* unable to open file for writing */
-				$this->error('<p>'. _WEBO_SPLASH3_CONFIGERROR .'</p>
-								<p>' . _WEBO_SPLASH3_CONFIGERROR2 . $option_file . _WEBO_SPLASH3_CONFIGERROR3 .'.</p>
-								<p>'. _WEBO_SPLASH3_CONFIGERROR4 .'</p>');
-			} else {
-/* write the file */
-				@fwrite($fp, $content);
-				@fclose($fp);
+				$this->error('<p>' . _WEBO_SPLASH3_CONFIGERROR .'</p><p>' . _WEBO_SPLASH3_CONFIGERROR2 . $option_file . _WEBO_SPLASH3_CONFIGERROR3 . '.</p><p>'. _WEBO_SPLASH3_CONFIGERROR4 . '</p>');
 			}
 		} else {
 			$this->error(_WEBO_SPLASH3_CONFIGERROR5);
@@ -1621,11 +1580,7 @@ ExpiresDefault \"access plus 10 years\"
 /* If posting a username and pass, md5 encode */
 		if (!empty($this->input['user']['username'])) {
 /* write protected password to .htpasswd if required */
-			$fp = @fopen($this->basepath . '.htpasswd', "w");
-			if ($fp) {
-				@fwrite($fp, $this->input['user']['username'] . ":" . $this->encrypt_password($this->input['user']['password']));
-				@fclose($fp);
-			}
+			$this->write_file($this->basepath . '.htpasswd', $this->input['user']['username'] . ":" . $this->encrypt_password($this->input['user']['password']));
 			if (empty($rewrite)) {
 				$this->input['user']['username'] = md5($this->input['user']['username']);
 			}
@@ -1680,15 +1635,11 @@ ExpiresDefault \"access plus 10 years\"
 	function protect_installation() {
 		$htaccess = $this->input['user']['webo_cachedir'] . '.htaccess';
 		$htaccess_content = @file_get_contents($htaccess);
-/* create backup */
-		@copy($htaccess, $htaccess . '.backup');
-		$fp = @fopen($htaccess, "w");
-		if ($fp) {
 /* clean current content */
-			$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
-			if (!empty($this->compress_options['htaccess']['access']) || !empty($this->input['user']['htaccess']['access'])) {
+		$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
+		if (!empty($this->compress_options['htaccess']['access']) || !empty($this->input['user']['htaccess']['access'])) {
 /* add secure protection via htpasswd */
-				$htaccess_content .= '
+			$htaccess_content .= '
 # Web Optimizer protection
 AuthType Basic
 AuthName "Web Optimizer Installation"
@@ -1698,10 +1649,10 @@ require valid-user
 	Deny from all
 </Files>
 # Web Optimizer protection end';
-			}
-			@fwrite($fp, $htaccess_content);
-			@fclose($fp);
 		}
+/* create backup */
+		@copy($htaccess, $htaccess . '.backup');
+		$this->write_file($htaccess, $htaccess_content);
 	}
 	/**
 	* Creates password hash for htpasswd file
