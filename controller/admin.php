@@ -749,7 +749,7 @@ class admin {
 	/**
 	* Save all options
 	**/
-	function set_options() {
+	function set_options($return = false) {
 		$this->get_modules();
 		$loaded_modules = @get_loaded_extensions();
 /* convert fake JavaScript minify option */
@@ -846,10 +846,10 @@ class admin {
 							}
 						}
 					}
-					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value, $return);
 				}
 			} else {
-				$this->save_option("['" . strtolower($key) . "']", $option);			
+				$this->save_option("['" . strtolower($key) . "']", $option, $return);
 			}
 		}
 	}
@@ -1079,7 +1079,7 @@ ExpiresDefault \"access plus 10 years\"
 				$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 			}
 			$ret = $this->write_file($htaccess, $content, 1);
-			if (empty($ret) && !empty($return)) {
+			if (empty($ret) && empty($return)) {
 				$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD3 . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD4 . "</p>");
 			} elseif (!empty($return)) {
 				return $ret;
