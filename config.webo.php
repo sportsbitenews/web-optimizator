@@ -93,10 +93,12 @@ $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
-## Maximum size of images to be converted, in bytes
-$compress_options['data_uris']['size'] = "24576";
 ## Optimiza all CSS images via smush.it?
 $compress_options['data_uris']['smushit'] = "0";
+## Maximum size of images to be converted, in bytes
+$compress_options['data_uris']['size'] = "24576";
+## data:URI ignore list, files separated by space, i.e. head.jpg
+$compress_options['data_uris']['ignore_list'] = "";
 ## Should Web Optimizer use CSS Sprites for background images?
 $compress_options['css_sprites']['enabled'] = "1";
 ## Save 24bit images in JPEG not PNG

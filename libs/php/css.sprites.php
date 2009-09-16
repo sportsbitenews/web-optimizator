@@ -35,6 +35,8 @@ class css_sprites {
 			$this->data_uris = $options['data_uris'];
 /* max size of images to be converted */
 			$this->data_uris_size = $options['data_uris_size'];
+/* list of excluded from data:URI files */
+			$this->data_uris_ignore_list = explode(" ", $options['data_uris_ignore_list']);
 /* part or full process */
 			$this->partly = $options['partly'];
 /* exclude IE6 from CSS Sprites */
@@ -128,6 +130,7 @@ class css_sprites {
 											!($bg == 'background-repeat' &&
 												($property == 'repeat !important' ||
 												$property == 'repeat'))) {
+													$property = $this->normalize_property($property);
 													if ($bg == 'background-image' && ($property == 'none !important' || $property == 'none')) {
 														$property = $this->none;
 													}
@@ -139,6 +142,7 @@ class css_sprites {
 										}
 									}
 								} else {
+									$value = $this->normalize_property($value);
 /* fix background-position: top|bottom -> center top|center bottom */
 									if ($key == 'background-position') {
 										$value = $this->compute_background_position($value);
@@ -586,8 +590,9 @@ __________________
 /* data:URI */
 			case 1:
 				$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
+				$filename = preg_replace("!.*/!", "", $this->css_image);
 /* Thx for htc for ali@ */
-				if (is_file($this->css_image) && !in_array($extension, array('htc', 'cur', 'eot', 'ttf'))) {
+				if (is_file($this->css_image) && !in_array($extension, array('htc', 'cur', 'eot', 'ttf')) && !in_array($filename, $this->data_uris_ignore_list)) {
 /* image optimization */
 					if ($this->image_optimization && !strpos($this->css_image, "/webo.")) {
 						$this->smushit($this->css_image);
@@ -1532,10 +1537,10 @@ __________________
 			switch ($values[0]) {
 				case 'top':
 				case 'bottom':
-					$value = '50% ' . $value;
+					$value = '50% ' . $values[0];
 					break;
 				default:
-					$value .= ' 50%';
+					$value = $values[0] . ' 50%';
 					break;
 			}
 		}
@@ -1547,7 +1552,7 @@ __________________
 		if (!empty($values[1]) && substr($values[1], 0, 1) == '0') {
 			$values[1] = 0;
 		}
-/* step 3:	switch bottom left to left bottom etc 
+/* step 3: switch bottom left to left bottom etc 
 			switch 40px left to left 40px etc */
 		if (in_array($values[0], array('top, bottom')) || in_array($values[1], array('left', 'right'))) {
 			$v = $values[0];
@@ -1559,6 +1564,11 @@ __________________
 		$value = str_replace(array('left', 'top', 'center', 'bottom', 'right'), array(0, 0, '50%', '100%', '100%'), $value);
 		return $value;
 	}
+/* delete !important and trim spaces from given property */
+	function normalize_property ($value) {
+		return trim(str_replace("!important", "", $value));
+	}
+
 }
 
 ?>

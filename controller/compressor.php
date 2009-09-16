@@ -53,9 +53,10 @@ class web_optimizer {
   - don't parse excluded pages
   - or parse included USER AGENTS,
   - flush or gzip for HTML are disabled,
-  - page is requested by GET.
+  - page is requested by GET,
+  - no chained optimization.
 */
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET');
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET') && empty($this->web_optimizer_stage);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 /* check if cached content is gzipped */
@@ -164,6 +165,7 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
+				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
@@ -389,6 +391,7 @@ class web_optimizer {
 					'rel' => 'stylesheet',
 					'data_uris' => $options['data_uris'],
 					'data_uris_size' => $options['data_uris_size'],
+					'data_uris_exclude' => $options['data_uris_exclude'],
 					'image_optimization' => $options['image_optimization'],
 					'css_sprites' => $options['css_sprites'],
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
@@ -1566,6 +1569,7 @@ class web_optimizer {
 			'extra_space' => $options['css_sprites_extra_space'],
 			'data_uris' => $options['data_uris'],
 			'data_uris_size' => $options['data_uris_size'],
+			'data_uris_ignore_list' => $options['data_uris_exclude'],
 			'image_optimization' => $options['image_optimization'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],

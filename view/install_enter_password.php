@@ -23,7 +23,7 @@
 ?></p></noscript><?php
 	echo _WEBO_LOGIN_INSTALLED . $version . ($protected ? _WEBO_LOGIN_INSTALLED3 : _WEBO_LOGIN_INSTALLED2);
 	echo $installed ? '' : '<br/>' . _WEBO_LOGIN_NOTINSTALLED;
-?></div><form method="post" enctype="multipart/form-data" action=""><fieldset class="f"><?php
+?></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><?php
 	if ($protected) {
 ?><legend><?php
 		echo _WEBO_SPLAHS1_PROTECTED;
