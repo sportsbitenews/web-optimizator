@@ -236,9 +236,9 @@ class admin {
 		if ($no_initial_grade) {
 			$this->download($this->webo_grade, $index_before, 1);
 		}
-		if(!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
+		$gzipped = $this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
+		if (!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
-			$this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
 			if (@filesize($index_check)) {
 				$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
 				@unlink($index_check);
@@ -292,6 +292,10 @@ class admin {
 				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version) : _WEBO_PASSWORD_SUCCESSFULL
 			);
 		} else {
+/* disable gzip for HTML as we alsredy have it */
+			if (!empty($gzip)) {
+				$this->save_option("['gzip']['page']", 0);
+			}
 /* check if we can display progress bar */
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
 			$page_variables = array(
@@ -1513,11 +1517,7 @@ ExpiresDefault \"access plus 10 years\"
 		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';
 		$this->write_progress(12);
 /* try to download main file */
-		$gzipped = $this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
-/* disable gzip for HTML if already have it (in CMS or on the server) */
-		if ($gzipped) {
-			$this->save_option("['gzip']['page']", 0);
-		}
+		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
