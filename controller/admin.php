@@ -430,6 +430,7 @@ class admin {
 			}
 			$this->cleanup_file($index, $return);
 			$content_saved = $this->clean_htaccess($return);
+			$htaccess = $this->detect_htaccess();
 			if (empty($this->error)) {
 				$this->write_file($htaccess, $content_saved, $return);	
 			}
@@ -510,7 +511,7 @@ class admin {
 		if (is_file($file)) {
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));\r?\n?/", "", @file_get_contents($file));
-			$this->write_file($cache_file, $content, $return);
+			$this->write_file($file, $content, $return);
 		}
 	}
 
@@ -1666,6 +1667,7 @@ require valid-user
 		$len = strlen($plainpasswd);
 		$text = $plainpasswd . '$apr1$' . $salt;
 		$bin = pack("H32", md5($plainpasswd . $salt . $plainpasswd));
+		$tmp = '';
 		for($i = $len; $i > 0; $i -= 16) {
 			$text .= substr($bin, 0, min(16, $i));
 		}
