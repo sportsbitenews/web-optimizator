@@ -29,7 +29,7 @@
 ?></a></li><?php
 		}
 	}
-?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3"><div class="n"><fieldset id="dirs"><h3><?php
+?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3" id="exp"><div class="n"><fieldset id="dirs"><h3><?php
 	echo _WEBO_SPLASH2_CACHE;
 ?></h3><label><?php
 	echo _WEBO_SPLASH2_CACHE_JS;
@@ -128,4 +128,4 @@
 	}
 ?></div><p id="hideme"><input type="submit" value="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="i"/></p></form><b></b><i></i><del></del><ins></ins></div>
+?>" class="i"/></p></form><b></b><i></i><del></del><ins></ins></div><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div>
