@@ -655,11 +655,6 @@ class admin {
 				'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
 				'value' => $this->compress_options['external_scripts']
 			),
-			'dont_check_file_mtime' => array(
-				'title' => _WEBO_SPLASH2_MTIME,
-				'intro' => _WEBO_SPLASH2_MTIME_INFO,
-				'value' => $this->compress_options['dont_check_file_mtime']						
-			),
 			'gzip' => array(
 				'title' => _WEBO_SPLASH2_GZIP,
 				'intro' => _WEBO_SPLASH2_GZIP_INFO,
@@ -687,6 +682,11 @@ class admin {
 			)
 		);
 		if ($premium) {
+			$options['dont_check_file_mtime'] = array(
+				'title' => _WEBO_SPLASH2_MTIME,
+				'intro' => _WEBO_SPLASH2_MTIME_INFO,
+				'value' => $this->compress_options['dont_check_file_mtime']						
+			);
 			$options['css_sprites'] = array(
 				'title' => _WEBO_SPLASH2_SPRITES,
 				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
@@ -1094,7 +1094,7 @@ ExpiresDefault \"access plus 10 years\"
 			if (in_array($this->cms_version, $cms_frameworks)) {
 				$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 			}
-			$ret = $this->write_file($htaccess, $content, 1);
+			$ret = $this->write_file($htaccess, $content_saved . "\n" . $content, 1);
 			if (empty($ret) && empty($return)) {
 				$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD3 . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD4 . "</p>");
 			} elseif (!empty($return)) {
@@ -1738,7 +1738,7 @@ require valid-user
 					}
 				}
 			}
-			return 'Drupal ' . $drupal_version;
+			return 'Drupal ' . trim($drupal_version);
 /* Joomla 1.5 */
 		} elseif (is_dir($root . 'libraries')) {
 			$joomla_version = '1.5.0';
