@@ -246,6 +246,10 @@ class admin {
 /* curl doesn't work -- can't check existence */
 				$installed = 1;
 			}
+/* fix double gzip: WO isn't installed, but page is gzipped */
+			if (!$installed && !empty($gzipped)) {
+				$this->save_option("['gzip']['page']", 0);
+			}
 			if ($installed && @filesize($index_before) && !@filesize($index_after)) {
 /* if we have just downloaded initial grade - try to renew it */
 				if ($no_initial_grade) {
@@ -638,17 +642,8 @@ class admin {
 			$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
 		}
 
-		$options = array(
-			'Minify' => $this->compress_options['minify'],
-			'GZIP' => $this->compress_options['gzip'],
-			'htaccess' => $this->compress_options['htaccess'],
-			'css_sprites' => $this->compress_options['css_sprites'],
-			'Far_future_expires' => $this->compress_options['far_future_expires'],
-			'html_cache' => $this->compress_options['html_cache'],
-			'external_scripts' => $this->compress_options['external_scripts'],
-			'parallel' => $this->compress_options['parallel']
-		);
-				
+		$premium = 1;
+
 		$options = array(
 			'minify' => array(
 				'title' => _WEBO_SPLASH2_MINIFY,
@@ -659,11 +654,6 @@ class admin {
 				'title' => _WEBO_SPLASH2_EXTERNAL,
 				'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
 				'value' => $this->compress_options['external_scripts']
-			),
-			'unobtrusive' => array(
-				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
-				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
-				'value' => $this->compress_options['unobtrusive']
 			),
 			'dont_check_file_mtime' => array(
 				'title' => _WEBO_SPLASH2_MTIME,
@@ -685,21 +675,6 @@ class admin {
 				'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
 				'value' => $this->compress_options['html_cache']
 			),
-			'css_sprites' => array(
-				'title' => _WEBO_SPLASH2_SPRITES,
-				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
-				'value' => $this->compress_options['css_sprites']
-			),
-			'data_uris' => array(
-				'title' => _WEBO_SPLASH2_DATAURI,
-				'intro' => _WEBO_SPLASH2_DATAURI_INFO,
-				'value' => $this->compress_options['data_uris']
-			),
-			'parallel' => array(
-				'title' => _WEBO_SPLASH2_PARALLEL,
-				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
-				'value' => $this->compress_options['parallel']
-			),
 			'htaccess' => array(
 				'title' => _WEBO_SPLASH2_HTACCESS,
 				'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules) . '</p>',
@@ -711,6 +686,28 @@ class admin {
 				'value' => $this->compress_options['footer']
 			)
 		);
+		if ($premium) {
+			$options['css_sprites'] = array(
+				'title' => _WEBO_SPLASH2_SPRITES,
+				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
+				'value' => $this->compress_options['css_sprites']
+			);
+			$options['data_uris'] = array(
+				'title' => _WEBO_SPLASH2_DATAURI,
+				'intro' => _WEBO_SPLASH2_DATAURI_INFO,
+				'value' => $this->compress_options['data_uris']
+			);
+			$options['parallel'] = array(
+				'title' => _WEBO_SPLASH2_PARALLEL,
+				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
+				'value' => $this->compress_options['parallel']
+			);
+			$options['unobtrusive'] = array(
+				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
+				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
+				'value' => $this->compress_options['unobtrusive']
+			);
+		}
 /* make fake option for JavaScript minimization */
 		if (is_array($options['minify']['value'])) {
 			$javascript = array_shift($options['minify']['value']);
@@ -861,7 +858,11 @@ class admin {
 		if (empty($this->options['htaccess']['local'])) {
 			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
 		} else {
-			$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+			if (strpos($this->input['user']['webo_cachedir'], "denwer")) {
+				$htaccess = $this->view->paths['absolute']['document_root'] . 'denwer/.htaccess';
+			} else {
+				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+			}
 		}
 		return $htaccess;
 	}
@@ -987,9 +988,24 @@ AddEncoding gzip .gz";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
 				$content .= "
-RewriteEngine On
+RewriteEngine On";
+				if (strpos($this->input['user']['webo_cachedir'], "denwer")) {
+					$content .= "
+RewriteBase /denwer/
+";
+				} else {
+					$content .= "
 RewriteBase /
 ";
+				}
+				if (!empty($this->input['user']['far_future_expires']['css'])) {
+					$content .= "
+RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
+				}
+				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
+					$content .= "
+RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
+				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
 RewriteCond %{HTTP:Accept-encoding} gzip

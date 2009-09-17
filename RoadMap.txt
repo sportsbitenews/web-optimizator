@@ -6,11 +6,13 @@
 +e) Auto-updater
 +f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
 +g) Memory usage (maximum -- 32MB)
- h) Donate / ads block
+ h) Donate / ads block (for basic edition)
 +i) Cache cleaner
 +j) Secure installation
 +k) Saved traffic / visitors' seconds
 +l) Backup of changed files
++m) Password change
+ n) License checker
 
 2. System check
 +a) .htaccess posibility
@@ -18,8 +20,10 @@
 +c) PHP (other languages) libs: gzencode, curl , etc.
 +d) Current Web Optimizer status: installed or not
 +e) Current website gzip compression
++f) Multiple hosts possibility
++g) CSS Sprites (GDlib) support
 
-3. Configurator: config.webo.php -- number of options
+3. Configurator: config.webo.php -- a lot of options
 +a) CSS / JS merging
 +b) HTML / CSS / JS gzip
 +c) CSS / JS compressing options (JSMin, Packer)
@@ -84,12 +88,13 @@
 +b) Make up
 +c) Clientside development
 
-10. Other languages porting
- a) Perl
-?b) Java
-?c) Python
- d) Ruby
- e) ASP.NET
+10. Server side languages support
++a) PHP
+ b) Perl
+?c) Java
+?d) Python
+ e) Ruby
+ f) ASP.NET
 
 11. Default CMS-compatibility
 +a) Wordpress (2.7.1, 2.8.4)
@@ -151,3 +156,12 @@
  +c) Troubleshooter
  +d) Use cases
   e) Full .pdf
+ +f) Integration examples
+  
+ 15) External plugins
+ +a) Wordpress 2.6+
+  b) Joomla! 1.5
+  c) Joomla! 1.0
+  d) Drupal 6.x
+  e) Drupal 5.x
+  f) Drupal 7.x

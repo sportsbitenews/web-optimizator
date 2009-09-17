@@ -6,6 +6,9 @@ It can also GZIP these assets, and the page itself (via PHP or .htaccess options
 Also it supports unobtrusive JavaScript conversion and a lot of other useful options.
 Average acceleration is 2,3 times. Web Optimizer was initially based on PHP Speedy.
 
+There is a Web Optimizer nativa plugin for Wordpress:
+http://wordpress.org/extend/plugins/web-optimizer/
+
 Installation
 ------------
 1. Download and UNZIP the Web Optimizer package into its own directory (if you haven't already).
@@ -46,8 +49,9 @@ images from CSS Sprites generation.
 Team
 ----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, promotion, investment raising, other stuff)
+ * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, unobtrusive logic, promotion, investment raising, other stuff)
  * fade (design, general usability)
+ * gkondratenko (documentation, integration, known issues gathering)
  * bazik (test cases for CSS Sprites, CSS rules, JS logic, etc)
  * beshkenadze (YUI Compressor envelope)
  * janvarev (files MTIME check)

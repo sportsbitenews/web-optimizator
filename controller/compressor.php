@@ -134,6 +134,7 @@ class web_optimizer {
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
 		}
+		$premium = 1;
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
@@ -146,8 +147,9 @@ class web_optimizer {
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
-				"unobtrusive" => $this->options['unobtrusive']['on'],
-				"unobtrusive_body" => $this->options['unobtrusive']['body'],
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'],
+				"unobtrusive" => $this->options['unobtrusive']['on'] && $premium,
+				"unobtrusive_body" => $this->options['unobtrusive']['body'] && $premium,
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
@@ -163,11 +165,12 @@ class web_optimizer {
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
-				"data_uris" => $this->options['data_uris']['on'],
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'],
+				"data_uris" => $this->options['data_uris']['on'] && $premium,
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
-				"css_sprites" => $this->options['css_sprites']['enabled'],
+				"css_sprites" => $this->options['css_sprites']['enabled'] && $premium,
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
@@ -177,7 +180,7 @@ class web_optimizer {
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
-				"parallel" => $this->options['parallel']['enabled'],
+				"parallel" => $this->options['parallel']['enabled'] && $premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
@@ -190,8 +193,8 @@ class web_optimizer {
 				"gzip_level" => round($this->options['gzip']['page_level']),
 				"gzip_cookie" => $this->options['gzip']['cookie'],
 				"minify" => $this->options['minify']['page'],
-				"minify_aggressive" => $this->options['minify']['html_one_string'],
-				"remove_comments" => $this->options['minify']['html_comments'],
+				"minify_aggressive" => $this->options['minify']['html_one_string'] && $premium,
+				"remove_comments" => $this->options['minify']['html_comments'] && $premium,
 				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
@@ -201,11 +204,11 @@ class web_optimizer {
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
-				"parallel" => $this->options['parallel']['enabled'],
+				"parallel" => $this->options['parallel']['enabled'] && $premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
-				"unobtrusive_informers" => $this->options['unobtrusive']['informers'],
-				"unobtrusive_counters" => $this->options['unobtrusive']['counters'],
-				"unobtrusive_ads" => $this->options['unobtrusive']['ads'],
+				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $premium,
+				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $premium,
+				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $premium,
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text']
 			)
@@ -343,6 +346,7 @@ class web_optimizer {
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
+					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
 					'header' => $type,
 					'css_sprites' => false,
 					'css_sprites_exclude' => false,
@@ -408,6 +412,7 @@ class web_optimizer {
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
+					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
 					'header' => $type,
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
@@ -877,8 +882,9 @@ class web_optimizer {
 				(empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
 				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
 				$cache_file . '.' .
+				($timestamp && $options['far_future_expires_rewrite'] ? 'wo' . $timestamp . '.' : '') .
 				$options['ext'] .
-				($timestamp ? '?' . $timestamp : '') .
+				($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '') .
 			'"' .
 			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : ' />');
