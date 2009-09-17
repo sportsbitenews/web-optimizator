@@ -1094,7 +1094,7 @@ ExpiresDefault \"access plus 10 years\"
 			if (in_array($this->cms_version, $cms_frameworks)) {
 				$content_saved = preg_replace("/((#\s*)?RewriteRule \.\* index.php\r?\n)/", "# Web Optimizer path\nRewriteCond %{REQUEST_FILENAME} ^(". $this->view->paths['relative']['current_directory'] .")\n# Web Optimizer path end\n$1", $content_saved);
 			}
-			$ret = $this->write_file($htaccess, $content_saved . "\n" . $content, 1);
+			$ret = $this->write_file($htaccess, $content . "\n" . $content_saved, 1);
 			if (empty($ret) && empty($return)) {
 				$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD3 . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD4 . "</p>");
 			} elseif (!empty($return)) {
