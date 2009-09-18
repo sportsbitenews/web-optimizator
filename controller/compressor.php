@@ -59,10 +59,6 @@ class web_optimizer {
 		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET') && empty($this->web_optimizer_stage);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
-/* check if cached content is gzipped */
-			if (!empty($this->options['page']['gzip'])) {
-				$this->set_gzip_header();
-			}
 			$this->uri = $this->convert_request_uri();
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
 			if (file_exists($file)) {
@@ -86,6 +82,10 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 				if (empty($this->options['page']['flush'])) {
+/* check if cached content is gzipped */
+					if (!empty($this->options['page']['gzip'])) {
+						$this->set_gzip_header();
+					}
 					echo $content;
 					die();
 /* content is a head part, flush it after */
@@ -153,7 +153,7 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
+				"dont_check_file_mtime" => $this->options['performance']['mtime']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -184,7 +184,7 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on']
+				"dont_check_file_mtime" => $this->options['performance']['mtime']
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],

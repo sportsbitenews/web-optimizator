@@ -96,28 +96,28 @@ define('_WEBO_SPLASH2_CACHE_CSS', 'Your CSS will be cached in');
 define('_WEBO_SPLASH2_CACHE_HTML', 'Your HTML will be cached in');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer is located in');
 define('_WEBO_SPLASH2_DOCUMENTROOT', 'Website is located in');
-define('_WEBO_SPLASH2_HOST', 'Website host, i.e. site.com');
+define('_WEBO_SPLASH2_HOST', 'Website host (to include before static resources), i.e. site.com');
 define('_WEBO_SPLASH2_SPACE', 'Please separate with space:');
 define('_WEBO_SPLASH2_YES', 'Yes:');
 define('_WEBO_SPLASH2_NO', 'No:');
 define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists and it is your root directory.');
 /* Web Optimizer options */
-define('_WEBO_SPLASH2_MINIFY', 'Minify Options');
+define('_WEBO_SPLASH2_MINIFY', 'Minify and Combine');
 define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Minifying removes whitespace and other unnecessary characters.</p>
 									<p>Also you can choose the tool for CSS/JavaScript minification or obfuscation.</p>
-									<p>Please be careful while applying "Remove HTML comments" or "Shrink HTML" options. Former can lead to removing a number of counters (JavaScript code inside comments), latter - to additional server load on every page view.</p>');
+									<p>Please be careful while applying "Remove HTML comments" or "Compress HTML" options. Former can lead to removing a number of counters (JavaScript code inside comments), latter - to additional server load on every page view.</p>');
 define('_WEBO_SPLASH2_UNOBTRUSIVE', '"Unobtrusive" JavaScript');
-define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be loaded right after all content has been shown in a browser.</p>
+define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be loaded right after all content has been shown in a browser (on <code>DOMloaded</code> event).</p>
 									<p>This can significantly increase website load speed. But in some cases can break the client side logic. Please be careful with this option.</p>
-									<p>Also you can move all JavaScript calls before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.</p>
+									<p>Also you can move all JavaScript calls (counters, ads, widgets, etc) before <code>&lt;/body&gt;</code> &mdash; this will significatnly increase speed of loading content on your website.</p>
 									<p><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive JavaScript</a>, <a href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/">Non-blocking JavaScript Downloads</a>, <a href="http://dean.edwards.name/weblog/2005/09/busted/">The <code>window.onload</code> Problem - Solved!</a>, <a href="http://dean.edwards.name/weblog/2006/06/again/"><code>window.onload</code> (again)</a></p>');
 define('_WEBO_SPLASH2_EXTERNAL', 'External and inline scripts');
 define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.</p>
 									<p>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
 									<p>You also can define a list of excluded files (i.e. ga.js jquery.min.js).</p>
 									<p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/">Serving JavaScript Fast</a></p>');
-define('_WEBO_SPLASH2_MTIME', 'Verify files mtime');
+define('_WEBO_SPLASH2_MTIME', 'Performance issues');
 define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.</p>
 									<p>It\'s not good from the server side optimization point of view so you can disable this check.</p>
 									<p>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.</p>');
@@ -133,12 +133,12 @@ define('_WEBO_SPLASH2_HTMLCACHE', 'Server Side Caching');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to cache generated HTML output and prevent a lot of server-side work to generate it.</p>
 									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>
 									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
-define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
-define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce number of HTTP Requests website load.</p>
+define('_WEBO_SPLASH2_SPRITES', 'Use CSS Sprites');
+define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce the number of HTTP requests during website load.</p>
 									<p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p>
 									<p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif).</p>
 									<p><a href="www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
-define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
+define('_WEBO_SPLASH2_DATAURI', 'Use data URIs');
 define('_WEBO_SPLASH2_DATAURI_INFO', '<p>It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
 									<p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p>
 									<p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
@@ -155,42 +155,42 @@ define('_WEBO_SPLASH2_FOOTER', 'Footer text');
 define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Web Optimizer can add a link in your blog footer back to the Web Optimizer website. The link can be a text link, a small image link or both.</p>
 									<p>Please support Web Optimizer by enabling this.</p>');
 define('_WEBO_SPLASH2_AUTOCHANGE', 'Changing /index.php');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer can add to your website based on ');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' all required changes (only for /index.php).</p>
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer can all required changes (only for <code>/index.php</code>) add to your website based on ');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', '.</p>
 									<p>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.</p>');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_unobtrusive_body', 'Include merged JavaScript file before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <code>&lt;/body&gt;</code>');
-define('_WEBO_unobtrusive_counters', 'Move counters calls before <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_counters', 'Move counter calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
 define('_WEBO_external_scripts_head_end', 'Force moving all merged scripts to <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
-define('_WEBO_dont_check_file_mtime_on', 'Don\'t check files mtime (and content)');
+define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_with', 'Minify JavaScript files');
-define('_WEBO_minify_with_jsmin', 'Minify with JSMin');
-define('_WEBO_minify_with_packer', 'Minify with Packer');
-define('_WEBO_minify_with_yui', 'Minify with YUI Compressor');
+define('_WEBO_minify_with_jsmin', 'Minify with JSMin (from Douglas Crockford)');
+define('_WEBO_minify_with_packer', 'Minify with Packer (by Dean Edwards)');
+define('_WEBO_minify_with_yui', 'Minify with YUI Compressor (requires java)');
 define('_WEBO_minify_css', 'Minify and combine CSS files');
-define('_WEBO_minify_page', 'Minify HTML');
+define('_WEBO_minify_page', 'Minify HTML (remove whitespaces)');
 define('_WEBO_minify_html_comments', 'Remove HTML comments');
-define('_WEBO_minify_html_one_string', 'Shrink HTML to the one string');
+define('_WEBO_minify_html_one_string', 'Compress HTML to the one string (CPU intensive)');
 define('_WEBO_gzip_javascript', 'Gzip JavaScript');
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_page', 'Gzip HTML');
 define('_WEBO_gzip_cookie', 'Check for gzip possibility via cookies');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
-define('_WEBO_far_future_expires_images', 'Cache images');
-define('_WEBO_far_future_expires_video', 'Cache video files');
-define('_WEBO_far_future_expires_static', 'Cache static assets');
+define('_WEBO_far_future_expires_images', 'Cache images (via <code>.htaccess</code>)');
+define('_WEBO_far_future_expires_video', 'Cache video files (via <code>.htaccess</code>)');
+define('_WEBO_far_future_expires_static', 'Cache static assets (via <code>.htaccess</code>)');
 define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_timeout', 'Default timeout, in seconds');
-define('_WEBO_html_cache_flush_only', 'Enable only earlier flush of content');
+define('_WEBO_html_cache_flush_only', 'Only cache first n bytes of content (flush early)');
 define('_WEBO_html_cache_flush_size', 'Flush content size (in bytes)');
 define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from caching');
 define('_WEBO_html_cache_allowed_list', 'List of USER AGENTS (robots) to add to caching');
@@ -302,7 +302,7 @@ define('_WEBO_SYSTEM_CHECK_HTACCESS_PROTECTED', 'Protected mode for install');
 define('_WEBO_SYSTEM_CHECK_CSS_DIRECTORY', 'CSS folder is writable');
 define('_WEBO_SYSTEM_CHECK_JAVASCRIPT_DIRECTORY', 'JavaScript folder is writable');
 define('_WEBO_SYSTEM_CHECK_HTML_DIRECTORY', 'HTML folder is writable');
-define('_WEBO_SYSTEM_CHECK_INDEX', '<code>/index.php</code> is wratable');
+define('_WEBO_SYSTEM_CHECK_INDEX', '<code>/index.php</code> is writable');
 define('_WEBO_SYSTEM_CHECK_CONFIG', 'Configuration file is writable');
 define('_WEBO_SYSTEM_CHECK_GZIP', '<code>gzip</code> "on fly"');
 define('_WEBO_SYSTEM_CHECK_GZIP_STATIC', 'Static <code>gzip</code>');

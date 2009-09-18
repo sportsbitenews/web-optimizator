@@ -35,8 +35,8 @@ $compress_options['external_scripts']['head_end'] = "1";
 $compress_options['external_scripts']['css'] = "1";
 ## Ignore list, files separated by space
 $compress_options['external_scripts']['ignore_list'] = "tiny_mce.js tiny_mce_gzip.php fckeditor.js";
-## Performance options
-$compress_options['dont_check_file_mtime']['on'] = "1";
+## Performance options, don't check files mtime
+$compress_options['performance']['mtime'] = "1";
 ## Minify options
 $compress_options['minify']['javascript'] = "1";
 ## Minify JS with JSMin from Douglas Crockford
@@ -136,7 +136,9 @@ $compress_options['htaccess']['local'] = "0";
 $compress_options['htaccess']['access'] = "0";
 ## Enable auto-rewrite for index.php
 $compress_options['auto_rewrite']['enabled'] = "1";
-## List of enabled plugins
+## List of enabled plugins for server side performance
 $compress_options['plugins'] = "";
+## Web Optimizer license, empty for free edition
+$compress_options['license'] = "";
 #########################################
 ?>

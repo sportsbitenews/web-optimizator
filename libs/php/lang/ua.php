@@ -169,7 +169,7 @@ define('_WEBO_external_scripts_head_end', 'Форсувати розміщенн
 define('_WEBO_external_scripts_css', 'Включити об\'єднання зовнішніх CSS-файлів');
 define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання файли');
 define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
-define('_WEBO_dont_check_file_mtime_on', 'Не перевіряти час зміни файлів');
+define('_WEBO_performance_mtime', 'Не перевіряти час зміни файлів');
 define('_WEBO_minify_with', 'Мінімізувати JavaScript-файли');
 define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');

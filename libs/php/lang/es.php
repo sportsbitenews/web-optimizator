@@ -167,7 +167,7 @@ define('_WEBO_external_scripts_on', 'Activa fusionamiento externo e interno de J
 define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scripts fusionados a <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Activa fusionamiento de estilos (styles) externos e internos');
 define('_WEBO_external_scripts_ignore_list', 'Excluye archivos de fusionamiento');
-define('_WEBO_dont_check_file_mtime_on', 'No revisa mtime de archivos (y contenido)');
+define('_WEBO_performance_mtime', 'No revisa mtime de archivos (y contenido)');
 define('_WEBO_minify_javascript', 'Combina archivos JavaScript');
 define('_WEBO_minify_with', 'Minimiza archivos JavaScript');
 define('_WEBO_minify_with_jsmin', 'Minimizar con JSMin');

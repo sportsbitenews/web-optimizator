@@ -682,10 +682,10 @@ class admin {
 			)
 		);
 		if ($premium) {
-			$options['dont_check_file_mtime'] = array(
+			$options['performance'] = array(
 				'title' => _WEBO_SPLASH2_MTIME,
 				'intro' => _WEBO_SPLASH2_MTIME_INFO,
-				'value' => $this->compress_options['dont_check_file_mtime']						
+				'value' => $this->compress_options['performance']						
 			);
 			$options['css_sprites'] = array(
 				'title' => _WEBO_SPLASH2_SPRITES,
