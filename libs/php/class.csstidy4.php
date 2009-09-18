@@ -279,7 +279,7 @@ function csstidy()
 	$this->settings['optimise_shorthands'] = 1;
 	$this->settings['remove_last_;'] = true;
 	$this->settings['case_properties'] = 1;
-	$this->settings['sort_properties'] = false;
+	$this->settings['sort_properties'] = true;
 	$this->settings['sort_selectors'] = false;
 	$this->settings['merge_selectors'] = 0;
     $this->settings['discard_invalid_selectors'] = false;
