@@ -60,7 +60,7 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-			$file = $this->options['page']['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
+			$file = $this->options['page']['cachedir'] . '/' . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -68,7 +68,7 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
-				$hash = md5($content) . (empty($this->encoding) ? '' : '-gzip');
+				$hash = md5($content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
 				if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') ||
@@ -467,21 +467,19 @@ class web_optimizer {
 			$this->content = preg_replace('!(</body>)!is', '<script type="text/javascript" src="' . str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . '/wo.cookie.php"></script>' . "$1", $this->content);
 		}
 /* Gzip page itself */
-		if(!empty($options['gzip'])) {
-			$content = $this->create_gz_compress($this->content);
+		if(!empty($options['gzip']) && !empty($this->encoding)) {
+			$content = $this->create_gz_compress($this->content, in_array($this->encoding, array('gzip', 'x-gzip')));
 			if (!empty($content)) {
 				$this->set_gzip_header();
-				if (!empty($this->encoding)) {
-					$this->content = $content;
-				}
+				$this->content = $content;
 			}
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
-			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding) ? '' : '.gz');
+			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
 			$timestamp = @filemtime($file);
 /* set ETag, thx to merzmarkus */
-			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-gzip') . "\"");
+			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding)) . "\"");
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
 				$fp = @fopen($file, "a");
 				if ($fp) {
@@ -534,39 +532,58 @@ class web_optimizer {
 	* Returns GZIP compressed content string with header
 	*
 	**/
-	function create_gz_compress($content) {
-
-		if(!empty($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzcompress')) {
-				$Size = strlen( $this->content );
-				$Crc = crc32( $this->content );
+	function create_gz_compress($content, $force_gzip = true) {
+		if (!empty($this->encoding) && function_exists('gzcompress')) {
+			if (!empty($force_gzip)) {
+				$size = strlen($this->content);
+				$crc = crc32($this->content);
 				$content = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
-				$this->content = gzcompress( $this->content,2);
-				$this->content = substr( $this->content, 0, strlen( $this->content) - 4 );
-				$content .= ( $this->content );
-				$content .= ( pack( 'V', $Crc ) );
-				$content .= ( pack( 'V', $Size ) );
-				return $content;
+				$this->content = gzcompress($this->content, $this->options['page']['gzip_level']);
+				$this->content = substr($this->content, 0, strlen( $this->content) - 4);
+				$content .= $this->content;
+				$content .= pack('V', $crc);
+				$content .= pack('V', $size);
+			} else {
+				$content = gzcompress($this->content, $this->options['page']['gzip_level']);
+			}
+			return $content;
 		} else {
 			return false;
 		}
-
 	}
 
+	/**
+	* Sets current encoding for HTML document
+	*
+	**/
+	function set_gzip_encoding() {
+		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
+				$this->encoding = "x-gzip";
+				$this->encoding_ext = 'gz';
+			}
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
+				$this->encoding = "gzip";
+				$this->encoding_ext = 'gz';
+			}
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate")) {
+				$this->encoding = "x-deflate";
+				$this->encoding_ext = empty($this->encoding_ext) ? 'df' : $this->encoding_ext;
+			}
+			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "deflate")) {
+				$this->encoding = "deflate";
+				$this->encoding_ext = empty($this->encoding_ext) ? 'df' : $this->encoding_ext;
+			}
+		}
+	}
+	
 	/**
 	* Sets the correct gzip header
 	*
 	**/
 	function set_gzip_header() {
-		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
-				$this->encoding = "x-gzip";
-			}
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
-				$this->encoding = "gzip";
-			}
-			if(!empty($this->encoding)) {
-				header("Content-Encoding: " . $this->encoding);
-			}
+		if(!empty($this->encoding)) {
+			header("Content-Encoding: " . $this->encoding);
 		}
 	}
 
@@ -972,7 +989,7 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
-					if (strpos($src, "://")) {
+					if (strpos($src, "://") && !preg_match('!//(www\.)?' . $_SERVER['HTTP_HOST'] . '/!', $src)) {
 						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
@@ -1204,6 +1221,8 @@ class web_optimizer {
 	*
 	**/
 	function set_gzip_headers() {
+/* define encoding for HTML page */
+		$this->set_gzip_encoding();
 /* When will the file expire? */
 		$offset = 6000000 * 60 ;
 		$ExpStr = "Expires: " .
@@ -1223,7 +1242,7 @@ class web_optimizer {
 			}
 			// Determine used compression method
 			$encoding = empty($gzip) ? (empty($xgzip) ? (empty($deflate) ? (empty($xdeflate) ? "none" : "x-deflate") : "deflate") : "x-gzip") : "gzip";
-			$hash = "' . $this->time .  '-" . $encoding;
+			$hash = "' . $this->time .  '-" . str_replace("x-", "", $encoding);
 			header ("Etag: \"" . $hash . "\"");
 ?>';
 /* Send 304? */
@@ -1245,7 +1264,7 @@ class web_optimizer {
 				$this->gzip_header[$type] .= '<?php
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
-					global $encoding, $gzip;
+					global $encoding, $gzip, $xgzip;
 					// Check for buggy versions of Internet Explorer
 					if (!empty($_SERVER["HTTP_USER_AGENT"]) && !strstr($_SERVER["HTTP_USER_AGENT"], "Opera") &&
 						preg_match("/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i", $_SERVER["HTTP_USER_AGENT"], $matches)) {
@@ -1259,11 +1278,12 @@ class web_optimizer {
 					if (isset($encoding) && $encoding != "none")
 					{
 						// try to get gzipped content from file
-						$content = @file_get_contents(__FILE__ . ".gz");
+						$extension = $gzip || $xgzip ? "gz" : "df";
+						$content = @file_get_contents(__FILE__ . "." . $extension);
 						if (empty($content)) {
 						// Send compressed contents
-							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip || $x-gzip ? FORCE_GZIP : FORCE_DEFLATE);
-							$fp = @fopen(__FILE__ . ".gz", "wb");
+							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip || $xgzip ? FORCE_GZIP : FORCE_DEFLATE);
+							$fp = @fopen(__FILE__ . "." . $extension, "wb");
 							if ($fp) {
 								@fwrite($fp, $contents);
 								@fclose($fp);
@@ -1595,76 +1615,6 @@ class web_optimizer {
 	function get_file_extension($file) {
 		$f = explode('.', $file);
 		return array_pop($f);
-	}
-
-	/**
-	 * Gets mime from extension
-	 *
-	 **/
-	function get_mimetype($value='') {
-		$ct['htm'] = 'text/html';
-		$ct['html'] = 'text/html';
-		$ct['txt'] = 'text/plain';
-		$ct['asc'] = 'text/plain';
-		$ct['bmp'] = 'image/bmp';
-		$ct['gif'] = 'image/gif';
-		$ct['jpeg'] = 'image/jpeg';
-		$ct['jpg'] = 'image/jpeg';
-		$ct['jpe'] = 'image/jpeg';
-		$ct['png'] = 'image/png';
-		$ct['ico'] = 'image/vnd.microsoft.icon';
-		$ct['mpeg'] = 'video/mpeg';
-		$ct['mpg'] = 'video/mpeg';
-		$ct['mpe'] = 'video/mpeg';
-		$ct['qt'] = 'video/quicktime';
-		$ct['mov'] = 'video/quicktime';
-		$ct['avi']  = 'video/x-msvideo';
-		$ct['wmv'] = 'video/x-ms-wmv';
-		$ct['mp2'] = 'audio/mpeg';
-		$ct['mp3'] = 'audio/mpeg';
-		$ct['rm'] = 'audio/x-pn-realaudio';
-		$ct['ram'] = 'audio/x-pn-realaudio';
-		$ct['rpm'] = 'audio/x-pn-realaudio-plugin';
-		$ct['ra'] = 'audio/x-realaudio';
-		$ct['wav'] = 'audio/x-wav';
-		$ct['css'] = 'text/css';
-		$ct['zip'] = 'application/zip';
-		$ct['pdf'] = 'application/pdf';
-		$ct['doc'] = 'application/msword';
-		$ct['bin'] = 'application/octet-stream';
-		$ct['exe'] = 'application/octet-stream';
-		$ct['class']= 'application/octet-stream';
-		$ct['dll'] = 'application/octet-stream';
-		$ct['xls'] = 'application/vnd.ms-excel';
-		$ct['ppt'] = 'application/vnd.ms-powerpoint';
-		$ct['wbxml']= 'application/vnd.wap.wbxml';
-		$ct['wmlc'] = 'application/vnd.wap.wmlc';
-		$ct['wmlsc']= 'application/vnd.wap.wmlscriptc';
-		$ct['dvi'] = 'application/x-dvi';
-		$ct['spl'] = 'application/x-futuresplash';
-		$ct['gtar'] = 'application/x-gtar';
-		$ct['gzip'] = 'application/x-gzip';
-		$ct['js'] = 'application/x-javascript';
-		$ct['swf'] = 'application/x-shockwave-flash';
-		$ct['tar'] = 'application/x-tar';
-		$ct['xhtml']= 'application/xhtml+xml';
-		$ct['au'] = 'audio/basic';
-		$ct['snd'] = 'audio/basic';
-		$ct['midi'] = 'audio/midi';
-		$ct['mid'] = 'audio/midi';
-		$ct['m3u'] = 'audio/x-mpegurl';
-		$ct['tiff'] = 'image/tiff';
-		$ct['tif'] = 'image/tiff';
-		$ct['rtf'] = 'text/rtf';
-		$ct['wml'] = 'text/vnd.wap.wml';
-		$ct['wmls'] = 'text/vnd.wap.wmlscript';
-		$ct['xsl'] = 'text/xml';
-		$ct['xml'] = 'text/xml';
-		$extension = $this->get_file_extension($value);
-		if (!$type = $ct[strtolower($extension)]) {
-			$type = 'text/html';
-		}
-		return $type;
 	}
 
 	/**

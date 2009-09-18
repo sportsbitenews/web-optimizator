@@ -60,9 +60,9 @@ $compress_options['gzip']['css'] = "1";
 ## Check for gzip possibility via cookie
 $compress_options['gzip']['cookie'] = "1";
 ## Compression level for JS/HTML/CSS files, works only in PHP
-$compress_options['gzip']['javascript_level'] = "9";
-$compress_options['gzip']['page_level'] = "9";
-$compress_options['gzip']['css_level'] = "9";
+$compress_options['gzip']['javascript_level'] = "7";
+$compress_options['gzip']['page_level'] = "7";
+$compress_options['gzip']['css_level'] = "7";
 ## Caching
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
