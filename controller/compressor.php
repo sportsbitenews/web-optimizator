@@ -887,7 +887,7 @@ class web_optimizer {
 				($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '') .
 			'"' .
 			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
-			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : ' />');
+			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		$this->compressed_files[] = $newfile;
 		return $newfile;
 	}
@@ -1480,8 +1480,11 @@ class web_optimizer {
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
 			}
+/* split XHTML behavior from HTML */
+			$xhtml = strpos($this->content, 'XHTML 1');
+			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
 /* add Web Optimizer spot */
-			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' lang="wo"', $this->content);
+			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
@@ -1496,7 +1499,7 @@ class web_optimizer {
 				} else {
 					$el = 'span';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="float:right;display:block;text-decoration:none;margin:-104px 4px -100px;width:100px;height:100px;'. $background_style .'"></' . $el . '>' . "$1", $this->content);
+				$this->content = preg_replace('!(</body>)!is', '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>' . "$1", $this->content);
 			}
 		}
 	}
