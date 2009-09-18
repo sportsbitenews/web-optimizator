@@ -195,7 +195,7 @@ class web_optimizer {
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'] && $premium,
 				"remove_comments" => $this->options['minify']['html_comments'] && $premium,
-				"dont_check_file_mtime" => $this->options['dont_check_file_mtime']['on'],
+				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
 				"cache" => $this->options['html_cache']['enabled'],
