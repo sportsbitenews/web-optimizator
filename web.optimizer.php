@@ -3,7 +3,7 @@
 // Licensed under the W3C (W3C-LICENSE.txt)
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.5.8
+// @version    0.5.9
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // initially based on PHP Speedy (Leon Chevalier, http://aciddrop.com)
 // ==============================================================================================
@@ -27,13 +27,11 @@ if ($compress_options['php'] == 4) {
 /* Include this for path getting help */
 	if (!class_exists('compressor_view', false)) {
 		require_once($basepath . "libs/php/view.php");
-	}	
+	}
 }
 
 /* We need to know the config */
 require_once($basepath . "config.webo.php");
-/* define basepath */
-$compress_options['basepath'] = $basepath;
 
 /* buffer input stream or not */
 $compress_options['buffered'] = empty($not_buffered) ? 1 : 0;

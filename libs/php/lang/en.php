@@ -9,6 +9,8 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
+define('_WEBO_GENERAL_BUYNOW', 'Buy now full version');
+define('_WEBO_GENERAL_DEMOVERSION', 'Demo version');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Hmmm...we have a problem');
@@ -27,6 +29,8 @@ define('_WEBO_LOGIN_USERNAME', 'Username');
 define('_WEBO_LOGIN_ENTERLOGIN', 'Enter your username');
 define('_WEBO_LOGIN_PASSWORD', 'Password');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Enter password');
+define('_WEBO_LOGIN_LICENSE', 'License key');
+define('_WEBO_LOGIN_ENTERLICENSE', 'Enter your license key');
 define('_WEBO_SPLAHS1_PROTECTED', 'Protected mode');
 define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer installation is safely protected. You can configure it once more.');
 /* Upgrade */
@@ -52,13 +56,14 @@ define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been dele
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - set password');
-define('_WEBO_NEW_PROTECT', '<p>Please enter username and password to protect this installation.</p>
+define('_WEBO_NEW_PROTECT', '<p>Please enter username and password to protect this installation. <strong>Demo version</strong> requires no license key to be installed.</p>
 							<p>Before installation please check that root <code>.htaccess</code> and source files of your web system are writable (during installation Web Optimizer also creates backup of your files).</p>
 							<p>Web Optimizer can check all functions of your server and complete installation automatically. For this option please press <strong>"Express install"</strong>. On complete you can change any settings using this administative interface.</p>
 							<p>If your want to set up usage of Web Optimizer manually please press <strong>"Next"</strong>. You can check and set all settings before actual Web Optimizer installation on your website.</p>
 							<p><a href="http://code.google.com/p/web-optimizator/wiki/Installation">Web Optimizer installation process</a></p>');
 define('_WEBO_NEW_USERDATA', 'Your username and password');
 define('_WEBO_NEW_ENTER', 'Enter your password for installation');
+define('_WEBO_NEW_ORDERINSTALLATION', 'Order Web Optimizer installation and configuration for your website');
 define('_WEBO_NEW_NOSCRIPT', 'For correct work JavaScript must be enabled!');
 
 /* First splash -- set document root */
@@ -102,6 +107,7 @@ define('_WEBO_SPLASH2_YES', 'Yes:');
 define('_WEBO_SPLASH2_NO', 'No:');
 define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
 define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists and it is your root directory.');
+
 /* Web Optimizer options */
 define('_WEBO_SPLASH2_MINIFY', 'Minify and Combine');
 define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Minifying removes whitespace and other unnecessary characters.</p>
@@ -184,7 +190,7 @@ define('_WEBO_gzip_cookie', 'Check for gzip possibility via cookies');
 define('_WEBO_far_future_expires_javascript', 'Cache JavaScript');
 define('_WEBO_far_future_expires_css', 'Cache CSS');
 define('_WEBO_far_future_expires_images', 'Cache images (only via <code>.htaccess</code>)');
-define('_WEBO_far_future_expires_video', 'Cache video files (onyl via <code>.htaccess</code>)');
+define('_WEBO_far_future_expires_video', 'Cache video files (only via <code>.htaccess</code>)');
 define('_WEBO_far_future_expires_static', 'Cache static assets (only via <code>.htaccess</code>)');
 define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');

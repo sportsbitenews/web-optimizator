@@ -69,6 +69,7 @@ class admin {
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
+		$this->premium = $this->view->validate_license($this->compress_options['license']);
 /* if we use .htaccess */
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']) && $this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
 		if ($this->input['page'] != 'system_check') {
@@ -119,7 +120,8 @@ class admin {
 				"username" => htmlspecialchars($this->input['user']['username']),
 				"password" => htmlspecialchars($this->input['user']['password']),
 				"version" => $this->version,
-				"version_new" => $this->version_new
+				"version_new" => $this->version_new,
+				"premium" => $this->premium
 			);
 			$this->view->render("admin_container", $page_variables);
 		}
@@ -199,7 +201,7 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
 			'protected_mode' => empty($this->protected) ? 0 : 1,
-			'cms' => $this->system_info($document_root),
+			'cms' => $this->system_info($document_root)
 		);
 /* Output data */
 		$this->view->render("system_check", $page_variables);
@@ -293,7 +295,8 @@ class admin {
 				"saved_percent" => $saved_percent,
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
-				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version) : _WEBO_PASSWORD_SUCCESSFULL
+				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version) : _WEBO_PASSWORD_SUCCESSFULL,
+				"premium" => $this->premium
 			);
 		} else {
 /* disable gzip for HTML as we alsredy have it */
@@ -308,6 +311,7 @@ class admin {
 				"display_progress" => $this->display_progress,
 				"version" => $this->version,
 				"version_new" => $this->version_new,
+				"premium" => true
 			); 
 		}
 /* Show the install page */
@@ -485,7 +489,8 @@ class admin {
 				"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
 				"compress_options" => $this->compress_options,
 				"version" => $this->version,
-				"version_new" => $this->version_new
+				"version_new" => $this->version_new,
+				"premium" => $this->premium
 			);
 		}
 	}
@@ -565,9 +570,10 @@ class admin {
 /* express install */
 		if (!empty($this->input['express'])) {
 			$this->view->set_paths();
-/* remember username and password */
+/* remember username, and password, and license */
 			$username = $this->input['user']['username'];
 			$password = $this->input['user']['password'];
+			$license = empty($this->input['user']['license']) ? '' : $this->input['user']['license'];
 /* load default options */
 			$this->input['user'] = $this->compress_options;
 /* calculate directories */
@@ -577,9 +583,10 @@ class admin {
 			$this->input['user']['webo_cachedir'] = $this->view->paths['full']['current_directory'];
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
 			$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
-/* restore username and password */
+/* restore username, and password, and license */
 			$this->input['user']['password'] = $password;
 			$this->input['user']['username'] = $username;
+			$this->input['user']['license'] = $license;
 			if (empty($this->input['user']['_username'])) {
 				$this->input['user']['_username'] = $this->input['user']['username'];
 			}
@@ -587,7 +594,7 @@ class admin {
 				$this->input['user']['_password'] = $this->input['user']['password'];
 			}
 /* minify with YUI Compressor by default */
-			$this->input['user']['minify']['with'] = 'with_yui';
+			$this->input['user']['minify']['with'] = 'with_jsmin';
 /* enable auto-rewrite */
 			$this->input['user']['auto_rewrite']['enabled'] = 1;
 			$this->input['Submit'] = 1;
@@ -642,72 +649,80 @@ class admin {
 			$this->compress_options['parallel']['allowed_list'] = $this->check_hosts($hosts);
 		}
 
-		$premium = 1;
-
 		$options = array(
 			'minify' => array(
 				'title' => _WEBO_SPLASH2_MINIFY,
 				'intro' => _WEBO_SPLASH2_MINIFY_INFO,
-				'value' => $this->compress_options['minify']
+				'value' => $this->compress_options['minify'],
+				'is_premium' => false
 			),
 			'external_scripts' => array(
 				'title' => _WEBO_SPLASH2_EXTERNAL,
 				'intro' => _WEBO_SPLASH2_EXTERNAL_INFO,
-				'value' => $this->compress_options['external_scripts']
+				'value' => $this->compress_options['external_scripts'],
+				'is_premium' => false
 			),
 			'gzip' => array(
 				'title' => _WEBO_SPLASH2_GZIP,
 				'intro' => _WEBO_SPLASH2_GZIP_INFO,
-				'value' => $this->compress_options['gzip']
+				'value' => $this->compress_options['gzip'],
+				'is_premium' => false
+			),
+			'unobtrusive' => array(
+				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
+				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
+				'value' => $this->compress_options['unobtrusive'],
+				'is_premium' => !$this->premium
 			),
 			'far_future_expires' => array(
 				'title' => _WEBO_SPLASH2_EXPIRES,
 				'intro' => _WEBO_SPLASH2_EXPIRES_INFO,
-				'value' => $this->compress_options['far_future_expires']
+				'value' => $this->compress_options['far_future_expires'],
+				'is_premium' => false
 			),
 			'html_cache' => array(
 				'title' => _WEBO_SPLASH2_HTMLCACHE,
 				'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
-				'value' => $this->compress_options['html_cache']
+				'value' => $this->compress_options['html_cache'],
+				'is_premium' => !$this->premium
+			),
+			'performance' => array(
+				'title' => _WEBO_SPLASH2_MTIME,
+				'intro' => _WEBO_SPLASH2_MTIME_INFO,
+				'value' => $this->compress_options['performance'],
+				'is_premium' => !$this->premium
+			),
+			'css_sprites' => array(
+				'title' => _WEBO_SPLASH2_SPRITES,
+				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
+				'value' => $this->compress_options['css_sprites'],
+				'is_premium' => !$this->premium
+			),
+			'data_uris' => array(
+				'title' => _WEBO_SPLASH2_DATAURI,
+				'intro' => _WEBO_SPLASH2_DATAURI_INFO,
+				'value' => $this->compress_options['data_uris'],
+				'is_premium' => !$this->premium
+			),
+			'parallel' => array(
+				'title' => _WEBO_SPLASH2_PARALLEL,
+				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
+				'value' => $this->compress_options['parallel'],
+				'is_premium' => !$this->premium
 			),
 			'htaccess' => array(
 				'title' => _WEBO_SPLASH2_HTACCESS,
 				'intro' => _WEBO_SPLASH2_HTACCESS_INFO . implode(", ", $this->apache_modules) . '</p>',
-				'value' => $this->compress_options['htaccess']
+				'value' => $this->compress_options['htaccess'],
+				'is_premium' => false
 			),
 			'footer' => array(
 				'title' => _WEBO_SPLASH2_FOOTER,
 				'intro' => _WEBO_SPLASH2_FOOTER_INFO,
-				'value' => $this->compress_options['footer']
+				'value' => $this->compress_options['footer'],
+				'is_premium' => false
 			)
 		);
-		if ($premium) {
-			$options['performance'] = array(
-				'title' => _WEBO_SPLASH2_MTIME,
-				'intro' => _WEBO_SPLASH2_MTIME_INFO,
-				'value' => $this->compress_options['performance']						
-			);
-			$options['css_sprites'] = array(
-				'title' => _WEBO_SPLASH2_SPRITES,
-				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
-				'value' => $this->compress_options['css_sprites']
-			);
-			$options['data_uris'] = array(
-				'title' => _WEBO_SPLASH2_DATAURI,
-				'intro' => _WEBO_SPLASH2_DATAURI_INFO,
-				'value' => $this->compress_options['data_uris']
-			);
-			$options['parallel'] = array(
-				'title' => _WEBO_SPLASH2_PARALLEL,
-				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
-				'value' => $this->compress_options['parallel']
-			);
-			$options['unobtrusive'] = array(
-				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
-				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
-				'value' => $this->compress_options['unobtrusive']
-			);
-		}
 /* make fake option for JavaScript minimization */
 		if (is_array($options['minify']['value'])) {
 			$javascript = array_shift($options['minify']['value']);
@@ -739,7 +754,9 @@ class admin {
 			"options" => $options,
 			"version" => $this->version,
 			"version_new" => $this->version_new,
-			"compress_options" => $this->compress_options
+			"compress_options" => $this->compress_options,
+			"license" => empty($this->compress_options['license']) ? '' : $this->compress_options['license'],
+			"premium" => $this->premium
 		);
 	}
 
@@ -1149,8 +1166,9 @@ ExpiresDefault \"access plus 10 years\"
 			$this->write_progress($this->web_optimizer_stage = 4);
 /* Create the options file */
 			$this->options_file = "config.webo.php";
-			if(!empty($this->input['Submit'])) {
+			if (!empty($this->input['Submit'])) {
 				$this->set_options();
+				$this->premium = $this->view->validate_license($this->input['user']['license']);
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* delete temporary files before chained installation */
 				$this->install_clean_cache(0);
@@ -1444,7 +1462,9 @@ ExpiresDefault \"access plus 10 years\"
 								"password" => $this->input['user']['_password'],
 								"version" => $this->version,
 								"version_new" => $this->version_new,
-								"files_to_change" => $this->system_files($this->cms_version));
+								"files_to_change" => $this->system_files($this->cms_version),
+								"premium" => $this->premium
+		);
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 
@@ -1632,7 +1652,8 @@ ExpiresDefault \"access plus 10 years\"
 			"error" => $string,
 			"version" => $this->version,
 			"version_new" => $this->version_new,
-			"page" => 'error'
+			"page" => 'error',
+			"premium" => $this->premium
 		);
 /* Show the install page */
 		$this->view->render("admin_container",$page_variables);
@@ -1950,11 +1971,6 @@ require valid-user
 							'mode' => 'finish',
 							'location' => 'echo JResponse::toString($mainframe->getCfg(\'gzip\'));',
 							'global' => 1
-						),
-						array(
-							'file' => 'index.php',
-							'mode' => 'finish',
-							'location' => 'end'
 						),
 						array(
 							'file' => 'administrator/components/com_jrecache/includes/cache_handler.php',

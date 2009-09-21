@@ -4,6 +4,7 @@
  * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page.
  * Can also gzip and minify the page itself
+ /* version 1.0 = Festinus Optimus
  **/
 class web_optimizer {
 
@@ -134,7 +135,7 @@ class web_optimizer {
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
 		}
-		$premium = 1;
+		$premium = $this->view->validate_license($this->options['license']);
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
@@ -153,7 +154,7 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime']
+				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -184,21 +185,21 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime']
+				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate']) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => round($this->options['gzip']['page_level']),
-				"gzip_cookie" => $this->options['gzip']['cookie'],
+				"gzip_cookie" => $this->options['gzip']['cookie'] && $premium,
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'] && $premium,
 				"remove_comments" => $this->options['minify']['html_comments'] && $premium,
-				"dont_check_file_mtime" => $this->options['performance']['mtime'],
+				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1,
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
-				"cache" => $this->options['html_cache']['enabled'],
+				"cache" => $this->options['html_cache']['enabled'] && $premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'],
 				"flush_size" => $this->options['html_cache']['flush_size'],
@@ -1585,7 +1586,7 @@ class web_optimizer {
 		if ($memory_limit < 64000000) {
 			@ini_set('memory_limit', '64M');
 		}
-		chdir($options['cachedir']);
+		@chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'],
 			'current_dir' => $options['cachedir'],

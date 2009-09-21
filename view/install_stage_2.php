@@ -19,7 +19,7 @@
 ?></a></li><?php
 	$count = 1;
 	foreach($options AS $key=>$type) {	
-		if(is_array($type['value'])) {
+		if(is_array($type['value']) && empty($type['is_premium'])) {
 ?><li><a href="#wo_<?php
 			echo $key;
 ?>" name="<?php
@@ -67,13 +67,19 @@
 	echo $host;
 ?>" title="<?php
 	echo _WEBO_SPLASH2_HOST;
+?>" size="40"/></label><label><?php
+	echo _WEBO_LOGIN_LICENSE;
+?><input name="user[license]" value="<?php
+	echo $license;
+?>" title="<?php
+	echo _WEBO_LOGIN_ENTERLICENSE;
 ?>" size="40"/></label><input type="hidden" name="page" value="install_stage_3"/><input type="hidden" name="Submit" value="1"/><input type="hidden" name="user[_username]" value="<?php
 	echo $compress_options['username'];
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $compress_options['password'];
 ?>"/></fieldset><?php
 	foreach ($options AS $key => $type) {
-		if(is_array($type['value'])) {
+		if (is_array($type['value']) && empty($type['is_premium'])) {
 ?><fieldset id="wo_<?php
 			echo $key;
 ?>"><h3><?php
@@ -81,8 +87,8 @@
 ?></h3><div class="o"><?php
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
-			foreach ($type['value'] as $option=>$value) {
-				if (!in_array($option, array('javascript_level', 'page_level', 'css_level'))) {
+			foreach ($type['value'] as $option => $value) {
+				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
 ?><label><?php
 					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
@@ -120,9 +126,27 @@
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 					}
 ?></label><?php
+				} elseif (!in_array($option, array('javascript_level', 'page_level', 'css_level')) && !$premium) {
+?><input type="hidden" name="user[<?php
+					echo $key;
+?>][<?php
+					echo $option;
+?>]" value="<?php
+					echo $value;
+?>"/><?php
 				}
 			}
 ?></fieldset><?php 
+		} elseif (!empty($type['is_premium'])) {
+			foreach ($type['value'] as $option => $value) {
+?><input type="hidden" name="user[<?php
+				echo $key;
+?>][<?php
+				echo $option;
+?>]" value="<?php
+				echo $value;
+?>"/><?php
+			}
 		}
 	}
 ?></div><p id="hideme"><input type="submit" value="<?php

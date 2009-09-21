@@ -305,7 +305,7 @@ class csstidy_print
 
         foreach ($this->css as $medium => $val)
         {
-            if ($this->parser->get_cfg('sort_selectors')) ksort($val);
+            if ($this->parser->get_cfg('sort_selectors')%2 == 1) ksort($val);
             if ($medium != DEFAULT_AT) {
                 $this->parser->_add_token(AT_START, $medium, true);
             }
@@ -313,6 +313,13 @@ class csstidy_print
             foreach ($val as $selector => $vali)
             {
                 if ($this->parser->get_cfg('sort_properties')) ksort($vali);
+
+				if ($this->parser->get_cfg('sort_selectors')%3 == 2) {
+					$selector = explode(",", $selector);
+					sort($selector);
+					$selector = implode(",", $selector);
+				}
+
                 $this->parser->_add_token(SEL_START, $selector, true);
 
                 foreach ($vali as $property => $valj)

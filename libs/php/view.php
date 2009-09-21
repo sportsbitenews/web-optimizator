@@ -160,5 +160,26 @@ class compressor_view {
 			return $path;
 		}
 	}
+	/**
+	* Validate license
+	* You can donate for Web Optimizer here: http://sprites.in/donate/
+	**/
+	function validate_license ($license) {
+		if (strlen($license) == 29) {
+			$table = '123QWERTUIOP456ASDFGHJKLCVBNM7890ZXYqwertuiop456asdfghjklcvbnm7890zxy';
+			$license = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z'), array(), strtoupper($license));
+			$c1 = strpos($table, substr($license, 1, 1))*31 + strpos($table, substr($license, 0, 1));
+			$c2 = strpos($table, substr($license, 3, 1))*31 + strpos($table, substr($license, 2, 1));
+			$i = -1;
+			$c3 = 0;
+			while (strlen($license)>4+(++$i)) {
+				$c3 += pow(31, $i) * strpos($table, substr($license, 4 + $i, 1));
+			}
+			if ((!(($c3*$c3)%941 - $c1) && !(($c1*$c1)%941 - $c2)) || (!(pow($c3, 3)%941 - $c1) && !(pow($c1, 3)%941 - $c2))) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 ?>

@@ -16,7 +16,9 @@
 	echo _WEBO_NEW_NOSCRIPT;
 ?></p></noscript><?php
 	echo _WEBO_NEW_PROTECT;
-?></div><div id="sc"><p><?php echo _WEBO_SYSTEM_CHECK ?></p></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><legend><?php
+?><p><a href="http://webo.name/web-optimizer/"><?php
+	echo _WEBO_NEW_ORDERINSTALLATION;
+?></a></p></div><div id="sc"><p><?php echo _WEBO_SYSTEM_CHECK ?></p></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;
 ?></legend><p><label for="user_username"><?php
 	echo _WEBO_LOGIN_USERNAME;
@@ -26,6 +28,10 @@
 	echo _WEBO_LOGIN_PASSWORD;
 ?></label><input type="password" id="user_password" name="user[password]" title="<?php
 	echo _WEBO_LOGIN_ENTERPASSWORD;
+?>"/><label for="user_license"><?php
+	echo _WEBO_LOGIN_LICENSE;
+?></label><input id="user_license" name="user[license]" title="<?php
+	echo _WEBO_LOGIN_ENTERLICENSE;
 ?>"/><input type="submit" name="express" id="express" value="<?php
 	echo _WEBO_SPLASH1_EXPRESS;
 ?>" title="<?php

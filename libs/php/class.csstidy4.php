@@ -278,10 +278,18 @@ function csstidy()
 	$this->settings['lowercase_s'] = false;
 	$this->settings['optimise_shorthands'] = 1;
 	$this->settings['remove_last_;'] = true;
+/* rewrite all properties with low case, better for later gzip */
 	$this->settings['case_properties'] = 1;
+/* sort properties in alpabetic order, better for later gzip */
 	$this->settings['sort_properties'] = true;
-	$this->settings['sort_selectors'] = false;
+/*
+1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
+2, 5, 8, etc -- enable sorting selectors inside one CSS decalaration: a,b,c{}
+*/
+	$this->settings['sort_selectors'] = 2;
+/* is dangeroues to be used: CSS is broken sometimes */
 	$this->settings['merge_selectors'] = 0;
+/* preserve or not browser hacks */
     $this->settings['discard_invalid_selectors'] = false;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
