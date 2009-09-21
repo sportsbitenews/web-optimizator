@@ -9,7 +9,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
-define('_WEBO_GENERAL_BUYNOW', 'Buy now full version');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Buy now full version</a>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Demo version');
 
 /* error layout */

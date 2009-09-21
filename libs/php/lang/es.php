@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
-define('_WEBO_GENERAL_BUYNOW', 'Comprar versi&oacute;n completa');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Comprar versi&oacute;n completa</a>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Versi&oacute;n Demo');
 
 /* error layout */

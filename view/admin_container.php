@@ -22,9 +22,9 @@ header('Content-Type: text/html; charset=' . _WEBO_CHARSET);
 	echo $version_new;
 ?></b></span></h4><?php
 	if (empty($premium)) {
-?><q><a href="http://webo.name/web-optimizer/"><?php
+?><q><?php
 		echo _WEBO_GENERAL_BUYNOW;
-?> </a></q><?php
+?></q><?php
 	}
 	require($page.".php");
 ?></div><blockquote><p><?php

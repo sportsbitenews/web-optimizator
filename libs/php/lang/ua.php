@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', 'Купить полную версию');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Купить полную версию</a>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Демонстрационная версия');
 
 /* error layout */

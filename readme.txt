@@ -29,6 +29,11 @@ Support and bug reports
 -----------------------
 Please submit support requests and bug reports via http://code.google.com/p/web-optimizator/
 
+Purchase
+-----------------------
+You can purchase full verion with dozens of acceleration settings here:
+http://webo.name/web-optimizer/
+
 Donate
 -----------------------
 Please find all coordinates for donation here: http://sprites.in/donate/
@@ -45,6 +50,8 @@ Known issues
 There are several issues related to CSS Sprites usage. If you think that your template is broken or you system shows white screen -- 
 plase try to disable CSS Sprites in configuration. This will solve occured issue in 99% of cases. Also you can try to exclude some
 images from CSS Sprites generation.
+Please also visit TroubleeShooter page in Wiki:
+http://code.google.com/p/web-optimizator/wiki/Troubleshooter
 
 Team
 -----------------------
