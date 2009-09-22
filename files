@@ -44,7 +44,7 @@ view/system_check.php
 config.webo.php
 index.php
 install.php
-W3C-LICENSE.txt
+LICENSE.txt
 readme.txt
 version
 web.optimizer.php
