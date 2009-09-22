@@ -416,13 +416,16 @@ class admin {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
-		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix' || substr($this->cms_version, 0, 10) == 'Open Slaed') {
+		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix' || substr($this->cms_version, 0, 10) == 'Open Slaed' || $this->cms_version == '4images') {
 			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
 			} elseif ($this->cms_version == 'PHP-Nuke' ) {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+			} elseif ($this->cms_version == '4images' ) {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/page_header.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'includes/page_footer.php';
 			} else {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
@@ -1300,6 +1303,26 @@ ExpiresDefault \"access plus 10 years\"
 								$auto_rewrite = 1;
 							}
 						}
+/* and for 4images */
+					} elseif ($this->cms_version == '4images') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/page_header.php';
+						$footer = $this->view->paths['absolute']['document_root'] . 'includes/page_footer.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						$footer_content = @file_get_contents($footer);
+						if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
+/* update mainfile */
+							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+/* create backup */
+							@copy($footer, $footer . '.backup');
+							$footer_content = preg_replace('!(exit;)!', 'global $web_optimizer;$web_optimizer->finish();' . "$1", $footer_content);
+/* update footer */
+							$return2 = $this->write_file($footer, $footer_content, 1);
+							if (!empty($return1) && !empty($return2)) {
+								$auto_rewrite = 1;
+							}
+						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($this->cms_version, 0, 9) == 'vBulletin') {
@@ -1577,7 +1600,7 @@ ExpiresDefault \"access plus 10 years\"
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		$option_value = preg_replace("/\/\//", "/", preg_replace("/\\\/", '/', $option_value));
 /* See if file exists */
-		$option_file = $this->view->paths['full']['current_directory'] . $this->options_file;
+		$option_file = $this->basepath . $this->options_file;
 		if (file_exists($option_file)) {
 			$content = @file_get_contents($option_file);
 			$content = preg_replace("@(" . $this->regex_escape($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
@@ -1820,6 +1843,9 @@ require valid-user
 				$joomla_version = empty($_VERSION->CMS_ver) ? ($_VERSION->RELEASE . '.' . $_VERSION->DEV_LEVEL) : $_VERSION->CMS_ver;
 				$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
 				return $joomla_title . ' ' . $joomla_version;
+/* 4images */
+			} elseif (is_file($root . 'postcards.php')) {
+				return '4images';
 /* MaxDev Pro */
 			} else {
 				return 'MaxDev Pro';
@@ -2232,6 +2258,20 @@ require valid-user
 						'mode' => 'finish',
 						'location' => 'exit;}'
 					)
+				);
+				break;
+/* 4images */
+			case '4images':
+				$files = array(
+					array(
+						'file' => 'includes/page_header.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'includes/page_footer.php',
+						'mode' => 'finish',
+						'location' => 'echo pack("V", $gzip_size);}'
+					),
 				);
 				break;
 /* all other systems */
