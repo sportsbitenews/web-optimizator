@@ -38,14 +38,14 @@ class web_optimizer {
 		$this->initial_files = array();
 /* Set options */
 		$this->set_options();
+/* Remember current page encoding */
+		$this->encoding = '';
 /* Define the gzip headers */
 		$this->set_gzip_headers();
 /* HTTPS or not ? */
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
-/* Remember current page encoding */
-		$this->encoding = '';
 /* HTML cache ? */
 		$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
 		$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
@@ -154,7 +154,7 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $premium 
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -185,7 +185,7 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $premium
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -478,7 +478,11 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
-			$timestamp = @filemtime($file);
+			if (file_exists($file)) {
+				$timestamp = @filemtime($file);
+			} else {
+				$timestamp = 0;
+			}
 /* set ETag, thx to merzmarkus */
 			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding)) . "\"");
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
@@ -1652,7 +1656,11 @@ class web_optimizer {
 				@chdir($this->options['javascript']['cachedir']);
 			}
 			$return_filename = 'wo' . md5($file) . '.' . ($tag == 'link' ? 'css' : 'js');
-			$timestamp = @filemtime($return_filename);
+			if (file_exists($return_filename)) {
+				$timestamp = @filemtime($return_filename);
+			} else {
+				$timestamp = 0;
+			}
 /* prevent download more than 1 time a day */
 			if (!empty($timestamp) && $timestamp + 86400 > $this->time) {
 				@chdir($current_directory);

@@ -89,7 +89,7 @@ class css_sprites {
 /* standartize all background values from input */
 						if (preg_match("/background/", $key)) {
 /* rewrite current background with strict none */
-							if ($key == 'background' && $value == 'none') {
+							if ($key == 'background' && ($property == 'none !important' || $property == 'none')) {
 								$this->css->css[$import][$tags]['background'] = $this->none;
 							}
 							foreach (explode(",", $tags) as $tag) {
@@ -192,6 +192,7 @@ class css_sprites {
 			$properties = array('background-image', 'background-position', 'background-repeat', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 
 'width', 'height');
 /* to remember already calculated selectors, by stages */
+/* need ro refactor to add fix_css3_selectors functionality and remove the latter at all */
 			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array(), 8 => array(), 9 => array(), 10 => array(), 11 => array(), 12 => array());
 /* try to restore property values from parent selectors */
 			foreach ($this->media as $import => $images) {
@@ -207,7 +208,7 @@ class css_sprites {
 			foreach ($this->media as $import => $images) {
 				foreach ($images as $key => $image) {
 					$back = empty($image['background-image']) ? '' : $image['background-image'];
-					if (empty($back) || $back == $this->none) {
+					if (empty($back)) {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 						$key_fixed = $this->fix_css3_selectors($key);
 						if (!empty($this->media[$import][$key_fixed])) {

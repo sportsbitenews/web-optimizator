@@ -1,6 +1,6 @@
 <?php
 // ==============================================================================================
-// Licensed under the W3C (W3C-LICENSE.txt)
+// Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
 // @version    0.5.9

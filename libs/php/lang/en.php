@@ -10,6 +10,7 @@ define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Buy now full version</a>');
+define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Demo version');
 
 /* error layout */
@@ -123,7 +124,7 @@ define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>With this option all scripts (includin
 									<p>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
 									<p>You also can define a list of excluded files (i.e. ga.js jquery.min.js).</p>
 									<p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/">Serving JavaScript Fast</a></p>');
-define('_WEBO_SPLASH2_MTIME', 'Performance issues');
+define('_WEBO_SPLASH2_MTIME', 'Performance Options');
 define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.</p>
 									<p>It\'s not good from the server side optimization point of view so you can disable this check.</p>
 									<p>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.</p>');
@@ -143,7 +144,7 @@ define('_WEBO_SPLASH2_SPRITES', 'Use CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce the number of HTTP requests during website load.</p>
 									<p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p>
 									<p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif).</p>
-									<p><a href="www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
+									<p><a href="http://www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
 define('_WEBO_SPLASH2_DATAURI', 'Use data URIs');
 define('_WEBO_SPLASH2_DATAURI_INFO', '<p>It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p> 
 									<p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p>

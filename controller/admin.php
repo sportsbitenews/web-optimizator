@@ -252,7 +252,7 @@ class admin {
 			if (!$installed && !empty($gzipped)) {
 				$this->save_option("['gzip']['page']", 0);
 			}
-			if ($installed && @filesize($index_before) && !@filesize($index_after)) {
+			if ($installed && @filesize($index_before) && @filesize($index_after) < 200) {
 /* if we have just downloaded initial grade - try to renew it */
 				if ($no_initial_grade) {
 					$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
@@ -266,10 +266,12 @@ class admin {
 			$after = @file_get_contents($index_after);
 			if (!empty($before) && !empty($after)) {
 				$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>'));
-				$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
 				$kb_before = substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>'));
-				$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
-				if ($kb_before) {
+				if (strpos($after, '<high>')) {
+					$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
+					$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
+				}
+				if (!empty($kb_before) && !empty($kb_after)) {
 					$saved_s = $s_before - $s_after;
 					$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
 					$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
@@ -1152,12 +1154,12 @@ ExpiresDefault \"access plus 10 years\"
 				} else {
 					@mkdir($dir, 0755);
 				}
-				$return = $this->write_file($dir . "test", $content, 1);
+				$return = $this->write_file($dir . "test", $content, 0);
 				if (!$return) {
 /* unable to open file for writing */
 					$this->error("<p>" . _WEBO_SPLASH3_CANTWRITE . $name . _WEBO_SPLASH3_CANTWRITE2 . "<p><p>". _WEBO_SPLASH3_CANTWRITE3 ."</p><p>". _WEBO_SPLASH3_CANTWRITE4 . "</p>");
 				} else {
-					unlink($dir . "test");
+					@unlink($dir . "test");
 				}
 			}
 /* copy unobtrusive loader library to cache directory */
@@ -1166,6 +1168,9 @@ ExpiresDefault \"access plus 10 years\"
 			@copy($this->input['user']['webo_cachedir'] . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
 /* copy stamp image to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
+			if (!is_file($this->input['user']['document_root']) . 'favicon.ico') {
+				$this->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
+			}
 			$this->write_progress($this->web_optimizer_stage = 4);
 /* Create the options file */
 			$this->options_file = "config.webo.php";
