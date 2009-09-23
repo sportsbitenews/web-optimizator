@@ -297,7 +297,7 @@ class admin {
 				"saved_percent" => $saved_percent,
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
-				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version) : _WEBO_PASSWORD_SUCCESSFULL,
+				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version . _WEBO_UPGRADE_SUCCESSFULL2) : _WEBO_PASSWORD_SUCCESSFULL,
 				"premium" => $this->premium
 			);
 		} else {

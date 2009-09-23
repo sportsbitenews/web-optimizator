@@ -22,7 +22,7 @@ define('_WEBO_LOGIN_TITLE', 'Enter your login details');
 define('_WEBO_LOGIN_INSTALLED', 'You have already installed Web Optimizer ');
 define('_WEBO_LOGIN_INSTALLED2', ' to this website. Please enter your login details below to get access to all settings:');
 define('_WEBO_LOGIN_INSTALLED3', '. Please press \'Next\' to get access to all settings.');
-define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Attention:</strong> can\'t find result of Web Optimizer\'s efforts íon your website. Please check its calls existence in your web system source files or install Web Optimizer once more.');
+define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Attention:</strong> can\'t find result of Web Optimizer\'s efforts on your website. Please check its calls existence in your web system source files or install Web Optimizer once more.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Optimization results per hit:<br/>saved ');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
 define('_WEBO_LOGIN_EFFICIENCY_S', 'seconds');
@@ -37,10 +37,11 @@ define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer installation is safely protect
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Your can upgrade your version (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') of Web Optimizer to latest one. Please enter your username and password and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
+define('_WEBO_LOGIN_UPGRADENOTICE2', ') of Web Optimizer to the latest one. Please enter your username and password and click <strong>Upgrade</strong>. Web Optimizer will be upgraded to the version <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_LOGIN_UPGRADENOTICE4', ') of Web Optimizer to latest one &mdash; <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'You have successfully upgraded to the version ');
+define('_WEBO_UPGRADE_SUCCESSFULL2', '');
 define('_WEBO_UPGRADE_UNABLE', 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'To remove Web Optimizer from your system please enter username and password and click <strong>Uninstall</strong>.');
@@ -52,7 +53,7 @@ define('_WEBO_LOGIN_LOGGED', 'Logged you in');
 define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
 define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear Web Optimizer cache please enter username and password and press <strong>Clear cache</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'All saved versions of generated files will be deleted from the cache folder.');
-define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delete a number of files from cache directory');
+define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delete a number of files from the cache directory');
 define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
 
 /* Set login and password */

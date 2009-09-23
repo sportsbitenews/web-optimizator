@@ -41,6 +41,7 @@ define('_WEBO_LOGIN_UPGRADENOTICE2', ') до самой последней. Дл
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_LOGIN_UPGRADENOTICE4', ') до самой последней версии <strong>');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'Вы успешно обновились до версии ');
+define('_WEBO_UPGRADE_SUCCESSFULL2', '');
 define('_WEBO_UPGRADE_UNABLE', 'Не удается загрузить последнюю версию из репозитория. Пожалуйста, проверьте соединение сервера с интернетом и наличие установленного curl.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'Чтобы удалить Web Optimizer, пожалуйста, введите ваш логин и пароль и нажмите кнопку <strong>Удалить</strong>.');
@@ -54,6 +55,7 @@ define('_WEBO_SPLASH1_CLEAR_CACHE', 'Чтобы очистить кэш Web Opti
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Все сохраненные копии созданных файлов будут удалены из кэширующей директории.');
 define('_WEBO_CLEAR_UNABLE', 'Не получается удалить некоторые файлы из кэширующих директорий');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Все файлы были успешно удалены из кэша');
+
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Установка - ограничение доступа');

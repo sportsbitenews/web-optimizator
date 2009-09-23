@@ -41,7 +41,8 @@ define('_WEBO_LOGIN_UPGRADENOTICE', 'Usted ya puede actualizar su versi&oacute;n
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') de Web Optimizer a la &uacute;ltima versi&oacute;n. Por favor ingrese su Login y Contrase&ntilde;a y presione <strong>Actualizar</strong>. Web Optimizer ser&aacute; actualizado <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_LOGIN_UPGRADENOTICE4', ') de Web Optimizer a la &uacute;ltima disponible &mdash; <strong>');
-define('_WEBO_UPGRADE_SUCCESSFULL', 'Su actualizaci&oacute;n a la &uacute;ltima versi&oacute;n fue todo un &eacute;xito ');
+define('_WEBO_UPGRADE_SUCCESSFULL', 'Su actualizaci&oacute;n a la &uacute;ltima versi&oacute;n ');
+define('_WEBO_UPGRADE_SUCCESSFULL2', ' fue todo un &eacute;xito');
 define('_WEBO_UPGRADE_UNABLE', 'No se puede descargar la &uacute;ltima versi&oacute;n de la fuente. Por favor revise su conexi&oacute;n de internet del servidor y existencia del curl.');
 
 /* Desinstalaci&oacute;n */

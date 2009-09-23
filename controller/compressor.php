@@ -1021,7 +1021,7 @@ class web_optimizer {
 		if (!empty($this->head)) {
 			if (!empty($this->options['javascript']['minify'])) {
 /* find all scripts from head */
-				$regex = "!<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)([^>]*)>(.*?</script>)!is";
+				$regex = "!(<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)[^>]*>)(.*?</script>)!is";
 				preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
 				if (!empty($matches)) {
 					foreach($matches as $match) {
@@ -1032,7 +1032,7 @@ class web_optimizer {
 						$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
 						$file['comment'] = '';
 						$file['file'] = '';
-						preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[2], $variants, PREG_SET_ORDER);
+						preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
 						if(is_array($variants)) {
 							foreach($variants AS $variant_type) {
 								$variant_type[1] = strtolower($variant_type[1]);

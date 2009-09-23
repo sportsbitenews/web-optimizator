@@ -41,6 +41,7 @@ define('_WEBO_LOGIN_UPGRADENOTICE', 'Ви можете обновити вашу
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') до найостаннішої. Для цього введіть ваш логін і пароль в формі вище і натисніть кнопку <strong>Поновити</strong>. Web Optimizer буде автоматично обновлений до версії <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
 define('_WEBO_UPGRADE_SUCCESSFULL', 'Ви успішно обновились до версії ');
+define('_WEBO_UPGRADE_SUCCESSFULL2', '');
 define('_WEBO_UPGRADE_UNABLE', 'Не вдається завантажити останню версію з репозиторію. Будь-ласка, перевірте з\'єднання серверу з інтернетом та наявність встановленого curl.');
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALL', 'Щоб видалити Web Optimizer, будь-ласка, введіть ваш логін та пароль у формі вище та натисніть кнопку <strong>Видалити</strong>.');
