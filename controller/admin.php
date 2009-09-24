@@ -1168,7 +1168,7 @@ ExpiresDefault \"access plus 10 years\"
 			@copy($this->input['user']['webo_cachedir'] . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
 /* copy stamp image to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
-			if (!is_file($this->input['user']['document_root']) . 'favicon.ico') {
+			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {
 				$this->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
 			}
 			$this->write_progress($this->web_optimizer_stage = 4);
