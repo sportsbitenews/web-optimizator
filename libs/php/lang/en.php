@@ -70,7 +70,7 @@ define('_WEBO_NEW_NOSCRIPT', 'For correct work JavaScript must be enabled!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
-define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Uninstall');
+define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Uninstallation');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Thank you for using Web Optimizer. You can install it once more later by visiting <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">Web Optimizer page</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Feel free to visit <a href="http://code.google.com/p/web-optimizator/">Web Optimizer website</a> and submit <a href="http://code.google.com/p/web-optimizator/issues/list">any related issues</a>.');

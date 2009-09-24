@@ -127,7 +127,7 @@ class web_optimizer {
 	**/
 	function set_options() {
 /* Set paths with new options */
-		$this->options['document_root'] = !empty($this->options['document_root']) ? $this->options['document_root'] : '';
+		$this->options['document_root'] = empty($this->options['document_root']) ? '' : $this->options['document_root'];
 		$this->view->set_paths($this->options['document_root']);
 /* Set local root if chained optimization */
 		if (!empty($this->web_optimizer_stage)) {
@@ -135,7 +135,7 @@ class web_optimizer {
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
 		}
-		$premium = $this->view->validate_license($this->options['license']);
+		$this->premium = $this->view->validate_license($this->options['license']);
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
@@ -143,35 +143,35 @@ class web_optimizer {
 				"installdir" => $this->options['webo_cachedir'],
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
-				"gzip_level" => round($this->options['gzip']['javascript_level']),
+				"gzip_level" => $this->premium ? round($this->options['gzip']['javascript_level']) : 1,
 				"minify" => $this->options['minify']['javascript'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
-				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'],
-				"unobtrusive" => $this->options['unobtrusive']['on'] && $premium,
-				"unobtrusive_body" => $this->options['unobtrusive']['body'] && $premium,
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && $this->premium,
+				"unobtrusive" => $this->options['unobtrusive']['on'] && $this->premium,
+				"unobtrusive_body" => $this->options['unobtrusive']['body'] && $this->premium,
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $premium 
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium 
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"installdir" => $this->options['webo_cachedir'],
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
-				"gzip_level" => round($this->options['gzip']['css_level']),
+				"gzip_level" => $this->premium ? round($this->options['gzip']['css_level']) : 1,
 				"minify" => $this->options['minify']['css'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
-				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'],
-				"data_uris" => $this->options['data_uris']['on'] && $premium,
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && $this->premium,
+				"data_uris" => $this->options['data_uris']['on'] && $this->premium,
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
-				"css_sprites" => $this->options['css_sprites']['enabled'] && $premium,
+				"css_sprites" => $this->options['css_sprites']['enabled'] && $this->premium,
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
@@ -181,35 +181,35 @@ class web_optimizer {
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
-				"parallel" => $this->options['parallel']['enabled'] && $premium,
+				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $premium
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate']) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => round($this->options['gzip']['page_level']),
-				"gzip_cookie" => $this->options['gzip']['cookie'] && $premium,
+				"gzip_cookie" => $this->options['gzip']['cookie'] && $this->premium,
 				"minify" => $this->options['minify']['page'],
-				"minify_aggressive" => $this->options['minify']['html_one_string'] && $premium,
-				"remove_comments" => $this->options['minify']['html_comments'] && $premium,
-				"dont_check_file_mtime" => $premium ? $this->options['performance']['mtime'] : 1,
+				"minify_aggressive" => $this->options['minify']['html_one_string'] && $this->premium,
+				"remove_comments" => $this->options['minify']['html_comments'] && $this->premium,
+				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
-				"cache" => $this->options['html_cache']['enabled'] && $premium,
+				"cache" => $this->options['html_cache']['enabled'] && $this->premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'],
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
-				"parallel" => $this->options['parallel']['enabled'] && $premium,
+				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
-				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $premium,
-				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $premium,
-				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $premium,
+				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $this->premium,
+				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $this->premium,
+				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text']
 			)
@@ -321,16 +321,14 @@ class web_optimizer {
 	*
 	**/
 	function javascript($options,$type) {
-		if (!empty($options['minify'])) {
-/* Remove any files in the remove list */
-			$this->do_remove();
 /* prepare list of files to process */
-			$script_files = array();
-			foreach ($this->initial_files as $file) {
-				if (!empty($file['tag']) && $file['tag'] == 'script') {
-					$script_files[] = $file;
-				}
+		$script_files = array();
+		foreach ($this->initial_files as $file) {
+			if (!empty($file['tag']) && $file['tag'] == 'script') {
+				$script_files[] = $file;
 			}
+		}
+		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium))) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
@@ -375,14 +373,14 @@ class web_optimizer {
 	*
 	**/
 	function css($options, $type) {
-		if (!empty($options['minify'])) {
 /* prepare list of files to process */
-			$link_files = array();
-			foreach ($this->initial_files as $file) {
-				if (!empty($file['tag']) && $file['tag'] == 'link') {
-					$link_files[] = $file;
-				}
+		$link_files = array();
+		foreach ($this->initial_files as $file) {
+			if (!empty($file['tag']) && $file['tag'] == 'link') {
+				$link_files[] = $file;
 			}
+		}
+		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium))) {
 /* Compress separately for each media type*/
 			$this->content = $this->do_compress(
 				array(
@@ -563,22 +561,19 @@ class web_optimizer {
 	**/
 	function set_gzip_encoding() {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
+			if (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
 				$this->encoding = "x-gzip";
 				$this->encoding_ext = 'gz';
-			}
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
+			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
 				$this->encoding = "gzip";
 				$this->encoding_ext = 'gz';
-			}
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate")) {
+			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate")) {
 				$this->encoding = "x-deflate";
-				$this->encoding_ext = empty($this->encoding_ext) ? 'df' : $this->encoding_ext;
-			}
-			if(strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "deflate")) {
+				$this->encoding_ext = 'df';
+			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "deflate")) {
 				$this->encoding = "deflate";
-				$this->encoding_ext = empty($this->encoding_ext) ? 'df' : $this->encoding_ext;
-			}
+				$this->encoding_ext = 'df';
+			} 
 		}
 	}
 	
@@ -590,39 +585,6 @@ class web_optimizer {
 		if(!empty($this->encoding)) {
 			header("Content-Encoding: " . $this->encoding);
 		}
-	}
-
-	/**
-	* Completely remove any JS scripts in the remove list
-	*
-	**/
-	function do_remove() {
-		if(empty($this->remove_files)) {
-			return;
-		}
-/* If we have scripts */
-		if(is_array($this->script_array)) {
-/* Pull out remove immune */
-			preg_match("@<!-- REMOVE IMMUNE -->(.*?)<!-- END REMOVE IMMUNE -->@is", $this->content, $match);
-			$_immune = $match[0];
-			$this->content = str_replace($_immune,'@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@', $this->content);
-			foreach($this->script_array AS $script) {
-				foreach($this->remove_files AS $file) {
-					if(!empty($file) && !empty($script)) {
-						if(strstr($script,$file)) {
-/* Remove the scripts from the source if they are on the remove list */
-							$this->content = str_replace($script, "", $this->content);
-						}
-					}
-				}
-			}
-/* Put back */
-			$this->content = str_replace("@@@COMPRESSOR:TRIM:REMOVEIMMUNE@@@", $_immune, $this->content);
-/* Remove comments */
-			$this->content = str_replace("<!-- REMOVE IMMUNE -->", "", $this->content);
-			$this->content = str_replace("<!-- END REMOVE IMMUNE -->", "", $this->content);
-		}
-
 	}
 
 	/**
@@ -926,10 +888,12 @@ class web_optimizer {
 		$dates = false;
 		if (!empty($files) && is_array($files)) {
 			foreach($files AS $key => $value) {
-				$value['file'] = $this->get_file_name($value['file']);
-				if (file_exists($value['file'])) {
-					$thedate = filemtime($value['file']);
-					$dates[] = $thedate;
+				if (!empty($value['file'])) {
+					$value['file'] = $this->get_file_name($value['file']);
+					if (file_exists($value['file'])) {
+						$thedate = filemtime($value['file']);
+						$dates[] = $thedate;
+					}
 				}
 			}	
 		}

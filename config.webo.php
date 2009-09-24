@@ -22,11 +22,11 @@ $compress_options['unobtrusive']['on'] = "0";
 ## Add JS loader for all libraries right before </body>
 $compress_options['unobtrusive']['body'] = "0";
 ## Put all known JS informers right before </body>
-$compress_options['unobtrusive']['informers'] = "0";
+$compress_options['unobtrusive']['informers'] = "1";
 ## Put all known JS counters right before </body>
-$compress_options['unobtrusive']['counters'] = "0";
+$compress_options['unobtrusive']['counters'] = "1";
 ## Put all known advertisement blocks right before </body>
-$compress_options['unobtrusive']['ads'] = "0";
+$compress_options['unobtrusive']['ads'] = "1";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
 ## Move merged scripts to </head>
