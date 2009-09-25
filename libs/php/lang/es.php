@@ -233,6 +233,23 @@ define('_WEBO_htaccess_local', 'Colocar el archivo <code>.htaccess</code> localm
 define('_WEBO_htaccess_access', 'Proteger la instalaci&oacute;n de Web Optimizer via <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'Activar reescritura autom&aacute;tica');
 
+/* Version comparison */
+define('_WEBO_SPLASH2_COMPARISON', 'Demo version limitations');
+define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Features and technologies');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Demo Version');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Full Version');
+define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium Support');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU overhead');
+define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
+define('_WEBO_SPLASH2_COMPARISON_UPTO', 'up to');
+define('_WEBO_SPLASH2_COMPARISON_TRAFFIC', 'less traffic');
+define('_WEBO_SPLASH2_COMPARISON_LOAD', 'CPU load');
+define('_WEBO_SPLASH2_COMPARISON_SAVED', 'CPU saved');
+define('_WEBO_SPLASH2_COMPARISON_REQUESTS', 'HTTP requests');
+define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'extra website speedup');
+define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'not included');
+define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'All benefits');
+
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Instalaci&oacute;n - Etapa 3');
 define('_WEBO_SPLASH3_SAVED', 'Sus opciones de configuraci&oacute;n an sido grabadas exitosamente.');

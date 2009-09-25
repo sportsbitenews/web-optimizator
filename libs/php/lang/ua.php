@@ -230,6 +230,24 @@ define('_WEBO_htaccess_local', 'Розмістити <code>.htaccess</code> в �
 define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'В\ключити авто-запис');
 
+/* Version comparison */
+define('_WEBO_SPLASH2_COMPARISON', 'Ограничения демо-версии');
+define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Аспекты технологии');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Демо-версия');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная версия');
+define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Процессорные затраты');
+define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'мс');
+define('_WEBO_SPLASH2_COMPARISON_UPTO', 'экономия до');
+define('_WEBO_SPLASH2_COMPARISON_UPTO2', 'на');
+define('_WEBO_SPLASH2_COMPARISON_TRAFFIC', 'трафика');
+define('_WEBO_SPLASH2_COMPARISON_LOAD', 'загрузки процессора');
+define('_WEBO_SPLASH2_COMPARISON_REQUESTS', 'HTTP-запросов');
+define('_WEBO_SPLASH2_COMPARISON_SAVED', 'процессорного времени');
+define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'быстрее загрузка сайта');
+define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'отсутствует');
+define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества');
+
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Установка - третій крок');
 define('_WEBO_SPLASH3_SAVED', 'Ваші налаштування були успішно збережені.');
