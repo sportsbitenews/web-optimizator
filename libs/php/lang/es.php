@@ -133,7 +133,7 @@ define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usualmente Web Optimizer revisa si los ar
 <p>Al activar esta opci&oacute;n usted debe de administrar la memoria Cache del Web Optimizer manualmente para limpiar folders del Cache de archivos antiguos almacenados cuando nuevos recursos est&eacute;n disponibles.</p>');
 define('_WEBO_SPLASH2_GZIP', 'Opciones Gzip');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>El Gzipping comprime el c&oacute;digo a trav&eacute;s de compresi&oacute;n Gzip. Esto es recomendado solo para websites de peque&ntilde;a escala, y est&aacute; apagado predeterminadamente.</p>
-<p>Para websites m&aacute;s grandes, usted deber&iacute;a efectuar Gzip por medio del web server.</p>
+<p>Para websites m&aacute;s grandes, usted deber&iacute;a efectuar Gzip por medio del web server. Web Optimizer by default adds all rules directly to server configuration.</p>
 <p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Haga su website m&aacute;s r&aacute;pido y m&aacute;s barato de operar de un simple paso</a></p>');
 define('_WEBO_SPLASH2_EXPIRES', 'Client Side Cache');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>Esto, a&ntilde;ade un encabezado de expiraci&oacute;n a sus archivos de JavaScript y CSS lo que asegura que est&eacute;n almacenados en el Cache del browser del cliente.</p>

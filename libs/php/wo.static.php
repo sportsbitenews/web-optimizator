@@ -4,6 +4,8 @@
  * Sends cache headers among the content of requested file.
  * Resticted filename to document root only.
  * Helps when there is now mod_expires on the server.
+ * htaccess RewriteRule ^(.*)\.(gif|png|jpe?g|ico)\.$ /webo/cache/wo.static.php?$1.$2
+ * or raw /webo/cache/wo.static.php?$filepath
  *
  **/
 

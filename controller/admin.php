@@ -1076,13 +1076,13 @@ ExpiresDefault \"access plus 10 years\"
 				}
 				if (empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-<FilesMatch \.(flv|wmf)$>
+<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm|)$>
 	ExpiresActive Off
 </FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['static'])) {
 					$content .= "
-<FilesMatch \.(swf|pdf|doc|rtf)$>
+<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 	ExpiresActive Off
 </FilesMatch>";
 				}

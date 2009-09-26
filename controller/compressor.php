@@ -313,6 +313,10 @@ class web_optimizer {
 /* or echo content to the browser */
 		} else {
 			echo $this->content;
+/* browsers crash if there is anything after deflate stream */
+			if (in_array($this->encoding, array('deflate', 'x-deflate'))) {
+				die();
+			}
 		}
 	}
 
@@ -536,8 +540,8 @@ class web_optimizer {
 	*
 	**/
 	function create_gz_compress($content, $force_gzip = true) {
-		if (!empty($this->encoding) && function_exists('gzcompress')) {
-			if (!empty($force_gzip)) {
+		if (!empty($this->encoding)) {
+			if (!empty($force_gzip) && function_exists('gzcompress')) {
 				$size = strlen($this->content);
 				$crc = crc32($this->content);
 				$content = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
@@ -546,8 +550,8 @@ class web_optimizer {
 				$content .= $this->content;
 				$content .= pack('V', $crc);
 				$content .= pack('V', $size);
-			} else {
-				$content = gzcompress($this->content, $this->options['page']['gzip_level']);
+			} elseif (empty($force_gzip) && function_exists('gzdeflate')) {
+				$content = gzdeflate($this->content, $this->options['page']['gzip_level']);
 			}
 			return $content;
 		} else {
@@ -1251,7 +1255,11 @@ class web_optimizer {
 						$content = @file_get_contents(__FILE__ . "." . $extension);
 						if (empty($content)) {
 						// Send compressed contents
-							$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', $gzip || $xgzip ? FORCE_GZIP : FORCE_DEFLATE);
+							if ($gzip || $xgzip) {
+								$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', FORCE_GZIP);
+							} else {
+								$contents = gzdeflate($contents, '. $this->options[$type]['gzip_level'] .');
+							}
 							$fp = @fopen(__FILE__ . "." . $extension, "wb");
 							if ($fp) {
 								@fwrite($fp, $contents);

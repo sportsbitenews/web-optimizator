@@ -122,16 +122,16 @@ define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unobtrusive JavaScript will be load
 									<p><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive JavaScript</a>, <a href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/">Non-blocking JavaScript Downloads</a>, <a href="http://dean.edwards.name/weblog/2005/09/busted/">The <code>window.onload</code> Problem - Solved!</a>, <a href="http://dean.edwards.name/weblog/2006/06/again/"><code>window.onload</code> (again)</a></p>');
 define('_WEBO_SPLASH2_EXTERNAL', 'External and inline scripts');
 define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>With this option all scripts (including external files and inline ones) will be merged into single one and added right after CSS file.</p>
-									<p>This can be useful in some cases when there is a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
+									<p>This can be useful in some cases when there are a lot of different plugins and modules in head section and this logic can\'t be moved to unobtrusive load.</p>
 									<p>You also can define a list of excluded files (i.e. ga.js jquery.min.js).</p>
 									<p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/">Serving JavaScript Fast</a></p>');
 define('_WEBO_SPLASH2_MTIME', 'Performance Options');
 define('_WEBO_SPLASH2_MTIME_INFO', '<p>Usually Web Optimizer checks if files have been changed since the last access to the page. And uses retrieved information to give existing file from cache or generate a new one.</p>
 									<p>It\'s not good from the server side optimization point of view so you can disable this check.</p>
-									<p>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assests are available.</p>');
+									<p>By enabling this option you need to manage Web Optimizer cache manually to clean cache folders from out-of-date cached files when new assets are available.</p>');
 define('_WEBO_SPLASH2_GZIP', 'Gzip Options');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping compresses the code via Gzip compression. This is recommended only for small scale sites, and is off by default.</p>
-									<p>For larger sites, you should Gzip via the web server.</p>
+									<p>For larger sites, you should Gzip via the web server. Web Optimizer by default adds all rules directly to server configuration.</p>
 									<p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Make your site faster and cheaper to operate in one easy step</a></p>');
 define('_WEBO_SPLASH2_EXPIRES', 'Client Side Caching');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>This option adds an expires header to your JavaScipt and CSS files which ensures that files are cached on the client-side by the browser.</p>
@@ -142,7 +142,7 @@ define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to ca
 									<p>Note, with this option all server-dependent logic will be disabled. All pages will be completely static. Please turn it on only if you are completely sure.</p>
 									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
 define('_WEBO_SPLASH2_SPRITES', 'Use CSS Sprites');
-define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS Background images as CSS Sprites. This can significantly reduce the number of HTTP requests during website load.</p>
+define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS background images as CSS Sprites. This can significantly reduce the number of HTTP requests during website load.</p>
 									<p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p>
 									<p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif).</p>
 									<p><a href="http://www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
@@ -174,7 +174,7 @@ define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls 
 define('_WEBO_external_scripts_on', 'Enable external and inline JavaScript merging');
 define('_WEBO_external_scripts_head_end', 'Force moving all merged scripts to <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Enable external and inline styles merging');
-define('_WEBO_external_scripts_ignore_list', 'Exclude file from merging');
+define('_WEBO_external_scripts_ignore_list', 'Exclude files from merging');
 define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_with', 'Minify JavaScript files');
