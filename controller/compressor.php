@@ -275,8 +275,12 @@ class web_optimizer {
 		} else {
 			$this->content = $content;
 		}
-/* skip RSS */
-		if (!strpos($this->content, "<rss version=")) {
+		if (function_exists('get_headers')) {
+			$headers = get_headers();
+			$xml = strpos($headers['Content-Type'], 'ext/xml');
+		}
+/* skip RSS, SMF xml format */
+		if (!strpos($this->content, "<rss version=") && empty($xml) && !strpos($this->content, "<smf>")) {
 			if (!empty($this->web_optimizer_stage)) {
 				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
 			}
@@ -1464,18 +1468,20 @@ class web_optimizer {
 		if (empty($this->head)) {
 /* hack for some templates (i.e. LiveStreet) */
 			$this->content = preg_replace("!(</head>)((\r?\n)*<script.*)(<body)!is", "$2$1$4", $this->content);
-/* Pull out the comment blocks, so as to avoid touching conditional comments */
-			if (!empty($this->options['javascript']['minify'])) {
-				$this->content = str_replace(array('//]]>', '<!--//-->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->content);
-			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
 			preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
+/* Pull out the comment blocks, so as to avoid touching conditional comments */
+				if (!empty($this->options['javascript']['minify'])) {
+					$this->head = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $matches[0]);
+/* replace current head content with updated version */
+					$this->content = str_replace($matches[0], $this->head, $this->content);
+				}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-				$this->head = preg_replace("@<!--.*?-->@is", '', $matches[0]);
+				$this->head = preg_replace("@<!--.*?-->@is", '', $this->head);
 			}
 /* split XHTML behavior from HTML */
 			$xhtml = strpos($this->content, 'XHTML 1');
@@ -1496,7 +1502,7 @@ class web_optimizer {
 				} else {
 					$el = 'span';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://code.google.com/p/web-optimizator/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>' . "$1", $this->content);
+				$this->content = preg_replace('!(</body>)!is', '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://www.web-optimizer.us/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>' . "$1", $this->content);
 			}
 		}
 	}
