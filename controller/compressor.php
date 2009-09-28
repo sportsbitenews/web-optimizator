@@ -276,8 +276,13 @@ class web_optimizer {
 			$this->content = $content;
 		}
 		if (function_exists('get_headers')) {
-			$headers = get_headers();
-			$xml = strpos($headers['Content-Type'], 'ext/xml');
+			$headers = headers_list();
+/* define if Content-Type is text/xml and skip it */
+			foreach ($headers as $header) {
+				if (strpos($header, 'text/xml')) {
+					$xml = 1;
+				}
+			}
 		}
 /* skip RSS, SMF xml format */
 		if (!strpos($this->content, "<rss version=") && empty($xml) && !strpos($this->content, "<smf>")) {
