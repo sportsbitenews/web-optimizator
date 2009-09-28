@@ -9,10 +9,10 @@ work, you (the licensee) agree that you have read, understood, and
 will comply with the following terms and conditions.
 
 Permission to copy, modify, and distribute this software and its
-documentation, with or without modification, for any purpose and
-without fee or royalty is hereby granted, provided that you include
-the following on ALL copies of the software and documentation or
-portions thereof, including modifications:
+documentation, with or without modification, for non-commercial
+purposes only and without fee or royalty is hereby granted, provided
+that you include the following on ALL copies of the software and
+documentation or portions thereof, including modifications:
 
 The full text of this NOTICE in a location viewable to users of the
 redistributed or derivative work.
@@ -25,7 +25,10 @@ date changes were made. (We recommend you provide URIs to the location
 from which the code is derived.)
 
 NOTE: you can use this software only according to its license key
-limitations.
+limitations. You are not allowed to re-distibute full edition of this
+software, or any part of its full edition, or any services based on the
+full edition of this software or its parts without a special agreement
+with WEBO Software.
 
 THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT
 HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,
