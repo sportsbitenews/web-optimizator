@@ -45,7 +45,7 @@ define('_WEBO_UPGRADE_SUCCESSFULL', 'Sie haben erfolgreich auf Version ');
 define('_WEBO_UPGRADE_SUCCESSFULL2', ' aktualisiert');
 define('_WEBO_UPGRADE_UNABLE', 'Kann die neueste Version nicht downloaden. Pr&uuml;fen Sie die Internetverbindung zum Server und die Curl-Existenz.');
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'Um Web Optimizer von Ihrem System zu entfernen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Deinstallieren</strong>');.
+define('_WEBO_LOGIN_UNINSTALL', 'Um Web Optimizer von Ihrem System zu entfernen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Deinstallieren</strong>');
 define('_WEBO_LOGIN_UNINSTALL2', 'Web Optimizer kann f&uuml;r Ihre Website ganz einfach unwirksam gemacht werden. Sie m&uuml;ssen das Tool nur l&ouml;schen.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Web Optimizer deinstallieren');
 define('_WEBO_LOGIN_FAILED', 'Login fehlgeschlagen');
@@ -133,11 +133,11 @@ define('_WEBO_SPLASH2_GZIP', 'Gzip-Optionen');
 define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping komprimiert den Code via Gzip-Komprimierung. Das ist nur f&uuml;r kleindimensionierte Seiten empfohlen und ist als Standard ausgeschaltet.</p>
 									<p>F&uuml;r gr&ouml;&szlig;ere Seiten sollten Sie Gzip via Web-Server ausf&uuml;hren.</p>
 									<p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Make your site faster and cheaper to operate in one easy step</a></p>');
-define('_WEBO_SPLASH2_EXPIRES', 'Ablauf in weiter Zukunft');
+define('_WEBO_SPLASH2_EXPIRES', 'Klient-Seite Cachen');
 define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>Dies f&uuml;gt einen Ablauf-Header in Ihre JavaScript und CSS-Dateien ein, der sicherstellt, dass sie Client-seitig durch den Browser zwischengespeichert werden.</p>
 									<p>Wenn Sie JS oder CSS &auml;ndern, wird ein neuer Dateiname erstellt und die letzte Version wird deshalb heruntergeladen und zwischengespeichert.</p>
 									<p><a href="http://developer.yahoo.com/performance/rules.html#expires">Ablauf- oder Cache-Control Header hinzuf&uuml;gen</a></p>');
-define('_WEBO_SPLASH2_HTMLCACHE', 'HTML-Dateien zwischenspeichern');
+define('_WEBO_SPLASH2_HTMLCACHE', 'Server-Seite Cachen');
 define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Diese Option erm&ouml;glicht Web Optimizer den erstellten HTML-Output zwischenzusoeichern und so eine Menge Server-seitige Arbeit f&uuml;r die Erstelluing abzuwenden.</p>
 									<p>Beachten Sie, dass diese Option alle Server-abh&auml;ngige Logik abschaltet. Alle Seiten werden vollst&auml;ndig statisch. Schalten Sie diese Option nur an, wenn Sie v&ouml;llig sicher sind.
 									<p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
@@ -164,7 +164,7 @@ define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Web Optimizer kann einen Link in die Fu&
 									<p>Bitte unterst&uuml;tzen Sie Web Optimizer durch Aktivieren dieses Links.</p>');
 define('_WEBO_SPLASH2_AUTOCHANGE', '/index.php &auml;ndern');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer kann zu Ihrer Website hinzugef&uuml;gt werden auf der Basis  ');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' aller erforderlichen Änderungen (nur f&uuml;r /index.php).</p>
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' aller erforderlichen &Auml;nderungen (nur f&uuml;r /index.php).</p>
 									<p>Anmerkung: Setzen Sie diese Option vorsichtig ein, sie kann Probleme bis hin zur Serverkonfiguration hervorrufen</p>');
 define('_WEBO_unobtrusive_on', 'Unauff&auml;lliges JavaScript aktivieren');
 define('_WEBO_unobtrusive_body', 'JavaScript Datei vor <code>&lt;/body&gt;</code> einflie&szlig;en lassen');
@@ -175,7 +175,7 @@ define('_WEBO_external_scripts_on', 'Vermischung von externem und Inline JavaScr
 define('_WEBO_external_scripts_head_end', 'Verschiebung aller vermischten Scripts nach <code>&lt;/head&gt;</code> erzwingen');
 define('_WEBO_external_scripts_css', 'Vermischung von externem und Inline Styles aktivieren');
 define('_WEBO_external_scripts_ignore_list', 'Datei vom Vermischen ausschlie&szlig;en');
-define('_WEBO_dont_check_file_mtime_on', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
+define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
 define('_WEBO_minify_javascript', 'JavaScript-Dateien kombinieren');
 define('_WEBO_minify_with', 'JavaScript-Dateien minimieren');
 define('_WEBO_minify_with_jsmin', 'Mit JSMin minimieren');
@@ -217,7 +217,7 @@ define('_WEBO_css_sprites_memory_limited', 'Speicherbenutzung beschr&auml;nken')
 define('_WEBO_css_sprites_dimensions_limited', 'Bilder gr&ouml;&szlig;er als eine vorgegebene Zahl in einer Dimension ausschlie&szlig;en');
 define('_WEBO_css_sprites_ignore_list', 'Dateien von CSS Sprites ausschlie&szlig;en');
 define('_WEBO_parallel_enabled', 'Multiple Hosts aktivieren');
-define('_WEBO_parallel_check', 'Verf&uuml;gbarkeit von hosts\ automatisch pr&uuml;fen');
+define('_WEBO_parallel_check', 'Verf&uuml;gbarkeit von hosts automatisch pr&uuml;fen');
 define('_WEBO_parallel_allowed_list', 'Erlaubte Hosts, z.B. img i1 i2');
 define('_WEBO_htaccess_enabled', '<code>.htaccess</code> aktivieren');
 define('_WEBO_htaccess_mod_deflate', '<code>mod_deflate</code> verwenden');
@@ -257,7 +257,7 @@ define('_WEBO_SPLASH3_TITLE', 'Installation - Abschnitt 3');
 define('_WEBO_SPLASH3_SAVED', 'Die Konfigurationsoptionen wurden erfolgreich gespeichert.');
 define('_WEBO_SPLASH3_REWRITE', 'Die Konfiguration wurde erfolgreich gespeichert.');
 define('_WEBO_SPLASH3_REWRITE_SHORT', 'Beschleunigung abgeschlossen');
-define('_WEBO_SPLASH3_MODIFY_SHORT', 'Erforderliche Änderungen');
+define('_WEBO_SPLASH3_MODIFY_SHORT', 'Erforderliche &Auml;nderungen');
 define('_WEBO_SPLASH3_TESTING_SHORT', 'Im Test');
 define('_WEBO_SPLASH3_SECURITY_SHORT', 'Mehr Sicherheit');
 define('_WEBO_SPLASH3_ADDITIONAL_SHORT', 'Zus&auml;tzliche Beschleunigung');
@@ -265,7 +265,7 @@ define('_WEBO_SPLASH3_REWRITE_DESCRIPTION', 'Ihre Webseite wurde auf Basis von  
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' gepatcht. Sie k&ouml;nnen das <a href="');
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">Ergebnis pr&uuml;fen</a>.');
 define('_WEBO_SPLASH3_WORKING', 'Es funktioniert. OK?');
-define('_WEBO_SPLASH3_WORKING_REQUIRED', 'Erforderliche Änderungen f&uuml;r ');
+define('_WEBO_SPLASH3_WORKING_REQUIRED', 'Erforderliche &Auml;nderungen f&uuml;r ');
 define('_WEBO_SPLASH3_ADD', 'Jetzt sollten Sie den <a href="#modify">Web Optimizer Code hinzuf&uuml;gen</a> zu Ihren eigenen PHP-Seiten(');
 define('_WEBO_SPLASH3_ADD_', '). Es macht Vielses einfacher, wenn Sie eine PHP-Datei haben, die alle Seiten Ihrer Website bedient, so dass Sie nur diese Datei &auml;ndern m&uuml;ssen.');
 define('_WEBO_SPLASH3_MODIFY', 'So modifizieren Sie Ihre PHP Dateien:');
@@ -294,7 +294,7 @@ define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Stellen Sie sicher, dass die Root Ihrer
 define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'CHMOD 775 oder CHMOD 777 oder <code>.htaccess</code> dort im Lese/Schreibmodus erstellen oder CHMOD der aktuellen <code>.htaccess</code> zu 664 oder 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Stellen Sie sicher, dass Sie Web Optimizer installiert haben nach');
 define('_WEBO_SPLASH3_CONFSAVED', 'Konfiguration gespeichert');
-define('_WEBO_SPLASH3_CONFIGERROR', 'Kann Konfigurationsdatei nicht zum Schreiben &ouml;ffnen. Ändern Sie die Eigenschaften der <code>config.webo.php</code> so, dass sie beschreibbar ist.');
+define('_WEBO_SPLASH3_CONFIGERROR', 'Kann Konfigurationsdatei nicht zum Schreiben &ouml;ffnen. &Auml;ndern Sie die Eigenschaften der <code>config.webo.php</code> so, dass sie beschreibbar ist.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Sie k&ouml;nnen das &uuml;blicherweise &uuml;ber Ihren FTP-Client erledigen. Navigieren Sie zu <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , klicken Sie mit der rechten Maustaste auf die Datei und &auml;ndern Sie die Eigenschaften oder die CHMOD-Option. Stellen Sie 775, 777 oder "write" ein.');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Wenn Sie das getan haben, aktualisieren Sie diese Seite.');
@@ -304,7 +304,7 @@ define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Sie k&ouml;nnen erweiterte Einstellunge
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Machen Sie Ihre Webseite Standard-Beschwerde (HTML, JavaScript und CSS).</strong> Non-Standard externen Dateien Eingliederung f&uuml;ren zu falschen Web Optimizer Verhalten und ihre disconfiguration.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Alle f&uuml;r Ihre Website erforderlichen JavaScript- und CSS-Dateienin die <code>head</code>-Sektion verschieben.</strong> Das erm&ouml;glicht Web Optimizer das Zusammenf&uuml;hren und Minimieren.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Multiple Hosts f&uuml;r Ihre Website hinzuf&uuml;gen.</strong> Sie m&uuml;ssen zu Ihrer DNS den Record <code>* IN A your_server_IP_address</code> hinzuf&uuml;gen und dann passende Subdomains (z.B. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) in Ihre Serverkonfiguration hinzuf&uuml;gen und Web Optimizer erneut installieren. Web Optimizer wird die existierenden Hosts automatisch ermitteln (wenn nicht, f&uuml;gen Sie diese manuell hinzu) und die Bilder auf sie verteilen.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Inline CSS und JavaScript in exterene Dateien verschieben.</strong> Das macht die Verwaltung von Änderungen am Design und Verhalten Ihrer Website einfacher. Au&szlig;erdem erm&ouml;glicht es Web Optimizer das Zusammenf&uuml;hren, Minimieren und Zwischenspeichern aller Styles und Scripts, die auf Ihrer Website benutzt werden.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Inline CSS und JavaScript in exterene Dateien verschieben.</strong> Das macht die Verwaltung von &Auml;nderungen am Design und Verhalten Ihrer Website einfacher. Au&szlig;erdem erm&ouml;glicht es Web Optimizer das Zusammenf&uuml;hren, Minimieren und Zwischenspeichern aller Styles und Scripts, die auf Ihrer Website benutzt werden.');
 
 /* System check info on the first screen */
 define('_WEBO_SYSTEM_CHECK', '&Uuml;berpr&uuml;fung des Server Konfiguration...');
