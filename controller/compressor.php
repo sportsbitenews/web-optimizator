@@ -1,9 +1,9 @@
 <?php
 /**
- * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
- * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page.
  * Can also gzip and minify the page itself
+ * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  /* version 1.0 = Festinus Optimus
  **/
 class web_optimizer {
@@ -12,7 +12,7 @@ class web_optimizer {
 	* Constructor
 	* Sets the options and defines the gzip headers
 	**/
-	function web_optimizer($options = false) {
+	function web_optimizer ($options = false) {
 /* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(@getenv('SCRIPT_NAME'), "ptimizing.php") ? 0 : $_GET['web_optimizer_stage']);
 		$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
@@ -125,7 +125,7 @@ class web_optimizer {
 	/**
 	* Options are read from config.webo.php
 	**/
-	function set_options() {
+	function set_options () {
 /* Set paths with new options */
 		$this->options['document_root'] = empty($this->options['document_root']) ? '' : $this->options['document_root'];
 		$this->view->set_paths($this->options['document_root']);
@@ -233,7 +233,7 @@ class web_optimizer {
 	* Start saving the output buffer
 	*
 	**/
-	function start() {
+	function start () {
 		ob_start();
 	}
 
@@ -241,31 +241,15 @@ class web_optimizer {
 	* Compress passes content directly
 	*
 	**/
-	function compress($content) {
+	function compress ($content) {
 		$this->finish($content);
-	}
-
-	/**
-	* Tells the script to ignore certain files
-	*
-	**/
-	function ignore($files = false) {
-		if(!empty($files)) {
-			$files_array = explode(",",$files);
-		}
-/* Ignore these files */
-		if(!empty($files_array)) {
-			foreach($files_array AS $key=>$value) {
-				$this->ignore_files[] = trim($value);
-			}
-		}
 	}
 
 	/**
 	* Do work and return output buffer
 	*
 	**/
-	function finish($content = false) {
+	function finish ($content = false) {
 /* disable any actions if not active */
 		if (empty($this->options['active'])) {
 			return;
@@ -333,7 +317,7 @@ class web_optimizer {
 	* GZIP and minify the javascript as required
 	*
 	**/
-	function javascript($options,$type) {
+	function javascript ($options,$type) {
 /* prepare list of files to process */
 		$script_files = array();
 		foreach ($this->initial_files as $file) {
@@ -385,7 +369,7 @@ class web_optimizer {
 	* GZIP and minify the CSS as required
 	*
 	**/
-	function css($options, $type) {
+	function css ($options, $type) {
 /* prepare list of files to process */
 		$link_files = array();
 		foreach ($this->initial_files as $file) {
@@ -444,7 +428,7 @@ class web_optimizer {
 	* GZIP and minify the page itself as required
 	*
 	**/
-	function page($options, $type) {
+	function page ($options, $type) {
 		if (empty($this->web_optimizer_stage) && $options['clientside_cache']) {
 /* setting cache headers for HTML file */
 			@date_default_timezone_set(@date_default_timezone_get());
@@ -456,15 +440,11 @@ class web_optimizer {
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 88 ? 88 : $this->web_optimizer_stage);
 		}
-/* Minify page itself */
-		if(!empty($options['minify'])) {
+/* Minify page itself or parse multiple hosts */
+		if(!empty($options['minify']) || (!empty($options['parallel']) && !empty($options['parallel_hosts']))) {
 			$this->content = $this->trimwhitespace($this->content);
 /* remove empty scripts after merging inline code */
 			$this->content = preg_replace("/<script type=['\"]text\/javascript['\"]><\/script>/i", "", $this->content);
-		}
-/* add multiple hosts */
-		if (!empty($options['parallel']) && !empty($options['parallel_hosts'])) {
-			$this->content = $this->add_multiple_hosts($this->content, explode(" ", $options['parallel_hosts']));
 		}
 /* remove BOM */
 		$this->content = str_replace("﻿", "", $this->content);
@@ -548,7 +528,7 @@ class web_optimizer {
 	* Returns GZIP compressed content string with header
 	*
 	**/
-	function create_gz_compress($content, $force_gzip = true) {
+	function create_gz_compress ($content, $force_gzip = true) {
 		if (!empty($this->encoding)) {
 			if (!empty($force_gzip) && function_exists('gzcompress')) {
 				$size = strlen($this->content);
@@ -572,7 +552,7 @@ class web_optimizer {
 	* Sets current encoding for HTML document
 	*
 	**/
-	function set_gzip_encoding() {
+	function set_gzip_encoding () {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
 			if (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
 				$this->encoding = "x-gzip";
@@ -594,7 +574,7 @@ class web_optimizer {
 	* Sets the correct gzip header
 	*
 	**/
-	function set_gzip_header() {
+	function set_gzip_header () {
 		if(!empty($this->encoding)) {
 			header("Content-Encoding: " . $this->encoding);
 		}
@@ -604,7 +584,7 @@ class web_optimizer {
 	* Compress JS or CSS and return source
 	*
 	**/
-	function do_compress($options, $source, $files) {
+	function do_compress ($options, $source, $files) {
 /* Save the original extension */
 		$options['original_ext'] = $options['ext'];
 /* Change the extension */
@@ -675,7 +655,7 @@ class web_optimizer {
 	* Include compressed JS or CSS into source and return it
 	*
 	**/
-	function do_include($options, $source, $cachedir, $external_array, $handler_array = null) {
+	function do_include ($options, $source, $cachedir, $external_array, $handler_array = null) {
 		if ($this->web_optimizer_stage) {
 			$this->write_progress($this->web_optimizer_stage += 1);
 		}
@@ -851,7 +831,7 @@ class web_optimizer {
 	* Replaces scripts calls or css links in the source with a marker
 	*
 	*/
-	function _remove_scripts($external_array, $source) {
+	function _remove_scripts ($external_array, $source) {
 		if (is_array($external_array)) {
 			$keys = array_keys($external_array);
 			$maxKey = array_pop($keys);
@@ -871,7 +851,7 @@ class web_optimizer {
 	* Returns the filename for our new compressed file
 	*
 	**/
-	function get_new_file($options, $cache_file, $timestamp = false) {
+	function get_new_file ($options, $cache_file, $timestamp = false) {
 		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
@@ -893,7 +873,7 @@ class web_optimizer {
 	* Returns the last modified dates of the files being compressed
 	* In this way we can see if any changes have been made
 	**/
-	function get_file_dates($files, $options) {
+	function get_file_dates ($files, $options) {
 /* option added by janvarev */
 		if (!empty($options['dont_check_file_mtime'])) {
 			return;
@@ -992,7 +972,7 @@ class web_optimizer {
 	* Gets an array of scripts/css files to be processed
 	*
 	**/
-	function get_script_array() {
+	function get_script_array () {
 /* get head with all content */
 		$this->get_head();
 		if (!empty($this->head)) {
@@ -1086,7 +1066,7 @@ class web_optimizer {
 	* Gets an content for array of scripts/css files
 	*
 	**/
-	function get_script_content($tag = false) {
+	function get_script_content ($tag = false) {
 /* to get inline values */
 		$last_key = array();
 /* to get inline values on empty non-inline */
@@ -1202,7 +1182,7 @@ class web_optimizer {
 	* Sets the headers to be sent in the javascript and css files
 	*
 	**/
-	function set_gzip_headers() {
+	function set_gzip_headers () {
 /* define encoding for HTML page */
 		$this->set_gzip_encoding();
 /* When will the file expire? */
@@ -1305,7 +1285,7 @@ class web_optimizer {
 	* Returns a path or url without the querystring and anchor
 	*
 	**/
-	function strip_querystring($path) {
+	function strip_querystring ($path) {
 		if ($commapos = strpos($path, '?')) {
 			$path = substr($path, 0, $commapos);
 		}
@@ -1337,14 +1317,20 @@ class web_optimizer {
 	* Safely trims whitespace from an HTML page
 	* Adapted from smarty code http://www.smarty.net/
 	**/
-	function trimwhitespace($source) {
+	function trimwhitespace ($source) {
 /* Pull out the script, textarea and pre blocks */
 		preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
 		$_script_blocks = $match[0];
 		$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
+/* add multiple hosts */
+		if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
+			$this->content = $this->add_multiple_hosts($this->content, explode(" ", $options['parallel_hosts']));
+		}
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
-		$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+		if (!empty($this->options['page']['minify'])) {
+			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+		}
 /* one-strig-HTML takes about 20-50ms */
 		if (!empty($this->options['page']['minify_aggressive'])) {
 /* replace breaks with nothing for block tags */
@@ -1353,7 +1339,9 @@ class web_optimizer {
 			$source = preg_replace("/(<\/?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)([^>]*)>[\s\t\r\n]+/i", "$1$2$3> ", $source);
 		}
 /* replace ' />' with '/>' */
-		$source = preg_replace("/\s\/>/", "/>", $source);
+		if (!empty($this->options['page']['minify'])) {
+			$source = preg_replace("/\s\/>/", "/>", $source);
+		}
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
@@ -1365,7 +1353,7 @@ class web_optimizer {
 	* Helper function for trimwhitespace
 	*
 	**/
-	function trimwhitespace_replace($search_str, $replace, &$subject) {
+	function trimwhitespace_replace ($search_str, $replace, &$subject) {
 		$_len = strlen($search_str);
 		$_pos = 0;
 		for ($_i=0, $_count=count($replace); $_i<$_count; $_i++) {
@@ -1454,7 +1442,7 @@ class web_optimizer {
 	* Gets the directory we are in
 	*
 	**/
-	function get_current_path($trailing=false) {
+	function get_current_path ($trailing=false) {
 		$current_dir = $this->view->paths['relative']['current_directory'];
 /* Remove trailing slash */
 		if($trailing) {
@@ -1517,7 +1505,7 @@ class web_optimizer {
 	*
 	**/
 
-	function convert_path_to_absolute($file, $path, $leave_querystring = false) {
+	function convert_path_to_absolute ($file, $path, $leave_querystring = false) {
 		$endfile = '';
 		$root = $this->view->unify_dir_separator($this->view->paths['full']['document_root']);
 		if (!empty($path['file'])) {
@@ -1549,7 +1537,7 @@ class web_optimizer {
 	* Finds background images in the CSS and converts their paths to absolute
 	*
 	**/
-	function convert_paths_to_absolute($content, $path) {
+	function convert_paths_to_absolute ($content, $path) {
 		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
 			foreach($matches[1] as $key => $file) {
@@ -1600,7 +1588,7 @@ class web_optimizer {
 	 * Gets file extension
 	 *
 	**/
-	function get_file_extension($file) {
+	function get_file_extension ($file) {
 		$f = explode('.', $file);
 		return array_pop($f);
 	}
