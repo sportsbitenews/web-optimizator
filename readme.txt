@@ -1,19 +1,22 @@
 Web Optimizer
 -----------------------
 
-Web Optimizer is a PHP script that automatically speeds up your website by
+Web Optimizer is a PHP solution that automatically speeds up your website by
 combining and compressing your JavaScript and CSS assets.
 It can also GZIP these assets, and the page itself (via PHP or .htaccess
 options). Also it applies CSS Sprites and data:URI techniques. It supports
 unobtrusive JavaScript conversion and a lot of other useful options.
-Average acceleration is 2.3 times. Web Optimizer was initially based on PHP
+Average acceleration is 2.5 times. Web Optimizer was initially based on PHP
 Speedy.
 
-There is a Web Optimizer native plugin for Wordpress:
+Web Optimizer native plugin for Wordpress:
 http://wordpress.org/extend/plugins/web-optimizer/
 
-There is a Web Optimizer native plugin for Joomla! 1.5:
+Web Optimizer native plugin for Joomla! 1.5:
 http://code.google.com/p/web-optimizator/downloads/detail?name=j15-web-optimizer.v0.5.9.zip
+
+Web Optimizer native plugin for Joomla! 1.0:
+http://code.google.com/p/web-optimizator/downloads/detail?name=j10-web-optimizer.v0.5.9.zip
 
 Installation
 -----------------------
@@ -46,7 +49,7 @@ Purchase
 -----------------------
 You can purchase full verion with dozens of acceleration settings or order
 product installation and tuning here:
-http://webo.name/web-optimizer/
+http://www.web-optimizer.us/
 
 Donate
 -----------------------

@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Contains all EN localization constants
  *
  **/
@@ -9,7 +9,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Buy now full version</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/">Buy now full version</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Demo version');
 
@@ -248,6 +248,9 @@ define('_WEBO_SPLASH2_COMPARISON_REQUESTS', 'HTTP requests');
 define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'extra website speedup');
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'not included');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'All benefits');
+define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Price');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'free');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '$99');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Installation - Stage 3');
@@ -291,7 +294,7 @@ define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Please make sure that the root of your 
 define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'Make CHMOD 775 or CHMOD 777 for it, or create writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Please sure that you have installed Web Optimizer into');
 define('_WEBO_SPLASH3_CONFSAVED', 'Configuration saved');
-define('_WEBO_SPLASH3_CONFIGERROR', 'Unable to open the config file for writing. Please change the <code>config.webo.php</code> file so that is it writable.');
+define('_WEBO_SPLASH3_CONFIGERROR', 'Unable to open the config file for writing. Please change the <code>config.webo.php</code> file to make it writable.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'You can usually do this from your FTP client. Just navigate to <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 775, 777, or "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Once you have done so, please refresh this page.');
@@ -299,9 +302,9 @@ define('_WEBO_SPLASH3_CONFIGERROR5', 'Config file does not exist. Please downloa
 define('_WEBO_SPLASH3_ADDITIONAL', 'Optimal performance settings');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'You can apply additional changes to your website to let Web Optimizer work more efficiently. Please check the following:');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Make your website standard-complaint (HTML, JavaScript, and CSS).</strong> Non standard external files inclusion lead to incorrect Web Optimizer behavior and its disconfiguration.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Move all required for your website JavaScript and CSS files to the <code>head</code> section.</strong> This will allow Web Optimizer to manage their merging and minifying.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Move all required for your website JavaScript and CSS files to the <code>head</code> section.</strong> This will allow Web Optimizer to manage their merging and minify.');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Add multiple hosts for your website.</strong> You need to add to your DNS the following record <code>* IN A your_server_IP_address</code>, then add approproate subdomains (i.e. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) into your server configuration and install Web Optimizer once more. Web Optimizer automatically detects existing hosts (if not please add them manually) and distribute images through them.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Move all inline CSS and JavaScript to external files.</strong> First of all it make managing changes in your website design / bahavior simplier. Secondly this will allow Web Optimizer to merge, minify and cache all styles and scripts that are used on your website.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Move all inline CSS and JavaScript to external files.</strong> First of all it make managing changes in your website design / behavior simplier. Secondly this will allow Web Optimizer to merge, minify and cache all styles and scripts that are used on your website.');
 
 /* System check info on the first screen */
 define('_WEBO_SYSTEM_CHECK', 'Checking server configuration...');
@@ -323,7 +326,7 @@ define('_WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE', '<code>mod_deflate</code> + <code>
 define('_WEBO_SYSTEM_CHECK_HTACCESS_EXPIRES', '<code>mod_expires</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_HEADERS', '<code>mod_headers</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_MIME', '<code>mod_mime</code>');
-define('_WEBO_SYSTEM_CHECK_HTACCESS_SETENVIF', '<code>mod_setenvif</code> support');
+define('_WEBO_SYSTEM_CHECK_HTACCESS_SETENVIF', '<code>mod_setenvif</code>');
 define('_WEBO_SYSTEM_CHECK_HTACCESS_PROTECTED', 'Protected mode for install');
 define('_WEBO_SYSTEM_CHECK_CSS_DIRECTORY', 'CSS folder is writable');
 define('_WEBO_SYSTEM_CHECK_JAVASCRIPT_DIRECTORY', 'JavaScript folder is writable');

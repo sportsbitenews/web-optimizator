@@ -1,7 +1,7 @@
 <?php
 /**
- * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
- * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.in)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  *
  **/
 class admin {
@@ -187,7 +187,7 @@ class admin {
 			'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
 			'config' => $webo_cachedir . 'config.webo.php',
 			'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
-			'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode'),
+			'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode') && function_exists('gzcompress') && function_exists('gzdeflate'),
 			'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
 			'gd_full_support' => !empty($gd['GIF Read Support']) && !empty($gd['GIF Create Support']) && !empty($gd['JPG Support']) && !empty($gd['PNG Support']) && !empty($gd['WBMP Support']),
 			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
@@ -528,7 +528,7 @@ class admin {
 	function cleanup_file ($file, $return = false) {
 		if (is_file($file)) {
 /* clean content from Web Optimizer calls */
-			$content = preg_replace("/(global \\\$web_optimizer;|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));\r?\n?/", "", @file_get_contents($file));
+			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", @file_get_contents($file));
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -850,9 +850,9 @@ class admin {
 							}
 						}
 					}
-/* check for gzencode existence */
+/* check for gzencode functions' existence */
 					if ($key == 'gzip') {
-						if (!function_exists('gzencode') && !$this->input['user']['htaccess']['enabled']) {
+						if ((!function_exists('gzencode') || !function_exists('gzcompress') || !function_exists('gzdeflate')) && !$this->input['user']['htaccess']['enabled']) {
 							$this->input['user'][$key][$option_name] = 0;
 						}
 					}

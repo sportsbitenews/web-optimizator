@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Contains all RU localization constants
  *
  **/
@@ -9,7 +9,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Настройка Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Быстрее молнии!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.in/web-optimizer/">Купить полную версию</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/">Купить полную версию</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Демонстрационная версия');
 
@@ -249,6 +249,9 @@ define('_WEBO_SPLASH2_COMPARISON_REQUESTS', 'HTTP-запросов');
 define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'быстрее загрузка сайта');
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'отсутствует');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества');
+define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '1999 руб.');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Установка - шаг третий');

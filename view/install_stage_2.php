@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Outputs final Stage 2 page
  *
  **/
@@ -183,7 +183,13 @@
 		echo _WEBO_SPLASH2_COMPARISON_SUPPORT;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
-?></td><td>24/7</td></tr></tbody></table><strong><?php
+?></td><td>24/7</td></tr><tr><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_PRICE;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_FREE;
+?></td><td><strong><?php
+		echo _WEBO_SPLASH2_COMPARISON_FULLPRICE;
+?></strong></td></tr></tbody></table><strong><?php
 		echo _WEBO_GENERAL_BUYNOW;
 ?></strong></fieldset><?php
 	}

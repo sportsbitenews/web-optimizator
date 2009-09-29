@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Outputs general container for pages of administation interface
  *
  **/
@@ -35,6 +35,6 @@ header('Content-Type: text/html; charset=' . _WEBO_CHARSET);
 	}
 ?>&copy; 2009<?php
 	echo date("Y")>2009 ? '-' . date("Y") : '';
-?> <a href="http://code.google.com/p/web-optimizator/">Web Optimizer</a>. <?php
+?> <a href="http://www.web-optimizer.us/">Web Optimizer</a>. <?php
 	echo _WEBO_GENERAL_FOOTER;
 ?></p></blockquote><script type="text/javascript" src="libs/js/yass.loadbar.js"></script></body></html>

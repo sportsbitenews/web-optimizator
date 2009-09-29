@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Alexander Beshkenadze, Nikolay Matsievsky
+ * File from Web Optimizer, Alexander Beshkenadze, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Envelopes YUI Compressor into PHP call
  * Outputs minified content
  *

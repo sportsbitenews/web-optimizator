@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Sends cache headers among the content of requested file.
  * Resticted filename to document root only.
  * Helps when there is now mod_expires on the server.

@@ -1,8 +1,8 @@
 <?php
 /**
- * File from PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Very basic templating class
- * Adopted to Web Optimizer by Nikolay Matsievsky (http://webo.name)
+ * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
  *
  **/
 class compressor_view {

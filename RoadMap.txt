@@ -63,6 +63,7 @@
 +e) Packer for JS files
 +f) Cached gzip for CSS / JS files
 +g) Check for gzip via cookie
++h) gzip / x-gzip / deflate / x-defalte full support
 
 6. Including
 +a) Manual including 2 strings
@@ -132,11 +133,12 @@
 +G) Xaraya (1.1.5)
 +H) Website Baker (2.8.0)
 +I) Open Slaed (1.2)
++J) 4images
 
 12. Localization
 +a) English
 +b) Russian
- c) German
++c) German
 ?d) Hebrew
 +e) Ukranian
 +f) Spanish
@@ -160,8 +162,8 @@
   
  15) External plugins
  +a) Wordpress 2.6+
-  b) Joomla! 1.5
-  c) Joomla! 1.0
+ +b) Joomla! 1.5
+ +c) Joomla! 1.0
   d) Drupal 6.x
   e) Drupal 5.x
   f) Drupal 7.x

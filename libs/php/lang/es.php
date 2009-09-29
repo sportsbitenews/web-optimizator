@@ -1,6 +1,6 @@
 <?php
 /**
- * Archivo del Web Optimizer, Nikolay Matsievsky (http://webo.in/) 
+ * Archivo del Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/) 
  * Contiene todas las constates en ES
  * by Alejandro Quezada
  *
@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://webo.name/web-optimizer/">Comprar versi&oacute;n completa</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/">Comprar versi&oacute;n completa</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Versi&oacute;n Demo');
 
@@ -242,6 +242,7 @@ define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium Support');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU overhead');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'up to');
+define('_WEBO_SPLASH2_COMPARISON_UPTO2', 'up to');
 define('_WEBO_SPLASH2_COMPARISON_TRAFFIC', 'less traffic');
 define('_WEBO_SPLASH2_COMPARISON_LOAD', 'CPU load');
 define('_WEBO_SPLASH2_COMPARISON_SAVED', 'CPU saved');
@@ -249,6 +250,9 @@ define('_WEBO_SPLASH2_COMPARISON_REQUESTS', 'HTTP requests');
 define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'extra website speedup');
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'not included');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'All benefits');
+define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Price');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'free');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '69&euro;');
 
 /* Third splash -- end screen */
 define('_WEBO_SPLASH3_TITLE', 'Instalaci&oacute;n - Etapa 3');

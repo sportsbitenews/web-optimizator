@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.name/)
+ * File from Web Optimizer, Nikolay Matsievsky (http://www.web_optimizer/)
  * Outputs final Stage 3 page
  *
  **/
