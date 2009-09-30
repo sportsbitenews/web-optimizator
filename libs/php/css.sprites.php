@@ -482,6 +482,9 @@ __________________
 /* only then try to combine all possible images into the last one */
 				$this->sprite = 'webo.'. $this->timestamp .'.png';
 				$this->merge_sprites(4);
+/* delete temporary files */
+				@unlink('webor.'. $this->timestamp .'.png');
+				@unlink('webob.'. $this->timestamp .'.png');
 			}
 /* finally convert CSS images to data:URI and add mutiple hosts*/
 			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count)) {
@@ -1117,7 +1120,7 @@ __________________
 										$css_top = -$final_y + $shift_y;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											$this->imagecopymerge_alpha($this->sprite_raw, $im, $final_x, $final_y, 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, -$css_left, -$css_top, 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
 										}
 										break;
 /* repeat-y */
