@@ -73,7 +73,7 @@ define('_WEBO_NEW_NOSCRIPT', 'Para que trabaje correctamente, JavaScript tiene q
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Desinstalar');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Desinstalar');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Gracias por usar Web Optimizer. Usted puede instalarlo nuevamente despu&eacute;s aqu&iacute; <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Gracias por usar <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Usted puede instalarlo nuevamente despu&eacute;s aqu&iacute; <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">P&aacute;gina de Web Optimizer</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Siempre puede visitar <a href="http://code.google.com/p/web-optimizator/">el website de Web Optimizer</a> y compartir <a href="http://code.google.com/p/web-optimizator/issues/list">alg&uacute;n problema encontrado</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Ya puede regresar a <a href="');

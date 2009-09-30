@@ -20,9 +20,9 @@ define('_WEBO_ERROR_ERROR', 'Oopps! Etwas ist schief gegangen');
 
 /* Enter login and password */
 define('_WEBO_LOGIN_TITLE', 'Tragen Sie Ihre Anmeldedaten ein');
-define('_WEBO_LOGIN_INSTALLED', 'Sie haben Web Optimizer schon installiert ');
-define('_WEBO_LOGIN_INSTALLED2', ' auf dieser Website. Tragen Sie Ihre Anmeldedaten ein, um Zugriff auf alle Einstellungen zu erhalten:');
-define('_WEBO_LOGIN_INSTALLED3', '. Klicken Sie auf  \'Weiter\', um Zugriff auf alle Einstellungen zu erhalten.');
+define('_WEBO_LOGIN_INSTALLED', 'Sie haben Web Optimizer ');
+define('_WEBO_LOGIN_INSTALLED2', ' auf dieser Website schon installiert. Tragen Sie Ihre Anmeldedaten ein, um Zugriff auf alle Einstellungen zu erhalten:');
+define('_WEBO_LOGIN_INSTALLED3', '. Klicken Sie auf  <strong>Weiter</strong>, um Zugriff auf alle Einstellungen zu erhalten.');
 define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Achtung:</strong> Kann keine Ergebnisse der T&auml;tigkeit von Web Optimizer auf  Ihret Website finden. Pr&uuml;fen Sie das Vorhandensein der Aufrufe in den Quelldateien Ihres Websystems oder installieren Sie Web Optimizer noch einmal.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Optimierungsergebnisse pro Hit:<br/>gespart');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
@@ -45,14 +45,14 @@ define('_WEBO_UPGRADE_SUCCESSFULL', 'Sie haben erfolgreich auf Version ');
 define('_WEBO_UPGRADE_SUCCESSFULL2', ' aktualisiert');
 define('_WEBO_UPGRADE_UNABLE', 'Kann die neueste Version nicht downloaden. Pr&uuml;fen Sie die Internetverbindung zum Server und die Curl-Existenz.');
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'Um Web Optimizer von Ihrem System zu entfernen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Deinstallieren</strong>');
+define('_WEBO_LOGIN_UNINSTALL', 'Um Web Optimizer von Ihrem System zu entfernen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Deinstall</strong>');
 define('_WEBO_LOGIN_UNINSTALL2', 'Web Optimizer kann f&uuml;r Ihre Website ganz einfach unwirksam gemacht werden. Sie m&uuml;ssen das Tool nur l&ouml;schen.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Web Optimizer deinstallieren');
 define('_WEBO_LOGIN_FAILED', 'Login fehlgeschlagen');
 define('_WEBO_LOGIN_ACCESS', 'Sie m&uuml;ssen angemeldet sein, um diese Seite anzusehen');
 define('_WEBO_LOGIN_LOGGED', 'Angemeldet');
-define('_WEBO_SPLASH1_CLEAR', 'Cachespeicher bereinigen');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'Um den Cachespeicher von Web Optimizer zu reinigen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Cachespeicher bereinigen</strong>. ');
+define('_WEBO_SPLASH1_CLEAR', 'Cache bereinigen');
+define('_WEBO_SPLASH1_CLEAR_CACHE', 'Um den Cachespeicher von Web Optimizer zu reinigen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Cache bereinigen</strong>. ');
 define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Alle gespeicherten Versionen erstellter Dateien werden aus Cache-Ordner gel&ouml;scht.');
 define('_WEBO_CLEAR_UNABLE', 'Einige Dateien konnten nicht aus dem Cache-Ordner gel&ouml;scht werden');
 define('_WEBO_CLEAR_SUCCESSFULL', 'Alle Dateien in Cache-Ordnern sind gel&ouml;scht worden');
@@ -70,9 +70,9 @@ define('_WEBO_NEW_ORDERINSTALLATION', 'Auftrag Web Optimizer Installation und Ko
 define('_WEBO_NEW_NOSCRIPT', 'F&uuml;r die korrekte Arbeit muss JavaScript aktiviert sein!');
 
 /* First splash -- set document root */
-define('_WEBO_SPLASH1_UNINSTALL', 'Deinstallation');
+define('_WEBO_SPLASH1_UNINSTALL', 'Deinstall');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Deinstallation');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von Web Optimizer. Sie k&ouml;nnen das Tool erneut installieren nach einem Besuch der  <a href =“ http: //');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Sie k&ouml;nnen das Tool erneut installieren nach einem Besuch der  <a href =“ http: //');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '"> Web Optimizer Seite</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Besuchen Sie die <a href="http://code.google.com/p/web-optimizator/">Web Optimizer Website</a> und <a href="http://code.google.com/p/web-optimizator/issues/list"> machen Sie Vorschl&auml;ge</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Jetzt k&ouml;nnen Sie Zur&uuml;kkehrenzu <a href="');

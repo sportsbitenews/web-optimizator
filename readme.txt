@@ -87,3 +87,6 @@ A lot of different persons contributed to this project. Some of them:
  * bazik (test cases for CSS Sprites, CSS rules, JS logic, etc)
  * beshkenadze (initial YUI Compressor envelope)
  * janvarev (files MTIME check)
+ * crazyyy (UA localization)
+ * Ajexandro (ES localization)
+ * jos (DE localization)

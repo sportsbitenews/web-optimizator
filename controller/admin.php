@@ -1344,9 +1344,6 @@ ExpiresDefault \"access plus 10 years\"
 /* fix for Joomla 1.0 */
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 								$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
-/* fix for Joomla 1.5.0 */
-							} elseif (preg_match("/Joomla! 1\.5\.0/", $this->cms_version)) {
-								$content_saved = preg_replace("/(new\s+JVersion\(\);\r?\n)/i", '$1require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
 /* fix for Joomla 1.5+ */
 							} elseif (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 								$content_saved = preg_replace("/(\\\$mainframe\s*=&\s*JFactory::getApplication\(['\"]site['\"]\);\r?\n)/i",  "$1" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -1984,7 +1981,7 @@ require valid-user
 		$files = array();
 		switch ($cms_version[0]) {
 			case 'Joomla!':
-/* Joomla 1.5 */
+/* Joomla 1.5.1+ */
 				if (preg_match("/1\.[56789]/", $cms_version[1])) {
 					$files = array(
 						array(

@@ -71,7 +71,7 @@ define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с при
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Видалити');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Видалення');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання Web Optimizer. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">сторінку Web Optimizer</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://code.google.com/p/web-optimizator/">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Тепер можна повернутися назад до <a href="');
