@@ -89,7 +89,7 @@ class css_sprites {
 /* standartize all background values from input */
 						if (preg_match("/background/", $key)) {
 /* rewrite current background with strict none */
-							if ($key == 'background' && ($property == 'none !important' || $property == 'none')) {
+							if ($key == 'background' && ($value == 'none !important' || $value == 'none')) {
 								$this->css->css[$import][$tags]['background'] = $this->none;
 							}
 							foreach (explode(",", $tags) as $tag) {

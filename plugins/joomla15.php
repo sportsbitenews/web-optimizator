@@ -44,7 +44,6 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 				}
 			}
 			$config_file = $root . 'configuration.php';
-/* Enable System-Cache plugin and disable Debug plugin */
 			if (!class_exists('JConfig') && is_file($config_file)) {
 				include($config_file);
 			}
@@ -59,6 +58,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 					}
 				}
 				$config = new JConfig();
+/* Enable System-Cache plugin and disable Debug plugin */
 				$query1 = "UPDATE " . $config->dbprefix . "plugins SET published=1 WHERE element='cache'";
 				$query2 = "UPDATE " . $config->dbprefix . "plugins SET published=0 WHERE element='debug'";
 				switch ($config->dbtype) {
