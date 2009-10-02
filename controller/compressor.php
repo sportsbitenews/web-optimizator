@@ -1407,12 +1407,18 @@ class web_optimizer {
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
-				$this->content = substr($this->content, 0, $pos) . '<div id="' . $stuff . '_dst_' . $key . '"></div>' . substr($this->content, $pos + $len, strlen($this->content) - $len);
+				$this->content = substr($this->content, 0, $pos) .
+					'<div style="' .
+						($height ? 'height:' . $height . 'px' : '') . 
+					'" id="' .
+						$stuff .
+					'_dst_' .
+						$key .
+					'"></div>' .
+						substr($this->content, $pos + $len, strlen($this->content) - $len);
 				$return .= '<' . ($inline ? 'span' : 'div') . ' id="'.
 						$stuff .'_src_' . $key . 
-					'" style="display:none;' .
-						($height ? 'height:' . $height . 'px' : '') .
-					'">' .
+					'" style="display:none">' .
 						$value[0] .
 					'</' . ($inline ? 'span' : 'div') . '>' .
 					'<script type="text/javascript">document.getElementById("' .
@@ -1436,6 +1442,8 @@ class web_optimizer {
 		if (!empty($options['unobtrusive_informers'])) {
 /* Odnaknopka */
 			$before_body .= $this->replace_unobtrusive_generic("@<script\s*src=['\"]https?://odnaknopka.ru[^>]+></script>@is", 'odnaknopka', 16);
+/* Addthis */
+			$before_body .= $this->replace_unobtrusive_generic("@<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->@is", 'addthis', 20);
 		}
 /* Counters */
 		if (!empty($options['unobtrusive_counters'])) {
