@@ -182,7 +182,7 @@ class web_optimizer {
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
-				"parallel_hosts" => $this->options['parallel']['allowed_list'],
+				"parallel_hosts" => trim($this->options['parallel']['allowed_list']),
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
@@ -206,7 +206,7 @@ class web_optimizer {
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
-				"parallel_hosts" => $this->options['parallel']['allowed_list'],
+				"parallel_hosts" => trim($this->options['parallel']['allowed_list']),
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $this->premium,
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $this->premium,
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
@@ -1354,7 +1354,7 @@ class web_optimizer {
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* add multiple hosts */
 		if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
-			$this->content = $this->add_multiple_hosts($this->content, explode(" ", $options['parallel_hosts']));
+			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']));
 		}
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
