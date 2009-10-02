@@ -1062,11 +1062,24 @@ class web_optimizer {
 		}
 	}
 
+	function get_script_base () {
+		if (empty($this->base) && preg_match("@<base@is", $this->head)) {
+/* find and parse <base> tag */
+			$this->base = preg_replace("@.*<base\s+href\s*=\s*['\"](.*?)['\"].*@is", "$1/", $this->head);
+/* remove current path from base */
+			$this->base = str_replace($this->strip_querystring($_SERVER['REQUEST_URI']), "", $this->base);
+/* strip from base HTTP host */
+			$this->base = preg_replace("@https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "@", "", $this->base);
+		}
+	}
+
 	/**
 	* Gets an content for array of scripts/css files
 	*
 	**/
 	function get_script_content ($tag = false) {
+/* calculate base for HTML document */
+		$this->get_script_base();
 /* to get inline values */
 		$last_key = array();
 /* to get inline values on empty non-inline */
@@ -1076,6 +1089,13 @@ class web_optimizer {
 			foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 				if (!$tag || $value['tag'] == $tag) {
+/* replace // with http(s) */
+					if (!empty($value['file']) && substr($value['file'], 0, 2) == '//') {
+						$this->initial_files[$key]['file'] = $value['file'] = 'http' . $this->https . ':' . $value['file'];
+					}
+					if (!empty($value['file_raw']) && substr($value['file_raw'], 0, 2) == '//') {
+						$this->initial_files[$key]['file_raw'] = $value['file_raw'] = 'http' . $this->https . ':' . $value['file_raw'];
+					}
 					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
 						if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
@@ -1103,6 +1123,15 @@ class web_optimizer {
 					}
 					$content_from_file = '';
 					if (!empty($value['file'])) {
+						if (!empty($this->base)) {
+/* all files here has not external paths but either absolute or relative ones */
+							if (substr($value['file'], 0, 1) != '/') {
+								$value['file'] = $this->base . $value['file'];
+							}
+							if (substr($value['file_raw'], 0, 1) != '/') {
+								$value['file_raw'] = $this->base . $value['file_raw'];
+							}
+						}
 /* convert dynamic files to static ones */
 						if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 							$dynamic_file = $value['file_raw'];
@@ -1480,7 +1509,7 @@ class web_optimizer {
 			$xhtml = strpos($this->content, 'XHTML 1');
 			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
 /* add Web Optimizer spot */
-			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
+			$this->content = preg_replace('@(<TITLE)@is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';

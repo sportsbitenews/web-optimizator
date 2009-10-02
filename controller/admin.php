@@ -924,7 +924,7 @@ class admin {
 	/**
 	* Checks and writes all optimized rules to .htaccess file
 	**/
-	function write_htaccess ($return = false) {
+	function write_htaccess ($return = false, $base = '/') {
 /* additional check for .htaccess -- need to open exact file */
 		if (!empty($this->input['user']['htaccess']['enabled'])) {
 			$this->view->set_paths($this->input['user']['document_root']);
@@ -1017,7 +1017,7 @@ RewriteBase /denwer/
 ";
 				} else {
 					$content .= "
-RewriteBase /
+RewriteBase $base
 ";
 				}
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
