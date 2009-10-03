@@ -182,6 +182,21 @@ header("Content-Type: application/x-javascript");
 ?>]</em><?php
 	}
 ?></li><li><?php
+	echo _WEBO_SYSTEM_CHECK_MEMORY;
+?> <?php
+	if (round($memory_limit) > 16) {
+?><strong><?php
+	} else {
+?><em><?php
+	}
+	echo $memory_limit;
+?><?php
+	if (round($memory_limit) > 16) {
+?></strong><?php
+	} else {
+?></em><?php
+	}
+?></li><li><?php
 	echo _WEBO_SYSTEM_CHECK_HTACCESS_SUPPORT;
 ?> <?php
 	if ($htaccess_possibility) {

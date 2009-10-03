@@ -16,7 +16,7 @@ class admin {
 		if (function_exists('date_default_timezone_set')) {
 			date_default_timezone_set('Europe/Moscow');
 		}
-		foreach($options AS $key => $value) {
+		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
 		if (empty($this->skip_render)) {
@@ -172,6 +172,13 @@ class admin {
 		if (!empty($this->compress_options['parallel']['check'])) {
 			$hosts = $this->check_hosts($hosts);
 		}
+/* try to get and increase memory limit */
+		$memory_limit = @ini_get('memory_limit');
+/* 64M must enough for any operations with images */
+		if (round(str_replace("M", "000000", str_replace("K", "000", $memory_limit))) < 64000000) {
+			@ini_set('memory_limit', '64M');
+			$memory_limit = @ini_get('memory_limit');
+		}
 /* set variables */
 		$page_variables = array(
 			'javascript_writable' => is_writable($javascript_cachedir),
@@ -201,7 +208,8 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
 			'protected_mode' => empty($this->protected) ? 0 : 1,
-			'cms' => $this->system_info($document_root)
+			'cms' => $this->system_info($document_root),
+			'memory_limit' => $memory_limit
 		);
 /* Output data */
 		$this->view->render("system_check", $page_variables);
@@ -330,7 +338,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
@@ -983,9 +991,7 @@ BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
 			if (!empty($htaccess_options['mod_deflate'])) {
 				if (!empty($this->input['user']['gzip']['page'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/html
-AddOutputFilterByType DEFLATE text/xml
-AddOutputFilterByType DEFLATE image/x-icon";
+AddOutputFilterByType DEFLATE text/html text/xml image/x-icon";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
@@ -993,14 +999,7 @@ AddOutputFilterByType DEFLATE text/css";
 				}
 				if (!empty($this->input['user']['gzip']['javascript'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/javascript
-AddOutputFilterByType DEFLATE application/javascript
-AddOutputFilterByType DEFLATE application/x-javascript
-AddOutputFilterByType DEFLATE text/x-js
-AddOutputFilterByType DEFLATE text/ecmascript
-AddOutputFilterByType DEFLATE application/ecmascript
-AddOutputFilterByType DEFLATE text/vbscript
-AddOutputFilterByType DEFLATE text/fluffscript";
+AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
 				}
 			}
 /* try to add static gzip */
@@ -1076,7 +1075,7 @@ ExpiresDefault \"access plus 10 years\"
 				}
 				if (empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm|)$>
+<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
 	ExpiresActive Off
 </FilesMatch>";
 				}
@@ -1085,6 +1084,21 @@ ExpiresDefault \"access plus 10 years\"
 <FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 	ExpiresActive Off
 </FilesMatch>";
+				}
+/* add Expires headers via PHP script if we don't have mod_expires */
+			} elseif (!empty($htaccess_options['mod_rewrite'])) {
+				$cachedir = str_replace($this->input['user']['document_root'], "/", $this->input['user']['html_cachedir']);
+				if (!empty($this->input['user']['far_future_expires']['images'])) {
+					$content .= "
+RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)\.$ " . $cachedir . "wo.static.php?$1.$2";
+				}
+				if (!empty($this->input['user']['far_future_expires']['video'])) {
+					$content .= "
+RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)\.$ " . $cachedir . "wo.static.php?$1.$2";
+				}
+				if (!empty($this->input['user']['far_future_expires']['static'])) {
+					$content .= "
+RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$1.$2";
 				}
 			}
 			if (!empty($htaccess_options['mod_headers'])) {
@@ -1097,10 +1111,10 @@ ExpiresDefault \"access plus 10 years\"
 				}
 				if (!empty($htaccess_options['mod_expires'])) {
 					$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
+<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
 	Header append Cache-Control public
 </FilesMatch>
-<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmf|swf|pdf|doc|rtf)$>
+<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
 	Header unset Last-Modified
 	FileETag MTime
 </FilesMatch>";
@@ -1166,6 +1180,8 @@ ExpiresDefault \"access plus 10 years\"
 			@copy($this->input['user']['webo_cachedir'] . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
 /* copy gzip check to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
+/* copy Expires setter to cache directory */
+			@copy($this->input['user']['webo_cachedir'] . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
 /* copy stamp image to cache directory */
 			@copy($this->input['user']['webo_cachedir'] . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
 			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {

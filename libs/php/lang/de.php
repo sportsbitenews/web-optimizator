@@ -346,4 +346,5 @@ define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Minifizieren f&uuml;r JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Externe Dateien zugreifen');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Mehrere Hosts');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Native Unterst&uuml;tzung von CMS');
+define('_WEBO_SYSTEM_CHECK_MEMORY', 'Memory available');
 ?>

@@ -344,4 +344,5 @@ define('_WEBO_SYSTEM_CHECK_JS_MINIFY', 'Минимизация JS');
 define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файлам');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка CMS');
+define('_WEBO_SYSTEM_CHECK_MEMORY', 'Доступная память');
 ?>

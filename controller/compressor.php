@@ -197,6 +197,11 @@ class web_optimizer {
 				"minify_aggressive" => $this->options['minify']['html_one_string'] && $this->premium,
 				"remove_comments" => $this->options['minify']['html_comments'] && $this->premium,
 				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
+				"far_future_expires_images" => $this->options['far_future_expires']['images'],
+				"far_future_expires_video" => $this->options['far_future_expires']['video'],
+				"far_future_expires_static" => $this->options['far_future_expires']['static'],
+				"far_future_expires" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
 				"cache" => $this->options['html_cache']['enabled'] && $this->premium,
@@ -516,33 +521,53 @@ class web_optimizer {
 		$count_satellites = count($satellites_hosts);
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
+/* count relative path to cache directory if we require it */
+		if (!empty($this->options['page']['far_future_expires']) ||!empty($this->options['page']['far_future_expires_rewrite'])) {
+			$cache_directory = str_replace($this->view->paths['full']['document_root'], "/", $this->options['page']['cachedir']);
+		}
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
 				if (empty($replaced[$old_src])) {
+/* are we operating with multiple hosts */
+					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
 /* skip images on different hosts */
-					if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src))) {
-						$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
-						$new_src = "http" .
-							$this->https .
-							"://" .
-							$hosts[strlen($old_src)%$count] .
-							"." .
-							preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
-							$absolute_src .
-							$old_src_param;
-						$content = str_replace($old_src, $new_src, $content);
-						$replaced[$old_src] = 1;
-					} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
-						$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
-/* check if we can distribute this image through satellites' hosts */
-						if (in_array($img_host, $satellites)) {
-							$new_src = preg_replace("@(https?://)(www\.)?([^/]+)/@", "$1" . $hosts[strlen($old_src)%$count] . ".$3/", $old_src);
+						if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src))) {
+							$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
+							$new_src = "http" .
+								$this->https .
+								"://" .
+								$hosts[strlen($old_src)%$count] .
+								"." .
+								preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
+								$absolute_src .
+								$old_src_param;
 							$content = str_replace($old_src, $new_src, $content);
-							$replaced[$old_src] = 1;
+						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
+							$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
+/* check if we can distribute this image through satellites' hosts */
+							if (in_array($img_host, $satellites)) {
+								$new_src = preg_replace("@(https?://)(www\.)?([^/]+)/@", "$1" . $hosts[strlen($old_src)%$count] . ".$3/", $old_src);
+								$content = str_replace($old_src, $new_src, $content);
+							}
+						}
+/* or replacing images with rewrite to Expires setter? */
+					} else {
+						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
+						if (!empty($this->options['page']['far_future_expires'])) {
+/* do not touch dynamic images -- how we can handle them? */
+							if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
+								$new_src = $cache_directory . '/wo.static.php?' . $src;
+							}
+						} else {
+							$new_src = preg_replace("@\.(bmp|gif|png|ico|jpe?g)$@is", ".$1.", $src);
+						}
+						if (!empty($new_src)) {
+							$content = str_replace($old_src, $new_src, $content);
 						}
 					}
+					$replaced[$old_src] = 1;
 				}
 			}
 		}
@@ -1349,9 +1374,10 @@ class web_optimizer {
 		$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* add multiple hosts */
-		if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
+		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
 		}
+/* add redirects for stati images */
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
 			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
@@ -1583,7 +1609,7 @@ class web_optimizer {
 	**/
 	function convert_css_sprites ($content, $options) {
 /* try to get and increase memory limit */
-		$memory_limit = round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit'))));
+		$memory_limit = round(str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit'))));
 /* 64M must enough for any operations with images. I hope... */
 		if ($memory_limit < 64000000) {
 			@ini_set('memory_limit', '64M');

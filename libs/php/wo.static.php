@@ -3,9 +3,7 @@
  * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Sends cache headers among the content of requested file.
  * Resticted filename to document root only.
- * Helps when there is now mod_expires on the server.
- * htaccess RewriteRule ^(.*)\.(gif|png|jpe?g|ico)\.$ /webo/cache/wo.static.php?$1.$2
- * or raw /webo/cache/wo.static.php?$filepath
+ * Helps when there is no mod_expires on the server.
  *
  **/
 
@@ -16,11 +14,11 @@ $extension = strtolower(preg_replace("!.*\.!", "", $_SERVER['QUERY_STRING']));
 switch ($extension) {
     case 'jpg':
         $extension = 'jpeg';
-    case 'bmp':
+	case 'bmp':
 	case 'gif':
     case 'png':
-        $extension = 'image/' . $extension;
-        break;
+		$extension = 'image/' . $extension;
+		break;
 	case 'ico':
 		$extension = 'image/x-icon';
 		break;
@@ -61,7 +59,7 @@ if (strpos(" " . $filename, $document_root)) {
 /* send correct content-encoding header */
 	header('Content-Type: ' . $extension);
 /* get content */
-    $content = @file_get_contents($filename);
+	$content = @file_get_contents($filename);
 /* calculate ETag */
 	$hash = crc32($content);
 	if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
