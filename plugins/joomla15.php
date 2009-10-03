@@ -105,7 +105,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 					'if ($_SERVER[\'HTTP_IF_NONE_MATCH\'] == $etag) {' .
 					'header( \'HTTP/1.0 304 Not Modified\' );' .
 					'header( \'Content-Length: 0\' );' .
-					'exit();}', 'header( \'Cache-Control: max-age=\'.$age.\', must-revalidate\' );');
+					'exit();}', 'header( \'Cache-Control: max-age=\'.$age.\', must-revalidate\' );', $content);
 				$fp = @fopen($virtuemart_file, 'wb');
 				if ($fp) {
 					@fwrite($fp, $content);
