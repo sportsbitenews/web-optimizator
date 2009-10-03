@@ -229,6 +229,8 @@ define('_WEBO_htaccess_mod_mime', 'Use <code>mod_mime</code>');
 define('_WEBO_htaccess_mod_rewrite', 'Use <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Place <code>.htaccess</code> file locally (not to Document Root)');
 define('_WEBO_htaccess_access', 'Protect Web Optimizer installation via <code>htpasswd</code>');
+define('_WEBO_htaccess_username', 'Username (to access via HTTP Basic Authorization)');
+define('_WEBO_htaccess_password', 'Password (to access via HTTP Basic Authorization)');
 define('_WEBO_auto_rewrite_enabled', 'Enable auto-rewrite');
 
 /* Version comparison */

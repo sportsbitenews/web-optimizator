@@ -230,6 +230,8 @@ define('_WEBO_htaccess_mod_mime', 'Использовать <code>mod_mime</code
 define('_WEBO_htaccess_mod_rewrite', 'Использовать <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
 define('_WEBO_htaccess_access', 'Защитить установку Web Optimizer с помощью <code>htpasswd</code>');
+define('_WEBO_htaccess_username', 'Логин для доступа по HTTP Basic Authorization');
+define('_WEBO_htaccess_password', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
 
 /* Version comparison */

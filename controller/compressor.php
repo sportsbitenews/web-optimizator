@@ -182,7 +182,7 @@ class web_optimizer {
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
-				"parallel_hosts" => trim($this->options['parallel']['allowed_list']),
+				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
@@ -206,12 +206,14 @@ class web_optimizer {
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
-				"parallel_hosts" => trim($this->options['parallel']['allowed_list']),
+				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $this->premium,
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $this->premium,
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
 				"footer" => $this->options['footer']['image'],
-				"footer_link" => $this->options['footer']['text']
+				"footer_link" => $this->options['footer']['text'],
+				"htaccess_username" => $this->options['htaccess']['username'],
+				"htaccess_password" => $this->options['htaccess']['password']
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -1062,24 +1064,11 @@ class web_optimizer {
 		}
 	}
 
-	function get_script_base () {
-		if (empty($this->base) && preg_match("@<base@is", $this->head)) {
-/* find and parse <base> tag */
-			$this->base = preg_replace("@.*<base\s+href\s*=\s*['\"](.*?)['\"].*@is", "$1/", $this->head);
-/* remove current path from base */
-			$this->base = str_replace($this->strip_querystring($_SERVER['REQUEST_URI']), "", $this->base);
-/* strip from base HTTP host */
-			$this->base = preg_replace("@https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "@", "", $this->base);
-		}
-	}
-
 	/**
 	* Gets an content for array of scripts/css files
 	*
 	**/
 	function get_script_content ($tag = false) {
-/* calculate base for HTML document */
-		$this->get_script_base();
 /* to get inline values */
 		$last_key = array();
 /* to get inline values on empty non-inline */
@@ -1089,13 +1078,6 @@ class web_optimizer {
 			foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
 				if (!$tag || $value['tag'] == $tag) {
-/* replace // with http(s) */
-					if (!empty($value['file']) && substr($value['file'], 0, 2) == '//') {
-						$this->initial_files[$key]['file'] = $value['file'] = 'http' . $this->https . ':' . $value['file'];
-					}
-					if (!empty($value['file_raw']) && substr($value['file_raw'], 0, 2) == '//') {
-						$this->initial_files[$key]['file_raw'] = $value['file_raw'] = 'http' . $this->https . ':' . $value['file_raw'];
-					}
 					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
 						if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
@@ -1123,15 +1105,6 @@ class web_optimizer {
 					}
 					$content_from_file = '';
 					if (!empty($value['file'])) {
-						if (!empty($this->base)) {
-/* all files here has not external paths but either absolute or relative ones */
-							if (substr($value['file'], 0, 1) != '/') {
-								$value['file'] = $this->base . $value['file'];
-							}
-							if (substr($value['file_raw'], 0, 1) != '/') {
-								$value['file_raw'] = $this->base . $value['file_raw'];
-							}
-						}
 /* convert dynamic files to static ones */
 						if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 							$dynamic_file = $value['file_raw'];
@@ -1407,18 +1380,12 @@ class web_optimizer {
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
-				$this->content = substr($this->content, 0, $pos) .
-					'<div style="' .
-						($height ? 'height:' . $height . 'px' : '') . 
-					'" id="' .
-						$stuff .
-					'_dst_' .
-						$key .
-					'"></div>' .
-						substr($this->content, $pos + $len, strlen($this->content) - $len);
+				$this->content = substr($this->content, 0, $pos) . '<div id="' . $stuff . '_dst_' . $key . '"></div>' . substr($this->content, $pos + $len, strlen($this->content) - $len);
 				$return .= '<' . ($inline ? 'span' : 'div') . ' id="'.
 						$stuff .'_src_' . $key . 
-					'" style="display:none">' .
+					'" style="display:none;' .
+						($height ? 'height:' . $height . 'px' : '') .
+					'">' .
 						$value[0] .
 					'</' . ($inline ? 'span' : 'div') . '>' .
 					'<script type="text/javascript">document.getElementById("' .
@@ -1517,7 +1484,7 @@ class web_optimizer {
 			$xhtml = strpos($this->content, 'XHTML 1');
 			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
 /* add Web Optimizer spot */
-			$this->content = preg_replace('@(<TITLE)@is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
+			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
@@ -1681,6 +1648,9 @@ class web_optimizer {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Faster than Lightning; http://web-optimizer.us/) Firefox 3.5.2");
+				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
+					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
+				}
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);

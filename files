@@ -2,11 +2,11 @@ cache/
 controller/admin.php
 controller/compressor.php
 images/web.optimizer.stamp.png
-libs/css/main.css
 libs/css/a.png
 libs/css/b.png
 libs/css/c.png
 libs/css/d.gif
+libs/css/main.css
 libs/js/wo.cookie.php
 libs/js/yass.loadbar.js
 libs/js/yass.loader.js
