@@ -18,12 +18,6 @@
 	echo _WEBO_SPLASH2_CACHE;
 ?></a></li><?php
 	$count = 1;
-	if (empty($premium)) {
-?><li><a href="#comparison" name="2"><?php
-		echo _WEBO_SPLASH2_COMPARISON;
-		$count++;
-?></a></li><?php
-	}
 	foreach($options AS $key=>$type) {	
 		if(is_array($type['value']) && empty($type['is_premium'])) {
 ?><li><a href="#wo_<?php
@@ -34,6 +28,13 @@
 			echo $type['title'];
 ?></a></li><?php
 		}
+	}
+	if (empty($premium)) {
+?><li><a href="#comparison" name="<?php
+	echo ++$count;
+?>"><strong><?php
+		echo _WEBO_SPLASH2_COMPARISON;
+?></strong></a></li><?php
 	}
 ?></ul><form method="post" enctype="multipart/form-data" action="?page=install_stage_3" id="exp"><div class="n"><fieldset id="dirs"><h3><?php
 	echo _WEBO_SPLASH2_CACHE;
@@ -84,6 +85,77 @@
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $compress_options['password'];
 ?>"/></fieldset><?php
+	foreach ($options AS $key => $type) {
+		if (is_array($type['value']) && empty($type['is_premium'])) {
+?><fieldset id="wo_<?php
+			echo $key;
+?>"><h3><?php
+			echo $type['title'];
+?></h3><div class="o"><?php
+			echo $type['intro'];
+?><i></i><del></del></div><?php
+			foreach ($type['value'] as $option => $value) {
+				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
+?><label><?php
+					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'username', 'password', 'additional', 'additional_list'))) {
+						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
+						echo in_array($option, array('ignore_list', 'allowed_list', 'additional', 'additional_list')) ? '. ' . _WEBO_SPLASH2_SPACE : ':';
+?> <input name="user[<?php
+						echo $key;
+?>][<?php
+						echo $option;
+?>]" value="<?php
+						echo $value;
+?>" size="40"<?php
+						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size', 'size')) ? ' class="t"' : '';
+?>/><?php
+					} else {
+?><a href="#<?php
+						echo $key;
+?>" class="<?php
+						if (strpos($option, 'ith_')) {
+							echo empty($value) ? 'r' : 'y';
+?>"><input type="radio" name="with" value="<?php
+							echo $key
+?>#<?php
+							echo $option;
+						} else {
+							echo empty($value) ? 's' : 'w';
+?>"><input type="checkbox" name="user[<?php
+							echo $key;
+?>][<?php
+							echo $option;
+?>]<?php
+						}
+?>" <?php
+						echo empty($value) ? '' : 'checked="checked"';
+?>/></a><?php
+						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
+					}
+?></label><?php
+				} elseif (!in_array($option, array('javascript_level', 'page_level', 'css_level')) && !$premium) {
+?><input type="hidden" name="user[<?php
+					echo $key;
+?>][<?php
+					echo $option;
+?>]" value="<?php
+					echo $value;
+?>"/><?php
+				}
+			}
+?></fieldset><?php 
+		} elseif (!empty($type['is_premium'])) {
+			foreach ($type['value'] as $option => $value) {
+?><input type="hidden" name="user[<?php
+				echo $key;
+?>][<?php
+				echo $option;
+?>]" value="<?php
+				echo $value;
+?>"/><?php
+			}
+		}
+	}
 	if (empty($premium)) {
 ?><fieldset id="comparison"><h3><?php
 		echo _WEBO_SPLASH2_COMPARISON;
@@ -192,77 +264,6 @@
 ?></strong></td></tr></tbody></table><strong><?php
 		echo _WEBO_GENERAL_BUYNOW;
 ?></strong></fieldset><?php
-	}
-	foreach ($options AS $key => $type) {
-		if (is_array($type['value']) && empty($type['is_premium'])) {
-?><fieldset id="wo_<?php
-			echo $key;
-?>"><h3><?php
-			echo $type['title'];
-?></h3><div class="o"><?php
-			echo $type['intro'];
-?><i></i><del></del></div><?php
-			foreach ($type['value'] as $option => $value) {
-				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
-?><label><?php
-					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'username', 'password'))) {
-						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
-						echo in_array($option, array('ignore_list', 'allowed_list')) ? '. ' . _WEBO_SPLASH2_SPACE : ':';
-?> <input name="user[<?php
-						echo $key;
-?>][<?php
-						echo $option;
-?>]" value="<?php
-						echo $value;
-?>" size="40"<?php
-						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size', 'size')) ? ' class="t"' : '';
-?>/><?php
-					} else {
-?><a href="#<?php
-						echo $key;
-?>" class="<?php
-						if (strpos($option, 'ith_')) {
-							echo empty($value) ? 'r' : 'y';
-?>"><input type="radio" name="with" value="<?php
-							echo $key
-?>#<?php
-							echo $option;
-						} else {
-							echo empty($value) ? 's' : 'w';
-?>"><input type="checkbox" name="user[<?php
-							echo $key;
-?>][<?php
-							echo $option;
-?>]<?php
-						}
-?>" <?php
-						echo empty($value) ? '' : 'checked="checked"';
-?>/></a><?php
-						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
-					}
-?></label><?php
-				} elseif (!in_array($option, array('javascript_level', 'page_level', 'css_level')) && !$premium) {
-?><input type="hidden" name="user[<?php
-					echo $key;
-?>][<?php
-					echo $option;
-?>]" value="<?php
-					echo $value;
-?>"/><?php
-				}
-			}
-?></fieldset><?php 
-		} elseif (!empty($type['is_premium'])) {
-			foreach ($type['value'] as $option => $value) {
-?><input type="hidden" name="user[<?php
-				echo $key;
-?>][<?php
-				echo $option;
-?>]" value="<?php
-				echo $value;
-?>"/><?php
-			}
-		}
 	}
 ?></div><p id="hideme"><input type="submit" value="<?php
 	echo _WEBO_SPLASH1_NEXT;

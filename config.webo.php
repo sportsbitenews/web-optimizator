@@ -121,6 +121,11 @@ $compress_options['parallel']['enabled'] = "1";
 $compress_options['parallel']['check'] = "1";
 ## List of hosts for parallel downloads, i.e. img i1 i2
 $compress_options['parallel']['allowed_list'] = "";
+## List of websites (saellites) to distribute through them,
+## i.e. satellite.com satellite2.com
+$compress_options['parallel']['additional'] = "";
+## List of satellites' hosts, i.e. i1 i2 i3
+$compress_options['parallel']['additional_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";

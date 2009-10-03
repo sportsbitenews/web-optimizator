@@ -207,6 +207,8 @@ class web_optimizer {
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
+				"parallel_satellites" => $this->options['parallel']['additional'],
+				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $this->premium,
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $this->premium,
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
@@ -502,24 +504,45 @@ class web_optimizer {
 	* Adds multiple hosts to HTML for images
 	*
 	**/
-	function add_multiple_hosts ($content, $hosts) {
+	function add_multiple_hosts ($content, $hosts, $satellites, $satellites_hosts) {
 /* limit by 4 */
 		if (count($hosts) > 4) {
 			$hosts = array($hosts[0], $hosts[1], $hosts[2], $hosts[3]);
 		}
+		if (count($satellites_hosts) > 4) {
+			$satellites_hosts = array($satellites_hosts[0], $satellites_hosts[1], $satellites_hosts[2], $satellites_hosts[3]);
+		}
 		$count = count($hosts);
+		$count_satellites = count($satellites_hosts);
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
+				if (empty($replaced[$old_src])) {
 /* skip images on different hosts */
-				if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src)) && empty($replaced[$old_src])) {
-					$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
-					$new_src = "http" . $this->https . "://" . $hosts[strlen($old_src)%$count] . "." . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . $absolute_src . $old_src_param;
-					$content = str_replace($old_src, $new_src, $content);
-					$replaced[$old_src] = 1;
+					if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src))) {
+						$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
+						$new_src = "http" .
+							$this->https .
+							"://" .
+							$hosts[strlen($old_src)%$count] .
+							"." .
+							preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
+							$absolute_src .
+							$old_src_param;
+						$content = str_replace($old_src, $new_src, $content);
+						$replaced[$old_src] = 1;
+					} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
+						$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
+/* check if we can distribute this image through satellites' hosts */
+						if (in_array($img_host, $satellites)) {
+							$new_src = preg_replace("@(https?://)(www\.)?([^/]+)/@", "$1" . $hosts[strlen($old_src)%$count] . ".$3/", $old_src);
+							$content = str_replace($old_src, $new_src, $content);
+							$replaced[$old_src] = 1;
+						}
+					}
 				}
 			}
 		}
@@ -1327,7 +1350,7 @@ class web_optimizer {
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* add multiple hosts */
 		if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
-			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']));
+			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
 		}
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {

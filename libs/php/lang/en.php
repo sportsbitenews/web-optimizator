@@ -219,6 +219,8 @@ define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites');
 define('_WEBO_parallel_enabled', 'Enable multiple hosts');
 define('_WEBO_parallel_check', 'Check hosts\' availability automatically');
 define('_WEBO_parallel_allowed_list', 'Allowed hosts, i.e. img i1 i2');
+define('_WEBO_parallel_additional', 'Additional websites with multiple hosts, i.e. shop-host.es photo-host.es');
+define('_WEBO_parallel_additional_list', 'Hosts on these websites, i.e. i1 i2');
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Use <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_htaccess_mod_gzip', 'Use <code>mod_gzip</code>');
