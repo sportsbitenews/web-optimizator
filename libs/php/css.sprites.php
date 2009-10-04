@@ -549,7 +549,7 @@ __________________
 				preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $image))) {
 /* add absolute path for sprited images */
 					if (0 === strpos($image, 'webo')) {
-						$image = str_replace($this->root_dir, "/", $this->current_dir) . $image;
+						$image = str_replace($this->website_root, "/", $this->current_dir) . '/' . $image;
 					}
 					return "http" . $this->https .
 						"://" .
