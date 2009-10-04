@@ -547,6 +547,10 @@ __________________
 		if (!empty($this->multiple_hosts_count) &&
 			(!strpos($image, "://") ||
 				preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $image))) {
+/* add absolute path for sprited images */
+					if (0 === strpos($image, 'webo')) {
+						$image = str_replace($this->root_dir, "/", $this->current_dir) . $image;
+					}
 					return "http" . $this->https .
 						"://" .
 						$this->multiple_hosts[strlen($image)%$this->multiple_hosts_count] .
