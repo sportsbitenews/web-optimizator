@@ -38,6 +38,7 @@ class compressor_view {
 				$this->paths['full']['document_root'] = $document_root;
 			}
 		}
+		$this->paths['full']['document_root'] = str_replace("//", "/", $this->paths['full']['document_root']);
 /* Get the view directory */
 		if($document_root && !empty($_SERVER['SCRIPT_NAME'])) {
 			$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($document_root) . $this->prevent_trailing_slash(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']));
