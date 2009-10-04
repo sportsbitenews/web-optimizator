@@ -1009,16 +1009,9 @@ AddEncoding gzip .gz";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
 				$content .= "
-RewriteEngine On";
-				if (strpos($this->input['user']['webo_cachedir'], "denwer")) {
-					$content .= "
-RewriteBase /denwer/
-";
-				} else {
-					$content .= "
+RewriteEngine On
 RewriteBase $base
 ";
-				}
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
 RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
@@ -1197,7 +1190,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* delete temporary files before chained installation */
 				$this->install_clean_cache(0);
 				$this->install_uninstall(0);
-				$this->write_htaccess(0);
+				$this->write_htaccess(0, $this->view->paths['relative']['document_root']);
 /* look for plugins */
 				$plugins = array();
 				if ($dp = @opendir($this->input['user']['webo_cachedir'] . 'plugins')) {

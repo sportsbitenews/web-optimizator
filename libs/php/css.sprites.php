@@ -198,7 +198,7 @@ class css_sprites {
 			foreach ($this->media as $import => $images) {
 				foreach ($images as $key => $image) {
 					foreach ($properties as $property) {
-						if (empty($image[$property]) && preg_match("@[a-zA-Z0-9][#\.\[][^#\.\[]+$@", $key)) {
+						if (empty($image[$property]) && preg_match("@[a-z\d][#\.\[][^#\.\[]+$@is", $key)) {
 							$this->media[$import][$key][$property] = $this->restore_property($import, $key, $property);
 						}
 					}
@@ -239,7 +239,7 @@ class css_sprites {
 /* Does image have background-position? */
 					$img_has['position'] = !empty($image['background-position']);
 					if ($img_has['position']) {
-						$background_position = explode(" ", $image['background-position']);
+						$background_position = explode(" ", $image['background-position'], 2);
 					} else {
 						$background_position = array(0, 0);
 					}
@@ -372,7 +372,7 @@ class css_sprites {
 							if (!empty($image['background-position']) && strpos($image['background-position'], '%')) {
 								$width_real = max($width, $image['width']);
 								$height_real = max($height, $image['height']);
-								$position = explode(" ", $image['background-position']);
+								$position = explode(" ", $image['background-position'], 2);
 								$position_x = round(round($position[0]) * ($image['width'] - $width) / 100);
 								$position_x .= ($position_x ? 'px' : '');
 								$position_y = round(round($position[1]) * ($image['height'] - $height) / 100);
@@ -400,7 +400,7 @@ class css_sprites {
 								$this->css_images[$this->sprite]['jpeg'] = 1;
 							}
 							$shift_x = $shift_y = $top = $left = 0;
-							$position = empty($image['background-position']) ? array(0, 0) : explode(" ", $image['background-position'] . " ");
+							$position = empty($image['background-position']) ? array(0, 0) : explode(" ", $image['background-position'], 2);
 							switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
 								case 'repeat-x':
@@ -1340,62 +1340,62 @@ __________________
 		switch ($stage) {
 /* remove all attribute selectors */
 			case 1:
-				$regexp = '([a-zA-Z0-9]+)\[[^\[]+\]$';
+				$regexp = '([a-z\d]+)\[[^\[]+\]$';
 				$part = '$1';
 				break;
 /* remove all class selectors */
 			case 2:
-				$regexp = '([a-zA-Z0-9]+)\.[^\.\s]+$';
+				$regexp = '([a-z\d]+)\.[^\.\s]+$';
 				$part = '$1';
 				break;
 /* remove all identificator selectors */
 			case 3:
-				$regexp = '([a-zA-Z0-9]+)#[^#\s]+$';
+				$regexp = '([a-z\d]+)#[^#\s]+$';
 				$part = '$1';
 				break;
 /* remove 1 attribute selectors from start */
 			case 4:
-				$regexp = '^([a-zA-Z0-9]+)\[[^\[]+\]\s([a-zA-Z0-9]+)';
+				$regexp = '^([a-z\d]+)\[[^\[]+\]\s([a-z\d]+)';
 				$part = '$1 $2';
 				break;
 /* remove 1 class selectors from start */
 			case 5:
-				$regexp = '^([a-zA-Z0-9]+)\.[^\.\s]+\s([a-zA-Z0-9]+)';
+				$regexp = '^([a-z\d]+)\.[^\.\s]+\s([a-z\d]+)';
 				$part = '$1 $2';
 				break;
 /* remove 1 identificator selectors from start */
 			case 6:
-				$regexp = '^([a-zA-Z0-9]+)#[^#\s]+\s([a-zA-Z0-9]+)';
+				$regexp = '^([a-z\d]+)#[^#\s]+\s([a-z\d]+)';
 				$part = '$1 $2';
 				break;
 /* remove all attribute selectors */
 			case 7:
-				$regexp = '([a-zA-Z0-9]+)\[[^\[]+\]';
+				$regexp = '([a-z\d]+)\[[^\[]+\]';
 				$part = '$1';
 				break;
 /* remove all class selectors */
 			case 8:
-				$regexp = '([a-zA-Z0-9]+)\.[^\.\s]+';
+				$regexp = '([a-z\d]+)\.[^\.\s]+';
 				$part = '$1';
 				break;
 /* remove all identificator selectors */
 			case 9:
-				$regexp = '([a-zA-Z0-9]+)#[^#\s]+';
+				$regexp = '([a-z\d]+)#[^#\s]+';
 				$part = '$1';
 				break;
 /* remove the first tag */
 			case 10:
-				$regexp = '^[^\s]+\s';
+				$regexp = '^\S+\s';
 				$part = '';
 				break;
 /* remove the first 2 tags */
 			case 11:
-				$regexp = '^[^\s]+\s[^\s]+\s';
+				$regexp = '^\S+\s\S+\s';
 				$part = '';
 				break;
 /* remove the first 3 tags */
 			case 12:
-				$regexp = '^[^\s]+\s[^\s]+\s[^\s]+\s';
+				$regexp = '^\S+\s\S+\s\S+\s';
 				$part = '';
 				break;
 
@@ -1408,7 +1408,7 @@ __________________
 			$restored_selectors = array();
 			if (empty($this->restored_selectors[$stage][$selector])) {
 /* clear selector for current stage */
-				$restored_selector = preg_replace("@" . $regexp . "@", $part, $selector);
+				$restored_selector = preg_replace("@" . $regexp . "@is", $part, $selector);
 			} else {
 /* or get from calculated ones */
 				$restored_selectors = $this->restored_selectors[$stage][$selector];
@@ -1536,7 +1536,7 @@ __________________
 							top|bottom -> 50% 0|50% 100% */
 	function compute_background_position ($value) {
 /* step 1: restore half-value to full one */
-		$values = explode(" ", $value);
+		$values = explode(" ", $value, 2);
 		if (!isset($values[1])) {
 			switch ($values[0]) {
 				case 'top':
@@ -1550,7 +1550,7 @@ __________________
 		}
 /* step 2: convert 0px etc to absolute 0 */
 		$values = explode(" ", $value);
-		if (!empty($values[0]) && substr($values[0], 0, 1) == '0') {
+		if (!empty($values[0]) && $values[0]{0} == '0') {
 			$values[0] = 0;
 		}
 		if (!empty($values[1]) && substr($values[1], 0, 1) == '0') {
@@ -1559,9 +1559,7 @@ __________________
 /* step 3: switch bottom left to left bottom etc 
 			switch 40px left to left 40px etc */
 		if (in_array($values[0], array('top, bottom')) || in_array($values[1], array('left', 'right'))) {
-			$v = $values[0];
-			$values[0] = $values[1];
-			$values[1] = $v;
+			$values = array_reverse($values);
 		}
 		$value = $values[0] . " " . $values[1];
 /* step 4: replace words with percent */

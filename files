@@ -1,7 +1,10 @@
 cache/
 controller/admin.php
 controller/compressor.php
+images/web.optimizer.logo.small.png
 images/web.optimizer.stamp.png
+images/web.optimizer.stamp.black.png
+images/web.optimizer.stamp.white.png
 libs/css/a.png
 libs/css/b.png
 libs/css/c.png
