@@ -754,33 +754,39 @@ __________________
 			$distance = $shift - $matrix_y - $css_icons['images'][0][2] - $css_icons['images'][0][4];
 			$x = 0;
 			$y = $shift;
+			$done_images = array();
 /* creating 'steps' */
 			foreach ($css_icons['images'] as $image) {
+/* skip already processed images */
+				if (empty($done_images[$image[0]])) {
 /* restrict square if no memory */
-				if ($x * ($shift - $distance) + $matrix_x * $matrix_y < $this->possible_square) {
-					$width = $image[1];
-					$height = $image[2];
-					$final_x = $image[3];
-					$final_y = $image[4];
-					$i = $x;
-					$x = $x + $width + $final_x;
-					$y = $y - $height - $final_y;
-					$image[3] = $x - $width;
-					$image[4] = $y + $final_y;
-					$image[5] = $final_x;
-					$image[6] = $final_y;
-					$j = $y;
+					if ($x * ($shift - $distance) + $matrix_x * $matrix_y < $this->possible_square) {
+						$width = $image[1];
+						$height = $image[2];
+						$final_x = $image[3];
+						$final_y = $image[4];
+						$i = $x;
+						$x += $width + $final_x;
+						$y -= $height - $final_y;
+						$image[3] = $x - $width;
+						$image[4] = $y + $final_y;
+						$image[5] = $final_x;
+						$image[6] = $final_y;
+						$j = $y;
 /* check for 3 points: left, middle and right for the top border */
-					while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
-						$j--;
-					}
+						while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
+							$j--;
+						}
 /* remember minimal distance */
-					if ($distance > $y - $j - 1) {
-						$distance = $y - $j - 1 - $final_y;
-					}
+						if ($distance > $y - $j - 1) {
+							$distance = $y - $j - 1 - $final_y;
+						}
 /* to separate new images from old ones */
-					$image[] = 1;
-					$css_images['images'][] = $image;
+						$image[] = 1;
+						$css_images['images'][] = $image;
+					} else {
+						$css_images['images'][] = $done_images[$image[0]];
+					}
 				}
 			}
 		}
@@ -1120,8 +1126,10 @@ __________________
 										$css_top = -$final_y + $shift_y;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											$this->imagecopymerge_alpha($this->sprite_raw, $im, -$css_left, -$css_top, 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
+											$this->imagecopymerge_alpha($this->sprite_raw, $im, -$css_left + ($added ? $shift_x : 0), -$css_top + ($added ? $shift_y : 0), 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
 										}
+//										$css_left += $shift_x;
+//										$css_top += $shift_y;
 										break;
 /* repeat-y */
 									case 2:
