@@ -219,8 +219,8 @@ class web_optimizer {
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text'],
-				"htaccess_username" => $this->options['htaccess']['username'],
-				"htaccess_password" => $this->options['htaccess']['password']
+				"htaccess_username" => $this->options['htaccess']['user'],
+				"htaccess_password" => $this->options['htaccess']['pass']
 			)
 		);
 /* overwrite other options array that we passed in */

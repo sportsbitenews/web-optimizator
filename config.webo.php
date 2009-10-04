@@ -140,8 +140,8 @@ $compress_options['htaccess']['local'] = "0";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
 ## To get through HTTP Basic Authorization
-$compress_options['htaccess']['username'] = "";
-$compress_options['htaccess']['password'] = "";
+$compress_options['htaccess']['user'] = "";
+$compress_options['htaccess']['pass'] = "";
 ## Enable auto-rewrite for index.php
 $compress_options['auto_rewrite']['enabled'] = "1";
 ## List of enabled plugins for server side performance
