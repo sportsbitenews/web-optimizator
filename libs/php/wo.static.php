@@ -9,7 +9,8 @@
 
 $document_root = $_SERVER['DOCUMENT_ROOT'] . '/';
 /* calculate extension */
-$extension = strtolower(preg_replace("!.*\.!", "", $_SERVER['QUERY_STRING']));
+$dot = strrpos($_SERVER['QUERY_STRING'], '.');
+$extension = strtolower(substr($_SERVER['QUERY_STRING'], $dot + 1, strlen($_SERVER['QUERY_STRING']) - $dot));
 /* calculate MIME type */
 switch ($extension) {
     case 'jpg':
