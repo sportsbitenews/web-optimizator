@@ -885,7 +885,7 @@ class admin {
 	* Returns actual .htaccess file name
 	**/
 	function detect_htaccess () {
-		if (empty($this->options['htaccess']['local'])) {
+		if (empty($this->compress_options['htaccess']['local'])) {
 			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
 		} else {
 			if (strpos($this->input['user']['webo_cachedir'], "denwer")) {
@@ -1703,7 +1703,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 	}
 
 	/**
-	* Protects Web OPtimizer folder via htpasswd
+	* Protects Web Optimizer folder via htpasswd
 	* 
 	**/
 	function protect_installation() {
@@ -2180,21 +2180,6 @@ require valid-user
 					)
 				);
 				break;
-/* CMS Made Simple */
-			case 'CMS':
-				$files = array(
-					array(
-						'file' => 'index.php',
-						'mode' => 'start',
-						'location' => 'header("Content-Type: " . $gCms->variables[\'content-type\'] . "; charset=" . (isset($pageinfo->template_encoding) && $pageinfo->template_encoding != \'\'?$pageinfo->template_encoding:get_encoding()));',
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => 'echo $html;'
-					)
-				);
-				break;
 /* UMI.CMS */
 			case 'UMI.CMS':
 				$files = array(
@@ -2285,6 +2270,23 @@ require valid-user
 					),
 				);
 				break;
+/* CMS Made Simple */
+			case 'CMS':
+				if ($cms_version[1] == 'Made') {
+					$files = array(
+						array(
+							'file' => 'index.php',
+							'mode' => 'start',
+							'location' => 'header("Content-Type: " . $gCms->variables[\'content-type\'] . "; charset=" . (isset($pageinfo->template_encoding) && $pageinfo->template_encoding != \'\'?$pageinfo->template_encoding:get_encoding()));',
+						),
+						array(
+							'file' => 'index.php',
+							'mode' => 'finish',
+							'location' => 'echo $html;'
+						)
+					);
+					break;
+				}
 /* all other systems */
 			default:
 				$files = array(

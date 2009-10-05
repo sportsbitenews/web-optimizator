@@ -19,7 +19,7 @@ class web_optimizer {
 		$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
 		$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
 /* allow merging of other classes with this one */
-		foreach ($options AS $key => $value) {
+		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
 /* disable any actions if not active */
@@ -522,7 +522,7 @@ class web_optimizer {
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 /* count relative path to cache directory if we require it */
-		if (!empty($this->options['page']['far_future_expires']) ||!empty($this->options['page']['far_future_expires_rewrite'])) {
+		if (!empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$cache_directory = str_replace($this->view->paths['full']['document_root'], "/", $this->options['page']['cachedir']);
 		}
 		if (!empty($imgs)) {
@@ -534,7 +534,7 @@ class web_optimizer {
 					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
 /* skip images on different hosts */
 						if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src))) {
-							$absolute_src = preg_replace("!https?://(www\.)?" . $_SERVER['HTTP_HOST'] . "!i", "", $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME'])));
+							$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 							$new_src = "http" .
 								$this->https .
 								"://" .
@@ -553,7 +553,8 @@ class web_optimizer {
 							}
 						}
 /* or replacing images with rewrite to Expires setter? */
-					} else {
+					}
+					if (!empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 						if (!empty($this->options['page']['far_future_expires'])) {
 /* do not touch dynamic images -- how we can handle them? */
@@ -1429,18 +1430,26 @@ class web_optimizer {
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
-				$this->content = substr($this->content, 0, $pos) . '<div id="' . $stuff . '_dst_' . $key . '"></div>' . substr($this->content, $pos + $len, strlen($this->content) - $len);
-				$return .= '<' . ($inline ? 'span' : 'div') . ' id="'.
+				$this->content = substr($this->content, 0, $pos) .
+					'<' .
+						($inline ? 'span' : 'div') .
+					' id="' .
+						$stuff .
+					'_dst_' .
+						$key .
+					'"' .
+						($height ? ' style="height:' . $height . 'px"' : '') .
+					'"></' .
+						($inline ? 'span' : 'div') .
+					'>' .
+						substr($this->content, $pos + $len, strlen($this->content) - $len);
+				$return .= '<div id="'.
 						$stuff .'_src_' . $key . 
-					'" style="display:none;' .
-						($height ? 'height:' . $height . 'px' : '') .
-					'">' .
+					'" style="display:none">' .
 						$value[0] .
-					'</' . ($inline ? 'span' : 'div') . '>' .
-					'<script type="text/javascript">document.getElementById("' .
+					'</div><script type="text/javascript">document.getElementById("' .
 						$stuff . '_dst_' . $key . '").appendChild(document.getElementById("' .
-						$stuff . '_src_' . $key . '"));document.getElementById("' .
-						$stuff . '_src_' . $key . '").style.display="block"</script>';
+						$stuff . '_src_' . $key . '"))</script>';
 			}
 		}
 		return $return;
@@ -1696,7 +1705,7 @@ class web_optimizer {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Faster than Lightning; http://web-optimizer.us/) Firefox 3.5.2");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Faster than Lightning; http://www.web-optimizer.us/) Firefox 3.5.3");
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
 					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
 				}
