@@ -7,7 +7,12 @@
  *
  **/
 
-$document_root = $_SERVER['DOCUMENT_ROOT'] . '/';
+$document_root = $_SERVER['DOCUMENT_ROOT'];
+/* Avoiding problems with Denwer and others CGI */
+if (empty($document_root) || !is_dir($document_root) || !is_file($document_root . getenv("SCRIPT_NAME"))) {
+	$document_root = substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")));
+}
+$document_root = str_replace("\\", "/", $document_root);
 /* calculate extension */
 $dot = strrpos($_SERVER['QUERY_STRING'], '.');
 $extension = strtolower(substr($_SERVER['QUERY_STRING'], $dot + 1, strlen($_SERVER['QUERY_STRING']) - $dot));
@@ -15,6 +20,7 @@ $extension = strtolower(substr($_SERVER['QUERY_STRING'], $dot + 1, strlen($_SERV
 switch ($extension) {
     case 'jpg':
         $extension = 'jpeg';
+	case 'jpeg':
 	case 'bmp':
 	case 'gif':
     case 'png':
@@ -54,7 +60,7 @@ switch ($extension) {
 		$extension = 'application/vnd.ms-powerpoint';
 		break;
 }
-$filename = realpath($document_root . $_SERVER['QUERY_STRING']);
+$filename = str_replace("\\", "/", realpath($document_root . $_SERVER['QUERY_STRING']));
 /* check if we inside document root */
 if (strpos(" " . $filename, $document_root)) {
 /* send correct content-encoding header */
@@ -62,9 +68,9 @@ if (strpos(" " . $filename, $document_root)) {
 /* send correct Content-Disposition to correct end-filename */
 	$slash = strrpos($filename, '/');
 	header('Content-Disposition: attachment;filename=' .
-		substr($filename, $slash + 1, strlen($filename) - $slash) .
+			substr($filename, $slash + 1, strlen($filename) - $slash) .
 		';modification-date="' .
-		date("r", @filemtime($filename)).
+			date("r", @filemtime($filename)) .
 		'";');
 /* get content */
 	$content = @file_get_contents($filename);

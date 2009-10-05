@@ -888,11 +888,7 @@ class admin {
 		if (empty($this->compress_options['htaccess']['local'])) {
 			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
 		} else {
-			if (strpos($this->input['user']['webo_cachedir'], "denwer")) {
-				$htaccess = $this->view->paths['absolute']['document_root'] . 'denwer/.htaccess';
-			} else {
-				$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
-			}
+			$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
 		}
 		return $htaccess;
 	}
