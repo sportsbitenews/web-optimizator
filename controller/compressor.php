@@ -1135,10 +1135,10 @@ class web_optimizer {
 /* get an external file */
 								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
-									$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']));
+									$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']), $value['tag']);
 /* static file */
 								} else {
-									$file = $this->get_remote_file($value['file']);
+									$file = $this->get_remote_file($value['file'], $value['tag']);
 								}
 								if (!empty($file)) {
 									$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
