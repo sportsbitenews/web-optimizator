@@ -1529,9 +1529,10 @@ class web_optimizer {
 			}
 			preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
+				$this->head = $matches[0];
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 				if (!empty($this->options['javascript']['minify'])) {
-					$this->head = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $matches[0]);
+					$this->head = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->head);
 /* replace current head content with updated version */
 					$this->content = str_replace($matches[0], $this->head, $this->content);
 				}

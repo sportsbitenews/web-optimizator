@@ -69,7 +69,7 @@ class admin {
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
 		$this->display_progress = false;
-		$this->premium = $this->view->validate_license($this->compress_options['license']);
+		$this->premium = $this->view->validate_license(empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license']);
 /* if we use .htaccess */
 		$this->protected = isset($_SERVER['PHP_AUTH_USER']) && $this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
 		if ($this->input['page'] != 'system_check') {
@@ -768,7 +768,7 @@ class admin {
 			"version" => $this->version,
 			"version_new" => $this->version_new,
 			"compress_options" => $this->compress_options,
-			"license" => empty($this->compress_options['license']) ? '' : $this->compress_options['license'],
+			"license" => empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license'],
 			"premium" => $this->premium
 		);
 	}
