@@ -59,10 +59,14 @@ switch ($extension) {
 	case 'ppt':
 		$extension = 'application/vnd.ms-powerpoint';
 		break;
+/* protect all other files from viewing */
+	default:
+		$extension = '';
+		break;
 }
 $filename = str_replace("\\", "/", realpath($document_root . $_SERVER['QUERY_STRING']));
 /* check if we inside document root */
-if (strpos(" " . $filename, $document_root)) {
+if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 /* send correct content-encoding header */
 	header('Content-Type: ' . $extension);
 /* send correct Content-Disposition to correct end-filename */
