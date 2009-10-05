@@ -7,7 +7,7 @@
  *
  **/
 
-$document_root = '/home/dreamwind/www/cmsms.webo.in/';
+$document_root = $_SERVER['DOCUMENT_ROOT'] . '/';
 /* calculate extension */
 $extension = strtolower(preg_replace("!.*\.!", "", $_SERVER['QUERY_STRING']));
 /* calculate MIME type */
@@ -58,6 +58,13 @@ $filename = realpath($document_root . $_SERVER['QUERY_STRING']);
 if (strpos(" " . $filename, $document_root)) {
 /* send correct content-encoding header */
 	header('Content-Type: ' . $extension);
+/* send correct Content-Disposition to correct end-filename */
+	$slash = strrpos($filename, '/');
+	header('Content-Disposition: attachment;filename=' .
+		substr($filename, $slash + 1, strlen($filename) - $slash) .
+		';modification-date="' .
+		date("r", @filemtime($filename)).
+		'";');
 /* get content */
 	$content = @file_get_contents($filename);
 /* calculate ETag */
