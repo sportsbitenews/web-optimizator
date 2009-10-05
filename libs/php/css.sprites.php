@@ -771,7 +771,7 @@ __________________
 						$final_y = $image[4];
 						$i = $x;
 						$x += $width + $final_x;
-						$y -= $height - $final_y;
+						$y -= ($height + $final_y);
 						$image[3] = $x - $width;
 						$image[4] = $y + $final_y;
 						$image[5] = $final_x;
@@ -1132,8 +1132,6 @@ __________________
 										if (!$file_exists) {
 											$this->imagecopymerge_alpha($this->sprite_raw, $im, -$css_left + ($added ? $shift_x : 0), -$css_top + ($added ? $shift_y : 0), 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
 										}
-//										$css_left += $shift_x;
-//										$css_top += $shift_y;
 										break;
 /* repeat-y */
 									case 2:
