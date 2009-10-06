@@ -6,6 +6,18 @@
  * Helps when there is no mod_expires on the server.
  *
  **/
+/* return heximal number for a decimal one */
+function dec_to_hex ($dec) {
+	$hex = Array(	0 => 0, 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5,
+					6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 'a',
+					11 => 'b', 12 => 'c', 13 => 'd', 14 => 'e',
+					15 => 'f' );
+	do {
+		$h = $hex[($dec%16)] . $h;
+		$dec /= 16;
+	} while ($dec >= 1);
+	return $sign . $h;
+}
 
 $document_root = $_SERVER['DOCUMENT_ROOT'];
 /* Avoiding problems with Denwer and others CGI */
@@ -18,12 +30,12 @@ $dot = strrpos($_SERVER['QUERY_STRING'], '.');
 $extension = strtolower(substr($_SERVER['QUERY_STRING'], $dot + 1, strlen($_SERVER['QUERY_STRING']) - $dot));
 /* calculate MIME type */
 switch ($extension) {
-    case 'jpg':
-        $extension = 'jpeg';
+	case 'jpg':
+		$extension = 'jpeg';
 	case 'jpeg':
 	case 'bmp':
 	case 'gif':
-    case 'png':
+	case 'png':
 		$extension = 'image/' . $extension;
 		break;
 	case 'ico':
@@ -76,10 +88,8 @@ if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 		';modification-date="' .
 			date("r", @filemtime($filename)) .
 		'";');
-/* get content */
-	$content = @file_get_contents($filename);
-/* calculate ETag */
-	$hash = crc32($content);
+/* calculate ETag, mimicry to default Apache settings */
+	$hash = dec_to_hex(@fileinode($filename)) . '-' . dec_to_hex(@filesize($filename)) . '-' . dec_to_hex(@filemtime($filename));
 	if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 			stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') ||
 		(isset($_SERVER['HTTP_IF_MATCH']) &&
@@ -99,7 +109,7 @@ if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 		@date_default_timezone_set(@date_default_timezone_get());
 		header("Expires: " . gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
 /* finally output content */
-		echo $content;
+		echo @file_get_contents($filename);
 	}
 }
 
