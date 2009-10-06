@@ -29,6 +29,9 @@ class admin {
 		$this->options_file = "config.webo.php";
 		require_once($this->basepath . $this->options_file);
 		$this->compress_options = $compress_options;
+/* to check and download new Web Optimizer version */
+		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
+		$this->version = @file_get_contents($this->basepath . 'version');
 /* Make sure login valid */
 		$this->manage_password();
 		$this->password_not_required = array(
@@ -39,9 +42,6 @@ class admin {
 		);
 /* default multiple hosts */
 		$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-/* to check and download new Web Optimizer version */
-		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
-		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
 		$this->download($this->svn . 'version', $version_new_file);

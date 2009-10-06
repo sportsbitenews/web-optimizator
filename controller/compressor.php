@@ -318,6 +318,9 @@ class web_optimizer {
 /* browsers crash if there is anything after deflate stream */
 			if (in_array($this->encoding, array('deflate', 'x-deflate'))) {
 				die();
+/* otherwise IE7 crashes if gzip is used */
+			} elseif (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 7")) {
+				die();
 			}
 		}
 	}
@@ -582,18 +585,18 @@ class web_optimizer {
 	function create_gz_compress ($content, $force_gzip = true) {
 		if (!empty($this->encoding)) {
 			if (!empty($force_gzip) && function_exists('gzcompress')) {
-				$size = strlen($this->content);
-				$crc = crc32($this->content);
-				$content = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
-				$this->content = gzcompress($this->content, $this->options['page']['gzip_level']);
-				$this->content = substr($this->content, 0, strlen( $this->content) - 4);
-				$content .= $this->content;
-				$content .= pack('V', $crc);
-				$content .= pack('V', $size);
+				$size = strlen($content);
+				$crc = crc32($content);
+				$cnt = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
+				$this->content = gzcompress($content, $this->options['page']['gzip_level']);
+				$this->content = substr($content, 0, strlen( $content) - 4);
+				$cnt .= $this->content;
+				$cnt .= pack('V', $crc);
+				$cent .= pack('V', $size);
 			} elseif (empty($force_gzip) && function_exists('gzdeflate')) {
-				$content = gzdeflate($this->content, $this->options['page']['gzip_level']);
+				$cnt = gzdeflate($content, $this->options['page']['gzip_level']);
 			}
-			return $content;
+			return $cnt;
 		} else {
 			return false;
 		}
