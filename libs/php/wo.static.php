@@ -6,7 +6,7 @@
  * Helps when there is no mod_expires on the server.
  *
  **/
-/* return heximal number for a decimal one */
+/* return heximal number for a decimal one, by jbleau at gmail dot com */
 function dec_to_hex ($dec) {
 	$hex = Array(	0 => 0, 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5,
 					6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 'a',
@@ -79,9 +79,9 @@ switch ($extension) {
 $filename = str_replace("\\", "/", realpath($document_root . $_SERVER['QUERY_STRING']));
 /* check if we inside document root */
 if (strpos(" " . $filename, $document_root) && !empty($extension)) {
-/* send correct content-encoding header */
+/* set correct content-encoding header */
 	header('Content-Type: ' . $extension);
-/* send correct Content-Disposition to correct end-filename */
+/* set correct Content-Disposition to correct end-filename */
 	$slash = strrpos($filename, '/');
 	header('Content-Disposition: attachment;filename=' .
 			substr($filename, $slash + 1, strlen($filename) - $slash) .
@@ -103,9 +103,9 @@ if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 		header('ETag: "' . $hash . '"');
 /* cache timeout */
 		$timeout = 360000000;
-/* Set Cache-Control header */
+/* set Cache-Control header */
 		header("Cache-Control: public, max-age=" . $timeout);
-/* Set Expires header */
+/* set Expires header */
 		@date_default_timezone_set(@date_default_timezone_get());
 		header("Expires: " . gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
 /* finally output content */
