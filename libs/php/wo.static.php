@@ -12,7 +12,7 @@ $document_root = $_SERVER['DOCUMENT_ROOT'];
 if (empty($document_root) || !is_dir($document_root) || !is_file($document_root . getenv("SCRIPT_NAME"))) {
 	$document_root = substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")));
 }
-$document_root = str_replace("\\", "/", $document_root);
+$document_root = realpath(str_replace("\\", "/", $document_root));
 /* calculate extension */
 $dot = strrpos($_SERVER['QUERY_STRING'], '.');
 $extension = strtolower(substr($_SERVER['QUERY_STRING'], $dot + 1, strlen($_SERVER['QUERY_STRING']) - $dot));
