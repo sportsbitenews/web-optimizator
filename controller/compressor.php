@@ -588,9 +588,9 @@ class web_optimizer {
 				$size = strlen($content);
 				$crc = crc32($content);
 				$cnt = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
-				$content = gzcompress($cnt, $this->options['page']['gzip_level']);
-				$content = substr($cnt, 0, strlen( $cnt) - 4);
-				$cnt .= $this->content;
+				$content = gzcompress($content, $this->options['page']['gzip_level']);
+				$content = substr($content, 0, strlen( $content) - 4);
+				$cnt .= $content;
 				$cnt .= pack('V', $crc);
 				$cnt .= pack('V', $size);
 			} elseif (empty($force_gzip) && function_exists('gzdeflate')) {
