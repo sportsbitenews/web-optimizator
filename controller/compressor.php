@@ -592,7 +592,7 @@ class web_optimizer {
 				$this->content = substr($content, 0, strlen( $content) - 4);
 				$cnt .= $this->content;
 				$cnt .= pack('V', $crc);
-				$cent .= pack('V', $size);
+				$cnt .= pack('V', $size);
 			} elseif (empty($force_gzip) && function_exists('gzdeflate')) {
 				$cnt = gzdeflate($content, $this->options['page']['gzip_level']);
 			}
