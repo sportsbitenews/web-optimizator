@@ -204,7 +204,7 @@ define('_WEBO_htaccess_pass', 'Password (to access via HTTP Basic Authorization)
 define('_WEBO_auto_rewrite_enabled', 'Auto-Rewrite aktivieren');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Testversion Einschr&auml;nkungen');
+define('_WEBO_SPLASH2_COMPARISON', 'Testversion Begrenzungen');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Merkmale und Technologien');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Testversion');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Vollversion');

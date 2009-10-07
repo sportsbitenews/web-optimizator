@@ -175,6 +175,8 @@ class web_optimizer {
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] && $this->premium,
+				"css_sprites_expires" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'], 
+				"css_sprites_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
@@ -416,6 +418,8 @@ class web_optimizer {
 					'memory_limited' => $options['memory_limited'],
 					'dimensions_limited' => $options['dimensions_limited'],
 					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
+					'css_sprites_expires' => $options['css_sprites_expires'],
+					'css_sprites_expires_rewrite' => $options['css_sprites_expires_rewrite'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
@@ -527,7 +531,7 @@ class web_optimizer {
 		$count_satellites = count($satellites_hosts);
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
-/* count relative path to cache directory if we require it */
+/* calculate relative path to cache directory if we require it */
 		if (!empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$cache_directory = str_replace($this->view->paths['full']['document_root'], "/", $this->options['page']['cachedir']);
 		}
@@ -1451,7 +1455,7 @@ class web_optimizer {
 					'"></' .
 						($inline ? 'span' : 'div') .
 					'>' .
-						substr($this->content, $pos + $len, -$len);
+						substr($this->content, $pos + $len, strlen($this->content) - $len);
 				$return .= '<div id="'.
 						$stuff .'_src_' . $key . 
 					'" style="display:none">' .
@@ -1672,6 +1676,7 @@ class web_optimizer {
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'],
 			'current_dir' => $options['cachedir'],
+			'html_cache' => $this->options['page']['cachedir'],
 			'website_root' => $this->view->paths['full']['document_root'],
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 			'aggressive' => $options['aggressive'],
@@ -1679,6 +1684,8 @@ class web_optimizer {
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
+			'expires' => $options['css_sprites_expires'],
+			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
 			'data_uris_size' => $options['data_uris_size'],
 			'data_uris_ignore_list' => $options['data_uris_exclude'],

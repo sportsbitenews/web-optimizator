@@ -23,6 +23,12 @@ class css_sprites {
 			$this->current_dir = $options['current_dir'];
 			$this->root_dir = $options['root_dir'];
 			$this->website_root = $options['website_root'];
+/* directory with cached HTML, for wo.static.php */
+			$this->html_dir = $options['html_cache'];
+/* calculate relative path to cache directory if we require it */
+			if (!empty($this->html_dir)) {
+				$this->html_dir = str_replace($this->website_root, "/", $this->current_dir);
+			}
 /* output True Color images in JPEG (or PNG24) */
 			$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
 /* use aggressive logic for repeat-x/y */
@@ -59,6 +65,10 @@ class css_sprites {
 			if (empty($this->multiple_hosts[0]) && empty($this->multiple_hosts[1])) {
 				$this->multiple_hosts_count = 0;
 			}
+/* rewrite static resources with PHP cache proxy? */
+			$this->proxy = $options['expires'];
+/* use */
+			$this->proxy_rewrite = $options['expires_rewrite'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -486,8 +496,8 @@ __________________
 				@unlink('webor.'. $this->timestamp .'.png');
 				@unlink('webob.'. $this->timestamp .'.png');
 			}
-/* finally convert CSS images to data:URI and add mutiple hosts*/
-			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count)) {
+/* finally convert CSS images to data:URI and add mutiple hosts, or add static proxy */
+			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count) || !empty($this->proxy) || !empty($this->proxy_rewrite)) {
 				$this->css_to_data_uri();
 			}
 			return html_entity_decode($this->css->print->formatted(), ENT_QUOTES);
@@ -557,6 +567,20 @@ __________________
 						"." .
 						preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
 						$image;
+		} elseif (!empty($this->proxy) || !empty($this->proxy_rewrite)) {
+/* add absolute path for sprited images */
+			if (0 === strpos($image, 'webo')) {
+				$image = str_replace($this->website_root, "/", $this->current_dir) . '/' . $image;
+			}
+			if (!empty($this->proxy)) {
+/* do not touch dynamic images -- how we can handle them? */
+				if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
+					$image = $this->html_dir . '/wo.static.php?' . $image;
+				}
+			} else {
+				$image = preg_replace("@\.(bmp|gif|png|ico|jpe?g)$@i", ".$1.", $image);
+			}
+			return $image;
 		} else {
 			return $image;
 		}
