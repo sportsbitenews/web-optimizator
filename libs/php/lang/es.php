@@ -177,6 +177,8 @@ define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&nt
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a Web Optimizer');
 define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
+define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml:/code>');
+define('_WEBO_data_uris_separate', 'Separate images from CSS code');
 define('_WEBO_data_uris_size', 'Maximo tamano de la imagen (en bytes)');
 define('_WEBO_data_uris_smushit', 'Optimiza todas las im&aacute;genes CSS via smush.it');
 define('_WEBO_data_uris_ignore_list', 'Excluiur archivos de data:URI');
