@@ -965,9 +965,9 @@ class web_optimizer {
 			$options['src'] . '="' .
 				(empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
 				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
-				$cache_file . '.' .
-				($add ? $options['ext'] . '.' : '') .
-				($timestamp && $options['far_future_expires_rewrite'] ? 'wo' . $timestamp : '') .
+				$cache_file .
+				($add ?  '.' . $options['ext'] : '') .
+				($timestamp && $options['far_future_expires_rewrite'] ? '.wo' . $timestamp : '') .
 				($add ? $add : '.' . $options['ext']) .
 				($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '') .
 			'"' .
