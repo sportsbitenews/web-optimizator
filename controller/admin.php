@@ -797,7 +797,7 @@ class admin {
 			$this->input['user']['minify']['with_packer'] = 0;
 		}
 /* try to set some libs executable */
-		@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', 0755);
+		@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
 /* Load pre-defined options */
 		foreach ($this->compress_options as $key => $option) {
 			if (is_array($option)) {
@@ -1149,7 +1149,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 			foreach($test_dirs AS $name => $dir) {
 				if (is_dir($dir)) {
 /* try to set to all cache folders 0755 permissions */
-					@chmod($dir, 0755);
+					@chmod($dir, octdec("0755"));
 					if (substr(sprintf('%o', fileperms($dir)), -3) != '755') {
 						@rmdir($dir);
 						@mkdir($dir, 0755);

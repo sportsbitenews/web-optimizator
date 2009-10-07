@@ -171,6 +171,8 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && $this->premium,
 				"data_uris" => $this->options['data_uris']['on'] && $this->premium,
+				"data_uris_mhtml" => $this->options['data_uris']['mhtml'],
+				"data_uris_separate" => $this->options['data_uris']['separate'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
@@ -324,7 +326,7 @@ class web_optimizer {
 			if (in_array($this->encoding, array('deflate', 'x-deflate'))) {
 				die();
 /* otherwise IE7 crashes if gzip is used */
-			} elseif ($this->ua_mod == 'ie7.') {
+			} elseif ($this->ua_mod == '.ie7') {
 				die();
 			}
 		}
@@ -407,6 +409,8 @@ class web_optimizer {
 					'src' => 'href',
 					'rel' => 'stylesheet',
 					'data_uris' => $options['data_uris'],
+					'data_uris_mhtml' => $options['data_uris_mhtml'],
+					'data_uris_separate' => $options['data_uris_separate'],
 					'data_uris_size' => $options['data_uris_size'],
 					'data_uris_exclude' => $options['data_uris_exclude'],
 					'image_optimization' => $options['image_optimization'],
@@ -746,9 +750,10 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 		$cache_file = urlencode($cache_file . $this->ua_mod);
-		$file = $cachedir . '/' . $cache_file . "." . $options['ext'];
-		if (file_exists($file)) {
-			$timestamp = @filemtime($file);
+		$physical_file = $cachedir . '/' . $cache_file . "." . $options['ext'];
+		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
+		if (file_exists($physical_file)) {
+			$timestamp = @filemtime($physical_file);
 		} else {
 			$timestamp = 0;
 		}
@@ -759,6 +764,11 @@ class web_optimizer {
 				$external_array = array($external_array);
 			}
 			$source = $this->_remove_scripts($external_array, $source);
+/* Create the link to the new file with data:URI / mhtml */
+			if (!empty($options['data_uris_separate'])) {
+				$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
 			$source = str_replace("@@@marker@@@", "", $source);
@@ -815,19 +825,51 @@ class web_optimizer {
 /* prepare first 4 Sprites */
 				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 40) {
 					$options['css_sprites_partly'] = 1;
-					$this->convert_css_sprites($contents, $options);
+					$this->convert_css_sprites($contents, $options, $external_file);
 					header('Location: optimizing.php?web_optimizer_stage=40&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 60) {
 /* Create CSS Sprites in CSS dir */
-					$this->convert_css_sprites($contents, $options);
+					$this->convert_css_sprites($contents, $options, $external_file);
 /* start new PHP process to create data:URI */
 					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 				} else {
 /* we created all Sprites -- ready for data:URI */
 					$options['data_uris'] = $remembered_data_uri;
-					$minified_content = $this->convert_css_sprites($contents, $options);
+/* create correct resource file name for data:URI / mhtml inclusion */
+					$resource_file = $external_file;
+					if (!empty($options['data_uris_separate'])) {
+						$resource_file .=
+							($options['far_future_expires_rewrite'] ? '.wo' . $this->time : '') .
+							'.css' . 
+							(!$options['far_future_expires_rewrite'] ? '?' . $this->time : '');
+					}
+					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
+					$minified_content = $minified_content_array[0];
+					$minified_resource = $minified_content_array[1];
+/* write data:URI / mhtml content */
+					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
+						if ($fp = @fopen($physical_file . '.css', 'wb')) {
+							@fwrite($fp, $minified_resource);
+							@fclose($fp);
+/* Set permissions, required by some hosts */
+							@chmod($physical_file . '.css', octdec("0755"));
+/* create static gzipped versions for static gzip in nginx, Apache */
+							$fpgz = @fopen($cachedir . '/' . $physical_file . '.css.gz', 'wb');
+							if ($fpgz) {
+								@fwrite($fpgz, @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
+								@fclose($fpgz);
+								@chmod($physical_file . '.css.gz', octdec("0755"));
+							}
+/* Create the link to the new file */
+							$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+						}
+					} elseif (!empty($minified_content)) {
+						$ie = in_array($this->ua_mod, array('.ie5', '.ie6', '.ie7'));
+						$minified_content .= ($ie ? "/*\n" : "") . $minified_resource . ($ie ? "\n*/" : "");
+					}
 				}
 				if (!empty($minified_content)) {
 					$contents = $minified_content;
@@ -866,17 +908,18 @@ class web_optimizer {
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
-				if ($fp = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'], 'wb')) {
+				if ($fp = @fopen($physical_file, 'wb')) {
 					@fwrite($fp, $contents);
 					@fclose($fp);
 /* Set permissions, required by some hosts */
-					@chmod($cachedir . '/' . $cache_file . '.' . $options['ext'], octdec("0755"));
+					@chmod($physical_file, octdec("0755"));
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
-						$fpgz = @fopen($cachedir . '/' . $cache_file . '.' . $options['ext'] . '.gz', 'wb');
+						$fpgz = @fopen($physical_file . '.gz', 'wb');
 						if ($fpgz) {
-							@fwrite($fpgz, gzencode($contents, $options['gzip_level'], FORCE_GZIP));
+							@fwrite($fpgz, @gzencode($contents, $options['gzip_level'], FORCE_GZIP));
 							@fclose($fpgz);
+							@chmod($physical_file . '.gz', octdec("0755"));
 						}
 					}
 /* Create the link to the new file */
@@ -915,7 +958,7 @@ class web_optimizer {
 	* Returns the filename for our new compressed file
 	*
 	**/
-	function get_new_file ($options, $cache_file, $timestamp = false) {
+	function get_new_file ($options, $cache_file, $timestamp = false, $add = false) {
 		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
@@ -923,8 +966,9 @@ class web_optimizer {
 				(empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
 				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
 				$cache_file . '.' .
-				($timestamp && $options['far_future_expires_rewrite'] ? 'wo' . $timestamp . '.' : '') .
-				$options['ext'] .
+				($add ? $options['ext'] . '.' : '') .
+				($timestamp && $options['far_future_expires_rewrite'] ? 'wo' . $timestamp : '') .
+				($add ? $add : '.' . $options['ext']) .
 				($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '') .
 			'"' .
 			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
@@ -1572,7 +1616,7 @@ class web_optimizer {
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
-				if ($this->ua_mod == 'ie5.' || $this->ua_mod == 'ie6.') {
+				if ($this->ua_mod == '.ie5' || $this->ua_mod == '.ie6') {
 					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
 				} else {
 					$background_style = 'background:url(' .  $background_image .')';
@@ -1599,7 +1643,7 @@ class web_optimizer {
 		}
 		for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
-			if ($this->ua_mod == ".ie" . $version) {
+			if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
 /* detect equality */
 				if (strpos(' ' . $this->head, 'IE ' . $version . ']>')) {
 					$this->head = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $this->head);
@@ -1673,7 +1717,7 @@ class web_optimizer {
 	/**
 	* Convert all background image to CSS Sprites if possible
 	**/
-	function convert_css_sprites ($content, $options) {
+	function convert_css_sprites ($content, $options, $css_url) {
 /* try to get and increase memory limit */
 		$memory_limit = round(str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit'))));
 /* 64M must enough for any operations with images. I hope... */
@@ -1695,13 +1739,17 @@ class web_optimizer {
 			'expires' => $options['css_sprites_expires'],
 			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
+			'data_uris_mhtml' => $options['data_uris_mhtml'],
+			'css_url' => $css_url,
+			'data_uris_separate' => $options['data_uris_separate'],
 			'data_uris_size' => $options['data_uris_size'],
 			'data_uris_ignore_list' => $options['data_uris_exclude'],
 			'image_optimization' => $options['image_optimization'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites'],
-			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts'])
+			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
+			'user_agent' => $this->ua_mod
 		));
 		return $css_sprites->process();
 	}

@@ -39,6 +39,12 @@ class css_sprites {
 			$this->ignore_list = explode(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
 			$this->data_uris = $options['data_uris'];
+/* create mhtml based on parsed CSS file */
+			$this->mhtml = $options['data_uris_mhtml'];
+/* external URL to place into file with mhtml */
+			$this->css_url = $options['css_url'];
+/* return separate files: rules only and with base64 images */
+			$this->separated = $options['data_uris_separate'];
 /* max size of images to be converted */
 			$this->data_uris_size = $options['data_uris_size'];
 /* list of excluded from data:URI files */
@@ -67,8 +73,13 @@ class css_sprites {
 			}
 /* rewrite static resources with PHP cache proxy? */
 			$this->proxy = $options['expires'];
-/* use */
+/* use rewrite (just add dot to the end of images) */
 			$this->proxy_rewrite = $options['expires_rewrite'];
+/* current USER AGENT spot */
+			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
+/* is USER AGENT old IE? */
+			$this->ie = in_array($this->ua, array('ie5', 'ie6', 'ie7'));
+			$this->compressed_mhtml = $this->ie ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -500,12 +511,19 @@ __________________
 			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count) || !empty($this->proxy) || !empty($this->proxy_rewrite)) {
 				$this->css_to_data_uri();
 			}
-			return html_entity_decode($this->css->print->formatted(), ENT_QUOTES);
+/* after 0.6.2 return array of separated files */
+			return array(html_entity_decode($this->css->print->formatted(), ENT_QUOTES), $this->compressed_mhtml . ($this->ie ? "\n*/" : ""));
 		}
 	}
 /* convert all CSS images to base64 */
 	function css_to_data_uri () {
+/* location for mhtml */
+		$location = 0;
 		foreach ($this->css->css as $import => $token) {
+/* open @media definition*/
+			if (!empty($this->separated) && !$this->ie && !round($import)) {
+				$this->compressed_mhtml .= '@import ' . $import . '{';
+			}
 			foreach ($token as $tags => $rule) {
 				foreach ($rule as $key => $value) {
 /* standartize all background values from input, skip IE6/7 hacks */
@@ -523,32 +541,40 @@ __________________
 							$this->css_image = substr($image, 4, strlen($image) - 5);
 							if (!empty($this->css_image)) {
 								$sprited = strpos($this->css_image, 'ebo.' . $this->timestamp);
-								if (!empty($this->data_uris)) {
-/* convert image to base64 */
+								if (!empty($this->data_uris) && !$this->ie) {
+/* convert image to data:URI */
 									$this->get_image(1);
+								} elseif (!empty($this->data_uris) && !empty($this->mhtml)) {
+/* convert image to mhtml: */
+									$this->get_image(2, $location++);
 								}
-								if (substr($this->css_image, 0, 5) == 'data:') {
-									$ie_image = preg_replace("/(.*)?url\([^\)]+\)(.*)?/", "$1url(" .
-										$this->distribute_image(substr($image, 4, strlen($image) - 5)) .
-										")$2", $value);
-									if (empty($this->no_ie6) || !$sprited) {
-/* preserve IE6/7 selectors only if we are doing anything for IE6 */
-										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))] = array();
-										$this->css->css[$import]["* html " . implode(",* html ", explode(",", $tags))][$key] = $ie_image;
-									}
-									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))] = array();
-									$this->css->css[$import]["*+html " . implode(",*+html ", explode(",", $tags))][$key] = $ie_image;
+								if (substr($this->css_image, 0, 5) != 'data:' && substr($this->css_image, 0, 6) != 'mhtml:' && !$sprited) {
 /* skip images on different hosts */
-								} elseif (!$sprited) {
 									$this->css_image = $this->distribute_image($this->css_image);
 								}
-								$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
-									$this->css_image .
-									")$1", $value);
+/* separate background-image rules from the others? */
+								if (empty($this->separated)) {
+									$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+										$this->css_image .
+										")$1", $value);
+								} else {
+/* add for IE add call to mhtml resource file */
+									if ($this->ie) {
+										$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)/", "url(" . $this->css_image . ")$1", $value);	
+/* for others just remove background-image call */
+									} else {
+										$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)/", "", $value);
+										$this->compressed_mhtml .= $tags . '{background-image:url(' . $this->css_image . ')}';
+									}
+								}
 							}
 						}
 					}
 				}
+			}
+/* close @media definition*/
+			if (!empty($this->separated) && !$this->ie && !round($import)) {
+				$this->compressed_mhtml .= '}';
 			}
 		}
 	}
@@ -586,7 +612,7 @@ __________________
 		}
 	}
 /* download requested image */
-	function get_image ($mode = 0) {
+	function get_image ($mode = 0, $location = 1) {
 		$image_saved = $this->css_image;
 /* handle cases with data:URI */
 		if (substr($this->css_image, 0, 5) == 'data:') {
@@ -599,7 +625,7 @@ __________________
 			} else {
 				$this->css_image = '';
 			}
-/* handle cases with mhtml: */
+/* handle cases with mhtml: NEED TO BE FIXED! */
 		} elseif (substr($this->css_image, 0, 6) == 'mhtml:') {
 			$this->css_image = '';
 		} else {
@@ -618,30 +644,41 @@ __________________
 				}
 			}
 		}
-		switch ($mode) {
-/* data:URI */
-			case 1:
-				$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
-				$filename = preg_replace("!.*/!", "", $this->css_image);
+		if ($mode > 0) {
+			$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
+			$filename = preg_replace("!.*/!", "", $this->css_image);
 /* Thx for htc for ali@ */
-				if (is_file($this->css_image) && !in_array($extension, array('htc', 'cur', 'eot', 'ttf')) && !in_array($filename, $this->data_uris_ignore_list)) {
+			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf')) || in_array($filename, $this->data_uris_ignore_list)) {
+				$this->css_image = $image_saved;
+				return;
+			}
 /* image optimization */
-					if ($this->image_optimization && !strpos($this->css_image, "/webo.")) {
-						$this->smushit($this->css_image);
-					}
-/* don't create data:URI greater than 32KB -- for IE8 */
-					if (@filesize($this->css_image) < $this->data_uris_size) {
-/* convert image to base64-string */
-						$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
-					} else {
-/* just return absolute URL for image */
-						$this->css_image = str_replace($this->website_root, "", $this->css_image);
-					}
+			if ($this->image_optimization && !strpos($this->css_image, "/webo.")) {
+				$this->smushit($this->css_image);
+			}
+		}
+		switch ($mode) {
+/* mhtml */
+			case 2:
+/* 50KB restriction for mhtml: -- why? */
+				if (@filesize($this->css_image) < 51250) {
+					$this->compressed_mhtml .= "\n\n--_\nContent-Location:$location\nContent-Transfer-Encoding:base64\n\n" . base64_encode(@file_get_contents($this->css_image));
+					$this->css_image = 'mhtml:' . $this->css_url . '!' . $location;
 				} else {
-					$this->css_image = $image_saved;
+					$this->css_image = str_replace($this->website_root, "", $this->css_image);
 				}
 				return;
-				break;
+/* data:URI */
+			case 1:
+/* don't create data:URI greater than 32KB -- for IE8 */
+				if (@filesize($this->css_image) < $this->data_uris_size) {
+/* convert image to base64-string */
+					$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
+				} else {
+/* just return absolute URL for image */
+					$this->css_image = str_replace($this->website_root, "", $this->css_image);
+				}
+				return;
 /* image dimensions */
 			default:
 				if (is_file($this->css_image)) {
