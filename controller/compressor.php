@@ -38,6 +38,9 @@ class web_optimizer {
 		$this->initial_files = array();
 /* Set options */
 		$this->set_options();
+/* Sets User Agent to differ IE from not-IE */
+		$this->ua = $_SERVER['HTTP_USER_AGENT'];
+		$this->set_user_agent();
 /* Remember current page encoding */
 		$this->encoding = '';
 /* Define the gzip headers */
@@ -57,7 +60,7 @@ class web_optimizer {
   - page is requested by GET,
   - no chained optimization.
 */
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $_SERVER['HTTP_USER_AGENT'])) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET') && empty($this->web_optimizer_stage);
+		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $this->ua)) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET') && empty($this->web_optimizer_stage);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -319,7 +322,7 @@ class web_optimizer {
 			if (in_array($this->encoding, array('deflate', 'x-deflate'))) {
 				die();
 /* otherwise IE7 crashes if gzip is used */
-			} elseif (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 7")) {
+			} elseif ($this->ua_mod == 'ie7.') {
 				die();
 			}
 		}
@@ -464,7 +467,7 @@ class web_optimizer {
 		$this->replace_informers($options);
 /* strip from content flushed part */
 		if (!empty($this->flushed)) {
-			$this->content = substr($this->content, $options['flush_size'], strlen($this->content));
+			$this->content = substr($this->content, $options['flush_size']);
 		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
@@ -531,7 +534,7 @@ class web_optimizer {
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
-				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos, strlen($old_src)) : '';
+				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 				if (empty($replaced[$old_src])) {
 /* are we operating with multiple hosts */
 					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
@@ -589,7 +592,7 @@ class web_optimizer {
 				$crc = crc32($content);
 				$cnt = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
 				$content = gzcompress($content, $this->options['page']['gzip_level']);
-				$content = substr($content, 0, strlen( $content) - 4);
+				$content = substr($content, 0, -4);
 				$cnt .= $content;
 				$cnt .= pack('V', $crc);
 				$cnt .= pack('V', $size);
@@ -608,20 +611,22 @@ class web_optimizer {
 	**/
 	function set_gzip_encoding () {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
-			if (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip")) {
+			$ae = $_SERVER["HTTP_ACCEPT_ENCODING"];
+			if (strpos(" " . $ae, "x-gzip")) {
 				$this->encoding = "x-gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE['_wo_gzip'])) {
+			} elseif (strpos(" " . $ae, "gzip") || !empty($_COOKIE['_wo_gzip'])) {
 				$this->encoding = "gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate")) {
+			} elseif (strpos(" " . $ae, "deflate")) {
 				$this->encoding = "x-deflate";
 				$this->encoding_ext = 'df';
-			} elseif (strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "deflate")) {
+			} elseif (strpos(" " . $ae, "deflate")) {
 				$this->encoding = "deflate";
 				$this->encoding_ext = 'df';
-			} 
+			}
 		}
+		$this->encoding_ext = $this->ua_mod . $this->encoding_ext;
 	}
 	
 	/**
@@ -736,9 +741,10 @@ class web_optimizer {
 		}
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
-		$cache_file = urlencode($cache_file);
-		if (file_exists($cachedir . '/' . $cache_file . "." . $options['ext'])) {
-			$timestamp = @filemtime($cachedir . '/' . $cache_file . "." . $options['ext']);
+		$cache_file = urlencode($cache_file . $this->ua_mod);
+		$file = $cachedir . '/' . $cache_file . "." . $options['ext'];
+		if (file_exists($file)) {
+			$timestamp = @filemtime($file);
 		} else {
 			$timestamp = 0;
 		}
@@ -1445,7 +1451,7 @@ class web_optimizer {
 					'"></' .
 						($inline ? 'span' : 'div') .
 					'>' .
-						substr($this->content, $pos + $len, strlen($this->content) - $len);
+						substr($this->content, $pos + $len, -$len);
 				$return .= '<div id="'.
 						$stuff .'_src_' . $key . 
 					'" style="display:none">' .
@@ -1510,9 +1516,9 @@ class web_optimizer {
 	function get_current_path ($trailing=false) {
 		$current_dir = $this->view->paths['relative']['current_directory'];
 /* Remove trailing slash */
-		if($trailing) {
-			if(substr($current_dir,-1,1) == "/") {
-				$current_dir = substr($current_dir,0,-1);
+		if ($trailing) {
+			if(substr($current_dir, -1, 1) == "/") {
+				$current_dir = substr($current_dir, 0, -1);
 			}
 		}
 		return $current_dir;
@@ -1533,6 +1539,10 @@ class web_optimizer {
 			preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
 			if (!empty($matches[0])) {
 				$this->head = $matches[0];
+/* remove conditional comments for current browser */
+				if (!empty($this->ua_mod)) {
+					$this->remove_conditional_comments();
+				}
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 				if (!empty($this->options['javascript']['minify'])) {
 					$this->head = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->head);
@@ -1550,7 +1560,7 @@ class web_optimizer {
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
-				if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 6") || strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 5")) {
+				if ($this->ua_mod == 'ie5.' || $this->ua_mod == 'ie6.') {
 					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
 				} else {
 					$background_style = 'background:url(' .  $background_image .')';
@@ -1567,10 +1577,41 @@ class web_optimizer {
 	}
 
 	/**
+	* Removes conditional comments for MSIE 5-9
+	*
+	**/
+	function remove_conditional_comments () {
+/* preliminary strpos saves about 50% of CPU */
+		if (strpos(' ' . $this->head, 'IE]>')) {
+			$this->head = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+		}
+		for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+/* detect */
+			if ($this->ua_mod == ".ie" . $version) {
+/* detect equality */
+				if (strpos(' ' . $this->head, 'IE ' . $version . ']>')) {
+					$this->head = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $this->head);
+				}
+/* detect lesser versions */
+				for ($i = $this->min_ie_version; $i < $version; $i++) {
+					if (strpos(' ' . $this->head, 'IE ' . $i . ']>')) {
+						$this->head = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+					}
+				}
+/* detect greater versions */
+				for ($i = $version; $i < $this->max_ie_version; $i++) {
+					if (strpos(' ' . $this->head, 'IE ' . $i . ']>')) {
+						$this->head = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	* Converts sinlge path to the absolute one
 	*
 	**/
-
 	function convert_path_to_absolute ($file, $path, $leave_querystring = false) {
 		$endfile = '';
 		$root = $this->view->unify_dir_separator($this->view->paths['full']['document_root']);
@@ -1736,6 +1777,25 @@ class web_optimizer {
 		}
 		@chdir($current_directory);
 		return false;
+	}
+
+	/**
+	 * Sets User Agent modificator
+	 *
+	 **/
+	function set_user_agent () {
+		$this->ua_mod = '';
+/* min. supported IE version */
+		$this->min_ie_version = 5;
+/* max. supported IE version */
+		$this->max_ie_version = 10;
+		if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
+			for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+				if (strpos($this->ua, 'MSIE ' . $version)) {
+					$this->ua_mod = '.ie' . $version;
+				}
+			}
+		}
 	}
 
 } // end class
