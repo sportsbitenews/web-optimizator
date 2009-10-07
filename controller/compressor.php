@@ -1440,6 +1440,14 @@ class web_optimizer {
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
+				if (empty($height)) {
+/* try to calculate height for AdWords */
+					switch ($stuff) {
+						case 'gadwords':
+							$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
+							break;
+					}
+				}
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
@@ -1458,7 +1466,7 @@ class web_optimizer {
 						substr($this->content, $pos + $len, strlen($this->content) - $len);
 				$return .= '<div id="'.
 						$stuff .'_src_' . $key . 
-					'" style="display:none">' .
+					'">' .
 						$value[0] .
 					'</div><script type="text/javascript">document.getElementById("' .
 						$stuff . '_dst_' . $key . '").appendChild(document.getElementById("' .
