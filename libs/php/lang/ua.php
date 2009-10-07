@@ -172,7 +172,7 @@ define('_WEBO_html_cache_allowed_list', 'Список частин USER AGENTS (
 define('_WEBO_footer_text', 'Додати посилання на Web Optimizer');
 define('_WEBO_footer_image', 'Додати зображення Web Optimizer');
 define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
-define('_WEBO_data_uris_mhtml', 'Застосувати <code>mhtml:/code>');
+define('_WEBO_data_uris_mhtml', 'Застосувати <code>mhtml:</code>');
 define('_WEBO_data_uris_separate', 'Отделить картинки от CSS-кода');
 define('_WEBO_data_uris_size', 'Максимальный размер изображения (в байтах)');
 define('_WEBO_data_uris_smushit', 'Оптимізувати всі CSS-зображення через smush.it');
