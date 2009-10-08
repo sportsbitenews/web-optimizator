@@ -139,7 +139,7 @@ class web_optimizer {
 			$_SERVER['REQUEST_URI'] = '/';
 		}
 		$this->premium = $this->view->validate_license($this->options['license']);
-		$webo_cachedir = realpath(dirname(__FILE__) . '/../');
+		$webo_cachedir = str_replace("//", "/", realpath(dirname(__FILE__) . '/../') . '/');
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
