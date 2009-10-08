@@ -98,7 +98,8 @@ define('_WEBO_SPLASH2_CACHE_JS', 'JavaScript-файли будуть розмі�
 define('_WEBO_SPLASH2_CACHE_CSS', 'CSS-файли будуть розміщуватися в');
 define('_WEBO_SPLASH2_CACHE_HTML', 'HTML-файли будуть розміщуватися в');
 define('_WEBO_SPLASH2_INSTALLDIR', 'Web Optimizer розміщений в');
-define('_WEBO_SPLASH2_DOCUMENTROOT', 'Сайт розміщений в');
+define('_WEBO_SPLASH2_WEBSITEROOT', 'Сайт розміщений в');
+define('_WEBO_SPLASH2_DOCUMENTROOT', 'Хост указывает на (document root)');
 define('_WEBO_SPLASH2_HOST', 'Адрес сайта, например, site.com.ua');
 define('_WEBO_SPLASH2_SPACE', 'Будь-лайска, через пробіл:');
 define('_WEBO_SPLASH2_YES', 'Так:');

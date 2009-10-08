@@ -139,11 +139,12 @@ class web_optimizer {
 			$_SERVER['REQUEST_URI'] = '/';
 		}
 		$this->premium = $this->view->validate_license($this->options['license']);
+		$webo_cachedir = realpath(dirname(__FILE__) . '/../');
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
-				"installdir" => $this->options['webo_cachedir'],
+				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => $this->premium ? round($this->options['gzip']['javascript_level']) : 1,
@@ -161,7 +162,7 @@ class web_optimizer {
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
-				"installdir" => $this->options['webo_cachedir'],
+				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => $this->premium ? round($this->options['gzip']['css_level']) : 1,
@@ -1113,7 +1114,10 @@ class web_optimizer {
 								}
 							}
 						}
-						$this->initial_files[] = $file;
+/* skip external files if option is disabled */
+						if ($this->options['javascript']['external_scripts'] || (!empty($file['file']) && preg_match("@\.js$@i", $file['file']))) {
+							$this->initial_files[] = $file;
+						}
 					}
 				}
 			}
@@ -1148,7 +1152,10 @@ class web_optimizer {
 								}
 							}
 						}
-						$this->initial_files[] = $file;
+/* skip external files if option is disabled */
+						if ($this->options['javascript']['external_scripts'] || (!empty($file['file']) && preg_match("@\.css$@i", $file['file']))) {
+							$this->initial_files[] = $file;
+						}
 					}
 				}
 			}
@@ -1790,7 +1797,7 @@ class web_optimizer {
 		if ($current_directory == '/') {
 			$current_directory = $this->options['css']['installdir'];
 		}
-		if (function_exists('curl_init')) {	
+		if (function_exists('curl_init')) {
 			if ($tag == 'link') {
 				@chdir($this->options['css']['cachedir']);
 			} else {

@@ -1,7 +1,7 @@
 <?php
 /**
  * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
- * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
+ * Provides admin interface for Web Optimizer standalone application.
  *
  **/
 class admin {
@@ -146,24 +146,24 @@ class admin {
 		$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
 		$css_cachedir = empty($this->compress_options['css_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['css_cachedir'];
 		$html_cachedir = empty($this->compress_options['html_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['html_cachedir'];
-		$webo_cachedir = empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'];
+		$website_root = empty($this->compress_options['website_root']) ? $this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'];
 		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
 /* check for YUI */
 		$YUI_available = 0;
-		if (is_file($webo_cachedir . 'libs/php/class.yuicompressor4.php') || is_file($webo_cachedir . 'libs/php/class.yuicompressor.php')) {
+		if (is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
 			if (substr(phpversion(), 0, 1) == 4) {
-				require_once($webo_cachedir . 'libs/php/class.yuicompressor4.php');
+				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
 			} else {
-				require_once($webo_cachedir . 'libs/php/class.yuicompressor.php');
+				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
 			}
-			$YUI = new YuiCompressor($javascript_cachedir, $webo_cachedir);
+			$YUI = new YuiCompressor($javascript_cachedir, $this->basepath);
 			$YUI_checked = $YUI->check();
 		}
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
 /* download restricted file */
-		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $webo_cachedir) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
-		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($webo_cachedir . 'css.sprites.php')) {
+		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
+		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($this->basepath . 'css.sprites.php')) {
 			$htaccess_available = 0;
 		}
 		@unlink($javascript_cachedir . 'htaccess.test');
@@ -187,12 +187,12 @@ class admin {
 			'css_cachedir' => $css_cachedir,
 			'html_writable' => is_writable($html_cachedir),
 			'html_cachedir' => $html_cachedir,
-			'htaccess_writable' => is_writable($document_root) || is_writable($document_root . '.htaccess'),
-			'htaccess' => $document_root . '.htaccess',
-			'index_writable' => is_writable($document_root . 'index.php'),
-			'index' => $document_root . 'index.php',
-			'config_writable' => is_writable($webo_cachedir . 'config.webo.php'),
-			'config' => $webo_cachedir . 'config.webo.php',
+			'htaccess_writable' => is_writable($website_root) || is_writable($website_root . '.htaccess'),
+			'htaccess' => $website_root . '.htaccess',
+			'index_writable' => is_writable($website_root . 'index.php'),
+			'index' => $website_root . 'index.php',
+			'config_writable' => is_writable($this->basepath . 'config.webo.php'),
+			'config' => $this->basepath . 'config.webo.php',
 			'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
 			'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode') && function_exists('gzcompress') && function_exists('gzdeflate'),
 			'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
@@ -208,7 +208,7 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
 			'protected_mode' => empty($this->protected) ? 0 : 1,
-			'cms' => $this->system_info($document_root),
+			'cms' => $this->system_info($website_root),
 			'memory_limit' => $memory_limit
 		);
 /* Output data */
@@ -444,14 +444,14 @@ class admin {
 			$this->cleanup_file($footer, $return);
 		} else {
 /* remove instances of Web Optimizer from index.php */
-			$index = $this->view->paths['full']['document_root'] . 'index.php';
+			$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 /* fix for phpBB */
 			if ($this->cms_version == 'phpBB') {
-				$index = $this->view->paths['full']['document_root'] . 'includes/functions.php';
+				$index = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 			}
 /* fix for IPB */
 			if ($this->cms_version == 'Invision Power Board') {
-				$index = $this->view->paths['full']['document_root'] . 'sources/classes/class_display.php';
+				$index = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
 			}
 			$this->cleanup_file($index, $return);
 			$content_saved = $this->clean_htaccess($return);
@@ -487,10 +487,10 @@ class admin {
 		$plugins = explode(" ", $this->compress_options['plugins']);
 		if (is_array($plugins)) {
 			foreach ($plugins as $plugin) {
-				$plugin_file = $this->input['user']['webo_cachedir'] . 'plugins/' . $plugin . '.php';
+				$plugin_file = $this->basepath . 'plugins/' . $plugin . '.php';
 				if (is_file($plugin_file)) {
 					include($plugin_file);
-					$web_optimizer_plugin->onUninstall($this->view->paths['full']['document_root']);
+					$web_optimizer_plugin->onUninstall($this->view->paths['absolute']['document_root']);
 				}
 			}
 		}
@@ -593,7 +593,7 @@ class admin {
 			$this->input['user']['javascript_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
 			$this->input['user']['css_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
 			$this->input['user']['html_cachedir'] = $this->view->paths['full']['current_directory'] . 'cache/';
-			$this->input['user']['webo_cachedir'] = $this->view->paths['full']['current_directory'];
+			$this->input['user']['website_root'] = $this->view->paths['absolute']['document_root'];
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
 			$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
 /* restore username, and password, and license */
@@ -645,11 +645,12 @@ class admin {
 		} else {
 			$this->view->set_paths();
 			$this->input['user']['document_root'] = $this->view->paths['full']['document_root'];
+			$this->input['user']['website_root'] = $this->view->paths['absolute']['document_root'];
 		}
 		$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
 /* check if we are using correct root directory */
-		if (!is_dir($this->input['user']['document_root'])) {
-			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['document_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
+		if (!is_dir($this->input['user']['website_root'])) {
+			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['website_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 		}
 		$this->get_modules();
 /* check for multiple hosts possibility */
@@ -744,7 +745,7 @@ class admin {
 		}
 		$options['auto_rewrite'] = null;
 /* check /index.php to possiblity to rewrite it */
-		$index = $this->input['user']['document_root'] . "index.php";
+		$index = $this->input['user']['website_root'] . "index.php";
 		if (is_readable($index) && is_writable($index)) {
 /* if we can rewrite the file -- add auto-patch option */
 			$options['auto_rewrite'] = array(
@@ -753,7 +754,6 @@ class admin {
 				'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
 			);
 		}
-
 		$this->page_variables = array(
 			"title" => _WEBO_SPLASH2_TITLE,
 			"paths" => $this->view->paths,
@@ -761,7 +761,7 @@ class admin {
 			"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
 			"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
 			"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
-			"webo_cachedir" => empty($this->compress_options['webo_cachedir']) ? $this->view->paths['full']['current_directory'] : $this->compress_options['webo_cachedir'],
+			"website_root" => empty($this->compress_options['website_root']) ? $this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'],
 			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
 			"host" => empty($this->compress_options['host']) ? (empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) : $this->compress_options['host'],
 			"options" => $options,
@@ -797,7 +797,7 @@ class admin {
 			$this->input['user']['minify']['with_packer'] = 0;
 		}
 /* try to set some libs executable */
-		@chmod($this->input['user']['webo_cachedir'] . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
+		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
 /* Load pre-defined options */
 		foreach ($this->compress_options as $key => $option) {
 			if (is_array($option)) {
@@ -815,13 +815,13 @@ class admin {
 		if (!empty($this->input['user']['minify']['with_yui'])) {
 /* check for YUI availability */
 			$YUI_checked = 0;
-			if (is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php') || is_file($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php')) {
+			if (is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
 				if (substr(phpversion(), 0, 1) == 4) {
-					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor4.php');
+					require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
 				} else {
-					require_once($this->input['user']['webo_cachedir'] . 'libs/php/class.yuicompressor.php');
+					require_once($this->basepath . 'libs/php/class.yuicompressor.php');
 				}
-				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->input['user']['webo_cachedir']);
+				$YUI = new YuiCompressor($this->input['user']['javascript_cachedir'], $this->basepath);
 				$YUI_checked = $YUI->check();
 			}
 			if (!$YUI_checked) {
@@ -844,33 +844,30 @@ class admin {
 		foreach($this->input['user'] as $key => $option) {
 			if (is_array($option)) {
 				foreach($option as $option_name => $option_value) {
-					if (!empty($this->apache_modules)) {
-						if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
-							$option_value = $option_value && in_array($option_name, $this->apache_modules);
-							$this->input['user'][$key][$option_name] = $option_value;
+					if (in_array($option_name, array('mod_expires', 'mod_deflate', 'mod_headers', 'mod_gzip', 'mod_setenvif', 'mod_mime', 'mod_rewrite'))) {
+						if (!empty($this->apache_modules)) {
+							$this->input['user'][$key][$option_name] = $option_value = ($option_value && in_array($option_name, $this->apache_modules));
+						} else {
+							$this->input['user'][$key][$option_name] = $option_value = 0;
 						}
 					}
 /* check for curl existence */
 					if ($key == 'external_scripts' && $option_name == 'on') {
-						if (!empty($loaded_modules)) {
-							if (!in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
-								$this->input['user'][$key][$option_name] = 0;
-							}
+						if (empty($loaded_modules) || !in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
+							$this->input['user'][$key][$option_name] = $option_value = 0;
 						}
 					}
 /* check for gzencode functions' existence */
 					if ($key == 'gzip') {
 						if ((!function_exists('gzencode') || !function_exists('gzcompress') || !function_exists('gzdeflate')) && !$this->input['user']['htaccess']['enabled']) {
-							$this->input['user'][$key][$option_name] = 0;
+							$this->input['user'][$key][$option_name] = $option_value = 0;
 						}
 					}
 /* correct multiple hosts list */
 					if ($key == 'parallel' && $option_name == 'allowed_list') {
 						$hosts = explode(" ", $option_value);
-						if (is_array($hosts)) {
-							if (!empty($this->input['user']['parallel']['check'])) {
-								$option_value = $this->check_hosts($hosts);
-							}
+						if (is_array($hosts) && !empty($this->input['user']['parallel']['check'])) {
+							$this->input['user'][$key][$option_name] = $option_value = $this->check_hosts($hosts);
 						}
 					}
 					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value, $return);
@@ -1166,13 +1163,13 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 				}
 			}
 /* copy unobtrusive loader library to cache directory */
-			@copy($this->input['user']['webo_cachedir'] . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
+			@copy($this->basepath . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
 /* copy gzip check to cache directory */
-			@copy($this->input['user']['webo_cachedir'] . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
+			@copy($this->basepath . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
 /* copy Expires setter to cache directory */
-			@copy($this->input['user']['webo_cachedir'] . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
+			@copy($this->basepath . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
 /* copy stamp image to cache directory */
-			@copy($this->input['user']['webo_cachedir'] . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
+			@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
 			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {
 				$this->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
 			}
@@ -1189,7 +1186,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 				$this->write_htaccess(0, $this->view->paths['relative']['document_root']);
 /* look for plugins */
 				$plugins = array();
-				if ($dp = @opendir($this->input['user']['webo_cachedir'] . 'plugins')) {
+				if ($dp = @opendir($this->basepath . 'plugins')) {
 					while (($file = @readdir($dp)) !== false) {
 						if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
 							$plugins[] = preg_replace("!\.php$!i", "", $file);
@@ -1205,9 +1202,8 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
 		if(!empty($this->input['Submit'])) {
-			$this->input['user']['webo_cachedir'] = empty($this->compress_options['webo_cachedir']) ? $this->input['user']['webo_cachedir'] : $this->compress_options['webo_cachedir'];
 /* delete test file from chained optimization */
-			@unlink($this->input['user']['webo_cachedir'] . 'cache/optimizing.php');
+			@unlink($this->basepath . 'cache/optimizing.php');
 /* define CMS */
 			if (empty($this->cms_version)) {
 				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
@@ -1216,9 +1212,9 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 			$auto_rewrite = 0;
 			if (!empty($this->input['user']['auto_rewrite']) && !empty($this->input['user']['auto_rewrite']['enabled'])) {
 /* check for web.optimizer.php existence */
-				$fp = fopen($this->input['user']['webo_cachedir'] . 'web.optimizer.php', 'r');
+				$fp = fopen($this->basepath . 'web.optimizer.php', 'r');
 				if (!$fp) {
-					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->input['user']['webo_cachedir'] . ".</p>");
+					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->basepath . ".</p>");
 				} else {
 /* dirty hack for PHP-Nuke */
 					if ($this->cms_version == 'PHP-Nuke') {
@@ -1230,7 +1226,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* update main PHP-Nuke file */
-							$return1 = $this->write_file($mainfile, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)), 1);
+							$return1 = $this->write_file($mainfile, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)), 1);
 /* create backup */
 							@copy($footer, $footer . '.backup');
 /* update footer */
@@ -1249,7 +1245,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* remove any old strings regarding Web Optimizer */
 							$mainfile_content = preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
 /* add class declaration */
-							$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');', $mainfile_content);
+							$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->basepath . 'web.optimizer.php\');', $mainfile_content);
 /* add finish */
 							$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
 							$return = $this->write_file($mainfile, $mainfile_content, 1);
@@ -1265,7 +1261,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* add class declaration */
-							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
+							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
 /* add finish */
 							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
 							$return = $this->write_file($mainfile, $mainfile_content, 1);
@@ -1283,7 +1279,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* update header */
-							$return1 = $this->write_file($mainfile, preg_replace("/<\?/", '<? require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+							$return1 = $this->write_file($mainfile, preg_replace("/<\?/", '<? require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
 							@copy($footer, $footer . '.backup');
 /* update footer */
@@ -1302,7 +1298,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* update mainfile */
-							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
 							@copy($footer, $footer . '.backup');
 							$footer_content = preg_replace('!(readfile\(\$cacheurl\);)!', "$1\n" . 'global $web_optimizer;$web_optimizer->finish();', $footer_content);
@@ -1323,7 +1319,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* update mainfile */
-							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
 							@copy($footer, $footer . '.backup');
 							$footer_content = preg_replace('!(exit;)!', 'global $web_optimizer;$web_optimizer->finish();' . "$1", $footer_content);
@@ -1348,27 +1344,27 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 							}
 /* fix for Joomla 1.0 */
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
-								$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+								$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for Joomla 1.5+ */
 							} elseif (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
-								$content_saved = preg_replace("/(\\\$mainframe\s*=&\s*JFactory::getApplication\(['\"]site['\"]\);\r?\n)/i",  "$1" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+								$content_saved = preg_replace("/(\\\$mainframe\s*=&\s*JFactory::getApplication\(['\"]site['\"]\);\r?\n)/i",  "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 /* fix for Joostina */
 							} elseif (preg_match("/Joostina/", $this->cms_version)) {
-								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for vBulletin */
 							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
-								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for CMS Made Simple */							
 							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
-								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$1", $content_saved);
+								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for UMI.CMS */							
 							} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
-								$content_saved = preg_replace("/(sha1.*)\r?\n([\s\t]*echo\s*\\\$res;)/", "$1\n" . 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n$2", $content_saved);
+								$content_saved = preg_replace("/(sha1.*)\r?\n([\s\t]*echo\s*\\\$res;)/", "$1\n" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$2", $content_saved);
 							} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "\n", $content_saved);
+								$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 							} else {
-								$content_saved = "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . $content_saved;
+								$content_saved = "<?php require('" . $this->basepath . "web.optimizer.php'); ?>" . $content_saved;
 							}
 /* fix for DataLife Engine */
 							if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
@@ -1421,7 +1417,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
 								if (is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
-									$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
 								}
 							}
@@ -1437,7 +1433,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
 								if (is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
-									$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->input['user']['webo_cachedir'] . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+									$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
 								}
 							}
@@ -1458,10 +1454,10 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 				$plugins = explode(" ", $this->compress_options['plugins']);
 				if (is_array($plugins)) {
 					foreach ($plugins as $plugin) {
-						$plugin_file = $this->input['user']['webo_cachedir'] . 'plugins/' . $plugin . '.php';
+						$plugin_file = $this->basepath . 'plugins/' . $plugin . '.php';
 						if (is_file($plugin_file)) {
 							include($plugin_file);
-							$web_optimizer_plugin->onInstall($this->view->paths['full']['document_root']);
+							$web_optimizer_plugin->onInstall($this->view->paths['absolute']['document_root']);
 						}
 					}
 				}
@@ -1580,14 +1576,14 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 	*
 	**/
 	function chained_load () {
-		$test_file = $this->input['user']['webo_cachedir'] . 'cache/optimizing.php';
+		$test_file = $this->basepath . 'cache/optimizing.php';
 		$this->write_progress(12);
 /* try to download main file */
 		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
-			$return = $this->write_file($test_file, "<?php require('" . $this->input['user']['webo_cachedir'] . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>', 1);
+			$return = $this->write_file($test_file, "<?php require('" . $this->basepath . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>', 1);
 			if (!empty($return)) {
 				$this->write_progress(14);
 				$this->input['user']['auto_rewrite'] = empty($this->input['user']['auto_rewrite']) ? array() : $this->input['user']['auto_rewrite'];
@@ -1703,7 +1699,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 	* 
 	**/
 	function protect_installation() {
-		$htaccess = $this->input['user']['webo_cachedir'] . '.htaccess';
+		$htaccess = $this->basepath . '.htaccess';
 		$htaccess_content = @file_get_contents($htaccess);
 /* clean current content */
 		$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
@@ -1713,9 +1709,9 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 # Web Optimizer protection
 AuthType Basic
 AuthName "Web Optimizer Installation"
-AuthUserFile ' . $this->input['user']['webo_cachedir'] . '.htpasswd
+AuthUserFile ' . $this->basepath . '.htpasswd
 require valid-user
-<Files ' . $this->input['user']['webo_cachedir'] . '.htpasswd>
+<Files ' . $this->basepath . '.htpasswd>
 	Deny from all
 </Files>
 # Web Optimizer protection end';
@@ -1933,8 +1929,8 @@ require valid-user
 /* CakePHP, global root */
 		} elseif (is_file($root . 'cake/VERSION.txt')) {
 /* change document root to inner directory */
-			$this->view->paths['full']['document_root'] = $this->view->ensure_trailing_slash($this->view->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
-			$this->save_option("['document_root']", $this->view->paths['full']['document_root']);
+			$this->view->paths['absolute']['document_root'] = $this->view->ensure_trailing_slash($this->view->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
+			$this->save_option("['website_root']", $this->view->paths['absolute']['document_root']);
 			return 'CakePHP';
 /* CakePHP, local root */
 		} elseif (is_file($root . '../../cake/VERSION.txt')) {

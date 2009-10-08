@@ -11,9 +11,9 @@ $compress_options['javascript_cachedir'] = "";
 $compress_options['css_cachedir'] = "";
 ## Cache directory for HTML files
 $compress_options['html_cachedir'] = "";
-## Web Optimizer installation directory
-$compress_options['webo_cachedir'] = "";
-## Root directory of the website
+## Website installation directory
+$compress_options['website_root'] = "";
+## Document Root directory of the website
 $compress_options['document_root'] = "";
 ## Host name, to include before static resources
 $compress_options['host'] = "";

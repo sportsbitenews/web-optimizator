@@ -57,9 +57,9 @@
 ?>" title="<?php
 	echo _WEBO_SPLASH2_CACHE_HTML;
 ?>" size="40"/></label><label><?php
-	echo _WEBO_SPLASH2_INSTALLDIR;
-?><input name="user[webo_cachedir]" value="<?php
-	echo $webo_cachedir;
+	echo _WEBO_SPLASH2_WEBSITEROOT;
+?><input name="user[website_root]" value="<?php
+	echo $website_root;
 ?>" title="<?php
 	echo _WEBO_SPLASH2_INSTALLDIR;
 ?>" size="40"/></label><label><?php
