@@ -128,7 +128,7 @@ define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Esta opci&oacute;n permite al Web Opt
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', '<p>Es posible almacenar imagenes de fondo CSS como sprites de CSS. Esto puede reudcir considerablemente el n&uacute;mero de demandas HTTP de carga del website</p><p>Esta t&eacute;cnica es totalmente compatible con browsers modernos. Usted puede adem&aacute;s cambiar a un modo mas agresivo si est&aacute; seguro de sus reglas en CSS.</p><p>Usted adem&aacute;s puede definir im&aacute;genes para excluir de creaci&oacute;n de sprites CSS (por ej. logo.png bg.gif).</p><p><a href="www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
 define('_WEBO_SPLASH2_DATAURI', 'Data URIs');
-define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Es posible almacenar las im&aacute;genes de fondo del CSS en urls de datos. Esto ayudar&aacute; a recortar m&aacute;s a&uacute;n la cantidad de demandas de HTTP.</p> <p>Nota, sin embargo, esto no funcionar&aacute; en Internet Explorer (hasta la versi&oacute;n 7.0) y que la informaci&oacute;n en general ser&aacute; mayor.</p><p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Im&aacute;genes en linea con informaci&oacute;n url</a> y <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Cuatro pasos para la reducci&oacute;n del tama&ntilde;o de archivos</a></p>');
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Es posible almacenar las im&aacute;genes de fondo del CSS en urls de datos. Esto ayudar&aacute; a recortar m&aacute;s a&uacute;n la cantidad de demandas de HTTP.</p><p>Note, <code>data:URI</code> isn\'t supported in Internet Explorer (up to version 7.0), for these browsers you should use <code>mhtml</code>.</p><p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Im&aacute;genes en linea con informaci&oacute;n url</a> y <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Cuatro pasos para la reducci&oacute;n del tama&ntilde;o de archivos</a></p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Hosts m&uacute;ltiples');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer puede tambi&eacute;n a&ntilde;adir m&uacute;ltiples hosts para servir archivos est&aacute;ticos (im&aacute;genes) y aumentar la velocidad de carga del website. Con varios hosts para browsers de recursos est&aacute;ticos puede abrir muchas conexiones al servidor singular.</p><p>Nota, para activar correctamente esta opci&oacute;n debe de a&ntilde;adir a la configuraci&oacute;n de su servidor algunos alias para el host principal, por ej.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Adem&aacute;s debe a&ntilde;adir informaci&oacute;n correspondiente al DNS (para apuntar al website principal). Web Optimizer revisa la disponibilidad de todos los hosts enlistados automaticamente.</p><p>Antes de desconectar el auto-check usted debe de asegurarse que el(los) host(s) existen, porque si no el HTTP GET ir&aacute; un error 404.</p><p><a href="http://www.ajaxperformance.com/2006/12/18/circumventing-browser-connection-limits-for-fun-and-profit/">Eludiendo los l&iacute;mites de conexi&oacute;n del browser por diversi&oacute;n y ganancia.</a></p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
@@ -177,11 +177,13 @@ define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&nt
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a Web Optimizer');
 define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
-define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml:</code>');
+define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');
-define('_WEBO_data_uris_size', 'Maximo tamano de la imagen (en bytes)');
+define('_WEBO_data_uris_size', 'Maximo tamano de <code>data:URI</code> (en bytes)');
+define('_WEBO_data_uris_mhtml_size', 'Maximo tamano de <code>mhtml</code> (en bytes)');
 define('_WEBO_data_uris_smushit', 'Optimiza todas las im&aacute;genes CSS via smush.it');
-define('_WEBO_data_uris_ignore_list', 'Excluiur archivos de data:URI');
+define('_WEBO_data_uris_ignore_list', 'Excluiur archivos de <code>data:URI</code>');
+define('_WEBO_data_uris_additional_list', 'Excluiur archivos de <code>mhtml</code>');
 define('_WEBO_css_sprites_enabled', 'AplicarSprites de CSS');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Graba im&aacute;genes truecolor como JPEG');
 define('_WEBO_css_sprites_aggressive', 'Modo combinado "Agresivo" para CSS Sprites');

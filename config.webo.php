@@ -93,8 +93,6 @@ $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
-## Should Web Optimizer use mhtml for background images?
-$compress_options['data_uris']['mhtml'] = "1";
 ## Should Web Optimizer separate CSS for rules and images?
 $compress_options['data_uris']['separate'] = "1";
 ## Optimiza all CSS images via smush.it?
@@ -103,13 +101,19 @@ $compress_options['data_uris']['smushit'] = "0";
 $compress_options['data_uris']['size'] = "24576";
 ## data:URI ignore list, files separated by space, i.e. head.jpg
 $compress_options['data_uris']['ignore_list'] = "";
+## Should Web Optimizer use mhtml for background images?
+$compress_options['data_uris']['mhtml'] = "1";
+## Maximum size of images to be converted into mhtml, in bytes
+$compress_options['data_uris']['mhtml_size'] = "51200";
+## mhtml ignore list, files separated by space, i.e. head.jpg
+$compress_options['data_uris']['additional_list'] = "";
 ## Should Web Optimizer use CSS Sprites for background images?
 $compress_options['css_sprites']['enabled'] = "1";
 ## Save 24bit images in JPEG not PNG
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
 ## Ignore no dimensions for repeat-x / repeat-y Sprites
 $compress_options['css_sprites']['aggressive'] = "0";
-## Add additional 5px to CSS Sprites
+## Add additional 5px around images to CSS Sprites
 $compress_options['css_sprites']['extra_space'] = "1";
 ## Exclude IE6 from CSS Sprites creation
 $compress_options['css_sprites']['no_ie6'] = "1";

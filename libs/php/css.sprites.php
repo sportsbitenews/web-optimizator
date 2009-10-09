@@ -39,16 +39,20 @@ class css_sprites {
 			$this->ignore_list = explode(" ", $options['ignore_list']);
 /* create data:URI based on parsed CSS file */
 			$this->data_uris = $options['data_uris'];
+/* max size of images to be converted to data:URI */
+			$this->data_uris_size = $options['data_uris_size'];
+/* list of excluded from data:URI files */
+			$this->data_uris_ignore_list = explode(" ", $options['data_uris_ignore_list']);
 /* create mhtml based on parsed CSS file */
-			$this->mhtml = $options['data_uris_mhtml'];
+			$this->mhtml = $options['mhtml'];
+/* max size of images to be converted to mhtml */
+			$this->mhtml_size = $options['mhtml_size'];
+/* list of excluded from data:URI files */
+			$this->mhtml_ignore_list = explode(" ", $options['mhtml_ignore_list']);
 /* external URL to place into file with mhtml */
 			$this->css_url = $options['css_url'];
 /* return separate files: rules only and with base64 images */
 			$this->separated = $options['data_uris_separate'];
-/* max size of images to be converted */
-			$this->data_uris_size = $options['data_uris_size'];
-/* list of excluded from data:URI files */
-			$this->data_uris_ignore_list = explode(" ", $options['data_uris_ignore_list']);
 /* part or full process */
 			$this->partly = $options['partly'];
 /* exclude IE6 from CSS Sprites */
@@ -648,7 +652,7 @@ __________________
 			$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
 			$filename = preg_replace("!.*/!", "", $this->css_image);
 /* Thx for htc for ali@ */
-			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf')) || in_array($filename, $this->data_uris_ignore_list)) {
+			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf'))) {
 				$this->css_image = $image_saved;
 				return;
 			}
@@ -660,23 +664,23 @@ __________________
 		switch ($mode) {
 /* mhtml */
 			case 2:
-/* 50KB restriction for mhtml: -- why? */
-				if (@filesize($this->css_image) < 51250) {
+/* 50KB deafault restriction for mhtml: -- why? */
+				if (@filesize($this->css_image) < $this->mhtml_size && !in_array($filename, $this->mhtml_ignore_list)) {
 					$this->compressed_mhtml .= "\n\n--_\nContent-Location:$location\nContent-Transfer-Encoding:base64\n\n" . base64_encode(@file_get_contents($this->css_image));
 					$this->css_image = 'mhtml:' . $this->css_url . '!' . $location;
 				} else {
-					$this->css_image = str_replace($this->website_root, "", $this->css_image);
+					$this->css_image = $image_saved;
 				}
 				return;
 /* data:URI */
 			case 1:
 /* don't create data:URI greater than 32KB -- for IE8 */
-				if (@filesize($this->css_image) < $this->data_uris_size) {
+				if (@filesize($this->css_image) < $this->data_uris_size && !in_array($filename, $this->data_uris_ignore_list)) {
 /* convert image to base64-string */
 					$this->css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($this->css_image));
 				} else {
 /* just return absolute URL for image */
-					$this->css_image = str_replace($this->website_root, "", $this->css_image);
+					$this->css_image = $image_saved;
 				}
 				return;
 /* image dimensions */

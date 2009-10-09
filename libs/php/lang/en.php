@@ -124,7 +124,7 @@ define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>This option allow Web Optimizer to ca
 define('_WEBO_SPLASH2_SPRITES', 'Use CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', '<p>It is possible to store CSS background images as CSS Sprites. This can significantly reduce the number of HTTP requests during website load.</p><p>This technique is fully supported by all modern browsers. You can also switch to more aggressive mode if you are sure with your CSS rules.</p><p>You also can define images to exclude from CSS Sprites creation (i.e. logo.png bg.gif).</p><p><a href="http://www.alistapart.com/articles/sprites">CSS Sprites: Image Slicing\'s Kiss of Death</a></p>');
 define('_WEBO_SPLASH2_DATAURI', 'Use data URIs');
-define('_WEBO_SPLASH2_DATAURI_INFO', '<p>It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p><p>Note, however, that this will not work on Internet Explorer (up to version 7.0) and that the overall data size will be larger.</p><p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>It is possible to store CSS Background images as Data URIs. This will help cut down even further on the amount of HTTP Requests.</p><p>Note, <code>data:URI</code> isn\'t supported in Internet Explorer (up to version 7.0), for these browsers you should use <code>mhtml</code>.</p><p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Multiple hosts');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer can also add multiple hosts to serve static files (images) and speed up website load. With several hosts for static assets browsers can open a lot of connections to the single server.</p><p>Note, to enable this option properly you need to add to your server configuration some aliases for the main host, i.e.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Also you need to add corresponding records to DNS (to point to the main website). Web Optimizer checks availability for all listed hosts automatically.</p><p>Before disabling auto-check you must make sure that host(s) do exist because otherwise HTTP GET runs into a 404 error.</p><p><a href="http://www.ajaxperformance.com/2006/12/18/circumventing-browser-connection-limits-for-fun-and-profit/">Circumventing browser connection limits for fun and profit</a></p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
@@ -173,11 +173,13 @@ define('_WEBO_html_cache_allowed_list', 'List of USER AGENTS (robots) to add to 
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
 define('_WEBO_data_uris_on', 'Apply <code>data:URI</code>');
-define('_WEBO_data_uris_mhtml', 'Apply <code>mhtml:</code>');
+define('_WEBO_data_uris_mhtml', 'Apply <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');
-define('_WEBO_data_uris_size', 'Maximum image size (in bytes)');
+define('_WEBO_data_uris_size', 'Maximum <code>data:URI</code> size (in bytes)');
+define('_WEBO_data_uris_mhtml_size', 'Maximum <code>mhtml</code> size (in bytes)');
 define('_WEBO_data_uris_smushit', 'Optimize all CSS images via smush.it');
 define('_WEBO_data_uris_ignore_list', 'Exclude files from <code>data:URI</code>');
+define('_WEBO_data_uris_additional_list', 'Exclude files from <code>mhtml</code>');
 define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Save truecolor images as JPEG');
 define('_WEBO_css_sprites_aggressive', '"Aggressive" combine mode for CSS Sprites');

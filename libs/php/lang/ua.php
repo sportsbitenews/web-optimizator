@@ -124,7 +124,7 @@ define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Web Optimizer може кешуват
 define('_WEBO_SPLASH2_SPRITES', 'CSS Sprites');
 define('_WEBO_SPLASH2_SPRITES_INFO', '<p>Існує можливість об\'єднати більшість фоновых зображень в CSS Sprites. Це суттєво зменшить кількість HTTP-запросів при завантаженні сайту.</p><p>Ця техніка повністю підтримується всіма сучасними браузерами. Ви також можете переключитися в більш агресивний режим використання CSS Sprites, якщо впевнені в коректності ваших CSS-правил.</p><p>Також можна задати набір зображень, які будуть виключені при створенні CSS Sprites (наприклад, logo.png bg.gif).</p><p><a href="http://webo.in/articles/habrahabr/08-all-about-css-sprites/">Техніка CSS Sprites</a> та <a href="http://webo.in/articles/habrahabr/89-css-sprites-2.0/">її автоматизація</a>.</p>');
 define('_WEBO_SPLASH2_DATAURI', 'Data:URI');
-define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Також є можливість перевести всі фонові зображення у формат <code>data:URI</code> (base64-вид). Таким чином при завантаженні дизайну сайта буде здійснений тілько один HTTP-запрос &mdash; до файлу стилів.</p><p>Увага: ця техніка не пфдтримується рядом браузеров (Internet Explorer до 7 версії включно). проте для них використовуються спеціальні CSS-правила, які дозволяють завантажити звичайні зображення. Також розмір кінцевого CSS-файлу може суттєво збільшитися (за рахунок включення в нього самих фонових зображень).</p><p><a href="http://webo.in/articles/habrahabr/29-all-about-data-url-images/">Техніка <code>data:URI</code></a> та <a href="http://webo.in/articles/habrahabr/69-total-image-optimization/">оптимізація зображень</a>.</p>');
+define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Також є можливість перевести всі фонові зображення у формат <code>data:URI</code> (base64-вид). Таким чином при завантаженні дизайну сайта буде здійснений тілько один HTTP-запрос &mdash; до файлу стилів.</p><p>Внимание: <code>data:URI</code> не поддерживается браузерами IE7 и ниже, для них необходимо использовать <code>mhtml</code>.</p><p><a href="http://webo.in/articles/habrahabr/29-all-about-data-url-images/">Техніка <code>data:URI</code></a>, <a href="http://webo.in/articles/clientside2008/data-uri-vs-css-sprites/">CSS Sprites и data:URI</a> та <a href="http://webo.in/articles/habrahabr/69-total-image-optimization/">оптимізація зображень</a>.</p>');
 define('_WEBO_SPLASH2_PARALLEL', 'Множинні хости');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Для прискорення процесу відображення сторінки в деяких випадках корисно додати декілька хостів для статичних файлів (зображень), щоб браузери могли відкрити більше паралельних з\'єднань із сервером.</p><p>Увага: для забезпечення роботи даної настройки необхідно додати в конфігураційний файл серверу декілька службових псевдонімів для основного хосту, наприклад: <code>i1.site.ru</code> <code>i2.site.ru</code> <code>i3.site.ru</code> <code>i4.site.ru</code>, &mdash; а також забезпечити їх відповідними записами в DNS (які б вказували для цих хостів на ту ж IP-адресу).</p><p>При отключении автоматической проверки, пожалуйтса, убедитесь, что указанные(-й) хост(ы) существуют, иначе статические ресурсы на вашем сайте нельзя будет загрузить.</p><p><a href="http://webo.in/articles/habrahabr/32-parallel-downloads-optimization/">Використання паралельних завантажень</a>.</p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Використання .htaccess');
@@ -173,9 +173,12 @@ define('_WEBO_html_cache_allowed_list', 'Список частин USER AGENTS (
 define('_WEBO_footer_text', 'Додати посилання на Web Optimizer');
 define('_WEBO_footer_image', 'Додати зображення Web Optimizer');
 define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
-define('_WEBO_data_uris_mhtml', 'Застосувати <code>mhtml:</code>');
+define('_WEBO_data_uris_mhtml', 'Застосувати <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Отделить картинки от CSS-кода');
-define('_WEBO_data_uris_size', 'Максимальный размер изображения (в байтах)');
+define('_WEBO_data_uris_size', 'Максимальный размер <code>data:URI</code> (в байтах)');
+define('_WEBO_data_uris_mhtml_size', 'Максимальный размер <code>mhtml</code> (в байтах)');
+define('_WEBO_data_uris_ignore_list', 'Исключить из <code>data:URI</code> файлы');
+define('_WEBO_data_uris_additional_list', 'Исключить из <code>mhtml</code> файлы');
 define('_WEBO_data_uris_smushit', 'Оптимізувати всі CSS-зображення через smush.it');
 define('_WEBO_css_sprites_enabled', 'Застосувати CSS Sprites');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Зберігати повнокольорові зображення в JPEG');

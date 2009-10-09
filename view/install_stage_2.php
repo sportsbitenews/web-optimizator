@@ -97,7 +97,7 @@
 			foreach ($type['value'] as $option => $value) {
 				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
 ?><label><?php
-					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'user', 'pass', 'additional', 'additional_list'))) {
+					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 						echo in_array($option, array('ignore_list', 'allowed_list', 'additional', 'additional_list')) ? '. ' . _WEBO_SPLASH2_SPACE : ':';
 ?> <input name="user[<?php
@@ -107,7 +107,7 @@
 ?>]" value="<?php
 						echo $value;
 ?>" size="40"<?php
-						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size', 'size')) ? ' class="t"' : '';
+						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size', 'size', 'mhtml_size')) ? ' class="t"' : '';
 ?>/><?php
 					} else {
 ?><a href="#<?php

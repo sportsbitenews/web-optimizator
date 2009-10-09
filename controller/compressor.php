@@ -175,7 +175,9 @@ class web_optimizer {
 				"data_uris_mhtml" => $this->options['data_uris']['mhtml'],
 				"data_uris_separate" => $this->options['data_uris']['separate'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
+				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
+				"data_uris_exclude_mhtml" => round($this->options['data_uris']['additional_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] && $this->premium,
 				"css_sprites_expires" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'], 
@@ -372,6 +374,7 @@ class web_optimizer {
 					'dimensions_limited' => false,
 					'css_sprites_extra_space' => false,
 					'data_uris' => false,
+					'mhtml' => false,
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
@@ -410,10 +413,13 @@ class web_optimizer {
 					'src' => 'href',
 					'rel' => 'stylesheet',
 					'data_uris' => $options['data_uris'],
-					'data_uris_mhtml' => $options['data_uris_mhtml'],
+					'mhtml' => $options['data_uris_mhtml'],
 					'data_uris_separate' => $options['data_uris_separate'],
 					'data_uris_size' => $options['data_uris_size'],
 					'data_uris_exclude' => $options['data_uris_exclude'],
+					'mhtml' => $options['data_uris_mhtml'],
+					'mhtml_size' => $options['data_uris_mhtml_size'],
+					'mhtml_exclude' => $options['mhtml_exclude'],
 					'image_optimization' => $options['image_optimization'],
 					'css_sprites' => $options['css_sprites'],
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
@@ -815,10 +821,11 @@ class web_optimizer {
 					$contents .= $file_contents . $delimiter;
 				}
 			}
-			if ($options['css_sprites'] || $options['data_uris']) {
+			if ($options['css_sprites'] || ($options['data_uris'] && empty($this->ua_mod)) || ($options['mhtml'] && !empty($this->ua_mod))) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
-				$options['data_uris'] = 0;
+				$remembered_mhtml = $options['mhtml'];
+				$options['data_uris'] = $options['mhtml'] = 0;
 /* start new PHP process to create CSS Sprites */
 				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 30) {
 					header('Location: optimizing.php?web_optimizer_stage=30&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
@@ -836,8 +843,9 @@ class web_optimizer {
 					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
 					die();
 				} else {
-/* we created all Sprites -- ready for data:URI */
+/* we created all Sprites -- ready for data:URI + mhtml */
 					$options['data_uris'] = $remembered_data_uri;
+					$options['mhtml'] = $remembered_mhtml;
 /* create correct resource file name for data:URI / mhtml inclusion */
 					$resource_file = $external_file;
 					if (!empty($options['data_uris_separate'])) {
@@ -1084,6 +1092,7 @@ class web_optimizer {
 	function get_script_array () {
 /* get head with all content */
 		$this->get_head();
+		$curl = function_exists('curl_init');
 		if (!empty($this->head)) {
 			if (!empty($this->options['javascript']['minify'])) {
 /* find all scripts from head */
@@ -1115,7 +1124,7 @@ class web_optimizer {
 							}
 						}
 /* skip external files if option is disabled */
-						if ($this->options['javascript']['external_scripts'] || (!empty($file['file']) && preg_match("@\.js$@i", $file['file']))) {
+						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file']))) {
 							$this->initial_files[] = $file;
 						}
 					}
@@ -1153,7 +1162,7 @@ class web_optimizer {
 							}
 						}
 /* skip external files if option is disabled */
-						if ($this->options['javascript']['external_scripts'] || (!empty($file['file']) && preg_match("@\.css$@i", $file['file']))) {
+						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file']))) {
 							$this->initial_files[] = $file;
 						}
 					}
@@ -1746,11 +1755,13 @@ class web_optimizer {
 			'expires' => $options['css_sprites_expires'],
 			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
-			'data_uris_mhtml' => $options['data_uris_mhtml'],
-			'css_url' => $css_url,
 			'data_uris_separate' => $options['data_uris_separate'],
 			'data_uris_size' => $options['data_uris_size'],
 			'data_uris_ignore_list' => $options['data_uris_exclude'],
+			'mhtml' => $options['mhtml'],
+			'mhtml_size' => $options['mhtml_size'],
+			'mhtml_ignore_list' => $options['mhtml_exclude'],
+			'css_url' => $css_url,
 			'image_optimization' => $options['image_optimization'],
 			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
