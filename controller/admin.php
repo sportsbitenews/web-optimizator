@@ -238,15 +238,13 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
-		if ($this->premium) {
-			$index_check = 'index.check';
-			$index_before = 'index.before';
-			$index_after = 'index.after';
-			$no_initial_grade = !@filesize($index_before);
+		$index_check = 'index.check';
+		$index_before = 'index.before';
+		$index_after = 'index.after';
+		$no_initial_grade = !@filesize($index_before);
 /* try to get reliminary optimization grade for the website */
-			if ($no_initial_grade) {
-				$this->download($this->webo_grade, $index_before, 1);
-			}
+		if ($no_initial_grade) {
+			$this->download($this->webo_grade, $index_before, 1);
 		}
 		$gzipped = $this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
 		if (!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
@@ -449,8 +447,8 @@ class admin {
 		} else {
 /* remove instances of Web Optimizer from index.php */
 			$index = $this->view->paths['absolute']['document_root'] . 'index.php';
-/* fix for phpBB */
-			if ($this->cms_version == 'phpBB') {
+/* fix for phpBB and vBulletin */
+			if ($this->cms_version == 'phpBB' || substr($this->cms_version, 0, 9) == 'vBulletin') {
 				$index = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 			}
 /* fix for IPB */
@@ -1336,7 +1334,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($this->cms_version, 0, 9) == 'vBulletin') {
-							$index = $this->view->paths['absolute']['document_root'] . 'include/functions.php';
+							$index = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 						} elseif ($this->cms_version == 'NetCat') {
 							$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 						}
@@ -2077,13 +2075,13 @@ require valid-user
 			case 'vBulletin':
 				$files = array(
 					array(
-						'file' => 'include/functions.php',
+						'file' => 'includes/functions.php',
 						'mode' => 'start',
 						'location' => '$output = process_replacement_vars($vartext);',
 						'global' => 1
 					),
 					array(
-						'file' => 'include/functions.php',
+						'file' => 'includes/functions.php',
 						'mode' => 'finish',
 						'location' => 'flush(); }',
 					)
