@@ -191,7 +191,7 @@ define('_WEBO_css_sprites_ignore_list', 'Исключить из CSS Sprites ф�
 define('_WEBO_parallel_enabled', 'Включить несколько хостов, например, i1 i2');
 define('_WEBO_parallel_check', 'Автоматически проверять доступность хостов');
 define('_WEBO_parallel_allowed_list', 'Доступные хосты');
-define('_WEBO_parallel_additional', 'Дополнительные сайты с множественными хостами, например, shop-host.ua photo-host.ua');
+define('_WEBO_parallel_additional', 'Дополнительные сайты с множественными хостами, например, shop-site.ru photo-site.ru');
 define('_WEBO_parallel_additional_list', 'Хосты дополнительных сайтов, например, i1 i2');
 define('_WEBO_htaccess_enabled', 'Включить <code>.htaccess</code>');
 define('_WEBO_htaccess_mod_deflate', 'Использовать <code>mod_deflate</code> + <code>mod_filter</code>');

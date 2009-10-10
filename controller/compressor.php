@@ -1505,7 +1505,7 @@ class web_optimizer {
 				if (empty($height)) {
 /* try to calculate height for AdWords */
 					switch ($stuff) {
-						case 'gadwords':
+						case 'gw':
 							$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
 							break;
 					}
@@ -1546,56 +1546,84 @@ class web_optimizer {
 	**/
 	function replace_informers ($options) {
 		$before_body = '';
+		$unobtrusive_items = array(
 /* Informers */
-		if (!empty($options['unobtrusive_informers'])) {
+			'unobtrusive_informers' => array(
 /* Odnaknopka */
-			$before_body .= $this->replace_unobtrusive_generic("@<script\s*src=['\"]https?://odnaknopka.ru[^>]+></script>@is", 'odnaknopka', 16);
+				'ok' => array(
+					'marker' => 'odnaknopka.ru',
+					'regexp' => "<script\s*src=['\"]https?://odnaknopka.ru[^>]+></script>",
+					'height' => 16
 /* Addthis */
-			$before_body .= $this->replace_unobtrusive_generic("@<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->@is", 'addthis', 20);
-		}
+				), 'at' => array(
+					'marker' => 'AddThis',
+					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
+					'height' => 20
+				)
 /* Counters */
-		if (!empty($options['unobtrusive_counters'])) {
+			), 'unobtrusive_counters' => array (
 /* LiveInternet */
-			$before_body .= $this->replace_unobtrusive_generic("@<!--LiveInternet counter-->.*?<!--/LiveInternet-->@is", 'liveinternet', 31, true);
+				'li' => array(
+					'marker' => 'LiveInternet',
+					'regexp' => "<!--LiveInternet\scounter-->.*?<!--/LiveInternet-->",
+					'height' => 31,
+					'inline' => true
 /* Google Analytics */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>@is", 'ga', 0, true);
+				), 'ga' => array(
+					'marker' => 'gaJsHost',
+					'regexp' => "<script type=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>",
+					'inline' => true
 /* SpyLog */
-			$before_body .= $this->replace_unobtrusive_generic("@<!-- SpyLOG -->\r?\n<script.*?script>\r?\n<!--/ SpyLOG -->@is", 'spylog', 0, true);
+				), 'sl' => array(
+					'marker' => 'SpyLOG',
+					'regexp' => "<!-- SpyLOG -->\r?\n<script.*?script>\r?\n<!--/ SpyLOG -->",
+					'inline' => true
 /* Rambler Top100 */
-			$before_body .= $this->replace_unobtrusive_generic("@<!-- begin of Top100 code -->.*?<!-- end of Top100 code -->@is", 'rambler', 0, true);
+				), 'ra' => array(
+					'marker' => 'Top100',
+					'regexp' => "<!-- begin of Top100 code -->.*?<!-- end of Top100 code -->",
+					'inline' => true
 /* Yandex.Metrica */
-			$before_body .= $this->replace_unobtrusive_generic("@<!-- Yandex.Metrika -->.*?<!-- Yandex.Metrika -->@is", 'metrica', 0, true);
+				), 'ym' => array(
+					'marker' => 'Yandex.Metrika',
+					'regexp' => "<!-- Yandex.Metrika -->.*?<!-- Yandex.Metrika -->",
+					'inline' => true
 /* Rating@Mail.ru */
-			$before_body .= $this->replace_unobtrusive_generic("@<!--Rating\@Mail.ru counter-->.*?<!--// Rating\@Mail.ru counter-->@is", 'ratingmail', 31, true);
-
-		}
+				), 'ym' => array(
+					'marker' => 'Rating@Mail.ru',
+					'regexp' => "<!--Rating\@Mail.ru counter-->.*?<!--// Rating\@Mail.ru counter-->",
+					'height' => 31,
+					'inline' => true
+				),
 /* Advertisement */
-		if (!empty($options['unobtrusive_ads'])) {
+			), 'unobtrusive_ads' => array (
 /* Yandex.Direct */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>@is", 'yadirect');
+				'yd' => array(
+					'marker' => 'yandex_partner_id',
+					'regexp' => "<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>"
 /* Google AdWords */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>@is", 'gadwords');
+				), 'gw' => array(
+					'marker' => 'pagead2.googlesyndication.com',
+					'regexp' => "<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>"
 /* Begun */
-			$before_body .= $this->replace_unobtrusive_generic("@<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>@is", 'begun');
+				), 'bu' => array(
+					'marker' => 'autocontext.begun.ru',
+					'regexp' => "<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
+				),
+			)
+		);
+		foreach ($unobtrusive_items as $group => $items) {
+			if (!empty($options[$group])) {
+				foreach ($items as $key => $item) {
+					if (strpos($this->content, $item['marker'])) {
+						$before_body .= $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is", $key, empty($item['height']) ? 0 : $item['height'], empty($item['inline']) ? false : $item['inline']);
+					}
+				}
+			}
 		}
 		if (!empty($before_body)) {
 			$this->content = str_replace('</body>', $before_body . '</body>' , $this->content);
 		}
-	}
-
-	/**
-	* Gets the directory we are in
-	*
-	**/
-	function get_current_path ($trailing=false) {
-		$current_dir = $this->view->paths['relative']['current_directory'];
-/* Remove trailing slash */
-		if ($trailing) {
-			if(substr($current_dir, -1, 1) == "/") {
-				$current_dir = substr($current_dir, 0, -1);
-			}
-		}
-		return $current_dir;
 	}
 
 	/**

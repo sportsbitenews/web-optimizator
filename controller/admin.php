@@ -1355,7 +1355,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 								$content_saved = preg_replace("/(require_once\s*\([^\)]+frontend\.php)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for vBulletin */
 							} elseif (substr($this->cms_version, 0, 9) == 'vBulletin') {
-								$content_saved = preg_replace("/\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
+								$content_saved = preg_replace("/(\(\\\$hook\s*=\s*vBulletinHook::fetch_hook\('global_complete'\)\))/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
 /* fix for CMS Made Simple */							
 							} elseif (substr($this->cms_version, 0, 15) == 'CMS Made Simple') {
 								$content_saved = preg_replace("/(echo\s*\\\$html;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);

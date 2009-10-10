@@ -112,7 +112,7 @@ class css_sprites {
 				foreach ($token as $tags => $rule) {
 					foreach ($rule as $key => $value) {
 /* standartize all background values from input */
-						if (preg_match("/background/", $key)) {
+						if (strpos(" ". $key, "background")) {
 /* rewrite current background with strict none */
 							if ($key == 'background' && ($value == 'none !important' || $value == 'none')) {
 								$this->css->css[$import][$tags]['background'] = $this->none;
@@ -186,14 +186,14 @@ class css_sprites {
 			foreach ($this->css->css as $import => $token) {
 				foreach ($token as $tags => $rule) {
 					foreach ($rule as $property => $value) {
-						if ($property == 'width' || $property == 'height' || preg_match("/padding/i", $property)) {
+						if ($property == 'width' || $property == 'height' || strpos(" " .$property, 'padding')) {
 /* try to add all possible dimensial properties for selected tags with background */
 							foreach ($this->media as $imp => $images) {
 								foreach ($images as $key => $image) {
 									$fixed_key = $this->fix_css3_selectors($key);
 /* remove pseudo-selectors, i.e. :focus, :hover, etc*/
 									if (in_array($key, explode(",", $tags)) || in_array($fixed_key, explode(",", $tags))) {
-										if (preg_match("/padding/i", $property)) {
+										if (strpos(" " .$property, 'padding')) {
 											if ($property == 'padding') {
 												$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
 											} else {
@@ -421,7 +421,7 @@ class css_sprites {
 								$this->css_images[$this->sprite]['images'] = array();
 							}
 /* fast fix for recalculating Sprites from PNG to JPEG -- don't touch files themselves */
-							if (preg_match("/\.jpe?g/i", $this->css_image) && $this->truecolor_in_jpeg) {
+							if (preg_match("/\.jpe?g$/i", $this->css_image) && $this->truecolor_in_jpeg) {
 								$this->css_images[$this->sprite]['jpeg'] = 1;
 							}
 							$shift_x = $shift_y = $top = $left = 0;
@@ -531,7 +531,7 @@ __________________
 			foreach ($token as $tags => $rule) {
 				foreach ($rule as $key => $value) {
 /* standartize all background values from input, skip IE6/7 hacks */
-					if (preg_match("/background/", $key) && !preg_match("/\*[\+ ]html/", $tags)) {
+					if (strpos(" " . $key, "background")) {
 						$background = array();
 						if ($key == 'background') {
 /* resolve background property */
@@ -633,7 +633,7 @@ __________________
 		} elseif (substr($this->css_image, 0, 6) == 'mhtml:') {
 			$this->css_image = '';
 		} else {
-			if (preg_match("/http:\/\//", $this->css_image)) {
+			if (strpos($this->css_image, "://")) {
 				$cached = preg_replace("/.*\//", "", $this->css_image);
 /* check for cached version */
 				if (!is_file($cached)) {
@@ -644,7 +644,7 @@ __________________
 				}
 			} else {
 				if (!preg_match("/^webo[ixy\.]/", $this->css_image)) {
-					$this->css_image = preg_match("/^\//", $this->css_image) ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;
+					$this->css_image = $this->css_image{0} == '/' ? $this->website_root . $this->css_image : $this->current_dir . '/' .$this->css_image;
 				}
 			}
 		}
@@ -1261,7 +1261,7 @@ __________________
 							}
 
 						} else {
-/* or just copy existing styles, save initial background-color */
+/* or just copy existing styles, save initial background-color, need also save background-attachement... */
 							if (!in_array($background{0}, array('-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'))) {
 								$background = substr($background, strpos($background, " ") + 1);
 							}
@@ -1395,7 +1395,7 @@ __________________
 		$this->download_file("http://smushit.eperf.vip.ac4.yahoo.com/ysmush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
 		if (is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
-			if (!preg_match("/['\"]error['\"]/i", $str) && filesize($tmp_file)) {
+			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
 				if (!is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
