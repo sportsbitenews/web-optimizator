@@ -172,7 +172,7 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && $this->premium,
 				"data_uris" => $this->options['data_uris']['on'] && $this->premium,
-				"data_uris_mhtml" => $this->options['data_uris']['mhtml'],
+				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] && $this->premium,
 				"data_uris_separate" => $this->options['data_uris']['separate'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
@@ -229,8 +229,8 @@ class web_optimizer {
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text'],
-				"htaccess_username" => $this->options['htaccess']['user'],
-				"htaccess_password" => $this->options['htaccess']['pass']
+				"htaccess_username" => $this->options['htaccess']['user'] && $this->premium,
+				"htaccess_password" => $this->options['htaccess']['pass'] && $this->premium
 			)
 		);
 /* overwrite other options array that we passed in */
