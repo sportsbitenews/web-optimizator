@@ -238,19 +238,21 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
-		$index_check = 'index.check';
-		$index_before = 'index.before';
-		$index_after = 'index.after';
-		$no_initial_grade = !@filesize($index_before);
+		if ($this->premium) {
+			$index_check = 'index.check';
+			$index_before = 'index.before';
+			$index_after = 'index.after';
+			$no_initial_grade = !@filesize($index_before);
 /* try to get reliminary optimization grade for the website */
-		if ($no_initial_grade) {
-			$this->download($this->webo_grade, $index_before, 1);
+			if ($no_initial_grade) {
+				$this->download($this->webo_grade, $index_before, 1);
+			}
 		}
 		$gzipped = $this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
 		if (!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
 			if (@filesize($index_check)) {
-				$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
+					$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
 				@unlink($index_check);
 			} else {
 /* curl doesn't work -- can't check existence */
@@ -260,35 +262,37 @@ class admin {
 			if (!$installed && !empty($gzipped)) {
 				$this->save_option("['gzip']['page']", 0);
 			}
-			if ($installed && @filesize($index_before) && @filesize($index_after) < 200) {
-/* if we have just downloaded initial grade - try to renew it */
-				if ($no_initial_grade) {
-					$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
-/* try to get final optimization grade for the website */
-				} else {
-					$this->download($this->webo_grade, $index_after, 1);
-				}
-			}
 			$saved_kb = $saved_s = $saved_percent = 0;
-			$before = @file_get_contents($index_before);
-			$after = @file_get_contents($index_after);
-			if (!empty($before) && !empty($after)) {
-				$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>'));
-				$kb_before = substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>'));
-				if (strpos($after, '<high>')) {
-					$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
-					$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
-				}
-				if (!empty($kb_before) && !empty($kb_after)) {
-					$saved_s = $s_before - $s_after;
-					$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
-					$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
-/* do not show negative numbers */
-					if ($saved_s < 0) {
-						$saved_s = $saved_kb = 0;
+			if ($this->premium) {
+				if ($installed && @filesize($index_before) && @filesize($index_after) < 200) {
+/* if we have just downloaded initial grade - try to renew it */
+					if ($no_initial_grade) {
+						$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
+/* try to get final optimization grade for the website */
+					} else {
+						$this->download($this->webo_grade, $index_after, 1);
 					}
-					if ($saved_kb < 0) {
-						$saved_kb = 0;
+				}
+				$before = @file_get_contents($index_before);
+				$after = @file_get_contents($index_after);
+				if (!empty($before) && !empty($after)) {
+					$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>'));
+					$kb_before = substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>'));
+					if (strpos($after, '<high>')) {
+						$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>'));
+						$kb_after = substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>'));
+					}
+					if (!empty($kb_before) && !empty($kb_after)) {
+						$saved_s = $s_before - $s_after;
+						$saved_kb = round(($kb_before - $kb_after) / 1024, 2);
+						$saved_percent = round(100 * $saved_kb * 1024 / $kb_before, 2);
+/* do not show negative numbers */
+						if ($saved_s < 0) {
+							$saved_s = $saved_kb = 0;
+						}
+						if ($saved_kb < 0) {
+							$saved_kb = 0;
+						}
 					}
 				}
 			}

@@ -419,7 +419,7 @@ class web_optimizer {
 					'data_uris_exclude' => $options['data_uris_exclude'],
 					'mhtml' => $options['data_uris_mhtml'],
 					'mhtml_size' => $options['data_uris_mhtml_size'],
-					'mhtml_exclude' => $options['mhtml_exclude'],
+					'mhtml_exclude' => $options['data_uris_exclude_mhtml'],
 					'image_optimization' => $options['image_optimization'],
 					'css_sprites' => $options['css_sprites'],
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
@@ -641,7 +641,9 @@ class web_optimizer {
 				$this->encoding_ext = 'df';
 			}
 		}
-		$this->encoding_ext = $this->ua_mod . $this->encoding_ext;
+		if (!empty($this->encoding_ext)) {
+			$this->encoding_ext = $this->ua_mod . $this->encoding_ext;
+		}
 	}
 	
 	/**
