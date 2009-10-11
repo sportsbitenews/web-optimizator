@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us">Купить полную версию</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.ru/">Купить полную версию</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Демонстрационная версия');
 
@@ -69,7 +69,7 @@ define('_WEBO_SPLASH1_UNINSTALL', 'Видалити');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Видалення');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">сторінку Web Optimizer</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://code.google.com/p/web-optimizator/">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://www.web-optimizer.ru/">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Тепер можна повернутися назад до <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашого сайту</a>.');
 define('_WEBO_SPLASH1_NEXT', 'Далі');
@@ -140,16 +140,20 @@ define('_WEBO_unobtrusive_informers', 'Перенести виклики JavaScr
 define('_WEBO_unobtrusive_counters', 'Перенести виклики лічильників перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Перенести рекламні виклики (контекст і банери) перед <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Включити об\'єднання зовнішніх файлів');
+define('_WEBO_external_scripts_inline', 'Включити об\'єднання JavaScript-кода');
 define('_WEBO_external_scripts_head_end', 'Форсувати розміщення об\'єднаного JavaScript-файлу перед <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_css', 'Включити об\'єднання зовнішніх CSS-файлів');
+define('_WEBO_external_scripts_css_inline', 'Включити об\'єднання CSS-кода');
 define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання файли');
 define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
+define('_WEBO_minify_javascript_body', 'Об\'єднати JavaScript-файли усередині <code>&lt;body&gt;</code>');
 define('_WEBO_performance_mtime', 'Не перевіряти час зміни файлів');
 define('_WEBO_minify_with', 'Мінімізувати JavaScript-файли');
 define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');
 define('_WEBO_minify_with_yui', 'Мінімізувати за допомогою YUI Compressor');
 define('_WEBO_minify_css', 'Мінімізувати і об\'єднати CSS-файли');
+define('_WEBO_minify_css_body', 'Об\'єднати CSS-файли усередині <code>&lt;body&gt;</code>');
 define('_WEBO_minify_page', 'Мінімізувати HTML');
 define('_WEBO_minify_html_comments', 'Видалити HTML-коментарі');
 define('_WEBO_minify_html_one_string', 'Стиснути HTML до 1 рядка');

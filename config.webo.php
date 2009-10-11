@@ -29,16 +29,22 @@ $compress_options['unobtrusive']['counters'] = "1";
 $compress_options['unobtrusive']['ads'] = "1";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
+## Merge inline scripts inside head
+$compress_options['external_scripts']['inline'] = "1";
 ## Move merged scripts to </head>
 $compress_options['external_scripts']['head_end'] = "1";
-## Merge inline styles in head and external CSS files
+## Merge external CSS files
 $compress_options['external_scripts']['css'] = "1";
+## Merge inline styles in head
+$compress_options['external_scripts']['css_inline'] = "1";
 ## Ignore list, files separated by space
 $compress_options['external_scripts']['ignore_list'] = "tiny_mce.js tiny_mce_gzip.php fckeditor.js";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
-## Minify options
+## Minify options, JS
 $compress_options['minify']['javascript'] = "1";
+## Minify JS inside <body> tag. Please be carefull
+$compress_options['minify']['javascript_body'] = "0";
 ## Minify JS with JSMin from Douglas Crockford
 $compress_options['minify']['with_jsmin'] = "1";
 ## Minify JS with Dean Edwards Packer
@@ -47,6 +53,8 @@ $compress_options['minify']['with_packer'] = "0";
 $compress_options['minify']['with_yui'] = "0";
 ## Minify CSS
 $compress_options['minify']['css'] = "1";
+## Minify CSS inside <body> tag
+$compress_options['minify']['css_body'] = "0";
 ## Remove whitespaces
 $compress_options['minify']['page'] = "1";
 ## Remove comments from HTML. Some JS counters can be broken

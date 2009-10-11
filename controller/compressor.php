@@ -149,6 +149,7 @@ class web_optimizer {
 				"gzip" => $this->options['gzip']['javascript'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => $this->premium ? round($this->options['gzip']['javascript_level']) : 1,
 				"minify" => $this->options['minify']['javascript'],
+				"minify_body" => $this->options['minify']['javascript_body'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
@@ -156,6 +157,7 @@ class web_optimizer {
 				"unobtrusive" => $this->options['unobtrusive']['on'] && $this->premium,
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] && $this->premium,
 				"external_scripts" => $this->options['external_scripts']['on'],
+				"inline_scripts" => $this->options['external_scripts']['inline'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium 
@@ -167,6 +169,7 @@ class web_optimizer {
 				"gzip" => $this->options['gzip']['css'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => $this->premium ? round($this->options['gzip']['css_level']) : 1,
 				"minify" => $this->options['minify']['css'],
+				"minify_body" => $this->options['minify']['css_body'],
 				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
 				"far_future_expires" => $this->options['far_future_expires']['css'] && !$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
@@ -194,6 +197,7 @@ class web_optimizer {
 				"parallel" => $this->options['parallel']['enabled'] && $this->premium,
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
+				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
 			),
@@ -361,6 +365,7 @@ class web_optimizer {
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
+					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
@@ -378,6 +383,7 @@ class web_optimizer {
 					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
+					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
@@ -435,6 +441,7 @@ class web_optimizer {
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
+					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
@@ -445,6 +452,7 @@ class web_optimizer {
 					'parallel' => $options['parallel'],
 					'parallel_hosts' => $options['parallel_hosts'],
 					'external_scripts' => $options['external_scripts'],
+					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
 				),
@@ -759,7 +767,7 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 		$cache_file = urlencode($cache_file . $this->ua_mod);
-		$physical_file = $cachedir . '/' . $cache_file . "." . $options['ext'];
+		$physical_file = $options['cachedir'] . '/' . $cache_file . "." . $options['ext'];
 		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
 		if (file_exists($physical_file)) {
 			$timestamp = @filemtime($physical_file);
@@ -1095,11 +1103,15 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		$curl = function_exists('curl_init');
-		if (!empty($this->head)) {
-			if (!empty($this->options['javascript']['minify'])) {
+		if (!empty($this->head) || !empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
+			if ((!empty($this->options['javascript']['minify']) && !empty($this->head)) || (!empty($this->options['javascript']['minify_body']) && !empty($this->body))) {
 /* find all scripts from head */
 				$regex = "!(<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)[^>]*>)(.*?</script>)!is";
-				preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				if (empty($this->options['javascript']['minify_body'])) {
+					preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				} else {
+					preg_match_all($regex, $this->body, $matches, PREG_SET_ORDER);
+				}
 				if (!empty($matches)) {
 					foreach($matches as $match) {
 						$file = array();
@@ -1126,16 +1138,20 @@ class web_optimizer {
 							}
 						}
 /* skip external files if option is disabled */
-						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file']))) {
+						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
 							$this->initial_files[] = $file;
 						}
 					}
 				}
 			}
-			if (!empty($this->options['css']['minify'])) {
+			if ((!empty($this->options['css']['minify']) && !empty($this->head)) || (!empty($this->options['css']['minify_body']) && !empty($this->body))) {
 /* find all CSS links from head and inine styles */
 				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)([^>]*)>|<style\\s+type\\s*=\\s*(\"text/css\"|'text/css'|text/css)([^>]*)>(.*?)</style>)!is";
-				preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				if (empty($this->options['css']['minify_body'])) {
+					preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
+				} else {
+					preg_match_all($regex, $this->body, $matches, PREG_SET_ORDER);
+				}
 				if (!empty($matches)) {
 					foreach($matches as $match) {
 						$file = array();
@@ -1164,7 +1180,7 @@ class web_optimizer {
 							}
 						}
 /* skip external files if option is disabled */
-						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file']))) {
+						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) || (empty($file['file']) && $this->options['css']['inline_scripts'])) {
 							$this->initial_files[] = $file;
 						}
 					}
@@ -1175,9 +1191,17 @@ class web_optimizer {
 		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if (is_array($this->initial_files)) {
 /* Remove empty sources and any externally linked files */
-			foreach($this->initial_files AS $key => $value) {
+			foreach ($this->initial_files as $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-				if(empty($value['file']) && !$this->options['javascript']['unobtrusive'] && ((!$this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || (!$this->options['css']['external_scripts'] && $value['tag'] == 'link')) || (!empty($excluded_scripts[0]) && !empty($value['file']) && in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
+				if (empty($value['file']) &&
+					!$this->options['javascript']['unobtrusive'] &&
+					((!$this->options['javascript']['inline_scripts'] &&
+							$value['tag'] == 'script') ||
+						(!$this->options['css']['inline_scripts'] &&
+							$value['tag'] == 'link')) ||
+					(!empty($excluded_scripts[0]) &&
+						!empty($value['file']) &&
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
 					unset($this->initial_files[$key]);
 				}
 			}
@@ -1318,7 +1342,7 @@ class web_optimizer {
 		$this->time + $offset) . " GMT";
 		$types = array("css", "javascript");
 
-		foreach($types AS $type) {
+		foreach ($types as $type) {
 /* Always send etag */
 			$this->gzip_header[$type] = '<?php
 			// Determine supported compression method
@@ -1552,7 +1576,7 @@ class web_optimizer {
 /* Odnaknopka */
 				'ok' => array(
 					'marker' => 'odnaknopka.ru',
-					'regexp' => "<script\s*src=['\"]https?://odnaknopka.ru[^>]+></script>",
+					'regexp' => "<script\s*src=['\"]https?://odnaknopka\.ru[^>]+></script>",
 					'height' => 16
 /* Addthis */
 				), 'at' => array(
@@ -1571,27 +1595,51 @@ class web_optimizer {
 /* Google Analytics */
 				), 'ga' => array(
 					'marker' => 'gaJsHost',
-					'regexp' => "<script type=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>",
+					'regexp' => "<script\stype=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>",
 					'inline' => true
 /* SpyLog */
 				), 'sl' => array(
 					'marker' => 'SpyLOG',
-					'regexp' => "<!-- SpyLOG -->\r?\n<script.*?script>\r?\n<!--/ SpyLOG -->",
+					'regexp' => "<!--\sSpyLOG\s-->\r?\n<script.*?script>\r?\n<!--/\sSpyLOG\s-->",
 					'inline' => true
 /* Rambler Top100 */
 				), 'ra' => array(
 					'marker' => 'Top100',
-					'regexp' => "<!-- begin of Top100 code -->.*?<!-- end of Top100 code -->",
+					'regexp' => "<!--\sbegin\sof\sTop100\scode\s-->.*?<!--\send\sof\sTop100\scode\s-->",
 					'inline' => true
 /* Yandex.Metrica */
 				), 'ym' => array(
 					'marker' => 'Yandex.Metrika',
-					'regexp' => "<!-- Yandex.Metrika -->.*?<!-- Yandex.Metrika -->",
+					'regexp' => "<!--\sYandex\.Metrika\s-->.*?<!--\sYandex\.Metrika\s-->",
 					'inline' => true
 /* Rating@Mail.ru */
 				), 'ym' => array(
 					'marker' => 'Rating@Mail.ru',
-					'regexp' => "<!--Rating\@Mail.ru counter-->.*?<!--// Rating\@Mail.ru counter-->",
+					'regexp' => "<!--Rating\@Mail\.ru\scounter-->.*?<!--//\sRating\@Mail\.ru\scounter-->",
+					'height' => 31,
+					'inline' => true
+/* bigmir)net TOP 100 */
+				), 'bm' => array(
+					'marker' => 'bigmir)net',
+					'regexp' => "<!--bigmir\)net\sTOP\s100-->.*?<!--bigmir\)net\sTOP\s100-->",
+					'height' => 31,
+					'inline' => true
+/* hit.ua */
+				), 'hu' => array(
+					'marker' => 'hit.ua',
+					'regexp' => "<!--shit\.ua\s-->.*?<!--s/\shit\.ua\s-->",
+					'height' => 31,
+					'inline' => true
+/* I.UA counter */
+				), 'iu' => array(
+					'marker' => 'I.UA',
+					'regexp' => "<!--\sI\.UA\scounter\s-->.*?<!--\sEnd\sof\sI\.UA\scounter\s-->",
+					'height' => 31,
+					'inline' => true
+/* counter.1Gb.ua */
+				), 'iu' => array(
+					'marker' => 'counter.1Gb.ua',
+					'regexp' => "<!--\scounter\.1Gb\.ua\s-->.*?<!--\s/counter\.1Gb\.ua\s-->",
 					'height' => 31,
 					'inline' => true
 				),
@@ -1609,7 +1657,11 @@ class web_optimizer {
 				), 'bu' => array(
 					'marker' => 'autocontext.begun.ru',
 					'regexp' => "<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
-				),
+/* OpenX */
+				), 'ox' => array(
+					'marker' => 'ajs.php',
+					'regexp' => "<!--/*\sOpenX\sJavascript.*?</noscript>"
+				)
 			)
 		);
 		foreach ($unobtrusive_items as $group => $items) {
@@ -1627,45 +1679,61 @@ class web_optimizer {
 	}
 
 	/**
-	* Gets the head part of the $source
+	* Removes all secondary stuff from HTML code
+	*
+	**/
+	function prepare_html ($source) {
+		$dest = $source;
+/* remove conditional comments for current browser */
+		if (!empty($this->ua_mod)) {
+			$dest = $this->remove_conditional_comments($dest);
+		}
+/* Pull out the comment blocks, so as to avoid touching conditional comments */
+		if (!empty($this->options['javascript']['minify'])) {
+			$dest = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $dest);
+		}
+/* replace current content with updated version */
+		$this->content = str_replace($source, $dest, $this->content);
+/* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
+		return preg_replace("@<!--.*?-->@is", '', $dest);
+	}
+
+	/**
+	* Gets the head (and body) part(s) of the HTML document
 	*
 	**/
 	function get_head () {
 		if (empty($this->head)) {
-/* hack for some templates (i.e. LiveStreet) */
-			$this->content = preg_replace("!(</head>)((\r?\n)*<script.*)(<body)!is", "$2$1$4", $this->content);
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
-			preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
-			if (!empty($matches[0])) {
-				$this->head = $matches[0];
-/* remove conditional comments for current browser */
-				if (!empty($this->ua_mod)) {
-					$this->remove_conditional_comments();
+/* skip parsing head if we includes both CSS and JavaScript from head+body */
+			if (empty($this->options['javascript']['minify_body']) || empty($this->options['css']['minify_body'])) {
+				preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
+				if (!empty($matches[0])) {
+					$this->head = $this->prepare_html($matches[0]);
 				}
-/* Pull out the comment blocks, so as to avoid touching conditional comments */
-				if (!empty($this->options['javascript']['minify'])) {
-					$this->head = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $this->head);
-/* replace current head content with updated version */
-					$this->content = str_replace($matches[0], $this->head, $this->content);
+			}
+/* get head+body if required */
+			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
+				preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
+				if (!empty($matches[0])) {
+					$this->body = $this->prepare_html($matches[0]);
 				}
-/* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-				$this->head = preg_replace("@<!--.*?-->@is", '', $this->head);
 			}
 /* split XHTML behavior from HTML */
 			$xhtml = strpos($this->content, 'XHTML 1');
 			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
 /* add Web Optimizer spot */
-			$this->content = preg_replace('!(<TITLE)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
+			$this->content = preg_replace('!(<title)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
 				if ($this->ua_mod == '.ie5' || $this->ua_mod == '.ie6') {
 					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
 				} else {
-					$background_style = 'background:url(' .  $background_image .')';
+					$background_style = 'background:url(' . $background_image . ')';
 				}
 /* choose between link or span */
 				if (!empty($this->options['page']['footer_link'])) {
@@ -1682,32 +1750,33 @@ class web_optimizer {
 	* Removes conditional comments for MSIE 5-9
 	*
 	**/
-	function remove_conditional_comments () {
+	function remove_conditional_comments ($source) {
 /* preliminary strpos saves about 50% of CPU */
-		if (strpos(' ' . $this->head, 'IE]>')) {
-			$this->head = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+		if (strpos(' ' . $source, 'IE]>')) {
+			$source = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 		}
 		for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
 			if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
 /* detect equality */
-				if (strpos(' ' . $this->head, 'IE ' . $version . ']>')) {
-					$this->head = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $this->head);
+				if (strpos(' ' . $source, 'IE ' . $version . ']>')) {
+					$source = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $source);
 				}
 /* detect lesser versions */
 				for ($i = $this->min_ie_version; $i < $version; $i++) {
-					if (strpos(' ' . $this->head, 'IE ' . $i . ']>')) {
-						$this->head = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+					if (strpos(' ' . $source, 'IE ' . $i . ']>')) {
+						$source = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 					}
 				}
 /* detect greater versions */
 				for ($i = $version; $i < $this->max_ie_version; $i++) {
-					if (strpos(' ' . $this->head, 'IE ' . $i . ']>')) {
-						$this->head = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $this->head);
+					if (strpos(' ' . $source, 'IE ' . $i . ']>')) {
+						$source = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 					}
 				}
 			}
 		}
+		return $source;
 	}
 
 	/**

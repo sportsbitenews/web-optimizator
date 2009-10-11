@@ -854,7 +854,7 @@ class admin {
 						}
 					}
 /* check for curl existence */
-					if ($key == 'external_scripts' && $option_name == 'on') {
+					if ($key == 'external_scripts' && ($option_name == 'on' || $option_name == 'css')) {
 						if (empty($loaded_modules) || !in_array('curl', $loaded_modules) || !function_exists('curl_init')) {
 							$this->input['user'][$key][$option_name] = $option_value = 0;
 						}
