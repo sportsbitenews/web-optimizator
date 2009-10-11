@@ -177,6 +177,8 @@ class css_sprites {
 										$this->media[$import][$tag][$key] = $value;
 									}
 								}
+/* remember multiple selectors to unset them */
+								$this->media[$import][$tag]['tags'] = $tags;
 							}
 						}
 					}
@@ -1273,12 +1275,13 @@ __________________
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
 						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
-/* unset overwritten values */
-						unset($this->css->css[$import][$key]['background-image']);
-						unset($this->css->css[$import][$key]['background-color']);
-						unset($this->css->css[$import][$key]['background-position']);
-						unset($this->css->css[$import][$key]['background-repeat']);
-						unset($this->css->css[$import][$key]['background-attachement']);
+/* unset overwritten values, use remembered multiple selectors */
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-image']);
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-color']);
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-position']);
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-repeat']);
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-attachement']);
+						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-image']);
 					}
 					if (!$file_exists) {
 /* try to add right and bottom Sprites to the main one */
