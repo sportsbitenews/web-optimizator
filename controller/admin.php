@@ -955,7 +955,11 @@ mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
 mod_gzip_dechunk No";
 				if (!empty($this->input['user']['gzip']['page'])) {
 					$content .= "
+mod_gzip_item_include mime ^text/plain$
 mod_gzip_item_include mime ^text/html$
+mod_gzip_item_include mime ^text/xml$
+mod_gzip_item_include mime ^application/xhtml+xml$
+mod_gzip_item_include mime ^image/x-icon$
 mod_gzip_item_include mime ^text/plain$
 mod_gzip_item_include mime ^image/x-icon$
 mod_gzip_item_include mime ^httpd/unix-directory$";
@@ -986,7 +990,7 @@ BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
 			if (!empty($htaccess_options['mod_deflate'])) {
 				if (!empty($this->input['user']['gzip']['page'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/html text/xml image/x-icon";
+AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
@@ -1151,10 +1155,10 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 					@chmod($dir, octdec("0755"));
 					if (substr(sprintf('%o', fileperms($dir)), -3) != '755') {
 						@rmdir($dir);
-						@mkdir($dir, 0755);
+						@mkdir($dir, octdec("0755"));
 					}
 				} else {
-					@mkdir($dir, 0755);
+					@mkdir($dir, octdec("0755"));
 				}
 				$return = $this->write_file($dir . "test", $content, 0);
 				if (!$return) {
@@ -1544,7 +1548,7 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
 /* try to create local directory*/
 			if ($local_dir != $local_file && !is_dir($local_dir)) {
-				@mkdir($local_dir, 0755);
+				@mkdir($local_dir, octdec("0755"));
 			}
 /* parse headers for content-encoding */
 			$local_file_headers = $local_file . ".headers";

@@ -873,13 +873,13 @@ class web_optimizer {
 							@fwrite($fp, $minified_resource);
 							@fclose($fp);
 /* Set permissions, required by some hosts */
-							@chmod($physical_file . '.css', octdec("0755"));
+							@chmod($physical_file . '.css', octdec("0644"));
 /* create static gzipped versions for static gzip in nginx, Apache */
 							$fpgz = @fopen($cachedir . '/' . $physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
 								@fwrite($fpgz, @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
 								@fclose($fpgz);
-								@chmod($physical_file . '.css.gz', octdec("0755"));
+								@chmod($physical_file . '.css.gz', octdec("0644"));
 							}
 /* Create the link to the new file */
 							$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
@@ -931,14 +931,14 @@ class web_optimizer {
 					@fwrite($fp, $contents);
 					@fclose($fp);
 /* Set permissions, required by some hosts */
-					@chmod($physical_file, octdec("0755"));
+					@chmod($physical_file, octdec("0644"));
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($physical_file . '.gz', 'wb');
 						if ($fpgz) {
 							@fwrite($fpgz, @gzencode($contents, $options['gzip_level'], FORCE_GZIP));
 							@fclose($fpgz);
-							@chmod($physical_file . '.gz', octdec("0755"));
+							@chmod($physical_file . '.gz', octdec("0644"));
 						}
 					}
 /* Create the link to the new file */
