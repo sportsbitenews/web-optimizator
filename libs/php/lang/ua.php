@@ -161,6 +161,7 @@ define('_WEBO_gzip_javascript', 'Застосувати <code>gzip</code> для
 define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
 define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
 define('_WEBO_gzip_cookie', 'Перевіряти можливість <code>gzip</code> через cookie');
+define('_WEBO_gzip_fonts', 'Застосувати <code>gzip</code> для шрифтiв');
 define('_WEBO_far_future_expires_javascript', 'Кешувати JavaScript');
 define('_WEBO_far_future_expires_css', 'Кешувати CSS');
 define('_WEBO_far_future_expires_images', 'Кешувати зображення');
@@ -168,6 +169,7 @@ define('_WEBO_far_future_expires_video', 'Кешувати видео-файли
 define('_WEBO_far_future_expires_static', 'Кешувати статичні файли');
 define('_WEBO_far_future_expires_html', 'Кешувати HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Час клієнтського кешу для HTML-файлів');
+define('_WEBO_far_future_expires_fonts', 'Кешувати шрифти');
 define('_WEBO_html_cache_enabled', 'Кешувати створені HTML-файли');
 define('_WEBO_html_cache_timeout', 'Термін дії кеша в секундах');
 define('_WEBO_html_cache_flush_only', 'Включити тільки швидке скидання частини документу');

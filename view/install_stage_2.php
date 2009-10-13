@@ -95,7 +95,7 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
+				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string')) && $premium)) {
 ?><label><?php
 					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
@@ -133,7 +133,7 @@
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 					}
 ?></label><?php
-				} elseif (!in_array($option, array('javascript_level', 'page_level', 'css_level')) && !$premium) {
+				} elseif (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level')) && !$premium) {
 ?><input type="hidden" name="user[<?php
 					echo $key;
 ?>][<?php

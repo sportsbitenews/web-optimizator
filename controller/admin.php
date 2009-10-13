@@ -960,8 +960,6 @@ mod_gzip_item_include mime ^text/html$
 mod_gzip_item_include mime ^text/xml$
 mod_gzip_item_include mime ^application/xhtml+xml$
 mod_gzip_item_include mime ^image/x-icon$
-mod_gzip_item_include mime ^text/plain$
-mod_gzip_item_include mime ^image/x-icon$
 mod_gzip_item_include mime ^httpd/unix-directory$";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
@@ -978,6 +976,19 @@ mod_gzip_item_include mime ^text/ecmascript$
 mod_gzip_item_include mime ^application/ecmascript$
 mod_gzip_item_include mime ^text/vbscript$
 mod_gzip_item_include mime ^text/fluffscript$";
+				}
+				if (!empty($this->input['user']['gzip']['fonts'])) {
+					$content .= "
+mod_gzip_item_include mime ^image/svg+xml$
+mod_gzip_item_include mime ^application/x-font$
+mod_gzip_item_include mime ^application/x-font-ttf$
+mod_gzip_item_include mime ^font/opentype$
+mod_gzip_item_include mime ^font/otf$
+mod_gzip_item_include mime ^font/ttf$
+mod_gzip_item_include mime ^application/x-font-opentype$
+mod_gzip_item_include mime ^application/x-font-truetype$
+mod_gzip_item_include mime ^application/vnd.ms-fontobject
+mod_gzip_item_include mime ^application/vnd.oasis.opendocument.formula-template$";
 				}
 			}
 			if (!empty($htaccess_options['mod_setenvif'])) {
@@ -999,6 +1010,10 @@ AddOutputFilterByType DEFLATE text/css";
 				if (!empty($this->input['user']['gzip']['javascript'])) {
 					$content .= "
 AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
+				}
+				if (!empty($this->input['user']['gzip']['fonts'])) {
+					$content .= "
+AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x-font font/opentype font/otf font/ttf application/x-font-truetype application/x-font-opentype application/vnd.ms-fontobject application/vnd.oasis.opendocument.formula-template";
 				}
 			}
 /* try to add static gzip */
@@ -1039,6 +1054,25 @@ RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 	ForceType application/x-javascript
 </FilesMatch>";
 				}
+				if (!empty($this->input['user']['gzip']['fonts'])) {
+					$content .= "
+RewriteCond %{HTTP:Accept-encoding} gzip
+RewriteCond %{HTTP_USER_AGENT} !Konqueror
+RewriteCond %{REQUEST_FILENAME}.gz -f
+RewriteRule ^(.*)\.(ttf|otf|eot|svg|)$ $1.$2.gz [QSA,L]
+<FilesMatch \.ttf\.gz$>
+	ForceType application/x-font-truetype
+</FilesMatch>
+<FilesMatch \.otf\.gz$>
+	ForceType application/x-font-opentype
+</FilesMatch>
+<FilesMatch \.svg\.gz$>
+	ForceType image/svg+xml
+</FilesMatch>
+<FilesMatch \.eot\.gz$>
+	ForceType application/vnd.ms-fontobject
+</FilesMatch>";
+				}
 			}
 			if (!empty($htaccess_options['mod_expires'])) {
 				$content .= "
@@ -1065,6 +1099,12 @@ ExpiresDefault \"access plus 10 years\"
 	ExpiresActive Off
 </FilesMatch>";
 				}
+				if (empty($this->input['user']['far_future_expires']['fonts'])) {
+					$content .= "
+<FilesMatch \.(eot|ttf|otf|svg)$>
+	ExpiresActive Off
+</FilesMatch>";
+				}
 				if (empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
 <FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
@@ -1080,17 +1120,29 @@ ExpiresDefault \"access plus 10 years\"
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($htaccess_options['mod_rewrite'])) {
 				$cachedir = str_replace($this->input['user']['document_root'], "/", $this->input['user']['html_cachedir']);
+				if (!empty($this->input['user']['far_future_expires']['css'])) {
+					$content .= "
+RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css";
+				}
+				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
+					$content .= "
+RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js";
+				}
 				if (!empty($this->input['user']['far_future_expires']['images'])) {
 					$content .= "
-RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)\.$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2";
 				}
 				if (!empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)\.$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2";
 				}
 				if (!empty($this->input['user']['far_future_expires']['static'])) {
 					$content .= "
-RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2";
+				}
+				if (!empty($this->input['user']['far_future_expires']['fonts'])) {
+					$content .= "
+RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 				}
 			}
 			if (!empty($htaccess_options['mod_headers'])) {
@@ -1172,8 +1224,25 @@ RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)\.$ " . $cachedir . "wo.static.php?$
 			@copy($this->basepath . 'libs/js/yass.loader.js', $this->input['user']['javascript_cachedir'] . 'yass.loader.js');
 /* copy gzip check to cache directory */
 			@copy($this->basepath . 'libs/js/wo.cookie.php', $this->input['user']['html_cachedir'] . 'wo.cookie.php');
-/* copy Expires setter to cache directory */
-			@copy($this->basepath . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
+/* copy Expires / GZIP setter to cache directory */
+			$static = @file_get_contents($this->basepath . 'libs/php/wo.static.php');
+			$fp = @fopen($this->input['user']['html_cachedir'] . 'wo.static.php', 'wb');
+			if (!empty($static) && $fp) {
+/* define gzip levels in this file */
+				$static = str_replace('<?php', "<?php\n" . '$gzip_level_css = ' .
+						$this->input['user']['gzip']['css_level'] .
+					";\n" . '$gzip_level_javascript = ' .
+						$this->input['user']['gzip']['javascript_level'] .
+					";\n" . '$gzip_level_fonts = ' .
+						$this->input['user']['gzip']['fonts_level'] .
+					";\n" . '$website_root = \'' .
+						$this->input['user']['website_root'] .
+					"';", $static);
+				@fwrite($fp, $static);
+				@fclose($static);
+			} else {
+				@copy($this->basepath . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
+			}
 /* copy stamp image to cache directory */
 			@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
 			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {

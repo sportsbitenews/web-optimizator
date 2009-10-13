@@ -36,11 +36,11 @@ class web_optimizer {
 		$this->buffered = $this->options['buffered'];
 /* number of external files calls to process */
 		$this->initial_files = array();
-/* Set options */
-		$this->set_options();
 /* Sets User Agent to differ IE from not-IE */
 		$this->ua = $_SERVER['HTTP_USER_AGENT'];
 		$this->set_user_agent();
+/* Set options */
+		$this->set_options();
 /* Remember current page encoding */
 		$this->encoding = '';
 /* Define the gzip headers */
@@ -176,15 +176,14 @@ class web_optimizer {
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && $this->premium,
 				"data_uris" => $this->options['data_uris']['on'] && $this->premium,
 				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] && $this->premium,
-				"data_uris_separate" => $this->options['data_uris']['separate'],
+				"data_uris_separate" => $this->options['data_uris']['separate'] && ((!empty($this->ua_mod) && $this->options['data_uris']['mhtml']) || (empty($this->ua_mod) && $this->options['data_uris']['on'])) && $this->premium,
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"data_uris_exclude_mhtml" => round($this->options['data_uris']['additional_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] && $this->premium,
-				"css_sprites_expires" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'], 
-				"css_sprites_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"css_sprites_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
@@ -214,8 +213,7 @@ class web_optimizer {
 				"far_future_expires_images" => $this->options['far_future_expires']['images'],
 				"far_future_expires_video" => $this->options['far_future_expires']['video'],
 				"far_future_expires_static" => $this->options['far_future_expires']['static'],
-				"far_future_expires" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
-				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] && $this->options['htaccess']['enabled'] && !$this->options['htaccess']['mod_expires'],
+				"far_future_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
 				"clientside_cache" => $this->options['far_future_expires']['html'],
 				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
 				"cache" => $this->options['html_cache']['enabled'] && $this->premium,
@@ -330,12 +328,13 @@ class web_optimizer {
 			return $this->content;
 /* or echo content to the browser */
 		} else {
+/* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
+			if (!empty($this->encoding)) {
+				header('Content-Length: ' . strlen($this->content));
+			}
 			echo $this->content;
-/* browsers crash if there is anything after deflate stream */
-			if (in_array($this->encoding, array('deflate', 'x-deflate'))) {
-				die();
-/* otherwise IE7 crashes if gzip is used */
-			} elseif ($this->ua_mod == '.ie7') {
+/* It' obvius to send anything right after gzipped content */
+			if (!empty($this->encoding)) {
 				die();
 			}
 		}
@@ -437,7 +436,6 @@ class web_optimizer {
 					'memory_limited' => $options['memory_limited'],
 					'dimensions_limited' => $options['dimensions_limited'],
 					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
-					'css_sprites_expires' => $options['css_sprites_expires'],
 					'css_sprites_expires_rewrite' => $options['css_sprites_expires_rewrite'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
@@ -553,7 +551,7 @@ class web_optimizer {
 		$replaced = array();
 		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 /* calculate relative path to cache directory if we require it */
-		if (!empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
+		if (!empty($this->options['page']['far_future_expires_rewrite'])) {
 			$cache_directory = str_replace($this->view->paths['full']['document_root'], "/", $this->options['page']['cachedir']);
 		}
 		if (!empty($imgs)) {
@@ -585,15 +583,13 @@ class web_optimizer {
 						}
 /* or replacing images with rewrite to Expires setter? */
 					}
-					if (!empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
+					if (!empty($this->options['page']['far_future_expires_rewrite'])) {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 						if (!empty($this->options['page']['far_future_expires'])) {
 /* do not touch dynamic images -- how we can handle them? */
 							if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
 								$new_src = $cache_directory . '/wo.static.php?' . $src;
 							}
-						} else {
-							$new_src = preg_replace("@\.(bmp|gif|png|ico|jpe?g)$@is", ".$1.", $src);
 						}
 						if (!empty($new_src)) {
 							$content = str_replace($old_src, $new_src, $content);
@@ -889,7 +885,7 @@ class web_optimizer {
 						}
 					} elseif (!empty($minified_content)) {
 						$ie = in_array($this->ua_mod, array('.ie5', '.ie6', '.ie7'));
-						$minified_content .= ($ie ? "/*\n" : "") . $minified_resource . ($ie ? "\n*/" : "");
+						$minified_content .= $minified_resource;
 					}
 				}
 				if (!empty($minified_content)) {
@@ -1476,7 +1472,7 @@ class web_optimizer {
 		$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is",
 							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 /* add multiple hosts */
-		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires']) || !empty($this->options['page']['far_future_expires_rewrite'])) {
+		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
 		}
 /* add redirects for stati images */
@@ -1853,7 +1849,6 @@ class web_optimizer {
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
-			'expires' => $options['css_sprites_expires'],
 			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
 			'data_uris_separate' => $options['data_uris_separate'],

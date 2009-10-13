@@ -65,17 +65,22 @@ $compress_options['minify']['html_one_string'] = "0";
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";
 $compress_options['gzip']['css'] = "1";
+## Gzip font files (SVG, TTF, OTF, etc)
+$compress_options['gzip']['fonts'] = "1";
 ## Check for gzip possibility via cookie
 $compress_options['gzip']['cookie'] = "1";
 ## Compression level for JS/HTML/CSS files, works only in PHP
 $compress_options['gzip']['javascript_level'] = "7";
 $compress_options['gzip']['page_level'] = "7";
 $compress_options['gzip']['css_level'] = "7";
+$compress_options['gzip']['fonts_level'] = "7";
 ## Caching
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
-## Cache static assets (images, flash, etc) -- only via .htaccess
+## Cache static assets via .htaccess or PHP proxy
 $compress_options['far_future_expires']['images'] = "1";
+$compress_options['far_future_expires']['fonts'] = "1";
+## Cache static assets (flash, video, etc) -- only via .htaccess
 $compress_options['far_future_expires']['video'] = "1";
 $compress_options['far_future_expires']['static'] = "1";
 ## Send cache headers for HTML files?

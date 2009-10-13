@@ -75,15 +75,13 @@ class css_sprites {
 			if (empty($this->multiple_hosts[0]) && empty($this->multiple_hosts[1])) {
 				$this->multiple_hosts_count = 0;
 			}
-/* rewrite static resources with PHP cache proxy? */
-			$this->proxy = $options['expires'];
 /* use rewrite (just add dot to the end of images) */
 			$this->proxy_rewrite = $options['expires_rewrite'];
 /* current USER AGENT spot */
 			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
 /* is USER AGENT old IE? */
 			$this->ie = in_array($this->ua, array('ie5', 'ie6', 'ie7'));
-			$this->compressed_mhtml = $this->ie ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
+			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -518,7 +516,7 @@ __________________
 				$this->css_to_data_uri();
 			}
 /* after 0.6.2 return array of separated files */
-			return array(html_entity_decode($this->css->print->formatted(), ENT_QUOTES), $this->compressed_mhtml . ($this->ie ? "\n*/" : ""));
+			return array(html_entity_decode($this->css->print->formatted(), ENT_QUOTES), $this->compressed_mhtml . ($this->ie && $this->separated ? "\n*/" : ""));
 		}
 	}
 /* convert all CSS images to base64 */
@@ -599,18 +597,14 @@ __________________
 						"." .
 						preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
 						$image;
-		} elseif (!empty($this->proxy) || !empty($this->proxy_rewrite)) {
+		} elseif (!empty($this->proxy_rewrite)) {
 /* add absolute path for sprited images */
 			if (0 === strpos($image, 'webo')) {
 				$image = str_replace($this->website_root, "/", $this->current_dir) . '/' . $image;
 			}
-			if (!empty($this->proxy)) {
+			if (!empty($this->proxy_rewrite) && !strpos($image, "://") && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
 /* do not touch dynamic images -- how we can handle them? */
-				if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
-					$image = $this->html_dir . '/wo.static.php?' . $image;
-				}
-			} else {
-				$image = preg_replace("@\.(bmp|gif|png|ico|jpe?g)$@i", ".$1.", $image);
+				$image = $this->html_dir . '/wo.static.php?' . $image;
 			}
 			return $image;
 		} else {
@@ -625,8 +619,8 @@ __________________
 			$image_name = md5($this->css_image) . "." . preg_replace("/.*image\/([^;]*);base64.*/", "$1", $this->css_image);
 			$fp = @fopen($image_name , "w");
 			if ($fp) {
-				fwrite($fp, base64_decode(preg_replace("/.*;base64,/", "", $this->css_image)));
-				fclose($fp);
+				@fwrite($fp, base64_decode(preg_replace("/.*;base64,/", "", $this->css_image)));
+				@fclose($fp);
 				$this->css_image = $image_name;
 			} else {
 				$this->css_image = '';
@@ -654,7 +648,7 @@ __________________
 			$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
 			$filename = preg_replace("!.*/!", "", $this->css_image);
 /* Thx for htc for ali@ */
-			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf'))) {
+			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf')) || strpos($this->css_image, "://")) {
 				$this->css_image = $image_saved;
 				return;
 			}
