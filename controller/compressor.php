@@ -291,8 +291,10 @@ class web_optimizer {
 				}
 			}
 		}
+/* reduce amount of viewing content, accelerate 'fast check' by 1% */
+		$spot = substr($this->content, 0, 20);
 /* skip RSS, SMF xml format */
-		if (!strpos($this->content, "<rss version=") && empty($xml) && !strpos($this->content, "<smf>")) {
+		if (empty($xml) && !strpos($spot, "<rss") && !strpos($spot, "<smf")) {
 			if (!empty($this->web_optimizer_stage)) {
 				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
 			}
@@ -1118,7 +1120,7 @@ class web_optimizer {
 						$file['tag'] = 'script';
 						$file['part'] = 'head';
 						$file['source'] = $match[0];
-						$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
+						$file['content'] = preg_replace("/(<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
 						$file['comment'] = '';
 						$file['file'] = '';
 						preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
@@ -1158,7 +1160,7 @@ class web_optimizer {
 						$file['tag'] = 'link';
 						$file['part'] = 'head';
 						$file['source'] = $match[0];
-						$file['content'] = preg_replace("/(@@@COMPRESSOR:TRIM:HEADCOMMENT@@@|<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
+						$file['content'] = preg_replace("/(<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
 						$file['comment'] = '';
 						preg_match_all("@(type|rel|media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
 						if(is_array($variants)) {
@@ -1491,7 +1493,7 @@ class web_optimizer {
 		}
 /* replace ' />' with '/>' */
 		if (!empty($this->options['page']['minify'])) {
-			$source = preg_replace("/\s\/>/", "/>", $source);
+			$source = str_replace(" />", ">", $source);
 		}
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */

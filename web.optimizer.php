@@ -3,7 +3,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://www.web-optimizer.us/)
-// @version    0.6.1
+// @version    0.6.2
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // initially based on PHP Speedy (Leon Chevalier, http://aciddrop.com)
 // ==============================================================================================
