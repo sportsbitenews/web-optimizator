@@ -1,8 +1,4 @@
 <?php
-$gzip_level_css = 7;
-$gzip_level_javascript = 7;
-$gzip_level_fonts = 7;
-$website_root = 'Z:/denwer/www/denwer/';
 /**
  * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Sends cache headers among the content of requested file.
