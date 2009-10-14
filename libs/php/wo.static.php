@@ -2,8 +2,9 @@
 /**
  * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Sends cache headers among the content of requested file.
+ * Also gzippes known types of files (that can be gzipped).
  * Resticted filename to document root only.
- * Helps when there is no mod_expires on the server.
+ * Helps when there is no mod_expires and(or) no mod_deflate on the server.
  *
  **/
 /* return heximal number for a decimal one, by jbleau at gmail dot com */
