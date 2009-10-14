@@ -161,11 +161,6 @@ class admin {
 		}
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
-/* download restricted file */
-		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
-		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($this->basepath . 'css.sprites.php')) {
-			$htaccess_available = 0;
-		}
 		@unlink($javascript_cachedir . 'htaccess.test');
 /* check for multiple hosts */
 		$hosts = empty($this->compress_options['parallel']['allowed_list']) ? $this->default_hosts : explode(" ", $this->compress_options['parallel']['allowed_list']);
@@ -1059,7 +1054,7 @@ RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
 RewriteCond %{HTTP:Accept-encoding} gzip
 RewriteCond %{HTTP_USER_AGENT} !Konqueror
 RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.(ttf|otf|eot|svg|)$ $1.$2.gz [QSA,L]
+RewriteRule ^(.*)\.(ttf|otf|eot|svg)$ $1.$2.gz [QSA,L]
 <FilesMatch \.ttf\.gz$>
 	ForceType application/x-font-truetype
 </FilesMatch>
@@ -1605,6 +1600,46 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 		if (in_array('mod_rewrite', $apache_modules)) {
 			$this->apache_modules[] = 'mod_rewrite';
 		}
+		$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
+		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
+/* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
+		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
+		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($this->basepath . 'libs/php/css.sprites.php')) {
+			$this->apache_modules = array();
+		} elseif (!count($this->apache_modules) && function_exists('curl_init')) {
+			$modules = array(
+				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/html',
+				'mod_gzip' => 'mod_gzip_on Yes',
+				'mod_headers' => 'Header append Cache-Control public',
+				'mod_expires' => 'ExpiresActive On',
+				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
+				'mod_mime' => 'AddEncoding gzip .gz',
+				'mod_rewrite' => 'RewriteEngine On'
+			);
+/* detect modules one by one, it can be CGI environment */
+			foreach ($modules as $key => $value) {
+				if ($this->check_apache_module($value, $document_root, $javascript_cachedir)) {
+					$this->apache_modules[] = $key;
+				}
+			}
+		}
+	}
+
+	/**
+	* Checks exitence of current Apache module
+	*
+	**/
+	function check_apache_module ($rule, $document_root, $javascript_cachedir) {
+		$testfile = 'libs/css/a.png';
+		$return = false;
+		$this->write_file($this->basepath . 'libs/css/.htaccess', $rule);
+		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
+/* it it's possible to get file => module works */
+		if (@filesize($javascript_cachedir . 'module.test') == @filesize($this->basepath . $testfile)) {
+			$return = true;
+		}
+		@unlink($javascript_cachedir . 'module.test');
+		return $return;
 	}
 
 	/**
