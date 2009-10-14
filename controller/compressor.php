@@ -1136,7 +1136,7 @@ class web_optimizer {
 							}
 						}
 /* skip external files if option is disabled */
-						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
+						if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
 							$this->initial_files[] = $file;
 						}
 					}
@@ -1268,7 +1268,8 @@ class web_optimizer {
 						if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
 							$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-								$this->resolve_css_imports($value['file']) . (empty($value['media']) ? "" : "}");
+									$this->resolve_css_imports($value['file']) .
+								(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
 							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
 						} else {
@@ -1287,7 +1288,9 @@ class web_optimizer {
 						if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
 /* resolve @import from inline styles */
 							if ($value['tag'] == 'link') {
-								$value['content'] = $this->resolve_css_imports($value['content'], true);
+								$value['content'] = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+										$this->resolve_css_imports($value['content'], true) . 
+									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
 						}
