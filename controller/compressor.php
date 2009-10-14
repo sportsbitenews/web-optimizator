@@ -22,6 +22,7 @@ class web_optimizer {
 		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
+		$this->options['active'] = !empty($_GET['web_optimizer_debug']) || !empty($_COOKIE['web_optimizer_debug']) ? 1 : $this->options['active'];
 /* disable any actions if not active */
 		if (empty($this->options['active'])) {
 			return;

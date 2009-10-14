@@ -32,6 +32,15 @@ class admin {
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
 		$this->version = @file_get_contents($this->basepath . 'version');
+/* get the latest version */
+		$version_new_file = 'version.new';
+		$this->download($this->svn . 'version', $version_new_file);
+		if (is_file($version_new_file)) {
+			$this->version_new = @file_get_contents($version_new_file);
+			@unlink($version_new_file);
+		} else {
+			$this->version_new = $this->version;
+		}
 /* Make sure login valid */
 		$this->manage_password();
 		$this->password_not_required = array(
@@ -42,15 +51,6 @@ class admin {
 		);
 /* default multiple hosts */
 		$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-/* get the latest version */
-		$version_new_file = 'version.new';
-		$this->download($this->svn . 'version', $version_new_file);
-		if (is_file($version_new_file)) {
-			$this->version_new = @file_get_contents($version_new_file);
-			@unlink($version_new_file);
-		} else {
-			$this->version_new = $this->version;
-		}
 		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
 		if (empty($this->password_not_required[$this->input['page']]) && (empty($this->input['change']) || $this->input['page'] != 'install_stage_2') && empty($this->skip_render)) {
 			$this->check_login();
@@ -1155,7 +1155,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 				}
 				if (!empty($htaccess_options['mod_expires'])) {
 					$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
+<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
 	Header append Cache-Control public
 </FilesMatch>
 <FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
