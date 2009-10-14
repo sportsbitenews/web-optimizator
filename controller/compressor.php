@@ -586,13 +586,9 @@ class web_optimizer {
 					}
 					if (!empty($this->options['page']['far_future_expires_rewrite'])) {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
-						if (!empty($this->options['page']['far_future_expires'])) {
 /* do not touch dynamic images -- how we can handle them? */
-							if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
-								$new_src = $cache_directory . '/wo.static.php?' . $src;
-							}
-						}
-						if (!empty($new_src)) {
+						if (!empty($this->options['page']['far_future_expires']) && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
+							$new_src = $cache_directory . '/wo.static.php?' . $src;
 							$content = str_replace($old_src, $new_src, $content);
 						}
 					}
@@ -1692,7 +1688,7 @@ class web_optimizer {
 		}
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 		if (!empty($this->options['javascript']['minify'])) {
-			$dest = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>'), array(), $dest);
+			$dest = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>', '// -->', "<script type='text/javascript'><!--", '<script type="text/javascript"><!--'), array('', '', '', '', '', '', '', "<script type='text/javascript'>", '<script type="text/javascript">'), $dest);
 		}
 /* replace current content with updated version */
 		$this->content = str_replace($source, $dest, $this->content);
