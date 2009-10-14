@@ -185,6 +185,7 @@ define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');
+define('_WEBO_data_uris_domloaded', 'Load images on <code>DOMready</code> event');
 define('_WEBO_data_uris_size', 'Maximo tamano de <code>data:URI</code> (en bytes)');
 define('_WEBO_data_uris_mhtml_size', 'Maximo tamano de <code>mhtml</code> (en bytes)');
 define('_WEBO_data_uris_smushit', 'Optimiza todas las im&aacute;genes CSS via smush.it');

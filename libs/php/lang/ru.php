@@ -181,6 +181,7 @@ define('_WEBO_footer_image', 'Добавить изображение Web Optimi
 define('_WEBO_data_uris_on', 'Применить <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Применить <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Отделить картинки от CSS-кода');
+define('_WEBO_data_uris_domloaded', 'Загружать картинки по событию <code>DOMready</code>');
 define('_WEBO_data_uris_size', 'Максимальный размер <code>data:URI</code> (в байтах)');
 define('_WEBO_data_uris_mhtml_size', 'Максимальный размер <code>mhtml</code> (в байтах)');
 define('_WEBO_data_uris_ignore_list', 'Исключить из <code>data:URI</code> файлы');
