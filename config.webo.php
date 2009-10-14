@@ -109,7 +109,7 @@ $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer separate CSS for rules and images?
 $compress_options['data_uris']['separate'] = "1";
 ## Should Web Optimizer load resource CSS on DOMloaded event?
-$compress_options['data_uris']['domloaded'] = "1";
+$compress_options['data_uris']['domloaded'] = "0";
 ## Optimiza all CSS images via smush.it?
 $compress_options['data_uris']['smushit'] = "0";
 ## Maximum size of images to be converted, in bytes
