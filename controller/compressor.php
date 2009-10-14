@@ -787,7 +787,7 @@ class web_optimizer {
 				$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 				if (empty($options['data_uris_domloaded'])) {
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
 /* incldue via JS loader to provide fast flush of content */
 				} else {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
@@ -888,9 +888,14 @@ class web_optimizer {
 								@fclose($fpgz);
 								@chmod($physical_file . '.css.gz', octdec("0644"));
 							}
-/* Create the link to the new file */
 							$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
-							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+/* raw include right after the main CSS file, or according to unobtrusive logic */
+							if (empty($options['data_uris_domloaded'])) {
+								$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+/* incldue via JS loader to provide fast flush of content */
+							} else {
+								$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
+							}
 						}
 					} elseif (!empty($minified_content)) {
 						$ie = in_array($this->ua_mod, array('.ie5', '.ie6', '.ie7'));
@@ -950,13 +955,7 @@ class web_optimizer {
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
-/* raw include right after the main CSS file, or according to unobtrusive logic */
-					if (empty($options['data_uris_domloaded'])) {
-						$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
-/* incldue via JS loader to provide fast flush of content */
-					} else {
-						$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
-					}
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
 				}
 			}
 			if ($this->web_optimizer_stage) {
