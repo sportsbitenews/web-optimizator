@@ -119,9 +119,9 @@ switch ($extension) {
 }
 /* handle cases with relative document root and redirect via .htaccess */
 if ($_SERVER['QUERY_STRING']{0} == '/') {
-	$filename = str_replace("\\", "/", realpath($document_root . $_SERVER['QUERY_STRING']));
+	$filename = str_replace("\\", "/", realpath($document_root . '/' . $_SERVER['QUERY_STRING']));
 } else {
-	$filename = str_replace("\\", "/", realpath($website_root . $_SERVER['QUERY_STRING']));
+	$filename = str_replace("\\", "/", realpath($website_root . '/' . $_SERVER['QUERY_STRING']));
 }
 /* check if we inside document root */
 if (strpos(" " . $filename, $document_root) && !empty($extension)) {

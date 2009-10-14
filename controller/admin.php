@@ -799,7 +799,7 @@ class admin {
 		foreach ($this->compress_options as $key => $option) {
 			if (is_array($option)) {
 				foreach($option as $option_name => $option_value) {
-					if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level'))) {
+					if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level', 'fonts_level'))) {
 						$default_value = in_array($option_name, array('allowed_list', 'ignore_list')) ? '' : 0;
 						$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
 						$this->input['user'][$key][$option_name] = (strcmp($this->input['user'][$key][$option_name], 'on') ? $this->input['user'][$key][$option_name] : 1);
@@ -1117,27 +1117,27 @@ ExpiresDefault \"access plus 10 years\"
 				$cachedir = str_replace($this->input['user']['document_root'], "/", $this->input['user']['html_cachedir']);
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
-RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css";
+RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
-RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js";
+RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['images'])) {
 					$content .= "
-RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['static'])) {
 					$content .= "
-RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['fonts'])) {
 					$content .= "
-RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
+RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 			}
 			if (!empty($htaccess_options['mod_headers'])) {
@@ -1196,7 +1196,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 			);
 			$this->write_progress($this->web_optimizer_stage = 3);
 /* Check we can write to the specified directories */
-			foreach($test_dirs AS $name => $dir) {
+			foreach ($test_dirs as $name => $dir) {
 				if (is_dir($dir)) {
 /* try to set to all cache folders 0755 permissions */
 					@chmod($dir, octdec("0755"));
@@ -1225,13 +1225,13 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 			if (!empty($static) && $fp) {
 /* define gzip levels in this file */
 				$static = str_replace('<?php', "<?php\n" . '$gzip_level_css = ' .
-						$this->input['user']['gzip']['css_level'] .
+						$this->compress_options['gzip']['css_level'] .
 					";\n" . '$gzip_level_javascript = ' .
-						$this->input['user']['gzip']['javascript_level'] .
+						$this->compress_options['gzip']['javascript_level'] .
 					";\n" . '$gzip_level_fonts = ' .
-						$this->input['user']['gzip']['fonts_level'] .
+						$this->compress_options['gzip']['fonts_level'] .
 					";\n" . '$website_root = \'' .
-						$this->input['user']['website_root'] .
+						$this->compress_options['website_root'] .
 					"';", $static);
 				@fwrite($fp, $static);
 				@fclose($static);
@@ -1639,6 +1639,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2";
 			$return = true;
 		}
 		@unlink($javascript_cachedir . 'module.test');
+		@unlink($this->basepath . 'libs/css/.htaccess');
 		return $return;
 	}
 

@@ -178,6 +178,7 @@ class web_optimizer {
 				"data_uris" => $this->options['data_uris']['on'] && $this->premium,
 				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] && $this->premium,
 				"data_uris_separate" => $this->options['data_uris']['separate'] && ((!empty($this->ua_mod) && $this->options['data_uris']['mhtml']) || (empty($this->ua_mod) && $this->options['data_uris']['on'])) && $this->premium,
+				"data_uris_domloaded" => $this->options['data_uris']['domloaded'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
@@ -423,6 +424,7 @@ class web_optimizer {
 					'data_uris' => $options['data_uris'],
 					'mhtml' => $options['data_uris_mhtml'],
 					'data_uris_separate' => $options['data_uris_separate'],
+					'data_uris_domloaded' => $options['data_uris_domloaded'],
 					'data_uris_size' => $options['data_uris_size'],
 					'data_uris_exclude' => $options['data_uris_exclude'],
 					'mhtml' => $options['data_uris_mhtml'],
@@ -702,7 +704,7 @@ class web_optimizer {
 	* Include a single file or an unobtrusive bundle
 	*
 	**/
-	function include_bundle ($source, $newfile, $handlers, $cachedir, $include) {
+	function include_bundle ($source, $newfile, $handlers, $cachedir, $include, $href = '') {
 		switch ($include) {
 /* if no unobtrusive logic and no external JS, move to top */
 			default:
@@ -725,6 +727,10 @@ class web_optimizer {
 /* add JavaScript calls before </body> */
 			case 3:
 				$source = preg_replace("!<\/body>!is", $newfile . "$0", $source);
+				break;
+/* place second CSS call to onDOMready */
+			case 4:
+				$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l)}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"://\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){_weboptimizer_load()}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){_weboptimizer_load})}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->', $source);
 				break;
 		}
 		return $source;
@@ -779,7 +785,13 @@ class web_optimizer {
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && is_file($physical_file . '.css')) {
 				$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
-				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+/* raw include right after the main CSS file, or according to unobtrusive logic */
+				if (empty($options['data_uris_domloaded'])) {
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
+/* incldue via JS loader to provide fast flush of content */
+				} else {
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
+				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
 /* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
@@ -938,7 +950,13 @@ class web_optimizer {
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
+/* raw include right after the main CSS file, or according to unobtrusive logic */
+					if (empty($options['data_uris_domloaded'])) {
+						$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
+/* incldue via JS loader to provide fast flush of content */
+					} else {
+						$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
+					}
 				}
 			}
 			if ($this->web_optimizer_stage) {
@@ -969,26 +987,32 @@ class web_optimizer {
 	}
 
 	/**
-	* Returns the filename for our new compressed file
+	* Returns the HTML code for our new compressed file
 	*
 	**/
 	function get_new_file ($options, $cache_file, $timestamp = false, $add = false) {
-		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
-			$options['src'] . '="' .
-				(empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
-				$this->view->prevent_leading_slash($relative_cachedir) . '/' .
-				$cache_file .
-				($add ?  '.' . $options['ext'] : '') .
-				($timestamp && $options['far_future_expires_rewrite'] ? '.wo' . $timestamp : '') .
-				($add ? $add : '.' . $options['ext']) .
-				($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '') .
-			'"' .
+			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) .'"' .
 			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		$this->compressed_files[] = $newfile;
 		return $newfile;
+	}
+
+	/**
+	* Returns the filename for our new compressed file
+	*
+	**/
+	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
+		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
+		return (empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
+			$this->view->prevent_leading_slash($relative_cachedir) . '/' .
+			$cache_file .
+			($add ?  '.' . $options['ext'] : '') .
+			($timestamp && $options['far_future_expires_rewrite'] ? '.wo' . $timestamp : '') .
+			($add ? $add : '.' . $options['ext']) .
+			($timestamp && !$options['far_future_expires_rewrite'] ? '?' . $timestamp : '');
 	}
 
 	/**
