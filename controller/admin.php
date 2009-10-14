@@ -1225,13 +1225,13 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 			if (!empty($static) && $fp) {
 /* define gzip levels in this file */
 				$static = str_replace('<?php', "<?php\n" . '$gzip_level_css = ' .
-						$this->compress_options['gzip']['css_level'] .
+						(empty($this->compress_options['gzip']['css_level']) ? $this->input['user']['gzip']['css_level'] : $this->compress_options['gzip']['css_level']) .
 					";\n" . '$gzip_level_javascript = ' .
-						$this->compress_options['gzip']['javascript_level'] .
+						(empty($this->compress_options['gzip']['javascript_level']) ? $this->input['user']['gzip']['javascript_level'] : $this->compress_options['gzip']['javascript_level']) .
 					";\n" . '$gzip_level_fonts = ' .
-						$this->compress_options['gzip']['fonts_level'] .
+						(empty($this->compress_options['gzip']['fonts_level']) ? $this->input['user']['gzip']['fonts_level'] : $this->compress_options['gzip']['fonts_level']) .
 					";\n" . '$website_root = \'' .
-						$this->compress_options['website_root'] .
+						(empty($this->compress_options['website_root']) ? $this->input['user']['website_root'] : $this->compress_options['website_root']) .
 					"';", $static);
 				@fwrite($fp, $static);
 				@fclose($static);
