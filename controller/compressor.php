@@ -882,7 +882,7 @@ class web_optimizer {
 /* Set permissions, required by some hosts */
 							@chmod($physical_file . '.css', octdec("0644"));
 /* create static gzipped versions for static gzip in nginx, Apache */
-							$fpgz = @fopen($cachedir . '/' . $physical_file . '.css.gz', 'wb');
+							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
 								@fwrite($fpgz, @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
 								@fclose($fpgz);
