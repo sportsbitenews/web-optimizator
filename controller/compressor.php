@@ -234,7 +234,8 @@ class web_optimizer {
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text'],
 				"htaccess_username" => $this->options['htaccess']['user'] && $this->premium,
-				"htaccess_password" => $this->options['htaccess']['pass'] && $this->premium
+				"htaccess_password" => $this->options['htaccess']['pass'] && $this->premium,
+				"html_tidy" => $this->premium
 			)
 		);
 /* overwrite other options array that we passed in */
@@ -1713,10 +1714,15 @@ class web_optimizer {
 		if (!empty($this->options['javascript']['minify'])) {
 			$dest = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>', '// -->', "<script type='text/javascript'><!--", '<script type="text/javascript"><!--'), array('', '', '', '', '', '', '', "<script type='text/javascript'>", '<script type="text/javascript">'), $dest);
 		}
+		if ($dest !== $source) {
 /* replace current content with updated version */
-		$this->content = str_replace($source, $dest, $this->content);
+			$this->content = str_replace($source, $dest, $this->content);
+		}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-		return preg_replace("@<!--.*?-->@is", '', $dest);
+		if (strpos($dest, '<!--')) {
+			$dest = preg_replace("@<!--.*?-->@is", '', $dest);
+		}
+		return $dest;
 	}
 
 	/**
@@ -1731,16 +1737,43 @@ class web_optimizer {
 			}
 /* skip parsing head if we includes both CSS and JavaScript from head+body */
 			if (empty($this->options['javascript']['minify_body']) || empty($this->options['css']['minify_body'])) {
-				preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
-				if (!empty($matches[0])) {
-					$this->head = $this->prepare_html($matches[0]);
+				if (empty($this->options['page']['html_tidy'])) {
+					preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
+					$head = $matches[0];
+				} else {
+					if ($headpos = strpos($this->content, '<head')) {
+						$head = substr($this->content, $headpos, strpos($this->content, '</head>') - $headpos);
+					} elseif ($headpos = strpos($this->content, '<HEAD')) {
+						$head = substr($this->content, $headpos, strpos($this->content, '</HEAD>') - $headpos);
+					}
+				}
+				if (!empty($head)) {
+					$this->head = $this->prepare_html($head);
 				}
 			}
 /* get head+body if required */
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-				preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
-				if (!empty($matches[0])) {
-					$this->body = $this->prepare_html($matches[0]);
+				if (empty($this->options['page']['html_tidy'])) {
+					preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
+					$body = $matches[0];
+				} else {
+					if ($headpos = strpos($this->content, '<head')) {
+						$body = substr($this->content, $headpos, strpos($this->content, '</body>') - $headpos);
+						if ($bodypos = strpos($this->content, '</body>')) {
+							$body = substr($this->content, $headpos, $bodypos - $headpos);
+						} else {
+							$body = substr($this->content, $headpos, strpos($this->content, '</BODY>') - $headpos);
+						}
+					} elseif ($headpos = strpos($this->content, '<HEAD')) {
+						if ($bodypos = strpos($this->content, '</BODY>')) {
+							$body = substr($this->content, $headpos, $bodypos - $headpos);
+						} else {
+							$body = substr($this->content, $headpos, strpos($this->content, '</body>') - $headpos);
+						}
+					}
+				}
+				if (!empty($head)) {
+					$this->body = $this->prepare_html($body);
 				}
 			}
 /* split XHTML behavior from HTML */
