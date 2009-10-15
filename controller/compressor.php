@@ -275,7 +275,7 @@ class web_optimizer {
 	function finish ($content = false) {
 /* disable any actions if not active */
 		if (empty($this->options['active'])) {
-			return;
+			return $content;
 		}
 		if (!$content) {
 			$this->content = ob_get_clean();
@@ -1746,8 +1746,14 @@ class web_optimizer {
 /* split XHTML behavior from HTML */
 			$xhtml = strpos($this->content, 'XHTML 1');
 			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
+			$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
 /* add Web Optimizer spot */
-			$this->content = preg_replace('!(<title)!is', "$1" . ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"', $this->content);
+			if ($titlepos = strpos($this->content, '<title>')) {
+				$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+			} else {
+				$titlepos = strpos($this->content, '<TITLE>');
+				$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+			}
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
@@ -1762,7 +1768,13 @@ class web_optimizer {
 				} else {
 					$el = 'span';
 				}
-				$this->content = preg_replace('!(</body>)!is', '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://www.web-optimizer.us/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>' . "$1", $this->content);
+				$stamp = '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://www.web-optimizer.us/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>';
+				if ($bodypos = strpos($this->content, '</body>')) {
+					$this->content = substr($this->content, 0, $bodypos) . $stamp . substr($this->content, $bodypos);
+				} else {
+					$bodypos = strpos($this->content, '</BODY>');
+					$this->content = substr($this->content, 0, $bodypos) . $stamp . substr($this->content, $bodypos);
+				}
 			}
 		}
 	}
