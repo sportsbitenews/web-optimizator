@@ -146,6 +146,9 @@ define('_WEBO_external_scripts_css', 'Vermischung von externem Styles aktivieren
 define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktivieren');
 define('_WEBO_external_scripts_ignore_list', 'Datei vom Vermischen ausschlie&szlig;en');
 define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
+define('_WEBO_performance_plain_string', 'Do not use regular expressions');
+define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
+define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
 define('_WEBO_minify_javascript', 'JavaScript-Dateien kombinieren');
 define('_WEBO_minify_javascript_body', 'JavaScript-Dateien innerhalb <code>&lt;body&gt;</code> kombinieren');
 define('_WEBO_minify_with', 'JavaScript-Dateien minimieren');
@@ -178,6 +181,7 @@ define('_WEBO_html_cache_ignore_list', 'Liste der Teile von URLs, die beim Zwisc
 define('_WEBO_html_cache_allowed_list', 'Liste der USER AGENTS (Robots), die zwischengespeichert werden');
 define('_WEBO_footer_text', 'Link auf Web Optimizer hinzuf&uuml;gen');
 define('_WEBO_footer_image', 'Web Optimizer-Bild hinzuf&uuml;gen');
+define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
 define('_WEBO_data_uris_on', '<code>data:URI</code> anwenden');
 define('_WEBO_data_uris_mhtml', '<code>mhtml</code> anwenden');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');

@@ -149,7 +149,10 @@ define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scrip
 define('_WEBO_external_scripts_css', 'Activa fusionamiento de estilos (styles) externos e internos');
 define('_WEBO_external_scripts_css_inline', 'Activa fusionamiento de estilos internos');
 define('_WEBO_external_scripts_ignore_list', 'Excluye archivos de fusionamiento');
-define('_WEBO_dont_check_file_mtime_on', 'No revisa mtime de archivos (y contenido)');
+define('_WEBO_performance_mtime', 'No revisa mtime de archivos (y contenido)');
+define('_WEBO_performance_plain_string', 'Do not use regular expressions');
+define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
+define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
 define('_WEBO_minify_javascript', 'Combina archivos JavaScript');
 define('_WEBO_minify_javascript_body', 'Combinar archivos JavaScript dentro de <code>&lt;body&gt;</code>');
 define('_WEBO_minify_with', 'Minimiza archivos JavaScript');
@@ -182,6 +185,7 @@ define('_WEBO_html_cache_ignore_list', 'Lista de partes de los URL a ignorar de 
 define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&ntilde;adir a la memoria Cache');
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a Web Optimizer');
 define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
+define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');

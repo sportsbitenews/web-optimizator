@@ -22,11 +22,11 @@ $compress_options['unobtrusive']['on'] = "0";
 ## Add JS loader for all libraries right before </body>
 $compress_options['unobtrusive']['body'] = "0";
 ## Put all known JS informers right before </body>
-$compress_options['unobtrusive']['informers'] = "1";
+$compress_options['unobtrusive']['informers'] = "0";
 ## Put all known JS counters right before </body>
-$compress_options['unobtrusive']['counters'] = "1";
+$compress_options['unobtrusive']['counters'] = "0";
 ## Put all known advertisement blocks right before </body>
-$compress_options['unobtrusive']['ads'] = "1";
+$compress_options['unobtrusive']['ads'] = "0";
 ## Merge external and inline scripts inside head
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts inside head
@@ -38,9 +38,15 @@ $compress_options['external_scripts']['css'] = "1";
 ## Merge inline styles in head
 $compress_options['external_scripts']['css_inline'] = "1";
 ## Ignore list, files separated by space
-$compress_options['external_scripts']['ignore_list'] = "tiny_mce.js tiny_mce_gzip.php fckeditor.js";
+$compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_gzip.php fckeditor.js";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
+## Quick checksum for head section
+$compress_options['performance']['quick_check'] = "1";
+## Don't use RegExp everywhere there it's possible
+$compress_options['performance']['plain_string'] = "1";
+## Cache version, ignore cache integrity
+$compress_options['performance']['cache_version'] = "0";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "1";
 ## Minify JS inside <body> tag. Please be carefull
@@ -104,6 +110,8 @@ $compress_options['active'] = "0";
 ## Display a link back to Web Optimizer
 $compress_options['footer']['text'] = "1";
 $compress_options['footer']['image'] = "1";
+## Add a spot to <title>: lang="wo" or xml:lang="wo"
+$compress_options['footer']['spot'] = "1";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer separate CSS for rules and images?

@@ -233,10 +233,13 @@ class web_optimizer {
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
 				"footer" => $this->options['footer']['image'],
 				"footer_link" => $this->options['footer']['text'],
+				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
 				"htaccess_username" => $this->options['htaccess']['user'] && $this->premium,
 				"htaccess_password" => $this->options['htaccess']['pass'] && $this->premium,
-				"html_tidy" => $this->premium
-			)
+				"html_tidy" => $this->options['performance']['plain_string'] && $this->premium
+			),
+			"cache_version" => $this->premium ? round($this->options['performance']['cache_version']) : 0,
+			"quick_check" => $this->options['performance']['quick_check'] && $this->premium
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -250,7 +253,6 @@ class web_optimizer {
 			}
 			$this->options[$key] = $option;
 		}
-		$this->options['show_timer'] = false; //time the javascript and css compression?
 	}
 
 	/**
@@ -299,12 +301,16 @@ class web_optimizer {
 			if (!empty($this->web_optimizer_stage)) {
 				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
 			}
+			if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
-			$this->get_script_array();
+				$this->get_script_array();
+			} else {
+				$this->get_head_status();
+			}
 /* Run the functions specified in options */
-			if(is_array($this->options)) {
-				foreach($this->options AS $func => $option) {
-					if(method_exists($this,$func)) {
+			if (is_array($this->options)) {
+				foreach ($this->options as $func => $option) {
+					if (method_exists($this,$func)) {
 						if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
 							$this->$func($option, $func);
 						}
@@ -312,7 +318,7 @@ class web_optimizer {
 				}
 			}
 /* Delete old cache files */
-			if(!empty($this->compressed_files) && is_array($this->compressed_files)) {
+			if (!empty($this->compressed_files) && is_array($this->compressed_files)) {
 /* Make a string with the names of the compressed files */
 				$this->compressed_files_string = implode("", $this->compressed_files);
 			}
@@ -355,7 +361,7 @@ class web_optimizer {
 				$script_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium))) {
+		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium) || !empty($this->options['quick_check']))) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
@@ -410,7 +416,7 @@ class web_optimizer {
 				$link_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium))) {
+		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium) || !empty($this->options['quick_check']))) {
 /* Compress separately for each media type*/
 			$this->content = $this->do_compress(
 				array(
@@ -777,31 +783,40 @@ class web_optimizer {
 		if(!is_array($external_array)) {
 			$external_array = array($external_array);
 		}
+		if (empty($this->options['quick_check'])) {
 /* glue scripts' content / filenames */
-		$scripts_string = '';
-		foreach ($external_array as $script) {
-			$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
-		}
-/* Get date string to make hash */
-		$datestring = $this->get_file_dates($external_array, $options);
-/* get options string */
-		$optstring = '';
-		foreach ($options as $key => $value) {
-			if (is_array($value)) {
-				$optstring .= '_' . implode('_', $value);
-			} else {
-				$optstring .= '_' . $value;
+			$scripts_string = '';
+			foreach ($external_array as $script) {
+				$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
 			}
-		}
+/* Get date string to make hash */
+			$datestring = $this->get_file_dates($external_array, $options);
+/* get options string */
+			$optstring = '';
+			foreach ($options as $key => $value) {
+				if (is_array($value)) {
+					$optstring .= '_' . implode('_', $value);
+				} else {
+					$optstring .= '_' . $value;
+				}
+			}
 /* Get the cache hash, restrict by 10 symbols */
-		$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
+			$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
+/* just provide quick checksum of head / body status */
+		} else {
+			$cache_file = $this->head_status;
+		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . '/' . $cache_file . "." . $options['ext'];
 		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
-		if (file_exists($physical_file)) {
-			$timestamp = @filemtime($physical_file);
+		if (empty($this->options['cache_version'])) {
+			if (is_file($physical_file)) {
+				$timestamp = @filemtime($physical_file);
+			} else {
+				$timestamp = 0;
+			}
 		} else {
-			$timestamp = 0;
+			$timestamp = $this->options['cache_version'];
 		}
 /* Check if the cache file exists */
 		if ($timestamp) {
@@ -811,7 +826,7 @@ class web_optimizer {
 			}
 			$source = $this->_remove_scripts($external_array, $source);
 /* Create the link to the new file with data:URI / mhtml */
-			if (!empty($options['data_uris_separate']) && is_file($physical_file . '.css')) {
+			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || is_file($physical_file . '.css'))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 				if (empty($options['data_uris_domloaded'])) {
@@ -844,6 +859,10 @@ class web_optimizer {
 					require_once($options['installdir'] . 'libs/php/' . $library);
 				}
 			}
+		}
+/* If the file didn't exist, get script array first */
+		if (!empty($this->options['quick_check'])) {
+			$this->get_script_array($options['tag']);
 		}
 /* If the file didn't exist, continue. Get files' content */
 		if (!empty($options['dont_check_file_mtime'])) {
@@ -909,7 +928,6 @@ class web_optimizer {
 							@fclose($fp);
 /* Set permissions, required by some hosts */
 							@chmod($physical_file . '.css', octdec("0644"));
-							@touch($physical_file . '.css', $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
@@ -973,7 +991,6 @@ class web_optimizer {
 					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($physical_file, octdec("0644"));
-					@touch($physical_file, $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($physical_file . '.gz', 'wb');
@@ -1151,86 +1168,79 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		$curl = function_exists('curl_init');
-		if (!empty($this->head) || !empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-			if ((!empty($this->options['javascript']['minify']) && !empty($this->head)) || (!empty($this->options['javascript']['minify_body']) && !empty($this->body))) {
+		if (!empty($this->options['javascript']['minify'])) {
+			if (empty($this->options['javascript']['minify_body'])) {
+				$toparse = $this->head;
+			} else {
+				$toparse = $this->body;
+			}
 /* find all scripts from head */
-				$regex = "!(<script[^>]+type\\s*=\\s*(\"text/javascript\"|'text/javascript'|text/javascript)[^>]*>)(.*?</script>)!is";
-				if (empty($this->options['javascript']['minify_body'])) {
-					preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
-				} else {
-					preg_match_all($regex, $this->body, $matches, PREG_SET_ORDER);
-				}
-				if (!empty($matches)) {
-					foreach($matches as $match) {
-						$file = array();
-						$file['tag'] = 'script';
-						$file['part'] = 'head';
-						$file['source'] = $match[0];
-						$file['content'] = preg_replace("/(<script[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/script>)/i", "", $match[0]);
-						$file['comment'] = '';
-						$file['file'] = '';
-						preg_match_all("@(type|src)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
-						if(is_array($variants)) {
-							foreach($variants AS $variant_type) {
-								$variant_type[1] = strtolower($variant_type[1]);
-								$variant_type[2] = ($variant_type[2] == '') ? (($variant_type[3] == '') ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
-								switch ($variant_type[1]) {
-									case "src":
-										$file['file'] = trim($this->strip_querystring($variant_type[2]));
-										$file['file_raw'] = $variant_type[2];
-										break;
-									default:
-										$file[$variant_type[1]] = $variant_type[2];
-										break;
-								}
-							}
+			$regex = "!(<script[^>]*>)(.*?</script>)!is";
+			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
+			if (!empty($matches)) {
+				foreach($matches as $match) {
+					$file = array(
+						'tag' => 'script',
+						'source' => $match[0],
+						'content' => preg_replace("@</script>@i", "", $match[0])
+					);
+					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
+					if (is_array($variants)) {
+						foreach ($variants as $variant_type) {
+							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? $variant_type[3] : $variant_type[2]) : $variant_type[1];
+							$file['file'] = trim($this->strip_querystring($variant_type[1]));
+							$file['file_raw'] = $variant_type[1];
 						}
+					}
 /* skip external files if option is disabled */
-						if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
-							$this->initial_files[] = $file;
-						}
+					if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
+						$this->initial_files[] = $file;
 					}
 				}
 			}
-			if ((!empty($this->options['css']['minify']) && !empty($this->head)) || (!empty($this->options['css']['minify_body']) && !empty($this->body))) {
+		}
+		if (!empty($this->options['css']['minify'])) {
+			if (empty($this->options['css']['minify_body'])) {
+				$toparse = $this->head;
+			} else {
+				$toparse = $this->body;
+			}
 /* find all CSS links from head and inine styles */
-				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)([^>]*)>|<style\\s+type\\s*=\\s*(\"text/css\"|'text/css'|text/css)([^>]*)>(.*?)</style>)!is";
-				if (empty($this->options['css']['minify_body'])) {
-					preg_match_all($regex, $this->head, $matches, PREG_SET_ORDER);
-				} else {
-					preg_match_all($regex, $this->body, $matches, PREG_SET_ORDER);
-				}
-				if (!empty($matches)) {
-					foreach($matches as $match) {
-						$file = array();
-						$file['tag'] = 'link';
-						$file['part'] = 'head';
-						$file['source'] = $match[0];
-						$file['content'] = preg_replace("/(<link[^>]+>|<style[^>]*>[\t\s\r\n]*|[\t\s\r\n]*<\/style>)/i", "", $match[0]);
-						$file['comment'] = '';
-						preg_match_all("@(type|rel|media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
-						if(is_array($variants)) {
-							foreach($variants AS $variant_type) {
-								$variant_type[1] = strtolower($variant_type[1]);
-								$variant_type[2] = ($variant_type[2] == '') ? (($variant_type[3] == '') ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
-								switch ($variant_type[1]) {
-									case "href":
-										$file['file'] = trim($this->strip_querystring($variant_type[2]));
-										$file['file_raw'] = $variant_type[2];
-										break;
-									default:
+			if (empty($this->options['css']['inline_scripts']) && $this->options['page']['html_tidy'] && !strpos($toparse, '<style') && !strpos($toparse, '<STYLE')) {
+				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>)!is";
+			} else {
+				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>|<style[^>]*>.*?</style>)!is";
+			}
+			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
+			if (!empty($matches)) {
+				foreach($matches as $match) {
+					$file = array(
+						'tag' => 'link',
+						'source' => $match[0],
+						'content' => preg_replace("@(<link[^>]+>|<style[^>]*>|<\/style>)@is", "", $match[0]),
+					);
+					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
+					if (is_array($variants)) {
+						foreach($variants as $variant_type) {
+							$variant_type[1] = strtolower($variant_type[1]);
+							$variant_type[2] = ($variant_type[2] == '') ? (($variant_type[3] == '') ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+							switch ($variant_type[1]) {
+								case "href":
+									$file['file'] = trim($this->strip_querystring($variant_type[2]));
+									$file['file_raw'] = $variant_type[2];
+									break;
+								default:
 /* skip media="all|screen" to prevent Safari bug with @media all{} and @media screen{} */
-										if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen/i", $variant_type[2]))) {
-											$file[$variant_type[1]] = $variant_type[2];
-										}
-										break;
-								}
+									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen/i", $variant_type[2]))) {
+										$file[$variant_type[1]] = $variant_type[2];
+									}
+									break;
 							}
 						}
+					}
 /* skip external files if option is disabled */
-						if (($this->options['javascript']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) || (empty($file['file']) && $this->options['css']['inline_scripts'])) {
-							$this->initial_files[] = $file;
-						}
+					if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) || (empty($file['file']) && $this->options['css']['inline_scripts'])) {
+						$this->initial_files[] = $file;
 					}
 				}
 			}
@@ -1557,8 +1567,8 @@ class web_optimizer {
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
 			$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
+			return $source;
 		}
-		return $source;
 	}
 
 	/**
@@ -1806,39 +1816,24 @@ class web_optimizer {
 			}
 /* get head+body if required */
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-				if (empty($this->options['page']['html_tidy'])) {
-					preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
-					$body = $matches[0];
-				} else {
-					if ($headpos = strpos($this->content, '<head')) {
-						$body = substr($this->content, $headpos, strpos($this->content, '</body>') - $headpos);
-						if ($bodypos = strpos($this->content, '</body>')) {
-							$body = substr($this->content, $headpos, $bodypos - $headpos);
-						} else {
-							$body = substr($this->content, $headpos, strpos($this->content, '</BODY>') - $headpos);
-						}
-					} elseif ($headpos = strpos($this->content, '<HEAD')) {
-						if ($bodypos = strpos($this->content, '</BODY>')) {
-							$body = substr($this->content, $headpos, $bodypos - $headpos);
-						} else {
-							$body = substr($this->content, $headpos, strpos($this->content, '</body>') - $headpos);
-						}
-					}
-				}
-				if (!empty($head)) {
-					$this->body = $this->prepare_html($body);
+				preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
+				if (!empty($matches[0])) {
+					$this->body = $this->prepare_html($matches[0]);
 				}
 			}
 /* split XHTML behavior from HTML */
 			$xhtml = strpos($this->content, 'XHTML 1');
-			$this->xhtml = ($xhtml > 34 && $xhtml < 100 ? 1 : 0);
-			$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
+			$this->xhtml = $xhtml > 34 && $xhtml < 100;
 /* add Web Optimizer spot */
-			if ($titlepos = strpos($this->content, '<title>')) {
-				$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
-			} else {
-				$titlepos = strpos($this->content, '<TITLE>');
-				$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+			if (!empty($this->options['page']['spot'])) {
+				$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
+				if (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<title>'))) {
+					$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+				} elseif (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<TITLE>'))) {
+					$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+				} else {
+					$this->content = preg_replace('!(<title)!is', "$1" . $spot, $this->content);
+				}
 			}
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
@@ -1862,6 +1857,34 @@ class web_optimizer {
 					$this->content = substr($this->content, 0, $bodypos) . $stamp . substr($this->content, $bodypos);
 				}
 			}
+		}
+	}
+
+	/**
+	* Gets the checksum of all required tags
+	*
+	**/
+	function get_head_status () {
+		$this->head_status = '';
+		$this->get_head();
+		if (!empty($this->options['css']['minify']) && !empty($this->options['css']['minify'])) {
+			if (empty($this->options['javascript']['minify_body']) && empty($this->options['css']['minify_body'])) {
+				$toparse = $this->head;
+			} else {
+				$toparse = $this->body;
+			}
+			$css = $javascript = '';
+			if (!empty($this->options['css']['minify'])) {
+				$css = "<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>|<style[^>]*>.*?</style>";
+			}
+			if (!empty($this->options['javascript']['minify'])) {
+				$javascript = "<script[^>]*>.*?</script>";
+			}
+			preg_match_all("@(" . $javascript . (empty($javascript) ? '' : '|') . $css .")@is", $toparse, $matches, PREG_SET_ORDER);
+			foreach ($matches as $match) {
+				$this->head_status .= $match[0];
+			}
+			$this->head_status = crc32($this->head_status);
 		}
 	}
 

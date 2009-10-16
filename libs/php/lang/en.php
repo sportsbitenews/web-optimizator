@@ -146,6 +146,9 @@ define('_WEBO_external_scripts_css', 'Enable external styles merging');
 define('_WEBO_external_scripts_css_inline', 'Enable inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude files from merging');
 define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
+define('_WEBO_performance_plain_string', 'Do not use regular expressions');
+define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
+define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_javascript_body', 'Combine JavaScript files inside <code>&lt;body&gt;</code>');
 define('_WEBO_minify_with', 'Minify JavaScript files');
@@ -178,6 +181,7 @@ define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from cac
 define('_WEBO_html_cache_allowed_list', 'List of USER AGENTS (robots) to add to caching');
 define('_WEBO_footer_text', 'Add a link to Web Optimizer');
 define('_WEBO_footer_image', 'Add a Web Optimizer image');
+define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
 define('_WEBO_data_uris_on', 'Apply <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Apply <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');

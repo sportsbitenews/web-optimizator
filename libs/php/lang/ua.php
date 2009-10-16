@@ -148,6 +148,9 @@ define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єдн
 define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
 define('_WEBO_minify_javascript_body', 'Об\'єднати JavaScript-файли усередині <code>&lt;body&gt;</code>');
 define('_WEBO_performance_mtime', 'Не перевіряти час зміни файлів');
+define('_WEBO_performance_plain_string', 'Не использовать регулярные выражения');
+define('_WEBO_performance_quick_check', 'Проверять целостность кэша только по <code>head</code>');
+define('_WEBO_performance_cache_version', 'Номер версии кэша (не проверять наличие файлов)');
 define('_WEBO_minify_with', 'Мінімізувати JavaScript-файли');
 define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');
@@ -178,6 +181,7 @@ define('_WEBO_html_cache_ignore_list', 'Перелік частин URL для �
 define('_WEBO_html_cache_allowed_list', 'Список частин USER AGENTS (роботів) для включення при кешуванні');
 define('_WEBO_footer_text', 'Додати посилання на Web Optimizer');
 define('_WEBO_footer_image', 'Додати зображення Web Optimizer');
+define('_WEBO_footer_spot', 'Добавлять <code>lang="wo"</code> в <code>title</code> страниц');
 define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Застосувати <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Отделить картинки от CSS-кода');

@@ -284,7 +284,7 @@ function csstidy()
 	$this->settings['sort_properties'] = true;
 /*
 1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
-2, 5, 8, etc -- enable sorting selectors inside one CSS decalaration: a,b,c{}
+2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
 */
 	$this->settings['sort_selectors'] = 2;
 /* is dangeroues to be used: CSS is broken sometimes */
