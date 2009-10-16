@@ -485,8 +485,6 @@ class web_optimizer {
 /* Minify page itself or parse multiple hosts */
 		if(!empty($options['minify']) || (!empty($options['parallel']) && !empty($options['parallel_hosts']))) {
 			$this->content = $this->trimwhitespace($this->content);
-/* remove empty scripts after merging inline code */
-			$this->content = preg_replace("/<script type=['\"]text\/javascript['\"]><\/script>/i", "", $this->content);
 		}
 /* remove BOM */
 		$this->content = str_replace("﻿", "", $this->content);
@@ -1521,11 +1519,21 @@ class web_optimizer {
 	* Adapted from smarty code http://www.smarty.net/
 	**/
 	function trimwhitespace ($source) {
+		if (!empty($this->options['page']['minify'])) {
+			if (!empty($this->options['page']['html_tidy'])) {
 /* Pull out the script, textarea and pre blocks */
-		preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
-		$_script_blocks = $match[0];
-		$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is",
-							   '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
+				$this->trimwhitespace_find('<script', '</script>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<SCRIPT', '</SCRIPT>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<textarea', '</textarea>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<TEXTAREA', '</TEXTAREA>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<pre', '</pre>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<PRE', '</PRE>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+			} else {
+				preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
+				$_script_blocks = $match[0];
+				$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
+			}
+		}
 /* add multiple hosts */
 		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
@@ -1545,12 +1553,26 @@ class web_optimizer {
 /* replace ' />' with '/>' */
 		if (!empty($this->options['page']['minify'])) {
 			$source = str_replace(" />", ">", $source);
-		}
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
-		$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
+			$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
+		}
 		return $source;
+	}
+
+	/**
+	* Helper function for trimwhitespace, finds all blocks
+	*
+	**/
+	function trimwhitespace_find ($block_begin, $block_end, $spot, &$subject, &$return) {
+		$len = strlen($block_end);
+		while ($posbegin = strpos($subject, $block_begin)) {
+			$chunk = substr($subject, $posbegin);
+			$posend = strpos($chunk, $block_end);
+			$return[] = substr($chunk, 0, $posend + $len);
+			$subject = substr($subject, 0, $posbegin) . $spot . substr($chunk, $posend + $len);
+		}
 	}
 
 	/**
