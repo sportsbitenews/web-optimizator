@@ -709,15 +709,29 @@ class web_optimizer {
 		switch ($include) {
 /* if no unobtrusive logic and no external JS, move to top */
 			default:
-				$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $newfile, $source);
+				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
+					$headclose = strpos(substr($source, $headpos, 50), '>');
+					$source = substr($source, 0, $headpos + $headclose + 1) . $newfile . substr($source, $headpos + $headclose + 1);
+				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
+					$headclose = strpos(substr($source, $headpos, 50), '>');
+					$source = substr($source, 0, $headpos + $headclose + 1) . $newfile . substr($source, $headpos + $headclose + 1);
+				} else {
+					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $newfile, $source);
+				}
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
 			case 1:
-				$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
+				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
+					$source = substr($source, 0, $headpos) . $newfile . substr($source, $headpos);
+				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
+					$source = substr($source, 0, $headpos) . $newfile . substr($source, $headpos);
+				} else {
+					$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
+				}
 				break;
 /* else use unobtrusive loader */
 			case 2:
-				if (stripos($source, "var yass_modules")) {
+				if (strpos($source, "var yass_modules")) {
 					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
@@ -727,11 +741,26 @@ class web_optimizer {
 				break;
 /* add JavaScript calls before </body> */
 			case 3:
-				$source = preg_replace("!<\/body>!is", $newfile . "$0", $source);
+				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
+					$source = substr($source, 0, $bodypos) . $newfile . substr($source, $bodypos);
+				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
+					$source = substr($source, 0, $bodypos) . $newfile . substr($source, $bodypos);
+				} else {
+					$source = preg_replace("!</body>!is", $newfile . "$0", $source);
+				}
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
-				$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"://\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){_weboptimizer_load})}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->', $source);
+				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"://\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){_weboptimizer_load})}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
+					$headclose = strpos(substr($source, $headpos, 50), '>');
+					$source = substr($source, 0, $headpos + $headclose + 1) . $include . substr($source, $headpos + $headclose + 1);
+				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
+					$headclose = strpos(substr($source, $headpos, 50), '>');
+					$source = substr($source, 0, $headpos + $headclose + 1) . $include . substr($source, $headpos + $headclose + 1);
+				} else {
+					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $include, $source);
+				}
 				break;
 		}
 		return $source;
@@ -785,13 +814,13 @@ class web_optimizer {
 			$source = $this->_remove_scripts($external_array, $source);
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && is_file($physical_file . '.css')) {
-				$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
+				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 				if (empty($options['data_uris_domloaded'])) {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
 /* incldue via JS loader to provide fast flush of content */
 				} else {
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.css'));
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
@@ -882,6 +911,7 @@ class web_optimizer {
 							@fclose($fp);
 /* Set permissions, required by some hosts */
 							@chmod($physical_file . '.css', octdec("0644"));
+							@touch($physical_file . '.css', $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
@@ -945,6 +975,7 @@ class web_optimizer {
 					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($physical_file, octdec("0644"));
+					@touch($physical_file, $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($physical_file . '.gz', 'wb');
