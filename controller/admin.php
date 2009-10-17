@@ -939,6 +939,7 @@ mod_gzip_on Yes
 mod_gzip_can_negotiate Yes
 mod_gzip_static_suffix .gz
 AddEncoding gzip .gz
+AddEncoding deflate .df
 mod_gzip_update_static No
 mod_gzip_keep_workfiles No
 mod_gzip_minimum_file_size 500
@@ -1014,7 +1015,8 @@ AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x
 /* try to add static gzip */
 			if (!empty($htaccess_options['mod_mime'])) {
 				$content .= "
-AddEncoding gzip .gz";
+AddEncoding gzip .gz
+AddEncoding deflate .df";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
 				$content .= "

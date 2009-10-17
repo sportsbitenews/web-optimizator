@@ -31,6 +31,12 @@ class web_optimizer {
 		$this->head = '';
 /* remember current time */
 		$this->time = $_SERVER['REQUEST_TIME'];
+		$this->host = $_SERVER['HTTP_HOST'];
+		if (strpos($_SERVER['HTTP_HOST'], "www.") !== false) {
+			$this->host = substr($this->host, 4);
+		} elseif (strpos($_SERVER['HTTP_HOST'], "WWW.") !== false) {
+			$this->host = substr($this->host, 4);
+		}
 /* define PHP version */
 		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */
@@ -50,9 +56,17 @@ class web_optimizer {
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
+		$excluded_html_pages = '';
+		$included_user_agents = '';
+		if (!empty($this->options['page']['cache'])) {
 /* HTML cache ? */
-		$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
-		$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
+			if (!empty($this->options['page']['cache_ignore'])) {
+				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
+			}
+			if (!empty($this->options['page']['allowed_user_agents'])) {
+				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
+			}
+		}
 /* cache if
   - option is enabled,
   - don't parse excluded pages
@@ -145,6 +159,7 @@ class web_optimizer {
 		$full_options = array(
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
+				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
@@ -165,6 +180,7 @@ class web_optimizer {
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
+				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['css_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate'] && (!$this->options['htaccess']['mod_rewrite'] || !$this->options['htaccess']['mod_mime'] || !$this->options['htaccess']['mod_expires'])) || !$this->options['htaccess']['enabled']),
@@ -204,6 +220,7 @@ class web_optimizer {
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
+				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['html_cachedir']),
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate']) || !$this->options['htaccess']['enabled']),
 				"gzip_level" => round($this->options['gzip']['page_level']),
@@ -502,7 +519,14 @@ class web_optimizer {
 		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-			$this->content = preg_replace('!(</body>)!is', '<script type="text/javascript" src="' . str_replace($this->view->paths['full']['document_root'], "/", $options['cachedir']) . '/wo.cookie.php"></script>' . "$1", $this->content);
+			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . '/wo.cookie.php"></script>';
+			if ($options['html_tidy'] && strpos($this->content, "</body>")) {
+				$this->content = str_replace('</body>', $cookie . '</body>');
+			} elseif ($options['html_tidy'] && strpos($this->content, "</BODY>")) {
+				$this->content = str_replace('</BODY>', $cookie . '</BODY>');
+			} else {
+				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
+			}
 		}
 /* Gzip page itself */
 		if(!empty($options['gzip']) && !empty($this->encoding)) {
@@ -557,10 +581,17 @@ class web_optimizer {
 		$count = count($hosts);
 		$count_satellites = count($satellites_hosts);
 		$replaced = array();
-		preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
-/* calculate relative path to cache directory if we require it */
-		if (!empty($this->options['page']['far_future_expires_rewrite'])) {
-			$cache_directory = str_replace($this->view->paths['full']['document_root'], "/", $this->options['page']['cachedir']);
+		$IMG = strpos($content, '<IMG');
+		if (!empty($this->options['page']['html_tidy']) && !$IMG) {
+			$_content = $content;
+			while ($pos = strpos($_content, '<img')) {
+				$len = strpos(substr($_content, $pos), '>');
+/* gets image tag w/o the closing >, it's OK */
+				$imgs[] = array(substr($_content, $pos, $len));
+				$_content = substr_replace($_content, '', $pos, $len);
+			}
+		} elseif (empty($this->options['page']['html_tidy']) || $IMG) {
+			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
@@ -570,14 +601,14 @@ class web_optimizer {
 /* are we operating with multiple hosts */
 					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
 /* skip images on different hosts */
-						if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "/!i", $old_src))) {
+						if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src))) {
 							$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 							$new_src = "http" .
 								$this->https .
 								"://" .
 								$hosts[strlen($old_src)%$count] .
 								"." .
-								preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) .
+								$this->host .
 								$absolute_src .
 								$old_src_param;
 							$content = str_replace($old_src, $new_src, $content);
@@ -595,7 +626,7 @@ class web_optimizer {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 /* do not touch dynamic images -- how we can handle them? */
 						if (!empty($this->options['page']['far_future_expires']) && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
-							$new_src = $cache_directory . '/wo.static.php?' . $src;
+							$new_src = $this->options['page']['cachedir_relative'] . '/wo.static.php?' . $src;
 							$content = str_replace($old_src, $new_src, $content);
 						}
 					}
@@ -636,17 +667,17 @@ class web_optimizer {
 	**/
 	function set_gzip_encoding () {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
-			$ae = $_SERVER["HTTP_ACCEPT_ENCODING"];
-			if (strpos(" " . $ae, "x-gzip")) {
+			$ae = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
+			if (strpos($ae, "x-gzip") !== false) {
 				$this->encoding = "x-gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos(" " . $ae, "gzip") || !empty($_COOKIE['_wo_gzip'])) {
+			} elseif (strpos($ae, "gzip") !== false || !empty($_COOKIE['_wo_gzip'])) {
 				$this->encoding = "gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos(" " . $ae, "deflate")) {
+			} elseif (strpos($ae, "deflate") !== false) {
 				$this->encoding = "x-deflate";
 				$this->encoding_ext = 'df';
-			} elseif (strpos(" " . $ae, "deflate")) {
+			} elseif (strpos($ae, "deflate") !== false) {
 				$this->encoding = "deflate";
 				$this->encoding_ext = 'df';
 			}
@@ -715,10 +746,10 @@ class web_optimizer {
 			default:
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr($source, 0, $headpos + $headclose + 1) . $newfile . substr($source, $headpos + $headclose + 1);
+					$source = substr_replace($source, $newfile, $headclose + $headpos + 1, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr($source, 0, $headpos + $headclose + 1) . $newfile . substr($source, $headpos + $headclose + 1);
+					$source = substr_replace($source, $newfile, $headclose + $headpos + 1, 0);
 				} else {
 					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $newfile, $source);
 				}
@@ -726,9 +757,9 @@ class web_optimizer {
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
 			case 1:
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
-					$source = substr($source, 0, $headpos) . $newfile . substr($source, $headpos);
+					$source = substr_replace($source, $newfile, $headpos, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
-					$source = substr($source, 0, $headpos) . $newfile . substr($source, $headpos);
+					$source = substr_replace($source, $newfile, $headpos, 0);
 				} else {
 					$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
 				}
@@ -740,15 +771,15 @@ class web_optimizer {
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
-						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. str_replace($this->view->paths['full']['document_root'], "/", $cachedir) .  '/yass.loader.js' . '"></script></body>', $source);
+						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. $cachedir .  '/yass.loader.js' . '"></script></body>', $source);
 				}
 				break;
 /* add JavaScript calls before </body> */
 			case 3:
 				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
-					$source = substr($source, 0, $bodypos) . $newfile . substr($source, $bodypos);
+					$source = substr_replace($source, $newfile, $bodypos, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
-					$source = substr($source, 0, $bodypos) . $newfile . substr($source, $bodypos);
+					$source = substr_replace($source, $newfile, $bodypos, 0);
 				} else {
 					$source = preg_replace("!</body>!is", $newfile . "$0", $source);
 				}
@@ -758,10 +789,10 @@ class web_optimizer {
 				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"://\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){_weboptimizer_load})}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr($source, 0, $headpos + $headclose + 1) . $include . substr($source, $headpos + $headclose + 1);
+					$source = substr_replace($source, $newfile, $headclose, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr($source, 0, $headpos + $headclose + 1) . $include . substr($source, $headpos + $headclose + 1);
+					$source = substr_replace($source, $newfile, $headclose, 0);
 				} else {
 					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $include, $source);
 				}
@@ -775,6 +806,7 @@ class web_optimizer {
 	*
 	**/
 	function do_include ($options, $source, $cachedir, $external_array, $handler_array = null) {
+		$cachedir_relative = $options['cachedir_relative'];
 		if ($this->web_optimizer_stage) {
 			$this->write_progress($this->web_optimizer_stage += 1);
 		}
@@ -837,9 +869,7 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-/* No longer use marker $source = str_replace("@@@marker@@@",$new_file,$source); */
-			$source = str_replace("@@@marker@@@", "", $source);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
 			if ($this->web_optimizer_stage) {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
@@ -1009,7 +1039,7 @@ class web_optimizer {
 				$this->write_progress($this->web_optimizer_stage += 2);
 			}
 		}
-		return str_replace("@@@marker@@@", "", $source);
+		return $source;
 	}
 
 	/**
@@ -1018,15 +1048,9 @@ class web_optimizer {
 	*/
 	function _remove_scripts ($external_array, $source) {
 		if (is_array($external_array)) {
-			$keys = array_keys($external_array);
-			$maxKey = array_pop($keys);
-			foreach($external_array as $key=>$value) {
+			foreach ($external_array as $key => $value) {
 /* Remove script */
-				if($key == $maxKey) {
-					$source = str_replace($value['source'], "@@@marker@@@", $source);
-				} else {
-					$source = str_replace($value['source'], "", $source);
-				}
+				$source = str_replace($value['source'], "", $source);
 			}
 		}
 		return $source;
@@ -1051,9 +1075,8 @@ class web_optimizer {
 	*
 	**/
 	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
-		$relative_cachedir = str_replace($this->view->prevent_trailing_slash($this->view->unify_dir_separator($this->view->paths['full']['document_root'])), "", $this->view->prevent_trailing_slash($this->view->unify_dir_separator($options['cachedir'])));
 		return (empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
-			$this->view->prevent_leading_slash($relative_cachedir) . '/' .
+			$options['cachedir_relative'] . '/' .
 			$cache_file .
 			($add ?  '.' . $options['ext'] : '') .
 			($timestamp && $options['far_future_expires_rewrite'] ? '.wo' . $timestamp : '') .
@@ -1096,7 +1119,7 @@ class web_optimizer {
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = $this->strip_querystring(preg_replace("/https?:\/\/(www\.)?" . preg_replace("?^www\.?", "", $_SERVER['HTTP_HOST']) . "/", "", $file));
+		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host . "@", "", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
 		} else {
@@ -1143,7 +1166,7 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
-					if (strpos($src, "://") && !preg_match('!//(www\.)?' . $_SERVER['HTTP_HOST'] . '/!', $src)) {
+					if (strpos($src, "://") && !preg_match('@://(www\.)?' . $this->host . '/@', $src)) {
 						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
@@ -1286,7 +1309,7 @@ class web_optimizer {
 				if (!$tag || $value['tag'] == $tag) {
 					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
-						if(!preg_match("!https?://(www\.)?". $_SERVER['HTTP_HOST'] . "!s", $value['file'])) {
+						if(!preg_match("!https?://(www\.)?". $this->host . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
 							if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
@@ -1298,7 +1321,7 @@ class web_optimizer {
 									$file = $this->get_remote_file($value['file'], $value['tag']);
 								}
 								if (!empty($file)) {
-									$value['file'] = $this->initial_files[$key]['file'] = str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript']['cachedir']) . "/" . $file;
+									$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . "/" . $file;
 								} else {
 									unset($this->initial_files[$key]);
 								}
@@ -1408,6 +1431,7 @@ class web_optimizer {
 			$this->gzip_header[$type] = '<?php
 			// Determine supported compression method
 			if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
+				$_SERVER["HTTP_ACCEPT_ENCODING"] = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
 				$gzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE["_wo_gzip"]);
 				$xgzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip");
 				$deflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
@@ -1578,10 +1602,12 @@ class web_optimizer {
 	function trimwhitespace_find ($block_begin, $block_end, $spot, &$subject, &$return) {
 		$len = strlen($block_end);
 		while ($posbegin = strpos($subject, $block_begin)) {
-			$chunk = substr($subject, $posbegin);
-			$posend = strpos($chunk, $block_end);
-			$return[] = substr($chunk, 0, $posend + $len);
-			$subject = substr($subject, 0, $posbegin) . $spot . substr($chunk, $posend + $len);
+			if (($posend = strpos($subject, $block_end)) !== false) {
+				$return[] = substr($subject, $posbegin, $posend - $posbegin + $len);
+				$subject = substr_replace($subject, $spot, $posbegin, $posend - $posbegin + $len);
+			} else {
+				break;
+			}
 		}
 	}
 
@@ -1592,8 +1618,8 @@ class web_optimizer {
 	function trimwhitespace_replace ($search_str, $replace, &$subject) {
 		$_len = strlen($search_str);
 		$_pos = 0;
-		for ($_i=0, $_count=count($replace); $_i<$_count; $_i++) {
-			if (($_pos=strpos($subject, $search_str, $_pos))!==false) {
+		for ($_i=0, $_count = count($replace); $_i<$_count; $_i++) {
+			if (($_pos = strpos($subject, $search_str, $_pos)) !== false) {
 				$subject = substr_replace($subject, $replace[$_i], $_pos, $_len);
 			} else {
 				break;
@@ -1622,7 +1648,7 @@ class web_optimizer {
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
-				$this->content = substr($this->content, 0, $pos) .
+				$this->content = substr_replace($this->content, 
 					'<' .
 						($inline ? 'span' : 'div') .
 					' id="' .
@@ -1633,8 +1659,7 @@ class web_optimizer {
 						($height ? ' style="height:' . $height . 'px"' : '') .
 					'"></' .
 						($inline ? 'span' : 'div') .
-					'>' .
-						substr($this->content, $pos + $len, strlen($this->content) - $len);
+					'>', $pos, $len);
 				$return .= '<div id="'.
 						$stuff .'_src_' . $key . 
 					'">' .
@@ -1759,7 +1784,13 @@ class web_optimizer {
 			}
 		}
 		if (!empty($before_body)) {
-			$this->content = str_replace('</body>', $before_body . '</body>' , $this->content);
+			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
+				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
+			 } elseif (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</BODY>'))) {
+				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
+			 } else {
+				$this->content = preg_replace('@</body>@i', $before_body . "$1" , $this->content);
+			 }
 		}
 	}
 
@@ -1782,8 +1813,9 @@ class web_optimizer {
 			$this->content = str_replace($source, $dest, $this->content);
 		}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-		if (strpos($dest, '<!--')) {
-			$dest = preg_replace("@<!--.*?-->@is", '', $dest);
+		while ($compos = strpos($dest, '<!--')) {
+			$end = strpos(substr($dest, $compos), '-->');
+			$dest = substr_replace($dest, '', $compos, $end + 3);
 		}
 		return $dest;
 	}
@@ -1827,10 +1859,10 @@ class web_optimizer {
 /* add Web Optimizer spot */
 			if (!empty($this->options['page']['spot'])) {
 				$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
-				if (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<title>'))) {
-					$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
-				} elseif (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<TITLE>'))) {
-					$this->content = substr($this->content, 0, $titlepos + 6) . $spot . substr($this->content, $titlepos + 6);
+				if (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<title'))) {
+					$this->content = substr_replace($this->content, $spot, $titlepos + 6, 0);
+				} elseif (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<TITLE'))) {
+					$this->content = substr_replace($this->content, $spot, $titlepos + 6, 0);
 				} else {
 					$this->content = preg_replace('!(<title)!is', "$1" . $spot, $this->content);
 				}
@@ -1850,11 +1882,12 @@ class web_optimizer {
 					$el = 'span';
 				}
 				$stamp = '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://www.web-optimizer.us/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>';
-				if ($bodypos = strpos($this->content, '</body>')) {
-					$this->content = substr($this->content, 0, $bodypos) . $stamp . substr($this->content, $bodypos);
+				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</body>'))) {
+					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
+				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {
+					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
 				} else {
-					$bodypos = strpos($this->content, '</BODY>');
-					$this->content = substr($this->content, 0, $bodypos) . $stamp . substr($this->content, $bodypos);
+					$this->content = preg_replace("@</body>@i", $stamp . "$1", $this->content);
 				}
 			}
 		}
@@ -1894,25 +1927,25 @@ class web_optimizer {
 	**/
 	function remove_conditional_comments ($source) {
 /* preliminary strpos saves about 50% of CPU */
-		if (strpos(' ' . $source, 'IE]>')) {
+		if (strpos($source, 'IE]>') !== false) {
 			$source = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 		}
 		for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
 			if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
 /* detect equality */
-				if (strpos(' ' . $source, 'IE ' . $version . ']>')) {
+				if (strpos($source, 'IE ' . $version . ']>') !== false) {
 					$source = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $source);
 				}
 /* detect lesser versions */
 				for ($i = $this->min_ie_version; $i < $version; $i++) {
-					if (strpos(' ' . $source, 'IE ' . $i . ']>')) {
+					if (strpos($source, 'IE ' . $i . ']>') !== false) {
 						$source = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 					}
 				}
 /* detect greater versions */
 				for ($i = $version; $i < $this->max_ie_version; $i++) {
-					if (strpos(' ' . $source, 'IE ' . $i . ']>')) {
+					if (strpos($source, 'IE ' . $i . ']>') !== false) {
 						$source = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 					}
 				}
@@ -1936,7 +1969,7 @@ class web_optimizer {
 			$endfile = $this->strip_querystring($endfile);
 		}
 /* Don't touch data URIs, or mhtml:, or external files */
-		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."!is", $file)) {
+		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $this->host ."!is", $file)) {
 			return false;
 		}
 		$absolute_path = $file;
@@ -1950,7 +1983,7 @@ class web_optimizer {
 			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($root, "", $this->view->unify_dir_separator($full_path_to_image . $file)));
 		}
 /* remove HTTP host from absolute URL */
-		return preg_replace("!https?://(www\.)?". preg_replace("!^www\.!", "", $_SERVER['HTTP_HOST']) ."/!i", "/", $absolute_path);
+		return preg_replace("!https?://(www\.)?". $this->host ."/!i", "/", $absolute_path);
 	}
 
 	/**
