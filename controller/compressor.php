@@ -378,7 +378,7 @@ class web_optimizer {
 				$script_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium) || !empty($this->options['quick_check']))) {
+		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium) || (!empty($this->options['quick_check']) && !empty($this->head_status_js)))) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
@@ -1918,6 +1918,12 @@ class web_optimizer {
 			preg_match_all("@(" . $javascript . (empty($javascript) ? '' : '|') . $css .")@is", $toparse, $matches, PREG_SET_ORDER);
 			foreach ($matches as $match) {
 				$this->head_status .= $match[0];
+			}
+/* check if ant JS file exist. CSS exist in every case, hopefully... */
+			if (!empty($this->options['page']['html_tidy'])) {
+				$this->head_status_js = (strpos($this->head_status, '<script') !== false) || (strpos($this->head_status, '<SCRIPT') !== false);
+			} else {
+				$this->head_status_js = preg_match("@<script@is", $this->head_status);
 			}
 			$this->head_status = crc32($this->head_status);
 		}
