@@ -382,6 +382,7 @@ class web_optimizer {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
+					'cachedir_relative' => $options['cachedir_relative'],
 					'installdir' => $options['installdir'],
 					'host' => $options['host'],
 					'tag' => 'script',
@@ -438,6 +439,7 @@ class web_optimizer {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
+					'cachedir_relative' => $options['cachedir_relative'],
 					'installdir' => $options['installdir'],
 					'host' => $options['host'],
 					'tag' => 'link',
@@ -1076,7 +1078,7 @@ class web_optimizer {
 	**/
 	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
 		return (empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
-			$options['cachedir_relative'] . '/' .
+			$options['cachedir_relative'] . 
 			$cache_file .
 			($add ?  '.' . $options['ext'] : '') .
 			($timestamp && $options['far_future_expires_rewrite'] ? '.wo' . $timestamp : '') .
