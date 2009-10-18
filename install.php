@@ -37,5 +37,9 @@ if (!empty($input['page'])) {
 $view = new compressor_view();
 
 /* Con. the admin controller */
-new admin(array('view' => $view, 'input' => $input, 'basepath' => $basepath));
+new admin(array(
+	'view' => $view,
+	'input' => $input,
+	'basepath' => $basepath)
+);
 ?>

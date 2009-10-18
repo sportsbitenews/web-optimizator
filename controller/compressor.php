@@ -597,7 +597,7 @@ class web_optimizer {
 		}
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
-				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=(\"[^\"]+\"|'[^']+'|\s*[\s]).*!is", "$1", $image[0]));
+				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 				if (empty($replaced[$old_src])) {
 /* are we operating with multiple hosts */
@@ -894,7 +894,7 @@ class web_optimizer {
 		}
 /* If the file didn't exist, get script array first */
 		if (!empty($this->options['quick_check'])) {
-			$this->get_script_array($options['tag']);
+			$this->get_script_array();
 		}
 /* If the file didn't exist, continue. Get files' content */
 		if (!empty($options['dont_check_file_mtime'])) {
@@ -1244,7 +1244,7 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<link[^>]+>|<style[^>]*>|<\/style>)@is", "", $match[0]),
 					);
-					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[0], $variants, PREG_SET_ORDER);
+					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))@i", $match[0], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach($variants as $variant_type) {
 							$variant_type[1] = strtolower($variant_type[1]);
@@ -1570,11 +1570,10 @@ class web_optimizer {
 				$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
 			}
 		}
-/* add multiple hosts */
+/* add multiple hosts or redirects for static images */
 		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires_rewrite'])) {
 			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
 		}
-/* add redirects for stati images */
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
 			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
