@@ -109,6 +109,16 @@
 ?>" size="40"<?php
 						echo in_array($option, array('html_timeout', 'dimensions_limited', 'timeout', 'flush_size', 'size', 'mhtml_size', 'cache_version')) ? ' class="t"' : '';
 ?>/><?php
+					} elseif (in_array($option, array('include_code'))) {
+						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
+?> <textarea name="user[<?php
+						echo $key;
+?>][<?php
+						echo $option;
+?>]" rows="3" cols="40"><?php
+						echo htmlspecialchars(str_replace("<br/>", "\n", $value));
+?></textarea><?php
+
 					} else {
 ?><a href="#<?php
 						echo $key;

@@ -39,6 +39,8 @@ $compress_options['external_scripts']['css'] = "1";
 $compress_options['external_scripts']['css_inline'] = "1";
 ## Ignore list, files separated by space
 $compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_gzip.php fckeditor.js";
+## Include CSS code to all generated files
+$compress_options['external_scripts']['include_code'] = "";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
 ## Quick checksum for head section

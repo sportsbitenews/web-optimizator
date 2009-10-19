@@ -216,6 +216,7 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
+				"include_code" => $this->options['external_scripts']['include_code'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
 			),
 			"page" => array(
@@ -483,6 +484,7 @@ class web_optimizer {
 					'external_scripts' => $options['external_scripts'],
 					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
+					'include_code' => $options['include_code'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime']
 				),
 				$this->content,
@@ -916,6 +918,9 @@ class web_optimizer {
 					$delimiter = $options['header'] == "javascript" ? ";\n" : "";
 					$contents .= $file_contents . $delimiter;
 				}
+			}
+			if ($options['tag'] === 'link' && !empty($options['include_code'])) {
+				$contents .= str_replace("<br/>", "", $options['include_code']);
 			}
 			if ($options['css_sprites'] || ($options['data_uris'] && empty($this->ua_mod)) || ($options['mhtml'] && !empty($this->ua_mod))) {
 				$options['css_sprites_partly'] = 0;

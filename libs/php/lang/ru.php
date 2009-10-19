@@ -145,6 +145,7 @@ define('_WEBO_external_scripts_head_end', 'Форсировать размеще
 define('_WEBO_external_scripts_css', 'Включить объединение внешних CSS-файлов');
 define('_WEBO_external_scripts_css_inline', 'Включить объединение CSS-кода');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файлы');
+define('_WEBO_external_scripts_include_code', 'Включить в файлы CSS-код');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
 define('_WEBO_minify_javascript_body', 'Объединить JavaScript-файлы внутри <code>&lt;body&gt;</code>');
 define('_WEBO_performance_mtime', 'Не проверять время изменения файлов');

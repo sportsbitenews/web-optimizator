@@ -145,6 +145,7 @@ define('_WEBO_external_scripts_head_end', 'Verschiebung aller vermischten Script
 define('_WEBO_external_scripts_css', 'Vermischung von externem Styles aktivieren');
 define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktivieren');
 define('_WEBO_external_scripts_ignore_list', 'Datei vom Vermischen ausschlie&szlig;en');
+define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
 define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');

@@ -149,6 +149,7 @@ define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scrip
 define('_WEBO_external_scripts_css', 'Activa fusionamiento de estilos (styles) externos e internos');
 define('_WEBO_external_scripts_css_inline', 'Activa fusionamiento de estilos internos');
 define('_WEBO_external_scripts_ignore_list', 'Excluye archivos de fusionamiento');
+define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
 define('_WEBO_performance_mtime', 'No revisa mtime de archivos (y contenido)');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');

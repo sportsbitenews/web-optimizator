@@ -145,6 +145,7 @@ define('_WEBO_external_scripts_head_end', 'Force moving all merged scripts to <c
 define('_WEBO_external_scripts_css', 'Enable external styles merging');
 define('_WEBO_external_scripts_css_inline', 'Enable inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude files from merging');
+define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
 define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
