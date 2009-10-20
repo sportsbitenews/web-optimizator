@@ -61,7 +61,7 @@
 ?><input name="user[website_root]" value="<?php
 	echo $website_root;
 ?>" title="<?php
-	echo _WEBO_SPLASH2_INSTALLDIR;
+	echo _WEBO_SPLASH2_WEBSITEROOT;
 ?>" size="40"/></label><label><?php
 	echo _WEBO_SPLASH2_DOCUMENTROOT;
 ?><input name="user[document_root]" value="<?php

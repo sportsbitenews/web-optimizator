@@ -261,16 +261,6 @@ class web_optimizer {
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
-/* Make sure cachedir does not have trailing slash */
-		foreach($this->options AS $key=>$option) {
-			if(!empty($option['cachedir'])) {
-				if(substr($option['cachedir'],-1,1) == "/") {
-					$cachedir = substr($option['cachedir'], 0, -1);
-					$option['cachedir'] = $cachedir;
-				}
-			}
-			$this->options[$key] = $option;
-		}
 	}
 
 	/**
@@ -525,9 +515,9 @@ class web_optimizer {
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . '/wo.cookie.php"></script>';
 			if ($options['html_tidy'] && strpos($this->content, "</body>")) {
-				$this->content = str_replace('</body>', $cookie . '</body>');
+				$this->content = str_replace('</body>', $cookie . '</body>', $this->content);
 			} elseif ($options['html_tidy'] && strpos($this->content, "</BODY>")) {
-				$this->content = str_replace('</BODY>', $cookie . '</BODY>');
+				$this->content = str_replace('</BODY>', $cookie . '</BODY>', $this->content);
 			} else {
 				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
 			}
@@ -542,7 +532,7 @@ class web_optimizer {
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
-			$file = $options['cachedir'] . '/' . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
+			$file = $options['cachedir'] . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -630,7 +620,7 @@ class web_optimizer {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 /* do not touch dynamic images -- how we can handle them? */
 						if (!empty($this->options['page']['far_future_expires']) && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
-							$new_src = $this->options['page']['cachedir_relative'] . '/wo.static.php?' . $src;
+							$new_src = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $src;
 							$content = str_replace($old_src, $new_src, $content);
 						}
 					}
@@ -775,7 +765,7 @@ class web_optimizer {
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
 					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
-						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. $cachedir .  '/yass.loader.js' . '"></script></body>', $source);
+						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. $cachedir .  'yass.loader.js' . '"></script></body>', $source);
 				}
 				break;
 /* add JavaScript calls before </body> */
@@ -843,7 +833,7 @@ class web_optimizer {
 			$cache_file = $this->head_status;
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
-		$physical_file = $options['cachedir'] . '/' . $cache_file . "." . $options['ext'];
+		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
 		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
 			if (is_file($physical_file)) {
@@ -1082,7 +1072,7 @@ class web_optimizer {
 	*
 	**/
 	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
-		return (empty($options['host']) ? '/' : ('http' . $this->https . '://' . $options['host'] . '/')) .
+		return (empty($options['host']) ? '' : ('http' . $this->https . '://' . $options['host'])) .
 			$options['cachedir_relative'] . 
 			$cache_file .
 			($add ?  '.' . $options['ext'] : '') .
@@ -1151,7 +1141,7 @@ class web_optimizer {
 				if (!strpos($dynamic_file, "://")) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
 				}
-				$file = $this->options['css']['cachedir'] . '/' . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
+				$file = $this->options['css']['cachedir'] . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
 			}
 			if (is_file($file)) {
 				$content = @file_get_contents($file);
@@ -1328,7 +1318,7 @@ class web_optimizer {
 									$file = $this->get_remote_file($value['file'], $value['tag']);
 								}
 								if (!empty($file)) {
-									$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . "/" . $file;
+									$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
 								} else {
 									unset($this->initial_files[$key]);
 								}
@@ -1348,7 +1338,7 @@ class web_optimizer {
 							if (!strpos($dynamic_file, "://")) {
 								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
 							}
-							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . '/' . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
+							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
 							if (is_file($static_file)) {
 								$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
 							} else {
@@ -1875,7 +1865,7 @@ class web_optimizer {
 			}
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
-				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . '/web.optimizer.stamp.png';
+				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . 'web.optimizer.stamp.png';
 				if ($this->ua_mod == '.ie5' || $this->ua_mod == '.ie6') {
 					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
 				} else {
