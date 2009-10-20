@@ -1206,7 +1206,7 @@ class web_optimizer {
 					$file = array(
 						'tag' => 'script',
 						'source' => $match[0],
-						'content' => preg_replace("@</script>@i", "", $match[0])
+						'content' => preg_replace("@(<script[^>]*>|</script>)@i", "", $match[0])
 					);
 					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
