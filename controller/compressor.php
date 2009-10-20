@@ -1657,7 +1657,7 @@ class web_optimizer {
 						$key .
 					'"' .
 						($height ? ' style="height:' . $height . 'px"' : '') .
-					'"></' .
+					'></' .
 						($inline ? 'span' : 'div') .
 					'>', $pos, $len);
 				$return .= '<div id="'.
