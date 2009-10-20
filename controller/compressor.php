@@ -1586,7 +1586,7 @@ class web_optimizer {
 		}
 /* replace ' />' with '/>' */
 		if (!empty($this->options['page']['minify'])) {
-			$source = str_replace(" />", ">", $source);
+			$source = str_replace(" />", "/>", $source);
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
