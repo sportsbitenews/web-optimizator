@@ -514,10 +514,10 @@ class web_optimizer {
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . '/wo.cookie.php"></script>';
-			if ($options['html_tidy'] && strpos($this->content, "</body>")) {
-				$this->content = str_replace('</body>', $cookie . '</body>', $this->content);
-			} elseif ($options['html_tidy'] && strpos($this->content, "</BODY>")) {
-				$this->content = str_replace('</BODY>', $cookie . '</BODY>', $this->content);
+			if ($options['html_tidy'] && ($bodypos = strpos($this->content, "</body>"))) {
+				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
+			} elseif ($options['html_tidy'] && ($bodypos = strpos($this->content, "</BODY>"))) {
+				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
 			} else {
 				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
 			}
@@ -1887,7 +1887,7 @@ class web_optimizer {
 				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {
 					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
 				} else {
-					$this->content = preg_replace("@</body>@i", $stamp . "$1", $this->content);
+					$this->content = preg_replace("@</body>@i", $stamp . "$0", $this->content);
 				}
 			}
 		}
