@@ -783,10 +783,10 @@ class web_optimizer {
 				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"://\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){_weboptimizer_load})}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $newfile, $headclose, 0);
+					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $newfile, $headclose, 0);
+					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
 				} else {
 					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $include, $source);
 				}
@@ -850,7 +850,9 @@ class web_optimizer {
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			if (empty($this->options['quick_check'])) {
+				$source = $this->_remove_scripts($external_array, $source);
+			}
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || is_file($physical_file . '.css'))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
@@ -980,7 +982,9 @@ class web_optimizer {
 					$contents = $minified_content;
 				}
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			if (empty($this->options['quick_check'])) {
+				$source = $this->_remove_scripts($external_array, $source);
+			}
 		}
 		if(!empty($contents)) {
 /* Allow for minification of javascript */
@@ -1909,9 +1913,11 @@ class web_optimizer {
 			if (!empty($this->options['javascript']['minify'])) {
 				$javascript = "<script[^>]*>.*?</script>";
 			}
-			preg_match_all("@(" . $javascript . (empty($javascript) ? '' : '|') . $css .")@is", $toparse, $matches, PREG_SET_ORDER);
+			$regexp = "(" . $javascript . (empty($javascript) ? '' : '|') . $css .")";
+			preg_match_all("@" . $regexp . "@is", $toparse, $matches, PREG_SET_ORDER);
 			foreach ($matches as $match) {
 				$this->head_status .= $match[0];
+				$this->content = str_replace($match[0], "", $this->content);
 			}
 /* check if ant JS file exist. CSS exist in every case, hopefully... */
 			if (!empty($this->options['page']['html_tidy'])) {
