@@ -153,7 +153,7 @@ class web_optimizer {
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
 		}
-		$this->premium = $this->view->validate_license($this->options['license']);
+		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir']);
 		$webo_cachedir = str_replace("//", "/", realpath(dirname(__FILE__) . '/../') . '/');
 /* Read in options */
 		$full_options = array(
@@ -224,6 +224,7 @@ class web_optimizer {
 				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['html_cachedir']),
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate']) || !$this->options['htaccess']['enabled']),
+				"gzip_noie" => $this->premium ? $this->options['gzip']['noie'] : 0,
 				"gzip_level" => round($this->options['gzip']['page_level']),
 				"gzip_cookie" => $this->options['gzip']['cookie'] && $this->premium,
 				"minify" => $this->options['minify']['page'],
@@ -513,7 +514,7 @@ class web_optimizer {
 		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . '/wo.cookie.php"></script>';
+			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
 			if ($options['html_tidy'] && ($bodypos = strpos($this->content, "</body>"))) {
 				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
 			} elseif ($options['html_tidy'] && ($bodypos = strpos($this->content, "</BODY>"))) {
@@ -661,14 +662,15 @@ class web_optimizer {
 	**/
 	function set_gzip_encoding () {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
+			$gzip_no_ie = !in_array($this->ua_mod, array('.ie6', '.ie7')) || empty($this->options['page']['gzip_noie']);
 			$ae = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
-			if (strpos($ae, "x-gzip") !== false) {
+			if (strpos($ae, "x-gzip") !== false && $gzip_no_ie) {
 				$this->encoding = "x-gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos($ae, "gzip") !== false || !empty($_COOKIE['_wo_gzip'])) {
+			} elseif ((strpos($ae, "gzip") !== false || !empty($_COOKIE['_wo_gzip'])) && $gzip_no_ie) {
 				$this->encoding = "gzip";
 				$this->encoding_ext = 'gz';
-			} elseif (strpos($ae, "deflate") !== false) {
+			} elseif (strpos($ae, "x-deflate") !== false) {
 				$this->encoding = "x-deflate";
 				$this->encoding_ext = 'df';
 			} elseif (strpos($ae, "deflate") !== false) {
@@ -957,6 +959,8 @@ class web_optimizer {
 							@fclose($fp);
 /* Set permissions, required by some hosts */
 							@chmod($physical_file . '.css', octdec("0644"));
+/* make timestamps equal */
+							@touch($physical_file . '.css', $timestamp);
 /* create static gzipped versions for static gzip in nginx, Apache */
 							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
@@ -1022,6 +1026,8 @@ class web_optimizer {
 					@fclose($fp);
 /* Set permissions, required by some hosts */
 					@chmod($physical_file, octdec("0644"));
+/* make timestamps equal */
+					@touch($physical_file, $timestamp);
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($physical_file . '.gz', 'wb');
@@ -1576,6 +1582,8 @@ class web_optimizer {
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
 			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+/* remove \r symbols */
+			$source = strtr($source, "\r", '');
 		}
 /* one-strig-HTML takes about 20-50ms */
 		if (!empty($this->options['page']['minify_aggressive'])) {

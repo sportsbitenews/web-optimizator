@@ -164,6 +164,7 @@ define('_WEBO_minify_html_one_string', 'HTML auf einen String verkleinern');
 define('_WEBO_gzip_javascript', 'Gzip JavaScript');
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_page', 'Gzip HTML');
+define('_WEBO_gzip_noie', 'Use <code>deflate</code> instead of <code>gzip</code> for IE6/7');
 define('_WEBO_gzip_cookie', 'M&ouml;glichkeit f&uuml;r Gzip via Cokkies pr&uuml;fen');
 define('_WEBO_gzip_fonts', 'Gzip Fonts');
 define('_WEBO_far_future_expires_javascript', 'JavaScript zwischenspeichern');

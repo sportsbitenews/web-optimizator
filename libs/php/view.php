@@ -21,8 +21,8 @@ class compressor_view {
 
 	/**
 	 * Sets the paths
-	 * 
-	 **/	
+	 *
+	 **/
 	function set_paths ($document_root = null) {
 		if (empty($document_root)) {
 /* Save doc root, fix for PHP as CGI */
@@ -165,22 +165,69 @@ class compressor_view {
 	* Validate license
 	* You can donate for Web Optimizer here: http://sprites.in/donate/
 	**/
-	function validate_license ($license) {
+	function validate_license ($license, $cachedir = false) {
 		if (strlen($license) == 29) {
 			$table = '123QWERTUIOP456ASDFGHJKLCVBNM7890ZXYqwertuiop456asdfghjklcvbnm7890zxy';
-			$license = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z'), array(), strtoupper($license));
-			$c1 = strpos($table, substr($license, 1, 1))*31 + strpos($table, substr($license, 0, 1));
-			$c2 = strpos($table, substr($license, 3, 1))*31 + strpos($table, substr($license, 2, 1));
+			$l = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z'), array(), strtoupper($license));
+			$c1 = strpos($table, substr($l, 1, 1))*31 + strpos($table, substr($l, 0, 1));
+			$c2 = strpos($table, substr($l, 3, 1))*31 + strpos($table, substr($l, 2, 1));
 			$i = -1;
 			$c3 = 0;
-			while (strlen($license)>4+(++$i)) {
-				$c3 += pow(31, $i) * strpos($table, substr($license, 4 + $i, 1));
+			while (strlen($l) > 4+(++$i)) {
+				$c3 += pow(31, $i) * strpos($table, substr($l, 4 + $i, 1));
 			}
 			if ((!(($c3*$c3)%941 - $c1) && !(($c1*$c1)%941 - $c2)) || (!(pow($c3, 3)%941 - $c1) && !(pow($c1, 3)%941 - $c2))) {
+				if ($cachedir) {
+					if (time() - @filemtime($cachedir . 'wo') > 86400) {
+						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 10);
+					}
+					if (($wo = @file_get_contents($cachedir . 'wo')) && $wo < 0) {
+						return false;
+					}
+				}
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	* Generic download function to get external files
+	*
+	**/
+	function download ($remote_file, $local_file, $timeout = 60) {
+		$gzip = false;
+		if (function_exists('curl_init')) {
+			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
+/* try to create local directory*/
+			if ($local_dir != $local_file && !is_dir($local_dir)) {
+				@mkdir($local_dir, octdec("0755"));
+			}
+/* parse headers for content-encoding */
+			$local_file_headers = $local_file . ".headers";
+/* start curl */
+			$ch = @curl_init($remote_file);
+			$fp = @fopen($local_file, "w");
+			$fph = @fopen($local_file_headers, "w");
+			if ($fp && $ch) {
+				@curl_setopt($ch, CURLOPT_FILE, $fp);
+				@curl_setopt($ch, CURLOPT_HEADER, 0);
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.5.2");
+				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
+				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+				@curl_exec($ch);
+				@curl_close($ch);
+				@fclose($fp);
+				@fclose($fph);
+			}
+			if (is_file($local_file_headers)) {
+				$gzip = preg_match('/content-encoding/i', @file_get_contents($local_file_headers));
+				@unlink($local_file_headers);
+			}
+		}
+		return $gzip;
 	}
 }
 ?>

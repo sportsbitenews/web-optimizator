@@ -77,6 +77,8 @@ $compress_options['gzip']['css'] = "1";
 $compress_options['gzip']['fonts'] = "1";
 ## Check for gzip possibility via cookie
 $compress_options['gzip']['cookie'] = "1";
+## Exclude IE6/7 from gzip logic
+$compress_options['gzip']['noie'] = "0";
 ## Compression level for JS/HTML/CSS files, works only in PHP
 $compress_options['gzip']['javascript_level'] = "7";
 $compress_options['gzip']['page_level'] = "7";

@@ -164,6 +164,7 @@ define('_WEBO_minify_html_one_string', 'Стиснути HTML до 1 рядка'
 define('_WEBO_gzip_javascript', 'Застосувати <code>gzip</code> для JavaScript');
 define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
 define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
+define('_WEBO_gzip_noie', 'Использовать для IE6/7 <code>deflate</code> вместо <code>gzip</code>');
 define('_WEBO_gzip_cookie', 'Перевіряти можливість <code>gzip</code> через cookie');
 define('_WEBO_gzip_fonts', 'Застосувати <code>gzip</code> для шрифтiв');
 define('_WEBO_far_future_expires_javascript', 'Кешувати JavaScript');

@@ -508,8 +508,12 @@ __________________
 				$this->sprite = 'webo.'. $this->timestamp .'.png';
 				$this->merge_sprites(4);
 /* delete temporary files */
-				@unlink('webor.'. $this->timestamp .'.png');
-				@unlink('webob.'. $this->timestamp .'.png');
+				if (is_file('webor.'. $this->timestamp .'.png')) {
+					@unlink('webor.'. $this->timestamp .'.png');
+				}
+				if (is_file('webob.'. $this->timestamp .'.png')) {
+					@unlink('webob.'. $this->timestamp .'.png');
+				}
 			}
 /* finally convert CSS images to data:URI and add mutiple hosts, or add static proxy */
 			if (!empty($this->data_uris) || !empty($this->multiple_hosts_count) || !empty($this->proxy) || !empty($this->proxy_rewrite)) {

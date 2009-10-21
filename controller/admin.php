@@ -34,14 +34,15 @@ class admin {
 		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
-		$this->download($this->svn . 'version', $version_new_file);
+		$this->view->download($this->svn . 'version', $version_new_file);
 		if (is_file($version_new_file)) {
 			$this->version_new = @file_get_contents($version_new_file);
 			@unlink($version_new_file);
 		} else {
 			$this->version_new = $this->version;
 		}
-		$this->premium = $this->view->validate_license(empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license']);
+		$this->compress_options['license'] = empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license'];
+		$this->premium = $this->view->validate_license($this->compress_options['license']);
 /* Make sure login valid */
 		$this->manage_password();
 		$this->password_not_required = array(
@@ -77,7 +78,7 @@ class admin {
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
 /* download counter */
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
-				$this->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
+				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
 			}
 		}
 /* show page */
@@ -239,9 +240,9 @@ class admin {
 		$no_initial_grade = !@filesize($index_before);
 /* try to get reliminary optimization grade for the website */
 		if ($no_initial_grade) {
-			$this->download($this->webo_grade, $index_before, 1);
+			$this->view->download($this->webo_grade, $index_before, 1);
 		}
-		$gzipped = $this->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
+		$gzipped = $this->view->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $index_check);
 		if (!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
 			if (@filesize($index_check)) {
@@ -260,10 +261,10 @@ class admin {
 				if ($installed && @filesize($index_before) && @filesize($index_after) < 200) {
 /* if we have just downloaded initial grade - try to renew it */
 					if ($no_initial_grade) {
-						$this->download($this->webo_grade. '&refresh=on', $index_after, 1);
+						$this->view->download($this->webo_grade. '&refresh=on', $index_after, 1);
 /* try to get final optimization grade for the website */
 					} else {
-						$this->download($this->webo_grade, $index_after, 1);
+						$this->view->download($this->webo_grade, $index_after, 1);
 					}
 				}
 				$before = @file_get_contents($index_before);
@@ -386,11 +387,11 @@ class admin {
 	**/	 
 	function install_upgrade() {
 		$file = 'files';
-		$this->download($this->svn . $file, $file);
+		$this->view->download($this->svn . $file, $file);
 		if (is_file($file)) {
 			$files = preg_split("/\r?\n/", @file_get_contents($file));
 			foreach ($files as $file) {
-				$this->download($this->svn . $file, $file);
+				$this->view->download($this->svn . $file, $file);
 				if ($file == 'config.webo.php') {
 /* save all options to the new file -- rewrite default ones  */
 					foreach($this->compress_options AS $key => $option) {
@@ -554,12 +555,12 @@ class admin {
 					$webo_image = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/a.png";
 					$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
-					$this->download($webo_image, $tmp_image);
+					$this->view->download($webo_image, $tmp_image);
 					if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
 						$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/c.png";
 						$tmp_image2 = "image.tmp2.png";
-						$this->download($webo_image2, $tmp_image2);
+						$this->view->download($webo_image2, $tmp_image2);
 						if (@filesize($tmp_image2) == $etalon2) {
 							$allowed_hosts .= $host . " ";
 						}
@@ -1245,7 +1246,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 /* copy stamp image to cache directory */
 			@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
 			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {
-				$this->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
+				$this->view->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
 			}
 			$this->write_progress($this->web_optimizer_stage = 4);
 /* Create the options file */
@@ -1543,12 +1544,12 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 			$index_after = 'index.after';
 /* try to get initial optimization grade for the website */
 			if (!@filesize($index_before )) {
-				$this->download($this->webo_grade, $index_before , 1);
+				$this->view->download($this->webo_grade, $index_before , 1);
 			}
 			$this->write_progress($this->web_optimizer_stage = 99);
 /* try to get final optimization grade for the website */
 			if ($auto_rewrite && @filesize($index_before ) && !@filesize($index_after)) {
-				$this->download($this->webo_grade . '&refresh=on', $index_after, 1);
+				$this->view->download($this->webo_grade . '&refresh=on', $index_after, 1);
 			}
 		}
 		$this->write_progress($this->web_optimizer_stage = 100);
@@ -1607,7 +1608,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
 		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
-		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
+		$this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
 		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($this->basepath . 'libs/php/css.sprites.php')) {
 			$this->apache_modules = array();
 		} elseif (!count($this->apache_modules) && function_exists('curl_init')) {
@@ -1637,7 +1638,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		$testfile = 'libs/css/a.png';
 		$return = false;
 		$this->write_file($this->basepath . 'libs/css/.htaccess', $rule);
-		$this->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
+		$this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
 /* it it's possible to get file => module works */
 		if (@filesize($javascript_cachedir . 'module.test') == @filesize($this->basepath . $testfile)) {
 			$return = true;
@@ -1645,44 +1646,6 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		@unlink($javascript_cachedir . 'module.test');
 		@unlink($this->basepath . 'libs/css/.htaccess');
 		return $return;
-	}
-
-	/**
-	* Generic download function to get external files
-	*
-	**/
-	function download ($remote_file, $local_file, $timeout = 60) {
-		$gzip = false;
-		if (function_exists('curl_init')) {
-			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
-/* try to create local directory*/
-			if ($local_dir != $local_file && !is_dir($local_dir)) {
-				@mkdir($local_dir, octdec("0755"));
-			}
-/* parse headers for content-encoding */
-			$local_file_headers = $local_file . ".headers";
-/* start curl */
-			$ch = @curl_init($remote_file);
-			$fp = @fopen($local_file, "w");
-			$fph = @fopen($local_file_headers, "w");
-			if ($fp && $ch) {
-				@curl_setopt($ch, CURLOPT_FILE, $fp);
-				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.0.11");
-				@curl_setopt($ch, CURLOPT_ENCODING, "");
-				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
-				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-				@curl_exec($ch);
-				@curl_close($ch);
-				@fclose($fp);
-				@fclose($fph);
-			}
-			if (is_file($local_file_headers)) {
-				$gzip = preg_match('/content-encoding/i', @file_get_contents($local_file_headers));
-				@unlink($local_file_headers);
-			}
-		}
-		return $gzip;
 	}
 
 	/**
@@ -1694,7 +1657,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		$test_file = $this->basepath . 'cache/optimizing.php';
 		$this->write_progress(12);
 /* try to download main file */
-		$this->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
+		$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 		$this->write_progress(13);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {

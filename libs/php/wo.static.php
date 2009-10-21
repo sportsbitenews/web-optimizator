@@ -124,7 +124,7 @@ if ($_SERVER['QUERY_STRING']{0} == '/') {
 	$filename = str_replace("\\", "/", realpath($website_root . '/' . $_SERVER['QUERY_STRING']));
 }
 /* check if we inside document root */
-if (strpos(" " . $filename, $document_root) && !empty($extension)) {
+if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* set correct content-encoding header */
 	header('Content-Type: ' . $extension);
 /* set correct Content-Disposition to correct end-filename */
@@ -139,10 +139,10 @@ if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 	if ($gzip) {
 		$gz = $xgzip = $deflate = $xdeflate = 0;
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"])) {
-			$gz = strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") || !empty($_COOKIE["_wo_gzip"]);
-			$xgzip = strpos(" "  . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip");
-			$deflate = strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
-			$xdeflate = strpos(" " . $_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate");
+			$gz = strpos($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") !== false || !empty($_COOKIE["_wo_gzip"]);
+			$xgzip = strpos($_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip") !== false;
+			$deflate = strpos($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate") !== false;
+			$xdeflate = strpos($_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate") !== false;
 		}
 /* Determine used compression method */
 		$encoding = $gz ? "gzip" : ($xgzip ? "x-gzip" : ($deflate ? "deflate" : ($xdeflate ? "x-deflate" : "")));
@@ -182,7 +182,7 @@ if (strpos(" " . $filename, $document_root) && !empty($extension)) {
 /* create gzipped file */
 		if ($gzip) {
 /* try to get gzipped content from file */
-			$extension = strpos(" " . $encoding, "gzip") ? 'gz' : 'df';
+			$extension = strpos($encoding, "gzip") !== false ? 'gz' : 'df';
 			$compressed = $filename . '.gz';
 /* check file's existence and its mtime */
 			if (is_file($compressed) && filemtime($compressed) == $mtime) {
