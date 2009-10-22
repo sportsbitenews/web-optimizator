@@ -27,7 +27,7 @@ class css_sprites {
 			$this->html_dir = $options['html_cache'];
 /* calculate relative path to cache directory if we require it */
 			if (!empty($this->html_dir)) {
-				$this->html_dir = str_replace($this->website_root, "/", $this->current_dir);
+				$this->html_dir = str_replace($this->website_root, "/", $this->html_dir);
 			}
 /* output True Color images in JPEG (or PNG24) */
 			$this->truecolor_in_jpeg = $options['truecolor_in_jpeg'];
