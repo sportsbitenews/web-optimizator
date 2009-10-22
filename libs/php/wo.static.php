@@ -134,7 +134,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 	header('Content-Disposition: inline;filename=' .
 			substr($filename, $slash + 1, strlen($filename) - $slash) .
 		';modification-date="' .
-			date("r", @filemtime($mtime)) .
+			date("r", $mtime) .
 		'";');
 	$contents = '';
 	if ($gzip) {

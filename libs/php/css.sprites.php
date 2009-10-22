@@ -556,7 +556,7 @@ __________________
 /* convert image to mhtml: */
 									$this->get_image(2, $location++);
 								}
-								if (substr($this->css_image, 0, 5) != 'data:' && substr($this->css_image, 0, 6) != 'mhtml:' && !$sprited) {
+								if (substr($this->css_image, 0, 5) !== 'data:' && substr($this->css_image, 0, 6) !== 'mhtml:') {
 /* skip images on different hosts */
 									$this->css_image = $this->distribute_image($this->css_image);
 								}
@@ -604,11 +604,11 @@ __________________
 		} elseif (!empty($this->proxy_rewrite)) {
 /* add absolute path for sprited images */
 			if (0 === strpos($image, 'webo')) {
-				$image = str_replace($this->website_root, "/", $this->current_dir) . '/' . $image;
+				$image = str_replace($this->website_root, "/", $this->current_dir) . $image;
 			}
-			if (!empty($this->proxy_rewrite) && !strpos($image, "://") && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
+			if (!strpos($image, "://") && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
 /* do not touch dynamic images -- how we can handle them? */
-				$image = $this->html_dir . '/wo.static.php?' . $image;
+				$image = $this->html_dir . 'wo.static.php?' . $image;
 			}
 			return $image;
 		} else {
