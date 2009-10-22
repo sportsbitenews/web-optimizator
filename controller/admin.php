@@ -327,7 +327,7 @@ class admin {
 	}
 
 	/**
-	* Clear cache
+	* Clean up cache
 	* 
 	**/	
 	function install_clean_cache($redirect = true) {
@@ -340,7 +340,7 @@ class admin {
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted)) {
+				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['css_cachedir'] . $file)) {
 						$deleted_css = false;
 					}
@@ -351,7 +351,7 @@ class admin {
 /* javascript cache */
 		if ($dir = @opendir($this->compress_options['javascript_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted)) {
+				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['javascript_cachedir'] . $file)) {
 						$deleted_js = false;
 					}
@@ -362,7 +362,7 @@ class admin {
 /* html cache */
 		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted)) {
+				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['html_cachedir'] . $file)) {
 						$deleted_html = false;
 					}
