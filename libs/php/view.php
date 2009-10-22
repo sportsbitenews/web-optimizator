@@ -62,34 +62,34 @@ class compressor_view {
 	}
 
 	/**
-	 * 
-	 * 
+	 * Adds trailing slash if required
+	 *
 	 **/	
-	 function ensure_trailing_slash($path) {
-	 	if (substr($path,-1,1) != "/") {
-			$path .= "/";
+	 function ensure_trailing_slash ($path) {
+	 	if (substr($path, -1, 1) !== DIRECTORY_SEPARATOR) {
+			$path .= DIRECTORY_SEPARATOR;
 		}
 	 	return $path; 
 	 }
 
 	/**
-	 * 
+	 * Removes trailing slash if required
 	 * 
 	 **/	
-	 function prevent_trailing_slash($path) {
-	 	if (substr($path,-1,1) == "/" || substr($path,-1,1) == "\\") {
+	 function prevent_trailing_slash ($path) {
+	 	if (substr($path, -1, 1) === DIRECTORY_SEPARATOR) {
 			$path = substr($path, 0, -1);
 		}
 	 	return $path;
 	 }
 	 
 	/**
-	 * 
+	 * Removes leading slash if required
 	 * 
 	 **/	
-	 function prevent_leading_slash($path) {
-	 	if(substr($path,0,1) == "/" || substr($path,0,1) == "\\") {
-			$path = substr($path,1); 
+	 function prevent_leading_slash ($path) {
+	 	if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
+			$path = substr($path, 1); 
 		}
 	 	return $path;
 	 }
@@ -113,40 +113,10 @@ class compressor_view {
 	}
 
 	/**
-	 * Version of realpath that will work on systems without realpath
-	 *
-	 * @param string $path The path to canonicalize
-	 * @return string Canonicalized path
-	 **/
-	function realpath ($path) {
-		$path = str_replace ('~', $_SERVER['DOCUMENT_ROOT'], $path);
-		if (function_exists ('realpath')) {
-			return realpath ($path);
-		} else if (DIRECTORY_SEPARATOR == '/') {
-/* canonicalize */
-			$path = explode (DIRECTORY_SEPARATOR, $path);
-			$newpath = array ();
-			for ($i = 0; $i < sizeof ($path); $i++) {
-				if ($path[$i] === '' || $path[$i] === '.') {
-					continue;
-				}
-				if ($path[$i] === '..') {
-					array_pop ($newpath);
-					continue;
-				}
-				array_push ($newpath, $path[$i]);
-			}
-			$finalpath = DIRECTORY_SEPARATOR.implode (DIRECTORY_SEPARATOR, $newpath);
-			return $finalpath;
-		}
-		return $path;
-	}	
-
-	/**
 	 * Version of basename works on nix and windows
 	 *
 	 **/	
-	function get_basename($filename) {
+	function get_basename ($filename) {
 		return preg_replace( '/^.*[\\\\\\/]/', '', $filename );
 	}
 
