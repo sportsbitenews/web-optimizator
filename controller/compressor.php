@@ -592,7 +592,7 @@ class web_optimizer {
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
-				if (empty($replaced[$old_src])) {
+				if (empty($replaced[$image[0]])) {
 /* are we operating with multiple hosts */
 					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
 /* skip images on different hosts */
@@ -606,26 +606,28 @@ class web_optimizer {
 								$this->host .
 								$absolute_src .
 								$old_src_param;
-							$content = str_replace($old_src, $new_src, $content);
 						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
 							$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
 /* check if we can distribute this image through satellites' hosts */
 							if (in_array($img_host, $satellites)) {
 								$new_src = preg_replace("@(https?://)(www\.)?([^/]+)/@", "$1" . $hosts[strlen($old_src)%$count] . ".$3/", $old_src);
-								$content = str_replace($old_src, $new_src, $content);
 							}
 						}
 /* or replacing images with rewrite to Expires setter? */
-					}
-					if (!empty($this->options['page']['far_future_expires_rewrite'])) {
+					} elseif (!empty($this->options['page']['far_future_expires_rewrite'])) {
 						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
 /* do not touch dynamic images -- how we can handle them? */
-						if (!empty($this->options['page']['far_future_expires']) && preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
+						if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
 							$new_src = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $src;
-							$content = str_replace($old_src, $new_src, $content);
 						}
 					}
-					$replaced[$old_src] = 1;
+					if (!empty($new_src)) {
+/* prevent replacing images from oher domains with the same file name */
+						$new_src_image = str_replace($old_src, $new_src, $image[0]);
+						$content = str_replace($image[0], $new_src_image, $content);
+						$new_src = '';
+					}
+					$replaced[$image[0]] = 1;
 				}
 			}
 		}
