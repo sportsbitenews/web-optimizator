@@ -154,7 +154,11 @@ class web_optimizer {
 			$_SERVER['REQUEST_URI'] = '/';
 		}
 		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir']);
-		$webo_cachedir = str_replace("//", "/", realpath(dirname(__FILE__) . '/../') . '/');
+		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . DIRECTORY_SEPARATOR);
+/* ensure trailing slashes */
+		$this->options['html_cachedir'] = $this->view->ensure_trailing_slash($this->options['html_cachedir']);
+		$this->options['css_cachedir'] = $this->view->ensure_trailing_slash($this->options['css_cachedir']);
+		$this->options['javascript_cachedir'] = $this->view->ensure_trailing_slash($this->options['javascript_cachedir']);
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
@@ -225,7 +229,7 @@ class web_optimizer {
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] && ((!$this->options['htaccess']['mod_gzip'] && !$this->options['htaccess']['mod_deflate']) || !$this->options['htaccess']['enabled']),
 				"gzip_noie" => $this->premium ? $this->options['gzip']['noie'] : 0,
-				"gzip_level" => round($this->options['gzip']['page_level']),
+				"gzip_level" => $this->premium ? round($this->options['gzip']['page_level']) : 1,
 				"gzip_cookie" => $this->options['gzip']['cookie'] && $this->premium,
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'] && $this->premium,
@@ -1381,7 +1385,7 @@ class web_optimizer {
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
-						if (($this->options['javascript']['external_scripts'] && $value['tag'] == 'script') || ($this->options['css']['external_scripts'] && $value['tag'] == 'link')) {
+						if (($this->options['javascript']['inline_scripts'] && $value['tag'] == 'script') || ($this->options['css']['inline_scripts'] && $value['tag'] == 'link')) {
 /* resolve @import from inline styles */
 							if ($value['tag'] == 'link') {
 								$value['content'] = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
@@ -1389,7 +1393,7 @@ class web_optimizer {
 									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
-						}
+							}
 							$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
 /* if we can't add to existing tag -- store for the future */
 							if (empty($last_key[$value['tag']])) {
@@ -1986,7 +1990,7 @@ class web_optimizer {
 	**/
 	function convert_path_to_absolute ($file, $path, $leave_querystring = false) {
 		$endfile = '';
-		$root = $this->view->unify_dir_separator($this->view->paths['full']['document_root']);
+		$root = $this->view->paths['full']['document_root'];
 		if (!empty($path['file'])) {
 			$endfile = $path['file'];
 		}
@@ -2000,13 +2004,13 @@ class web_optimizer {
 		}
 		$absolute_path = $file;
 /* Not absolute or external */
-		if (substr($file, 0, 1) != "/" && !preg_match("!^https?://!", $file)) {
+		if (substr($file, 0, 1) != '/' && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
 			if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
 				$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
 			}
-			$full_path_to_image = preg_replace("@[^/]+$@", "", $endfile);
-			$absolute_path = (preg_match("!https?://!i", $full_path_to_image) ? "" : "/") . $this->view->prevent_leading_slash(str_replace($root, "", $this->view->unify_dir_separator($full_path_to_image . $file)));
+			$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
+			$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
 		}
 /* remove HTTP host from absolute URL */
 		return preg_replace("!https?://(www\.)?". $this->host ."/!i", "/", $absolute_path);

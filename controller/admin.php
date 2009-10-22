@@ -1643,7 +1643,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		if (@filesize($javascript_cachedir . 'module.test') == @filesize($this->basepath . $testfile)) {
 			$return = true;
 		}
-/* check fo gzip / deflate support */
+/* check for gzip / deflate support */
 		if ((strpos($rule, 'DEFLATE') || strpos($rule, 'gzip')) && !$curl) {
 			$return = false;
 		}
