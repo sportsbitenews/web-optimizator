@@ -893,7 +893,7 @@ class web_optimizer {
 			$this->get_script_array();
 		}
 /* If the file didn't exist, continue. Get files' content */
-		if (!empty($options['dont_check_file_mtime'])) {
+		if (!empty($options['dont_check_file_mtime']) || !empty($this->options['quick_check'])) {
 			$this->get_script_content($options['tag']);
 /* replace existing array with the new content */
 			$external_array = array();

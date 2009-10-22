@@ -19,7 +19,7 @@ $compress_options['document_root'] = "";
 $compress_options['host'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
-## Add JS loader for all libraries right before </body>
+## Add all libraries right before </body>
 $compress_options['unobtrusive']['body'] = "0";
 ## Put all known JS informers right before </body>
 $compress_options['unobtrusive']['informers'] = "0";
@@ -47,7 +47,7 @@ $compress_options['performance']['mtime'] = "1";
 $compress_options['performance']['quick_check'] = "0";
 ## Don't use RegExp everywhere where it's possible
 $compress_options['performance']['plain_string'] = "1";
-## Cache version, ignore cache integrity
+## Cache version, ignore cache integrity, no I/O overhead
 $compress_options['performance']['cache_version'] = "0";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "1";

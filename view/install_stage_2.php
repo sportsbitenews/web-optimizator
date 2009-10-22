@@ -95,7 +95,7 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'cache_version')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string', 'cache_version')) && $premium)) {
+				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie')) && $premium)) {
 ?><label><?php
 					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
