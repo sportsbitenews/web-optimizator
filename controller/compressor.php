@@ -848,6 +848,10 @@ class web_optimizer {
 		} else {
 			$timestamp = $this->options['cache_version'];
 		}
+/* add BackgroundImageCache for IE6 to prevent CSS Sprites blinking */
+		if ($this->ua_mod === '.ie6'&& !empty($options['css_sprites'])) {
+			$source = $this->include_bundle($source, '<script type="text/javascript">try{document.execCommand("BackgroundImageCache",false,true)}catch(e){}</script>', $handlers, $cachedir, 1);
+		}
 /* Check if the cache file exists */
 		if ($timestamp) {
 /* Put in locations and remove certain scripts */
