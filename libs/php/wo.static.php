@@ -61,6 +61,7 @@ switch ($extension) {
 	case 'ico':
 		$extension = 'image/x-icon';
 		$gzip = 1;
+		$gzip_level = $gzip_level_css;
 		break;
 	case 'flv':
 		$extension = 'video/x-flv';
