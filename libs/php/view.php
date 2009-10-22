@@ -179,7 +179,7 @@ class compressor_view {
 			if ((!(($c3*$c3)%941 - $c1) && !(($c1*$c1)%941 - $c2)) || (!(pow($c3, 3)%941 - $c1) && !(pow($c1, 3)%941 - $c2))) {
 				if ($cachedir) {
 					if (time() - @filemtime($cachedir . 'wo') > 86400) {
-						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 10);
+						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 5);
 					}
 					if (($wo = @file_get_contents($cachedir . 'wo')) && $wo < 0) {
 						return false;

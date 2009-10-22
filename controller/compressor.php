@@ -1884,7 +1884,7 @@ class web_optimizer {
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . 'web.optimizer.stamp.png';
-				if ($this->ua_mod == '.ie5' || $this->ua_mod == '.ie6') {
+				if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
 					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
 				} else {
 					$background_style = 'background:url(' . $background_image . ')';
@@ -1972,6 +1972,10 @@ class web_optimizer {
 					}
 				}
 			}
+		}
+/* fix for IE7@Vista: skip both data:URI and mhtml approaches */
+		if ($this->ua_mod === '.ie7' && strpos($this->ua, 'NT 6.0')) {
+			$this->ua_mod === '.ie4';
 		}
 		return $source;
 	}
