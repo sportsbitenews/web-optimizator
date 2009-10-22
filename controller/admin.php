@@ -1613,7 +1613,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 			$this->apache_modules = array();
 		} elseif (!count($this->apache_modules) && function_exists('curl_init')) {
 			$modules = array(
-				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/html',
+				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
 				'mod_gzip' => 'mod_gzip_on Yes',
 				'mod_headers' => 'Header append Cache-Control public',
 				'mod_expires' => 'ExpiresActive On',
@@ -1635,16 +1635,20 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 	*
 	**/
 	function check_apache_module ($rule, $document_root, $javascript_cachedir) {
-		$testfile = 'libs/css/a.png';
+		$testfile = 'libs/js/yass.loader.js';
 		$return = false;
-		$this->write_file($this->basepath . 'libs/css/.htaccess', $rule);
-		$this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
+		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
+		$curl = $this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
 /* it it's possible to get file => module works */
 		if (@filesize($javascript_cachedir . 'module.test') == @filesize($this->basepath . $testfile)) {
 			$return = true;
 		}
+/* check fo gzip / deflate support */
+		if ((strpos($rule, 'DEFLATE') || strpos($rule, 'gzip')) && !$curl) {
+			$return = false;
+		}
 		@unlink($javascript_cachedir . 'module.test');
-		@unlink($this->basepath . 'libs/css/.htaccess');
+		@unlink($this->basepath . 'libs/js/.htaccess');
 		return $return;
 	}
 
