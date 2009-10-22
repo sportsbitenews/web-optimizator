@@ -246,7 +246,7 @@ class admin {
 		if (!empty($this->compress_options['username']) && !empty($this->compress_options['password'])) {
 /* check for Web Optimizer existence on the website */
 			if (@filesize($index_check)) {
-					$installed = strpos(@file_get_contents($index_check), 'lang="wo"');
+				$installed = strpos(@file_get_contents($index_check), 'lang="wo"') || empty($this->compress_options['footer']['spot']);
 				@unlink($index_check);
 			} else {
 /* curl doesn't work -- can't check existence */
@@ -336,7 +336,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
