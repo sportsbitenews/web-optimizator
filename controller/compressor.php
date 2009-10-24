@@ -1890,7 +1890,8 @@ class web_optimizer {
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$style = empty($this->options['page']['footer_style']) ? '' : $this->options['page']['footer_style'];
-				$text = empty($this->options['page']['footer_text']) || !empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
+				$title = empty($this->options['page']['footer_text']) ? '' : ' title="' . $this->options['page']['footer_text'] . '"';
+				$text = empty($this->options['page']['footer_text']) || !empty($this->options['page']['footer_image']) ? '' : $alt;
 /* place or not image? */
 				if (empty($this->options['page']['footer_image'])) {
 					$background_image = $background_style = '';
@@ -1922,9 +1923,7 @@ class web_optimizer {
 						$style .
 					'"><' .
 						$el .
-					' title="' .
-						$text .
-					'"'.
+						$title .
 						$background_style .
 					'>'.
 						$text .
