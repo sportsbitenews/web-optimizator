@@ -1244,7 +1244,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				@copy($this->basepath . 'libs/php/wo.static.php', $this->input['user']['html_cachedir'] . 'wo.static.php');
 			}
 /* copy stamp image to cache directory */
-			@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->input['user']['css_cachedir'] . 'web.optimizer.stamp.png');
+			@copy($this->basepath . 'images/' . $this->input['user']['footer']['image'], $this->input['user']['css_cachedir'] . $this->input['user']['footer']['image']);
 			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {
 				$this->view->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
 			}

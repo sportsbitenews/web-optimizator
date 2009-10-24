@@ -133,7 +133,7 @@ define('_WEBO_SPLASH2_PARALLEL', 'Hosts m&uacute;ltiples');
 define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer puede tambi&eacute;n a&ntilde;adir m&uacute;ltiples hosts para servir archivos est&aacute;ticos (im&aacute;genes) y aumentar la velocidad de carga del website. Con varios hosts para browsers de recursos est&aacute;ticos puede abrir muchas conexiones al servidor singular.</p><p>Nota, para activar correctamente esta opci&oacute;n debe de a&ntilde;adir a la configuraci&oacute;n de su servidor algunos alias para el host principal, por ej.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Adem&aacute;s debe a&ntilde;adir informaci&oacute;n correspondiente al DNS (para apuntar al website principal). Web Optimizer revisa la disponibilidad de todos los hosts enlistados automaticamente.</p><p>Antes de desconectar el auto-check usted debe de asegurarse que el(los) host(s) existen, porque si no el HTTP GET ir&aacute; un error 404.</p><p><a href="http://www.ajaxperformance.com/2006/12/18/circumventing-browser-connection-limits-for-fun-and-profit/">Eludiendo los l&iacute;mites de conexi&oacute;n del browser por diversi&oacute;n y ganancia.</a></p>');
 define('_WEBO_SPLASH2_HTACCESS', 'Use .htaccess');
 define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>La mayor&iacute;a de opciones gzip y cache puede ser escrita para la configuraci&oacute;n de su website (y evitar trabajo adicional). Esto se puede efectuar v&iacute;a archivo <code>.htaccess</code> (y usted puede luego cortar opciones de ah&iacute; y mover a <code>httpd.cond</code> si es requerido).</p><p><a href="http://httpd.apache.org/docs/2.0/mod/mod_deflate.html">mod_deflate</a>, <a href="http://httpd.apache.org/docs/2.2/mod/mod_filter.html">mod_filter</a>, <a href="http://httpd.apache.org/docs/1.3/mod/mod_mime.html">mod_mime</a>, <a href="http://httpd.apache.org/docs/2.0/mod/mod_headers.html">mod_headers</a>, <a href="http://httpd.apache.org/docs/2.0/mod/mod_expires.html">mod_expires</a>, <a href="http://httpd.apache.org/docs/1.3/mod/mod_setenvif.html">mod_setenvif</a>.</p><p>Opciones disponibles: ');
-define('_WEBO_SPLASH2_FOOTER', 'Texto del footer');
+define('_WEBO_SPLASH2_FOOTER', 'Backlink and spot');
 define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Web Optimizer puede a&ntilde;adir un enlace en el footer de su blog enlazado de regreso al website de Web Optimizer. El enlace puede ser uno de texto, una peque&ntilde;a imagen o ambos.</p><p>Por favor ayude a impulsar el Web Optimizer activando estos.</p>');
 define('_WEBO_SPLASH2_AUTOCHANGE', 'Cambiando /index.php');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer puede a&ntilde;adir a tu website basado en ');
@@ -188,6 +188,8 @@ define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&nt
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a Web Optimizer');
 define('_WEBO_footer_image', 'A&ntilde;ade a Web Optimizer una imagen');
 define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
+define('_WEBO_footer_link', 'Text for backlink');
+define('_WEBO_footer_css_code', 'Styles for backlink placement');
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
 define('_WEBO_data_uris_mhtml', 'Ejecuta <code>mhtml</code>');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');

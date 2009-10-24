@@ -13,11 +13,11 @@ Speedy.
 Web Optimizer native plugin for Wordpress:
 http://wordpress.org/extend/plugins/web-optimizer/
 
-Web Optimizer native plugin for Joomla! 1.5:
-http://code.google.com/p/web-optimizator/downloads/detail?name=j15-web-optimizer.v0.6.0.zip
+Web Optimizer native plugin for Joomla! 1.5 and Joomla! 1.0:
+http://extensions.joomla.org/extensions/site-management/cache/10152
 
-Web Optimizer native plugin for Joomla! 1.0:
-http://code.google.com/p/web-optimizator/downloads/detail?name=j10-web-optimizer.v0.6.0.zip
+Web Optimizer native plugin for Drupal 6.x and Drupal 5.x:
+http://code.google.com/p/web-optimizator/downloads/
 
 Installation
 -----------------------
@@ -51,6 +51,8 @@ Purchase
 You can purchase full verion with dozens of acceleration settings or order
 product installation and tuning here:
 http://www.web-optimizer.us/
+Version Comparison is here:
+http://www.web-optimizer.us/web-optimizer/comparison.html
 
 Donate
 -----------------------
@@ -74,17 +76,18 @@ template is broken or you system shows white screen -- please try to disable
 CSS Sprites in configuration. This will solve occured issue in 99% of cases.
 Also you can try to exclude some images from CSS Sprites generation.
 Please also visit TroubleeShooter page in Wiki:
-http://code.google.com/p/web-optimizator/wiki/Troubleshooter
+http://code.google.com/p/web-optimizator/wiki/TroubleshootingAndSupport
 
 Team
 -----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (ported core, htaccess, CSS Sprites, multiple hosts, unobtrusive
-   logic, promotion, investment raising, other stuff)
+ * sunnybear (ported core, unit tests, htaccess, CSS Sprites, multiple hosts,
+   unobtrusive logic, performance tuning, promotion, investment raising, other
+   stuff)
  * fade (design, general usability)
- * gkondratenko (documentation, integration, known issues gathering)
+ * gkondratenko (documentation, interfaces, integration, known issues gathering)
  * ShimON (Java branch, CSS Sprites unit-tests)
- * bazik (test cases for CSS Sprites, CSS rules, JS logic, etc)
+ * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
  * janvarev (files MTIME check)
  * crazyyy (UA localization)

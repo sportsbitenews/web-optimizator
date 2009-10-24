@@ -154,7 +154,7 @@ class web_optimizer {
 			$_SERVER['REQUEST_URI'] = '/';
 		}
 		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir']);
-		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . DIRECTORY_SEPARATOR);
+		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . '/');
 /* ensure trailing slashes */
 		$this->options['html_cachedir'] = $this->view->ensure_trailing_slash($this->options['html_cachedir']);
 		$this->options['css_cachedir'] = $this->view->ensure_trailing_slash($this->options['css_cachedir']);
@@ -220,7 +220,7 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"include_code" => $this->options['external_scripts']['include_code'],
+				"include_code" => $this->premium ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
 			),
 			"page" => array(
@@ -239,8 +239,8 @@ class web_optimizer {
 				"far_future_expires_video" => $this->options['far_future_expires']['video'],
 				"far_future_expires_static" => $this->options['far_future_expires']['static'],
 				"far_future_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
-				"clientside_cache" => $this->options['far_future_expires']['html'],
-				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
+				"clientside_cache" => $this->premium ? $this->options['far_future_expires']['html'] : 0,
+				"clientside_timeout" => $this->premium ? $this->options['far_future_expires']['html_timeout'] : 0,
 				"cache" => $this->options['html_cache']['enabled'] && $this->premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'],
@@ -254,8 +254,10 @@ class web_optimizer {
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] && $this->premium,
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] && $this->premium,
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] && $this->premium,
-				"footer" => $this->options['footer']['image'],
-				"footer_link" => $this->options['footer']['text'],
+				"footer" => $this->options['footer']['text'],
+				"footer_image" => $this->options['footer']['image'],
+				"footer_text" => $this->options['footer']['link'],
+				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
 				"htaccess_username" => $this->options['htaccess']['user'] && $this->premium,
 				"htaccess_password" => $this->options['htaccess']['pass'] && $this->premium,
@@ -1887,19 +1889,48 @@ class web_optimizer {
 			}
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
-				$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . 'web.optimizer.stamp.png';
-				if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
-					$background_style = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' . $background_image . ',sizingMethod=\'scale\')';
+				$style = empty($this->options['page']['footer_style']) ? '' : $this->options['page']['footer_style'];
+				$text = empty($this->options['page']['footer_text']) || !empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
+/* place or not image? */
+				if (empty($this->options['page']['footer_image'])) {
+					$background_image = $background_style = '';
 				} else {
-					$background_style = 'background:url(' . $background_image . ')';
+					$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . $this->options['page']['footer_image'];
+					$image_style = 'display:block;text-decoration:none;width:100px;height:100px;';
+					if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
+						$background_style = $image_style . 
+							'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
+								$background_image .
+							',sizingMethod=\'scale\')';
+					} else {
+						$background_style = $image_style . 
+							'background:url(' .
+								$background_image .
+							')';
+					}
+					$background_style = ' style="' . $background_style . '"';
 				}
 /* choose between link or span */
 				if (!empty($this->options['page']['footer_link'])) {
-					$el = 'a' ;
+					$el = 'a href="http://www.web-optimizer.us/" rel="nofollow"';
+					$el_close = 'a';
 				} else {
-					$el = 'span';
+					$el = $el_close = 'span';
 				}
-				$stamp = '<div style="float:right;margin:-104px 4px -100px"><' . $el . ' href="http://www.web-optimizer.us/" rel="nofollow" title="Web Optimizer: Faster than Lightning" style="display:block;text-decoration:none;width:100px;height:100px;'. $background_style .'"></' . $el . '></div>';
+/* finally from stamp */
+				$stamp = '<div style="' .
+						$style .
+					'"><' .
+						$el .
+					' title="' .
+						$text .
+					'"'.
+						$background_style .
+					'>'.
+						$text .
+					'</' .
+						$el_close .
+					'></div>';
 				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</body>'))) {
 					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
 				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {

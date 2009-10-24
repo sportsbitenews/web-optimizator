@@ -85,7 +85,7 @@
 ?>"/><input type="hidden" name="user[_password]" value="<?php
 	echo $compress_options['password'];
 ?>"/></fieldset><?php
-	foreach ($options AS $key => $type) {
+	foreach ($options as $key => $type) {
 		if (is_array($type['value']) && empty($type['is_premium'])) {
 ?><fieldset id="wo_<?php
 			echo $key;
@@ -95,9 +95,16 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if (!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie')) || (in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie')) && $premium)) {
+				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout')) ||
+						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout'))
+							&& $premium)) &&
+					($option != 'html' ||
+						$key != 'far_future_expires' ||
+						($option == 'html' &&
+							$key == 'far_future_expires' &&
+							$premium))) {
 ?><label><?php
-					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version'))) {
+					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version', 'css_code', 'link', 'image'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 						echo in_array($option, array('ignore_list', 'allowed_list', 'additional', 'additional_list')) ? '. ' . _WEBO_SPLASH2_SPACE : ':';
 ?> <input name="user[<?php
