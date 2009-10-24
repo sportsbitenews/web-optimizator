@@ -12,7 +12,7 @@
 +k) Saved traffic / visitors' seconds
 +l) Backup of changed files
 +m) Password change
- n) License checker
++n) License checker
 
 2. System check
 +a) .htaccess posibility
@@ -164,7 +164,9 @@
  +a) Wordpress 2.6+
  +b) Joomla! 1.5
  +c) Joomla! 1.0
-  d) Drupal 6.x
-  e) Drupal 5.x
+ +d) Drupal 6.x
+ +e) Drupal 5.x
   f) Drupal 7.x
   g) Bitrix
+  h) UMI.CMS
+  i) NetCat

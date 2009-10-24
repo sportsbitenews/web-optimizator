@@ -15,9 +15,32 @@ class web_optimizer {
 	function web_optimizer ($options = false) {
 /* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(@getenv('SCRIPT_NAME'), "ptimizing.php") ? 0 : $_GET['web_optimizer_stage']);
-		$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
-		$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
-		$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
+/* get chained optimization params */
+		if (!empty($this->web_optimizer_stage)) {
+			$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
+			$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
+			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
+			$this->cache_version = round(empty($_GET['cache_version']) ? '' : $_GET['cache_version']);
+/* get major stage number, all stages:
+ 0-10	- inilialization, stars in administrative interface
+ 10-13	- JS file generation, 1st major stage (common browsers)
+ 14-19	- CSS Sprites / data:URI generation, 1st major stage
+ 20-24	- CSS file generation + page parsing, 1st major stage
+ 25-28	- JS file generation, 2nd major stage (IE 6.0)
+ 29-34	- CSS Sprites / mhtml generation, 2nd major stage
+ 35-39	- CSS file generation + page parsing, 2nd major stage
+ 40-43	- JS file generation, 3rd major stage (IE 7.0)
+ 44-49	- CSS Sprites / mhtml generation, 2nd major stage
+ 50-54	- CSS file generation + page parsing, 2nd major stage
+ 55-58	- JS file generation, 4th major stage (IE 8.0)
+ 59-64	- CSS Sprites / data:URI generation, 4th major stage
+ 65-69	- CSS file generation + page parsing, 4th major stage
+ 70-73	- JS file generation, 5th major stage (IE 7.0 @ Vista)
+ 74-79	- CSS Sprites generation, 5th major stage
+ 80-84	- CSS file generation + page parsing, 5th major stage
+*/
+			$this->cache_stage = floor(($this->web_optimizer_stage - 10) / 15);
+		}
 /* allow merging of other classes with this one */
 		foreach ($options as $key => $value) {
 			$this->$key = $value;
@@ -152,6 +175,20 @@ class web_optimizer {
 			$this->view->paths['full']['current_directory'] = $this->view->paths['full']['document_root'];
 			$this->view->paths['relative']['current_directory'] = $this->view->paths['relative']['document_root'];
 			$_SERVER['REQUEST_URI'] = '/';
+/* force User Agent on chained optimization */
+			$mods = array(
+/* all common browsers except IE */
+				'',
+/* IE 6.0, when will it die? */
+				'.ie6',
+/* IE 7.0 */
+				'.ie7',
+/* IE 8.0 */
+				'.ie8',
+/* IE 7.0 @ Vista, buggy mhtml */
+				'.ie4',
+			);
+			$this->ua_mod = $mods[$this->cache_stage];
 		}
 		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir']);
 		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . '/');
@@ -313,9 +350,6 @@ class web_optimizer {
 		$spot = substr($this->content, 0, 20);
 /* skip RSS, SMF xml format */
 		if (empty($xml) && !strpos($spot, "<rss") && !strpos($spot, "<smf")) {
-			if (!empty($this->web_optimizer_stage)) {
-				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 16 ? 16 : $this->web_optimizer_stage);
-			}
 			if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
 				$this->get_script_array();
@@ -327,23 +361,40 @@ class web_optimizer {
 				foreach ($this->options as $func => $option) {
 					if (method_exists($this,$func)) {
 						if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
+							if (!empty($this->web_optimizer_stage)) {
+								$this->write_progress($this->web_optimizer_stage++);
+							}
 							$this->$func($option, $func);
 						}
 					}
 				}
 			}
-/* Delete old cache files */
-			if (!empty($this->compressed_files) && is_array($this->compressed_files)) {
-/* Make a string with the names of the compressed files */
-				$this->compressed_files_string = implode("", $this->compressed_files);
-			}
 			if (!empty($this->web_optimizer_stage)) {
-				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 90 ? 90 : $this->web_optimizer_stage);
-			}
-/* redirect to installation page if chained optimization */
-			if (!empty($this->web_optimizer_stage)) {
-				$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 95 ? 95 : $this->web_optimizer_stage);
-				header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage='. $this->web_optimizer_stage .'&user[_username]=' . $this->username . '&user[_password]=' . $this->password . "&user[auto_rewrite][enabled]=" . $this->auto_rewrite);
+				$this->write_progress($this->web_optimizer_stage);
+/* redirect to installation page if chained optimization if finished */
+				if ($this->web_optimizer_stage > 85) {
+					$this->write_progress(97);
+					header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&user[_username]=' .
+							$this->username .
+						'&user[_password]=' .
+							$this->password .
+						'&user[auto_rewrite][enabled]=' .
+							$this->auto_rewrite .
+						'&user[performance][cache_version]=' .
+							$this->cache_version);
+/* else redirect to the next stage */
+				} else {
+					header('Location: optimizing.php?web_optimizer_stage=' . 
+							$this->web_optimizer_stage .
+						'&username=' .
+							$this->username .
+						'&password=' .
+							$this->password .
+						'&auto_rewrite=' .
+							$this->auto_rewrite .
+						'&cache_version=' .
+							$this->cache_version);
+				}
 				die();
 			}
 		}
@@ -357,7 +408,7 @@ class web_optimizer {
 				header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
-/* It' obvius to send anything right after gzipped content */
+/* It's obvious to send anything right after gzipped content */
 			if (!empty($this->encoding)) {
 				die();
 			}
@@ -500,15 +551,14 @@ class web_optimizer {
 			@date_default_timezone_set(@date_default_timezone_get());
 			$ExpStr = gmdate("D, d M Y H:i:s",
 			$this->time + $this->options['page']['clientside_timeout']) . " GMT";
-			header("Cache-Control: private, max-age=" . $this->options['page']['clientside_timeout']);
+			header("Cache-Control: private, max-age=" .
+				$this->options['page']['clientside_timeout']);
 			header("Expires: " . $ExpStr);
 		}
-		if (!empty($this->web_optimizer_stage)) {
-			$this->write_progress($this->web_optimizer_stage = $this->web_optimizer_stage < 88 ? 88 : $this->web_optimizer_stage);
-		}
 /* Minify page itself or parse multiple hosts */
-		if(!empty($options['minify']) || (!empty($options['parallel']) && !empty($options['parallel_hosts']))) {
-			$this->content = $this->trimwhitespace($this->content);
+		if(!empty($options['minify']) || (!empty($options['parallel']) &&
+			!empty($options['parallel_hosts']))) {
+				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
 		$this->content = str_replace("﻿", "", $this->content);
@@ -536,6 +586,9 @@ class web_optimizer {
 				$this->set_gzip_header();
 				$this->content = $content;
 			}
+		}
+		if (!empty($this->web_optimizer_stage)) {
+			$this->write_progress($this->web_optimizer_stage++);
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
@@ -715,7 +768,7 @@ class web_optimizer {
 /* Set cachedir */
 		$cachedir = $options['cachedir'];
 		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage += 1);
+			$this->write_progress($this->web_optimizer_stage++);
 		}
 /* prepare JS w/o src for merging in unobtrusive way */
 		if ($options['unobtrusive'] && !empty($files) && is_array($files)) {
@@ -811,9 +864,6 @@ class web_optimizer {
 	**/
 	function do_include ($options, $source, $cachedir, $external_array, $handler_array = null) {
 		$cachedir_relative = $options['cachedir_relative'];
-		if ($this->web_optimizer_stage) {
-			$this->write_progress($this->web_optimizer_stage += 1);
-		}
 		$handlers = '';
 /* If only one script found */
 		if(!is_array($external_array)) {
@@ -880,9 +930,6 @@ class web_optimizer {
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
 			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
-			if ($this->web_optimizer_stage) {
-				$this->write_progress($this->web_optimizer_stage += 2);
-			}
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -934,20 +981,47 @@ class web_optimizer {
 				$remembered_mhtml = $options['mhtml'];
 				$options['data_uris'] = $options['mhtml'] = 0;
 /* start new PHP process to create CSS Sprites */
-				if (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 30) {
-					header('Location: optimizing.php?web_optimizer_stage=30&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+				if (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 13)%15) && $this->web_optimizer_stage < 85) {
+					header('Location: optimizing.php?web_optimizer_stage=' . 
+							$this->web_optimizer_stage .
+						'&username=' .
+							$this->username .
+						'&password=' .
+							$this->password .
+						'&auto_rewrite=' .
+							$this->auto_rewrite .
+						'&cache_version=' .
+							$this->cache_version);
 					die();
 /* prepare first 4 Sprites */
-				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 40) {
+				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 16)%15) && $this->web_optimizer_stage < 85) {
 					$options['css_sprites_partly'] = 1;
 					$this->convert_css_sprites($contents, $options, $external_file);
-					header('Location: optimizing.php?web_optimizer_stage=40&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					header('Location: optimizing.php?web_optimizer_stage=' . 
+							$this->web_optimizer_stage .
+						'&username=' .
+							$this->username .
+						'&password=' .
+							$this->password .
+						'&auto_rewrite=' .
+							$this->auto_rewrite .
+						'&cache_version=' .
+							$this->cache_version);
 					die();
-				} elseif (!empty($this->web_optimizer_stage) && $this->web_optimizer_stage < 60) {
+				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 19)%15) && $this->web_optimizer_stage < 85) {
 /* Create CSS Sprites in CSS dir */
 					$this->convert_css_sprites($contents, $options, $external_file);
 /* start new PHP process to create data:URI */
-					header('Location: optimizing.php?web_optimizer_stage=60&username=' . $this->username . '&password=' . $this->password . "&auto_rewrite=" . $this->auto_rewrite);
+					header('Location: optimizing.php?web_optimizer_stage=' . 
+							($this->web_optimizer_stage + 1) .
+						'&username=' .
+							$this->username .
+						'&password=' .
+							$this->password .
+						'&auto_rewrite=' .
+							$this->auto_rewrite .
+						'&cache_version=' .
+							$this->cache_version);
 					die();
 				} else {
 /* we created all Sprites -- ready for data:URI + mhtml */
@@ -972,7 +1046,7 @@ class web_optimizer {
 /* Set permissions, required by some hosts */
 							@chmod($physical_file . '.css', octdec("0644"));
 /* make timestamps equal */
-							@touch($physical_file . '.css', $timestamp);
+							@touch($physical_file . '.css', $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
 							if ($fpgz) {
@@ -1002,9 +1076,9 @@ class web_optimizer {
 				$source = $this->_remove_scripts($external_array, $source);
 			}
 		}
-		if(!empty($contents)) {
+		if (!empty($contents)) {
 /* Allow for minification of javascript */
-			if($options['header'] == "javascript" && $options['minify']) {
+			if ($options['header'] == "javascript" && $options['minify']) {
 				if ($options['minify_with'] == 'packer') {
 					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
 					$minified_content = $this->packer->pack();
@@ -1017,9 +1091,6 @@ class web_optimizer {
 				}
 				if (!empty($minified_content)) {
 					$contents = $minified_content;
-				}
-				if ($this->web_optimizer_stage) {
-					$this->write_progress($this->web_optimizer_stage += 3);
 				}
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
@@ -1039,7 +1110,7 @@ class web_optimizer {
 /* Set permissions, required by some hosts */
 					@chmod($physical_file, octdec("0644"));
 /* make timestamps equal */
-					@touch($physical_file, $timestamp);
+					@touch($physical_file, $this->time);
 /* create static gzipped versions for static gzip in nginx, Apache */
 					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 						$fpgz = @fopen($physical_file . '.gz', 'wb');
@@ -1053,9 +1124,6 @@ class web_optimizer {
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
 				}
-			}
-			if ($this->web_optimizer_stage) {
-				$this->write_progress($this->web_optimizer_stage += 2);
 			}
 		}
 		return $source;
@@ -1085,7 +1153,6 @@ class web_optimizer {
 			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) .'"' .
 			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
-		$this->compressed_files[] = $newfile;
 		return $newfile;
 	}
 

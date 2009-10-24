@@ -1192,7 +1192,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 	**/	
 	function install_stage_3() {
 /* if haven't completed chained optimization */
-		if ($this->web_optimizer_stage < 95) {
+		if ($this->web_optimizer_stage < 97) {
 			$content = "Test";
 			$test_dirs = array(
 				'javascript' => $this->view->ensure_trailing_slash($this->input['user']['javascript_cachedir']),
@@ -1271,6 +1271,9 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				$this->save_option("['plugins']", implode(" ", $plugins));
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
+/* remember cache_version */
+			$this->cache_version = empty($this->input['user']['performance']['cache_version']) ? 0 : $this->input['user']['performance']['cache_version'];
+			$this->save_option("['performance']['cache_version']", 0);
 /* activate Web Optimizer */
 			$this->save_option("['active']", 1);
 			$this->chained_load();
@@ -1279,6 +1282,8 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 		if(!empty($this->input['Submit'])) {
 /* delete test file from chained optimization */
 			@unlink($this->basepath . 'cache/optimizing.php');
+/* update cache_version option */
+			$this->save_option("['performance']['cache_version']", round($this->input['user']['performance']['cache_version']));
 /* define CMS */
 			if (empty($this->cms_version)) {
 				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
@@ -1537,7 +1542,7 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 					}
 				}
 			}
-			$this->write_progress($this->web_optimizer_stage = 98);
+			$this->write_progress(98);
 /* secure Web Optimizer folder with .htpasswd */
 			$this->protect_installation();
 			$index_before = 'index.before';
@@ -1546,13 +1551,13 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 			if (!@filesize($index_before )) {
 				$this->view->download($this->webo_grade, $index_before , 1);
 			}
-			$this->write_progress($this->web_optimizer_stage = 99);
+			$this->write_progress(99);
 /* try to get final optimization grade for the website */
 			if ($auto_rewrite && @filesize($index_before ) && !@filesize($index_after)) {
 				$this->view->download($this->webo_grade . '&refresh=on', $index_after, 1);
 			}
 		}
-		$this->write_progress($this->web_optimizer_stage = 100);
+		$this->write_progress(100);
 		$page_variables = array("title" => _WEBO_SPLASH3_TITLE,
 								"paths" => $this->view->paths,
 								"page" => $this->input['page'],
@@ -1659,18 +1664,33 @@ RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 	**/
 	function chained_load () {
 		$test_file = $this->basepath . 'cache/optimizing.php';
-		$this->write_progress(12);
+		$this->write_progress(8);
 /* try to download main file */
 		$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
-		$this->write_progress(13);
+		$this->write_progress(9);
 		$contents = @file_get_contents($test_file);
 		if (!empty($contents)) {
-			$return = $this->write_file($test_file, "<?php require('" . $this->basepath . "web.optimizer.php'); ?>" . preg_replace("/<\?xml[^>]+\?>/", "", $contents) . '<?php $web_optimizer->finish(); ?>', 1);
+			$return = $this->write_file($test_file, "<?php require('" .
+					$this->basepath .
+				"web.optimizer.php'); ?>" .
+					preg_replace("/<\?xml[^>]+\?>/", "", $contents) .
+				'<?php $web_optimizer->finish(); ?>', 1);
 			if (!empty($return)) {
-				$this->write_progress(14);
-				$this->input['user']['auto_rewrite'] = empty($this->input['user']['auto_rewrite']) ? array() : $this->input['user']['auto_rewrite'];
-				$this->input['user']['auto_rewrite']['enabled'] = empty($this->input['user']['auto_rewrite']['enabled']) ? 0 : 1;
-				header('Location: cache/optimizing.php?web_optimizer_stage=15&password=' . $this->input['user']['password'] . '&username=' . $this->input['user']['username'] . "&auto_rewrite=" . $this->input['user']['auto_rewrite']['enabled'] );
+				$this->write_progress(10);
+				$this->input['user']['auto_rewrite'] =
+					empty($this->input['user']['auto_rewrite']) ? array() :
+						$this->input['user']['auto_rewrite'];
+				$this->input['user']['auto_rewrite']['enabled'] =
+					empty($this->input['user']['auto_rewrite']['enabled']) ? 0 :
+						1;
+				header('Location: cache/optimizing.php?web_optimizer_stage=10&password=' .
+						$this->input['user']['password'] .
+					'&username=' .
+						$this->input['user']['username'] .
+					'&auto_rewrite=' .
+						$this->input['user']['auto_rewrite']['enabled'] .
+					'&cache_version=' .
+						$this->cache_version);
 				exit();
 			}
 		}
