@@ -95,8 +95,8 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout')) ||
-						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout'))
+				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot')) ||
+						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot'))
 							&& $premium)) &&
 					($option != 'html' ||
 						$key != 'far_future_expires' ||

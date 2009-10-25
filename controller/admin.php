@@ -938,231 +938,253 @@ class admin {
 			$content = '# Web Optimizer options';
 			if (!empty($htaccess_options['mod_gzip'])) {
 				$content .= "
-mod_gzip_on Yes
-mod_gzip_can_negotiate Yes
-mod_gzip_static_suffix .gz
-AddEncoding gzip .gz
-AddEncoding deflate .df
-mod_gzip_update_static No
-mod_gzip_keep_workfiles No
-mod_gzip_minimum_file_size 500
-mod_gzip_maximum_file_size 5000000
-mod_gzip_maximum_inmem_size 60000
-mod_gzip_min_http 1000
-mod_gzip_handle_methods GET POST
-mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
-mod_gzip_dechunk No";
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_can_negotiate Yes
+	mod_gzip_static_suffix .gz
+	mod_gzip_update_static No
+	mod_gzip_keep_workfiles No
+	mod_gzip_minimum_file_size 500
+	mod_gzip_maximum_file_size 5000000
+	mod_gzip_maximum_inmem_size 60000
+	mod_gzip_min_http 1000
+	mod_gzip_handle_methods GET POST
+	mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
+	mod_gzip_dechunk No";
 				if (!empty($this->input['user']['gzip']['page'])) {
 					$content .= "
-mod_gzip_item_include mime ^text/plain$
-mod_gzip_item_include mime ^text/html$
-mod_gzip_item_include mime ^text/xml$
-mod_gzip_item_include mime ^application/xhtml+xml$
-mod_gzip_item_include mime ^image/x-icon$
-mod_gzip_item_include mime ^httpd/unix-directory$";
+	mod_gzip_item_include mime ^text/plain$
+	mod_gzip_item_include mime ^text/html$
+	mod_gzip_item_include mime ^text/xml$
+	mod_gzip_item_include mime ^application/xhtml+xml$
+	mod_gzip_item_include mime ^image/x-icon$
+	mod_gzip_item_include mime ^httpd/unix-directory$";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
-mod_gzip_item_include mime ^text/css$";
+	mod_gzip_item_include mime ^text/css$";
 				}
 				if (!empty($this->input['user']['gzip']['javascript'])) {
 					$content .= "
-mod_gzip_item_include mime ^text/javascript$
-mod_gzip_item_include mime ^application/javascript$
-mod_gzip_item_include mime ^application/x-javascript$
-mod_gzip_item_include mime ^text/x-js$
-mod_gzip_item_include mime ^text/ecmascript$
-mod_gzip_item_include mime ^application/ecmascript$
-mod_gzip_item_include mime ^text/vbscript$
-mod_gzip_item_include mime ^text/fluffscript$";
+	mod_gzip_item_include mime ^text/javascript$
+	mod_gzip_item_include mime ^application/javascript$
+	mod_gzip_item_include mime ^application/x-javascript$
+	mod_gzip_item_include mime ^text/x-js$
+	mod_gzip_item_include mime ^text/ecmascript$
+	mod_gzip_item_include mime ^application/ecmascript$
+	mod_gzip_item_include mime ^text/vbscript$
+	mod_gzip_item_include mime ^text/fluffscript$";
 				}
 				if (!empty($this->input['user']['gzip']['fonts'])) {
 					$content .= "
-mod_gzip_item_include mime ^image/svg+xml$
-mod_gzip_item_include mime ^application/x-font$
-mod_gzip_item_include mime ^application/x-font-ttf$
-mod_gzip_item_include mime ^font/opentype$
-mod_gzip_item_include mime ^font/otf$
-mod_gzip_item_include mime ^font/ttf$
-mod_gzip_item_include mime ^application/x-font-opentype$
-mod_gzip_item_include mime ^application/x-font-truetype$
-mod_gzip_item_include mime ^application/vnd.ms-fontobject
-mod_gzip_item_include mime ^application/vnd.oasis.opendocument.formula-template$";
+	mod_gzip_item_include mime ^image/svg+xml$
+	mod_gzip_item_include mime ^application/x-font$
+	mod_gzip_item_include mime ^application/x-font-ttf$
+	mod_gzip_item_include mime ^font/opentype$
+	mod_gzip_item_include mime ^font/otf$
+	mod_gzip_item_include mime ^font/ttf$
+	mod_gzip_item_include mime ^application/x-font-opentype$
+	mod_gzip_item_include mime ^application/x-font-truetype$
+	mod_gzip_item_include mime ^application/vnd.ms-fontobject
+	mod_gzip_item_include mime ^application/vnd.oasis.opendocument.formula-template$";
 				}
+				$content .= "
+</IfModule>";
 			}
 			if (!empty($htaccess_options['mod_setenvif'])) {
 				$content .= "
-BrowserMatch ^Mozilla/4 gzip-only-text/html
-BrowserMatch ^Mozilla/4\.0[678] no-gzip
-BrowserMatch SV1; !no_gzip
-BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+<IfModule mod_setenvif.c>
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
+	BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	BrowserMatch SV1; !no_gzip
+	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>";
 			}
 			if (!empty($htaccess_options['mod_deflate'])) {
+				$content .= "
+<IfModule mod_deflate.c>";
 				if (!empty($this->input['user']['gzip']['page'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
+	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/css";
+	AddOutputFilterByType DEFLATE text/css";
 				}
 				if (!empty($this->input['user']['gzip']['javascript'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
+	AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
 				}
 				if (!empty($this->input['user']['gzip']['fonts'])) {
 					$content .= "
-AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x-font font/opentype font/otf font/ttf application/x-font-truetype application/x-font-opentype application/vnd.ms-fontobject application/vnd.oasis.opendocument.formula-template";
+	AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x-font font/opentype font/otf font/ttf application/x-font-truetype application/x-font-opentype application/vnd.ms-fontobject application/vnd.oasis.opendocument.formula-template";
 				}
+				$content .= "
+</IfModule>";
 			}
 /* try to add static gzip */
 			if (!empty($htaccess_options['mod_mime'])) {
 				$content .= "
-AddEncoding gzip .gz
-AddEncoding deflate .df";
+<IfModule mod_mime.c>
+	AddEncoding gzip .gz
+	AddEncoding deflate .df
+</IfModule>";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
 				$content .= "
-RewriteEngine On
-RewriteBase $base
-";
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase $base";
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
-RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
+	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
 				}
 				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
-RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
+	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
 				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{HTTP_USER_AGENT} !Konqueror
-RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
-<FilesMatch \.css\.gz$>
-	ForceType text/css
-</FilesMatch>";
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
+	<FilesMatch \.css\.gz$>
+		ForceType text/css
+	</FilesMatch>";
 				}
 				if (!empty($this->input['user']['gzip']['javascript'])) {
 					$content .= "
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{HTTP_USER_AGENT} !Konqueror
-RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
-<FilesMatch \.js\.gz$>
-	ForceType application/x-javascript
-</FilesMatch>";
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
+	<FilesMatch \.js\.gz$>
+		ForceType application/x-javascript
+	</FilesMatch>";
 				}
 				if (!empty($this->input['user']['gzip']['fonts'])) {
 					$content .= "
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{HTTP_USER_AGENT} !Konqueror
-RewriteCond %{REQUEST_FILENAME}.gz -f
-RewriteRule ^(.*)\.(ttf|otf|eot|svg)$ $1.$2.gz [QSA,L]
-<FilesMatch \.ttf\.gz$>
-	ForceType application/x-font-truetype
-</FilesMatch>
-<FilesMatch \.otf\.gz$>
-	ForceType application/x-font-opentype
-</FilesMatch>
-<FilesMatch \.svg\.gz$>
-	ForceType image/svg+xml
-</FilesMatch>
-<FilesMatch \.eot\.gz$>
-	ForceType application/vnd.ms-fontobject
-</FilesMatch>";
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.(ttf|otf|eot|svg)$ $1.$2.gz [QSA,L]
+	<FilesMatch \.ttf\.gz$>
+		ForceType application/x-font-truetype
+	</FilesMatch>
+	<FilesMatch \.otf\.gz$>
+		ForceType application/x-font-opentype
+	</FilesMatch>
+	<FilesMatch \.svg\.gz$>
+		ForceType image/svg+xml
+	</FilesMatch>
+	<FilesMatch \.eot\.gz$>
+		ForceType application/vnd.ms-fontobject
+	</FilesMatch>";
 				}
+				$content .= "
+</IfModule>";
 			}
 			if (!empty($htaccess_options['mod_expires'])) {
 				$content .= "
-ExpiresActive On
-ExpiresDefault \"access plus 10 years\"
-<FilesMatch \.(php|phtml|shtml|html|xml)$>
-	ExpiresActive Off
-</FilesMatch>";
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault \"access plus 10 years\"
+	<FilesMatch \.(php|phtml|shtml|html|xml)$>
+		ExpiresActive Off
+	</FilesMatch>";
 				if (empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
-<FilesMatch \.css$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.css$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
-<FilesMatch \.js$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.js$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['images'])) {
 					$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['fonts'])) {
 					$content .= "
-<FilesMatch \.(eot|ttf|otf|svg)$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.(eot|ttf|otf|svg)$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
 				if (empty($this->input['user']['far_future_expires']['static'])) {
 					$content .= "
-<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
-	ExpiresActive Off
-</FilesMatch>";
+	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
+		ExpiresActive Off
+	</FilesMatch>";
 				}
+				$content .= "
+</IfModule>";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($htaccess_options['mod_rewrite'])) {
 				$cachedir = str_replace($this->input['user']['document_root'], "/", $this->input['user']['html_cachedir']);
+				$content .= "
+<IfModule mod_rewrite.c>";
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
-RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css [L]";
+	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
-RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js [L]";
+	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['images'])) {
 					$content .= "
-RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+	RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
-RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['static'])) {
 					$content .= "
-RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['fonts'])) {
 					$content .= "
-RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
+				$content .= "
+</IfModule>";
 			}
 			if (!empty($htaccess_options['mod_headers'])) {
+				$content .= "
+<IfModule mod_headers.c>";
 				if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
 					$content .= "
-<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
-	Header append Vary User-Agent
-	Header append Cache-Control private
-</FilesMatch>";
+	<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
+		Header append Vary User-Agent
+		Header append Cache-Control private
+	</FilesMatch>";
 				}
 				if (!empty($htaccess_options['mod_expires'])) {
 					$content .= "
-<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
-	Header append Cache-Control public
-</FilesMatch>
-<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
-	Header unset Last-Modified
-	FileETag MTime
-</FilesMatch>";
+	<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
+		Header append Cache-Control public
+	</FilesMatch>
+	<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
+		Header unset Last-Modified
+		FileETag MTime
+	</FilesMatch>";
 				}
+				$content .= "
+</IfModule>";
 			}
 			$content .= "\n# Web Optimizer end";
 /* define CMS */
