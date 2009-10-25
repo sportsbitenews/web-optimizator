@@ -1641,17 +1641,18 @@ class web_optimizer {
 	function trimwhitespace ($source) {
 		if (!empty($this->options['page']['minify'])) {
 			if (!empty($this->options['page']['html_tidy'])) {
+				$_script_blocks = array(array(), array(), array(), array(), array(), array());
 /* Pull out the script, textarea and pre blocks */
-				$this->trimwhitespace_find('<script', '</script>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
-				$this->trimwhitespace_find('<SCRIPT', '</SCRIPT>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
-				$this->trimwhitespace_find('<textarea', '</textarea>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
-				$this->trimwhitespace_find('<TEXTAREA', '</TEXTAREA>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
-				$this->trimwhitespace_find('<pre', '</pre>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
-				$this->trimwhitespace_find('<PRE', '</PRE>', '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source, $_script_blocks);
+				$this->trimwhitespace_find('<script', '</script>', '@@@WBO:TRIM:SCRIPT0@@@', $source, $_script_blocks[0]);
+				$this->trimwhitespace_find('<SCRIPT', '</SCRIPT>', '@@@WBO:TRIM:SCRIPT1@@@', $source, $_script_blocks[1]);
+				$this->trimwhitespace_find('<textarea', '</textarea>', '@@@WBO:TRIM:SCRIPT2@@@', $source, $_script_blocks[2]);
+				$this->trimwhitespace_find('<TEXTAREA', '</TEXTAREA>', '@@@WBO:TRIM:SCRIPT3@@@', $source, $_script_blocks[3]);
+				$this->trimwhitespace_find('<pre', '</pre>', '@@@WBO:TRIM:SCRIPT4@@@', $source, $_script_blocks[4]);
+				$this->trimwhitespace_find('<PRE', '</PRE>', '@@@WBO:TRIM:SCRIPT5@@@', $source, $_script_blocks[5]);
 			} else {
 				preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
 				$_script_blocks = $match[0];
-				$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@COMPRESSOR:TRIM:SCRIPT@@@', $source);
+				$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@WBO:TRIM:SCRIPT@@@', $source);
 			}
 		}
 /* add multiple hosts or redirects for static images */
@@ -1677,7 +1678,17 @@ class web_optimizer {
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
-			$this->trimwhitespace_replace("@@@COMPRESSOR:TRIM:SCRIPT@@@", $_script_blocks, $source);
+			if (!empty($this->options['page']['html_tidy'])) {
+				for ($i = 0; $i < 6; $i++) {
+					$_block = $_script_blocks[$i];
+					if (count($_block)) {
+						$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" . $i . "@@@",
+							$_block, $source);
+					}
+				}
+			} else {
+				$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT@@@", $_script_blocks, $source);
+			}
 			return $source;
 		}
 	}
