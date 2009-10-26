@@ -1031,7 +1031,10 @@ class admin {
 </IfModule>";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
+/* preventing 403 error
+http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/ */
 				$content .= "
+Options +FollowSymLinks +SymLinksIfOwnerMatch
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
