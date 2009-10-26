@@ -216,6 +216,10 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* finally output content */
 		echo $contents;
 	}
+/* else just redirect to resource */
+} else {
+	header("Location: " . $_SERVER['QUERY_STRING']);
+	die();
 }
 
 ?>
