@@ -14,13 +14,20 @@ class web_optimizer {
 	**/
 	function web_optimizer ($options = false) {
 /* initialize chained optimization */
-		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) || !strpos(@getenv('SCRIPT_NAME'), "ptimizing.php") ? 0 : $_GET['web_optimizer_stage']);
+		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
 /* get chained optimization params */
 		if (!empty($this->web_optimizer_stage)) {
-			$this->username = htmlspecialchars(empty($_GET['username']) ? '' : $_GET['username']);
-			$this->password = htmlspecialchars(empty($_GET['password']) ? '' : $_GET['password']);
-			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' : $_GET['auto_rewrite']);
-			$this->cache_version = round(empty($_GET['cache_version']) ? '' : $_GET['cache_version']);
+			$this->username = htmlspecialchars(empty($_GET['username']) ? '' :
+				$_GET['username']);
+			$this->password = htmlspecialchars(empty($_GET['password']) ? '' :
+				$_GET['password']);
+			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' :
+				$_GET['auto_rewrite']);
+			$this->chained_redirect = 
+				$this->username && $this->password && $this->auto_rewrite ?
+					'optimizing.php' : 'index.php';
+			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
+				$_GET['cache_version']);
 /* get major stage number, all stages:
  0-10	- inilialization, stars in administrative interface
  10-13	- JS file generation, 1st major stage (common browsers)
@@ -373,18 +380,20 @@ class web_optimizer {
 				$this->write_progress($this->web_optimizer_stage);
 /* redirect to installation page if chained optimization if finished */
 				if ($this->web_optimizer_stage > 85) {
-					$this->write_progress(97);
-					header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&user[_username]=' .
-							$this->username .
-						'&user[_password]=' .
-							$this->password .
-						'&user[auto_rewrite][enabled]=' .
-							$this->auto_rewrite .
-						'&user[performance][cache_version]=' .
-							$this->cache_version);
+					if ($this->chained_redirect === 'optimizing.php') {
+						$this->write_progress(97);
+						header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&user[_username]=' .
+								$this->username .
+							'&user[_password]=' .
+								$this->password .
+							'&user[auto_rewrite][enabled]=' .
+								$this->auto_rewrite .
+							'&user[performance][cache_version]=' .
+								$this->cache_version);
+					}
 /* else redirect to the next stage */
 				} else {
-					header('Location: optimizing.php?web_optimizer_stage=' . 
+					header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
 							$this->web_optimizer_stage .
 						'&username=' .
 							$this->username .
@@ -393,7 +402,8 @@ class web_optimizer {
 						'&auto_rewrite=' .
 							$this->auto_rewrite .
 						'&cache_version=' .
-							$this->cache_version);
+							$this->cache_version .
+						'&web_optimizer_debug=1');
 				}
 				die();
 			}
@@ -982,7 +992,8 @@ class web_optimizer {
 				$options['data_uris'] = $options['mhtml'] = 0;
 /* start new PHP process to create CSS Sprites */
 				if (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 13)%15) && $this->web_optimizer_stage < 85) {
-					header('Location: optimizing.php?web_optimizer_stage=' . 
+					header('Location: ' . $this->chained_redirect .
+						'?web_optimizer_stage=' . 
 							$this->web_optimizer_stage .
 						'&username=' .
 							$this->username .
@@ -991,13 +1002,15 @@ class web_optimizer {
 						'&auto_rewrite=' .
 							$this->auto_rewrite .
 						'&cache_version=' .
-							$this->cache_version);
+							$this->cache_version .
+						'&web_optimizer_debug=1');
 					die();
 /* prepare first 4 Sprites */
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 16)%15) && $this->web_optimizer_stage < 85) {
 					$options['css_sprites_partly'] = 1;
 					$this->convert_css_sprites($contents, $options, $external_file);
-					header('Location: optimizing.php?web_optimizer_stage=' . 
+					header('Location: ' . $this->chained_redirect .
+						'?web_optimizer_stage=' . 
 							$this->web_optimizer_stage .
 						'&username=' .
 							$this->username .
@@ -1006,13 +1019,15 @@ class web_optimizer {
 						'&auto_rewrite=' .
 							$this->auto_rewrite .
 						'&cache_version=' .
-							$this->cache_version);
+							$this->cache_version .
+						'&web_optimizer_debug=1');
 					die();
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 19)%15) && $this->web_optimizer_stage < 85) {
 /* Create CSS Sprites in CSS dir */
 					$this->convert_css_sprites($contents, $options, $external_file);
 /* start new PHP process to create data:URI */
-					header('Location: optimizing.php?web_optimizer_stage=' . 
+					header('Location: ' . $this->chained_redirect .
+						'?web_optimizer_stage=' . 
 							($this->web_optimizer_stage + 1) .
 						'&username=' .
 							$this->username .
@@ -1021,7 +1036,8 @@ class web_optimizer {
 						'&auto_rewrite=' .
 							$this->auto_rewrite .
 						'&cache_version=' .
-							$this->cache_version);
+							$this->cache_version .
+						'&web_optimizer_debug=1');
 					die();
 				} else {
 /* we created all Sprites -- ready for data:URI + mhtml */

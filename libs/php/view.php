@@ -184,6 +184,7 @@ class compressor_view {
 				@curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);

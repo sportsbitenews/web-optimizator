@@ -372,6 +372,10 @@ class admin {
 		}
 		if ($success && $deleted_css && $deleted_js && $deleted_html) {
 			if ($redirect) {
+/* create all new cached files */
+				$this->chained_load(str_replace(
+					$this->compress_options['document_root'], "/" ,
+						$this->compress_options['website_root']) . 'index.php');
 /* redirect to the main page */
 				header("Location: index.php?cleared=1");
 				die();
@@ -898,7 +902,7 @@ class admin {
 		$htaccess = $this->detect_htaccess();
 /* remove rules from .htaccess */
 		if (is_file($htaccess)) {
-			$fp = @fopen($htaccess, 'r');		
+			$fp = @fopen($htaccess, 'r');
 			if (!$fp) {
 				if (!empty($debug)) {
 					$this->error("<p>" . _WEBO_SPLASH3_HTACCESS_CHMOD . "</p><p>" . _WEBO_SPLASH3_HTACCESS_CHMOD2 . "</p>");
@@ -1015,6 +1019,8 @@ class admin {
 					$content .= "
 	AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
 				}
+/* add gzip for fonts
+http://www.phpied.com/gzip-your-font-face-files/ */
 				if (!empty($this->input['user']['gzip']['fonts'])) {
 					$content .= "
 	AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x-font font/opentype font/otf font/ttf application/x-font-truetype application/x-font-opentype application/vnd.ms-fontobject application/vnd.oasis.opendocument.formula-template";
@@ -1031,8 +1037,9 @@ class admin {
 </IfModule>";
 			}
 			if (!empty($htaccess_options['mod_rewrite'])) {
-/* preventing 403 error
-http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/ */
+/* prevent 403 error due to no FollowSymLinks
+http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
+http://code.google.com/p/web-optimizator/issues/detail?id=156 */
 				$content .= "
 Options +FollowSymLinks +SymLinksIfOwnerMatch
 <IfModule mod_rewrite.c>
@@ -1278,7 +1285,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			$this->options_file = "config.webo.php";
 			if (!empty($this->input['Submit'])) {
 				$this->set_options();
-				$this->premium = $this->view->validate_license($this->input['user']['license']);
+				$this->premium =
+					$this->view->validate_license($this->input['user']['license']);
 				$this->write_progress($this->web_optimizer_stage = 5);
 /* delete temporary files before chained installation */
 				$this->install_clean_cache(0);
@@ -1288,8 +1296,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				$plugins = array();
 				if ($dp = @opendir($this->basepath . 'plugins')) {
 					while (($file = @readdir($dp)) !== false) {
-						if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) == preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
-							$plugins[] = preg_replace("!\.php$!i", "", $file);
+						if (preg_replace("!([a-zA-Z]+).*!", "$1", $file) ==
+							preg_replace("![^a-z]!", "", strtolower($this->cms_version))) {
+								$plugins[] = preg_replace("!\.php$!i", "", $file);
 						}
 					}
 				}
@@ -1297,43 +1306,55 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			}
 			$this->write_progress($this->web_optimizer_stage = 6);
 /* remember cache_version */
-			$this->cache_version = empty($this->input['user']['performance']['cache_version']) ? 0 : $this->input['user']['performance']['cache_version'];
+			$this->cache_version =
+				empty($this->input['user']['performance']['cache_version']) ?
+					0 : $this->input['user']['performance']['cache_version'];
 			$this->save_option("['performance']['cache_version']", 0);
-/* activate Web Optimizer */
-			$this->save_option("['active']", 1);
+/* de-activate Web Optimizer, we have web_optimizer_debug param on chained optimization */
+			$this->save_option("['active']", 0);
 			$this->chained_load();
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
 		if(!empty($this->input['Submit'])) {
 /* delete test file from chained optimization */
 			@unlink($this->basepath . 'cache/optimizing.php');
+/* activate Web Optimzier back after chained optimization */
+			$this->save_option("['active']", 1);
 /* update cache_version option */
-			$this->save_option("['performance']['cache_version']", round($this->input['user']['performance']['cache_version']));
+			$this->save_option("['performance']['cache_version']",
+				round($this->input['user']['performance']['cache_version']));
 /* define CMS */
 			if (empty($this->cms_version)) {
-				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
+				$this->cms_version =
+					$this->system_info($this->view->paths['absolute']['document_root']);
 			}
-/* try to auto-patch root /index.php */
+/* try to auto-patch root /index.php or some other related files */
 			$auto_rewrite = 0;
-			if (!empty($this->input['user']['auto_rewrite']) && !empty($this->input['user']['auto_rewrite']['enabled'])) {
+			if (!empty($this->input['user']['auto_rewrite']) &&
+				!empty($this->input['user']['auto_rewrite']['enabled'])) {
 /* check for web.optimizer.php existence */
-				$fp = fopen($this->basepath . 'web.optimizer.php', 'r');
-				if (!$fp) {
-					$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->basepath . ".</p>");
-				} else {
+					$fp = fopen($this->basepath . 'web.optimizer.php', 'r');
+					if (!$fp) {
+						$this->error("<p>". _WEBO_SPLASH3_HTACCESS_CHMOD5 ." " . $this->basepath . ".</p>");
+					} else {
 /* dirty hack for PHP-Nuke */
-					if ($this->cms_version == 'PHP-Nuke') {
-						$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
-						$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
-						$mainfile_content = @file_get_contents($mainfile);
-						$footer_content = @file_get_contents($footer);
-						if (!empty($mainfile_content) && !empty($footer_content)) {
+						if ($this->cms_version == 'PHP-Nuke') {
+							$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
+							$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+							$mainfile_content = @file_get_contents($mainfile);
+							$footer_content = @file_get_contents($footer);
+							if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
-							@copy($mainfile, $mainfile . '.backup');
+								@copy($mainfile, $mainfile . '.backup');
 /* update main PHP-Nuke file */
-							$return1 = $this->write_file($mainfile, preg_replace("/(if\s+\(!ini_get\('register_globals)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)), 1);
+								$return1 =
+									$this->write_file($mainfile,
+										preg_replace("/(if\s+\(!ini_get\('register_globals)/",
+											'require(\'' . $this->basepath .
+											'web.optimizer.php\');' . "\n$1",
+										preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content)), 1);
 /* create backup */
-							@copy($footer, $footer . '.backup');
+								@copy($footer, $footer . '.backup');
 /* update footer */
 							$return2 = $this->write_file($footer, preg_replace("/global /", 'global \$web_optimizer,', preg_replace("/(\s*ob_end_flush\(\);)/", '\$web_optimizer->finish();' . "\n$1", preg_replace("/(\\\$web_optimizer,|\\\$web_optimizer->finish\(\);\r?\n?)/", "", $footer_content))), 1);
 							if (!empty($return1) && !empty($return2)) {
@@ -1342,33 +1363,54 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 						}
 /* another dirty hack for phpBB */
 					} elseif ($this->cms_version == 'phpBB') {
-						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
+						$mainfile =
+							$this->view->paths['absolute']['document_root'] .
+								'includes/functions.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* remove any old strings regarding Web Optimizer */
-							$mainfile_content = preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "", preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "", $mainfile_content));
+							$mainfile_content =
+								preg_replace("/\\\$web_optimizer->finish\(\);\r?\n?/", "",
+									preg_replace("/require\('[^\']+\/web.optimizer.php'\);\r?\n?/", "",
+										$mainfile_content));
 /* add class declaration */
-							$mainfile_content = preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/", "$1\n" . 'require(\'' . $this->basepath . 'web.optimizer.php\');', $mainfile_content);
+							$mainfile_content =
+								preg_replace("/(function\s*page_footer\s*\([^\)]+\)[\r\n\s]*\{)/",
+									"$1\n" . 'require(\'' .
+									$this->basepath .
+									'web.optimizer.php\');',
+									$mainfile_content);
 /* add finish */
-							$mainfile_content = preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
-							$return = $this->write_file($mainfile, $mainfile_content, 1);
+							$mainfile_content =
+								preg_replace("/(\\\$template->display\(['\"]body['\"]\);\r?\n?)/",
+									"$1" . '\$web_optimizer->finish();' . "\n",
+									$mainfile_content);
+							$return =
+								$this->write_file($mainfile, $mainfile_content, 1);
 							if (!empty($return)) {
 								$auto_rewrite = 1;
 							}
 						}
 /* one more dirty hack for ipb */
 					} elseif ($this->cms_version == 'Invision Power Board') {
-						$mainfile = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
+						$mainfile =
+							$this->view->paths['absolute']['document_root'] .
+								'sources/classes/class_display.php';
 						$mainfile_content = @file_get_contents($mainfile);
 						if (!empty($mainfile_content)) {
 /* create backup */
 							@copy($mainfile, $mainfile . '.backup');
 /* add class declaration */
-							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $mainfile_content);
+							$mainfile_content =
+								preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/",
+									'require(\'' . $this->basepath .
+									'web.optimizer.php\');' . "\n$1",
+									$mainfile_content);
 /* add finish */
-							$mainfile_content = preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
+							$mainfile_content =
+								preg_replace("/(print \\\$this->ipsclass->skin\['_wrapper'\];\r?\n?)/", "$1" . '\$web_optimizer->finish();' . "\n", $mainfile_content);
 							$return = $this->write_file($mainfile, $mainfile_content, 1);
 							if (!empty($return)) {
 								$auto_rewrite = 1;
@@ -1687,36 +1729,52 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 	* To prevent initial delay for optimized website and PHP timeout
 	*
 	**/
-	function chained_load () {
-		$test_file = $this->basepath . 'cache/optimizing.php';
-		$this->write_progress(8);
+	function chained_load ($index = false) {
+/* force cache reload via index.php */
+		if ($index) {
+/* deactivate Web Optimizer */
+			$this->save_option("['active']", 0, 0);
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index .
+				'?web_optimizer_stage=10&cache_version=' .
+					$this->cache_version .
+				'&web_optimizer_debug=1',
+				$this->compress_options['html_cachedir'] . 'chained.load');
+			if (is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
+				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
+			}
+			$this->save_option("['active']", 1, 0);
+/* or via cached HTML */
+		} else {
+			$test_file = $this->basepath . 'cache/optimizing.php';
+			$this->write_progress(8);
 /* try to download main file */
-		$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
-		$this->write_progress(9);
-		$contents = @file_get_contents($test_file);
-		if (!empty($contents)) {
-			$return = $this->write_file($test_file, "<?php require('" .
-					$this->basepath .
-				"web.optimizer.php'); ?>" .
-					preg_replace("/<\?xml[^>]+\?>/", "", $contents) .
-				'<?php $web_optimizer->finish(); ?>', 1);
-			if (!empty($return)) {
-				$this->write_progress(10);
-				$this->input['user']['auto_rewrite'] =
-					empty($this->input['user']['auto_rewrite']) ? array() :
-						$this->input['user']['auto_rewrite'];
-				$this->input['user']['auto_rewrite']['enabled'] =
-					empty($this->input['user']['auto_rewrite']['enabled']) ? 0 :
-						1;
-				header('Location: cache/optimizing.php?web_optimizer_stage=10&password=' .
-						$this->input['user']['password'] .
-					'&username=' .
-						$this->input['user']['username'] .
-					'&auto_rewrite=' .
-						$this->input['user']['auto_rewrite']['enabled'] .
-					'&cache_version=' .
-						$this->cache_version);
-				exit();
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
+			$this->write_progress(9);
+			$contents = @file_get_contents($test_file);
+			if (!empty($contents)) {
+				$return = $this->write_file($test_file, "<?php require('" .
+						$this->basepath .
+					"web.optimizer.php'); ?>" .
+						preg_replace("/<\?xml[^>]+\?>/", "", $contents) .
+					'<?php $web_optimizer->finish(); ?>', 1);
+				if (!empty($return)) {
+					$this->write_progress(10);
+					$this->input['user']['auto_rewrite'] =
+						empty($this->input['user']['auto_rewrite']) ? array() :
+							$this->input['user']['auto_rewrite'];
+					$this->input['user']['auto_rewrite']['enabled'] =
+						empty($this->input['user']['auto_rewrite']['enabled']) ? 0 : 1;
+					header('Location: cache/optimizing.php?web_optimizer_stage=10&password=' .
+							$this->input['user']['password'] .
+						'&username=' .
+							$this->input['user']['username'] .
+						'&auto_rewrite=' .
+							$this->input['user']['auto_rewrite']['enabled'] .
+						'&cache_version=' .
+							$this->cache_version .
+						'&web_optimizer_debug=1');
+					die();
+				}
 			}
 		}
 	}
@@ -1809,7 +1867,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			"premium" => $this->premium
 		);
 /* Show the install page */
-		$this->view->render("admin_container",$page_variables);
+		$this->view->render("admin_container", $page_variables);
 		die();
 	}
 

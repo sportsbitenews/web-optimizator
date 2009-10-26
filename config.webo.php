@@ -79,11 +79,11 @@ $compress_options['gzip']['fonts'] = "1";
 $compress_options['gzip']['cookie'] = "1";
 ## Exclude IE6/7 from gzip logic
 $compress_options['gzip']['noie'] = "0";
-## Compression level for JS/HTML/CSS files, works only in PHP
-$compress_options['gzip']['javascript_level'] = "7";
-$compress_options['gzip']['page_level'] = "7";
-$compress_options['gzip']['css_level'] = "7";
-$compress_options['gzip']['fonts_level'] = "7";
+## Compression levels for JS/HTML/CSS files, work only in PHP
+$compress_options['gzip']['javascript_level'] = "9";
+$compress_options['gzip']['page_level'] = "9";
+$compress_options['gzip']['css_level'] = "9";
+$compress_options['gzip']['fonts_level'] = "9";
 ## Caching
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
@@ -126,7 +126,7 @@ $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer separate CSS for rules and images?
 $compress_options['data_uris']['separate'] = "1";
 ## Should Web Optimizer load resource CSS on DOMloaded event?
-$compress_options['data_uris']['domloaded'] = "0";
+$compress_options['data_uris']['domloaded'] = "1";
 ## Optimiza all CSS images via smush.it?
 $compress_options['data_uris']['smushit'] = "0";
 ## Maximum size of images to be converted, in bytes
