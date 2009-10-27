@@ -1738,7 +1738,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				'?web_optimizer_stage=10&cache_version=' .
 					$this->cache_version .
 				'&web_optimizer_debug=1',
-				$this->compress_options['html_cachedir'] . 'chained.load');
+				$this->compress_options['html_cachedir'] . 'chained.load', 29);
 			if (is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
 				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			}
