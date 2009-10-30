@@ -351,7 +351,7 @@ class admin {
 /* javascript cache */
 		if ($dir = @opendir($this->compress_options['javascript_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
+				if (!in_array($file, $restricted) && is_file($this->compress_options['javascript_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['javascript_cachedir'] . $file)) {
 						$deleted_js = false;
 					}
@@ -362,7 +362,7 @@ class admin {
 /* html cache */
 		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
+				if (!in_array($file, $restricted) && is_file($this->compress_options['html_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['html_cachedir'] . $file)) {
 						$deleted_html = false;
 					}
