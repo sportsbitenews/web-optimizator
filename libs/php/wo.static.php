@@ -113,6 +113,9 @@ switch ($extension) {
 		$gzip = 1;
 		$gzip_level = $gzip_level_fonts;
 		break;
+	case 'woff':
+		$extension = 'font/woff';
+		break;
 /* protect all other files from viewing */
 	default:
 		$extension = '';

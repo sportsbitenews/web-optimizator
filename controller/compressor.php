@@ -992,9 +992,11 @@ class web_optimizer {
 				$options['data_uris'] = $options['mhtml'] = 0;
 /* start new PHP process to create CSS Sprites */
 				if (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 13)%15) && $this->web_optimizer_stage < 85) {
+/* skip 2 minor stages if we not in the first major stage */
+					$delta = $this->web_optimizer_stage > 20 ? 6 : 0;
 					header('Location: ' . $this->chained_redirect .
 						'?web_optimizer_stage=' . 
-							$this->web_optimizer_stage .
+							($this->web_optimizer_stage + $delta) .
 						'&username=' .
 							$this->username .
 						'&password=' .
