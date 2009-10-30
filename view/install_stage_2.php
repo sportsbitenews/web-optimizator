@@ -104,7 +104,7 @@
 							$key == 'far_future_expires' &&
 							$premium))) {
 ?><label><?php
-					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version', 'css_code', 'link', 'image'))) {
+					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version', 'css_code', 'link', 'image', 'css_file', 'javascript_file'))) {
 						echo defined("_WEBO_" . $key . "_" . $option) ? constant("_WEBO_" . $key . "_" . $option) : ($key . " " . $option);
 						echo in_array($option, array('ignore_list', 'allowed_list', 'additional', 'additional_list')) ? '. ' . _WEBO_SPLASH2_SPACE : ':';
 ?> <input name="user[<?php

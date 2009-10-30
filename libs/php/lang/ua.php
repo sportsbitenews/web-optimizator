@@ -161,6 +161,8 @@ define('_WEBO_minify_css_body', 'Об\'єднати CSS-файли усеред�
 define('_WEBO_minify_page', 'Мінімізувати HTML');
 define('_WEBO_minify_html_comments', 'Видалити HTML-коментарі');
 define('_WEBO_minify_html_one_string', 'Стиснути HTML до 1 рядка');
+define('_WEBO_minify_css_file', 'Имя объединенного CSS-файла');
+define('_WEBO_minify_javascript_file', 'Имя объединенного JavaScript-файла');
 define('_WEBO_gzip_javascript', 'Застосувати <code>gzip</code> для JavaScript');
 define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
 define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');

@@ -807,7 +807,7 @@ class admin {
 			if (is_array($option)) {
 				foreach($option as $option_name => $option_value) {
 					if (!empty($option_value) && !in_array($option_name, array('javascript_level', 'css_level', 'page_level', 'fonts_level'))) {
-						$default_value = in_array($option_name, array('allowed_list', 'ignore_list', 'include_code', 'additional_list', 'link', 'css_code', 'image')) ? '' : 0;
+						$default_value = in_array($option_name, array('allowed_list', 'ignore_list', 'include_code', 'additional_list', 'link', 'css_code', 'image', 'css_file', 'javascript_file')) ? '' : 0;
 						$this->input['user'][$key][$option_name] = !isset($this->input['user'][$key][$option_name]) ? $default_value : $this->input['user'][$key][$option_name];
 						$this->input['user'][$key][$option_name] = (strcmp($this->input['user'][$key][$option_name], 'on') ? $this->input['user'][$key][$option_name] : 1);
 					}

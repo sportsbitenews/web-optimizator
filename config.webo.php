@@ -69,6 +69,10 @@ $compress_options['minify']['page'] = "1";
 $compress_options['minify']['html_comments'] = "0";
 ## Shrink HTML code to 1 string, CPU intensive
 $compress_options['minify']['html_one_string'] = "0";
+## CSS file name (only if 1 CSS set for website is used)
+$compress_options['minify']['css_file'] = "";
+## JS file name (only if 1 JS set for website is used)
+$compress_options['minify']['javascript_file'] = "";
 ## Gzip options
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";

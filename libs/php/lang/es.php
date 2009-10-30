@@ -165,6 +165,8 @@ define('_WEBO_minify_css_body', 'Combinar archivos CSS dentro de <code>&lt;body&
 define('_WEBO_minify_page', 'Minimizar HTML');
 define('_WEBO_minify_html_comments', 'Borrar comentarios HTML');
 define('_WEBO_minify_html_one_string', 'Comprimir HTML a la linea uno');
+define('_WEBO_minify_css_file', 'Combined CSS file name');
+define('_WEBO_minify_javascript_file', 'Combined JavaScript file name');
 define('_WEBO_gzip_javascript', 'Gzip JavaScript');
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_page', 'Gzip HTML');

@@ -224,7 +224,8 @@ class web_optimizer {
 				"inline_scripts" => $this->options['external_scripts']['inline'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium 
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium,
+				"file" => $this->options['minify']['javascript_file']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -265,7 +266,8 @@ class web_optimizer {
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"include_code" => $this->premium ? $this->options['external_scripts']['include_code'] : '',
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium
+				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium,
+				"file" => $this->options['minify']['css_file']
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -473,7 +475,8 @@ class web_optimizer {
 					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
-					'dont_check_file_mtime' => $options['dont_check_file_mtime']
+					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
+					'file' => $options['file']
 				),
 				$this->content,
 				$script_files
@@ -543,7 +546,8 @@ class web_optimizer {
 					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'include_code' => $options['include_code'],
-					'dont_check_file_mtime' => $options['dont_check_file_mtime']
+					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
+					'file' => $options['file']
 				),
 				$this->content,
 				$link_files
@@ -879,7 +883,7 @@ class web_optimizer {
 		if(!is_array($external_array)) {
 			$external_array = array($external_array);
 		}
-		if (empty($this->options['quick_check'])) {
+		if (empty($this->options['quick_check']) && empty($options['file'])) {
 /* glue scripts' content / filenames */
 			$scripts_string = '';
 			foreach ($external_array as $script) {
@@ -899,8 +903,11 @@ class web_optimizer {
 /* Get the cache hash, restrict by 10 symbols */
 			$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 /* just provide quick checksum of head / body status */
-		} else {
+		} elseif (empty($options['file'])) {
 			$cache_file = $this->head_status;
+/* use general file if it has been defined */
+		} else {
+			$cache_file = $options['file'];
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
