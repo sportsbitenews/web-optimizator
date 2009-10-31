@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Konfiguration');
 define('_WEBO_GENERAL_FOOTER', 'Schneller als ein Blitz!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/">Kaufen Vollversion</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Kaufen Vollversion</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Testversion');
 
@@ -59,7 +59,7 @@ define('_WEBO_CLEAR_SUCCESSFULL', 'Alle Dateien in Cache-Ordnern sind gel&ouml;s
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - Kennwort einrichten');
-define('_WEBO_NEW_PROTECT', '<p>Tragen Sie Benutzernamen und Kennwort ein, um diese Installation zu sch&uuml;tzen.</p><p>Kontrollieren Sie vor der Installation die Schreibrechte f&uuml;r die root <code>.htaccess</code> und f&uuml;r die Quelldateien Web-Systems (w&auml;hrend Installation wird Web Optimizer Backups Ihrer Dateien erstellen).</p><p>Web Optimizer kann alle Funktionen des Servers pr&uuml;fen und die Installation automatisch vollenden. Benutzen Sie daf&uuml;r die Option <strong>"Express-Installation"</strong>. Nach Fertigstellung k&ouml;nnen Sie beliebige Einstellungen &uuml;ber die administative Schnittstelle &auml;ndern</p>.<p>Wenn Sie die Benutzung von Web Optimizer selbst einstellen wollen, dann klicken Sie auf <strong>"Weiter"</strong>. Sie k&ouml;nnen alle Einstellungen vor der eigentlichen Installation von Web Optimizer auf Ihrer Website p&uuml;rfen und ver&auml;ndern.</p><p><a href="http://code.google.com/p/web-optimizator/wiki/StandaloneInstallation">Web Optimizer - Installation</a></p>');
+define('_WEBO_NEW_PROTECT', '<p>Tragen Sie Benutzernamen und Kennwort ein, um diese Installation zu sch&uuml;tzen.</p><p>Kontrollieren Sie vor der Installation die Schreibrechte f&uuml;r die root <code>.htaccess</code> und f&uuml;r die Quelldateien Web-Systems (w&auml;hrend Installation wird Web Optimizer Backups Ihrer Dateien erstellen).</p><p>Web Optimizer kann alle Funktionen des Servers pr&uuml;fen und die Installation automatisch vollenden. Benutzen Sie daf&uuml;r die Option <strong>"Express-Installation"</strong>. Nach Fertigstellung k&ouml;nnen Sie beliebige Einstellungen &uuml;ber die administative Schnittstelle &auml;ndern</p>.<p>Wenn Sie die Benutzung von Web Optimizer selbst einstellen wollen, dann klicken Sie auf <strong>"Weiter"</strong>. Sie k&ouml;nnen alle Einstellungen vor der eigentlichen Installation von Web Optimizer auf Ihrer Website p&uuml;rfen und ver&auml;ndern.</p><p><a href="http://code.google.com/p/web-optimizator/wiki/StandaloneInstallation?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer - Installation</a></p>');
 define('_WEBO_NEW_USERDATA', 'Benutzername und Kennwort');
 define('_WEBO_NEW_ENTER', 'Tragen Sie das Kennwort f&uuml;r die Installation ein');
 define('_WEBO_NEW_ORDERINSTALLATION', 'Auftrag Web Optimizer Installation und Konfiguration f&uuml;r Ihre Website');
@@ -68,9 +68,9 @@ define('_WEBO_NEW_NOSCRIPT', 'F&uuml;r die korrekte Arbeit muss JavaScript aktiv
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Deinstall');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Deinstallation');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Sie k&ouml;nnen das Tool erneut installieren nach einem Besuch der <a href =“ http: //');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer</a>. Sie k&ouml;nnen das Tool erneut installieren nach einem Besuch der <a href =“ http: //');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '"> Web Optimizer Seite</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Besuchen Sie die <a href="http://www.web-optimizer.us/">Web Optimizer Website</a> und <a href="http://code.google.com/p/web-optimizator/issues/list"> machen Sie Vorschl&auml;ge</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Besuchen Sie die <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer Website</a> und <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer"> machen Sie Vorschl&auml;ge</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Jetzt k&ouml;nnen Sie Zur&uuml;kkehrenzu <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">Ihrer Website</a>.');
 define('_WEBO_SPLASH1_NEXT', 'Weiter');
@@ -291,7 +291,7 @@ define('_WEBO_SPLASH3_CONFIGERROR', 'Kann Konfigurationsdatei nicht zum Schreibe
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Sie k&ouml;nnen das &uuml;blicherweise &uuml;ber Ihren FTP-Client erledigen. Navigieren Sie zu <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , klicken Sie mit der rechten Maustaste auf die Datei und &auml;ndern Sie die Eigenschaften oder die CHMOD-Option. Stellen Sie 775, 777 oder "write" ein.');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Wenn Sie das getan haben, aktualisieren Sie diese Seite.');
-define('_WEBO_SPLASH3_CONFIGERROR5', 'Konfigurationsdatei existiert nicht. Laden Sie das vollst&auml;ndige Script von <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
+define('_WEBO_SPLASH3_CONFIGERROR5', 'Konfigurationsdatei existiert nicht. Laden Sie das vollst&auml;ndige Script von <a href="http://code.google.com/p/web-optimizator/downloads/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 define('_WEBO_SPLASH3_ADDITIONAL', 'Einstellungen f&uuml;r optimale Performance');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Sie k&ouml;nnen erweiterte Einstellungen auf Ihre Website anwenden, damit Web Optimizer effizienter arbeitet. Pr&uuml;fen Sie Folgendes:');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Machen Sie Ihre Webseite Standard-Beschwerde (HTML, JavaScript und CSS).</strong> Non-Standard externen Dateien Eingliederung f&uuml;ren zu falschen Web Optimizer Verhalten und ihre disconfiguration.');

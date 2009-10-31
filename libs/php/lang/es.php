@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/">Comprar versi&oacute;n completa</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Comprar versi&oacute;n completa</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Versi&oacute;n Demo');
 
@@ -60,7 +60,7 @@ define('_WEBO_CLEAR_SUCCESSFULL', 'Todos los archivos del folder de la memoria C
 
 /* Login y Contrase&ntilde;a */
 define('_WEBO_NEW_TITLE', 'Instalaci&oacute;n &ndash; ingrese una contrase&ntilde;a');
-define('_WEBO_NEW_PROTECT', '<p>Por favor ingrese un Login y Contrase&ntilde;a para proteger esta instalaci&oacute;n.</p><p>Antes de la instalaci&oacute;n, por favor revise que la ra&iacute;z <code>.htaccess</code> y archivos fuente del sistema de su web no est&eacute;n protegidos contra escritura (durante la instalaci&oacute;n Web Optimizer crea aparte, copia de seguridad de sus archivos iniciales).</p><p>Web Optimizer puede revisar todas las funciones de su servidor y completar la instalaci&oacute;n automaticamente. Para acceder a esta opci&oacute;n, por favor presione <strong>"Instalaci&oacute;n Express"</strong>. Una vez completado, usted puede cambiar cualquier opci&oacute;n usando esta m&oacute;dulo administrativo.</p><p>Si desea definir el uso de  Web Optimizer manualmente, por favor presione <strong>"Siguiente"</strong>. Usted puede revisar y definir todas las funciones antes de la la instalaci&oacute;n misma de Web Optimizer en su website.</p><p><a href="http://code.google.com/p/web-optimizator/wiki/StandaloneInstallation">Proceso de instalaci&oacute;n de Web Optimizer</a></p>');
+define('_WEBO_NEW_PROTECT', '<p>Por favor ingrese un Login y Contrase&ntilde;a para proteger esta instalaci&oacute;n.</p><p>Antes de la instalaci&oacute;n, por favor revise que la ra&iacute;z <code>.htaccess</code> y archivos fuente del sistema de su web no est&eacute;n protegidos contra escritura (durante la instalaci&oacute;n Web Optimizer crea aparte, copia de seguridad de sus archivos iniciales).</p><p>Web Optimizer puede revisar todas las funciones de su servidor y completar la instalaci&oacute;n automaticamente. Para acceder a esta opci&oacute;n, por favor presione <strong>"Instalaci&oacute;n Express"</strong>. Una vez completado, usted puede cambiar cualquier opci&oacute;n usando esta m&oacute;dulo administrativo.</p><p>Si desea definir el uso de  Web Optimizer manualmente, por favor presione <strong>"Siguiente"</strong>. Usted puede revisar y definir todas las funciones antes de la la instalaci&oacute;n misma de Web Optimizer en su website.</p><p><a href="http://code.google.com/p/web-optimizator/wiki/StandaloneInstallation?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Proceso de instalaci&oacute;n de Web Optimizer</a></p>');
 define('_WEBO_NEW_USERDATA', 'Su nombre de usuario y Contrase&ntilde;a');
 define('_WEBO_NEW_ENTER', 'Ingrese su Contrase&ntilde;a para la instalaci&oacute;n');
 define('_WEBO_NEW_ORDERINSTALLATION', 'Compra de instalacion y la configuracion del Web Optimizer de su sitio web');
@@ -69,9 +69,9 @@ define('_WEBO_NEW_NOSCRIPT', 'Para que trabaje correctamente, JavaScript tiene q
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Desinstalar');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Desinstalar');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Gracias por usar <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Usted puede instalarlo nuevamente despu&eacute;s aqu&iacute; <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Gracias por usar <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer</a>. Usted puede instalarlo nuevamente despu&eacute;s aqu&iacute; <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">P&aacute;gina de Web Optimizer</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Siempre puede visitar <a href="http://www.web-optimizer.us/">el website de Web Optimizer</a> y compartir <a href="http://code.google.com/p/web-optimizator/issues/list">alg&uacute;n problema encontrado</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Siempre puede visitar <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">el website de Web Optimizer</a> y compartir <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">alg&uacute;n problema encontrado</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Ya puede regresar a <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">su website</a>.');
 define('_WEBO_SPLASH1_NEXT', 'Siguiente');
@@ -295,7 +295,7 @@ define('_WEBO_SPLASH3_CONFIGERROR', 'No se puede abrir el archivo congif para es
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Usted puede hacer esto usualmente desde su cliente FTP. Solo navegue a <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , haga click derecho en el archivo, y busque por las propiedades u opciones CHMOD. Escoja 775, 777, o "escribir"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Una vez haya usted hecho esto, por favor recargue la p&aacute;gina.');
-define('_WEBO_SPLASH3_CONFIGERROR5', 'El archivo de configuraci&oacute;n no existe. Por favor descargue el script completo de <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
+define('_WEBO_SPLASH3_CONFIGERROR5', 'El archivo de configuraci&oacute;n no existe. Por favor descargue el script completo de <a href="http://code.google.com/p/web-optimizator/downloads/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 define('_WEBO_SPLASH3_ADDITIONAL', 'Opciones de performance &oacute;ptima');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Usted puede acceder a cambios adicionales de su website para dejar al Web Optimizer trabajar m&aacute;s eficientemente. Por favor revise lo siguiente:');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Haga su website compatible con los estandares (HTML, JavaScript, and CSS).</strong> Inclusion de archivos externos no compatibles llevan a un mal comportamiento del Web Optimizer y a su desconfiguracion.');

@@ -16,7 +16,7 @@
 	echo _WEBO_NEW_NOSCRIPT;
 ?></p></noscript><?php
 	echo _WEBO_NEW_PROTECT;
-?><p><a href="http://webo.name/web-optimizer/"><?php
+?><p><a href="http://www.web-optimizer.us/web-optimizer/buy-now.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer"><?php
 	echo _WEBO_NEW_ORDERINSTALLATION;
 ?></a></p></div><div id="sc"><p><?php echo _WEBO_SYSTEM_CHECK ?></p></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><legend><?php
 	echo _WEBO_NEW_USERDATA;

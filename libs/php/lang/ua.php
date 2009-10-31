@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.ru/">Купить полную версию</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Купить полную версию</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Демонстрационная версия');
 
@@ -67,9 +67,9 @@ define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с при
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Видалити');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Видалення');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання <a href="http://www.web-optimizer.us/">Web Optimizer</a>. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Дякуємо за використання <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer</a>. Ви можете встановити його знову в будь-який момент, якщо зайдете на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">сторінку Web Optimizer</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://www.web-optimizer.ru/">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list">будь-які проблемні запитання</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Ми будемо раді бачити ваші відгуки про систему на <a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">сайті Web Optimizer</a>, ви також можете відправити<a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">будь-які проблемні запитання</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Тепер можна повернутися назад до <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашого сайту</a>.');
 define('_WEBO_SPLASH1_NEXT', 'Далі');
@@ -290,7 +290,7 @@ define('_WEBO_SPLASH3_CONFIGERROR', 'Неможливо відкрити для 
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Ви можете це зробити за допомогою вашого FTP-клієнта. Для цього просто перейдіть в директорію <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , потім увійдіть до властивостей файлу або виконайте CHMOD. Встановіть у 775 або 777, або "write"');
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Після того, як ви усунете цю проблему, будь-ласка, перезавантажте сторінку.');
-define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Web Optimizer повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
+define('_WEBO_SPLASH3_CONFIGERROR5', 'Конфігураційний файл не знайдений. Будь-ласка, завантажте Web Optimizer повністю за адресою <a href="http://code.google.com/p/web-optimizator/downloads/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 define('_WEBO_SPLASH3_ADDITIONAL', 'Налаштуваня оптимальної швидкодії');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Ви можете провести додаткові зміни на вашому сайті, які дозволять використовувати Web Optimizer більш ефективно. До числа таких змін можна віднести:');
 define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Сделайте ваш сайт соответствующим спецификациям (HTML, JavaScript и CSS).</strong> Нестандартные вызовы файлов и некорректный код приводит к различному рода ошибкам и ограничение функциональности Web Optimizer.');
