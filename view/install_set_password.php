@@ -48,4 +48,6 @@
 	if ($display_progress) {
 ?><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div><?php
 	}
-?><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
+?><script type="text/javascript">window.wc='<?php
+	echo $javascript_relative_cachedir;
+?>'</script><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>

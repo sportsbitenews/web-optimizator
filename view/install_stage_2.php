@@ -284,4 +284,6 @@
 	}
 ?></div><p id="hideme"><input type="submit" value="<?php
 	echo _WEBO_SPLASH1_NEXT;
-?>" class="i"/></p></form><b></b><i></i><del></del><ins></ins></div><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div>
+?>" class="i"/></p></form><b></b><i></i><del></del><ins></ins></div><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div><script type="text/javascript">window.wc='<?php
+	echo $javascript_relative_cachedir;
+?>'</script>

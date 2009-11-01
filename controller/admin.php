@@ -216,7 +216,10 @@ class admin {
 	* 
 	**/	
 	function write_progress ($progress, $init = false) {
-		$file = $this->basepath . 'cache/progress.html';
+		$file = (empty($this->input['user']['javascript_cachedir']) ?
+			($this->view->paths['full']['current_directory'] . 'cache/') :
+				$this->input['user']['javascript_cachedir']) .
+					'progress.html';
 		if ($this->display_progress || $init) {
 			$return = $this->write_file($file, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>', 1);
 			if (!empty($return)) {
@@ -304,7 +307,8 @@ class admin {
 				"username" => $this->compress_options['username'],
 				"password" => $this->compress_options['password'],
 				"message" => empty($this->input['changed']) ? (empty($this->input['upgraded']) ? (empty($this->input['cleared']) ? '' : _WEBO_CLEAR_SUCCESSFULL) : _WEBO_UPGRADE_SUCCESSFULL . $this->version . _WEBO_UPGRADE_SUCCESSFULL2) : _WEBO_PASSWORD_SUCCESSFULL,
-				"premium" => $this->premium
+				"premium" => $this->premium,
+				"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir'])
 			);
 		} else {
 /* disable gzip for HTML as we alsredy have it */
@@ -319,7 +323,8 @@ class admin {
 				"display_progress" => $this->display_progress,
 				"version" => $this->version,
 				"version_new" => $this->version_new,
-				"premium" => true
+				"premium" => true,
+				"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir'])
 			); 
 		}
 /* Show the install page */
@@ -584,6 +589,7 @@ class admin {
 	function install_stage_2() {
 /* express install */
 		if (!empty($this->input['express'])) {
+			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 1, true);
 			$this->view->set_paths();
 /* remember username, and password, and license */
 			$username = $this->input['user']['username'];
@@ -615,7 +621,7 @@ class admin {
 			$this->input['Submit'] = 1;
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
-			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
+			$this->write_progress($this->web_optimizer_stage = 2);
 /* check for multiple hosts possibility */;
 			if (!empty($this->input['user']['parallel']['check'])) {
 				$this->input['user']['parallel']['allowed_list'] = $this->check_hosts($this->default_hosts);
@@ -756,22 +762,43 @@ class admin {
 				'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
 			);
 		}
+		$this->compress_options['javascript_cachedir'] =
+			empty($this->compress_options['javascript_cachedir']) ?
+				($this->view->paths['full']['current_directory'] . 'cache/') :
+					$this->compress_options['javascript_cachedir'];
+		$this->compress_options['css_cachedir'] =
+			empty($this->compress_options['css_cachedir']) ?
+				($this->view->paths['full']['current_directory'] . 'cache/') :
+					$this->compress_options['css_cachedir'];
+		$this->compress_options['html_cachedir'] =
+			empty($this->compress_options['html_cachedir']) ?
+				($this->view->paths['full']['current_directory'] . 'cache/') :
+					$this->compress_options['html_cachedir'];
+		$this->compress_options['website_root'] =
+			empty($this->compress_options['website_root']) ?
+				$this->view->paths['absolute']['document_root'] :
+					$this->compress_options['website_root'];
+		$this->compress_options['document_root'] =
+			empty($this->compress_options['document_root']) ?
+				$this->view->paths['full']['document_root'] :
+					$this->compress_options['document_root'];
 		$this->page_variables = array(
 			"title" => _WEBO_SPLASH2_TITLE,
 			"paths" => $this->view->paths,
 			"page" => $this->input['page'],
-			"javascript_cachedir" => empty($this->compress_options['javascript_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['javascript_cachedir'],
-			"css_cachedir" => empty($this->compress_options['css_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['css_cachedir'],
-			"html_cachedir" => empty($this->compress_options['html_cachedir']) ? ($this->view->paths['full']['current_directory'] . 'cache/') : $this->compress_options['html_cachedir'],
-			"website_root" => empty($this->compress_options['website_root']) ? $this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'],
-			"document_root" => empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'],
+			"javascript_cachedir" => $this->compress_options['javascript_cachedir'],
+			"css_cachedir" => $this->compress_options['css_cachedir'],
+			"html_cachedir" => $this->compress_options['html_cachedir'],
+			"website_root" => $this->compress_options['website_root'],
+			"document_root" => $this->compress_options['document_root'],
 			"host" => empty($this->compress_options['host']) ? (empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) : $this->compress_options['host'],
 			"options" => $options,
 			"version" => $this->version,
 			"version_new" => $this->version_new,
 			"compress_options" => $this->compress_options,
 			"license" => empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license'],
-			"premium" => $this->premium
+			"premium" => $this->premium,
+			"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir'])
 		);
 	}
 
@@ -1053,6 +1080,23 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 					$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
 				}
+				if (!empty($this->input['user']['gzip']['page'])) {
+					$content .= "
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.ico$ $1.ico.gz [QSA,L]
+	<FilesMatch \.ico\.gz$>
+		ForceType image/x-icon
+	</FilesMatch>
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.xml$ $1.xml.gz [QSA,L]
+	<FilesMatch \.xml\.gz$>
+		ForceType text/xml
+	</FilesMatch>";
+				}
 				if (!empty($this->input['user']['gzip']['css'])) {
 					$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
@@ -1231,7 +1275,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				'css' => $this->view->ensure_trailing_slash($this->input['user']['css_cachedir']),
 				'html' => $this->view->ensure_trailing_slash($this->input['user']['html_cachedir'])
 			);
-			$this->write_progress($this->web_optimizer_stage = 3);
+			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
 /* Check we can write to the specified directories */
 			foreach ($test_dirs as $name => $dir) {
 				if (is_dir($dir)) {

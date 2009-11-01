@@ -95,4 +95,6 @@
 	echo _WEBO_PASSWORD_TITLE;
 ?>" class="k"/></p></fieldset></div><div id="sc"><p><?php 
 	echo _WEBO_SYSTEM_CHECK
-?></p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
+?></p></div></form><b></b><i></i><del></del><ins></ins></div><script type="text/javascript">window.wc='<?php
+	echo $javascript_relative_cachedir;
+?>'</script><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
