@@ -1929,7 +1929,15 @@ class web_optimizer {
 		}
 /* Pull out the comment blocks, so as to avoid touching conditional comments */
 		if (!empty($this->options['javascript']['minify'])) {
-			$dest = str_replace(array('//]]>', '// ]]>', '<!--//-->', '<!-- // -->', '<![CDATA[', '//><!--', '//--><!]]>', '// -->', "<script type='text/javascript'><!--", '<script type="text/javascript"><!--'), array('', '', '', '', '', '', '', "<script type='text/javascript'>", '<script type="text/javascript">'), $dest);
+			$dest = str_replace(
+				array('//]]>',	'// ]]>',	'<!--//-->',	'<!-- // -->',
+					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
+					"<script type='text/javascript'><!--",
+					'<script type="text/javascript"><!--',	'--></script>'),
+				array('',		'',			'',				'',
+					'',				'',			'',				'',
+					"<script type='text/javascript'>",
+					'<script type="text/javascript">',		'</script>'), $dest);
 		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
