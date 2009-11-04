@@ -2107,7 +2107,7 @@ class web_optimizer {
 			if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
 /* detect equality */
 				if (strpos($source, 'IE ' . $version . ']>') !== false) {
-					$source = preg_replace("@<!--\[if (gte )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$2", $source);
+					$source = preg_replace("@<!--\[if ((gte|lte) )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$3", $source);
 				}
 /* detect lesser versions */
 				for ($i = $this->min_ie_version; $i < $version; $i++) {
@@ -2116,7 +2116,7 @@ class web_optimizer {
 					}
 				}
 /* detect greater versions */
-				for ($i = $version; $i < $this->max_ie_version; $i++) {
+				for ($i = $version + 1; $i < $this->max_ie_version; $i++) {
 					if (strpos($source, 'IE ' . $i . ']>') !== false) {
 						$source = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
 					}
