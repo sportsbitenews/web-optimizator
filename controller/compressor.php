@@ -1651,7 +1651,7 @@ class web_optimizer {
 /* Remove simple comments */
 		$txt = preg_replace('!/\*.*?\*/!', '', $txt);
 /* Compress whitespaces */
-		$txt = str_replace('  ', ' ', $txt);
+		$txt = preg_replace('![\t\s]+!', ' ', $txt);
 /* Remove spaces for }, {, ;, ,: */
 		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
 /* Remove excessive symbols */
