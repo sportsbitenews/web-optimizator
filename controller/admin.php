@@ -501,6 +501,12 @@ class admin {
 				}
 			}
 		}
+/* clean up all Web Optimzier rules from .htaccess */
+		$content_saved = $this->clean_htaccess($return);
+		$htaccess = $this->detect_htaccess();
+		if (empty($this->error)) {
+			$this->write_file($htaccess, $content_saved, $return);	
+		}
 		if (!empty($return)) {
 			$this->page_variables = array(
 				"title" => _WEBO_SPLASH1_UNINSTALL,

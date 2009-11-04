@@ -1816,7 +1816,11 @@ class web_optimizer {
 					'marker' => 'AddThis',
 					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 					'height' => 20
-				)
+/* Reformal */
+				), 're' => array(
+					'marker' => 'Reformal',
+					'regexp' => "<script type=\"text/javascript\" language=\"JavaScript\" src=\"http://reformal.ru.*?</script>"
+				),
 /* Counters */
 			), 'unobtrusive_counters' => array (
 /* LiveInternet */
@@ -1927,7 +1931,8 @@ class web_optimizer {
 		if (!empty($this->ua_mod)) {
 			$dest = $this->remove_conditional_comments($dest);
 		}
-/* Pull out the comment blocks, so as to avoid touching conditional comments */
+/* Pull out the comment blocks, so as to avoid touching conditional comments,
+	and some semi-standard compalint hacks */
 		if (!empty($this->options['javascript']['minify'])) {
 			$dest = str_replace(
 				array('//]]>',	'// ]]>',	'<!--//-->',	'<!-- // -->',

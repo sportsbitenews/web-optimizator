@@ -652,7 +652,7 @@ __________________
 			$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $this->css_image)));
 			$filename = preg_replace("!.*/!", "", $this->css_image);
 /* Thx for htc for ali@ */
-			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf')) || strpos($this->css_image, "://")) {
+			if (!is_file($this->css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($this->css_image, "://")) {
 				$this->css_image = $image_saved;
 				return;
 			}
