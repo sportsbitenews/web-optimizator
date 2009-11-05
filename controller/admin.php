@@ -139,8 +139,7 @@ class admin {
 /* get PHP extensions */
 		$extensions = @get_loaded_extensions();
 /* get GDlib info */
-		$gd = @gd_info();
-		$gd = empty($gd) ? array() : $gd;
+		$gd = function_exists('gd_info') ? gd_info() : array();
 /* set default paths */
 		$this->view->set_paths();
 /* calculate directories */
