@@ -985,7 +985,7 @@ class web_optimizer {
 			foreach($external_array as $key => $info) {
 /* Get the code */
 				if ($file_contents = $info['content']) {
-					$delimiter = $options['header'] == "javascript" ? ";\n" : "";
+					$delimiter = $options['header'] == "javascript" ? "\n" : "";
 					$contents .= $file_contents . $delimiter;
 				}
 			}
@@ -1488,7 +1488,7 @@ class web_optimizer {
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
 							}
-							$text = $delimiter . (empty($value['content']) ? '' : $value['content']);
+							$text = (empty($value['content']) ? '' : $delimiter . $value['content']);
 /* if we can't add to existing tag -- store for the future */
 							if (empty($last_key[$value['tag']])) {
 								$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
@@ -1501,7 +1501,7 @@ class web_optimizer {
 						}
 					} elseif (!empty($content_from_file)) {
 /* don't rewrite existing content inside script tags */
-						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content']) . $delimiter . $content_from_file;
+						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content'] . $delimiter) . $content_from_file;
 /* add stored content before, but leave styles stored */
 						if (!empty($stored[$value['tag']])) {
 /* preserve order of merged content */
