@@ -985,8 +985,7 @@ class web_optimizer {
 			foreach($external_array as $key => $info) {
 /* Get the code */
 				if ($file_contents = $info['content']) {
-					$delimiter = $options['header'] == "javascript" ? "\n" : "";
-					$contents .= $file_contents . $delimiter;
+					$contents .= $file_contents . "\n";
 				}
 			}
 			if ($options['tag'] === 'link' && !empty($options['include_code'])) {
@@ -1318,7 +1317,7 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<script[^>]*>|</script>)@i", "", $match[0])
 					);
-					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\s]+))@i", $match[1], $variants, PREG_SET_ORDER);
+					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))>?@i", $match[1], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach ($variants as $variant_type) {
 							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? $variant_type[3] : $variant_type[2]) : $variant_type[1];
@@ -1472,10 +1471,6 @@ class web_optimizer {
 					}
 /* remove BOM */
 					$content_from_file = str_replace('﻿', '', $content_from_file);
-					$delimiter = '';
-					if ($value['tag'] == 'script') {
-						$delimiter = ";\n";
-					}
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
@@ -1488,7 +1483,7 @@ class web_optimizer {
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
 							}
-							$text = (empty($value['content']) ? '' : $delimiter . $value['content']);
+							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
 /* if we can't add to existing tag -- store for the future */
 							if (empty($last_key[$value['tag']])) {
 								$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
@@ -1501,14 +1496,14 @@ class web_optimizer {
 						}
 					} elseif (!empty($content_from_file)) {
 /* don't rewrite existing content inside script tags */
-						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content'] . $delimiter) . $content_from_file;
+						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content'] . "\n") . $content_from_file;
 /* add stored content before, but leave styles stored */
 						if (!empty($stored[$value['tag']])) {
 /* preserve order of merged content */
 							if ($last_key_flushed[$value['tag']] < $key) {
-								$this->initial_files[$key]['content'] = $stored[$value['tag']] . $delimiter . $this->initial_files[$key]['content'];
+								$this->initial_files[$key]['content'] = $stored[$value['tag']] . "\n" . $this->initial_files[$key]['content'];
 							} else {
-								$this->initial_files[$key]['content'] .= $delimiter . $stored[$value['tag']];
+								$this->initial_files[$key]['content'] .= "\n" . $stored[$value['tag']];
 							}
 							$stored[$value['tag']] = '';
 						}
