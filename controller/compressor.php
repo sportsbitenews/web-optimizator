@@ -225,7 +225,7 @@ class web_optimizer {
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium,
-				"file" => $this->options['minify']['javascript_file']
+				"file" => $this->premium ? $this->options['minify']['javascript_file'] : ''
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -267,7 +267,7 @@ class web_optimizer {
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"include_code" => $this->premium ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] && $this->premium,
-				"file" => $this->options['minify']['css_file']
+				"file" => $this->premium ? $this->options['minify']['css_file'] : ''
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
