@@ -1161,47 +1161,97 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			}
 			if (!empty($htaccess_options['mod_expires'])) {
 				$content .= "
-<IfModule mod_expires.c>
-	ExpiresActive On
-	ExpiresDefault \"access plus 10 years\"
-	<FilesMatch \.(php|phtml|shtml|html|xml)$>
-		ExpiresActive Off
-	</FilesMatch>";
-				if (empty($this->input['user']['far_future_expires']['css'])) {
+<IfModule mod_expires.c>";
+				if (!empty($this->input['user']['far_future_expires']['html'])) {
+					$content .= "
+	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
+		ExpiresActive On
+		ExpiresDefault \"access plus " . $this->input['user']['far_future_expires']['html_timeout'] . " seconds\"
+	</FilesMatch>
+	ExpiresByType text/html A" . $this->input['user']['far_future_expires']['html_timeout'] . "
+	ExpiresByType text/xml A" . $this->input['user']['far_future_expires']['html_timeout'] . "
+	ExpiresByType application/xhtml+xml A" . $this->input['user']['far_future_expires']['html_timeout'] . "
+	ExpiresByType text/plain A" . $this->input['user']['far_future_expires']['html_timeout'];
+				}
+				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
 	<FilesMatch \.css$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType text/css A315360000";
 				}
-				if (empty($this->input['user']['far_future_expires']['javascript'])) {
+				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
 	<FilesMatch \.js$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType text/javascript A315360000
+	ExpiresByType application/javascript A315360000
+	ExpiresByType application/x-javascript A315360000
+	ExpiresByType text/x-js A315360000
+	ExpiresByType text/ecmascript A315360000
+	ExpiresByType application/ecmascript A315360000
+	ExpiresByType text/vbscript A315360000
+	ExpiresByType text/fluffscript A315360000";
 				}
-				if (empty($this->input['user']['far_future_expires']['images']) || empty($this->premium)) {
+				if (!empty($this->input['user']['far_future_expires']['images']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType image/gif A315360000
+	ExpiresByType image/png A315360000
+	ExpiresByType image/jpeg A315360000
+	ExpiresByType image/x-icon A315360000
+	ExpiresByType image/bmp A315360000";
 				}
-				if (empty($this->input['user']['far_future_expires']['fonts']) || empty($this->premium)) {
+				if (!empty($this->input['user']['far_future_expires']['fonts']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType application/x-font-opentype A315360000
+	ExpiresByType application/x-font-truetype A315360000
+	ExpiresByType application/x-font-ttf A315360000
+	ExpiresByType application/x-font A315360000
+	ExpiresByType font/opentype A315360000
+	ExpiresByType font/otf A315360000
+	ExpiresByType application/vnd.oasis.opendocument.formula-template A315360000
+	ExpiresByType image/svg+xml A315360000
+	ExpiresByType application/vnd.ms-fontobject A315360000
+	ExpiresByType font/woff A315360000";
 				}
-				if (empty($this->input['user']['far_future_expires']['video']) || empty($this->premium)) {
+				if (!empty($this->input['user']['far_future_expires']['video']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType video/x-flv A315360000
+	ExpiresByType video/x-ms-wmv A315360000
+	ExpiresByType video/x-ms-asf A315360000
+	ExpiresByType video/x-ms-asx A315360000
+	ExpiresByType video/x-ms-wma A315360000
+	ExpiresByType video/x-ms-wax A315360000
+	ExpiresByType video/x-ms-wmx A315360000
+	ExpiresByType video/x-ms-wm A315360000";
 				}
-				if (empty($this->input['user']['far_future_expires']['static']) || empty($this->premium)) {
+				if (!empty($this->input['user']['far_future_expires']['static']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
-		ExpiresActive Off
-	</FilesMatch>";
+		ExpiresActive On
+		ExpiresDefault \"access plus 10 years\"
+	</FilesMatch>
+	ExpiresByType application/x-shockwave-flash A315360000
+	ExpiresByType application/pdf A315360000
+	ExpiresByType application/msword A315360000
+	ExpiresByType application/rtf A315360000
+	ExpiresByType application/vnd.ms-excel A315360000
+	ExpiresByType application/vnd.ms-powerpoint A315360000";
 				}
 				$content .= "
 </IfModule>";
@@ -1220,7 +1270,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				}
 				if (!empty($this->input['user']['far_future_expires']['images'])) {
 					$content .= "
-	RewriteRule ^(.*)\.(!bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
 				if (!empty($this->input['user']['far_future_expires']['video'])) {
 					$content .= "
@@ -1242,7 +1292,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 <IfModule mod_headers.c>";
 				if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
 					$content .= "
-	<FilesMatch \.(css|js|php|phtml|shtml|html|xml)$>
+	<FilesMatch \.(css|js)$>
 		Header append Vary User-Agent
 		Header append Cache-Control private
 	</FilesMatch>";
