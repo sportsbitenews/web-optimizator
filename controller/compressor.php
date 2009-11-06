@@ -1941,12 +1941,11 @@ class web_optimizer {
 			$dest = str_replace(
 				array('//]]>',	'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					"<script type='text/javascript'><!--",
-					'<script type="text/javascript"><!--',	'--></script>'),
+					'--></script>'),
 				array('',		'',			'',				'',
 					'',				'',			'',				'',
-					"<script type='text/javascript'>",
-					'<script type="text/javascript">',		'</script>'), $dest);
+					'</script>'), $dest);
+			$dest = preg_replace("@(<script[^>]*>)(\r\n)?<!--@is", "$1", $dest);
 		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
