@@ -174,6 +174,10 @@ class admin {
 			@ini_set('memory_limit', '64M');
 			$memory_limit = @ini_get('memory_limit');
 		}
+		$apache2 = 0;
+		if (function_exists('apache_get_version')) {
+			$apache2 = strpos(apache_get_version(), "/2");
+		}
 /* set variables */
 		$page_variables = array(
 			'javascript_writable' => is_writable($javascript_cachedir),
@@ -182,16 +186,26 @@ class admin {
 			'css_cachedir' => $css_cachedir,
 			'html_writable' => is_writable($html_cachedir),
 			'html_cachedir' => $html_cachedir,
-			'htaccess_writable' => is_writable($website_root) || is_writable($website_root . '.htaccess'),
+			'htaccess_writable' => is_writable($website_root) ||
+				is_writable($website_root . '.htaccess'),
 			'htaccess' => $website_root . '.htaccess',
 			'index_writable' => is_writable($website_root . 'index.php'),
 			'index' => $website_root . 'index.php',
 			'config_writable' => is_writable($this->basepath . 'config.webo.php'),
 			'config' => $this->basepath . 'config.webo.php',
-			'curl_possibility' => in_array('curl', $extensions) && function_exists('curl_init'),
-			'gzip_possibility' => in_array('zlib', $extensions) && function_exists('gzencode') && function_exists('gzcompress') && function_exists('gzdeflate'),
-			'gd_possibility' => in_array('gd', $extensions) && function_exists('imagecreatetruecolor'),
-			'gd_full_support' => !empty($gd['GIF Read Support']) && !empty($gd['GIF Create Support']) && !empty($gd['JPG Support']) && !empty($gd['PNG Support']) && !empty($gd['WBMP Support']),
+			'curl_possibility' => in_array('curl', $extensions) &&
+				function_exists('curl_init'),
+			'gzip_possibility' => in_array('zlib', $extensions) &&
+				function_exists('gzencode') &&
+				function_exists('gzcompress') &&
+				function_exists('gzdeflate'),
+			'gd_possibility' => in_array('gd', $extensions) &&
+				function_exists('imagecreatetruecolor'),
+			'gd_full_support' => !empty($gd['GIF Read Support']) &&
+				!empty($gd['GIF Create Support']) &&
+				!empty($gd['JPG Support']) &&
+				!empty($gd['PNG Support']) &&
+				!empty($gd['WBMP Support']),
 			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'htaccess_possibility' => $htaccess_available,
@@ -204,7 +218,8 @@ class admin {
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
 			'protected_mode' => empty($this->protected) ? 0 : 1,
 			'cms' => $this->system_info($website_root),
-			'memory_limit' => $memory_limit
+			'memory_limit' => $memory_limit,
+			'apache2' => $apache2
 		);
 /* Output data */
 		$this->view->render("system_check", $page_variables);

@@ -234,19 +234,23 @@ header("Content-Type: application/x-javascript");
 		echo _WEBO_SYSTEM_CHECK_DISABLED;
 ?>]</em><?php
 	}
-?></li><li><?php
-	echo _WEBO_SYSTEM_CHECK_HTACCESS_GZIP;
+?></li><?php
+	if (!$apache2) {
+?><li><?php
+		echo _WEBO_SYSTEM_CHECK_HTACCESS_GZIP;
 ?> <?php
-	if ($mod_gzip) {
+		if ($mod_gzip) {
 ?><strong>[<?php
-		echo _WEBO_SYSTEM_CHECK_ENABLED;
+			echo _WEBO_SYSTEM_CHECK_ENABLED;
 ?>]</strong><?php
-	} else {
+		} else {
 ?><em>[<?php
-		echo _WEBO_SYSTEM_CHECK_DISABLED;
+			echo _WEBO_SYSTEM_CHECK_DISABLED;
 ?>]</em><?php
+		}
+?></li><?php
 	}
-?></li><li><?php
+?><li><?php
 	echo _WEBO_SYSTEM_CHECK_HTACCESS_DEFLATE;
 ?> <?php
 	if ($mod_deflate) {

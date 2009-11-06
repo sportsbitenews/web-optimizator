@@ -951,7 +951,7 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0)));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive'] ? 2 : ($options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0)));
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -1151,7 +1151,7 @@ class web_optimizer {
 					}
 /* Create the link to the new file */
 					$newfile = $this->get_new_file($options, $cache_file, $this->time);
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && ($options['external_scripts'] || $options['external_scripts_head_end']) ? 1 : 0));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
 				}
 			}
 		}
