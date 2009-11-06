@@ -91,10 +91,10 @@ class web_optimizer {
 		if (!empty($this->options['page']['cache'])) {
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore'])) {
-				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
+				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
 			}
 			if (!empty($this->options['page']['allowed_user_agents'])) {
-				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
+				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
 			}
 		}
 /* cache if
@@ -105,7 +105,15 @@ class web_optimizer {
   - page is requested by GET,
   - no chained optimization.
 */
-		$this->cache_me = !empty($this->options['page']['cache']) && (empty($this->options['page']['cache_ignore']) || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) || preg_match("!" . $included_user_agents . "!is", $this->ua)) && (empty($this->options['page']['gzip']) || empty($this->options['page']['flush'])) && !headers_sent() && (getenv('REQUEST_METHOD') == 'GET') && empty($this->web_optimizer_stage);
+		$this->cache_me = !empty($this->options['page']['cache']) &&
+			(empty($this->options['page']['cache_ignore']) ||
+				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
+				preg_match("!" . $included_user_agents . "!is", $this->ua)) &&
+			(empty($this->options['page']['gzip']) ||
+				empty($this->options['page']['flush'])) &&
+			!headers_sent() &&
+			(getenv('REQUEST_METHOD') == 'GET') &&
+			empty($this->web_optimizer_stage);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -1315,12 +1323,12 @@ class web_optimizer {
 					$file = array(
 						'tag' => 'script',
 						'source' => $match[0],
-						'content' => preg_replace("@(<script[^>]*>|</script>)@i", "", $match[0])
+						'content' => preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0])
 					);
-					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))>?@i", $match[1], $variants, PREG_SET_ORDER);
+					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))@is", $match[1], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach ($variants as $variant_type) {
-							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? $variant_type[3] : $variant_type[2]) : $variant_type[1];
+							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? str_replace('>', '', $variant_type[3]) : $variant_type[2]) : $variant_type[1];
 							$file['file'] = trim($this->strip_querystring($variant_type[1]));
 							$file['file_raw'] = $variant_type[1];
 						}
