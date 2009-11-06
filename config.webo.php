@@ -27,9 +27,9 @@ $compress_options['unobtrusive']['informers'] = "0";
 $compress_options['unobtrusive']['counters'] = "0";
 ## Put all known advertisement blocks right before </body>
 $compress_options['unobtrusive']['ads'] = "0";
-## Merge external and inline scripts inside head
+## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
-## Merge inline scripts inside head
+## Merge inline scripts in head
 $compress_options['external_scripts']['inline'] = "1";
 ## Move merged scripts to </head>
 $compress_options['external_scripts']['head_end'] = "1";

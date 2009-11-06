@@ -1331,8 +1331,10 @@ class web_optimizer {
 						}
 					}
 /* skip external files if option is disabled */
-					if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) || (empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
-						$this->initial_files[] = $file;
+					if (($this->options['javascript']['external_scripts'] && $curl) ||
+						(!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) ||
+						(empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
+							$this->initial_files[] = $file;
 					}
 				}
 			}
@@ -1377,8 +1379,10 @@ class web_optimizer {
 						}
 					}
 /* skip external files if option is disabled */
-					if (($this->options['css']['external_scripts'] && $curl) || (!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) || (empty($file['file']) && $this->options['css']['inline_scripts'])) {
-						$this->initial_files[] = $file;
+					if (($this->options['css']['external_scripts'] && $curl) ||
+						(!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) ||
+						(empty($file['file']) && $this->options['css']['inline_scripts'])) {
+							$this->initial_files[] = $file;
 					}
 				}
 			}
@@ -1501,7 +1505,7 @@ class web_optimizer {
 						}
 					} elseif (!empty($content_from_file)) {
 /* don't rewrite existing content inside script tags */
-						$this->initial_files[$key]['content'] = (empty($value['content']) ? '' : $value['content'] . "\n") . $content_from_file;
+						$this->initial_files[$key]['content'] = $content_from_file . (empty($value['content']) ? '' : "\n" . $value['content']);
 /* add stored content before, but leave styles stored */
 						if (!empty($stored[$value['tag']])) {
 /* preserve order of merged content */
