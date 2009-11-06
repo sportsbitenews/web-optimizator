@@ -289,9 +289,6 @@ class web_optimizer {
 				"minify_aggressive" => $this->options['minify']['html_one_string'] && $this->premium,
 				"remove_comments" => $this->options['minify']['html_comments'] && $this->premium,
 				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
-				"far_future_expires_images" => $this->options['far_future_expires']['images'],
-				"far_future_expires_video" => $this->options['far_future_expires']['video'],
-				"far_future_expires_static" => $this->options['far_future_expires']['static'],
 				"far_future_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] || $this->options['htaccess']['mod_expires']) || !$this->options['htaccess']['enabled'],
 				"clientside_cache" => $this->premium ? $this->options['far_future_expires']['html'] : 0,
 				"clientside_timeout" => $this->premium ? $this->options['far_future_expires']['html_timeout'] : 0,
@@ -1372,7 +1369,7 @@ class web_optimizer {
 									break;
 								default:
 /* skip media="all|screen" to prevent Safari bug with @media all{} and @media screen{} */
-									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen/i", $variant_type[2]))) {
+									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen|''|\"\"/i", $variant_type[2]))) {
 										$file[$variant_type[1]] = $variant_type[2];
 									}
 									break;

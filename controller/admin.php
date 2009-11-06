@@ -1164,25 +1164,25 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		ExpiresActive Off
 	</FilesMatch>";
 				}
-				if (empty($this->input['user']['far_future_expires']['images'])) {
+				if (empty($this->input['user']['far_future_expires']['images']) || empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
 		ExpiresActive Off
 	</FilesMatch>";
 				}
-				if (empty($this->input['user']['far_future_expires']['fonts'])) {
+				if (empty($this->input['user']['far_future_expires']['fonts']) || empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
 		ExpiresActive Off
 	</FilesMatch>";
 				}
-				if (empty($this->input['user']['far_future_expires']['video'])) {
+				if (empty($this->input['user']['far_future_expires']['video']) || empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
 		ExpiresActive Off
 	</FilesMatch>";
 				}
-				if (empty($this->input['user']['far_future_expires']['static'])) {
+				if (empty($this->input['user']['far_future_expires']['static']) || empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 		ExpiresActive Off
