@@ -1998,24 +1998,28 @@ class web_optimizer {
 				$this->content = preg_replace("@<!--[^\]\[]*?-->@is", '', $this->content);
 			}
 /* skip parsing head if we includes both CSS and JavaScript from head+body */
-			if (empty($this->options['javascript']['minify_body']) || empty($this->options['css']['minify_body'])) {
-				if (empty($this->options['page']['html_tidy'])) {
-					preg_match("!<head(\s+[^>]+)?>.*?</head>!is", $this->content, $matches);
-					$head = $matches[0];
-				} else {
-					if ($headpos = strpos($this->content, '<head')) {
-						$head = substr($this->content, $headpos, strpos($this->content, '</head>') - $headpos);
-					} elseif ($headpos = strpos($this->content, '<HEAD')) {
-						$head = substr($this->content, $headpos, strpos($this->content, '</HEAD>') - $headpos);
+			if (empty($this->options['javascript']['minify_body']) ||
+				empty($this->options['css']['minify_body'])) {
+					if (empty($this->options['page']['html_tidy'])) {
+						preg_match("!<head(\s+[^>]+)?>.*?</head>!is",
+							$this->content, $matches);
+						$head = $matches[0];
+					} else {
+						if ($headpos = strpos($this->content, '<head')) {
+							$head = substr($this->content, $headpos,
+								strpos($this->content, '</head>') - $headpos);
+						} elseif ($headpos = strpos($this->content, '<HEAD')) {
+							$head = substr($this->content, $headpos,
+								strpos($this->content, '</HEAD>') - $headpos);
+						}
 					}
-				}
-				if (!empty($head)) {
-					$this->head = $this->prepare_html($head);
-				}
+					if (!empty($head)) {
+						$this->head = $this->prepare_html($head);
+					}
 			}
 /* get head+body if required */
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-				preg_match("!<head(\s+[^>]+)?>.*?(</body>)?!is", $this->content, $matches);
+				preg_match("!<head(\s+[^>]+)?>.*?(</body>|$)!is", $this->content, $matches);
 				if (!empty($matches[0])) {
 					$this->body = $this->prepare_html($matches[0]);
 				}
@@ -2026,25 +2030,35 @@ class web_optimizer {
 /* add Web Optimizer spot */
 			if (!empty($this->options['page']['spot'])) {
 				$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
-				if (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<title'))) {
-					$this->content = substr_replace($this->content, $spot, $titlepos + 6, 0);
-				} elseif (!empty($this->options['page']['html_tidy']) && ($titlepos = strpos($this->content, '<TITLE'))) {
-					$this->content = substr_replace($this->content, $spot, $titlepos + 6, 0);
+				if (!empty($this->options['page']['html_tidy']) &&
+					($titlepos = strpos($this->content, '<title'))) {
+						$this->content = substr_replace($this->content,
+							$spot, $titlepos + 6, 0);
+				} elseif (!empty($this->options['page']['html_tidy']) &&
+					($titlepos = strpos($this->content, '<TITLE'))) {
+						$this->content = substr_replace($this->content,
+							$spot, $titlepos + 6, 0);
 				} else {
-					$this->content = preg_replace('!(<title)!is', "$1" . $spot, $this->content);
+					$this->content = preg_replace('!(<title)!is', "$1" .
+						$spot, $this->content);
 				}
 			}
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
-				$style = empty($this->options['page']['footer_style']) ? '' : $this->options['page']['footer_style'];
-				$title = empty($this->options['page']['footer_text']) ? '' : ' title="' . $this->options['page']['footer_text'] . '"';
-				$text = empty($this->options['page']['footer_text']) || !empty($this->options['page']['footer_image']) ? '' : $alt;
+				$style = empty($this->options['page']['footer_style']) ? '' :
+					$this->options['page']['footer_style'];
+				$title = empty($this->options['page']['footer_text']) ? '' :
+					' title="' . $this->options['page']['footer_text'] . '"';
+				$text = empty($this->options['page']['footer_text']) ||
+					!empty($this->options['page']['footer_image']) ? '' : $alt;
 /* place or not image? */
 				if (empty($this->options['page']['footer_image'])) {
 					$background_image = $background_style = '';
 				} else {
-					$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) . $this->options['page']['footer_image'];
-					$image_style = 'display:block;text-decoration:none;width:100px;height:100px;';
+					$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) .
+						$this->options['page']['footer_image'];
+					$image_style =
+						'display:block;text-decoration:none;width:100px;height:100px;';
 					if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
 						$background_style = $image_style . 
 							'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
@@ -2077,12 +2091,17 @@ class web_optimizer {
 					'</' .
 						$el_close .
 					'></div>';
-				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</body>'))) {
-					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
-				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {
-					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
+				if ($this->options['page']['html_tidy'] &&
+					($bodypos = strpos($this->content, '</body>'))) {
+						$this->content = substr_replace($this->content,
+							$stamp, $bodypos, 0);
+				} elseif ($this->options['page']['html_tidy'] &&
+					($bodypos = strpos($this->content, '</BODY>'))) {
+						$this->content = substr_replace($this->content,
+							$stamp, $bodypos, 0);
 				} else {
-					$this->content = preg_replace("@</body>@i", $stamp . "$0", $this->content);
+					$this->content = preg_replace("@</body>@i",
+						$stamp . "$0", $this->content);
 /* a number of engines doesn't set </body> */
 					if (!strpos($this->content, $stamp)) {
 						$this->content .= $stamp;
