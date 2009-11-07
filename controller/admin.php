@@ -1161,11 +1161,11 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			}
 			if (!empty($htaccess_options['mod_expires'])) {
 				$content .= "
-<IfModule mod_expires.c>";
+<IfModule mod_expires.c>
+	ExpiresActive On";
 				if (!empty($this->input['user']['far_future_expires']['html'])) {
 					$content .= "
 	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
-		ExpiresActive On
 		ExpiresDefault \"access plus " . $this->input['user']['far_future_expires']['html_timeout'] . " seconds\"
 	</FilesMatch>
 	ExpiresByType text/html A" . $this->input['user']['far_future_expires']['html_timeout'] . "
@@ -1176,7 +1176,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['css'])) {
 					$content .= "
 	<FilesMatch \.css$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType text/css A315360000";
@@ -1184,7 +1183,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['javascript'])) {
 					$content .= "
 	<FilesMatch \.js$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType text/javascript A315360000
@@ -1199,7 +1197,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['images']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType image/gif A315360000
@@ -1211,7 +1208,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['fonts']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType application/x-font-opentype A315360000

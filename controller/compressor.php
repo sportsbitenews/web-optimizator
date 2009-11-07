@@ -24,7 +24,7 @@ class web_optimizer {
 			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' :
 				$_GET['auto_rewrite']);
 			$this->chained_redirect = 
-				$this->username && $this->password && $this->auto_rewrite ?
+				$this->username && $this->password ?
 					'optimizing.php' : 'index.php';
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
 				$_GET['cache_version']);
@@ -596,6 +596,10 @@ class web_optimizer {
 				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
 			} else {
 				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
+/* a number of engines doesn't set </body> */
+				if (!strpos($this->content, "wo.cookie")) {
+					$this->content .= $cookie;
+				}
 			}
 		}
 /* Gzip page itself */
@@ -846,8 +850,24 @@ class web_optimizer {
 					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
 						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
 				} else {
-					$source = preg_replace('/<\/body>/', '<script type="text/javascript">var yass_modules=[["'. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile)
-						. '","'. $handlers . '"]]</script><script type="text/javascript" src="'. $cachedir .  'yass.loader.js' . '"></script></body>', $source);
+					$script = '<script type="text/javascript">var yass_modules=[["'.
+								preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) .
+							'","' .
+								$handlers .
+							'"]]</script><script type="text/javascript" src="'.
+								$cachedir . 
+							'yass.loader.js"></script>';
+					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
+						$source = substr_replace($source, $script, $bodypos, 0);
+					} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
+						$source = substr_replace($source, $script, $bodypos, 0);
+					} else {
+						$source = preg_replace('@</body>@is', $script . "$0", $source);
+/* a number of engines doesn't set </body> */
+						if (!strpos($this->content, "yass.loader")) {
+							$this->content .= $script;
+						}
+					}
 				}
 				break;
 /* add JavaScript calls before </body> */
@@ -858,6 +878,10 @@ class web_optimizer {
 					$source = substr_replace($source, $newfile, $bodypos, 0);
 				} else {
 					$source = preg_replace("!</body>!is", $newfile . "$0", $source);
+/* a number of engines doesn't set </body> */
+					if (!strpos($this->content, $newfile)) {
+						$this->content .= $newfile;
+					}
 				}
 				break;
 /* place second CSS call to onDOMready */
@@ -1920,7 +1944,11 @@ class web_optimizer {
 			 } elseif (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</BODY>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
 			 } else {
-				$this->content = preg_replace('@</body>@i', $before_body . "$1" , $this->content);
+				$this->content = preg_replace('@</body>@i', $before_body . "$0" , $this->content);
+/* a number of engines doesn't set </body> */
+				if (!strpos($this->content, $before_body)) {
+					$this->content .= $before_body;
+				}
 			 }
 		}
 	}
@@ -1987,7 +2015,7 @@ class web_optimizer {
 			}
 /* get head+body if required */
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-				preg_match("!<head(\s+[^>]+)?>.*?</body>!is", $this->content, $matches);
+				preg_match("!<head(\s+[^>]+)?>.*?(</body>)?!is", $this->content, $matches);
 				if (!empty($matches[0])) {
 					$this->body = $this->prepare_html($matches[0]);
 				}
@@ -2055,6 +2083,10 @@ class web_optimizer {
 					$this->content = substr_replace($this->content, $stamp, $bodypos, 0);
 				} else {
 					$this->content = preg_replace("@</body>@i", $stamp . "$0", $this->content);
+/* a number of engines doesn't set </body> */
+					if (!strpos($this->content, $stamp)) {
+						$this->content .= $stamp;
+					}
 				}
 			}
 		}
