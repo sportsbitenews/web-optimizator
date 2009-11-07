@@ -723,14 +723,16 @@ class web_optimizer {
 		}
 		if (!empty($imgs)) {
 			foreach ($imgs as $image) {
-				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
+				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 				if (empty($replaced[$image[0]])) {
 /* are we operating with multiple hosts */
 					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
 /* skip images on different hosts */
-						if ((!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src))) {
-							$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
+						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
+							$absolute_src =
+								$this->convert_path_to_absolute($old_src,
+									array('file' => $this->view->paths['relative']['document_root']));
 							$new_src = "http" .
 								$this->https .
 								"://" .
@@ -738,7 +740,10 @@ class web_optimizer {
 								"." .
 								$this->host .
 								$absolute_src .
-								$old_src_param;
+								preg_replace("!(www\.)?" . $this->host . "!i",
+									$hosts[strlen($old_src)%$count] .
+										"." . $this->host,
+									$old_src_param);
 						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
 							$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
 /* check if we can distribute this image through satellites' hosts */
@@ -748,7 +753,8 @@ class web_optimizer {
 						}
 /* or replacing images with rewrite to Expires setter? */
 					} elseif (!empty($this->options['page']['far_future_expires_rewrite'])) {
-						$src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['SCRIPT_FILENAME']));
+						$src = $this->convert_path_to_absolute($old_src,
+							array('file' => $this->view->paths['relative']['document_root']));
 /* do not touch dynamic images -- how we can handle them? */
 						if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
 							$new_src = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $src;
@@ -1565,7 +1571,8 @@ class web_optimizer {
 										$this->resolve_css_imports($value['content'], true) . 
 									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
-								$value['content'] = $this->convert_paths_to_absolute($value['content'], array('file' => '/'));
+								$value['content'] = $this->convert_paths_to_absolute($value['content'],
+									array('file' => $this->view->paths['relative']['document_root']));
 							}
 							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
 /* if we can't add to existing tag -- store for the future */

@@ -1229,7 +1229,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['video']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType video/x-flv A315360000
@@ -1244,7 +1243,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (!empty($this->input['user']['far_future_expires']['static']) && !empty($this->premium)) {
 					$content .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
-		ExpiresActive On
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType application/x-shockwave-flash A315360000
