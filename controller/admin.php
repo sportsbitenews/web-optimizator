@@ -447,7 +447,7 @@ class admin {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
-		if ($this->cms_version == 'PHP-Nuke' || $this->cms_version == 'Bitrix' || substr($this->cms_version, 0, 10) == 'Open Slaed' || $this->cms_version == '4images') {
+		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop'))  || substr($this->cms_version, 0, 10) == 'Open Slaed') {
 			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
@@ -457,6 +457,9 @@ class admin {
 			} elseif ($this->cms_version == '4images' ) {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/page_header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'includes/page_footer.php';
+			} elseif ($this->cms_version == 'VaM Shop' ) {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
 			} else {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
@@ -1586,6 +1589,26 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 								$auto_rewrite = 1;
 							}
 						}
+/* and for VaM Shop */
+					} elseif ($this->cms_version == 'VaM Shop') {
+						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
+						$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
+						$mainfile_content = @file_get_contents($mainfile);
+						$footer_content = @file_get_contents($footer);
+						if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+							@copy($mainfile, $mainfile . '.backup');
+/* update mainfile */
+							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+/* create backup */
+							@copy($footer, $footer . '.backup');
+							$footer_content = preg_replace('!(\r?\n\?>)!s', '$web_optimizer->finish();' . "$1", $footer_content);
+/* update footer */
+							$return2 = $this->write_file($footer, $footer_content, 1);
+							if (!empty($return1) && !empty($return2)) {
+								$auto_rewrite = 1;
+							}
+						}
 					} else {
 						$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 						if (substr($this->cms_version, 0, 9) == 'vBulletin') {
@@ -2144,6 +2167,9 @@ require valid-user
 /* 4images */
 			} elseif (is_file($root . 'postcards.php')) {
 				return '4images';
+/* VaM Shop */
+			} elseif (is_file($root . 'includes/application_top.php')) {
+				return 'VaM Shop';
 /* MaxDev Pro */
 			} else {
 				return 'MaxDev Pro';
@@ -2574,6 +2600,19 @@ require valid-user
 					);
 					break;
 				}
+/* VaM Shop */
+			case 'VaM':
+				$files = array(
+					array(
+						'file' => 'includes/application_top.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'includes/application_bottom.php',
+						'mode' => 'finish',
+						'location' => 'end'
+					)
+				);
 /* all other systems */
 			default:
 				$files = array(
