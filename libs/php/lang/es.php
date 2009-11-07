@@ -140,6 +140,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer puede a&ntilde;adir a 
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' todos los cambios requeridos (Solo para /index.php).</p><p>Nota: esto puede llevar a algunos problemas debido a mala configuraci&oacute;n de su servidor, tenga precauci&oacute;n con esta opci&oacute;n.</p>');
 define('_WEBO_unobtrusive_on', 'Activando el JavaScript discreto');
 define('_WEBO_unobtrusive_body', 'Incluye archivos JavaScript fusionados antes de <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Mueve llamados informantes de antes de <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Mueve contrallamados antes de <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Mueve direccionamiento de avisos (de contenido y baners) antes de <code>&lt;/body&gt;</code>');

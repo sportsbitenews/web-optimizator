@@ -136,6 +136,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer kann zu Ihrer Website 
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' aller erforderlichen &Auml;nderungen (nur f&uuml;r /index.php).</p><p>Anmerkung: Setzen Sie diese Option vorsichtig ein, sie kann Probleme bis hin zur Serverkonfiguration hervorrufen</p>');
 define('_WEBO_unobtrusive_on', 'Unauff&auml;lliges JavaScript aktivieren');
 define('_WEBO_unobtrusive_body', 'JavaScript Datei vor <code>&lt;/body&gt;</code> einflie&szlig;en lassen');
+define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'JavaScript Informer Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
 define('_WEBO_unobtrusive_counters', 'Counter Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
 define('_WEBO_unobtrusive_ads', 'Werbung (Kontext und Banner vor <code>&lt;/body&gt;</code> verschieben');

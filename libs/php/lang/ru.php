@@ -136,6 +136,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer может автом�
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (изменения будут применены только для <code>/index.php</code>).</p><p>Внимание: для некоторых непроверенных окружений и малораспространенных CMS это может привести к неработоспособности сайта.</p>');
 define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
 define('_WEBO_unobtrusive_body', 'Вставить вызов объединенного JavaScript-файла перед <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_all', 'Переместить весь JavaScript-код перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Перенести вызовы JavaScript-информеров перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Перенести вызовы счетчиков перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Перенести рекламные вызовы (контекст и банеры) перед <code>&lt;/body&gt;</code>');

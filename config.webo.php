@@ -19,8 +19,10 @@ $compress_options['document_root'] = "";
 $compress_options['host'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
-## Add all libraries right before </body>
+## Add merged script right before </body>
 $compress_options['unobtrusive']['body'] = "0";
+## Put all scripts right before </body>
+$compress_options['unobtrusive']['all'] = "0";
 ## Put all known JS informers right before </body>
 $compress_options['unobtrusive']['informers'] = "0";
 ## Put all known JS counters right before </body>

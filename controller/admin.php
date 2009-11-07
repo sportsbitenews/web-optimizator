@@ -544,11 +544,13 @@ class admin {
 	function write_file ($file, $content, $return = false) {
 		if (function_exists('file_put_contents')) {
 			$return = @file_put_contents($file, $content);
+			@chmod($file, octdec("0644"));
 		} else {
 			$fp = @fopen($file, "w");
 			if ($fp) {
 				fwrite($fp, $content);
 				fclose($fp);
+				@chmod($file, octdec("0644"));
 				$return = 1;
 			} elseif ($return) {
 				$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $file ." ". _WEBO_SPLASH2_MAKESURE ."</p>");

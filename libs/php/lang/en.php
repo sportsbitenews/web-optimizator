@@ -136,6 +136,7 @@ define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer can add all required c
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', '.</p><p>Note: this can lead to some problems due to server misconfiguration, be carefull with this option.</p>');
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
 define('_WEBO_unobtrusive_body', 'Include merged JavaScript file before <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Move counter calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls before <code>&lt;/body&gt;</code>');
