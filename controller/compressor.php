@@ -2050,7 +2050,7 @@ class web_optimizer {
 				$title = empty($this->options['page']['footer_text']) ? '' :
 					' title="' . $this->options['page']['footer_text'] . '"';
 				$text = empty($this->options['page']['footer_text']) ||
-					!empty($this->options['page']['footer_image']) ? '' : $alt;
+					!empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
 /* place or not image? */
 				if (empty($this->options['page']['footer_image'])) {
 					$background_image = $background_style = '';
@@ -2073,7 +2073,7 @@ class web_optimizer {
 					$background_style = ' style="' . $background_style . '"';
 				}
 /* choose between link or span */
-				if (!empty($this->options['page']['footer_link'])) {
+				if (empty($text)) {
 					$el = 'a href="http://www.web-optimizer.us/" rel="nofollow"';
 					$el_close = 'a';
 				} else {
