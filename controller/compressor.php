@@ -2154,7 +2154,7 @@ class web_optimizer {
 				array('',			'',			'',				'',
 					'',				'',			'',				'',
 					'',				'</script>'), $dest);
-			$dest = preg_replace("@(<script[^>]*>)(\r\n)?<!--@is", "$1", $dest);
+			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
