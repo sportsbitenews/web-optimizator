@@ -447,17 +447,17 @@ class admin {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
-		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop'))  || substr($this->cms_version, 0, 10) == 'Open Slaed') {
+		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce'))  || substr($this->cms_version, 0, 10) == 'Open Slaed') {
 			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
-			} elseif ($this->cms_version == 'PHP-Nuke' ) {
+			} elseif ($this->cms_version == 'PHP-Nuke') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
-			} elseif ($this->cms_version == '4images' ) {
+			} elseif ($this->cms_version == '4images') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/page_header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'includes/page_footer.php';
-			} elseif ($this->cms_version == 'VaM Shop' ) {
+			} elseif ($this->cms_version == 'VaM Shop' || $this->cms_version == 'osCommerce') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
 			} else {
@@ -1589,8 +1589,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 								$auto_rewrite = 1;
 							}
 						}
-/* and for VaM Shop */
-					} elseif ($this->cms_version == 'VaM Shop') {
+/* and for VaM Shop, osCommerce */
+					} elseif ($this->cms_version == 'VaM Shop' || $this->cms_version == 'osCommerce') {
 						$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
 						$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
 						$mainfile_content = @file_get_contents($mainfile);
@@ -1602,7 +1602,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 							$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
 /* create backup */
 							@copy($footer, $footer . '.backup');
-							$footer_content = preg_replace('!(\r?\n\?>)!s', '$web_optimizer->finish();' . "$1", $footer_content);
+							$footer_content = preg_replace('!(\?>)!s', '$web_optimizer->finish();' . "$1", $footer_content);
 /* update footer */
 							$return2 = $this->write_file($footer, $footer_content, 1);
 							if (!empty($return1) && !empty($return2)) {
