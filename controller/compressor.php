@@ -1876,6 +1876,7 @@ class web_optimizer {
 		}
 		if (!empty($this->options['page']['unobtrusive_body']) ||
 			!empty($this->options['page']['minify'])) {
+				$before_body = '';
 				if (!empty($this->options['page']['html_tidy'])) {
 					for ($i = 0; $i < 6; $i++) {
 						$_block = $_script_blocks[$i];
