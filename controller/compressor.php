@@ -117,7 +117,9 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-			$file = $this->options['page']['cachedir'] . '/' . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
+/* skip gzip/deflate if plugins are enabled - they can have onAfterOptimization */
+			$file = $this->options['page']['cachedir'] . '/' . $this->uri .
+				(empty($this->encoding_ext) || is_array($this->options['plugins']) ? '' : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -125,7 +127,8 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = @file_get_contents($file);
-				$hash = md5($content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
+				$hash = crc32($content) .
+					(empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
 				if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') ||
@@ -139,6 +142,27 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 				if (empty($this->options['page']['flush'])) {
+/* execute plugin-specific logic */
+					if (is_array($this->options['plugins'])) {
+						foreach ($this->options['plugins'] as $plugin) {
+							$plugin_file =
+								$this->options['css']['installdir'] .
+									'plugins/' . $plugin . '.php';
+							if (is_file($plugin_file)) {
+								include($plugin_file);
+								$content =
+									$web_optimizer_plugin->onAfterOptimization($content);
+							}
+						}
+						$cnt = $this->create_gz_compress($content,
+							in_array($this->encoding, array('gzip', 'x-gzip')));
+						if (!empty($cnt)) {
+							$content = $cnt;
+/* skip gzip if we can't compress content */
+						} else {
+							$this->options['page']['gzip'] = 0;
+						}
+					}
 /* check if cached content is gzipped */
 					if (!empty($this->options['page']['gzip'])) {
 						$this->set_gzip_header();
@@ -171,11 +195,8 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$fp = @fopen($this->options['javascript']['cachedir'] . '/progress.html', "w");
-		if ($fp) {
-			@fwrite($fp, '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>');
-			@fclose($fp);
-		}
+		$this->write_file($this->options['javascript']['cachedir'] . '/progress.html',
+			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>');
 	}
 
 	/**
@@ -366,7 +387,9 @@ class web_optimizer {
 			),
 			"cache_version" => $this->premium ? round($this->options['performance']['cache_version']) : 0,
 			"quick_check" => $this->options['performance']['quick_check'] &&
-				$this->premium
+				$this->premium,
+			"plugins" => $this->premium &&
+				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -401,6 +424,19 @@ class web_optimizer {
 			$this->content = ob_get_clean();
 		} else {
 			$this->content = $content;
+		}
+/* execute plugin-specific logic, BeforeOptimization event */
+		if (is_array($this->options['plugins'])) {
+			foreach ($this->options['plugins'] as $plugin) {
+				$plugin_file =
+					$this->options['css']['installdir'] .
+						'plugins/' . $plugin . '.php';
+				if (is_file($plugin_file)) {
+					include($plugin_file);
+					$this->content =
+						$web_optimizer_plugin->onBeforeOptimization($this->content);
+				}
+			}
 		}
 		if (function_exists('get_headers')) {
 			$headers = headers_list();
@@ -628,8 +664,10 @@ class web_optimizer {
 /* move informers, counters and ads before </body> */
 		$this->replace_informers($options);
 /* Minify page itself or parse multiple hosts */
-		if(!empty($options['minify']) || (!empty($options['parallel']) &&
-			!empty($options['parallel_hosts']))) {
+		if(!empty($options['minify']) ||
+			(!empty($options['parallel']) &&
+				!empty($options['parallel_hosts'])) ||
+			!empty($options['unobtrusive_body'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
@@ -653,12 +691,17 @@ class web_optimizer {
 				}
 			}
 		}
-/* Gzip page itself */
-		if(!empty($options['gzip']) && !empty($this->encoding)) {
-			$content = $this->create_gz_compress($this->content, in_array($this->encoding, array('gzip', 'x-gzip')));
-			if (!empty($content)) {
-				$this->set_gzip_header();
-				$this->content = $content;
+/* execute plugin-specific logic, AfterOptimization event */
+		if (is_array($this->options['plugins'])) {
+			foreach ($this->options['plugins'] as $plugin) {
+				$plugin_file =
+					$this->options['css']['installdir'] .
+						'plugins/' . $plugin . '.php';
+				if (is_file($plugin_file)) {
+					include($plugin_file);
+					$this->content =
+						$web_optimizer_plugin->onAfterOptimization($this->content);
+				}
 			}
 		}
 		if (!empty($this->web_optimizer_stage)) {
@@ -666,32 +709,82 @@ class web_optimizer {
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
-			$file = $options['cachedir'] . $this->uri . (empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
+			$file = $options['cachedir'] .
+				$this->uri .
+				(empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
 				$timestamp = 0;
 			}
 /* set ETag, thx to merzmarkus */
-			header("ETag: \"" . md5($this->content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding)) . "\"");
+			header("ETag: \"" .
+				md5($this->content) .
+				(empty($this->encoding) ? '' : '-' .
+					str_replace("x-", "", $this->encoding)) .
+				"\"");
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
-				$fp = @fopen($file, "a");
-				if ($fp) {
-/* block file from writing */
-					@flock($fp, LOCK_EX);
-/* erase content and move to the beginning */
-					@ftruncate($fp, 0);
-					@fseek($fp, 0);
-					$content_to_write = $this->content;
+				if (!empty($options['gzip']) && !empty($this->encoding)) {
+					$content_to_write = $this->create_gz_compress($this->content,
+						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* can't write a part of gzipped file */
-					if (!empty($options['flush']) && empty($this->encoding)) {
-						$content_to_write = substr($content_to_write, 0, $options['flush_size']);
-					}
-					@fwrite($fp, $content_to_write);
-					@fclose($fp);
+				} elseif (!empty($options['flush']) && empty($this->encoding)) {
+					$content_to_write =
+						substr($content_to_write, 0, $options['flush_size']);
+				}
+				$this->write_file($file, $content_to_write);
+/* create uncompressed file for plugins */
+				if (is_array($this->options['plugins']) &&
+					!empty($this->encoding_ext)) {
+						$this->write_file($options['cachedir'] . $this->uri,
+							$this->content);
 				}
 			}
 		}
+/* execute plugin-specific logic, Cache event */
+		if (is_array($this->options['plugins'])) {
+			foreach ($this->options['plugins'] as $plugin) {
+				$plugin_file =
+					$this->options['css']['installdir'] .
+						'plugins/' . $plugin . '.php';
+				if (is_file($plugin_file)) {
+					include($plugin_file);
+					$this->content =
+						$web_optimizer_plugin->onCache($this->content);
+				}
+			}
+		}
+/* Gzip page itself */
+		if(!empty($options['gzip']) && !empty($this->encoding)) {
+			$content = $this->create_gz_compress($this->content,
+				in_array($this->encoding, array('gzip', 'x-gzip')));
+			if (!empty($content)) {
+				$this->set_gzip_header();
+				$this->content = $content;
+			}
+		}
+	}
+
+	/**
+	* Write content to file
+	* 
+	**/
+	function write_file ($file, $content) {
+		if (function_exists('file_put_contents')) {
+			file_put_contents($file, $content);
+		} else {
+			$fp = @fopen($file, "a");
+			if ($fp) {
+/* block file from writing */
+				@flock($fp, LOCK_EX);
+/* erase content and move to the beginning */
+				@ftruncate($fp, 0);
+				@fseek($fp, 0);
+				@fwrite($fp, $content);
+				@fclose($fp);
+			}
+		}
+		@touch($file, $this->time);
 	}
 
 	/**
@@ -1150,28 +1243,17 @@ class web_optimizer {
 					$minified_resource = $minified_content_array[1];
 /* write data:URI / mhtml content */
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
-						if ($fp = @fopen($physical_file . '.css', 'wb')) {
-							@fwrite($fp, $minified_resource);
-							@fclose($fp);
-/* Set permissions, required by some hosts */
-							@chmod($physical_file . '.css', octdec("0644"));
-/* make timestamps equal */
-							@touch($physical_file . '.css', $this->time);
-/* create static gzipped versions for static gzip in nginx, Apache */
-							$fpgz = @fopen($physical_file . '.css.gz', 'wb');
-							if ($fpgz) {
-								@fwrite($fpgz, @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
-								@fclose($fpgz);
-								@chmod($physical_file . '.css.gz', octdec("0644"));
-							}
-							$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
+						$this->write_file($physical_file . '.css',
+							$minified_resource);
+						$this->write_file($physical_file . '.css.gz',
+							@gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
+						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
 /* raw include right after the main CSS file, or according to unobtrusive logic */
-							if (empty($options['data_uris_domloaded'])) {
-								$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
+						if (empty($options['data_uris_domloaded'])) {
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 0);
 /* incldue via JS loader to provide fast flush of content */
-							} else {
-								$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
-							}
+						} else {
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
 						}
 					} elseif (!empty($minified_content)) {
 						$ie = in_array($this->ua_mod, array('.ie5', '.ie6', '.ie7'));
@@ -1214,26 +1296,15 @@ class web_optimizer {
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
-				if ($fp = @fopen($physical_file, 'wb')) {
-					@fwrite($fp, $contents);
-					@fclose($fp);
-/* Set permissions, required by some hosts */
-					@chmod($physical_file, octdec("0644"));
-/* make timestamps equal */
-					@touch($physical_file, $this->time);
+				$this->write_file($physical_file, $contents);
 /* create static gzipped versions for static gzip in nginx, Apache */
-					if ($options['ext'] == 'css' || $options['ext'] == 'js') {
-						$fpgz = @fopen($physical_file . '.gz', 'wb');
-						if ($fpgz) {
-							@fwrite($fpgz, @gzencode($contents, $options['gzip_level'], FORCE_GZIP));
-							@fclose($fpgz);
-							@chmod($physical_file . '.gz', octdec("0644"));
-						}
-					}
-/* Create the link to the new file */
-					$newfile = $this->get_new_file($options, $cache_file, $this->time);
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
+				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
+					$this->write_file($physical_file . '.gz',
+						@gzencode($contents, $options['gzip_level'], FORCE_GZIP));
 				}
+/* Create the link to the new file */
+				$newfile = $this->get_new_file($options, $cache_file, $this->time);
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir, $options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
 			}
 		}
 		return $source;
@@ -1750,25 +1821,38 @@ class web_optimizer {
 	* Adapted from smarty code http://www.smarty.net/
 	**/
 	function trimwhitespace ($source) {
-		if (!empty($this->options['page']['minify'])) {
-			if (!empty($this->options['page']['html_tidy'])) {
-				$_script_blocks = array(array(), array(), array(), array(), array(), array());
+		if (!empty($this->options['page']['minify']) ||
+			!empty($this->options['page']['unobtrusive_body'])) {
+				if (!empty($this->options['page']['html_tidy'])) {
+					$_script_blocks = array(array(), array(), array(),
+											array(), array(), array());
 /* Pull out the script, textarea and pre blocks */
-				$this->trimwhitespace_find('<script', '</script>', '@@@WBO:TRIM:SCRIPT0@@@', $source, $_script_blocks[0]);
-				$this->trimwhitespace_find('<SCRIPT', '</SCRIPT>', '@@@WBO:TRIM:SCRIPT1@@@', $source, $_script_blocks[1]);
-				$this->trimwhitespace_find('<textarea', '</textarea>', '@@@WBO:TRIM:SCRIPT2@@@', $source, $_script_blocks[2]);
-				$this->trimwhitespace_find('<TEXTAREA', '</TEXTAREA>', '@@@WBO:TRIM:SCRIPT3@@@', $source, $_script_blocks[3]);
-				$this->trimwhitespace_find('<pre', '</pre>', '@@@WBO:TRIM:SCRIPT4@@@', $source, $_script_blocks[4]);
-				$this->trimwhitespace_find('<PRE', '</PRE>', '@@@WBO:TRIM:SCRIPT5@@@', $source, $_script_blocks[5]);
-			} else {
-				preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
-				$_script_blocks = $match[0];
-				$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@WBO:TRIM:SCRIPT@@@', $source);
-			}
+					$this->trimwhitespace_find('<script', '</script>',
+						'@@@WBO:TRIM:SCRIPT0@@@', $source, $_script_blocks[0]);
+					$this->trimwhitespace_find('<SCRIPT', '</SCRIPT>',
+						'@@@WBO:TRIM:SCRIPT1@@@', $source, $_script_blocks[1]);
+					$this->trimwhitespace_find('<textarea', '</textarea>',
+						'@@@WBO:TRIM:SCRIPT2@@@', $source, $_script_blocks[2]);
+					$this->trimwhitespace_find('<TEXTAREA', '</TEXTAREA>',
+						'@@@WBO:TRIM:SCRIPT3@@@', $source, $_script_blocks[3]);
+					$this->trimwhitespace_find('<pre', '</pre>',
+						'@@@WBO:TRIM:SCRIPT4@@@', $source, $_script_blocks[4]);
+					$this->trimwhitespace_find('<PRE', '</PRE>',
+						'@@@WBO:TRIM:SCRIPT5@@@', $source, $_script_blocks[5]);
+				} else {
+					preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
+					$_script_blocks = $match[0];
+					$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@WBO:TRIM:SCRIPT@@@', $source);
+				}
 		}
 /* add multiple hosts or redirects for static images */
-		if ((!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) || !empty($this->options['page']['far_future_expires_rewrite'])) {
-			$source = $this->add_multiple_hosts($source, explode(" ", $this->options['page']['parallel_hosts']),  explode(" ", $this->options['page']['parallel_satellites']),  explode(" ", $this->options['page']['parallel_satellites_hosts']));
+		if ((!empty($this->options['page']['parallel']) &&
+				!empty($this->options['page']['parallel_hosts'])) ||
+			!empty($this->options['page']['far_future_expires_rewrite'])) {
+				$source = $this->add_multiple_hosts($source,
+					explode(" ", $this->options['page']['parallel_hosts']),
+					explode(" ", $this->options['page']['parallel_satellites']),
+					explode(" ", $this->options['page']['parallel_satellites_hosts']));
 		}
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
@@ -1789,23 +1873,25 @@ class web_optimizer {
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
-			if (!empty($this->options['page']['html_tidy'])) {
-				for ($i = 0; $i < 6; $i++) {
-					$_block = $_script_blocks[$i];
-					if (count($_block)) {
-						$before_body .=
-							$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" .
-								$i . "@@@", $_block, $source);
+		}
+		if (!empty($this->options['page']['unobtrusive_body']) ||
+			!empty($this->options['page']['minify'])) {
+				if (!empty($this->options['page']['html_tidy'])) {
+					for ($i = 0; $i < 6; $i++) {
+						$_block = $_script_blocks[$i];
+						if (count($_block)) {
+							$before_body .=
+								$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" .
+									$i . "@@@", $_block, $source);
+						}
 					}
+				} else {
+					$before_body =
+						$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT@@@",
+							$_script_blocks, $source);
 				}
-			} else {
-				$before_body =
-					$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT@@@",
-						$_script_blocks, $source);
-			}
 /* move all scripts to </body> */
-			if (!empty($this->options['page']['unobtrusive_body']) &&
-				!empty($before_body)) {
+				if (!empty($before_body)) {
 					if ($this->options['html_tidy'] &&
 						($bodypos = strpos($source, "</body>"))) {
 							$source = substr_replace($this->content,
@@ -1821,11 +1907,10 @@ class web_optimizer {
 						if (!strpos($source, $before_body)) {
 							$source .= $before_body;
 						}
-								
 					}
-			}
-			return $source;
+				}
 		}
+		return $source;
 	}
 
 	/**

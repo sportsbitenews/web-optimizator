@@ -115,14 +115,20 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 		}
 
 /* preOptimizer */
-		function beforeOptimization ($content) {
+		function onBeforeOptimization ($content) {
 			return $content;
 		}
 
 /* postOptimizer */
-		function afterOptimization ($content) {
+		function onAfterOptimization ($content) {
 			return $content;
 		}
+
+/* HTML Cacher */
+		function onCache ($content) {
+			return $content;
+		}
+
 
 	}
 }
