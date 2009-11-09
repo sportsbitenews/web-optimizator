@@ -143,7 +143,10 @@ class compressor_view {
 			while (strlen($l) > 4+(++$i)) {
 				$c3 += pow(31, $i) * strpos($table, substr($l, 4 + $i, 1));
 			}
-			if ((!(($c3*$c3)%941 - $c1) && !(($c1*$c1)%941 - $c2)) || (!(pow($c3, 3)%941 - $c1) && !(pow($c1, 3)%941 - $c2))) {
+			$t1 = !($c3%941 - $c1) && !($c1%941 - $c2);
+			$t2 = !(($c3*$c3)%941 - $c1) && !(($c1*$c1)%941 - $c2);
+			$t3 = !(pow($c3, 3)%941 - $c1) && !(pow($c1, 3)%941 - $c2);
+			if ($t1 || $t2 || $t3) {
 				if ($cachedir) {
 					if (time() - @filemtime($cachedir . 'wo') > 86400) {
 						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 5);
@@ -152,7 +155,7 @@ class compressor_view {
 						return false;
 					}
 				}
-				return true;
+				return $t1 ? 1 : 2;
 			}
 		}
 		return false;

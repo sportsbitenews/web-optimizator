@@ -1271,14 +1271,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 					$content .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
-				if (!empty($this->input['user']['far_future_expires']['video'])) {
-					$content .= "
-	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
-				if (!empty($this->input['user']['far_future_expires']['static'])) {
-					$content .= "
-	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
 				if (!empty($this->input['user']['far_future_expires']['fonts'])) {
 					$content .= "
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
@@ -1286,7 +1278,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($htaccess_options['mod_headers'])) {
+			if (!empty($htaccess_options['mod_headers']) && !empty($this->premium)) {
 				$content .= "
 <IfModule mod_headers.c>";
 				if (!empty($htaccess_options['mod_deflate']) || !empty($htaccess_options['mod_gzip'])) {
@@ -2290,6 +2282,9 @@ require valid-user
 			define('FUNC_FILE', 1);
 			require($root . 'config/config_global.php');
 			return 'Open Slaed' . (empty($conf['version']) ? '' : ' ' . $conf['version']);
+/* Geeklog 1.6.1 */
+		} elseif (is_file($root . '/images/icons/geeklog.gif')) {
+			return 'Geeklog';
 		}
 		return 'CMS 42';
 	}
