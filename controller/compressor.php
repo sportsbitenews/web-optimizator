@@ -440,17 +440,20 @@ class web_optimizer {
 		}
 		if (function_exists('get_headers')) {
 			$headers = headers_list();
-/* define if Content-Type is text/xml and skip it */
+			$skip = 1;
+/* define if Content-Type is text/html and allow it */
 			foreach ($headers as $header) {
-				if (strpos($header, 'text/xml')) {
-					$xml = 1;
+				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {
+					$skip = 0;
 				}
 			}
 		}
+		$query = explode('.', $_SERVER['QUERY_STRING']);
+		$ext = $query[count($query) - 1];
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
 		$spot = substr($this->content, 0, 20);
 /* skip RSS, SMF xml format */
-		if (empty($xml) && !strpos($spot, "<rss") && !strpos($spot, "<smf")) {
+		if (!$skip && !strpos($spot, "<rss") && !strpos($spot, "<smf") && !in_array($ext, array('pdf', 'PDF', 'doc', 'DOC', 'xls', 'XLS'))) {
 			if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
 				$this->get_script_array();

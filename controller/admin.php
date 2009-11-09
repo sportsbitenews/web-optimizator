@@ -1271,6 +1271,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 					$content .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
 				}
+				if (!empty($this->input['user']['far_future_expires']['video'])) {
+					$content .= "
+	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+				}
+				if (!empty($this->input['user']['far_future_expires']['static'])) {
+					$content .= "
+	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
+				}
 				if (!empty($this->input['user']['far_future_expires']['fonts'])) {
 					$content .= "
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
