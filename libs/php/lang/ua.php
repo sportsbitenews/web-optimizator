@@ -12,7 +12,7 @@ define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Купить полную версию</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
-define('_WEBO_GENERAL_DEMOVERSION', 'Демонстрационная версия');
+define('_WEBO_GENERAL_DEMOVERSION', 'Некоммерческая версия');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Хмм... у нас виникла проблема');

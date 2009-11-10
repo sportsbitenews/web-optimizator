@@ -10,9 +10,9 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Comprar versi&oacute;n completa</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Comprar edici&oacute;n Premium</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
-define('_WEBO_GENERAL_DEMOVERSION', 'Versi&oacute;n Demo');
+define('_WEBO_GENERAL_DEMOVERSION', 'Edici&oacute;n comminuty');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Hmmm... tenemos un problemita');
