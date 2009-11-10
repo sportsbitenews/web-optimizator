@@ -257,8 +257,11 @@ class web_optimizer {
 					$this->options['htaccess']['enabled'] &&
 					$this->premium,
 				"unobtrusive" => $this->options['unobtrusive']['on'] &&
+					!$this->options['unobtrusive']['body'] &&
+					!$this->options['unobtrusive']['all'] &&
 					$this->premium,
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] &&
+					!$this->options['unobtrusive']['all'] &&
 					$this->premium,
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"inline_scripts" => $this->options['external_scripts']['inline'],
@@ -371,7 +374,7 @@ class web_optimizer {
 					$this->premium,
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] &&
 					$this->premium,
-				"unobtrusive_body" => $this->options['unobtrusive']['all'] &&
+				"unobtrusive_all" => $this->options['unobtrusive']['all'] &&
 					$this->premium,
 				"footer" => $this->options['footer']['text'],
 				"footer_image" => $this->options['footer']['image'],
@@ -468,11 +471,15 @@ class web_optimizer {
 			if (is_array($this->options)) {
 				foreach ($this->options as $func => $option) {
 					if (method_exists($this,$func)) {
-						if (!empty($option['gzip']) || !empty($option['minify']) || !empty($option['far_future_expires']) || !empty($option['parallel'])) {
-							if (!empty($this->web_optimizer_stage)) {
-								$this->write_progress($this->web_optimizer_stage++);
-							}
-							$this->$func($option, $func);
+						if (!empty($option['gzip']) ||
+							!empty($option['minify']) ||
+							!empty($option['far_future_expires']) ||
+							!empty($option['parallel']) ||
+							!empty($option['unobtrusive_all'])) {
+								if (!empty($this->web_optimizer_stage)) {
+									$this->write_progress($this->web_optimizer_stage++);
+								}
+								$this->$func($option, $func);
 						}
 					}
 				}
@@ -674,7 +681,7 @@ class web_optimizer {
 		if(!empty($options['minify']) ||
 			(!empty($options['parallel']) &&
 				!empty($options['parallel_hosts'])) ||
-			!empty($options['unobtrusive_body'])) {
+			!empty($options['unobtrusive_all'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
@@ -1838,7 +1845,7 @@ class web_optimizer {
 	**/
 	function trimwhitespace ($source) {
 		if (!empty($this->options['page']['minify']) ||
-			!empty($this->options['page']['unobtrusive_body'])) {
+			!empty($this->options['page']['unobtrusive_all'])) {
 				if (!empty($this->options['page']['html_tidy'])) {
 					$_script_blocks = array(array(), array(), array(),
 											array(), array(), array());
@@ -1890,7 +1897,7 @@ class web_optimizer {
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
 		}
-		if (!empty($this->options['page']['unobtrusive_body']) ||
+		if (!empty($this->options['page']['unobtrusive_all']) ||
 			!empty($this->options['page']['minify'])) {
 				$before_body = '';
 				if (!empty($this->options['page']['html_tidy'])) {
@@ -1957,7 +1964,7 @@ class web_optimizer {
 		for ($_i=0, $_count = count($replace); $_i<$_count; $_i++) {
 			if (($_pos = strpos($subject, $search_str, $_pos)) !== false) {
 /* move scripts to </body>. Skip dynamic styles loader */
-				if (!empty($this->options['page']['unobtrusive_body']) &&
+				if (!empty($this->options['page']['unobtrusive_all']) &&
 					!strpos($replace[$_i], '_weboptimizer_load')) {
 					if ((!empty($this->options['html_tidy']) &&
 							(strpos($replace[$_i], '<script') ||

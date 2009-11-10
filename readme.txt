@@ -7,8 +7,9 @@ It can also GZIP these assets, and the page itself (via PHP or .htaccess
 options). Also it applies CSS Sprites and data:URI techniques. It supports
 unobtrusive JavaScript conversion, multiple hosts, and a lot of other useful
 options.
-Average acceleration is 2.5 times. Web Optimizer was initially based on PHP
-Speedy.
+Actually Web Optimizer applies all known client side optimization approaches to
+completely speed up your website. Average acceleration is 2.5 times. Web
+Optimizer was initially based on PHP Speedy.
 
 Web Optimizer native plugin for Wordpress:
 http://wordpress.org/extend/plugins/web-optimizer/
@@ -78,14 +79,15 @@ Also you can try to exclude some images from CSS Sprites generation.
 Please also visit TroubleeShooter page in Wiki:
 http://code.google.com/p/web-optimizator/wiki/TroubleshootingAndSupport
 
-Team
+Team and contributors
 -----------------------
 A lot of different persons contributed to this project. Some of them:
  * sunnybear (ported core, unit tests, htaccess, CSS Sprites, multiple hosts,
    unobtrusive logic, performance tuning, promotion, investment raising, other
    stuff)
- * fade (design, general usability)
+ * fade (design, logo, general usability)
  * gkondratenko (documentation, interfaces, integration, known issues gathering)
+ * markusmerz (a lot of minor bugs found and overall beta testing perfromed)
  * ShimON (Java branch, CSS Sprites unit-tests)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
@@ -93,3 +95,15 @@ A lot of different persons contributed to this project. Some of them:
  * crazyyy (UA localization)
  * Ajexandro (ES localization)
  * jos (DE localization)
+ 
+ License
+ -----------------------
+ Web Optimizer is licensed under WEBO Software license (LICENSE.txt). It's
+ located in this package. For Russian users there is LICENSE.ru.txt
+ Some parts of Web Optimizer are open source and licensed under different
+ licenses:
+  * JSMin library - GNU GPLv2
+  * Packer library - GNU LGPLv2
+  * YUI Compressor binary - BSD License
+  * YASS - MIT License
+  * CSS Tidy - 
