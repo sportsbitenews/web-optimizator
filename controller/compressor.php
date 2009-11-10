@@ -1066,11 +1066,18 @@ class web_optimizer {
 		$cachedir_relative = $options['cachedir_relative'];
 		$handlers = '';
 /* If only one script found */
-		if(!is_array($external_array)) {
+		if (!is_array($external_array)) {
 			$external_array = array($external_array);
 		}
+/* Merge all handlers. But the correct way is to set them one by one... */
+		if (is_array($handler_array)) {
+			foreach ($handler_array as $h) {
+				$handlers .= preg_replace("@\r?\n\s*\t*@", ";", $h['content']);
+				$source = str_replace($h['source'], '', $source);
+			}
+		}
 		if (empty($this->options['quick_check']) && empty($options['file'])) {
-/* glue scripts' content / filenames */
+/* Glue scripts' content / filenames */
 			$scripts_string = '';
 			foreach ($external_array as $script) {
 				$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
@@ -1492,8 +1499,10 @@ class web_optimizer {
 /* skip external files if option is disabled */
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
 						(!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) ||
-						(empty($file['file']) && $this->options['javascript']['inline_scripts'])) {
-							$this->initial_files[] = $file;
+						(empty($file['file']) &&
+							($this->options['javascript']['inline_scripts'] || 
+								$this->options['javascript']['unobtrusive']))) {
+									$this->initial_files[] = $file;
 					}
 				}
 			}
