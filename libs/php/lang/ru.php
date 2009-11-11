@@ -11,7 +11,6 @@ define('_WEBO_GENERAL_TITLE', 'Настройка Web Optimizer');
 define('_WEBO_GENERAL_FOOTER', 'Быстрее молнии!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Купить полную версию</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
-define('_WEBO_GENERAL_DEMOVERSION', 'Некоммерческая версия');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Хмм... у нас возникла проблема');
@@ -147,10 +146,13 @@ define('_WEBO_external_scripts_css', 'Включить объединение в
 define('_WEBO_external_scripts_css_inline', 'Включить объединение CSS-кода');
 define('_WEBO_external_scripts_ignore_list', 'Исключить из объединения файл(ы)');
 define('_WEBO_external_scripts_include_code', 'Включить в файлы CSS-код');
+define('_WEBO_external_scripts_user', 'Логин для доступа по HTTP Basic Authorization');
+define('_WEBO_external_scripts_pass', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_performance_mtime', 'Не проверять время изменения файлов');
 define('_WEBO_performance_plain_string', 'Не использовать регулярные выражения');
 define('_WEBO_performance_quick_check', 'Проверять целостность кэша только по <code>head</code>');
 define('_WEBO_performance_cache_version', 'Номер версии кэша (не проверять наличие файлов)');
+define('_WEBO_performance_uniform_cache', 'Одинаковые файлы в кэше для всех браузеров');
 define('_WEBO_minify_javascript', 'Объединить JavaScript-файлы');
 define('_WEBO_minify_javascript_body', 'Объединить JavaScript-файлы внутри <code>&lt;body&gt;</code>');
 define('_WEBO_minify_with', 'Минимизировать JavaScript-файлы');
@@ -221,14 +223,13 @@ define('_WEBO_htaccess_mod_mime', 'Использовать <code>mod_mime</code
 define('_WEBO_htaccess_mod_rewrite', 'Использовать <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
 define('_WEBO_htaccess_access', 'Защитить установку Web Optimizer с помощью <code>htpasswd</code>');
-define('_WEBO_htaccess_user', 'Логин для доступа по HTTP Basic Authorization');
-define('_WEBO_htaccess_pass', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Ограничения демо-версии');
+define('_WEBO_SPLASH2_COMPARISON', 'Ограничения версии');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Аспекты технологии');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Демо-версия');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая версия');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная версия');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная версия');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'Процессорные затраты');
@@ -244,6 +245,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'отсутствует');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '399 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '1999 руб.');
 
 /* Third splash -- end screen */

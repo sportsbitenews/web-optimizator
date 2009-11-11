@@ -147,12 +147,15 @@ define('_WEBO_external_scripts_css', 'Включити об\'єднання зо
 define('_WEBO_external_scripts_css_inline', 'Включити об\'єднання CSS-кода');
 define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання файли');
 define('_WEBO_external_scripts_include_code', 'Включить в файлы CSS-код');
+define('_WEBO_external_scripts_user', 'Логин для доступа по HTTP Basic Authorization');
+define('_WEBO_external_scripts_pass', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_minify_javascript', 'Об\'єднати JavaScript-файли');
 define('_WEBO_minify_javascript_body', 'Об\'єднати JavaScript-файли усередині <code>&lt;body&gt;</code>');
 define('_WEBO_performance_mtime', 'Не перевіряти час зміни файлів');
 define('_WEBO_performance_plain_string', 'Не использовать регулярные выражения');
 define('_WEBO_performance_quick_check', 'Проверять целостность кэша только по <code>head</code>');
 define('_WEBO_performance_cache_version', 'Номер версии кэша (не проверять наличие файлов)');
+define('_WEBO_performance_uniform_cache', 'Одинаковые файлы в кэше для всех браузеров');
 define('_WEBO_minify_with', 'Мінімізувати JavaScript-файли');
 define('_WEBO_minify_with_jsmin', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_with_packer', 'Мінімізувати за допомогою Packer');
@@ -221,14 +224,13 @@ define('_WEBO_htaccess_mod_mime', 'Використовувати <code>mod_mime
 define('_WEBO_htaccess_mod_rewrite', 'Використовувати <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Розмістити <code>.htaccess</code> в локальній (не кореневій) директорії');
 define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');
-define('_WEBO_htaccess_user', 'Логин для доступа по HTTP Basic Authorization');
-define('_WEBO_htaccess_pass', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_auto_rewrite_enabled', 'В\ключити авто-запис');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Ограничения демо-версии');
+define('_WEBO_SPLASH2_COMPARISON', 'Ограничения версии');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Аспекты технологии');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Демо-версия');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая версия');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная версия');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная версия');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'Процессорные затраты');
@@ -244,6 +246,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'отсутствует');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '399 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '1999 руб.');
 
 /* Third splash -- end screen */

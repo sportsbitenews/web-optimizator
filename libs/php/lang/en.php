@@ -147,10 +147,13 @@ define('_WEBO_external_scripts_css', 'Enable external styles merging');
 define('_WEBO_external_scripts_css_inline', 'Enable inline styles merging');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file(s) from merging');
 define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
+define('_WEBO_external_scripts_user', 'Username (to access via HTTP Basic Authorization)');
+define('_WEBO_external_scripts_pass', 'Password (to access via HTTP Basic Authorization)');
 define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
 define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
+define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_minify_javascript', 'Combine JavaScript files');
 define('_WEBO_minify_javascript_body', 'Combine JavaScript files inside <code>&lt;body&gt;</code>');
 define('_WEBO_minify_with', 'Minify JavaScript files');
@@ -221,15 +224,14 @@ define('_WEBO_htaccess_mod_mime', 'Use <code>mod_mime</code>');
 define('_WEBO_htaccess_mod_rewrite', 'Use <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Place <code>.htaccess</code> file locally (not to Document Root)');
 define('_WEBO_htaccess_access', 'Protect Web Optimizer installation via <code>htpasswd</code>');
-define('_WEBO_htaccess_user', 'Username (to access via HTTP Basic Authorization)');
-define('_WEBO_htaccess_pass', 'Password (to access via HTTP Basic Authorization)');
 define('_WEBO_auto_rewrite_enabled', 'Enable auto-rewrite');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Demo version limitations');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Features and technologies');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Demo Version');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Full Version');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community Edition');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite Edition');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium Edition');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium Support');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU overhead');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
@@ -244,6 +246,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'not included');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'All benefits');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Price');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'free');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '$19.99');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '$99');
 
 /* Third splash -- end screen */

@@ -43,6 +43,9 @@ $compress_options['external_scripts']['css_inline'] = "1";
 $compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_gzip.php fckeditor.js";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
+## To get through HTTP Basic Authorization
+$compress_options['external_scripts']['user'] = "";
+$compress_options['external_scripts']['pass'] = "";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
 ## Quick checksum for head section
@@ -51,6 +54,8 @@ $compress_options['performance']['quick_check'] = "0";
 $compress_options['performance']['plain_string'] = "1";
 ## Cache version, ignore cache integrity, no I/O overhead
 $compress_options['performance']['cache_version'] = "0";
+## Uniform cache files through all browsers
+$compress_options['performance']['uniform_cache'] = "0";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "1";
 ## Minify JS inside <body> tag. Please be carefull
@@ -185,9 +190,6 @@ $compress_options['htaccess']['mod_mime'] = "1";
 $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
-## To get through HTTP Basic Authorization
-$compress_options['htaccess']['user'] = "";
-$compress_options['htaccess']['pass'] = "";
 ## Enable auto-rewrite for index.php
 $compress_options['auto_rewrite']['enabled'] = "1";
 ## List of enabled plugins for server side performance

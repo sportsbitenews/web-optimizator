@@ -84,6 +84,13 @@ class web_optimizer {
 		$this->set_gzip_headers();
 /* HTTPS or not ? */
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* skip all browser-dependent features */
+		if ($this->options['uniform_cache']) {
+			$this->ua_mod = '';
+			$this->options['css']['data_uris'] = 0;
+			$this->options['css']['mhtml'] = 0;
+			$this->options['css']['data_uris_separate'] = 0;
+		}
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 		$excluded_html_pages = '';
@@ -249,7 +256,10 @@ class web_optimizer {
 				"gzip_level" => $this->premium ? round($this->options['gzip']['javascript_level']) : 1,
 				"minify" => $this->options['minify']['javascript'],
 				"minify_body" => $this->options['minify']['javascript_body'],
-				"minify_with" => $this->options['minify']['with_jsmin'] ? 'jsmin' : ($this->options['minify']['with_yui'] ? 'yui' : ($this->options['minify']['with_packer'] ? 'packer' : '')),
+				"minify_with" => $this->options['minify']['with_jsmin'] ?
+					'jsmin' : ($this->options['minify']['with_yui'] ?
+						'yui' : ($this->options['minify']['with_packer'] ?
+							'packer' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
@@ -259,10 +269,10 @@ class web_optimizer {
 				"unobtrusive" => $this->options['unobtrusive']['on'] &&
 					!$this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'] &&
-					$this->premium,
+					($this->premium > 1),
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'] &&
-					$this->premium,
+					($this->premium > 1),
 				"external_scripts" => $this->options['external_scripts']['on'],
 				"inline_scripts" => $this->options['external_scripts']['inline'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
@@ -302,7 +312,7 @@ class web_optimizer {
 							$this->options['data_uris']['mhtml']) ||
 						(empty($this->ua_mod) &&
 							$this->options['data_uris']['on'])) &&
-					$this->premium,
+					($this->premium > 1),
 				"data_uris_domloaded" => $this->options['data_uris']['domloaded'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
@@ -310,7 +320,7 @@ class web_optimizer {
 				"data_uris_exclude_mhtml" => round($this->options['data_uris']['additional_list']),
 				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] &&
-					$this->premium,
+					($this->premium > 1),
 				"css_sprites_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled'],
@@ -324,12 +334,12 @@ class web_optimizer {
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
 				"parallel" => $this->options['parallel']['enabled'] &&
-					$this->premium,
+					($this->premium > 1),
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"include_code" => $this->premium ? $this->options['external_scripts']['include_code'] : '',
+				"include_code" => ($this->premium > 1) ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['css_file'] : ''
@@ -347,7 +357,7 @@ class web_optimizer {
 				"gzip_cookie" => $this->options['gzip']['cookie'] && $this->premium,
 				"minify" => $this->options['minify']['page'],
 				"minify_aggressive" => $this->options['minify']['html_one_string'] &&
-					$this->premium,
+					($this->premium > 1),
 				"remove_comments" => $this->options['minify']['html_comments'] &&
 					$this->premium,
 				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
@@ -357,41 +367,44 @@ class web_optimizer {
 				"clientside_cache" => $this->premium ? $this->options['far_future_expires']['html'] : 0,
 				"clientside_timeout" => $this->premium ? $this->options['far_future_expires']['html_timeout'] : 0,
 				"cache" => $this->options['html_cache']['enabled'] &&
-				$this->premium,
+					($this->premium > 1),
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'],
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"parallel" => $this->options['parallel']['enabled'] &&
-					$this->premium,
+					($this->premium > 1),
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"parallel_satellites" => $this->options['parallel']['additional'],
 				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
-					$this->premium,
+					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
-					$this->premium,
+					($this->premium > 1),
 				"unobtrusive_ads" => $this->options['unobtrusive']['ads'] &&
-					$this->premium,
+					($this->premium > 1),
 				"unobtrusive_all" => $this->options['unobtrusive']['all'] &&
-					$this->premium,
-				"footer" => $this->options['footer']['text'],
+					($this->premium > 1),
+				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
 				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
-				"htaccess_username" => $this->options['htaccess']['user'] &&
-					$this->premium,
-				"htaccess_password" => $this->options['htaccess']['pass'] &&
-					$this->premium,
+				"htaccess_username" => $this->options['external_scripts']['user'] &&
+					($this->premium > 1),
+				"htaccess_password" => $this->options['external_scripts']['pass'] &&
+					($this->premium > 1),
 				"html_tidy" => $this->options['performance']['plain_string'] &&
-					$this->premium
+					($this->premium > 1)
 			),
-			"cache_version" => $this->premium ? round($this->options['performance']['cache_version']) : 0,
+			"cache_version" => ($this->premium > 1) ?
+				round($this->options['performance']['cache_version']) : 0,
+			"uniform_cache" => ($this->premium > 1) &&
+				$this->options['performance']['uniform_cache'],
 			"quick_check" => $this->options['performance']['quick_check'] &&
-				$this->premium,
-			"plugins" => $this->premium &&
+				($this->premium > 1),
+			"plugins" => ($this->premium > 1)&&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 		);
 /* overwrite other options array that we passed in */
@@ -470,12 +483,15 @@ class web_optimizer {
 /* Run the functions specified in options */
 			if (is_array($this->options)) {
 				foreach ($this->options as $func => $option) {
-					if (method_exists($this,$func)) {
+					if (method_exists($this, $func)) {
 						if (!empty($option['gzip']) ||
 							!empty($option['minify']) ||
 							!empty($option['far_future_expires']) ||
 							!empty($option['parallel']) ||
-							!empty($option['unobtrusive_all'])) {
+							!empty($option['unobtrusive_all']) ||
+							!empty($option['unobtrusive_ads']) ||
+							!empty($option['unobtrusive_counters']) ||
+							!empty($option['unobtrusive_informers'])) {
 								if (!empty($this->web_optimizer_stage)) {
 									$this->write_progress($this->web_optimizer_stage++);
 								}
@@ -2003,23 +2019,33 @@ class web_optimizer {
 /* count param for str_replace available only in PHP5 */
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
+				$tag = $inline ? 'span' : 'div';
 				$this->content = substr_replace($this->content, 
 					'<' .
-						($inline ? 'span' : 'div') .
+						$tag .
 					' id="' .
 						$stuff .
 					'_dst_' .
 						$key .
 					'"' .
-						($height ? ' style="height:' . $height . 'px"' : '') .
+						($height && $inline ? ' style="height:' .
+							$height .
+						'px;display:inline-block"' : '') .
+						($height && !$inline ? ' style="height:' .
+							$height .
+						'px"' : '') .
 					'></' .
-						($inline ? 'span' : 'div') .
+						$tag .
 					'>', $pos, $len);
-				$return .= '<div id="'.
+				$return .= '<' .
+						$tag .
+					' id="'.
 						$stuff .'_src_' . $key . 
 					'">' .
 						$value[0] .
-					'</div><script type="text/javascript">document.getElementById("' .
+					'</' .
+						$tag .
+					'><script type="text/javascript">document.getElementById("' .
 						$stuff . '_dst_' . $key . '").appendChild(document.getElementById("' .
 						$stuff . '_src_' . $key . '"))</script>';
 			}
@@ -2038,27 +2064,27 @@ class web_optimizer {
 		$unobtrusive_items = array(
 /* Informers */
 			'unobtrusive_informers' => array(
+/* Addthis */
+				'at' => array(
+					'marker' => 'AddThis',
+					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
+					'height' => 16
 /* Odnaknopka */
-				'ok' => array(
+				), 'ok' => array(
 					'marker' => 'odnaknopka.ru',
 					'regexp' => "<script\s*src=['\"]https?://odnaknopka\.ru[^>]+></script>",
 					'height' => 16
-/* Addthis */
-				), 'at' => array(
-					'marker' => 'AddThis',
-					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
-					'height' => 20
 /* Reformal */
 				), 're' => array(
-					'marker' => 'Reformal',
-					'regexp' => "<script type=\"text/javascript\" language=\"JavaScript\" src=\"http://reformal.ru.*?</script>"
-				),
+					'marker' => 'reformal.ru',
+					'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+				)
 /* Counters */
 			), 'unobtrusive_counters' => array (
-/* LiveInternet */
-				'li' => array(
-					'marker' => 'LiveInternet',
-					'regexp' => "<!--LiveInternet\scounter-->.*?<!--/LiveInternet-->",
+/* bigmir)net TOP 100 */
+				'bm' => array(
+					'marker' => 'bigmir)net',
+					'regexp' => "<!--bigmir\)net.*bigmir\)net\sTOP\s100(\sPart\s2)?-->",
 					'height' => 31,
 					'inline' => true
 /* Google Analytics */
@@ -2066,70 +2092,82 @@ class web_optimizer {
 					'marker' => 'gaJsHost',
 					'regexp' => "<script\stype=\"text/javascript\">\s*\r?\n?var\s+gaJsHost.*?catch\(err\)\s*\{\}</script>",
 					'inline' => true
-/* SpyLog */
-				), 'sl' => array(
-					'marker' => 'SpyLOG',
-					'regexp' => "<!--\sSpyLOG\s-->\r?\n<script.*?script>\r?\n<!--/\sSpyLOG\s-->",
-					'inline' => true
-/* Rambler Top100 */
-				), 'ra' => array(
-					'marker' => 'Top100',
-					'regexp' => "<!--\sbegin\sof\sTop100\scode\s-->.*?<!--\send\sof\sTop100\scode\s-->",
-					'inline' => true
-/* Yandex.Metrica */
-				), 'ym' => array(
-					'marker' => 'Yandex.Metrika',
-					'regexp' => "<!--\sYandex\.Metrika\s-->.*?<!--\sYandex\.Metrika\s-->",
-					'inline' => true
-/* Rating@Mail.ru */
-				), 'ym' => array(
-					'marker' => 'Rating@Mail.ru',
-					'regexp' => "<!--Rating\@Mail\.ru\scounter-->.*?<!--//\sRating\@Mail\.ru\scounter-->",
+/* counter.1Gb.ua */
+				), 'gb' => array(
+					'marker' => 'counter.1Gb.ua',
+					'regexp' => "<!--\scounter\.1Gb\.ua.*?counter\.1Gb\.ua\s-->",
 					'height' => 31,
 					'inline' => true
-/* bigmir)net TOP 100 */
-				), 'bm' => array(
-					'marker' => 'bigmir)net',
-					'regexp' => "<!--bigmir\)net\sTOP\s100-->.*?<!--bigmir\)net\sTOP\s100-->",
+/* BotLog */
+				), 'hl' => array(
+					'marker' => 'HotLog',
+					'regexp' => "<!--\sHotLog.*HotLog\s-->",
 					'height' => 31,
 					'inline' => true
 /* hit.ua */
 				), 'hu' => array(
 					'marker' => 'hit.ua',
-					'regexp' => "<!--shit\.ua\s-->.*?<!--s/\shit\.ua\s-->",
-					'height' => 31,
+					'regexp' => "<!--\shit\.ua\sinvisible.*?hit\.ua\sinvisible\spart\s-->",
 					'inline' => true
 /* I.UA counter */
 				), 'iu' => array(
 					'marker' => 'I.UA',
-					'regexp' => "<!--\sI\.UA\scounter\s-->.*?<!--\sEnd\sof\sI\.UA\scounter\s-->",
+					'regexp' => "<!--\sI\.UA\scounter.*?I\.UA\scounter\s-->",
 					'height' => 31,
 					'inline' => true
-/* counter.1Gb.ua */
-				), 'iu' => array(
-					'marker' => 'counter.1Gb.ua',
-					'regexp' => "<!--\scounter\.1Gb\.ua\s-->.*?<!--\s/counter\.1Gb\.ua\s-->",
+/* LiveInternet */
+				), 'li' => array(
+					'marker' => 'LiveInternet',
+					'regexp' => "<!--LiveInternet\scounter-->.*?<!--/LiveInternet-->",
 					'height' => 31,
 					'inline' => true
-				),
+/* Number One Counter */
+				), 'no' => array(
+					'marker' => 'www.one.ru',
+					'regexp' => "<!--NUMBER\sONE.*?ONE\sCOUNTER-->",
+					'height' => 31,
+					'inline' => true
+/* Rambler Top100 */
+				), 'ra' => array(
+					'marker' => 'Top100',
+					'regexp' => "<!--\sbegin\sof\sTop100.*?end\sof\sTop100\scode\s-->",
+					'inline' => true
+/* Rating@Mail.ru */
+				), 'rm' => array(
+					'marker' => 'Rating@Mail.ru',
+					'regexp' => "<!--Rating\@Mail\.ru.*?Rating\@Mail.ru\scounter-->",
+					'height' => 31,
+					'inline' => true
+/* SpyLog */
+				), 'sl' => array(
+					'marker' => 'SpyLOG',
+					'regexp' => "<!--\sSpyLOG.*?SpyLOG\s-->",
+					'height' => 31,
+					'inline' => true
+/* Yandex.Metrica */
+				), 'ym' => array(
+					'marker' => 'Yandex.Metrika',
+					'regexp' => "<!--\sYandex\.Metrika.*?Yandex\.Metrika\s-->",
+					'inline' => true
+				)
 /* Advertisement */
 			), 'unobtrusive_ads' => array (
-/* Yandex.Direct */
-				'yd' => array(
-					'marker' => 'yandex_partner_id',
-					'regexp' => "<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>"
+/* Begun */
+				'bu' => array(
+					'marker' => 'autocontext.begun.ru',
+					'regexp' => "<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
 /* Google AdWords */
 				), 'gw' => array(
 					'marker' => 'pagead2.googlesyndication.com',
 					'regexp' => "<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>"
-/* Begun */
-				), 'bu' => array(
-					'marker' => 'autocontext.begun.ru',
-					'regexp' => "<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
 /* OpenX */
 				), 'ox' => array(
 					'marker' => 'ajs.php',
 					'regexp' => "<!--/*\sOpenX\sJavascript.*?</noscript>"
+/* Yandex.Direct */
+				), 'yd' => array(
+					'marker' => 'yandex_partner_id',
+					'regexp' => "<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>"
 				)
 			)
 		);
@@ -2250,7 +2288,7 @@ class web_optimizer {
 /* add Web Optimizer stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$style = empty($this->options['page']['footer_style']) ? '' :
-					$this->options['page']['footer_style'];
+					 ' style="' . $this->options['page']['footer_style'] . '"';
 				$title = empty($this->options['page']['footer_text']) ? '' :
 					' title="' . $this->options['page']['footer_text'] . '"';
 				$text = empty($this->options['page']['footer_text']) ||
@@ -2284,9 +2322,9 @@ class web_optimizer {
 					$el = $el_close = 'span';
 				}
 /* finally from stamp */
-				$stamp = '<div style="' .
+				$stamp = '<div' .
 						$style .
-					'"><' .
+					'><' .
 						$el .
 						$title .
 						$background_style .

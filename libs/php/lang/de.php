@@ -10,7 +10,7 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Web Optimizer Konfiguration');
 define('_WEBO_GENERAL_FOOTER', 'Schneller als ein Blitz!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Kaufen premium Ausgabe</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Kaufen Premium-Ausgabe</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_DEMOVERSION', 'Gemeinschaftausgabe');
 
@@ -147,10 +147,13 @@ define('_WEBO_external_scripts_css', 'Vermischung von externem Styles aktivieren
 define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktivieren');
 define('_WEBO_external_scripts_ignore_list', 'Datei vom Vermischen ausschlie&szlig;en');
 define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
+define('_WEBO_external_scripts_user', 'Username (to access via HTTP Basic Authorization)');
+define('_WEBO_external_scripts_pass', 'Password (to access via HTTP Basic Authorization)');
 define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
 define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
+define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_minify_javascript', 'JavaScript-Dateien kombinieren');
 define('_WEBO_minify_javascript_body', 'JavaScript-Dateien innerhalb <code>&lt;body&gt;</code> kombinieren');
 define('_WEBO_minify_with', 'JavaScript-Dateien minimieren');
@@ -221,16 +224,15 @@ define('_WEBO_htaccess_mod_mime', '<code>mod_mime</code> verwenden');
 define('_WEBO_htaccess_mod_rewrite', '<code>mod_rewrite</code> verwenden');
 define('_WEBO_htaccess_local', 'Datei <code>.htaccess</code> lokal platzieren (nicht in die Dokument-Root)');
 define('_WEBO_htaccess_access', 'Web Optimizer Installation via <code>htpasswd</code> sch&uuml;tzen');
-define('_WEBO_htaccess_user', 'Username (to access via HTTP Basic Authorization)');
-define('_WEBO_htaccess_pass', 'Password (to access via HTTP Basic Authorization)');
 define('_WEBO_auto_rewrite_enabled', 'Auto-Rewrite aktivieren');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Testversion Begrenzungen');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Merkmale und Technologien');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Testversion');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Vollversion');
-define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Pr&auml;mie Support');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Gemeinschaftausgabe');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite Ausgabe');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium-Ausgabe');
+define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium-Support');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU-Unkosten');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'bis zu');
@@ -244,6 +246,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'nicht verf&uuml;gbar');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Alle Leistungen');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pries');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'kostenlos');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '13,95&euro;');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '69&euro;');
 
 /* Third splash -- end screen */

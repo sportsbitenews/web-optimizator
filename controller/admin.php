@@ -719,7 +719,7 @@ class admin {
 				'title' => _WEBO_SPLASH2_UNOBTRUSIVE,
 				'intro' => _WEBO_SPLASH2_UNOBTRUSIVE_INFO,
 				'value' => $this->compress_options['unobtrusive'],
-				'is_premium' => !$this->premium
+				'is_premium' => !($this->premium > 1)
 			),
 			'far_future_expires' => array(
 				'title' => _WEBO_SPLASH2_EXPIRES,
@@ -731,7 +731,7 @@ class admin {
 				'title' => _WEBO_SPLASH2_HTMLCACHE,
 				'intro' => _WEBO_SPLASH2_HTMLCACHE_INFO,
 				'value' => $this->compress_options['html_cache'],
-				'is_premium' => !$this->premium
+				'is_premium' => !($this->premium > 1)
 			),
 			'performance' => array(
 				'title' => _WEBO_SPLASH2_MTIME,
@@ -743,7 +743,7 @@ class admin {
 				'title' => _WEBO_SPLASH2_SPRITES,
 				'intro' => _WEBO_SPLASH2_SPRITES_INFO,
 				'value' => $this->compress_options['css_sprites'],
-				'is_premium' => !$this->premium
+				'is_premium' => !($this->premium > 1)
 			),
 			'data_uris' => array(
 				'title' => _WEBO_SPLASH2_DATAURI,
@@ -755,7 +755,7 @@ class admin {
 				'title' => _WEBO_SPLASH2_PARALLEL,
 				'intro' => _WEBO_SPLASH2_PARALLEL_INFO,
 				'value' => $this->compress_options['parallel'],
-				'is_premium' => !$this->premium
+				'is_premium' => !($this->premium > 1)
 			),
 			'htaccess' => array(
 				'title' => _WEBO_SPLASH2_HTACCESS,

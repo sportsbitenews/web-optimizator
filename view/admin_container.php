@@ -27,13 +27,19 @@ header('Content-Type: text/html; charset=' . _WEBO_CHARSET);
 ?></q><?php
 	}
 	require($page.".php");
-?></div><blockquote><p><?php
-	if (empty($premium)) {
-?><cite><?php
-		echo _WEBO_GENERAL_DEMOVERSION;
-?> </cite><?php
+?></div><blockquote><p><cite><?php
+	switch ($premium) {
+		case 2:
+			echo _WEBO_SPLASH2_COMPARISON_FULL;
+			break;
+		case 1:
+			echo _WEBO_SPLASH2_COMPARISON_LITE;
+			break;
+		default:
+			echo _WEBO_SPLASH2_COMPARISON_DEMO;
+			break;
 	}
-?>&copy; 2009<?php
+?> </cite>&copy; 2009<?php
 	echo date("Y")>2009 ? '-' . date("Y") : '';
 ?> <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer</a>. <?php
 	echo _WEBO_GENERAL_FOOTER;

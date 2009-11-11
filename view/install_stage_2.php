@@ -18,7 +18,7 @@
 	echo _WEBO_SPLASH2_CACHE;
 ?></a></li><?php
 	$count = 1;
-	foreach($options AS $key=>$type) {	
+	foreach ($options as $key=>$type) {	
 		if(is_array($type['value']) && empty($type['is_premium'])) {
 ?><li><a href="#wo_<?php
 			echo $key;
@@ -95,13 +95,20 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'css_file', 'javascript_file')) ||
-						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'css_file', 'javascript_file'))
+				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'css_file', 'javascript_file', 'mtime', 'size', 'mhtml', 'mhtml_size', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass', 'text')) ||
+						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass')) &&
+							$premium > 1) || 
+						(in_array($option, array('css_file', 'javascript_file', 'mtime', 'size', 'ignore_list', 'mhtml', 'mhtml_size', 'additional_list', 'text'))
 							&& $premium)) &&
 					($option != 'html' ||
 						$key != 'far_future_expires' ||
 						($option == 'html' &&
 							$key == 'far_future_expires' &&
+							$premium > 1)) &&
+					($option != 'on' ||
+						$key != 'data_uris' ||
+						($option == 'on' &&
+							$key == 'data_uris' &&
 							$premium))) {
 ?><label><?php
 					if (in_array($option, array('html_timeout', 'dimensions_limited', 'ignore_list', 'timeout', 'allowed_list', 'flush_size', 'size', 'mhtml_size', 'user', 'pass', 'additional', 'additional_list', 'cache_version', 'css_code', 'link', 'image', 'css_file', 'javascript_file'))) {
@@ -176,40 +183,28 @@
 	if (empty($premium)) {
 ?><fieldset id="comparison"><h3><?php
 		echo _WEBO_SPLASH2_COMPARISON;
-?></h3><table><col width="190"/><col width="115"/><col width="275"/><thead><tr><th><?php
+?></h3><table><col width="190"/><col width="115"/><col width="115"/><col width="160"/><thead><tr><th><?php
 		echo _WEBO_SPLASH2_COMPARISON_TITLE;
 ?></th><th><?php
 		echo _WEBO_SPLASH2_COMPARISON_DEMO;
 ?></th><th><?php
+		echo _WEBO_SPLASH2_COMPARISON_LITE;
+?></th><th><?php
 		echo _WEBO_SPLASH2_COMPARISON_FULL;
-?></th></tr></thead><tfoot><tr><td><?php
-		echo _WEBO_SPLASH2_COMPARISON_ALLBENEFITS;
-?></td><td></td><td><?php
-		echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> <strong>98%</strong> <?php
-		echo _WEBO_SPLASH2_COMPARISON_SAVED;
-?><br/><?php
-		echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> <strong>73%</strong> <?php
-		echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?><br/><?php
-		echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> <strong>85%</strong> <?php
-		echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
-?><br/><?php
-		echo _WEBO_SPLASH2_COMPARISON_UPTO2;
-?> <strong>70%</strong> <?php
-		echo _WEBO_SPLASH2_COMPARISON_ACCELERATION;
-?><br/><?php
-		echo _WEBO_SPLASH2_COMPARISON_SUPPORT;
-?> 24/7</td></tr></tfoot><tbody><tr><td><?php
+?></th></tr></thead><tbody><tr><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_CPU;
-?></td><td>15-50 <?php
+?></td><td>20-100 <?php
 		echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
-?></td><td>3-10<?php
+?></td><td>10-50 <?php
+		echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
+?></td><td>1-5 <?php
 		echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
 ?></td></tr><tr><td><?php
 		echo _WEBO_SPLASH2_GZIP;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_UPTO;
+?> 65% <?php
+		echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 65% <?php
@@ -220,6 +215,10 @@
 		echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
 ?></td></tr><tr><td><?php
 		echo _WEBO_SPLASH2_EXPIRES;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_UPTO;
+?> 40% <?php
+		echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 60% <?php
@@ -233,11 +232,15 @@
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
+?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 90% <?php
 		echo _WEBO_SPLASH2_COMPARISON_LOAD;
 ?></td></tr><tr><td><?php
 		echo _WEBO_SPLASH2_SPRITES;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
@@ -252,8 +255,14 @@
 		echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 60% <?php
 		echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_UPTO;
+?> 60% <?php
+		echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
 ?></td></tr><tr><td><?php
 		echo _WEBO_SPLASH2_PARALLEL;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
@@ -265,6 +274,8 @@
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
+?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_UPTO2;
 ?> 20% <?php
 		echo _WEBO_SPLASH2_COMPARISON_ACCELERATION;
@@ -272,11 +283,15 @@
 		echo _WEBO_SPLASH2_COMPARISON_SUPPORT;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
+?></td><td><?php
+		echo _WEBO_SPLASH2_COMPARISON_NOTINCLUDED;
 ?></td><td>24/7</td></tr><tr><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_PRICE;
 ?></td><td><?php
 		echo _WEBO_SPLASH2_COMPARISON_FREE;
 ?></td><td><strong><?php
+		echo _WEBO_SPLASH2_COMPARISON_LITEPRICE;
+?></strong></td><td><strong><?php
 		echo _WEBO_SPLASH2_COMPARISON_FULLPRICE;
 ?></strong></td></tr></tbody></table><strong><?php
 		echo _WEBO_GENERAL_BUYNOW;
