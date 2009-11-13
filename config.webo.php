@@ -5,6 +5,7 @@
 ## Access control
 $compress_options['username'] = "";
 $compress_options['password'] = "";
+$compress_options['htpasswd'] = "";
 ## Path info. Cache directory for JS files
 $compress_options['javascript_cachedir'] = "";
 ## Cache directory for CSS files

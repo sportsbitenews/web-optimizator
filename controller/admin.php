@@ -1918,8 +1918,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 	**/
 	function save_option ($option_name, $option_value, $debug = true) {
 		$return = 0;
+/* make password salt safe */
+		if ($option_name == "['htpasswd']") {
+			$option_value = str_replace('$', '\\\\$', str_replace('\\', '\\\\\\\\', $option_value));
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
-		$option_value = preg_replace("/\/\//", "/", preg_replace("/\\\/", '/', $option_value));
+		} else {
+			$option_value = str_replace('//', '/', str_replace('\\', '/', $option_value));
+		}
 /* See if file exists */
 		$option_file = $this->basepath . $this->options_file;
 		if (file_exists($option_file)) {
@@ -1962,16 +1967,29 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 	function manage_password($rewrite = 0) {
 /* If posting a username and pass, md5 encode */
 		if (!empty($this->input['user']['username'])) {
+			$firstaccess = (empty($this->compress_options['username']) &&
+					empty($this->compress_options['password'])) ||
+				!empty($rewrite);
+/* write to htpasswd only on the first access, thx to Alexey.Kupershtokh */
+			if ($firstaccess) {
+				$htpasswd = $this->input['user']['username'] .
+				":" . $this->encrypt_password($this->input['user']['password']);
 /* write protected password to .htpasswd if required */
-			$this->write_file($this->basepath . '.htpasswd', $this->input['user']['username'] . ":" . $this->encrypt_password($this->input['user']['password']));
+				if (!$this->write_file($this->basepath . '.htpasswd', $htpasswd, 1)) {
+/* store htpasswd string in config if can't write it */
+					$this->save_option("['htpasswd']", $htpasswd);
+				} else {
+					$this->protect_installation();
+				}
+			}
 			if (empty($rewrite)) {
 				$this->input['user']['username'] = md5($this->input['user']['username']);
 			}
 			$this->input['user']['password'] = md5($this->input['user']['password']);
 /* If the pass isn't there, write it */
-			if ((empty($this->compress_options['username']) && empty($this->compress_options['password'])) || !empty($rewrite)) {
-				$this->save_option('[\'username\']', $this->input['user']['username']);
-				$this->save_option('[\'password\']', $this->input['user']['password']);
+			if ($firstaccess) {
+				$this->save_option("['username']", $this->input['user']['username']);
+				$this->save_option("['password']", $this->input['user']['password']);
 /* Update */
 				$this->compress_options['username'] = $this->input['user']['username'];
 				$this->compress_options['password'] = $this->input['user']['password'];
@@ -1981,6 +1999,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		if (!empty($this->input['user']['_username'])) {
 			$this->input['user']['username'] = ($this->input['user']['_username']);
 			$this->input['user']['password'] = ($this->input['user']['_password']);	
+/* try to save .htpasswd file */
+			if ($this->compress_options['htpasswd']) {
+				if ($this->write_file($this->basepath . '.htpasswd',
+					$this->compress_options['htpasswd'], 1)) {
+						$this->save_option("['htpasswd']", "");
+						$this->compress_options['htpasswd'] = "";
+				}
+			}
 		}
 	
 	}
@@ -2013,22 +2039,34 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		$htaccess_content = @file_get_contents($htaccess);
 /* clean current content */
 		$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
-		if (!empty($this->compress_options['htaccess']['access']) || !empty($this->input['user']['htaccess']['access'])) {
+		$htaccess_content .= '
+# Web Optimizer protection';
+		$protected = !empty($this->compress_options['htaccess']['access']) ||
+			!empty($this->input['user']['htaccess']['access']);
+		if ($protected) {
+			if (is_file($this->basepath . '.htpasswd')) {
 /* add secure protection via htpasswd */
-			$htaccess_content .= '
-# Web Optimizer protection
+				$htaccess_content .= '
 AuthType Basic
 AuthName "Web Optimizer Installation"
 AuthUserFile ' . $this->basepath . '.htpasswd
-require valid-user
+require valid-user';
+			} else {
+				$this->error("<p>" . _WEBO_SPLASH2_UNABLE . " ".
+					$this->basepath . ".htpasswd</p>");
+			}
+		}
+		$htaccess_content .= '
 <Files ' . $this->basepath . '.htpasswd>
 	Deny from all
 </Files>
 # Web Optimizer protection end';
-		}
 /* create backup */
 		@copy($htaccess, $htaccess . '.backup');
-		$this->write_file($htaccess, $htaccess_content);
+		if (!$this->write_file($htaccess, $htaccess_content) && $protected) {
+			$this->error("<p>" . _WEBO_SPLASH2_UNABLE . " ".
+				$this->basepath . ".htaccess</p>");
+		}
 	}
 	/**
 	* Creates password hash for htpasswd file
