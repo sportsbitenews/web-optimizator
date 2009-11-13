@@ -42,7 +42,7 @@ class admin {
 			$this->version_new = $this->version;
 		}
 		$this->compress_options['license'] = empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license'];
-		$this->premium = $this->view->validate_license($this->compress_options['license']);
+		$this->premium = $this->view->validate_license($this->compress_options['license'], $this->compress_options['html_cachedir'], $this->compress_options['host']);
 /* Make sure login valid */
 		$this->manage_password();
 		$this->password_not_required = array(
@@ -1924,7 +1924,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		$option_file = $this->basepath . $this->options_file;
 		if (file_exists($option_file)) {
 			$content = @file_get_contents($option_file);
-			$content = preg_replace("@(" . $this->regex_escape($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
+			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			$ret = $this->write_file($option_file, $content, $debug);
 			if (!empty($debug) && empty($ret)) {
 /* unable to open file for writing */
@@ -2002,14 +2002,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 /* Show the install page */
 		$this->view->render("admin_container", $page_variables);
 		die();
-	}
-
-	/**
-	* Make safe for regex
-	* 
-	**/
-	function regex_escape($string) {
-		return addcslashes($string,'\^$.[]|()?*+{}');
 	}
 
 	/**
@@ -2171,7 +2163,7 @@ require valid-user
 			} elseif (is_file($root . 'includes/application_top.php')) {
 				return 'VaM Shop';
 /* MaxDev Pro */
-			} else {
+			} elseif (is_file($root . 'includes/mdHTML.php')) {
 				return 'MaxDev Pro';
 			}
 /* Typo 3 */

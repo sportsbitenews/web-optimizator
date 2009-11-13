@@ -233,7 +233,7 @@ class web_optimizer {
 			);
 			$this->ua_mod = $mods[$this->cache_stage];
 		}
-		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir']);
+		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir'], $this->options['host']);
 		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . '/');
 /* ensure trailing slashes */
 		$this->options['html_cachedir'] = $this->view->ensure_trailing_slash($this->options['html_cachedir']);
@@ -460,7 +460,7 @@ class web_optimizer {
 /* define if Content-Type is text/html and allow it */
 			foreach ($headers as $header) {
 				$header = strtolower($header);
-				if (strpos($header, 'content-type')) {
+				if (strpos($header, 'content-type') !== false) {
 					$skip = 1;
 				}
 				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {

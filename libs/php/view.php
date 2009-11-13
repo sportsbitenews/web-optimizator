@@ -132,7 +132,7 @@ class compressor_view {
 	* Validate license
 	* You can donate for Web Optimizer here: http://sprites.in/donate/
 	**/
-	function validate_license ($license, $cachedir = false) {
+	function validate_license ($license, $cachedir = false, $host = false) {
 		if (strlen($license) == 29) {
 			$table = '123QWERTUIOP456ASDFGHJKLCVBNM7890ZXYqwertuiop456asdfghjklcvbnm7890zxy';
 			$l = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z'), array(), strtoupper($license));
@@ -149,7 +149,7 @@ class compressor_view {
 			if ($t1 || $t2 || $t3) {
 				if ($cachedir) {
 					if (time() - @filemtime($cachedir . 'wo') > 86400) {
-						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 5);
+						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 5, $host);
 					}
 					if (($wo = @file_get_contents($cachedir . 'wo')) && $wo < 0) {
 						return false;
@@ -165,7 +165,10 @@ class compressor_view {
 	* Generic download function to get external files
 	*
 	**/
-	function download ($remote_file, $local_file, $timeout = 60) {
+	function download ($remote_file, $local_file, $timeout = 60, $host = false) {
+		if (!$host) {
+			$host = $_SERVER['HTTP_HOST'];
+		}
 		$gzip = false;
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
@@ -184,7 +187,7 @@ class compressor_view {
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Speed Up Your Website; http://web-optimizer.us/) Firefox 3.5.2");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
-				@curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+				@curl_setopt($ch, CURLOPT_REFERER, $host);
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
