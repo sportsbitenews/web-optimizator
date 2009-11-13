@@ -1920,7 +1920,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		$return = 0;
 /* make password salt safe */
 		if ($option_name == "['htpasswd']") {
-			$option_value = str_replace('$', '\\\\$', str_replace('\\', '\\\\\\\\', $option_value));
+			$option_value = str_replace('$', '\\\\$', str_replace('\\', '\\\\', $option_value));
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		} else {
 			$option_value = str_replace('//', '/', str_replace('\\', '/', $option_value));
