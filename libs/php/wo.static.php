@@ -125,18 +125,59 @@ switch ($extension) {
 		break;
 }
 /* handle cases with relative document root and redirect via .htaccess */
-if ($_SERVER['QUERY_STRING']{0} == '/') {
-	$filename = str_replace("\\", "/",
-		realpath($document_root . '/' . $_SERVER['QUERY_STRING']));
-} else {
+if ($_SERVER['QUERY_STRING']{0} === '/') {
+	if ($_SERVER['QUERY_STRING']{1} === '/') {
+		$_SERVER['QUERY_STRING'] = 'http' .
+			(empty($_SERVER['HTTPS']) ? '' : 's') .
+			':' . $_SERVER['QUERY_STRING'];
+	} else {
+		$filename = str_replace("\\", "/",
+			realpath($document_root . '/' . $_SERVER['QUERY_STRING']));
+	}
+} elseif (substr($_SERVER['QUERY_STRING'], 0, 4) !== 'http') {
 	$filename = str_replace("\\", "/",
 		realpath($website_root . '/' . $_SERVER['QUERY_STRING']));
+}
+/* get external files */
+if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
+	$filename = str_replace("\\", "/", dirname(__FILE__)) .
+		'/' . str_replace(array('/', '?', '&'),
+			array('-', '-', '-'),
+			$_SERVER['QUERY_STRING']);
+	$mtime = @filemtime($filename);
+	if (!is_file($filename) || (time() - $mtime > 86400)) {
+		if (function_exists('curl_init')) {
+/* start curl */
+			$ch = @curl_init($_SERVER['QUERY_STRING']);
+			$fp = @fopen($filename, "w");
+			if ($fp && $ch) {
+				@curl_setopt($ch, CURLOPT_FILE, $fp);
+				@curl_setopt($ch, CURLOPT_HEADER, 0);
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Web Optimizer Downloader");
+				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				@curl_exec($ch);
+				@curl_close($ch);
+				@fclose($fp);
+			}
+/* redirect if can't download */
+			if (!is_file($filename)) {
+				header("Location: " . $_SERVER['QUERY_STRING']);
+				die();
+			}
+/* redirect if no curl */
+		} else {
+			header("Location: " . $_SERVER['QUERY_STRING']);
+			die();
+		}
+	}
 }
 /* check if we inside document root */
 if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* set correct content-encoding header */
 	header('Content-Type: ' . $extension);
-	$mtime = @filemtime($filename);
+	$mtime = empty($mtime) ? @filemtime($filename) : $mtime;
 	$contents = '';
 	if ($gzip) {
 		$gz = $xgzip = $deflate = $xdeflate = 0;
