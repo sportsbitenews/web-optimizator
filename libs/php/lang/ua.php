@@ -181,6 +181,7 @@ define('_WEBO_far_future_expires_static', 'Кешувати статичні ф�
 define('_WEBO_far_future_expires_html', 'Кешувати HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Час клієнтського кешу для HTML-файлів');
 define('_WEBO_far_future_expires_fonts', 'Кешувати шрифти');
+define('_WEBO_far_future_expires_external', 'Кешувати зовнішні файли');
 define('_WEBO_html_cache_enabled', 'Кешувати створені HTML-файли');
 define('_WEBO_html_cache_timeout', 'Термін дії кеша в секундах');
 define('_WEBO_html_cache_flush_only', 'Включити тільки швидке скидання частини документу');

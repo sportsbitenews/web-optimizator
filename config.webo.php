@@ -109,6 +109,8 @@ $compress_options['far_future_expires']['static'] = "1";
 $compress_options['far_future_expires']['html'] = "0";
 ## Default timeout of client side HTML files caching, in seconds
 $compress_options['far_future_expires']['html_timeout'] = "60";
+## Add caching for external files
+$compress_options['far_future_expires']['external'] = "0";
 ## Cache generated HTML files
 $compress_options['html_cache']['enabled'] = "0";
 ## Cache timeout for generated HTML files, in seconds

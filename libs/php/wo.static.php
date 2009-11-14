@@ -140,10 +140,10 @@ if ($_SERVER['QUERY_STRING']{0} === '/') {
 }
 /* get external files */
 if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
-	$filename = str_replace("\\", "/", dirname(__FILE__)) .
+	$filename = substr(str_replace("\\", "/", dirname(__FILE__)) .
 		'/' . str_replace(array('/', '?', '&'),
 			array('-', '-', '-'),
-			$_SERVER['QUERY_STRING']);
+			$_SERVER['QUERY_STRING']), 0, 250);
 	$mtime = @filemtime($filename);
 	if (!is_file($filename) || (time() - $mtime > 86400)) {
 		if (function_exists('curl_init')) {

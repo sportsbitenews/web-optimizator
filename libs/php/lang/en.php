@@ -181,6 +181,7 @@ define('_WEBO_far_future_expires_static', 'Cache static assets');
 define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML, in seconds');
 define('_WEBO_far_future_expires_fonts', 'Cache fonts');
+define('_WEBO_far_future_expires_external', 'Cache external files');
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_timeout', 'Default timeout, in seconds');
 define('_WEBO_html_cache_flush_only', 'Only cache first n bytes of content (flush early)');

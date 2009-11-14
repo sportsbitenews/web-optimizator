@@ -95,8 +95,8 @@
 			echo $type['intro'];
 ?><i></i><del></del></div><?php
 			foreach ($type['value'] as $option => $value) {
-				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'css_file', 'javascript_file', 'mtime', 'size', 'mhtml', 'mhtml_size', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass', 'text')) ||
-						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass')) &&
+				if ((!in_array($option, array('javascript_level', 'page_level', 'css_level', 'fonts_level', 'cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'css_file', 'javascript_file', 'mtime', 'size', 'mhtml', 'mhtml_size', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass', 'text', 'external')) ||
+						(in_array($option, array('cookie', 'html_comments', 'html_one_string', 'gzip_noie', 'include_code', 'html_timeout', 'spot', 'quick_check', 'plain_string', 'cache_version', 'separate', 'smushit', 'domloaded', 'user', 'pass', 'external')) &&
 							$premium > 1) || 
 						(in_array($option, array('css_file', 'javascript_file', 'mtime', 'size', 'ignore_list', 'mhtml', 'mhtml_size', 'additional_list', 'text'))
 							&& $premium)) &&

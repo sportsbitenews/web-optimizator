@@ -180,6 +180,7 @@ define('_WEBO_far_future_expires_static', 'Кэшировать другие ф�
 define('_WEBO_far_future_expires_html', 'Кэшировать HTML');
 define('_WEBO_far_future_expires_html_timeout', 'Время клиентского кэша для HTML-файлов');
 define('_WEBO_far_future_expires_fonts', 'Кэшировать шрифты');
+define('_WEBO_far_future_expires_external', 'Кэшировать внешние файлы');
 define('_WEBO_html_cache_enabled', 'Кэшировать созданные HTML-файлы');
 define('_WEBO_html_cache_timeout', 'Срок действия кэша в секундах');
 define('_WEBO_html_cache_flush_only', 'Включить только быстрый сброс части документа');

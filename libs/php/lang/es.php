@@ -185,6 +185,7 @@ define('_WEBO_far_future_expires_video', 'Cache archivos de video');
 define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_fonts', 'Cache Fuentes');
 define('_WEBO_far_future_expires_html_timeout', 'Timeout predeterminado al cache HTML, en segundos');
+define('_WEBO_far_future_expires_external', 'Cache external files');
 define('_WEBO_html_cache_enabled', 'Archivos HTML generados por Cache');
 define('_WEBO_html_cache_timeout', 'Timeout predeterminado, en segundos');
 define('_WEBO_html_cache_flush_only', 'Activar solo expulsi&oacute;n temprana de contenido');

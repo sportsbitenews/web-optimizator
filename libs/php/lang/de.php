@@ -181,6 +181,7 @@ define('_WEBO_far_future_expires_static', 'Statische Assets zwischenspeichern');
 define('_WEBO_far_future_expires_html', 'HTML zwischenspeichern');
 define('_WEBO_far_future_expires_html_timeout', 'Standard-Timeout f&uuml;r das Cachen von HTML, in Sekunden');
 define('_WEBO_far_future_expires_fonts', 'Fonts zwischenspeichern');
+define('_WEBO_far_future_expires_external', 'Cache external files');
 define('_WEBO_html_cache_enabled', 'Generierte HTML-Dateien zwischenspeichern');
 define('_WEBO_html_cache_timeout', 'Standard-Timeout, in Sekunden');
 define('_WEBO_html_cache_flush_only', 'Nur das fr&uuml;here Sp&uuml;len von Inhalt aktivieren');

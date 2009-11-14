@@ -363,7 +363,10 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
 				"far_future_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
-					!$this->options['htaccess']['enabled'],
+					!$this->options['htaccess']['enabled'] &&
+					$this->options['far_future_expires']['images'],
+				"far_future_expires_external" => $this->options['far_future_expires']['external'] &&
+					($this->premium > 1),
 				"clientside_cache" => $this->premium ? $this->options['far_future_expires']['html'] : 0,
 				"clientside_timeout" => $this->premium ? $this->options['far_future_expires']['html_timeout'] : 0,
 				"cache" => $this->options['html_cache']['enabled'] &&
@@ -875,13 +878,23 @@ class web_optimizer {
 							}
 						}
 /* or replacing images with rewrite to Expires setter? */
-					} elseif (!empty($this->options['page']['far_future_expires_rewrite'])) {
-						$src = $this->convert_path_to_absolute($old_src,
-							array('file' => $this->view->paths['relative']['document_root']));
-/* do not touch dynamic images -- how we can handle them? */
-						if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src)) {
-							$new_src = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $src;
-						}
+					} elseif (!empty($this->options['page']['far_future_expires_rewrite']) ||
+						!empty($this->options['page']['far_future_expires_external'])) {
+							$src = $this->convert_path_to_absolute($old_src,
+								array('file' => $this->view->paths['relative']['document_root']));
+/* add static proxy for external images */
+							if (!$src &&
+								$this->options['page']['far_future_expires_external']) {
+									$src = $old_src;
+							}
+/* do not touch dynamic images / styles / scripts -- how we can handle them? */
+							if ($src &&
+								(preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src) ||
+									!empty($this->options['page']['far_future_expires_external']))) {
+										$new_src =
+											$this->options['page']['cachedir_relative'] .
+											'wo.static.php?' . $src;
+							}
 					}
 					if (!empty($new_src)) {
 /* prevent replacing images from oher domains with the same file name */
@@ -1594,6 +1607,17 @@ class web_optimizer {
 						!empty($value['file']) &&
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
 					unset($this->initial_files[$key]);
+/* rewrite skipped file with caching proxy */
+					if (!empty($value['file']) &&
+						$this->options['page']['far_future_expires_external']) {
+							$new_src =
+								$this->options['html']['cachedir_relative'] . 
+								'wo.static.php?' . $value['file'];
+							$new_script = str_replace($value['file'],
+								$new_src, $value['file_raw']);
+							$this->content = str_replace($value['file_raw'],
+								$new_script, $this->content);
+					}
 				}
 			}
 /* skip mining files' content if don't check MTIME */
@@ -2532,10 +2556,11 @@ class web_optimizer {
 	 **/
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : $_SERVER['REQUEST_URI'];
-/* replace / with - */
-		$uri = preg_replace("!/!", "+", $uri);
-/* replace ?, & with + */
-		$uri = preg_replace("!\?|&!", "+", $uri);
+/* replace /, ?, & with - */
+		$uri = str_replace(
+			array('/', '?', '&'),
+			array('+', '+', '+'),
+			$uri);
 		return $uri;
 	}
 
@@ -2550,7 +2575,7 @@ class web_optimizer {
 		}
 		$current_directory = @getcwd();
 /* dirty fix for buggy getcwd call */
-		if ($current_directory == '/') {
+		if ($current_directory === '/') {
 			$current_directory = $this->options['css']['installdir'];
 		}
 		if (function_exists('curl_init')) {
