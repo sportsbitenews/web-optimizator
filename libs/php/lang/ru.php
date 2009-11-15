@@ -225,6 +225,7 @@ define('_WEBO_htaccess_mod_rewrite', 'Использовать <code>mod_rewrite
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
 define('_WEBO_htaccess_access', 'Защитить установку Web Optimizer с помощью <code>htpasswd</code>');
 define('_WEBO_auto_rewrite_enabled', 'Включить авто-запись');
+define('_WEBO_auto_rewrite_chained', 'Включить цепочную оптимизацию');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Ограничения версии');

@@ -20,7 +20,7 @@ define('_WEBO_ERROR_ERROR', 'Щось пішло не так!');
 
 /* Enter login and password */
 define('_WEBO_LOGIN_TITLE', 'Введіть ваші авторизаційні дані');
-define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Веб Оптимизатор ');
+define('_WEBO_LOGIN_INSTALLED', 'Для цього сайту Web Optimizer ');
 define('_WEBO_LOGIN_INSTALLED2', ' вже встановлений. Будь-ласка, введіть ваш логін та пароль для доступу до всіх налаштувань:');
 define('_WEBO_LOGIN_INSTALLED3', '. Для доступу до всіх налаштувань натисніть кнопку <strong>Далі</strong>.');
 define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Увага:</strong> не вдається знайти результат роботи Web Optimizer. Будь-ласка, перевірте наявність його викликів у файлах вашої веб-системи або проведіть установку ще раз.');
@@ -130,9 +130,9 @@ define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Для прискорення проц
 define('_WEBO_SPLASH2_HTACCESS', 'Використання .htaccess');
 define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Більша частина налаштувань <code>gzip</code>-стискання і кешування можуть бути записані в конфігураційному файлі вашого серверу для запобігання додаткової роботи на стороні серверних скриптів. Це може бути пророблено за допомогою файлу <code>.htaccess</code> (при необхідності ви можете пізніше самостійно перенести всі настройки в файл <code>httpd.cond</code>).</p><p><a href="http://webo.in/articles/all/mod-gzip-minify-on-fly/">Використання <code>mod_gzip</code></a>, <a href="http://webo.in/articles/all/2009/12-faster-and-cheaper-with-gzip/"><code>mod_deflate</code></a> та <a href="http://webo.in/articles/habrahabr/07-gzip-all/"><code>mod_rewrite</code></a>.</p><p>Доступні модулі: ');
 define('_WEBO_SPLASH2_FOOTER', 'Обратная ссылка');
-define('_WEBO_SPLASH2_FOOTER_INFO', 'Веб Оптимізавтор може додати значок оптимізатора із посиланням на сайт проекту. Це може бути як печатка, так і посилання, а також і то, і інше.<br/>Включивши цю опцію ви підтримаєте розповсюдження Web Optimizer в маси.');
+define('_WEBO_SPLASH2_FOOTER_INFO', 'Web Optimizer може додати значок оптимізатора із посиланням на сайт проекту. Це може бути як печатка, так і посилання, а також і то, і інше.<br/>Включивши цю опцію ви підтримаєте розповсюдження Web Optimizer в маси.');
 define('_WEBO_SPLASH2_AUTOCHANGE', 'Автоматичне змінення /index.php');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Веб Оптимізавтор може автоматично внести потрібні зміни в основний файл вашого сайту, який використовує ');
+define('_WEBO_SPLASH2_AUTOCHANGE_INFO', 'Web Optimizer може автоматично внести потрібні зміни в основний файл вашого сайту, який використовує ');
 define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' (зміни будуть застосовані тільки для <code>/index.php</code>).<br/>УВАГА: для деяких переревірених середовищ і малорозповсюджених CMS це може призвести до непрацездатності сайту.');
 define('_WEBO_unobtrusive_on', 'Включити &laquo;ненав\'язливий&raquo; JavaScript');
 define('_WEBO_unobtrusive_body', 'Вставити виклик об\'єднаного JavaScript-файлу перед <code>&lt;/body&gt;</code>');
@@ -225,7 +225,8 @@ define('_WEBO_htaccess_mod_mime', 'Використовувати <code>mod_mime
 define('_WEBO_htaccess_mod_rewrite', 'Використовувати <code>mod_rewrite</code>');
 define('_WEBO_htaccess_local', 'Розмістити <code>.htaccess</code> в локальній (не кореневій) директорії');
 define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');
-define('_WEBO_auto_rewrite_enabled', 'В\ключити авто-запис');
+define('_WEBO_auto_rewrite_enabled', 'Включити авто-запис');
+define('_WEBO_auto_rewrite_chained', 'Включити цепочную оптимізацію');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Ограничения версии');

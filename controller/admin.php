@@ -391,10 +391,12 @@ class admin {
 		}
 		if ($success && $deleted_css && $deleted_js && $deleted_html) {
 			if ($redirect) {
+				if (!empty($this->compress_options['auto_rewrite']['chained'])) {
 /* create all new cached files */
-				$this->chained_load(str_replace(
-					$this->compress_options['document_root'], "/" ,
-						$this->compress_options['website_root']) . 'index.php');
+					$this->chained_load(str_replace(
+						$this->compress_options['document_root'], "/" ,
+							$this->compress_options['website_root']) . 'index.php');
+				}
 /* redirect to the main page */
 				header("Location: index.php?cleared=1");
 				die();
@@ -643,6 +645,7 @@ class admin {
 			$this->input['user']['minify']['with'] = 'with_jsmin';
 /* enable auto-rewrite */
 			$this->input['user']['auto_rewrite']['enabled'] = 1;
+			$this->input['user']['auto_rewrite']['chained'] = 1;
 			$this->input['Submit'] = 1;
 /* switch View page */
 			$this->input['page'] = 'install_stage_3';
@@ -786,6 +789,9 @@ class admin {
 				'intro' => _WEBO_SPLASH2_AUTOCHANGE_INFO . $this->system_info($this->view->paths['absolute']['document_root']) . _WEBO_SPLASH2_AUTOCHANGE_INFO2,
 				'value' => empty($this->compress_options['auto_rewrite']) ? array('enabled' => null) : $this->compress_options['auto_rewrite']
 			);
+/* disable chained optimization otherwise */
+		} else {
+			$this->input['user']['auto_rewrite']['chained'] = 0;
 		}
 		$this->compress_options['javascript_cachedir'] =
 			empty($this->compress_options['javascript_cachedir']) ?
@@ -1425,7 +1431,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			$this->save_option("['performance']['cache_version']", 0);
 /* de-activate Web Optimizer, we have web_optimizer_debug param on chained optimization */
 			$this->save_option("['active']", 0);
-			$this->chained_load();
+			if (!empty($this->input['user']['auto_rewrite']['chained'])) {
+				$this->chained_load();
+			}
 		}
 		$this->display_progress = !empty($this->web_optimizer_stage);
 		if(!empty($this->input['Submit'])) {
@@ -1867,6 +1875,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		if ($index) {
 /* deactivate Web Optimizer */
 			$this->save_option("['active']", 0, 0);
+/* load home page in DEBUG mode */
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index .
 				'?web_optimizer_stage=10&cache_version=' .
 					$this->cache_version .
@@ -1875,6 +1884,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			if (is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
 				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			}
+/* activate Web Optimizer back */
 			$this->save_option("['active']", 1, 0);
 /* or via cached HTML */
 		} else {

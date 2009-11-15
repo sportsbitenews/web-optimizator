@@ -195,6 +195,8 @@ $compress_options['htaccess']['local'] = "1";
 $compress_options['htaccess']['access'] = "0";
 ## Enable auto-rewrite for index.php
 $compress_options['auto_rewrite']['enabled'] = "1";
+## Enable chained optimization for the website
+$compress_options['auto_rewrite']['chained'] = "1";
 ## List of enabled plugins for server side performance
 $compress_options['plugins'] = "";
 ## Web Optimizer license, empty for free edition

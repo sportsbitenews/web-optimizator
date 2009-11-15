@@ -226,6 +226,7 @@ define('_WEBO_htaccess_mod_rewrite', '<code>mod_rewrite</code> verwenden');
 define('_WEBO_htaccess_local', 'Datei <code>.htaccess</code> lokal platzieren (nicht in die Dokument-Root)');
 define('_WEBO_htaccess_access', 'Web Optimizer Installation via <code>htpasswd</code> sch&uuml;tzen');
 define('_WEBO_auto_rewrite_enabled', 'Auto-Rewrite aktivieren');
+define('_WEBO_auto_rewrite_chained', 'Ketten-Optimierung aktivieren');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Testversion Begrenzungen');
