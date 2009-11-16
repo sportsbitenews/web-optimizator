@@ -472,7 +472,7 @@ class web_optimizer {
 			}
 		}
 /* also skip AJAX requests with X-Requested-With: XMLHttpRequest */
-		if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 			$skip = 1;
 		}
 		$query = explode('.', $_SERVER['QUERY_STRING']);

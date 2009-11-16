@@ -1832,11 +1832,12 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				'mod_expires' => 'ExpiresActive On',
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
-				'mod_rewrite' => 'RewriteEngine On'
+				'mod_rewrite' => "RewriteEngine On
+				RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
-				if ($this->check_apache_module($value, $document_root, $javascript_cachedir)) {
+				if ($this->check_apache_module($value, $document_root, $javascript_cachedir, $key)) {
 					$this->apache_modules[] = $key;
 				}
 			}
@@ -1847,11 +1848,12 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 	* Checks exitence of current Apache module
 	*
 	**/
-	function check_apache_module ($rule, $document_root, $javascript_cachedir) {
+	function check_apache_module ($rule, $document_root, $javascript_cachedir, $module) {
 		$testfile = 'libs/js/yass.loader.js';
+		$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
-		$curl = $this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $testfile, $javascript_cachedir . 'module.test');
+		$curl = $this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . $curlfile, $javascript_cachedir . 'module.test');
 /* it it's possible to get file => module works */
 		if (@filesize($javascript_cachedir . 'module.test') == @filesize($this->basepath . $testfile)) {
 			$return = true;
