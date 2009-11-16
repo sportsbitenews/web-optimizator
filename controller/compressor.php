@@ -464,12 +464,16 @@ class web_optimizer {
 			foreach ($headers as $header) {
 				$header = strtolower($header);
 				if (strpos($header, 'content-type') !== false) {
-					$skip = 1;
+					$skip++;
 				}
 				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {
-					$skip = 0;
+					$skip--;
 				}
 			}
+		}
+/* also skip AJAX requests with X-Requested-With: XMLHttpRequest */
+		if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+			$skip = 1;
 		}
 		$query = explode('.', $_SERVER['QUERY_STRING']);
 		$ext = strtolower($query[count($query) - 1]);
