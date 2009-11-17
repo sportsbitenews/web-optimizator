@@ -2042,6 +2042,9 @@ class web_optimizer {
 						case 'gw':
 							$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
 							break;
+						case 'aa':
+							$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
+							break;							
 					}
 				}
 /* count param for str_replace available only in PHP5 */
@@ -2180,14 +2183,19 @@ class web_optimizer {
 				)
 /* Advertisement */
 			), 'unobtrusive_ads' => array (
+/* Amazon Ads */
+				'aa' => array(
+					'marker' => 'amazon_ad',
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*amazon_ad_tag.*?ads.js\"></script>"
+				
 /* Begun */
-				'bu' => array(
+				), 'bu' => array(
 					'marker' => 'autocontext.begun.ru',
-					'regexp' => "<script type=\"text/javascript\"><!--\r?\nvar begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
 /* Google AdWords */
 				), 'gw' => array(
 					'marker' => 'pagead2.googlesyndication.com',
-					'regexp' => "<script type=\"text/javascript\"><!--\r?\n?\r?\ngoogle_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>"
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*google_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>"
 /* OpenX */
 				), 'ox' => array(
 					'marker' => 'ajs.php',
@@ -2195,7 +2203,7 @@ class web_optimizer {
 /* Yandex.Direct */
 				), 'yd' => array(
 					'marker' => 'yandex_partner_id',
-					'regexp' => "<script type=\"text/javascript\"><!--\r?\nyandex_partner_id.*?</script>"
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*yandex_partner_id.*?</script>"
 				)
 			)
 		);
