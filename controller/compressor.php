@@ -124,10 +124,10 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-/* skip gzip/deflate if plugins are enabled - they can have onAfterOptimization */
+/* skip gzip/deflate if plugins are enabled - they can have onCache */
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri .
 				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
-					$this->ua_mod : '.' . $this->encoding_ext);
+					$this->ua_mod : $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -749,8 +749,7 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] .
 				$this->uri .
-				(empty($this->encoding_ext) ?
-					$this->ua_mod : '.' . $this->encoding_ext);
+				(empty($this->encoding_ext) ? $this->ua_mod : $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
