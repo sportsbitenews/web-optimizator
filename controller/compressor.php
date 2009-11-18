@@ -126,7 +126,8 @@ class web_optimizer {
 			$this->uri = $this->convert_request_uri();
 /* skip gzip/deflate if plugins are enabled - they can have onAfterOptimization */
 			$file = $this->options['page']['cachedir'] . '/' . $this->uri .
-				(empty($this->encoding_ext) || is_array($this->options['plugins']) ? '' : '.' . $this->encoding_ext);
+				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
+					$this->ua_mod : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -748,7 +749,8 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] .
 				$this->uri .
-				(empty($this->encoding_ext) ? '' : '.' . $this->encoding_ext);
+				(empty($this->encoding_ext) ?
+					$this->ua_mod : '.' . $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
@@ -768,6 +770,9 @@ class web_optimizer {
 				} elseif (!empty($options['flush']) && empty($this->encoding)) {
 					$content_to_write =
 						substr($content_to_write, 0, $options['flush_size']);
+/* or just write non-gzipped content */
+				} else {
+					$content_to_write = $this->content;
 				}
 				$this->write_file($file, $content_to_write);
 /* create uncompressed file for plugins */
@@ -960,7 +965,7 @@ class web_optimizer {
 			}
 		}
 		if (!empty($this->encoding_ext)) {
-			$this->encoding_ext = $this->ua_mod . $this->encoding_ext;
+			$this->encoding_ext = $this->ua_mod . '.' . $this->encoding_ext;
 		}
 	}
 	
