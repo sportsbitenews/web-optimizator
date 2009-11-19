@@ -144,6 +144,7 @@ define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;
 define('_WEBO_unobtrusive_informers', 'Mueve llamados informantes de antes de <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Mueve contrallamados antes de <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Mueve direccionamiento de avisos (de contenido y baners) antes de <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_iframes', 'Move frames load to <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Activa fusionamiento externo de JavaScript');
 define('_WEBO_external_scripts_inline', 'Activa fusionamiento interno de JavaScript');
 define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scripts fusionados a <code>&lt;/head&gt;</code>');

@@ -383,6 +383,8 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_all" => $this->options['unobtrusive']['all'] &&
 					($this->premium > 1),
+				"unobtrusive_iframes" => $this->options['unobtrusive']['iframes'] &&
+					($this->premium > 1),
 				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
@@ -822,6 +824,63 @@ class web_optimizer {
 	}
 
 	/**
+	* Moves all iframes' laod to </body>
+	*
+	**/	
+	function add_iframes_loaders ($content) {
+		$IFRAME = strpos($content, '<IFRAME');
+		if (!empty($this->options['page']['html_tidy']) && !$IFRAME) {
+			$_content = $content;
+			while ($pos = strpos($_content, '<iframe')) {
+				$len = strpos(substr($_content, $pos), '>') + 1;
+/* gets image tag w/o the closing >, it's OK */
+				$iframes[] = array(substr($_content, $pos, $len));
+				$_content = substr_replace($_content, '', $pos, $len);
+			}
+		} elseif (empty($this->options['page']['html_tidy']) || $IFRAME) {
+			preg_match_all("!<iframe[^>]+>!is", $content, $iframes, PREG_SET_ORDER);
+		}
+		if (!empty($iframes)) {
+			$i = 0;
+			$before_body = '';
+			foreach ($iframes as $iframe) {
+				$iframe_old = $iframe[0];
+				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $iframe[0]));
+				if (preg_match("!\sid\s*=!", $iframe[0])) {
+					$old_id = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\sid\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $iframe[0]));
+				} else {
+					$old_id = '_wo_iframe' . $i;
+					$iframe[0] = str_replace('>' , ' id="' . $old_id . '">', $iframe[0]);
+				}
+				$before_body .= "document.getElementById('" .
+						$old_id .
+					"').src='" .
+						$old_src .
+					"';";
+				$iframe[0] = str_replace($old_src, '', $iframe[0]);
+				$content = str_replace($iframe_old, $iframe[0], $content);
+				$i++;
+			}
+			if (!empty($before_body)) {
+				$script = '<script type="text/javascript">' . 
+					$before_body . '</script>';
+				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
+					$content = substr_replace($content, $script, $bodypos, 0);
+				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
+					$content = substr_replace($content, $script, $bodypos, 0);
+				} else {
+					$content = preg_replace('@</body>@is', $script . "$0", $content);
+/* a number of engines doesn't set </body> */
+					if (!strpos($content, $before_body)) {
+						$content .= $script;
+					}
+				}
+			}
+		}
+		return $content;
+	}
+
+	/**
 	* Adds multiple hosts to HTML for images
 	*
 	**/
@@ -1065,8 +1124,8 @@ class web_optimizer {
 					} else {
 						$source = preg_replace('@</body>@is', $script . "$0", $source);
 /* a number of engines doesn't set </body> */
-						if (!strpos($this->content, "yass.loader")) {
-							$this->content .= $script;
+						if (!strpos($source, "yass.loader")) {
+							$source .= $script;
 						}
 					}
 				}
@@ -1080,8 +1139,8 @@ class web_optimizer {
 				} else {
 					$source = preg_replace("!</body>!is", $newfile . "$0", $source);
 /* a number of engines doesn't set </body> */
-					if (!strpos($this->content, $newfile)) {
-						$this->content .= $newfile;
+					if (!strpos($source, $newfile)) {
+						$source .= $newfile;
 					}
 				}
 				break;
@@ -1981,6 +2040,10 @@ class web_optimizer {
 						}
 					}
 				}
+		}
+/* insert iframes near </body> */
+		if (!empty($this->options['page']['unobtrusive_iframes'])) {
+			$source = $this->add_iframes_loaders($source);
 		}
 		return $source;
 	}

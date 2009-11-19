@@ -140,6 +140,7 @@ define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;
 define('_WEBO_unobtrusive_informers', 'JavaScript Informer Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
 define('_WEBO_unobtrusive_counters', 'Counter Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
 define('_WEBO_unobtrusive_ads', 'Werbung (Kontext und Banner vor <code>&lt;/body&gt;</code> verschieben');
+define('_WEBO_unobtrusive_iframes', 'Move frames load to <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Vermischung von externem JavaScript aktivieren');
 define('_WEBO_external_scripts_inline', 'Vermischung von Inline JavaScript aktivieren');
 define('_WEBO_external_scripts_head_end', 'Verschiebung aller vermischten Scripts nach <code>&lt;/head&gt;</code> erzwingen');

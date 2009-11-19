@@ -140,6 +140,7 @@ define('_WEBO_unobtrusive_all', 'Переместить весь JavaScript-ко
 define('_WEBO_unobtrusive_informers', 'Перенести виклики JavaScript-інформерів перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Перенести виклики лічильників перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Перенести рекламні виклики (контекст і банери) перед <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_iframes', 'Перенести загрузку фреймов перед <code>&lt;/body&gt;</code>');
 define('_WEBO_external_scripts_on', 'Включити об\'єднання зовнішніх файлів');
 define('_WEBO_external_scripts_inline', 'Включити об\'єднання JavaScript-кода');
 define('_WEBO_external_scripts_head_end', 'Форсувати розміщення об\'єднаного JavaScript-файлу перед <code>&lt;/head&gt;</code>');
