@@ -80,13 +80,6 @@ class web_optimizer {
 		$this->set_options();
 /* Remember current page encoding */
 		$this->encoding = '';
-/* skip all browser-dependent features */
-		if ($this->options['uniform_cache']) {
-			$this->ua_mod = '';
-			$this->options['css']['data_uris'] = 0;
-			$this->options['css']['mhtml'] = 0;
-			$this->options['css']['data_uris_separate'] = 0;
-		}
 /* Define the gzip headers */
 		$this->set_gzip_headers();
 /* HTTPS or not ? */
@@ -962,6 +955,13 @@ class web_optimizer {
 				$this->encoding = "deflate";
 				$this->encoding_ext = 'df';
 			}
+		}
+/* skip all browser-dependent features */
+		if ($this->options['uniform_cache']) {
+			$this->ua_mod = '';
+			$this->options['css']['data_uris'] = 0;
+			$this->options['css']['mhtml'] = 0;
+			$this->options['css']['data_uris_separate'] = 0;
 		}
 		if (!empty($this->encoding_ext)) {
 			$this->encoding_ext = $this->ua_mod . '.' . $this->encoding_ext;
