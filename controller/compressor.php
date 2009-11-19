@@ -80,10 +80,6 @@ class web_optimizer {
 		$this->set_options();
 /* Remember current page encoding */
 		$this->encoding = '';
-/* Define the gzip headers */
-		$this->set_gzip_headers();
-/* HTTPS or not ? */
-		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* skip all browser-dependent features */
 		if ($this->options['uniform_cache']) {
 			$this->ua_mod = '';
@@ -91,6 +87,10 @@ class web_optimizer {
 			$this->options['css']['mhtml'] = 0;
 			$this->options['css']['data_uris_separate'] = 0;
 		}
+/* Define the gzip headers */
+		$this->set_gzip_headers();
+/* HTTPS or not ? */
+		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 		$excluded_html_pages = '';
