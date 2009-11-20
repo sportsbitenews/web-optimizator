@@ -140,7 +140,7 @@ define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;
 define('_WEBO_unobtrusive_informers', 'Move JavaScript informers calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_counters', 'Move counter calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads', 'Move advertisement (context and banners) calls before <code>&lt;/body&gt;</code>');
-define('_WEBO_unobtrusive_iframes', 'Move frames load to <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_iframes', 'Make iframes\' load delayed');
 define('_WEBO_external_scripts_on', 'Enable external JavaScript merging');
 define('_WEBO_external_scripts_inline', 'Enable inline JavaScript merging');
 define('_WEBO_external_scripts_head_end', 'Force moving all merged scripts to <code>&lt;/head&gt;</code>');

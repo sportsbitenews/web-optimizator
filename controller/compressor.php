@@ -494,7 +494,8 @@ class web_optimizer {
 							!empty($option['unobtrusive_all']) ||
 							!empty($option['unobtrusive_ads']) ||
 							!empty($option['unobtrusive_counters']) ||
-							!empty($option['unobtrusive_informers'])) {
+							!empty($option['unobtrusive_informers']) ||
+							!empty($option['unobtrusive_iframes'])) {
 								if (!empty($this->web_optimizer_stage)) {
 									$this->write_progress($this->web_optimizer_stage++);
 								}
@@ -700,7 +701,8 @@ class web_optimizer {
 		if(!empty($options['minify']) ||
 			(!empty($options['parallel']) &&
 				!empty($options['parallel_hosts'])) ||
-			!empty($options['unobtrusive_all'])) {
+			!empty($options['unobtrusive_all']) ||
+			!empty($options['unobtrusive_iframes'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
@@ -2162,7 +2164,7 @@ class web_optimizer {
 		$unobtrusive_items = array(
 /* Informers */
 			'unobtrusive_informers' => array(
-/* Addthis */
+/* AddThis */
 				'at' => array(
 					'marker' => 'AddThis',
 					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
