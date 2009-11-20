@@ -823,6 +823,7 @@ class web_optimizer {
 			}
 		}
 		@touch($file, $this->time);
+		@chmod($file, octdec("0644"));
 	}
 
 	/**
