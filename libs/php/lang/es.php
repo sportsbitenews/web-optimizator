@@ -347,4 +347,12 @@ define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Acceso de archivos externos');
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Hosts multiples');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Compatible con CMS nativo');
 define('_WEBO_SYSTEM_CHECK_MEMORY', 'Memory available');
+
+/* create .gz versions of css/js file */
+define('_WEBO_GZIP_TITLE', 'Static gzip');
+define('_WEBO_GZIP_INSTALLED', 'You can create <code>.gz</code> versions of all CSS and JS files (for static gzip usage). For this purpose please enter intitial directory. It will be scanned recursively for required files, current <code>.gz</code> versions of files will be refreshed if it\'s required.');
+define('_WEBO_GZIP_RESULTS', 'Gzip results:');
+define('_WEBO_GZIP_ENTERDIRECTORY', 'Enter initial directory');
+define('_WEBO_GZIP_DIRECTORY', 'Directory');
+define('_WEBO_GZIP_CREATE', 'Create');
 ?>

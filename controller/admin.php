@@ -66,7 +66,8 @@ class admin {
 			'install_uninstall' => 1,
 			'install_upgrade' => 1,
 			'system_check' => 1,
-			'install_change_password' => 1
+			'install_change_password' => 1,
+			'install_gzip' => 1
 		);
 /* inializa stage for chained optimization */
 		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
@@ -274,7 +275,7 @@ class admin {
 				$this->save_option("['gzip']['page']", 0);
 			}
 			$saved_kb = $saved_s = $saved_percent = 0;
-			if ($this->premium) {
+			if ($this->premium > 1) {
 				if ($installed && @filesize($index_before) && @filesize($index_after) < 200) {
 /* if we have just downloaded initial grade - try to renew it */
 					if ($no_initial_grade) {
@@ -403,6 +404,83 @@ class admin {
 			}
 		} else {
 			$this->error("<p>". _WEBO_CLEAR_UNABLE ."</p>");
+		}
+	}
+
+	/**
+	* Apply static gzip to one file
+	*
+	**/	 
+	function install_gzip_unit ($file) {
+		$mtime = @filemtime($file);
+		$gzipped = $file . '.gz';
+/* check if mtime of gzipped version isn't equal to the initial file's mtime */
+		if ($mtime != @filemtime($gzipped)) {
+			$this->write_file($gzipped,
+				@gzencode(@file_get_contents($file), 9, FORCE_GZIP));
+			@touch($gzipped, $mtime);
+			$this->files[] = $gzipped;
+		}
+	}
+
+	/**
+	* Recursive function for files' fetching
+	*
+	**/	
+	function recursive_actions($directory, $regexp, $callback) {
+		if (is_dir($directory) && ($dh = opendir($directory))) {
+			while (($file = readdir($dh)) !== false) {
+				if ($file !== '.' && $file !== '..') {
+					$absolute_file =
+						$this->view->ensure_trailing_slash($directory) . $file;
+/* deeper recursion */
+					if (is_dir($absolute_file)) {
+						$this->recursive_actions($absolute_file, $regexp, $callback);
+/* check for mask and apply action */
+					} else {
+						if (preg_match("!". $regexp . "!", $file)) {
+							$this->$callback($absolute_file);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	* Static gzip page
+	*
+	**/	 
+	function install_gzip() {
+		$directory = empty($this->input['user']['directory']) ?
+			(empty($this->compress_options['website_root']) ?
+				$this->view->paths['absolute']['document_root'] :
+					$this->compress_options['website_root']) :
+			$this->input['user']['directory'];
+		$results = '';
+		if ($this->input['page'] == 'install_gzip') {
+			$this->recursive_actions($directory, '\\.(css|js)$', 'install_gzip_unit');
+			if (is_array($this->files)) {
+				foreach ($this->files as $file) {
+					$results .= $file . "\n";
+				}
+			}
+		}
+		$this->page_variables = array(
+			"title" => _WEBO_SPLASH1_UNINSTALL,
+			"paths" => $this->view->paths,
+			"page" => 'install_gzip',
+			"results" => $results,
+			"username" => $this->input['user']['username'],
+			"password" => $this->input['user']['password'],
+			"directory" => $directory,
+			"version" => $this->version,
+			"version_new" => $this->version_new,
+			"premium" => $this->premium
+		);
+		if ($this->input['page'] == 'install_gzip') {
+			$this->view->render("admin_container", $this->page_variables);
+			die();
 		}
 	}
 
@@ -665,6 +743,8 @@ class admin {
 				$this->install_clean_cache();
 			} elseif (!empty($this->input['change'])) {
 				$this->install_change_password();
+			} elseif (!empty($this->input['gzip'])) {
+				$this->install_gzip();
 			} else{
 /* return page variables to render */
 				$this->get_options();

@@ -342,4 +342,12 @@ define('_WEBO_SYSTEM_CHECK_EXTERNAL', 'Доступ ко внешних файл
 define('_WEBO_SYSTEM_CHECK_HOSTS', 'Множественные хосты');
 define('_WEBO_SYSTEM_CHECK_CMS', 'Встроенная поддержка CMS');
 define('_WEBO_SYSTEM_CHECK_MEMORY', 'Доступная память');
+
+/* create .gz versions of css/js file */
+define('_WEBO_GZIP_TITLE', 'Статическое сжатие');
+define('_WEBO_GZIP_INSTALLED', 'Вы можете создать <code>.gz</code>-версии всех CSS- и JS-файлов (для использования статическиого сжатия). Для этого введите исходную директорию. Она будет рекурсивно просмотрена на наличие необходимых файлов, текущие <code>.gz</code>-версии файлов будут обновлены при необходимости.');
+define('_WEBO_GZIP_RESULTS', 'Результаты сжатия:');
+define('_WEBO_GZIP_ENTERDIRECTORY', 'Введите исходную директорию');
+define('_WEBO_GZIP_DIRECTORY', 'Директория');
+define('_WEBO_GZIP_CREATE', 'Создать');
 ?>

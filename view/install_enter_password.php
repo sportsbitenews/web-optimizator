@@ -67,6 +67,13 @@
 		}
 ?></label></p><?php
 	}
+	if ($premium > 1) {
+?><br/><br/><p><input type="submit" value="<?php
+		echo _WEBO_GZIP_TITLE;
+?>" title="<?php
+		echo _WEBO_GZIP_TITLE;
+?>" class="v" name="gzip"/></p><?php
+	}
 ?></fieldset><div><?php
 	if ($version_new_exists) {
 ?><fieldset class="g"><p><?php

@@ -41,6 +41,7 @@ view/admin_container.php
 view/error.php
 view/install_change_password.php
 view/install_enter_password.php
+view/install_gzip.php
 view/install_set_password.php
 view/install_stage_2.php
 view/install_stage_3.php
@@ -50,7 +51,6 @@ config.webo.php
 index.php
 install.php
 LICENSE.txt
-LICENSE.ru.txt
 readme.txt
 version
 web.optimizer.php
