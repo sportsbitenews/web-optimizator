@@ -4,7 +4,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.6.0
+// @version    0.6.6
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 // To install Web Optimizer please copy this file to the document root, make document root
@@ -28,7 +28,7 @@
 	);
 
 	function download ($file, $install_directory) {
-		$ch = @curl_init('http://web-optimizator.googlecode.com/svn/trunk/' . $file);
+		$ch = @curl_init('http://web-optimizator.googlecode.com/svn/trunk-stable/' . $file);
 		$dir = $file;
 /* remember current directory */
 		$current_directory = @getcwd();
