@@ -30,7 +30,7 @@ class admin {
 		require_once($this->basepath . $this->options_file);
 		$this->compress_options = $compress_options;
 /* to check and download new Web Optimizer version */
-		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk/';
+		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
 		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
