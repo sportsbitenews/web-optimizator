@@ -31,6 +31,7 @@ class admin {
 		$this->compress_options = $compress_options;
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
+		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
 		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
@@ -314,6 +315,7 @@ class admin {
 				"version" => $this->version,
 				"version_new" => $this->version_new,
 				"version_new_exists" => $this->version_new_exists,
+				"version_beta" => strpos($this->version, 'b'),
 				"protected" => $this->protected,
 				"installed" => $installed,
 				"saved_kb" => $saved_kb,
@@ -737,7 +739,10 @@ class admin {
 		} else {
 			if (!empty($this->input['uninstall'])) {
 				$this->install_uninstall();
-			} elseif (!empty($this->input['upgrade'])) {
+			} elseif (!empty($this->input['upgrade']) || !empty($this->input['upgradestable'])) {
+				$this->install_upgrade();
+			} elseif (!empty($this->input['upgradebeta'])) {
+				$this->svn = $this->svn_beta;
 				$this->install_upgrade();
 			} elseif (!empty($this->input['clear'])) {
 				$this->install_clean_cache();

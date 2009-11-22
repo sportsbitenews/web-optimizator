@@ -74,17 +74,30 @@
 		echo _WEBO_GZIP_TITLE;
 ?>" class="v" name="gzip"/></p><?php
 	}
-?></fieldset><div><?php
+?></fieldset><div><fieldset class="g"><input type="hidden" name="ujs" value="1"/><p><?php
+	echo _WEBO_LOGIN_UPGRADENOTICE . $version . ($protected ? _WEBO_LOGIN_UPGRADENOTICE4 : _WEBO_LOGIN_UPGRADENOTICE2) . $version_new . _WEBO_LOGIN_UPGRADENOTICE3;
+?></p><?php
 	if ($version_new_exists) {
-?><fieldset class="g"><p><?php
-		echo _WEBO_LOGIN_UPGRADENOTICE . $version . ($protected ? _WEBO_LOGIN_UPGRADENOTICE4 : _WEBO_LOGIN_UPGRADENOTICE2) . $version_new . _WEBO_LOGIN_UPGRADENOTICE3;
-?></p><input type="hidden" name="ujs" value="1"/><input type="submit" name="upgrade" value="<?php
+?><input type="submit" name="upgrade" value="<?php
 		echo _WEBO_LOGIN_UPGRADE;
 ?>" title="<?php
 		echo _WEBO_LOGIN_UPGRADE;
-?>" onclick="this.form.ujs.id=this.form.ujs.name='upgrade';this.form.submit();return false"/></fieldset><?php
+?>" onclick="this.form.ujs.id=this.form.ujs.name='upgrade';this.form.submit();return false"/><?php
 	}
-?><fieldset class="h"><p><?php
+	if (!$version_beta) {
+?><input type="submit" name="upgradebeta" value="<?php
+		echo _WEBO_LOGIN_UPGRADE_BETA;
+?>" title="<?php
+		echo _WEBO_LOGIN_UPGRADE_BETA;
+?>" onclick="this.form.ujs.id=this.form.ujs.name='upgradebeta';this.form.submit();return false"/><?php
+	} else {
+?><input type="submit" name="upgradestable" value="<?php
+		echo _WEBO_LOGIN_UPGRADE_STABLE;
+?>" title="<?php
+		echo _WEBO_LOGIN_UPGRADE_STABLE;
+?>" onclick="this.form.ujs.id=this.form.ujs.name='upgradestable';this.form.submit();return false"/><?php
+	}
+?></fieldset><fieldset class="h"><p><?php
 	echo ($protected ? '' : _WEBO_SPLASH1_CLEAR_CACHE) . _WEBO_SPLASH1_CLEAR_CACHE2;
 ?></p><input type="submit" name="clear" value="<?php
 	echo _WEBO_SPLASH1_CLEAR;

@@ -37,6 +37,8 @@ define('_WEBO_SPLAHS1_PROTECTED', 'Gesch&uuml;tzter Modus');
 define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer Installation ist sicher gesch&uuml;tzt. Sie k&ouml;nnen erneut konfigurieren.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
+define('_WEBO_LOGIN_UPGRADE_BETA', 'To beta');
+define('_WEBO_LOGIN_UPGRADE_STABLE', 'To stable');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Sie k&ouml;nnen Ihre Version (');
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') von Web Optimizer auf die neueste Version aktualisieren. Tragen Sie Ihre Benutzernamen und Kennwort ein und klicken Sie auf <strong>Upgrade</strong>. Web Optimizer wird aktualisiert auf Version <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');

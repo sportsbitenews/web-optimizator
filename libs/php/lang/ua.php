@@ -37,6 +37,8 @@ define('_WEBO_SPLAHS1_PROTECTED', 'Захищений режим');
 define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer надійно захищає від зовнішнього доступу. Ви можете налаштувати його ще раз.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновити');
+define('_WEBO_LOGIN_UPGRADE_BETA', 'До бета');
+define('_WEBO_LOGIN_UPGRADE_STABLE', 'До стабил.');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Ви можете обновити вашу поточну версію Web Optimizer (');
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') до найостаннішої. Для цього введіть ваш логін і пароль в формі вище і натисніть кнопку <strong>Поновити</strong>. Web Optimizer буде автоматично обновлений до версії <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');

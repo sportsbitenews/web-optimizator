@@ -37,6 +37,8 @@ define('_WEBO_SPLAHS1_PROTECTED', 'Modo protegido');
 define('_WEBO_SPLAHS1_PROTECTED2', 'La instalaci&oacute;n de Web Optimizer est&aacute; protegida exitosamente. Usted puede configurarla nuevamente.');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Actualizaci&oacute;n');
+define('_WEBO_LOGIN_UPGRADE_BETA', 'To beta');
+define('_WEBO_LOGIN_UPGRADE_STABLE', 'To stable');
 define('_WEBO_LOGIN_UPGRADENOTICE', 'Usted ya puede actualizar su versi&oacute;n (');
 define('_WEBO_LOGIN_UPGRADENOTICE2', ') de Web Optimizer a la &uacute;ltima versi&oacute;n. Por favor ingrese su Login y Contrase&ntilde;a y presione <strong>Actualizar</strong>. Web Optimizer ser&aacute; actualizado <strong>');
 define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
