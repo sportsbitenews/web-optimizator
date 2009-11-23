@@ -2466,7 +2466,7 @@ class web_optimizer {
 	function get_head_status () {
 		$this->head_status = '';
 		$this->get_head();
-		if (!empty($this->options['css']['minify']) && !empty($this->options['css']['minify'])) {
+		if (!empty($this->options['css']['minify']) && !empty($this->options['javascript']['minify'])) {
 			if (empty($this->options['javascript']['minify_body']) && empty($this->options['css']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
