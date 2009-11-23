@@ -1392,14 +1392,19 @@ class web_optimizer {
 /* Allow for minification of javascript */
 			if ($options['header'] == "javascript" && $options['minify']) {
 				if ($options['minify_with'] == 'packer') {
-					$this->packer = new JavaScriptPacker($contents, 'Normal', false, false);
+					$this->packer = new JavaScriptPacker($contents,
+						'Normal', false, false);
 					$minified_content = $this->packer->pack();
 				} elseif ($options['minify_with'] == 'yui' ) {
-					$this->yuicompressor = new YuiCompressor($options['cachedir'], $options['installdir']);
+					$this->yuicompressor = new YuiCompressor($options['cachedir'],
+						$options['installdir']);
 					$minified_content = $this->yuicompressor->compress($contents);
-				} elseif ($options['minify_with'] == 'jsmin' || empty($minified_content)) {
-					$this->jsmin = new JSMin($contents);
-					$minified_content = $this->jsmin->minify($contents);
+				}
+				if ($options['minify_with'] == 'jsmin' ||
+					(!empty($options['minify_with']) &&
+						empty($minified_content))) {
+							$this->jsmin = new JSMin($contents);
+							$minified_content = $this->jsmin->minify($contents);
 				}
 				if (!empty($minified_content)) {
 					$contents = $minified_content;
