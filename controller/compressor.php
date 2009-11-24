@@ -2275,6 +2275,10 @@ class web_optimizer {
 				), 'ox' => array(
 					'marker' => 'ajs.php',
 					'regexp' => "<!--/*\sOpenX\sJavascript.*?</noscript>"
+/* PredictAd */
+				), 'pa' => array(
+					'marker' => 'PredictAd Code',
+					'regexp' => "<!-- PredictAd Code.*?End PredictAd Code -->"
 /* Yandex.Direct */
 				), 'yd' => array(
 					'marker' => 'yandex_partner_id',
