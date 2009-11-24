@@ -43,7 +43,7 @@ $compress_options['external_scripts']['css'] = "1";
 ## Merge inline styles in head
 $compress_options['external_scripts']['css_inline'] = "1";
 ## Ignore list, files separated by space
-$compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_gzip.php fckeditor.js";
+$compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_src.js tiny_init.js tiny_mce_gzip.php fckeditor.js";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
 ## To get through HTTP Basic Authorization

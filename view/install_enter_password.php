@@ -18,9 +18,9 @@
 	}
 ?><h2><?php
 	echo _WEBO_LOGIN_TITLE;
-?></h2><div class="d"><div class="e"><noscript><p><?php
+?></h2><div class="d"><div class="e"><noscript><?php
 	echo _WEBO_NEW_NOSCRIPT;
-?></p></noscript><?php
+?></noscript><?php
 	echo _WEBO_LOGIN_INSTALLED . $version . ($protected ? _WEBO_LOGIN_INSTALLED3 : _WEBO_LOGIN_INSTALLED2);
 	echo $installed ? '' : '<br/>' . _WEBO_LOGIN_NOTINSTALLED;
 ?></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><?php
