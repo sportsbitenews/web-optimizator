@@ -149,7 +149,7 @@ class web_optimizer {
 							$plugin_file =
 								$this->options['css']['installdir'] .
 									'plugins/' . $plugin . '.php';
-							if (is_file($plugin_file)) {
+							if (@is_file($plugin_file)) {
 								include($plugin_file);
 								$content =
 									$web_optimizer_plugin->onAfterOptimization($content);
@@ -416,6 +416,7 @@ class web_optimizer {
 	**/
 	function start () {
 		ob_start();
+		ob_implicit_flush(0);
 	}
 
 	/**
@@ -446,7 +447,7 @@ class web_optimizer {
 				$plugin_file =
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
-				if (is_file($plugin_file)) {
+				if (@is_file($plugin_file)) {
 					include($plugin_file);
 					$this->content =
 						$web_optimizer_plugin->onBeforeOptimization($this->content);
@@ -732,7 +733,7 @@ class web_optimizer {
 				$plugin_file =
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
-				if (is_file($plugin_file)) {
+				if (@is_file($plugin_file)) {
 					include($plugin_file);
 					$this->content =
 						$web_optimizer_plugin->onAfterOptimization($this->content);
@@ -785,7 +786,7 @@ class web_optimizer {
 				$plugin_file =
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
-				if (is_file($plugin_file)) {
+				if (@is_file($plugin_file)) {
 					include($plugin_file);
 					$this->content =
 						$web_optimizer_plugin->onCache($this->content);
@@ -1212,7 +1213,7 @@ class web_optimizer {
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
 		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
-			if (is_file($physical_file)) {
+			if (@is_file($physical_file)) {
 				$timestamp = @filemtime($physical_file);
 			} else {
 				$timestamp = 0;
@@ -1234,7 +1235,7 @@ class web_optimizer {
 				$source = $this->_remove_scripts($external_array, $source);
 			}
 /* Create the link to the new file with data:URI / mhtml */
-			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || is_file($physical_file . '.css'))) {
+			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.css'))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 				if (empty($options['data_uris_domloaded'])) {
@@ -1538,7 +1539,7 @@ class web_optimizer {
 				}
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
 			}
-			if (is_file($file)) {
+			if (@is_file($file)) {
 				$content = @file_get_contents($file);
 			}
 		} else {
@@ -1546,7 +1547,7 @@ class web_optimizer {
 		}
 /* remove BOM */
 		$content = str_replace(array('&amp;', '﻿'), array('&', ''), $content);
-		if (is_file($file) || $inline) {
+		if (@is_file($file) || $inline) {
 /* remove commented @import. First of all glue CSS files, optimiza only secondly */
 			$content = preg_replace("!/\*\s*@import.*?\*/!is", "", $content);
 /* new RegExp from xandrx */
@@ -1751,7 +1752,7 @@ class web_optimizer {
 								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
 							}
 							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
-							if (is_file($static_file)) {
+							if (@is_file($static_file)) {
 								$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
 							} else {
 								unset($value['file']);
@@ -2277,7 +2278,7 @@ class web_optimizer {
 					'regexp' => "<!--/*\sOpenX\sJavascript.*?</noscript>"
 /* PredictAd */
 				), 'pa' => array(
-					'marker' => 'PredictAd Code',
+					'marker' => 'PredictAd',
 					'regexp' => "<!-- PredictAd Code.*?End PredictAd Code -->"
 /* Yandex.Direct */
 				), 'yd' => array(
@@ -2314,15 +2315,14 @@ class web_optimizer {
 	* Removes all secondary stuff from HTML code
 	*
 	**/
-	function prepare_html ($source) {
+	function prepare_html ($source, $cssonly = false) {
 		$dest = $source;
 /* remove conditional comments for current browser */
-		if (!empty($this->ua_mod)) {
-			$dest = $this->remove_conditional_comments($dest);
-		}
+		$dest = $this->remove_conditional_comments($dest);
 /* Pull out the comment blocks, so as to avoid touching conditional comments,
-	and some semi-standard compalint hacks */
-		if (!empty($this->options['javascript']['minify'])) {
+	and some semi-standard complaint hacks,
+	skip if we fetch body but not head */
+		if (!empty($this->options['javascript']['minify']) && !$cssonly) {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
@@ -2378,7 +2378,7 @@ class web_optimizer {
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
 				preg_match("!<head(\s+[^>]+)?>.*?(</body>|$)!is", $this->content, $matches);
 				if (!empty($matches[0])) {
-					$this->body = $this->prepare_html($matches[0]);
+					$this->body = $this->prepare_html($matches[0], empty($this->options['javascript']['minify_body']));
 				}
 			}
 /* split XHTML behavior from HTML */
@@ -2509,34 +2509,38 @@ class web_optimizer {
 	*
 	**/
 	function remove_conditional_comments ($source) {
+		if (!empty($this->ua_mod)) {
 /* preliminary strpos saves about 50% of CPU */
-		if (strpos($source, 'IE]>') !== false) {
-			$source = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $source);
-		}
-		for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+			if (strpos($source, 'IE]>') !== false) {
+				$source = preg_replace("@<!--\[if \(?IE\)?\]>(.*?)<!\[endif\]-->@s", "$1", $source);
+			}
+			for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
-			if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
+				if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
 /* detect equality */
-				if (strpos($source, 'IE ' . $version . ']>') !== false) {
-					$source = preg_replace("@<!--\[if ((gte|lte) )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$3", $source);
-				}
-/* detect lesser versions */
-				for ($i = $this->min_ie_version; $i < $version; $i++) {
-					if (strpos($source, 'IE ' . $i . ']>') !== false) {
-						$source = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
+					if (strpos($source, 'IE ' . $version . ']>') !== false) {
+						$source = preg_replace("@<!--\[if ((gte|lte) )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$3", $source);
 					}
-				}
+/* detect lesser versions */
+					for ($i = $this->min_ie_version; $i < $version; $i++) {
+						if (strpos($source, 'IE ' . $i . ']>') !== false) {
+							$source = preg_replace("@<!--\[if gte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
+						}
+					}
 /* detect greater versions */
-				for ($i = $version + 1; $i < $this->max_ie_version; $i++) {
-					if (strpos($source, 'IE ' . $i . ']>') !== false) {
-						$source = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
+					for ($i = $version + 1; $i < $this->max_ie_version; $i++) {
+						if (strpos($source, 'IE ' . $i . ']>') !== false) {
+							$source = preg_replace("@<!--\[if lte? IE " . $i . "[^\]]*\]>(.*?)<!\[endif\]-->@s", "$1", $source);
+						}
 					}
 				}
 			}
-		}
 /* fix for IE7@Vista: skip both data:URI and mhtml approaches */
-		if ($this->ua_mod === '.ie7' && strpos($this->ua, 'NT 6.0')) {
-			$this->ua_mod === '.ie4';
+			if ($this->ua_mod === '.ie7' && strpos($this->ua, 'NT 6.0')) {
+				$this->ua_mod === '.ie4';
+			}
+		} elseif (empty($this->options['uniform_cache']) && strpos($source, '<!--[if') !== false) {
+			$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
 		}
 		return $source;
 	}

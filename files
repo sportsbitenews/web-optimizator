@@ -26,6 +26,7 @@ libs/php/class.csstidy_print.php
 libs/php/class.csstidy4.php
 libs/php/class.yuicompressor4.php
 libs/php/class.yuicompressor.php
+libs/php/css.sprites.optimize.php
 libs/php/css.sprites.php
 libs/php/css.template.tpl
 libs/php/data.inc.php

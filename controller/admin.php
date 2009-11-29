@@ -430,13 +430,13 @@ class admin {
 	*
 	**/	
 	function recursive_actions($directory, $regexp, $callback) {
-		if (is_dir($directory) && ($dh = opendir($directory))) {
-			while (($file = readdir($dh)) !== false) {
+		if (@is_dir($directory) && ($dh = @opendir($directory))) {
+			while (($file = @readdir($dh)) !== false) {
 				if ($file !== '.' && $file !== '..') {
 					$absolute_file =
 						$this->view->ensure_trailing_slash($directory) . $file;
 /* deeper recursion */
-					if (is_dir($absolute_file)) {
+					if (@is_dir($absolute_file)) {
 						$this->recursive_actions($absolute_file, $regexp, $callback);
 /* check for mask and apply action */
 					} else {
@@ -493,7 +493,7 @@ class admin {
 	function install_upgrade() {
 		$file = 'files';
 		$this->view->download($this->svn . $file, $file);
-		if (is_file($file)) {
+		if (@is_file($file)) {
 			$files = preg_split("/\r?\n/", @file_get_contents($file));
 			foreach ($files as $file) {
 				$this->view->download($this->svn . $file, $file);
@@ -594,7 +594,7 @@ class admin {
 		if (is_array($plugins)) {
 			foreach ($plugins as $plugin) {
 				$plugin_file = $this->basepath . 'plugins/' . $plugin . '.php';
-				if (is_file($plugin_file)) {
+				if (@is_file($plugin_file)) {
 					include($plugin_file);
 					$web_optimizer_plugin->onUninstall($this->view->paths['absolute']['document_root']);
 				}
@@ -648,7 +648,7 @@ class admin {
 	* Delets Web Optimizer calls from a single file
 	**/
 	function cleanup_file ($file, $return = false) {
-		if (is_file($file)) {
+		if (@is_file($file)) {
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", @file_get_contents($file));
 			$this->write_file($file, $content, $return);
@@ -770,7 +770,7 @@ class admin {
 		}
 		$this->input['user']['host'] = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
 /* check if we are using correct root directory */
-		if (!is_dir($this->input['user']['website_root'])) {
+		if (!@is_dir($this->input['user']['website_root'])) {
 			$this->error("<p>". _WEBO_SPLASH2_UNABLE ." ". $this->input['user']['website_root'] ." ". _WEBO_SPLASH2_MAKESURE ."</p>");
 		}
 		$this->get_modules();
@@ -962,7 +962,7 @@ class admin {
 		if (!empty($this->input['user']['minify']['with_yui'])) {
 /* check for YUI availability */
 			$YUI_checked = 0;
-			if (is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
+			if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || @is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
 				if (substr(phpversion(), 0, 1) == 4) {
 					require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
 				} else {
@@ -1044,7 +1044,7 @@ class admin {
 		$content_saved = '';
 		$htaccess = $this->detect_htaccess();
 /* remove rules from .htaccess */
-		if (is_file($htaccess)) {
+		if (@is_file($htaccess)) {
 			$fp = @fopen($htaccess, 'r');
 			if (!$fp) {
 				if (!empty($debug)) {
@@ -1438,7 +1438,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 2, true);
 /* Check we can write to the specified directories */
 			foreach ($test_dirs as $name => $dir) {
-				if (is_dir($dir)) {
+				if (@is_dir($dir)) {
 /* try to set to all cache folders 0755 permissions */
 					@chmod($dir, octdec("0755"));
 					if (substr(sprintf('%o', fileperms($dir)), -3) != '755') {
@@ -1481,7 +1481,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 			}
 /* copy stamp image to cache directory */
 			@copy($this->basepath . 'images/' . $this->input['user']['footer']['image'], $this->input['user']['css_cachedir'] . $this->input['user']['footer']['image']);
-			if (!is_file($this->input['user']['document_root'] . 'favicon.ico')) {
+			if (!@is_file($this->input['user']['document_root'] . 'favicon.ico')) {
 				$this->view->download($this->svn . 'favicon.ico', $this->input['user']['document_root'] . 'favicon.ico');
 			}
 			$this->write_progress($this->web_optimizer_stage = 4);
@@ -1781,14 +1781,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 							if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
 /* System-Cache plugin */
 							$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
-								if (is_file($cache_file)) {
+								if (@is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
 								}
 /* JRE component */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
-								if (is_file($cache_file)) {
+								if (@is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
@@ -1797,14 +1797,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 							if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 /* PageCache component */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
-								if (is_file($cache_file)) {
+								if (@is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
 								}
 /* System-Cache mambot */
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
-								if (is_file($cache_file)) {
+								if (@is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
@@ -1812,7 +1812,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 							}
 							if (substr($this->cms_version, 0, 5) == 'XOOPS') {
 								$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
-								if (is_file($cache_file)) {
+								if (@is_file($cache_file)) {
 									@copy($cache_file, $cache_file . '.backup');
 									$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
 									$this->write_file($cache_file, $content);
@@ -1828,7 +1828,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				if (is_array($plugins)) {
 					foreach ($plugins as $plugin) {
 						$plugin_file = $this->basepath . 'plugins/' . $plugin . '.php';
-						if (is_file($plugin_file)) {
+						if (@is_file($plugin_file)) {
 							include($plugin_file);
 							$web_optimizer_plugin->onInstall($this->view->paths['absolute']['document_root']);
 						}
@@ -1968,7 +1968,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 					$this->cache_version .
 				'&web_optimizer_debug=1',
 				$this->compress_options['html_cachedir'] . 'chained.load', 29);
-			if (is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
+			if (@is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
 				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			}
 /* activate Web Optimizer back */
@@ -2141,7 +2141,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 		$protected = !empty($this->compress_options['htaccess']['access']) ||
 			!empty($this->input['user']['htaccess']['access']);
 		if ($protected) {
-			if (is_file($this->basepath . '.htpasswd')) {
+			if (@is_file($this->basepath . '.htpasswd')) {
 /* add secure protection via htpasswd */
 				$htaccess_content .= '
 AuthType Basic
@@ -2215,11 +2215,11 @@ require valid-user';
 	**/
 	function system_info($root) {
 /* Wordpress */
-		if (is_file($root . 'wp-includes/version.php')) {
+		if (@is_file($root . 'wp-includes/version.php')) {
 			$wp_version = '1.0.0';
 			require($root . 'wp-includes/version.php');
 			return 'Wordpress ' . $wp_version;
-		} elseif (is_file($root . 'modules/system/system.info')) {
+		} elseif (@is_file($root . 'modules/system/system.info')) {
 /* Drupal */
 			$drupal_version = '1.0.0';
 			$fp  = @fopen($root . 'modules/system/system.info', "r");
@@ -2232,9 +2232,9 @@ require valid-user';
 			}
 			return 'Drupal ' . trim($drupal_version);
 /* Joomla 1.5 */
-		} elseif (is_dir($root . 'libraries')) {
+		} elseif (@is_dir($root . 'libraries')) {
 			$joomla_version = '1.5.0';
-			if (is_file($root . 'libraries/joomla/version.php')) {
+			if (@is_file($root . 'libraries/joomla/version.php')) {
 				if (substr(phpversion(), 0, 1) == 4) {
 					if (!class_exists('JVersion')) {
 						require($root . 'libraries/joomla/version.php');
@@ -2252,12 +2252,12 @@ require valid-user';
 				}
 			}
 			return 'Joomla! ' . $joomla_version;
-		} elseif (is_dir($root . 'includes')) {
+		} elseif (@is_dir($root . 'includes')) {
 /* for PHP-Nuke 8.0 */
-			if (is_file($root . 'modules/Journal/copyright.php') && is_file($root . 'footer.php') && is_file($root . 'mainfile.php')) {
+			if (@is_file($root . 'modules/Journal/copyright.php') && @is_file($root . 'footer.php') && @is_file($root . 'mainfile.php')) {
 				return 'PHP-Nuke';
 /* vBulletin */
-			} elseif (is_file($root . 'includes/class_core.php')) {
+			} elseif (@is_file($root . 'includes/class_core.php')) {
 				require($root . 'includes/class_core.php');
 				$vbulletin_version = '';
 				if (defined('FILE_VERSION')) {
@@ -2265,13 +2265,13 @@ require valid-user';
 				}
 				return 'vBulletin' . $vbulletin_version;
 /* phpBB (3.0) */
-			} elseif (is_file($root . 'includes/functions_privmsgs.php')) {
+			} elseif (@is_file($root . 'includes/functions_privmsgs.php')) {
 				return 'phpBB';
 /* osCommerce (2.2) */
-			} elseif (is_file($root . 'includes/tld.txt')) {
+			} elseif (@is_file($root . 'includes/tld.txt')) {
 				return 'osCommerce';
 /* Joomla 1.0, Joostina */
-			} elseif (is_file($root . 'includes/version.php')) {
+			} elseif (@is_file($root . 'includes/version.php')) {
 				define('_VALID_MOS', 1);
 				$joomla_version = '1.0';
 				$joomla_title = 'Joomla!';
@@ -2292,27 +2292,27 @@ require valid-user';
 				$joomla_title = empty($_VERSION->CMS) ? $_VERSION->PRODUCT : $_VERSION->CMS;
 				return $joomla_title . ' ' . $joomla_version;
 /* 4images */
-			} elseif (is_file($root . 'postcards.php')) {
+			} elseif (@is_file($root . 'postcards.php')) {
 				return '4images';
 /* VaM Shop */
-			} elseif (is_file($root . 'includes/application_top.php')) {
+			} elseif (@is_file($root . 'includes/application_top.php')) {
 				return 'VaM Shop';
 /* MaxDev Pro */
-			} elseif (is_file($root . 'includes/mdHTML.php')) {
+			} elseif (@is_file($root . 'includes/mdHTML.php')) {
 				return 'MaxDev Pro';
 			}
 /* Typo 3 */
-		} elseif (is_dir($root . 'typo3conf')) {
+		} elseif (@is_dir($root . 'typo3conf')) {
 			$TYPO3_CONF_VARS = array('SYS' => array('compat_version' => '4.2'));
-			if (is_file($root . 'typo3conf/localconf.php')) {
+			if (@is_file($root . 'typo3conf/localconf.php')) {
 				require($root . 'typo3conf/localconf.php');
 			}
 			return 'Typo3 ' . $TYPO3_CONF_VARS['SYS']['compat_version'];
 /* Simpla */
-		} elseif (is_file($root . 'Storefront.class.php')) {
+		} elseif (@is_file($root . 'Storefront.class.php')) {
 			return 'Simpla';
 /* Etomate 1.0, MODx */
-		} elseif (is_file($root . 'manager/includes/version.inc.php')) {
+		} elseif (@is_file($root . 'manager/includes/version.inc.php')) {
 			require($root . 'manager/includes/version.inc.php');
 			if (empty($full_appname)) {
 				return 'Etomite ' . $release;
@@ -2321,10 +2321,10 @@ require valid-user';
 				return $full_appname;
 			}
 /* LiveStreet */
-		} elseif (is_file($root . 'classes/engine/Router.class.php')) {
+		} elseif (@is_file($root . 'classes/engine/Router.class.php')) {
 			return 'LiveStreet';
 /* Santafox */
-		} elseif (is_file($root . 'ini.php')) {
+		} elseif (@is_file($root . 'ini.php')) {
 			require($root . 'ini.php');
 			if (defined('SANTAFOX_VERSION')) {
 				return 'Santafox ' . SANTAFOX_VERSION;
@@ -2332,68 +2332,68 @@ require valid-user';
 				return 'Santafox';
 			}
 /* Zend Framework */
-		} elseif (is_file($root . '../application/configs/config.ini')) {
+		} elseif (@is_file($root . '../application/configs/config.ini')) {
 			return 'Zend Framework';
 /* DataLife Engine */
-		} elseif (is_file($root . 'engine/data/config.php')) {
+		} elseif (@is_file($root . 'engine/data/config.php')) {
 			$config = array(
 				'version_id' => '8.0'
 			);
 			require($root . 'engine/data/config.php');
 			return 'DataLife Engine ' . $config['version_id'];
 /* CodeIgniter */
-		} elseif (is_file($root . 'system/codeigniter/CodeIgniter.php')) {
+		} elseif (@is_file($root . 'system/codeigniter/CodeIgniter.php')) {
 			return 'CodeIgniter';
 /* Symfony */
-		} elseif (is_file($root . '../lib/symfony/config/config/settings.yml')) {
+		} elseif (@is_file($root . '../lib/symfony/config/config/settings.yml')) {
 			return 'Symfony';
 /* Textpattern */
-		} elseif (is_file($root . 'textpattern/index.php')) {
+		} elseif (@is_file($root . 'textpattern/index.php')) {
 			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$thisversion\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'textpattern/index.php'))));
 			return 'Textpattern ' . $version;
 /* Kohana */
-		} elseif (is_file($root . 'system/core/Kohana.php')) {
+		} elseif (@is_file($root . 'system/core/Kohana.php')) {
 			return 'Kohana';
 /* Yii */
-		} elseif (is_file($root . '../framework/YiiBase.php') || is_file($root . 'framework/YiiBase.php')) {
+		} elseif (@is_file($root . '../framework/YiiBase.php') || @is_file($root . 'framework/YiiBase.php')) {
 			return 'Yii';
 /* Invision Power Board */
-		} elseif (is_file($root . 'sources/classes/class_display.php')) {
+		} elseif (@is_file($root . 'sources/classes/class_display.php')) {
 			return 'Invision Power Board';
 /* Simple Machines Forum */
-		} elseif (is_file($root . 'Sources/LogInOut.php')) {
+		} elseif (@is_file($root . 'Sources/LogInOut.php')) {
 			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'index.php'))));
 			return 'Simple Machines Forum' . (empty($version) ? '' : ' ' . $version);
 /* Bitrix */
-		} elseif (is_dir($root . 'bitrix/')) {
+		} elseif (@is_dir($root . 'bitrix/')) {
 			return 'Bitrix';
 /* cogear */
-		} elseif (is_file($root . 'gears/global/global.info')) {
+		} elseif (@is_file($root . 'gears/global/global.info')) {
 			$version = preg_replace("/group.*/", "", preg_replace("/.*version\s*=\s*/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'gears/global/global.info'))));
 			return 'cogear' . (empty($version) ? '' : ' ' . $version);
 /* NetCat */
-		} elseif (is_dir($root . 'netcat/')) {
+		} elseif (@is_dir($root . 'netcat/')) {
 			return 'NetCat';
 /* CakePHP, global root */
-		} elseif (is_file($root . 'cake/VERSION.txt')) {
+		} elseif (@is_file($root . 'cake/VERSION.txt')) {
 /* change document root to inner directory */
 			$this->view->paths['absolute']['document_root'] = $this->view->ensure_trailing_slash($this->view->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
 			$this->save_option("['website_root']", $this->view->paths['absolute']['document_root']);
 			return 'CakePHP';
 /* CakePHP, local root */
-		} elseif (is_file($root . '../../cake/VERSION.txt')) {
+		} elseif (@is_file($root . '../../cake/VERSION.txt')) {
 			$this->save_option("['document_root']", $root);
 			return 'CakePHP';
 /* CMS Made Simple */
-		} elseif (is_file($root . 'version.php')) {
-			if (is_file($root . 'plugins/function.cms_version.php')) {
+		} elseif (@is_file($root . 'version.php')) {
+			if (@is_file($root . 'plugins/function.cms_version.php')) {
 				require_once($root . 'version.php');
 			}
 			return 'CMS Made Simple ' . $CMS_VERSION;
 /* UMI.CMS */
-		} elseif (is_file($root . 'gw.php')) {
+		} elseif (@is_file($root . 'gw.php')) {
 			return 'UMI.CMS';
-		} elseif (is_file($root . 'path.php')) {
+		} elseif (@is_file($root . 'path.php')) {
 			require_once($root . 'path.php');
 			define('EXT', '1');
 /* ExpressionEngine */
@@ -2403,22 +2403,22 @@ require valid-user';
 				return 'ExpressionEngine' . $version;
 			}
 /* Xaraya 1.1.5 */
-		} elseif (is_file($root . 'var/config.system.php')) {
+		} elseif (@is_file($root . 'var/config.system.php')) {
 			return 'Xaraya';
 /* XOOPS 2.3.3 */
-		} elseif (is_file($root . 'include/version.php')) {
+		} elseif (@is_file($root . 'include/version.php')) {
 			require($root . 'include/version.php');
 			return defined(XOOPS_VERSION) ? XOOPS_VERSION : 'XOOPS';
 /* Website Baker 2.8 */
-		} elseif (is_file($root . 'account/preferences.php')) {
+		} elseif (@is_file($root . 'account/preferences.php')) {
 			return 'Website Baker';
 /* Open Slaed 1.2 */
-		} elseif (is_file($root . 'config/config_global.php')) {
+		} elseif (@is_file($root . 'config/config_global.php')) {
 			define('FUNC_FILE', 1);
 			require($root . 'config/config_global.php');
 			return 'Open Slaed' . (empty($conf['version']) ? '' : ' ' . $conf['version']);
 /* Geeklog 1.6.1 */
-		} elseif (is_file($root . '/images/icons/geeklog.gif')) {
+		} elseif (@is_file($root . '/images/icons/geeklog.gif')) {
 			return 'Geeklog';
 		}
 		return 'CMS 42';

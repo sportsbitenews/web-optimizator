@@ -11,7 +11,7 @@ class compressor_view {
 	* 
 	* Creates class instance
 	**/
-	function compressor_view($options=null) {
+	function compressor_view ($options = null) {
 		$this->paths = array();
 		$this->paths['full'] = array();
 		$this->paths['relative'] = array();
@@ -31,7 +31,7 @@ class compressor_view {
 			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator($document_root));
 		}
 /* Avoiding problems with Denwer */
-		if (empty($this->paths['full']['document_root']) || !is_dir($this->paths['full']['document_root']) || !is_file($this->paths['full']['document_root'] . getenv("SCRIPT_NAME"))) {
+		if (empty($this->paths['full']['document_root']) || !@is_dir($this->paths['full']['document_root']) || !@is_file($this->paths['full']['document_root'] . getenv("SCRIPT_NAME"))) {
 			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
 		}
 		$this->paths['full']['document_root'] = str_replace("//", "/", $this->paths['full']['document_root']);
@@ -43,7 +43,7 @@ class compressor_view {
 		}
 
 		if (!file_exists($this->paths['full']['current_directory'])) {
-			$this->paths['full']['current_directory'] = getcwd();
+			$this->paths['full']['current_directory'] = @getcwd();
 		}
 
 		$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->unify_dir_separator($this->paths['full']['current_directory']));
@@ -173,7 +173,7 @@ class compressor_view {
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
 /* try to create local directory*/
-			if ($local_dir != $local_file && !is_dir($local_dir)) {
+			if ($local_dir != $local_file && !@is_dir($local_dir)) {
 				@mkdir($local_dir, octdec("0755"));
 			}
 /* parse headers for content-encoding */
@@ -196,7 +196,7 @@ class compressor_view {
 				@fclose($fp);
 				@fclose($fph);
 			}
-			if (is_file($local_file_headers)) {
+			if (@is_file($local_file_headers)) {
 				$gzip = preg_match('/content-encoding/i', @file_get_contents($local_file_headers));
 				@unlink($local_file_headers);
 			}

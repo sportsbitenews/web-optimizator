@@ -65,10 +65,11 @@
 +g) Check for gzip via cookie
 +h) gzip / x-gzip / deflate / x-defalte full support
 
-6. Including
+6. Including / utilities
 +a) Manual including 2 strings
 +b) Auto including (root index.php)
- c) Auto-parsing source directories for css / js files
++c) Auto-gzip for CSS / JS files
+ d) Auto-optimize for images
 
 7. CDN integration
  a) Google Apps Engine
@@ -101,7 +102,7 @@
 +a) Wordpress (2.7.1, 2.8.4)
 +b) Joomla (1.0.15, 1.5.0, 1.5.9, 1.5.10, 1.5.11), Joostina (1.2)
 +c) Drupal (6.10, 5.16)
-+d) Bitrix
++d) Bitrix (8.5.1)
 +e) Typo3 (4.2)
  f) WebGUI
  g) Plone
@@ -148,16 +149,13 @@
  13) Plugin API
  +a) Possiblity to add plugin for any system
  +b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
-  c) Drupal 5 (???)
-  d) Drupal 6 (???)
-  e) Wordpress 2
  
  14. Documentation
  +a) Installation process
  +b) Settings description
  +c) Troubleshooter
  +d) Use cases
-  e) Full .pdf
+ +e) Full .pdf
  +f) Integration examples
   
  15) External plugins
@@ -167,6 +165,6 @@
  +d) Drupal 6.x
  +e) Drupal 5.x
   f) Drupal 7.x
-  g) Bitrix
+ +g) Bitrix
   h) UMI.CMS
   i) NetCat

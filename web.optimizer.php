@@ -44,6 +44,7 @@ $libraries = array();
 
 /* Include this for CSS Sprites generating */
 $libraries['css_sprites'] = 'css.sprites.php';
+$libraries['css_sprites_optimize'] = 'css.sprites.optimize.php';
 
 if ($compress_options['php'] == 4) {
 /* JSMin */
