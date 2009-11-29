@@ -62,10 +62,9 @@ class web_optimizer {
 /* remember current time */
 		$this->time = $_SERVER['REQUEST_TIME'];
 		$this->host = $_SERVER['HTTP_HOST'];
-		if (strpos($_SERVER['HTTP_HOST'], "www.") !== false) {
-			$this->host = substr($this->host, 4);
-		} elseif (strpos($_SERVER['HTTP_HOST'], "WWW.") !== false) {
-			$this->host = substr($this->host, 4);
+		if (strpos($_SERVER['HTTP_HOST'], "www.") !== false ||
+			strpos($_SERVER['HTTP_HOST'], "WWW.") !== false) {
+				$this->host = substr($this->host, 4);
 		}
 /* define PHP version */
 		$this->php = $this->options['php'];
@@ -233,6 +232,10 @@ class web_optimizer {
 		$this->options['html_cachedir'] = $this->view->ensure_trailing_slash($this->options['html_cachedir']);
 		$this->options['css_cachedir'] = $this->view->ensure_trailing_slash($this->options['css_cachedir']);
 		$this->options['javascript_cachedir'] = $this->view->ensure_trailing_slash($this->options['javascript_cachedir']);
+/* normalize host */
+		if (!empty($this->options['host'])) {
+			$this->options['host'] = preg_replace("!^https?://!", "", $this->options['host']);
+		}
 /* Read in options */
 		$full_options = array(
 			"javascript" => array(
