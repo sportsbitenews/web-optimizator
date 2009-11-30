@@ -1,6 +1,5 @@
 Web Optimizer
 -----------------------
-
 Web Optimizer is a PHP solution that automatically speeds up your website by
 combining and compressing your JavaScript and CSS assets.
 It can also GZIP these assets, and the page itself (via PHP or .htaccess
@@ -86,7 +85,7 @@ A lot of different persons contributed to this project. Some of them:
    unobtrusive logic, performance tuning, promotion, investment raising, other
    stuff)
  * fade (design, logo, general usability)
- * gkondratenko (documentation, interfaces, integration, known issues gathering)
+ * gkondratenko (documentation, integration, interfaces, known issues gathering)
  * markusmerz (a lot of minor bugs found and overall beta testing perfromed)
  * ShimON (Java branch, CSS Sprites unit-tests)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
@@ -105,5 +104,5 @@ A lot of different persons contributed to this project. Some of them:
   * JSMin library - GNU GPLv2
   * Packer library - GNU LGPLv2
   * YUI Compressor binary - BSD License
-  * YASS - MIT License
-  * CSS Tidy - 
+  * YASS library - MIT License
+  * CSS Tidy library - GNU LGPLv2
