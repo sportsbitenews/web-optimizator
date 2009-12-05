@@ -28,7 +28,7 @@ class admin {
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
 		require_once($this->basepath . $this->options_file);
-		$this->compress_options = $compress_options;
+		$this->compress_options = empty($compress_options) ? '' : $compress_options;
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
 		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
@@ -42,51 +42,71 @@ class admin {
 		} else {
 			$this->version_new = $this->version;
 		}
-		$this->compress_options['license'] = empty($this->input['user']['license']) ? $this->compress_options['license'] : $this->input['user']['license'];
-		$this->premium = $this->view->validate_license($this->compress_options['license'], $this->compress_options['html_cachedir'], $this->compress_options['host']);
+		if (!empty($compress_options)) {
+			$this->compress_options['license'] =
+				empty($this->input['user']['license']) ?
+					$this->compress_options['license'] :
+						$this->input['user']['license'];
+			$this->premium = $this->view->validate_license($this->compress_options['license'],
+				$this->compress_options['html_cachedir'],
+					$this->compress_options['host']);
 /* Make sure login valid */
-		$this->manage_password();
-		$this->password_not_required = array(
-			'install_enter_password' => 1,
-			'install_set_password' => 1,
-			'system_check' => 1,
-			'install_change_password' => 1
-		);
+			$this->manage_password();
+			$this->password_not_required = array(
+				'install_enter_password' => 1,
+				'install_set_password' => 1,
+				'system_check' => 1,
+				'install_change_password' => 1
+			);
 /* default multiple hosts */
-		$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-		$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
-		if (empty($this->password_not_required[$this->input['page']]) && (empty($this->input['change']) || $this->input['page'] != 'install_stage_2') && empty($this->skip_render)) {
-			$this->check_login();
-		}
+			$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
+			$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
+			if (empty($this->password_not_required[$this->input['page']]) &&
+				(empty($this->input['change']) ||
+					$this->input['page'] != 'install_stage_2') &&
+				empty($this->skip_render)) {
+					$this->check_login();
+			}
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
-		$this->page_functions = array(
-			'install_set_password' => 1,
-			'install_enter_password' => 1,
-			'install_stage_2' => 1,
-			'install_stage_3' => 1,
-			'install_uninstall' => 1,
-			'install_upgrade' => 1,
-			'system_check' => 1,
-			'install_change_password' => 1,
-			'install_gzip' => 1
-		);
+			$this->page_functions = array(
+				'install_set_password' => 1,
+				'install_enter_password' => 1,
+				'install_stage_2' => 1,
+				'install_stage_3' => 1,
+				'install_uninstall' => 1,
+				'install_upgrade' => 1,
+				'system_check' => 1,
+				'install_change_password' => 1,
+				'install_gzip' => 1
+			);
 /* inializa stage for chained optimization */
-		$this->web_optimizer_stage = round(empty($this->input['web_optimizer_stage']) ? 0 : $this->input['web_optimizer_stage']);
-		$this->display_progress = false;
+			$this->web_optimizer_stage =
+				round(empty($this->input['web_optimizer_stage']) ? 0 :
+					$this->input['web_optimizer_stage']);
+			$this->display_progress = false;
 /* if we use .htaccess */
-		$this->protected = isset($_SERVER['PHP_AUTH_USER']) && $this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
-		if ($this->input['page'] != 'system_check') {
+			$this->protected = isset($_SERVER['PHP_AUTH_USER']) &&
+				$this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
+			if ($this->input['page'] != 'system_check') {
 /* grade URL from webo.name */
-			$this->webo_grade = 'http://webo.name/check/index2.php?url=' . $_SERVER['HTTP_HOST'] . '&mode=xml&source=wo';
+				$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
+					$_SERVER['HTTP_HOST'] . '/' .
+					str_replace($this->view->paths['full']['document_root'], '',
+						$this->view->paths['absolute']['document_root']) .
+					'&mode=xml&source=wo';
+			}
 /* download counter */
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
-				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter', $this->basepath . 'web-optimizer-counter');
+				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter',
+					$this->basepath . 'web-optimizer-counter');
 			}
 		}
 /* show page */
-		if(!empty($this->page_functions[$this->input['page']]) && method_exists($this,$this->input['page']) && empty($this->skip_render)) {
-			$func = $this->input['page'];
-			$this->$func();
+		if(!empty($this->page_functions[$this->input['page']]) &&
+			method_exists($this,$this->input['page']) &&
+			empty($this->skip_render)) {
+				$func = $this->input['page'];
+				$this->$func();
 		}
 	}
 
@@ -558,6 +578,10 @@ class admin {
 /* fix for IPB */
 			if ($this->cms_version == 'Invision Power Board') {
 				$index = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
+			}
+/* fix for NetCat */
+			if ($this->cms_version == 'NetCat') {
+				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 			}
 			$this->cleanup_file($index, $return);
 			$content_saved = $this->clean_htaccess($return);
@@ -2146,7 +2170,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch
 				$htaccess_content .= '
 AuthType Basic
 AuthName "Web Optimizer Installation"
-AuthUserFile ' . $this->basepath . '.htpasswd
+AuthUserFile .htpasswd
 require valid-user';
 			} else {
 				$this->error("<p>" . _WEBO_SPLASH2_UNABLE . " ".
@@ -2154,7 +2178,7 @@ require valid-user';
 			}
 		}
 		$htaccess_content .= '
-<Files ' . $this->basepath . '.htpasswd>
+<Files .htpasswd>
 	Deny from all
 </Files>
 # Web Optimizer protection end';
