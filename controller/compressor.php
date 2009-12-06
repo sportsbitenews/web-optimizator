@@ -699,14 +699,13 @@ class web_optimizer {
 				$this->options['page']['clientside_timeout']);
 			header("Expires: " . $ExpStr);
 		}
-/* move informers, counters and ads before </body> */
+/* move informers, counters, ads, and iframes before </body> */
 		$this->replace_informers($options);
 /* Minify page itself or parse multiple hosts */
-		if(!empty($options['minify']) ||
+		if (!empty($options['minify']) ||
 			(!empty($options['parallel']) &&
 				!empty($options['parallel_hosts'])) ||
-			!empty($options['unobtrusive_all']) ||
-			!empty($options['unobtrusive_iframes'])) {
+			!empty($options['unobtrusive_all'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
@@ -828,63 +827,6 @@ class web_optimizer {
 		}
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));
-	}
-
-	/**
-	* Moves all iframes' laod to </body>
-	*
-	**/	
-	function add_iframes_loaders ($content) {
-		$IFRAME = strpos($content, '<IFRAME');
-		if (!empty($this->options['page']['html_tidy']) && !$IFRAME) {
-			$_content = $content;
-			while ($pos = strpos($_content, '<iframe')) {
-				$len = strpos(substr($_content, $pos), '>') + 1;
-/* gets image tag w/o the closing >, it's OK */
-				$iframes[] = array(substr($_content, $pos, $len));
-				$_content = substr_replace($_content, '', $pos, $len);
-			}
-		} elseif (empty($this->options['page']['html_tidy']) || $IFRAME) {
-			preg_match_all("!<iframe[^>]+>!is", $content, $iframes, PREG_SET_ORDER);
-		}
-		if (!empty($iframes)) {
-			$i = 0;
-			$before_body = '';
-			foreach ($iframes as $iframe) {
-				$iframe_old = $iframe[0];
-				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $iframe[0]));
-				if (preg_match("!\sid\s*=!", $iframe[0])) {
-					$old_id = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\sid\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $iframe[0]));
-				} else {
-					$old_id = '_wo_iframe' . $i;
-					$iframe[0] = str_replace('>' , ' id="' . $old_id . '">', $iframe[0]);
-				}
-				$before_body .= "document.getElementById('" .
-						$old_id .
-					"').src='" .
-						$old_src .
-					"';";
-				$iframe[0] = str_replace($old_src, '', $iframe[0]);
-				$content = str_replace($iframe_old, $iframe[0], $content);
-				$i++;
-			}
-			if (!empty($before_body)) {
-				$script = '<script type="text/javascript">' . 
-					$before_body . '</script>';
-				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
-					$content = substr_replace($content, $script, $bodypos, 0);
-				} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
-					$content = substr_replace($content, $script, $bodypos, 0);
-				} else {
-					$content = preg_replace('@</body>@is', $script . "$0", $content);
-/* a number of engines doesn't set </body> */
-					if (!strpos($content, $before_body)) {
-						$content .= $script;
-					}
-				}
-			}
-		}
-		return $content;
 	}
 
 	/**
@@ -2053,10 +1995,6 @@ class web_optimizer {
 					}
 				}
 		}
-/* insert iframes near </body> */
-		if (!empty($this->options['page']['unobtrusive_iframes'])) {
-			$source = $this->add_iframes_loaders($source);
-		}
 		return $source;
 	}
 
@@ -2123,7 +2061,13 @@ class web_optimizer {
 							break;
 						case 'aa':
 							$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
-							break;							
+							break;
+						case 'if':
+						case 'IF':
+							if (preg_match("@height\s*=@is", $value[0])) {
+								$height = round(preg_replace("@.*height\s*=[\s'\"](.*)[\s'\"]@", "$1", $value[0]));
+							}
+							break;
 					}
 				}
 /* count param for str_replace available only in PHP5 */
@@ -2287,6 +2231,14 @@ class web_optimizer {
 				), 'yd' => array(
 					'marker' => 'yandex_partner_id',
 					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*yandex_partner_id.*?</script>"
+				)
+			), 'unobtrusive_iframes' => array (
+				'if' => array(
+					'marker' => '<iframe',
+					'regexp' => "<iframe.*?</iframe>"
+				), 'IF' => array(
+					'marker' => '<IFRAME',
+					'regexp' => "<iframe.*?</iframe>"
 				)
 			)
 		);
