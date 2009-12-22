@@ -1071,7 +1071,8 @@ class admin {
 /* Show the install page */
 				$this->view->render("admin_container", $page_variables);
 			} else {
-				$this->save_option("['password']", md5($this->input['wss_password']));
+				$this->compress_options['password'] = md5($this->input['wss_password']);
+				$this->save_option("['password']", $this->compress_options['password']);
 				$this->save_option("['email']", htmlspecialchars($this->input['wss_email']));
 				$this->save_option("['username']", htmlspecialchars($this->input['wss_username']));
 				$this->save_option("['name']", htmlspecialchars($this->input['wss_username']));
@@ -2607,6 +2608,25 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$this->cms_version =
 				$this->system_info($this->view->paths['absolute']['document_root']);
 		}
+/* sve initial options */
+		$this->compress_options['document_root'] = $this->view->paths['absolute']['document_root'];
+		$this->compress_options['website_root'] = $this->view->paths['full']['document_root'];
+		$this->compress_options['css_cachedir'] =
+		$this->compress_options['javascript_cachedir'] =
+		$this->compress_options['html_cachedir'] =
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/';
+		foreach (array(
+			'document_root',
+			'website_root',
+			'css_cachedir',
+			'javascript_cachedir',
+			'html_cachedir') as $val) {
+				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
+		}
+/* copy some files */
+		@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
+		@copy($this->basepath . 'libs/js/wo.cookie.php', $this->compress_options['html_cachedir'] . 'wo.cookie.php');
+		@copy($this->basepath . 'libs/js/yass.loader.js', $this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 /* dirty hack for PHP-Nuke */
 		if ($this->cms_version == 'PHP-Nuke') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
@@ -2954,6 +2974,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				}
 			}
 		}
+		@unlink($javascript_cachedir . 'htaccess.test');
 	}
 
 	/**

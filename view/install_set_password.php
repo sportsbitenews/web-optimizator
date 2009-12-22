@@ -36,7 +36,7 @@
 	}
 ?>" id="wss_error4"><?php
 	echo "Please confirm license agreement";
-?></li></ul></div>
+?></li></ul></div></div>
 <h2 class="wssB"><?php
 	echo _WEBO_NEW_ENTER;
 ?></h2>

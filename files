@@ -17,7 +17,6 @@ libs/css/button.orange.hover.png
 libs/css/button.orange.png
 libs/css/button.ow.hover.png
 libs/css/button.ow.png
-libs/css/button.png
 libs/css/button.red.hover.png
 libs/css/button.red.png
 libs/css/button.yellow.hover.png
@@ -29,7 +28,6 @@ libs/css/cache.png
 libs/css/corner.disabled.gif
 libs/css/corner.disabled.png
 libs/css/corner.gif
-libs/css/corner.hover.png
 libs/css/corner.png
 libs/css/dashboard.hover.png
 libs/css/dashboard.png
@@ -68,11 +66,9 @@ libs/css/minus.png
 libs/css/news.hover.png
 libs/css/news.png
 libs/css/plus.png
-libs/css/pngout.png
 libs/css/progress.png
 libs/css/promo.over.png
 libs/css/promo.png
-libs/css/settings.dark.png
 libs/css/settings.hover.png
 libs/css/settings.png
 libs/css/speed.hover.png
@@ -117,6 +113,7 @@ libs/yuicompressor/yuicompressor.jar
 plugins/joomla15.php
 view/admin_container.php
 view/compress_gzip.php
+view/dashboard_cache.php
 view/dashboard_options.php
 view/dashboard_speed.php
 view/dashboard_system.php
