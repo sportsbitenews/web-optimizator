@@ -13,6 +13,10 @@ require($basepath . "libs/php/view.php");
 
 /* include language file */
 $language = strtolower(preg_replace("/[-,;].*/", "", empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? '' : $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+if (!empty($_COOKIE['wss_lang'])) {
+	$language = strtolower($_COOKIE['wss_lang']);
+}
+$language = preg_replace("/[^a-z]/", "", $language);
 if (is_file($basepath . "libs/php/lang/" . $language . ".php")) {
 	require($basepath . "libs/php/lang/" . $language . ".php");
 } else {
@@ -20,17 +24,15 @@ if (is_file($basepath . "libs/php/lang/" . $language . ".php")) {
 }
 
 /* set encoding via header */
-header("Content-Type: text/html; charset=" . _WEBO_CHARSET);
-
-/* Set the default page */
-if(empty($_GET['page'])) {
-	$_GET['page'] = 'install_set_password';
-}
+header("Content-Type: text/html;charset=" . _WEBO_CHARSET);
 
 /* Merge _GET and _POST */
 $input = array_merge($_GET, $_POST);
-if (!empty($input['page'])) {
-	$input['page'] = htmlspecialchars($input['page']);
+if (!empty($input['wss_page'])) {
+	$input['wss_page'] = htmlspecialchars($input['wss_page']);
+/* set default page */
+} else {
+	$input['wss_page'] = 'install_set_password';
 }
 
 /* Con. the view library */
@@ -40,6 +42,7 @@ $view = new compressor_view();
 new admin(array(
 	'view' => $view,
 	'input' => $input,
-	'basepath' => $basepath)
+	'basepath' => $basepath,
+	'language' => $language)
 );
 ?>

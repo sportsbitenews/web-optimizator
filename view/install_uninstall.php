@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Outputs uninstall page
  *
  **/

@@ -6,6 +6,10 @@
 $compress_options['username'] = "";
 $compress_options['password'] = "";
 $compress_options['htpasswd'] = "";
+$compress_options['optimization'] = "1";
+$compress_options['showbeta'] = "0";
+$compress_options['email'] = "";
+$compress_options['name'] = "";
 ## Path info. Cache directory for JS files
 $compress_options['javascript_cachedir'] = "";
 ## Cache directory for CSS files
@@ -42,8 +46,10 @@ $compress_options['external_scripts']['head_end'] = "1";
 $compress_options['external_scripts']['css'] = "1";
 ## Merge inline styles in head
 $compress_options['external_scripts']['css_inline'] = "1";
-## Ignore list, files separated by space
+## Ignore list, JS files separated by space
 $compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js tiny_mce_src.js tiny_init.js tiny_mce_gzip.php fckeditor.js";
+## Ignore list, CSS files separated by space
+$compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
 ## To get through HTTP Basic Authorization
@@ -64,7 +70,7 @@ $compress_options['minify']['javascript'] = "1";
 ## Minify JS inside <body> tag. Please be carefull
 $compress_options['minify']['javascript_body'] = "0";
 ## Minify JS with JSMin from Douglas Crockford
-$compress_options['minify']['with_jsmin'] = "1";
+$compress_options['minify']['with_jsmin'] = "0";
 ## Minify JS with Dean Edwards Packer
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
@@ -74,7 +80,7 @@ $compress_options['minify']['css'] = "1";
 ## Minify CSS inside <body> tag
 $compress_options['minify']['css_body'] = "0";
 ## Remove whitespaces
-$compress_options['minify']['page'] = "1";
+$compress_options['minify']['page'] = "0";
 ## Remove comments from HTML. Some JS counters can be broken
 $compress_options['minify']['html_comments'] = "0";
 ## Shrink HTML code to 1 string, CPU intensive
@@ -102,11 +108,11 @@ $compress_options['gzip']['fonts_level'] = "9";
 $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 ## Cache static assets via .htaccess or PHP proxy
-$compress_options['far_future_expires']['images'] = "1";
-$compress_options['far_future_expires']['fonts'] = "1";
+$compress_options['far_future_expires']['images'] = "0";
+$compress_options['far_future_expires']['fonts'] = "0";
 ## Cache static assets (flash, video, etc) -- only via .htaccess
-$compress_options['far_future_expires']['video'] = "1";
-$compress_options['far_future_expires']['static'] = "1";
+$compress_options['far_future_expires']['video'] = "0";
+$compress_options['far_future_expires']['static'] = "0";
 ## Send cache headers for HTML files?
 $compress_options['far_future_expires']['html'] = "0";
 ## Default timeout of client side HTML files caching, in seconds
@@ -128,7 +134,7 @@ $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo
 ## On or off 
 $compress_options['active'] = "0";
 ## Display a link back to Web Optimizer
-$compress_options['footer']['text'] = "1";
+$compress_options['footer']['text'] = "0";
 ## Image path for Web Optimizer, empty for text link
 $compress_options['footer']['image'] = "web.optimizer.stamp.png";
 ## Text for a text link
@@ -143,8 +149,6 @@ $compress_options['data_uris']['on'] = "1";
 $compress_options['data_uris']['separate'] = "1";
 ## Should Web Optimizer load resource CSS on DOMloaded event?
 $compress_options['data_uris']['domloaded'] = "1";
-## Optimiza all CSS images via smush.it?
-$compress_options['data_uris']['smushit'] = "0";
 ## Maximum size of images to be converted, in bytes
 $compress_options['data_uris']['size'] = "24576";
 ## data:URI ignore list, files separated by space, i.e. head.jpg
@@ -156,7 +160,7 @@ $compress_options['data_uris']['mhtml_size'] = "51200";
 ## mhtml ignore list, files separated by space, i.e. head.jpg
 $compress_options['data_uris']['additional_list'] = "";
 ## Should Web Optimizer use CSS Sprites for background images?
-$compress_options['css_sprites']['enabled'] = "1";
+$compress_options['css_sprites']['enabled'] = "0";
 ## Save 24bit images in JPEG not PNG
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
 ## Ignore no dimensions for repeat-x / repeat-y Sprites
@@ -174,7 +178,7 @@ $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Parallel downloads
 $compress_options['parallel']['enabled'] = "1";
 ## Check hosts availability or not?
-$compress_options['parallel']['check'] = "1";
+$compress_options['parallel']['check'] = "0";
 ## List of hosts for parallel downloads, i.e. img i1 i2
 $compress_options['parallel']['allowed_list'] = "";
 ## List of websites (saellites) to distribute through them,
@@ -195,10 +199,6 @@ $compress_options['htaccess']['mod_mime'] = "1";
 $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
-## Enable auto-rewrite for index.php
-$compress_options['auto_rewrite']['enabled'] = "1";
-## Enable chained optimization for the website
-$compress_options['auto_rewrite']['chained'] = "1";
 ## List of enabled plugins for server side performance
 $compress_options['plugins'] = "";
 ## Web Optimizer license, empty for free edition

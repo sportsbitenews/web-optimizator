@@ -29,7 +29,7 @@ class web_optimizer {
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
 				$_GET['cache_version']);
 /* get major stage number, all stages:
- 0-10	- inilialization, stars in administrative interface
+ 0-9	- inilialization, starts in administrative interface
  10-13	- JS file generation, 1st major stage (common browsers)
  14-19	- CSS Sprites / data:URI generation, 1st major stage
  20-24	- CSS file generation + page parsing, 1st major stage
@@ -195,8 +195,7 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$this->write_file($this->options['javascript']['cachedir'] . '/progress.html',
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title></title><script type="text/javascript">parent.window.lp(' . $progress. ')</script></head><body></body></html>');
+		$this->write_file($this->options['javascript']['cachedir'] . '/progress.html', $progress);
 	}
 
 	/**
@@ -1977,11 +1976,11 @@ class web_optimizer {
 				}
 /* move all scripts to </body> */
 				if (!empty($before_body)) {
-					if ($this->options['html_tidy'] &&
+					if (!empty($this->options['page']['html_tidy']) &&
 						($bodypos = strpos($source, "</body>"))) {
 							$source = substr_replace($this->content,
 								$before_body, $bodypos, 0);
-					} elseif ($options['html_tidy'] &&
+					} elseif (!empty($this->options['page']['html_tidy']) &&
 						($bodypos = strpos($this->content, "</BODY>"))) {
 							$source = substr_replace($this->content,
 								$before_body, $bodypos, 0);

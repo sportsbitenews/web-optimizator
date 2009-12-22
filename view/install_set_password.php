@@ -1,53 +1,186 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
- * Outputs final Stage 1 page (before installation)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * Outputs registration page
  *
  **/
-?><ul><li><strong>1</strong></li><li><a href="?page=install_stage_2" title="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" class="x">2</a></li><li><a href="?page=install_stage_3" title="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" class="x">3</a></li></ul></div><p id="showme"><sup><a href="?page=install_stage_2" title="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" class="x"></a></sup></p><div class="c"><b></b><i></i><del></del><ins></ins><h2><?php
+?><h1 class="wssA wssA2"><?php
 	echo _WEBO_NEW_TITLE;
-?></h2><div class="d u"><div class="e"><noscript><p><?php
-	echo _WEBO_NEW_NOSCRIPT;
-?></p></noscript><?php
-	echo _WEBO_NEW_PROTECT;
-?><p><a href="http://www.web-optimizer.us/web-optimizer/buy-now.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer"><?php
-	echo _WEBO_NEW_ORDERINSTALLATION;
-?></a></p></div><div id="sc"><p><?php echo _WEBO_SYSTEM_CHECK ?></p></div><form method="post" enctype="multipart/form-data" action="?page=install_stage_2"><fieldset class="f"><legend><?php
-	echo _WEBO_NEW_USERDATA;
-?></legend><p><label for="user_username"><?php
-	echo _WEBO_LOGIN_USERNAME;
-?></label><input id="user_username" name="user[username]" title="<?php
-	echo _WEBO_LOGIN_ENTERLOGIN;
-?>"/><label for="user_password"><?php
-	echo _WEBO_LOGIN_PASSWORD;
-?></label><input type="password" id="user_password" name="user[password]" title="<?php
+?></h1><div class="wssK<?php
+	if (empty($error) || !count($error)) {
+	?> wssA0<?php
+	}
+?>"><div class="wssK1"><h2 class="wssB"><?php
+	echo _WEBO_ERROR_TITLE;
+?></h2><ul class="wssL"><li class="wssL1<?php
+			if (empty($error[1])) {
+?> wssA0<?php
+			}
+?>" id="wss_error1"><?php
 	echo _WEBO_LOGIN_ENTERPASSWORD;
-?>"/><label for="user_license"><?php
+?></li><li class="wssL1<?php
+	if (empty($error[2])) {
+?> wssA0<?php
+	}
+?>" id="wss_error2"><?php
+	echo _WEBO_LOGIN_PASSWORDSDIFFER;
+?></li><li class="wssL1<?php
+	if (empty($error[3])) {
+?> wssA0<?php
+	}
+?>" id="wss_error3"><?php
+	echo _WEBO_LOGIN_ENTEREMAIL;
+?></li><li class="wssL1<?php
+	if (empty($error[4])) {
+?> wssA0<?php
+	}
+?>" id="wss_error4"><?php
+	echo "Please confirm license agreement";
+?></li></ul></div>
+<h2 class="wssB"><?php
+	echo _WEBO_NEW_ENTER;
+?></h2>
+<form action="index.php" method="post" class="wssC wssC1">
+	<dl class="wssD">
+		<dt class="wssD1">
+			<label for="wss_username" class="wssE"><?php 
+	echo _WEBO_LOGIN_USERNAME;
+?>:</label>
+		</dt>
+		<dd class="wssD2">
+			<input id="wss_username" name="wss_username" title="<?php
+	echo _WEBO_LOGIN_ENTERLOGIN;
+?>" class="wssF" value="<?php
+	if (empty($submit) || !empty($username)) {
+		echo htmlspecialchars($username);
+	}?>"/>
+		</dd>
+		<dt class="wssD1">
+			<label for="wss_password" class="wssE"><?php 
+	echo _WEBO_LOGIN_PASSWORD;
+?>:</label>
+		</dt>
+		<dd class="wssD2<?php
+	if (!empty($error[1]) || !empty($error[2])) {
+			?> wssD8<?php
+	}
+			?>">
+			<span class="wssD3">*</span>
+			<input type="password" id="wss_password" name="wss_password" title="<?php
+	echo _WEBO_LOGIN_ENTERPASSWORD;
+?>" class="wssF" value="<?php
+	if (empty($submit) || !empty($password)) {
+		echo htmlspecialchars($password);
+	}?>"/>
+		</dd>
+		<dt class="wssD1">
+			<label for="wss_confirm" class="wssE"><?php 
+	echo _WEBO_PASSWORD_CONFIRM;
+?>:</label>
+		</dt>
+		<dd class="wssD2<?php
+	if (!empty($error[2])) {
+			?> wssD8<?php
+	}
+			?>">
+			<span class="wssD3">*</span>
+			<input type="password" id="wss_confirm" name="wss_confirm" title="<?php
+	echo _WEBO_PASSWORD_ENTERPASSWORDCONFIRM;
+?>" class="wssF" value="<?php
+	if (empty($submit) || !empty($confirm)) {
+		echo htmlspecialchars($confirm);
+	}?>"/>
+		</dd>
+		<dt class="wssD1">
+			<label for="wss_license" class="wssE"><?php 
 	echo _WEBO_LOGIN_LICENSE;
-?></label><input id="user_license" name="user[license]" title="<?php
+?>:</label>
+		</dt>
+		<dd class="wssD2">
+			<input id="wss_license" name="wss_license" title="<?php
 	echo _WEBO_LOGIN_ENTERLICENSE;
-?>"/><input type="submit" name="express" id="express" value="<?php
-	echo _WEBO_SPLASH1_EXPRESS;
-?>" title="<?php
-	echo _WEBO_SPLASH1_EXPRESS;
-?>" class="v"/><input type="submit" name="Submit" value="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" title="<?php
-	echo _WEBO_SPLASH1_NEXT;
-?>" class="i"/><?php
-	if ($display_progress) {
-?><input type="hidden" name="display_progress" value="1"/><?php
+?>" class="wssF" value="<?php
+	if (empty($submit) || !empty($license)) {
+		echo htmlspecialchars($license);
+	}?>"/>
+		</dd>
+		<dt class="wssD1">
+			<label for="wss_email" class="wssE"><?php 
+	echo _WEBO_LOGIN_EMAIL;
+?>:</label>
+		</dt>
+		<dd class="wssD2<?php
+	if (!empty($error[3])) {
+			?> wssD8<?php
 	}
-?><input type="hidden" name="page" value="install_stage_2"/></p></fieldset></form><b></b><i></i><del></del><ins></ins></div><?php
-	if ($display_progress) {
-?><div id="a"><div><span id="b"><span id="d"></span></span></div><span id="c"><span id="e">0</span>%</span></div><?php
+			?>">
+			<span class="wssD3">*</span>
+			<input id="wss_email" name="wss_email" title="<?php
+	echo _WEBO_LOGIN_ENTEREMAIL;
+?> <?php
+	echo _WEBO_LOGIN_EMAILNOTICE;
+			?>" class="wssF" value="<?php
+	if (empty($submit) || !empty($email)) {
+		echo htmlspecialchars($email);
+	}?>"/>
+			<span class="wssD4"><?php
+	echo _WEBO_LOGIN_EMAILNOTICE;
+			?></span>
+		</dd>
+		<dt class="wssD5">
+			<label for="wss_confirmagreement" class="wssE"><?php 
+	echo 'I confirm <a href="javascript:document.getElementById(\'wss_eula1\').style.display=\'block\';document.getElementById(\'wss_eula2\').style.display=\'block\';void(0)	">license agreement</a>';
+?>:</label>
+		</dt>
+		<dd class="wssD6 wssD7<?php
+	if (!empty($error[4])) {
+			?> wssD8<?php
 	}
-?><script type="text/javascript">window.wc='<?php
-	echo $javascript_relative_cachedir;
-?>'</script><script type="text/javascript" src="?page=system_check&amp;r=<?php echo time() ?>"></script>
+			?>">
+			<span class="wssD3">*</span>
+			<input type="checkbox" id="wss_confirmagreement" name="wss_confirmagreement" title="<?php
+	echo "Confirm license agreement";
+?>"<?php
+	if (empty($submit) || !empty($confirmagreement)) {
+		?> checked="checked"<?php
+	}?>/>
+		</dd>
+		<dt class="wssD1 wssA0" id="wss_eula1">
+			<label class="wssE"><?php 
+	echo "User agreement";
+?>:</label>
+		</dt>
+		<dd class="wssD2 wssA0" id="wss_eula2">
+			<pre class="wssF wssF1"><?php
+	if ($language == 'ru') {
+		echo htmlspecialchars(@file_get_contents('LICENSE.utf8.ru.txt'));
+	} else {
+		echo htmlspecialchars(@file_get_contents('LICENSE.txt'));
+	}
+			?></pre>
+		</dd>
+	</dl>
+	<p class="wssD">
+		<input type="submit" value="<?php
+	echo _WEBO_SPLASH1_NEXT;
+?>" class="wssG"/><input type="hidden" name="wss_page" value="install_set_password"/><input type="hidden" name="wss_Submit" value="1"/>
+	</p>
+</form>
+<div class="wssH wssH2">
+	<div class="wssRB">
+		<span class="wssRB1"><span class="wssRB2">&bull;</span></span>
+		<span class="wssRB3"><span class="wssRB4">&bull;</span></span>
+	</div>
+	<div class="wssH1">
+		<h2 class="wssB"><?php
+	echo _WEBO_NEW_TITLE;
+		?></h2>
+		<?php
+	echo _WEBO_NEW_PROTECT;
+		?>
+	</div>
+	<div class="wssRB">
+		<span class="wssRB5"><span class="wssRB6">&bull;</span></span>
+		<span class="wssRB7"><span class="wssRB8">&bull;</span></span>
+	</div>
+</div>

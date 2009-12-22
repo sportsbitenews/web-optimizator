@@ -433,7 +433,7 @@ __________________
 		}
 /* create first part of CSS Sprites */
 		if ($this->optimizer->partly || empty($this->css)) {
-			return '';
+			return array('', '');
 		} else {
 			if (empty($this->optimizer->no_sprites)) {
 /* only then try to combine all possible images into the last one */
@@ -506,7 +506,7 @@ __________________
 /* for others just remove background-image call */
 									} else {
 										$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)/", "", $value);
-										$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->css_image . ')}';
+										$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->css_image . ')!important}';
 									}
 								}
 							}

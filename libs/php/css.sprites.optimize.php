@@ -865,7 +865,7 @@ class css_sprites_optimize {
 /* image optimization via smush.it */
 	function smushit ($file) {
 		$tmp_file = $file . ".tmp";
-		$this->download_file("http://smushit.eperf.vip.ac4.yahoo.com/ysmush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
+		$this->download_file("http://www.smushit.com/ysmush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
 		if (is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
 			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
@@ -873,7 +873,7 @@ class css_sprites_optimize {
 				if (!is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
-				$this->download_file($optimized, $file, 'http://developer.yahoo.com/yslow/smushit/');
+				$this->download_file($optimized, $file, 'http://www.smushit.com/ysmush.it/');
 				if (!@filesize($file) || strpos(@file_get_contents($file), "DOCTYPE")) {
 					@copy($file . '.backup', $file);
 				} else {
@@ -882,9 +882,8 @@ class css_sprites_optimize {
 			}
 			@unlink($tmp_file);
 		}
-/* delay not to overload Yahoo! servers */
-		sleep(1);
 		if (!@filesize($file)) {
+			sleep(1);
 /* if can't optimize file - try once more */
 			@copy($file . '.backup', $file);
 			$this->smushit($file);
