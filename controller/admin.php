@@ -70,6 +70,7 @@ class admin {
 				'install_set_password' => 1,
 				'install_enter_password' => 1,
 				'install_dashboard' => 1,
+				'install_install' => 1,
 				'install_uninstall' => 1,
 				'install_promo' => 1,
 				'install_about' => 1,
@@ -284,22 +285,7 @@ class admin {
 			}
 /* send a email to info@webo.name */
 			if (!count($error)) {
-				$headers = 'From: ' . $email . "\r\n" . 'Reply-To: ' . $email . "\r\n";
-				$headers .= 'Content-Type: text/plain; charset=utf-8'."\r\n";
-				$headers .= 'Content-Transfer-Encoding: base64';
-				$message .= "\r\n\r\nSystem Info:\r\n" .
-					"Host: " . $_SERVER['HTTP_HOST'] . "\r\n";
-					"Options: host => " . $this->compress_options['host'] . "\r\n";
-				foreach ($this->compress_options as $ko => $opts) {
-					if (is_array($opts)) {
-						foreach ($opts as $k => $v) {
-							$message .= $ko . " "  . $k  . " => " . $v . "\r\n";
-						}
-					}
-				}
-				@mail('info@webo.name', "=?latin-1?B?" .
-					base64_encode('New message from WEBO Site SpeedUp') . "?=",
-						base64_encode($message), $headers);
+				$this->send_message($email, $message);
 			}
 		}
 		$page_variables = array(
@@ -313,13 +299,38 @@ class admin {
 	}
 
 	/*
+	* Sends a message from given e-mail
+	*
+	**/
+	function send_message ($email, $message) {
+		$headers = 'From: ' . $email . "\r\n" . 'Reply-To: ' . $email . "\r\n";
+		$headers .= 'Content-Type: text/plain; charset=utf-8'."\r\n";
+		$headers .= 'Content-Transfer-Encoding: base64';
+		$message .= "\r\n\r\nSystem Info:\r\n" .
+			"Host: " . $_SERVER['HTTP_HOST'] . "\r\n";
+			"Options: host => " . $this->compress_options['host'] . "\r\n";
+		foreach ($this->compress_options as $ko => $opts) {
+			if (is_array($opts)) {
+				foreach ($opts as $k => $v) {
+					$message .= $ko . " "  . $k  . " => " . $v . "\r\n";
+				}
+			}
+		}
+		@mail('info@webo.name', "=?latin-1?B?" .
+			base64_encode('New message from WEBO Site SpeedUp') . "?=",
+				base64_encode($message), $headers);
+	}
+
+	/*
 	* Renders cache refresh (from cache page)
 	*
 	**/
 	function install_renew () {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
+		$this->save_option("['performance']['cache_version']", 0);
 		$this->chained_load('/');
+		$this->save_option("['performance']['cache_version']", $this->compress_options['performance']['cache_version']);
 		$this->install_cache();
 	}
 
@@ -330,7 +341,9 @@ class admin {
 	function install_refresh () {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
+		$this->save_option("['performance']['cache_version']", 0);
 		$this->chained_load('/');
+		$this->save_option("['performance']['cache_version']", $this->compress_options['performance']['cache_version']);
 		$this->install_dashboard();
 	}
 
@@ -870,7 +883,7 @@ class admin {
 	* Outputs page with general info about system / common actions
 	* 
 	**/		
-	function install_system () {
+	function install_system ($success = 0) {
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
@@ -881,8 +894,6 @@ class admin {
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['language'] = $this->language;
 		$page_variables['premium'] = $this->premium;
-		$page_variables['wssroot'] = str_replace($this->compress_options['document_root'],
-				"/", $this->view->unify_dir_separator($this->basepath));
 		$page_variables['password'] = $this->compress_options['password'];
 		$page_variables['active'] = $this->compress_options['active'];
 		$page_variables['website'] = $_SERVER['HTTP_HOST'];
@@ -900,6 +911,7 @@ class admin {
 		$page_variables['showbeta'] = $this->compress_options['showbeta'];
 		$page_variables['files_to_change'] = $this->system_files($this->cms_version);
 		$page_variables['cms_version'] = $this->cms_version;
+		$page_variables['success'] = $success;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
@@ -1001,8 +1013,6 @@ class admin {
 			"version_new" => $this->version_new,
 			"language" => $this->language,
 			"premium" => $this->premium,
-			"wssroot" => str_replace($this->compress_options['document_root'],
-				"/", $this->view->unify_dir_separator($this->basepath)),
 			"password" => $this->compress_options['password'],
 			"active" => $this->compress_options['active'],
 			"website" => $_SERVER['HTTP_HOST'],
@@ -1076,7 +1086,7 @@ class admin {
 				$this->save_option("['email']", htmlspecialchars($this->input['wss_email']));
 				$this->save_option("['username']", htmlspecialchars($this->input['wss_username']));
 				$this->save_option("['name']", htmlspecialchars($this->input['wss_username']));
-				$this->install_install();
+				$this->install_install(1);
 				$this->install_dashboard();
 			}
 		}
@@ -1260,7 +1270,7 @@ class admin {
 	* Uninstall page
 	* 
 	**/	
-	function install_uninstall ($return = true) {
+	function install_uninstall () {
 /* delete last optimization grade */
 		@unlink('index.after');
 		if (empty($this->cms_version)) {
@@ -1343,24 +1353,41 @@ class admin {
 			}
 		}
 /* clean up all Web Optimzier rules from .htaccess */
-		$content_saved = $this->clean_htaccess($return);
-		$htaccess = $this->detect_htaccess();
-		if (empty($this->error)) {
-			$this->write_file($htaccess, $content_saved, $return);	
+		$this->htaccess = $this->detect_htaccess();
+		$content_saved = $this->clean_htaccess();
+		$this->write_file($this->htaccess, $content_saved, $return);
+		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
+		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
+		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
+		$error = array();
+		if ($submit) {
+			if (empty($email) ||
+				!preg_match("/.+@.+\..+/", $email)) {
+				$error[1] = 1;
+			}
+			if (empty($message)) {
+				$error[2] = 1;
+			}
+/* send a email to info@webo.name */
+			if (!count($error)) {
+				$this->send_message($email, $message);
+			}
 		}
-		if (!empty($return)) {
-			$this->page_variables = array(
-				"title" => _WEBO_SPLASH1_UNINSTALL,
-				"paths" => $this->view->paths,
-				"page" => 'install_uninstall',
-				"document_root" => empty($this->compress_options['document_root']) ? null : $this->compress_options['document_root'],
-				"compress_options" => $this->compress_options,
-				"version" => $this->version,
-				"version_new" => $this->version_new,
-				"premium" => $this->premium,
-				"language" => $this->language
-			);
-		}
+		$this->page_variables = array(
+			"title" => _WEBO_SPLASH1_UNINSTALL,
+			"page" => 'install_uninstall',
+			"document_root" => $this->view->paths['full']['document_root'],
+			"website_root" => $this->view->paths['absolute']['document_root'],
+			"message" => $message,
+			"email" => $email,
+			"submit" => $submit,
+			"error" => $error,
+			"basepath" => $this->basepath,
+			"version" => $this->version,
+			"premium" => $this->premium,
+			"language" => $this->language
+		);
+		$this->view->render("install_uninstall", $this->page_variables);
 	}
 
 	/**
@@ -2601,7 +2628,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	* Final stage
 	* 
 	**/	
-	function install_install() {
+	function install_install($skip = false) {
 		$auto_rewrite = 0;
 /* define CMS */
 		if (empty($this->cms_version)) {
@@ -2609,12 +2636,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$this->system_info($this->view->paths['absolute']['document_root']);
 		}
 /* sve initial options */
-		$this->compress_options['document_root'] = $this->view->paths['absolute']['document_root'];
-		$this->compress_options['website_root'] = $this->view->paths['full']['document_root'];
-		$this->compress_options['css_cachedir'] =
-		$this->compress_options['javascript_cachedir'] =
-		$this->compress_options['html_cachedir'] =
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/';
+		$this->compress_options['document_root'] = empty($this->compress_options['document_root']) ?
+			$this->view->paths['absolute']['document_root'] : $this->compress_options['document_root'];
+		$this->compress_options['website_root'] = empty($this->compress_options['website_root']) ?
+			$this->view->paths['full']['document_root'] : $this->compress_options['website_root'];
+		$this->compress_options['css_cachedir'] = empty($this->compress_options['css_cachedir']) ?
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['css_cachedir'];
+		$this->compress_options['javascript_cachedir'] = empty($this->compress_options['javascript_cachedir']) ?
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['javascript_cachedir'];
+		$this->compress_options['html_cachedir'] = empty($this->compress_options['html_cachedir']) ?
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['html_cachedir'];
 		foreach (array(
 			'document_root',
 			'website_root',
@@ -2895,6 +2926,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 						$this->write_file($cache_file, $content);
 					}
 				}
+			}
+			if (!$skip) {
+				$this->install_system(2 - $auto_rewrite);
 			}
 		}
 

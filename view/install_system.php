@@ -64,7 +64,32 @@
 		</a>
 	</li><?php
 	}
-?></ul><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7">
+?></ul><?php
+	if (!empty($success)) {
+		if ($success == 1) {
+?><div class="wssS"><div class="wssS1"><h2 class="wssB"><?php
+			echo _WEBO_SYSTEM_SUCCESS;
+		?></h2></div></div><?php
+		}
+		if ($success == 2) {
+?><div class="wssK">
+	<div class="wssK1">
+		<h2 class="wssB"><?php
+		echo _WEBO_ERROR_TITLE;
+		?></h2>
+		<ul class="wssL"><?php
+		foreach ($files_to_change as $file) {
+		?>
+			<li class="wssL1"><?php
+			echo _WEBO_SPLASH3_CANTWRITE4 . preg_replace("/\\\/", "/", $document_root) . $file['file'];;
+			?></li><?php
+		}
+		?></ul>
+	</div>
+</div><?php
+		}
+	} 
+?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7">
 	<ul class="wssO3">
 		<li class="wssO4 wssO5">
 			<a href="#status" class="wssJ">
@@ -352,7 +377,7 @@ require('<?php
 				}
 ?></li><?php
 		}
-?></ol><!-- p class="wssI"><?php
+?></ol><p class="wssI"><?php
 	echo _WEBO_SYSTEM_INSTALLINFO2;
 			?></p><p class="wssI">
 		<a href="#wss_install" class="wssJ7">
@@ -366,7 +391,7 @@ require('<?php
 			?>
 			<span class="wssJ6"></span>
 		</a>
-	</p -->
+	</p>
 		</div>
 	</fieldset>
 </form>

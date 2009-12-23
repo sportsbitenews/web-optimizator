@@ -97,8 +97,7 @@
 	echo _WEBO_ABOUT_TITLE;
 ?></h1><?php
 	echo _WEBO_ABOUT_TEXT;
-?>
-<form action="#wss_about" method="post" class="wssC wssC2" enctype="multipart/form-data">
+?><form action="#wss_about" method="post" class="wssC wssC2" enctype="multipart/form-data">
 	<h2 class="wssB wssB2"><?php
 	echo _WEBO_ABOUT_SENDMESSAGE;
 	?></h2>

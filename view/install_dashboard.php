@@ -145,14 +145,10 @@
 				<a class="wssJ20" href="javascript:_.hide('wss_che')"></a>
 			</div>
 		</div>
-		<div class="wssN5<?php
+		<div class="wssN5 wssN21<?php
 	echo $premium < 2?' wssN20':'';
 		?>" id="wss_sp">
-			<div class="wssN2<?php
-	if ($premium > 1) {
-				?> wssN21<?php
-	}
-				?>">
+			<div class="wssN2">
 				<h2 class="wssB"><<?php
 	echo $premium < 2 ? 'span' : 'span';
 				?> class="wssN3"><?php
@@ -177,7 +173,7 @@
 		<div class="wssN5<?php
 	echo $premium<2 ? ' wssN20' : '';
 		?>" id="wss_tools">
-			<div class="wssN2">
+			<div class="wssN2 wssN21">
 				<h2 class="wssB"><span class="wssN3"><?php
 	echo _WEBO_DASHBOARD_TOOLS;
 				?></span></h2>
@@ -302,9 +298,7 @@
 			?></span></h2>
 		</div>
 	</div>
-</div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess">Current Status</p></div><script type="text/javascript">wss_root='<?php
-	echo $wssroot;
-?>';wss_pass='<?php
+</div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess">Current Status</p></div><script type="text/javascript">wss_pass='<?php
 	echo $password;
 ?>';wss_c='<?php
 	echo $cache_folder;

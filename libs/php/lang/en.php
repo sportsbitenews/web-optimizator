@@ -66,18 +66,12 @@ define('_WEBO_LOGIN_UPGRADENOTICE4', ') of WEBO Site SpeedUp to latest one &mdas
 define('_WEBO_UPGRADE_SUCCESSFULL', 'You have successfully upgraded to the version ');
 define('_WEBO_UPGRADE_SUCCESSFULL2', '');
 define('_WEBO_UPGRADE_UNABLE', 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
+
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'To remove WEBO Site SpeedUp from your system please enter username and password and click <strong>Uninstall</strong>.');
-define('_WEBO_LOGIN_UNINSTALL2', 'WEBO Site SpeedUp can be simply disabled for your website. Just delete it.');
 define('_WEBO_LOGIN_UNINSTALLME', 'Uninstall WEBO Site SpeedUp');
 define('_WEBO_LOGIN_FAILED', 'Login failed');
-define('_WEBO_LOGIN_ACCESS', 'You need to be logged in to view this page');
-define('_WEBO_LOGIN_LOGGED', 'Logged you in');
-define('_WEBO_SPLASH1_CLEAR', 'Clear cache');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'To clear WEBO Site SpeedUp cache please enter username and password and press <strong>Clear cache</strong>. ');
-define('_WEBO_SPLASH1_CLEAR_CACHE2', 'All saved versions of generated files will be deleted from the cache folder.');
-define('_WEBO_CLEAR_UNABLE', 'Sorry, can\'t delete a number of files from the cache directory');
-define('_WEBO_CLEAR_SUCCESSFULL', 'All files in cache directories have been deleted');
+define('_WEBO_UNINSTALL_MESSAGE', 'WEBO Site SpeedUp uninstall reason');
+define('_WEBO_UNINSTALL_SUCCESS', 'WEBO Site SpeedUp was successfully uninstalled.');
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation - set password');
@@ -89,15 +83,16 @@ define('_WEBO_NEW_NOSCRIPT', 'For correct work JavaScript must be enabled!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
-define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Uninstallation');
+define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'WEBO Site SpeedUp uninstallation');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Thank you for using <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">WEBO Site SpeedUp</a>. You can install it once more later by visiting <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">WEBO Site SpeedUp page</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Feel free to visit <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">WEBO Site SpeedUp website</a> and submit <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">any related issues</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Now you can return back to <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">your website</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_HELP', 'Please help us to improve our product - tell us WEBO Site SpeedUp uninstall reason.');
+define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Send message');
 define('_WEBO_SPLASH1_NEXT', 'Next');
 define('_WEBO_SPLASH1_BACK', 'Back');
-define('_WEBO_SPLASH1_EXPRESS', 'Express install');
 
 /* Change password */
 define('_WEBO_PASSWORD_TITLE', 'Change password');
@@ -484,6 +479,9 @@ define('_WEBO_SYSTEM_INSTALL_TITLE', 'WEBO Site SpeedUp install and uninstall');
 define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp is installed for');
 define('_WEBO_SYSTEM_INSTALLINFO', 'The following changes made during WEBO Site SpeedUp installation can be rolled back if you press button &quot;Uninstall&quot;:');
 define('_WEBO_SYSTEM_INSTALLINFO2', 'You can restore initial application calls in system files anytime. To perform this please press &quot;Install&quot; (or &quot;Re-install&quot;). In case of application uninstall all cache files and configuration options will be saved.');
+define('_WEBO_SYSTEM_SUCCESS', 'All changes in source files were successfully performed.'));
+define('_WEBO_showbeta', 'Show beta versions\' information');
+define('_WEBO_showbeta_HELP', 'By default only stable WEBO Site SpeedUp updates are shown. You can also enable check for beta (potentially unstable) versions.');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Disabled');
@@ -598,7 +596,7 @@ define('_WEBO_SPLASH3_FINISH', 'Finish installation');
 define('_WEBO_SPLASH3_CANTWRITE', 'Unable to write to the ');
 define('_WEBO_SPLASH3_CANTWRITE2', ' directory you specified. Please make sure the directory exists and is writable.');
 define('_WEBO_SPLASH3_CANTWRITE3', 'You can usually do this from your FTP client. Just navigate to the directory, right click and look for a Properties or CHMOD option.');
-define('_WEBO_SPLASH3_CANTWRITE4', 'Once you have done so, please refresh this page.');
+define('_WEBO_SPLASH3_CANTWRITE4', 'Can\'t write to file ');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Please make sure that the root of your website is readable and writable for your web server process.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'Make CHMOD 775 or CHMOD 777 for it, or create readable and writable <code>.htaccess</code> there, or CHMOD current <code>.htaccess</code> to 664 or 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Please make sure that the root of your website is writable for your web server process or there is a writable <code>.htaccess</code> file.');
@@ -675,6 +673,9 @@ define('_WEBO_GZIP_FINAL_TOTAL', 'Compressed files size');
 define('_WEBO_GZIP_SAVINGS', 'Total savings');
 define('_WEBO_GZIP_INITIAL', 'Initial size');
 define('_WEBO_GZIP_FINAL', 'Savings');
+define('_WEBO_GZIP_PROCESSING', 'Processing image');
+define('_WEBO_GZIP_OUTOF', 'out of');
+define('_WEBO_GZIP_OPTIMIZATION', 'Optimization in action. Please wait');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'You can minify images on your website (without losses in quality). For this purpose please enter intitial directory. It will be scanned recursively for required files, current <code>.backup</code> versions of files will be refreshed if it\'s required.');
