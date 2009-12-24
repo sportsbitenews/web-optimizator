@@ -181,8 +181,8 @@ define('_WEBO_minify_js', 'Minify JavaScript files');
 define('_WEBO_minify_js_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined JavaScript file. Library choice affects minify algorithm and compression rate. Maximum compression can be achieved with any of these libraries depending on initial conditions.');
 define('_WEBO_minify_js1', 'Don\'t minify JavaScript');
 define('_WEBO_minify_js2', 'Minify with JSMin (from Douglas Crockford)');
-define('_WEBO_minify_js3', 'Minify with Packer (by Dean Edwards)');
-define('_WEBO_minify_js4', 'Minify with YUI Compressor (requires java)');
+define('_WEBO_minify_js3', 'Minify with YUI Compressor (requires java)');
+define('_WEBO_minify_js4', 'Minify with Packer (by Dean Edwards)');
 define('_WEBO_minify_page', 'Minify HTML');
 define('_WEBO_minify_page_HELP', 'HTML code will be cleaned from double spaces, double line breaks, empty symbols at the beginning of every string and spaces before tag ends. Tags &lt;pre&gt;, &lt;textarea&gt;, &lt;script&gt; will be excluded from all actions .');
 define('_WEBO_minify_html_comments', 'Remove HTML comments');
@@ -239,7 +239,7 @@ define('_WEBO_far_future_expires_external_HELP', 'External files called on web p
 
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout set in option &quot;Default HTML cache timeout&quot;. This option allows you to significantly speedup web pages load with long generation time. But this is reasonable only for static pages without dynamic content.');
-define('_WEBO_html_cache_timeout', 'Default HTML cache timeout, in seconds');
+define('_WEBO_html_cache_timeout', 'Default HTML cache timeout (in seconds)');
 define('_WEBO_html_cache_timeout_HELP', 'After this time all cached HTML pages will be re-created on server side.');
 define('_WEBO_html_cache_flush_only', 'Only cache first n bytes of content (flush early)');
 define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whole web page but the first n bytes of it (set in option &quot;Flush content size&raquo;) будет отправляться и &quot;с). And this amount of data will be flushed to browser earlier than the rest web page content. So browser will receive calls to required resources earlier and don\'t wait the rest of the page to start their load.');
@@ -375,7 +375,7 @@ define('_WEBO_DASHBOARD_STATUS_DEBUG', 'debug&nbsp;mode');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'You can debug the application');
 define('_WEBO_DASHBOARD_STATUS_TESTING2', 'with the <code>web_optimizer_debug</code> parameter');
 define('_WEBO_DASHBOARD_STATUS_COOKIE', 'or just via cookie');
-define('_WEBO_DASHBOARD_STATUS_TESTING3', 'After this you can press &quot;Enable&quot;.');
+define('_WEBO_DASHBOARD_STATUS_TESTING3', 'After this please press &quot;Enable&quot;.');
 define('_WEBO_DASHBOARD_STATUS_ENABLE', 'Enable');
 define('_WEBO_DASHBOARD_STATUS_DISABLE', 'Disable');
 define('_WEBO_DASHBOARD_STATUS0','Starting optimization');
@@ -470,7 +470,7 @@ define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp is installed for');
 define('_WEBO_SYSTEM_INSTALLINFO', 'The following changes made during WEBO Site SpeedUp installation can be rolled back if you press button &quot;Uninstall&quot;:');
 define('_WEBO_SYSTEM_INSTALLINFO2', 'You can restore initial application calls in system files anytime. To perform this please press &quot;Install&quot; (or &quot;Re-install&quot;). In case of application uninstall all cache files and configuration options will be saved.');
 define('_WEBO_SYSTEM_SUCCESS', 'All changes in source files were successfully performed.');
-define('_WEBO_showbeta', 'Show beta versions\' information');
+define('_WEBO_showbeta', 'Show information about beta version');
 define('_WEBO_showbeta_HELP', 'By default only stable WEBO Site SpeedUp updates are shown. You can also enable check for beta (potentially unstable) versions.');
 
 /* Dashboard options block */
@@ -607,5 +607,5 @@ define('_WEBO_GZIP_OPTIMIZATION', 'Optimization in action. Please wait');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'You can minify images on your website (without losses in quality). For this purpose please enter intitial directory. It will be scanned recursively for required files, current <code>.backup</code> versions of files will be refreshed if it\'s required.');
-define('_WEBO_IMAGE_INSTALLED2', 'There are backup (<code>.backup</code>) version of all images are being createed during optimization process. In the future you can roll back all changes with these backup versions. To optimize images <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">terms of use</a>) service is used. GIF files are replaced with PNG ones if latter are smaller.');
+define('_WEBO_IMAGE_INSTALLED2', 'There are backup (<code>.backup</code>) version of all images are being createed during optimization process. In the future you can roll back all changes with these backup versions. To optimize images <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">terms of service</a>) or <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">terms of service</a>) service is used. GIF files are replaced with PNG ones if latter are smaller.');
 ?>
