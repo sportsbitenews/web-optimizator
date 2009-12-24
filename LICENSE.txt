@@ -25,10 +25,10 @@ date changes were made. (We recommend you provide URIs to the location
 from which the code is derived.)
 
 NOTE: you can use this software only according to its license key
-limitations. You are not allowed to re-distibute full edition of this
-software, or any part of its full edition, or any services based on the
-full edition of this software or its parts without a special agreement
-with WEBO Software.
+limitations. You are not allowed to re-distibute this software, or any
+part of its source codes (which don't belong to third-party libraries),
+or any services based on this software or its parts without a special
+agreement with WEBO Software.
 
 THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT
 HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,
