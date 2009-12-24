@@ -35,13 +35,13 @@ class admin {
 		$this->version = @file_get_contents($this->basepath . 'version');
 /* get the latest version */
 		$version_new_file = 'version.new';
-		if (in_array($input['wss_page'],
+		if (in_array($this->input['wss_page'],
 			array('install_dashboard',
 				'install_set_password',
 				'install_enter_password'))) {
 			$this->view->download($this->svn . 'version', $version_new_file);
 		}
-		if (is_file($version_new_file)) {
+		if (@is_file($version_new_file)) {
 			$this->version_new = @file_get_contents($version_new_file);
 			@unlink($version_new_file);
 		} else {
@@ -1028,6 +1028,13 @@ class admin {
 	**/	
 	function install_set_password() {
 		$no_initial_grade = !@filesize($this->index_before);
+		$username = empty($this->input['wss_username']) ? '' : $this->input['wss_username'];
+		$password = empty($this->input['wss_password']) ? '' : $this->input['wss_password'];
+		$confirm = empty($this->input['wss_confirm']) ? '' : $this->input['wss_confirm'];
+		$license = empty($this->input['wss_license']) ? '' : $this->input['wss_license'];
+		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
+		$confirmagreement = empty($this->input['wss_confirmagreement']) ? '' : $this->input['wss_confirmagreement'];
+		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 /* try to get reliminary optimization grade for the website */
 		if ($no_initial_grade) {
 			$this->view->download($this->webo_grade, $this->index_before, 1);
@@ -1043,23 +1050,20 @@ class admin {
 /* check if we can display progress bar */
 			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
 			$error = array();
-			if (empty($this->input['wss_password']) &&
-				!empty($this->input['wss_Submit'])) {
+			if (!empty($submit)) {
+				if (empty($password)) {
 					$error[1] = 1;
-			}
-			if ((empty($this->input['wss_confirm']) ||
-					empty($this->input['wss_password']) ||
-					$this->input['wss_password'] != $this->input['wss_confirm'])
-				 && !empty($this->input['wss_Submit'])) {
-						$error[2] = 1;
-			}
-			if (empty($this->input['wss_email']) &&
-				!empty($this->input['wss_Submit'])) {
-					$error[3] = 1;
-			}
-			if (empty($this->input['wss_confirmagreement']) &&
-				!empty($this->input['wss_Submit'])) {
+				}
+				if (empty($password) || empty($confirm) || $password != $confirm) {
+					$error[2] = 1;
+				}
+				if (empty($email) ||
+					!preg_match("/.+@.+\..+/", $email)) {
+						$error[3] = 1;
+				}
+				if (empty($confirmagreement)) {
 					$error[4] = 1;
+				}
 			}
 			if (count($error) || empty($this->input['wss_Submit'])) {
 				$page_variables = array(
@@ -1067,13 +1071,13 @@ class admin {
 					"page" => 'install_set_password',
 					"version" => $this->version,
 					"error" => $error,
-					"username" => $this->input['wss_username'],
-					"password" => $this->input['wss_password'],
-					"confirm" => $this->input['wss_confirm'],
-					"license" => $this->input['wss_license'],
-					"email" => $this->input['wss_email'],
-					"confirmagreement" => $this->input['wss_confirmagreement'],
-					"submit" => $this->input['wss_Submit'],
+					"username" => $username,
+					"password" => $password,
+					"confirm" => $confirm,
+					"license" => $license,
+					"email" => $email,
+					"confirmagreement" => $confirmagreement,
+					"submit" => $submit,
 					"premium" => true,
 					"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir']),
 					"language" => $this->language
