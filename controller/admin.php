@@ -3024,13 +3024,17 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
-		$curl = $this->view->download(str_replace(realpath($document_root),
-				"http://" . $_SERVER['HTTP_HOST'],
-				realpath($this->basepath)) .
-			'/' . $curlfile, $javascript_cachedir . 'module.test');
+		$recursive = 0;
+		while (!($filesize = @filesize($javascript_cachedir . 'module.test')) &&
+			$recursive < 10) {
+				$curl = $this->view->download(str_replace(realpath($document_root),
+					"http://" . $_SERVER['HTTP_HOST'],
+					realpath($this->basepath)) . '/' .
+					$curlfile, $javascript_cachedir . 'module.test');
+				$recursive++;
+		}
 /* it it's possible to get file => module works */
-		if (@filesize($javascript_cachedir . 'module.test') ==
-			@filesize($this->basepath . $testfile)) {
+		if ($filesize == @filesize($this->basepath . $testfile)) {
 				$return = true;
 		}
 /* check for gzip / deflate support */
