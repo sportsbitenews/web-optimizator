@@ -123,7 +123,7 @@ class admin {
 			'res' => array('*.css.css', '*.css.css.gz', '*.php.php', '*.php.php.gz'),
 			'sprites' => array('webo.*.png', 'webo.*.jpg'),
 			'imgs' => array('*.png', '*.jpg', '*.gif', '*.bmp'),
-			'html' => array('*+*', '*+*.gz', '*+*.df')
+			'html' => array('*+*')
 		);
 /* show page */
 		if (!empty($this->input) &&
@@ -2293,7 +2293,7 @@ class admin {
 /* create backup */
 			@copy($this->htaccess, $this->htaccess . '.backup');
 			$content = '# Web Optimizer options';
-			if (!empty($this->input['user']['htaccess_mod_gzip'])) {
+			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
 				$content .= "
 <IfModule mod_gzip.c>
 	mod_gzip_on Yes
@@ -2348,7 +2348,7 @@ class admin {
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['user']['htaccess_mod_setenvif'])) {
+			if (!empty($this->input['wss_htaccess_mod_setenvif'])) {
 				$content .= "
 <IfModule mod_setenvif.c>
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
@@ -2357,18 +2357,18 @@ class admin {
 	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 </IfModule>";
 			}
-			if (!empty($this->input['user']['htaccess_mod_deflate'])) {
+			if (!empty($this->input['wss_htaccess_mod_deflate'])) {
 				$content .= "
 <IfModule mod_deflate.c>";
-				if (!empty($this->input['user']['gzip']['wss_page'])) {
+				if (!empty($this->input['wss_gzip_page'])) {
 					$content .= "
 	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
 				}
-				if (!empty($this->input['user']['gzip']['css'])) {
+				if (!empty($this->input['wss_gzip_css'])) {
 					$content .= "
 	AddOutputFilterByType DEFLATE text/css";
 				}
-				if (!empty($this->input['user']['gzip']['javascript'])) {
+				if (!empty($this->input['wss_gzip_javascript'])) {
 					$content .= "
 	AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
 				}
@@ -2382,18 +2382,18 @@ http://www.phpied.com/gzip-your-font-face-files/ */
 </IfModule>";
 			}
 /* try to add static gzip */
-			if (!empty($this->input['user']['htaccess_mod_mime'])) {
+			if (!empty($this->input['wss_htaccess_mod_mime'])) {
 				$content .= "
 <IfModule mod_mime.c>
 	AddEncoding gzip .gz
 	AddEncoding deflate .df
 </IfModule>";
 			}
-			if (!empty($this->input['user']['htaccess_mod_rewrite'])) {
+			if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 /* prevent 403 error due to no FollowSymLinks
 http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
 http://code.google.com/p/web-optimizator/issues/detail?id=156 */
-				if (!empty($this->input['user']['htaccess_mod_symlinks'])) {
+				if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
 					$content .= "
 Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				}
@@ -2468,7 +2468,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['user']['htaccess_mod_expires'])) {
+			if (!empty($this->input['wss_htaccess_mod_expires'])) {
 				$content .= "
 <IfModule mod_expires.c>
 	ExpiresActive On";
@@ -2559,7 +2559,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 /* add Expires headers via PHP script if we don't have mod_expires */
-			} elseif (!empty($this->input['user']['htaccess_mod_rewrite'])) {
+			} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 				$cachedir = str_replace($this->input['wss_website_root'], "/", $this->input['wss_html_cachedir']);
 				$content .= "
 <IfModule mod_rewrite.c>";
@@ -2590,18 +2590,18 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['user']['htaccess_mod_headers']) && !empty($this->premium)) {
+			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
 				$content .= "
 <IfModule mod_headers.c>";
-				if (!empty($this->input['user']['htaccess_mod_deflate']) ||
-					!empty($this->input['user']['htaccess_mod_gzip'])) {
+				if (!empty($this->input['wss_htaccess_mod_deflate']) ||
+					!empty($this->input['wss_htaccess_mod_gzip'])) {
 						$content .= "
 	<FilesMatch \.(css|js)$>
 		Header append Vary User-Agent
 		Header append Cache-Control private
 	</FilesMatch>";
 				}
-				if (!empty($this->input['user']['htaccess_mod_expires'])) {
+				if (!empty($this->input['wss_htaccess_mod_expires'])) {
 					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
 		Header append Cache-Control public

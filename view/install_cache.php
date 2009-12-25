@@ -130,7 +130,7 @@
 		echo _WEBO_CACHE_TOTAL;
 			?>:</th>
 			<th class="wssT9" colspan="2"><?php
-		echo printf("%.1f", $total / 1024);
+		echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($total / 1024));
 			?> <?php
 		echo _WEBO_LOGIN_EFFICIENCY_KB;
 			?></th>
