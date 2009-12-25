@@ -187,7 +187,7 @@ $compress_options['parallel']['additional'] = "";
 ## List of satellites' hosts, i.e. i1 i2 i3
 $compress_options['parallel']['additional_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?
-$compress_options['htaccess']['enabled'] = "1";
+$compress_options['htaccess']['enabled'] = "0";
 $compress_options['htaccess']['mod_deflate'] = "1";
 $compress_options['htaccess']['mod_gzip'] = "1";
 $compress_options['htaccess']['mod_expires'] = "1";

@@ -150,7 +150,7 @@ if ($submit) {
 <div class="wssX"></div>
 <div class="wssU">
 	<p class="wssI">
-		<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.q);void(0)" class="wssJ5"><?php
+		<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
 	echo _WEBO_OPTIONS_APPLY;
 		?><span class="wssJ6"></span></a>
 	</p>
@@ -286,7 +286,7 @@ if ($submit) {
 ?>
 	<div class="wssU">
 		<p class="wssI">
-			<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.q);void(0)" class="wssJ5"><?php
+			<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
 	echo _WEBO_OPTIONS_APPLY;
 			?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/>
 		</p>

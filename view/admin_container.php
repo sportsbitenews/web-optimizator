@@ -109,7 +109,7 @@ if (!$ajax) {
 				echo  _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span></a><?php
 		}
-?></p></div><script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAcDjjgL6gyYUwSrkesv6c7RRPj_C4VnSBVCqcbcH6fyxpcL8EhxSiDicBRQUIZJ32TB5Qr_cb3UjZXg"></script><script type="text/javascript" src="libs/js/yass.loadbar.js??<?php
+?></p></div><script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAcDjjgL6gyYUwSrkesv6c7RRPj_C4VnSBVCqcbcH6fyxpcL8EhxSiDicBRQUIZJ32TB5Qr_cb3UjZXg"></script><script type="text/javascript" src="libs/js/yass.loadbar.js?<?php
 		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
 			echo $version;
 		}
