@@ -1,7 +1,13 @@
 <?php
 #########################################
-## Web Optimizer options file ###########
+## WEBO Site SpeedUp Configuration ######
 #########################################
+## Configuration title
+$compress_options['title'] = "";
+## Configuration description
+$compress_options['description'] = "";
+## Active configuration
+$compress_options['config'] = "extreme";
 ## Host name, to include before static resources
 $compress_options['host'] = "";
 ## Add JS loader for all libraries on DOMloaded event

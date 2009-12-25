@@ -4,7 +4,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
-// @version    0.6.6
+// @version    1.0.0
 // @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
 // ==============================================================================================
 // To install Web Optimizer please copy this file to the document root, make document root
@@ -20,7 +20,7 @@
 
 	$loaded_modules = @get_loaded_extensions();
 	$install_directory = 'web-optimizer';
-	$download_package = 'download Web Optimizer full package at <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>.';
+	$download_package = 'download WEBO Site SpeedUp full package at <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>.';
 	$messages = array(
 		'curl_not_installed' => 'Curl isn\'t installed. Please ' . $download_package,
 		'directory_not_writable' => 'Can\'t write to the current directory. Please chmod ' . @dirname(__FILE__) . ' to 0775.',
@@ -112,10 +112,10 @@
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 ?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Web Optimizer Install</title>
+<title>WEBO Site SpeedUp Installation</title>
 </head>
 <body>
-<h1>We have some problems during Web Optimizer installation</h1>
+<h1>We have some problems during WEBO Site SpeedUp installation</h1>
 <p><?php echo $error ?></p>
 </body>
 </html>

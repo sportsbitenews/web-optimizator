@@ -1,7 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
- * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  *
  **/
 

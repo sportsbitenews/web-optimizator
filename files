@@ -9,6 +9,9 @@ libs/css/account.hover.png
 libs/css/account.png
 libs/css/all.hover.png
 libs/css/all.png
+libs/css/apply.active.png
+libs/css/apply.hover.png
+libs/css/apply.png
 libs/css/button.blue.hover.png
 libs/css/button.blue.png
 libs/css/button.bw.hover.png
@@ -31,11 +34,17 @@ libs/css/corner.gif
 libs/css/corner.png
 libs/css/dashboard.hover.png
 libs/css/dashboard.png
+libs/css/edit.active.png
+libs/css/edit.hover.png
+libs/css/edit.png
 libs/css/error-button.png
 libs/css/error-config.png
 libs/css/error-input.png
 libs/css/error-warning.png
 libs/css/error.png
+libs/css/delete.active.png
+libs/css/delete.hover.png
+libs/css/delete.png
 libs/css/help.hover.png
 libs/css/help.png
 libs/css/hlp.hover.png
@@ -129,6 +138,7 @@ view/install_promo.php
 view/install_set_password.php
 view/install_system.php
 view/install_uninstall.php
+view/options_configuration.php
 config.extreme.php
 config.optimal.php
 config.safe.php

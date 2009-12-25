@@ -287,6 +287,30 @@
 	echo htmlspecialchars($username);
 				?>" name="wss_username" id="wss_username" class="wssF"/>
 			</dd>
+			<dt class="wssD1">
+				<label class="wssE" for="wss_external_scripts_user"><?php
+	echo _WEBO_external_scripts_user;
+				?> <a class="wssJ9" href="#" title="<?php
+						echo _WEBO_external_scripts_user_HELP;
+			?>">?</a>
+				</label>
+			</dt>
+			<dd class="wssD2"><input value="<?php
+	echo htmlspecialchars($external_scripts_user);
+				?>" name="wss_external_scripts_user" id="wss_external_scripts_user" class="wssF"/>
+			</dd>
+			<dt class="wssD1">
+				<label class="wssE" for="wss_external_scripts_pass"><?php
+	echo _WEBO_external_scripts_user;
+				?> <a class="wssJ9" href="#" title="<?php
+						echo _WEBO_external_scripts_user_HELP;
+			?>">?</a>
+				</label>
+			</dt>
+			<dd class="wssD2"><input value="<?php
+	echo htmlspecialchars($external_scripts_pass);
+				?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/>
+			</dd>
 		</dl>
 	<!-- p class="wssI">
 		<input type="submit" value="<?php

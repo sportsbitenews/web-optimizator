@@ -505,6 +505,18 @@ define('_WEBO_CACHE_ALL', 'Все файлы');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Применить');
+define('_WEBO_OPTIONS_CONFIGURATION', 'Конфигурация');
+define('_WEBO_OPTIONS_DESCRIPTION', 'Описание');
+define('_WEBO_OPTIONS_APPLYCONFIG', 'применить конфигурацию');
+define('_WEBO_OPTIONS_EDITCONFIG', 'изменить конфигурацию');
+define('_WEBO_OPTIONS_DELETECONFIG', 'удалить конфигурация');
+define('_WEBO_OPTIONS_ALLCONFIGS', 'Все конфигурации');
+define('_WEBO_OPTIONS_CREATENEW', 'Создать свою');
+define('_WEBO_OPTIONS_EXTREME', 'Экстремальная');
+define('_WEBO_OPTIONS_OPTIMAL', 'Оптимальная');
+define('_WEBO_OPTIONS_SAFE', 'Безопасная');
+define('_WEBO_OPTIONS_ATTENTION', 'Внимание!');
+define('_WEBO_OPTIONS_ATTENTION2', 'Изменение конфигурации может повлечь за собой неработоспособность сайта. Пожалуйста, <a href="#wss_system" class="wssJ">переведите приложение в режим отладки</a> перед внесением изменений.');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Сравнение версий WEBO Site SpeedUp');

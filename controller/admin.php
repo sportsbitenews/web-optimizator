@@ -88,7 +88,8 @@ class admin {
 				'dashboard_options' => 1,
 				'dashboard_speed' => 1,
 				'compress_gzip' => 1,
-				'compress_image' => 1
+				'compress_image' => 1,
+				'options_configuration' => 1
 			);
 /* inializa stage for chained optimization */
 			$this->web_optimizer_stage =
@@ -908,6 +909,8 @@ class admin {
 		$page_variables['current_directory'] = dirname(__FILE__) . '/';
 		$page_variables['htpasswd'] = $this->compress_options['htaccess']['access'];
 		$page_variables['username'] = $this->compress_options['username'];
+		$page_variables['external_scripts_user'] = $this->compress_options['external_scripts']['user'];
+		$page_variables['external_scripts_pass'] = $this->compress_options['external_scripts']['pass'];
 		$page_variables['showbeta'] = $this->compress_options['showbeta'];
 		$page_variables['files_to_change'] = $this->system_files($this->cms_version);
 		$page_variables['cms_version'] = $this->cms_version;
@@ -1462,6 +1465,26 @@ class admin {
 		return trim($allowed_hosts);
 	}
 
+	function options_configuration () {
+/* get all available configurations */
+		$options = array();
+		@chdir($this->basepath);
+		foreach (glob("config.*.php") as $file) {
+			if ($file != 'config.webo.php') {
+				$saved = $this->compress_options;
+				include($this->basepath . $file);
+				$this->compress_options = $compress_options;
+				$key = str_replace(array("config.", ".php"), '', $file);
+				$options[$key] = $this->get_options();
+				$this->compress_options = $saved;
+			}
+		}
+		$this->page_variables = array(
+			"options" => $options
+		);
+		$this->view->render("options_configuration", $this->page_variables);
+	}
+
 	/**
 	* Get options to render them
 	*
@@ -1483,18 +1506,22 @@ class admin {
 			}
 			$this->write_htaccess();
 		}
+/* get list of users configs */
+		$configs = array();
+		@chdir($this->basepath);
+		foreach (glob("config.*.php") as $file) {
+			if (!in_array($file, array( 'config.webo.php', 'config.safe.php', 'config.optimal.php', 'config.extreme.php'))) {
+				$configs[] = str_replace(array("config.", ".php"), '', $file);
+			}
+		}
 		$this->page_variables = array(
 			"options" => $options,
 			"premium" => $this->premium,
 			"submit" => $submit,
 			"error" => $this->error,
 			"basepath" => $thos->basepath,
-			"cssdir" => empty($this->input['wss_css_cachedir']) ?
-				$options['general']['css_cachedir']: $this->input['wss_css_cachedir'],
-			"jsdir" => empty($this->input['wss_javascript_cachedir']) ?
-				$options['general']['javascript_cachedir']: $this->input['wss_javascript_cachedir'],
-			"htmldir" => empty($this->input['wss_html_cachedir']) ?
-				$options['general']['html_cachedir']: $this->input['wss_html_cachedir'],
+			"configs" => $configs,
+			"config" => $this->compress_options['config']
 		);
 		$this->view->render("install_options", $this->page_variables);
 	}
@@ -1505,42 +1532,6 @@ class admin {
 	**/	
 	function get_options () {
 		$options = array(
-			'general' => array(
-				'host' => array(
-					'value' => $this->compress_options['host'],
-					'type' => 'text'
-				),
-				'website_root' => array(
-					'value' => $this->compress_options['website_root'],
-					'type' => 'text'
-				),
-				'document_root' => array(
-					'value' => $this->compress_options['document_root'],
-					'type' => 'text'
-				),
-				'css_cachedir' => array(
-					'value' => $this->compress_options['css_cachedir'],
-					'type' => 'text'
-				),
-				'javascript_cachedir' => array(
-					'value' => $this->compress_options['javascript_cachedir'],
-					'type' => 'text'
-				),
-				'html_cachedir' => array(
-					'value' => $this->compress_options['html_cachedir'],
-					'type' => 'text'
-				),
-				'external_scripts_user' => array(
-					'value' => $this->compress_options['external_scripts']['user'],
-					'type' => 'text',
-					'hidden' => $this->premium < 2 ? 1 : 0
-				),
-				'external_scripts_pass' => array(
-					'value' => $this->compress_options['external_scripts']['pass'],
-					'type' => 'text',
-					'hidden' => $this->premium < 2 ? 1 : 0
-				),
-			),
 			'combinecss' => array(
 				'combine_css' => array(
 					'value' => $this->compress_options['minify']['css'] ?
@@ -1569,6 +1560,11 @@ class admin {
 					'value' => $this->compress_options['external_scripts']['include_code'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'config' => array(
+					'value' => $this->compress_options['config'],
+					'type' => 'text',
+					'hidden' => 1
 				)
 			),
 			'combine_js' => array(

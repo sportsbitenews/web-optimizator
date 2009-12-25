@@ -149,34 +149,164 @@ if ($submit) {
 ?></ul>
 <div class="wssX"></div>
 <div class="wssU">
-	<p class="wssI">
-		<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
-	echo _WEBO_OPTIONS_APPLY;
-		?><span class="wssJ6"></span></a>
-	</p>
+	<dl class="wssU1">
+		<dt class="wssU2"><?php
+	echo _WEBO_OPTIONS_CONFIGURATION;
+		?>:</dt>
+		<dd class="wssU3"><?php
+	echo $configuration_title;
+		?></dd>
+		<dt class="wssU2"><?php
+	echo _WEBO_OPTIONS_DESCRIPTION;
+		?>:</dt>
+		<dd class="wssU4"><?php
+	echo $configuration_decription;
+		?></dd>
+	</dl>
+	<ul class="wssO3">
+		<li class="wssO4 wssO11">&mdash; <?php
+	echo _WEBO_OPTIONS_APPLYCONFIG;;
+		?></li>
+		<li class="wssO4 wssO12">&mdash; <?php
+	echo _WEBO_OPTIONS_EDITCONFIG;;
+		?></li>
+		<li class="wssO4 wssO13">&mdash; <?php
+	echo _WEBO_OPTIONS_DELETECONFIG;;
+		?></li>
+	</ul>
+	<dl class="wssU1">
+		<dt class="wssU2"><?php
+	echo _WEBO_OPTIONS_ALLCONFIGS;
+		?>:</dt>
+		<dd class="wssU5">
+			<div class="wssH">
+				<div class="wssRB">
+					<span class="wssRB1"><span class="wssRB2">&bull;</span></span>
+					<span class="wssRB3"><span class="wssRB4">&bull;</span></span>
+				</div>
+				<div class="wssH1">
+					<ul class="wssU10">
+						<li class="wssU11<?php
+	if ($config == 'safe') {
+						?> wssU12<?php
+	}
+						?>">
+							<a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe">
+								<span class="wssU13" onclick="_.c('safe');return false" title="<?php
+	echo _WEBO_OPTIONS_APPLYCONFIG;
+								?>"></span>
+								<span class="wssU14" onclick="_.e('safe');return false" title="<?php
+	echo _WEBO_OPTIONS_EDITCONFIG;
+								?>"></span><?php
+	echo _WEBO_OPTIONS_SAFE;
+							?></a>
+						</li>
+						<li class="wssU11<?php
+	if ($config == 'optimal') {
+						?> wssU12<?php
+	}
+						?>">
+							<a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal">
+								<span class="wssU13" onclick="_.c('optimal');return false" title="<?php
+	echo _WEBO_OPTIONS_APPLYCONFIG;
+								?>"></span>
+								<span class="wssU14" onclick="_.e('optimal');return false" title="<?php
+	echo _WEBO_OPTIONS_EDITCONFIG;
+								?>"></span><?php
+	echo _WEBO_OPTIONS_OPTIMAL;
+							?></a>
+						</li>
+						<li class="wssU11<?php
+	if ($config == 'extreme') {
+						?> wssU12<?php
+	}
+						?>">
+							<a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme">
+								<span class="wssU13" onclick="_.c('extreme');return false" title="<?php
+	echo _WEBO_OPTIONS_APPLYCONFIG;
+								?>"></span>
+								<span class="wssU14" onclick="_.e('extreme');return false" title="<?php
+	echo _WEBO_OPTIONS_EDITCONFIG;
+								?>"></span><?php
+	echo _WEBO_OPTIONS_EXTREME;
+							?></a>
+						</li><?php
+	if (count($configs)) {
+		foreach ($configs as $c) {
+						?><li class="wssU11<?php
+			if ($config == $c) {
+						?> wssU12<?php
+			}
+						?>">
+							<a class="wssJ" href="javascript:_.f('<?php
+			echo $c;
+							?>');void(0)" rel="<?php
+			echo $c;
+						?>">
+								<span class="wssU13" onclick="_.c('<?php
+			echo $c;
+							?>');return false" title="<?php
+			echo _WEBO_OPTIONS_APPLYCONFIG;
+								?>"></span>
+								<span class="wssU14" onclick="_.e('<?php
+			echo $c;
+							?>');return false" title="<?php
+			echo _WEBO_OPTIONS_EDITCONFIG;
+								?>"></span>
+								<span class="wssU15" onclick="_.d('<?php
+			echo $c;
+							?>');return false" title="<?php
+			echo _WEBO_OPTIONS_DELETECONFIG;
+								?>"></span><?php
+			echo _WEBO_OPTIONS_EXTREME;
+							?></a>
+						</li><?php
+		}
+	}
+						?><li class="wssU11 wssU20">
+							<a class="wssJ" href="javascript:_.c('user');void(0)"><?php
+	echo _WEBO_OPTIONS_CREATENEW;
+							?></a>
+						</li>
+					</ul>
+				</div>
+				<div class="wssRB">
+					<span class="wssRB5"><span class="wssRB6">&bull;</span></span>
+					<span class="wssRB7"><span class="wssRB8">&bull;</span></span>
+				</div>
+			</div>
+		</dd>
+	</dl>
+	<h3 class="wssB"><?php
+	echo _WEBO_OPTIONS_ATTENTION;
+	?></h3>
+	<p class="wssI"><?php
+	echo _WEBO_OPTIONS_ATTENTION2;
+	?></p>
 </div>
-<form method="post" enctype="multipart/form-data" action="#wss_options" class="wssC6">
-	<ul class="wssO3"><?php
+<div class="wssA0 wssU0">
+	<form method="post" enctype="multipart/form-data" action="#wss_options" class="wssC6">
+		<ul class="wssO3"><?php
 		foreach ($options as $key => $group) {
 			if (empty($group['premium'])) {
-		?><li class="wssO4<?php
-				echo $key == 'general' ? ' wssO5' : '';
-		?>">
-			<a href="#<?php
+			?><li class="wssO4<?php
+				echo $key == 'combinecss' ? ' wssO5' : '';
+			?>">
+				<a href="#<?php
 				echo $key;
-			?>" class="wssJ"><?php
+				?>" class="wssJ"><?php
 				echo constant('_WEBO_' . $key);
-			?><span class="wssJ6"></span></a>
-		</li><?php
+				?><span class="wssJ6"></span></a>
+			</li><?php
 			}
 		}
-	?></ul><?php
+		?></ul><?php
 	foreach ($options as $key => $group) {
-	?><fieldset id="<?php
+		?><fieldset id="<?php
 		echo $key;
-	?>" class="wssD9<?php
-				echo $key != 'general' ? ' wssA0' : '';
-		?>"><dl class="wssD10"><?php
+		?>" class="wssD9<?php
+				echo $key != 'combinecss' ? ' wssA0' : '';
+			?>"><dl class="wssD10"><?php
 		foreach ($group as $option => $value) {
 			if (is_array($value)) {
 				if ($value['type'] != 'radio' || !empty($value['hidden'])) {
@@ -184,113 +314,112 @@ if ($submit) {
 				}
 				$i = 0;
 				if ($value['type'] == 'radio') {
-			?><dt class="wssI"><label class="wssE" for="wss_<?php
+				?><dt class="wssI"><label class="wssE" for="wss_<?php
 					echo $option;
-			?>1"><?php
+				?>1"><?php
 					echo constant('_WEBO_' . $option);
-			?> <a class="wssJ9" href="#" title="<?php
+				?> <a class="wssJ9" href="#" title="<?php
 					echo constant('_WEBO_' . $option . '_HELP');
-			?>">?</a></label></dt><?php
+				?>">?</a></label></dt><?php
 				}
 				while ($i++ != $value['count']) {
 					if (empty($value['hidden'])) {
-			?><dt class="wssD<?php
+				?><dt class="wssD<?php
 						echo strpos($value['type'], 'text') !== false ? 1 : 5;
-			?>"><label for="wss_<?php
+				?>"><label for="wss_<?php
 						echo $option . ($value['type'] == 'radio' ? $i : '');
-			?>" class="wssE"><?php
+				?>" class="wssE"><?php
 						echo constant('_WEBO_' . $option . ($value['count'] > 1 ? $i : ''));
 						echo strpos($value['type'], 'text') !== false ? ':' : '';
 						if ($value['type'] != 'radio') {
-			?> <a class="wssJ9" href="#" title="<?php
+				?> <a class="wssJ9" href="#" title="<?php
 							echo constant('_WEBO_' . $option . '_HELP');
-			?>">?</a><?php
+				?>">?</a><?php
 						}
-			?></label></dt><?php
+				?></label></dt><?php
 					}
 					switch ($value['type']) {
 						case 'text':
-				?><dd class="wssD2"><input <?php
+					?><dd class="wssD2"><input <?php
 							echo empty($value['hidden']) ? '' : ' type="hidden"';
-				?> value="<?php
+					?> value="<?php
 							echo htmlspecialchars($value['value']);
-				?>" name="wss_<?php
+					?>" name="wss_<?php
 							echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 							echo $option;
-				?>" class="wssF"/></dd><?php
+					?>" class="wssF"/></dd><?php
 							break;
 						case 'smalltext':
-				?><dd class="wssD2"><input <?php
+					?><dd class="wssD2"><input <?php
 							echo empty($value['hidden']) ? '' : ' type="hidden"';
-				?> value="<?php
+					?> value="<?php
 							echo htmlspecialchars($value['value']);
-				?>" name="wss_<?php
+					?>" name="wss_<?php
 							echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 							echo $option;
-				?>" class="wssF wssF3"/></dd><?php
+					?>" class="wssF wssF3"/></dd><?php
 							break;
 						case 'radio':
-				?><dd class="wssD6"><input value="<?php
+					?><dd class="wssD6"><input value="<?php
 							echo $i;
-				?>" type="<?php
+					?>" type="<?php
 							echo empty($value['hidden']) ? 'radio' : 'hidden';
-				?>"<?php
+					?>"<?php
 							echo $value['value'] == $i-1 ? ' checked="checked"' : '';
-				?>" name="wss_<?php
+					?>" name="wss_<?php
 							echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 							echo $option . $i;
-				?>" class="wssF"/></dd><?php
+					?>" class="wssF"/></dd><?php
 							break;
 						case 'checkbox':
-				?><dd class="wssD6"><input type="<?php
+					?><dd class="wssD6"><input type="<?php
 							echo empty($value['hidden']) ? 'checkbox' : 'hidden';
-				?>"<?php
+					?>"<?php
 							echo $value['value'] ? ' checked="checked"' : '';
-				?>" name="wss_<?php
+					?>" name="wss_<?php
 							echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 							echo $option;
-				?>" class="wssF"/></dd><?php
+					?>" class="wssF"/></dd><?php
 							break;
 						case 'textarea':
 							if (!empty($value['hidden'])) {
-				?><input type="hidden" name="wss_<?php
+					?><input type="hidden" name="wss_<?php
 								echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 								echo $option;
-				?>" value="<?php
+					?>" value="<?php
 								echo htmlspecialchars($value['value']);
-				?>"/><?php
+					?>"/><?php
 							} else {
-				?><dd class="wssD2"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
+					?><dd class="wssD2"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
 								echo $option;
-				?>" id="wss_<?php
+					?>" id="wss_<?php
 								echo $option;
-				?>"><?php
+					?>"><?php
 								echo htmlspecialchars($value['value']);
-				?></textarea></dd><?php
+					?></textarea></dd><?php
 							}
 							break;
 					}
-			?>
-			</dd><?php
+				?></dd><?php
 				}
 			}
 		}
-		?></dl>
-	</fieldset><?php
+			?></dl>
+		</fieldset><?php
 	}
 ?>
-	<div class="wssU">
-		<p class="wssI">
-			<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
+		<div class="wssU">
+			<p class="wssI">
+				<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
 	echo _WEBO_OPTIONS_APPLY;
-			?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/>
-		</p>
-	</div>
-</form><?php
+				?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/>
+			</p>
+		</div>
+	</form><?php
 }
-?>
+?></div>

@@ -503,6 +503,18 @@ define('_WEBO_CACHE_ALL', 'All files');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Apply');
+define('_WEBO_OPTIONS_CONFIGURATION', 'Configuration');
+define('_WEBO_OPTIONS_DESCRIPTION', 'Description');
+define('_WEBO_OPTIONS_APPLYCONFIG', 'apply configuration');
+define('_WEBO_OPTIONS_EDITCONFIG', 'edit configuration');
+define('_WEBO_OPTIONS_DELETECONFIG', 'delete configuration');
+define('_WEBO_OPTIONS_ALLCONFIGS', 'All configurations');
+define('_WEBO_OPTIONS_CREATENEW', 'Create new');
+define('_WEBO_OPTIONS_EXTREME', 'Extreme');
+define('_WEBO_OPTIONS_OPTIMAL', 'Optimal');
+define('_WEBO_OPTIONS_SAFE', 'Safe');
+define('_WEBO_OPTIONS_ATTENTION', 'Attention!');
+define('_WEBO_OPTIONS_ATTENTION2', 'Configuration change can lead website failure. Please <a href="#wss_system" class="wssJ">put the application to debug mode</a> before applying any changes.');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Demo version limitations');

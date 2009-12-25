@@ -1,6 +1,6 @@
 <?php
 #########################################
-## Web Optimizer options file ###########
+## WEBO Site SpeedUp configuration ######
 #########################################
 ## Access control
 $compress_options['username'] = "";
@@ -10,6 +10,8 @@ $compress_options['optimization'] = "1";
 $compress_options['showbeta'] = "0";
 $compress_options['email'] = "";
 $compress_options['name'] = "";
+## Active configuration
+$compress_options['config'] = "safe";
 ## Path info. Cache directory for JS files
 $compress_options['javascript_cachedir'] = "";
 ## Cache directory for CSS files
