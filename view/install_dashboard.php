@@ -87,7 +87,9 @@
 				</p>
 			</div>
 		</div>
-		<!-- div class="wssN5" id="wss_updates">
+		<div class="wssN5<?php
+	echo strpos($cookie, 'wss_updates') !== false ? ' wssA0' : '';
+	?>" id="wss_updates">
 			<div class="wssN2 wssN21">
 				<h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_UPDATES;
@@ -103,8 +105,10 @@
 				</div>
 				<a class="wssJ20" href="javascript:_.hide('wss_updates')"></a>
 			</div>
-		</div -->
-		<div class="wssN5" id="wss_buzz">
+		</div>
+		<div class="wssN5<?php
+	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
+	?>" id="wss_buzz">
 			<div class="wssN2">
 				<h2 class="wssB"><a href="#wss_about" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_BUZZ;
@@ -117,7 +121,9 @@
 				<a class="wssJ20" href="javascript:_.hide('wss_buzz')"></a>
 			</div>
 		</div>
-		<div class="wssN5" id="wss_news">
+		<div class="wssN5<?php
+	echo strpos($cookie, 'wss_news') !== false ? ' wssA0' : '';
+	?>" id="wss_news">
 			<div class="wssN2 wssN21">
 				<h2 class="wssB"><a href="http://blog.web-optimizer.us/" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_NEWS;
@@ -132,7 +138,9 @@
 		</div>
 	</div>
 	<div class="wssN4">
-		<div class="wssN5" id="wss_che">
+		<div class="wssN5<?php
+	echo strpos($cookie, 'wss_che') !== false ? ' wssA0' : '';
+	?>" id="wss_che">
 			<div class="wssN2 wssN21">
 				<h2 class="wssB"><a href="#wss_cache" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
@@ -147,7 +155,8 @@
 		</div>
 		<div class="wssN5 wssN21<?php
 	echo $premium < 2?' wssN20':'';
-		?>" id="wss_sp">
+	echo strpos($cookie, 'wss_sp') !== false ? ' wssA0' : '';
+	?>" id="wss_sp">
 			<div class="wssN2">
 				<h2 class="wssB"><<?php
 	echo $premium < 2 ? 'span' : 'span';
@@ -172,6 +181,7 @@
 		</div>
 		<div class="wssN5<?php
 	echo $premium<2 ? ' wssN20' : '';
+	echo strpos($cookie, 'wss_tools') !== false ? ' wssA0' : '';
 		?>" id="wss_tools">
 			<div class="wssN2 wssN21">
 				<h2 class="wssB"><span class="wssN3"><?php
@@ -201,7 +211,9 @@
 				?><a class="wssJ20" href="javascript:_.hide('wss_tools')"></a>
 			</div>
 		</div>
-		<div class="wssN5" id="wss_links">
+		<div class="wssN5<?php
+	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
+	?>" id="wss_links">
 			<div class="wssN2">
 				<h2 class="wssB"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_LINKS;
@@ -224,7 +236,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="wssN1" id="wss_status">
+	<div class="wssN1<?php
+	echo strpos($cookie, 'wss_status') !== false ? ' wssA0' : '';
+	?>" id="wss_status">
 		<div class="wssN2">
 			<h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_STATUS;
@@ -265,7 +279,9 @@
 			<a class="wssJ20" href="javascript:_.hide('wss_status')"></a>
 		</div>
 	</div>
-	<div class="wssN1" id="wss_opt">
+	<div class="wssN1<?php
+	echo strpos($cookie, 'wss_opt') !== false ? ' wssA0' : '';
+	?>" id="wss_opt">
 		<div class="wssN2 wssN21">
 			<h2 class="wssB"><a href="#wss_options" class="wssN3"><?php
 	echo _WEBO_SPLASH2_OPTIONS;
@@ -278,7 +294,9 @@
 			<a class="wssJ20" href="javascript:_.hide('wss_opt')"></a>
 		</div>
 	</div>
-	<div class="wssN1" id="wss_sys">
+	<div class="wssN1<?php
+	echo strpos($cookie, 'wss_sys') !== false ? ' wssA0' : '';
+	?>" id="wss_sys">
 		<div class="wssN2 wssN21">
 			<h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_SYSTEM_TITLE;
@@ -291,12 +309,40 @@
 			<a class="wssJ20" href="javascript:_.hide('wss_sys')"></a>
 		</div>
 	</div>
-	<div class="wssN1 wssN12">
-		<div class="wssN2">
+	<div class="wssN1 wssN12<?php
+		if (!$cookie) {
+	?> wssA0<?php
+		}
+	?>">
+		<div class="wssN2 wssN21">
 			<h2 class="wssB"><span href="#wss_options" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_ALL;
-			?></span></h2>
-		</div>
+			?></span></h2><?php
+	foreach (array(
+		'wss_status' => '_WEBO_DASHBOARD_STATUS',
+		'wss_opt' => '_WEBO_SPLASH2_OPTIONS',
+		'wss_sys' => '_WEBO_SYSTEM_TITLE',
+		'wss_che' => '_WEBO_DASHBOARD_CACHE_TITLE',
+		'wss_sp' => '_WEBO_DASHBOARD_RESULTS',
+		'wss_tools' => '_WEBO_DASHBOARD_TOOLS',
+		'wss_links' => '_WEBO_DASHBOARD_LINKS',
+		'wss_updates' => '_WEBO_DASHBOARD_UPDATES',
+		'wss_buzz' => '_WEBO_DASHBOARD_BUZZ',
+		'wss_news' => '_WEBO_DASHBOARD_NEWS'
+		) as $key => $val) {
+			if (strpos($cookie, $key) !== false) {
+				?><p class="wssI <?php
+				echo $key;
+				?>">
+					<a href="javascript:_.show('<?php
+				echo $key;
+					?>')" class="wssJ"><?php
+				echo constant($val);
+					?></a>
+				</p><?php
+			}
+	}
+		?></div>
 	</div>
 </div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess">Current Status</p></div><script type="text/javascript">wss_pass='<?php
 	echo $password;

@@ -245,7 +245,7 @@ class admin {
 			$this->premium = $this->view->validate_license($license);
 /* save new options */
 			if (!count($error)) {
-				$this->save_option("['email']", htmlspecialchars($email]));
+				$this->save_option("['email']", htmlspecialchars($email));
 				$this->save_option("['optimization']", $allow);
 				$this->save_option("['license']", htmlspecialchars($license));
 				$this->save_option("['name']", htmlspecialchars($name));
@@ -1027,7 +1027,8 @@ class admin {
 			"active" => $this->compress_options['active'],
 			"website" => $_SERVER['HTTP_HOST'],
 			"cache_folder" => str_replace($this->compress_options['document_root'],
-				"/", $this->compress_options['html_cachedir'])
+				"/", $this->compress_options['html_cachedir']),
+			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks']
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
