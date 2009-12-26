@@ -286,6 +286,28 @@ if ($submit) {
 </div>
 <div class="wssA0 wssU0">
 	<form method="post" enctype="multipart/form-data" action="#wss_options" class="wssC6">
+		<dl class="wssU1">
+			<dt class="wssU2">
+				<label for="wss_title"><?php
+	echo _WEBO_OPTIONS_CONFIGURATION;
+				?>:</label>
+			</dt>
+			<dd class="wssU3">
+				<input name="wss_title" id="wss_title" class="wssF" value="<?php
+	echo htmlspecialchars($options['title']);
+				?>"/>
+			</dd>
+			<dt class="wssU2">
+				<label for="wss_description"><?php
+	echo _WEBO_OPTIONS_DESCRIPTION;
+				?>:</label>
+			</dt>
+			<dd class="wssU4">
+				<textarea rows="2" cols="80" class="wssF wssF1" id="wss_description" name="wss_description"><?php
+	echo htmlspecialchars($options['description']);
+				?></textarea>
+			</dd>
+		</dl>
 		<ul class="wssO3"><?php
 		foreach ($options as $key => $group) {
 			if (empty($group['premium'])) {
@@ -314,7 +336,7 @@ if ($submit) {
 				}
 				$i = 0;
 				if ($value['type'] == 'radio') {
-				?><dt class="wssI"><label class="wssE" for="wss_<?php
+				?><dt class="wssD5"><label class="wssE" for="wss_<?php
 					echo $option;
 				?>1"><?php
 					echo constant('_WEBO_' . $option);
@@ -413,13 +435,16 @@ if ($submit) {
 		</fieldset><?php
 	}
 ?>
-		<div class="wssU">
-			<p class="wssI">
-				<a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
+		<p class="wssI">
+			<a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
+	echo _WEBO_SPLASH1_BACK;
+			?></a> <a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
 	echo _WEBO_OPTIONS_APPLY;
-				?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/>
-			</p>
-		</div>
+			?>
+				<span class="wssJ6"></span>
+			</a>
+			<input type="hidden" name="wss_Submit" value="1"/>
+		</p>
 	</form><?php
 }
 ?></div>

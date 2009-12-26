@@ -56,15 +56,8 @@ define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Passwords don\'t match');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
 define('_WEBO_LOGIN_VERSION', 'Version');
-define('_WEBO_LOGIN_UPGRADE_BETA', 'To beta');
-define('_WEBO_LOGIN_UPGRADE_STABLE', 'To stable');
-define('_WEBO_LOGIN_UPGRADENOTICE', 'Your can upgrade your version (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') of WEBO Site SpeedUp to the latest one. Please enter your username and password and click <strong>Upgrade</strong>. WEBO Site SpeedUp will be upgraded to the version <strong>');
-define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
-define('_WEBO_LOGIN_UPGRADENOTICE4', ') of WEBO Site SpeedUp to latest one &mdash; <strong>');
-define('_WEBO_UPGRADE_SUCCESSFULL', 'You have successfully upgraded to the version ');
-define('_WEBO_UPGRADE_SUCCESSFULL2', '');
-define('_WEBO_UPGRADE_UNABLE', 'Can\'t download the latest version from repository. Please check internet connection of the server and curl existence.');
+define('_WEBO_UPGRADE_WAIT', 'WEBO Site SpeedUp is being upgraded. Please wait');
+define('_WEBO_UPGRADE_FILE', 'Upgrading file');
 
 /* Uninstall */
 define('_WEBO_LOGIN_UNINSTALLME', 'Uninstall WEBO Site SpeedUp');
@@ -491,6 +484,13 @@ define('_WEBO_DASHBOARD_HELP1', 'Any troubles with WEBO Site SpeedUp configurati
 define('_WEBO_DASHBOARD_HELP2', 'Our engineers can help to install and tune WEBO Site SpeedUp for your website.');
 define('_WEBO_DASHBOARD_SEND', 'Send request');
 
+/* Account page */
+define('_WEBO_ACCOUNT_EXPIRES', 'Valid till');
+define('_WEBO_ACCOUNT_LICENSEINFO', 'WEBO Site SpeedUp is licensed for an annual subscription fee. Community edition can be used only on non-commercial websites (<a href="http://www.web-optimizer.us/web-optimizer/questions-answers.html" class="wssJ">frequently asked questions</a>). For other (commercial) websites you can use one of two WEBO Site SpeedUp editions - Lite or Premium (<a href="#wss_promo" class="wssJ">version comparison</a>).');
+define('_WEBO_ACCOUNT_LICENSEINFO2', 'License key registration is performed automatically - you just need to enter it to the right field. After license key registration you will get information about its expiration date. When license key is expired you can purchase WEBO Site SpeedUp license renewal.');
+define('_WEBO_ACCOUNT_LICENSEINFO3', 'You can ask all questions regarding WEBO Site SpeedUp license policy <a href="http://www.web-optimizer.us/ru/about/comtacts.html" class="wssJ">using contacts listed on the official website</a>.');
+define('_WEBO_ACCOUNT_INVALID', 'Can\'t activate your license key');
+
 /* Cache page */
 define('_WEBO_CACHE_EMPTY', 'Cache is empty');
 define('_WEBO_CACHE_TOTAL', 'Total size of all cache files');
@@ -515,6 +515,14 @@ define('_WEBO_OPTIONS_OPTIMAL', 'Optimal');
 define('_WEBO_OPTIONS_SAFE', 'Safe');
 define('_WEBO_OPTIONS_ATTENTION', 'Attention!');
 define('_WEBO_OPTIONS_ATTENTION2', 'Configuration change can lead website failure. Please <a href="#wss_system" class="wssJ">put the application to debug mode</a> before applying any changes.');
+define('_WEBO_OPTIONS_TITLES_safe', 'Safe configuration');
+define('_WEBO_OPTIONS_TITLES_optimal', 'Optimal configuration');
+define('_WEBO_OPTIONS_TITLES_extreme', 'Extreme configuration');
+define('_WEBO_OPTIONS_TITLES_user', 'User configuration');
+define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'All settings have been carefully tested to provide significant speeup for your website but don\'t harm it anyway.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_optimal', 'Optimal configuration set provides more acceleration for your website but sometimes can broken it.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'Extreme settings combine all client side acceleration methods and guarantee maximum acceleration. But they must be checked before applying to a live website.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Your own settings.');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Demo version limitations');
@@ -590,8 +598,6 @@ define('_WEBO_SPLASH3_CONFSAVED', 'Configuration saved');
 define('_WEBO_SPLASH3_CONFIGERROR', 'Unable to open the config file for writing. Please change the <code>config.webo.php</code> file to make it writable.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'You can usually do this from your FTP client. Just navigate to <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , right click the file, and look for a Properties or CHMOD option. Set to 775, 777, or "write"');
-define('_WEBO_SPLASH3_CONFIGERROR4', 'Once you have done so, please refresh this page.');
-define('_WEBO_SPLASH3_CONFIGERROR5', 'Config file does not exist. Please download the full script from <a href="http://code.google.com/p/web-optimizator/downloads/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 
 /* create .gz versions of css/js file */
 define('_WEBO_GZIP_INSTALLED', 'You can create <code>.gz</code> versions of all CSS and JS files and some more file types (for static gzip usage). For this purpose please enter intitial directory. It will be scanned recursively for required files, current <code>.gz</code> versions of files will be refreshed if it\'s required.');

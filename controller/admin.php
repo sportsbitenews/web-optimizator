@@ -226,7 +226,7 @@ class admin {
 		if (!empty($this->input['wss_Submit'])) {
 			$email = $this->input['wss_email'];
 			$allow = empty($this->input['wss_allow']) ? 0 : 1;
-			$license = $this->input['wss_license'];
+			$license = trim($this->input['wss_license']);
 			$name = $this->input['wss_name'];
 			if (md5($this->input['wss_password']) !=
 				$this->input['wss__password']) {
@@ -242,22 +242,29 @@ class admin {
 						$this->input['wss_new'])) {
 				$error[3] = 1;
 			}
+			$this->premium = $this->view->validate_license($license);
 /* save new options */
 			if (!count($error)) {
-				$this->save_option("['email']", htmlspecialchars($this->input['wss_email']));
-				$this->save_option("['optimization']", empty($this->input['wss_allow']) ? 0 : 1);
-				$this->save_option("['license']", htmlspecialchars($this->input['wss_license']));
-				$this->premium = $this->view->validate_license($license);
-				$this->save_option("['name']", htmlspecialchars($this->input['wss_name']));
+				$this->save_option("['email']", htmlspecialchars($email]));
+				$this->save_option("['optimization']", $allow);
+				$this->save_option("['license']", htmlspecialchars($license));
+				$this->save_option("['name']", htmlspecialchars($name));
 				if (!empty($this->input['wss_new'])) {
 					$this->save_option("['password']", md5($this->input['wss_new']));
 				}
 			}
 		}
+		$expires = -1;
+		if (empty($this->premium) && !empty($license)) {
+			$error[4] = 1;
+		} else {
+			$expires = @file_get_contents($this->compress_options['html_cachedir'] . 'wo');
+		}
 		$page_variables = array(
 			"version" => $this->version,
 			"premium" => $this->premium,
 			"submit" => $this->input['wss_Submit'],
+			"expires" => $expires,
 			"allow" => $allow,
 			"email" => $email,
 			"name" => $name,
@@ -1472,10 +1479,11 @@ class admin {
 		foreach (glob("config.*.php") as $file) {
 			if ($file != 'config.webo.php') {
 				$saved = $this->compress_options;
+				$key = str_replace(array("config.", ".php"), '', $file);
+				$ext = strpos($key, 'user') === false ? $key : 'user';
 				include($this->basepath . $file);
 				$this->compress_options = $compress_options;
-				$key = str_replace(array("config.", ".php"), '', $file);
-				$options[$key] = $this->get_options();
+				$options[$key] = $this->get_options($ext);
 				$this->compress_options = $saved;
 			}
 		}
@@ -1530,8 +1538,12 @@ class admin {
 	* Set options according to internal logic
 	*
 	**/	
-	function get_options () {
+	function get_options ($config = 'safe') {
 		$options = array(
+			'title' => empty($this->compress_options['title']) ?
+				'' : $this->compress_options['title'],
+			'description' => empty($this->compress_options['description']) ?
+				'' : $this->compress_options['description'],
 			'combinecss' => array(
 				'combine_css' => array(
 					'value' => $this->compress_options['minify']['css'] ?
@@ -1972,6 +1984,12 @@ class admin {
 				)
 			)
 		);
+		if (empty($options['title'])) {
+			$options['title'] = constant('_WEBO_OPTIONS_TITLES_' . $config);
+		}
+		if (empty($options['description'])) {
+			$options['description'] = constant('_WEBO_OPTIONS_DESCRIPTIONS_' . $config);
+		}
 		return $options;
 	}
 

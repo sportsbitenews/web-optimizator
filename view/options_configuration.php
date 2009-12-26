@@ -8,16 +8,24 @@
 	foreach ($options as $key => $config) {
 ?>_.config.<?php
 		echo htmlspecialchars($key);
-		foreach ($config as $group => $value) {
 ?>=[<?php
-			foreach ($value as $k => $v) {
-				if ($k != 'premium') {
+		foreach ($config as $group => $value) {
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					if ($k != 'premium') {
 ?>["wss_<?php
-					echo $k;
+						echo $k;
 ?>","<?php
-					echo htmlspecialchars($v['value']);
+						echo htmlspecialchars($v['value']);
 ?>"],<?php
+					}
 				}
+			} else {
+?>["wss_<?php
+				echo $group;
+?>","<?php
+				echo $value;
+?>"],<?php
 			}
 		}
 ?>];<?php

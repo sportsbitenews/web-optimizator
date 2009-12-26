@@ -1,7 +1,7 @@
 <?php
 /**
  * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
- * Outputs about page (general product information)
+ * Outputs account page (with personal data)
  *
  **/
 ?><noscript><?php
@@ -100,21 +100,39 @@
 			?>"><?php
 	echo _WEBO_PASSWORD_DIFFERENT;
 			?></li>
+			<li class="wssL1<?php
+			if (empty($error[4])) {
+			?> wssA0<?php
+			}
+			?>"><?php
+	echo _WEBO_ACCOUNT_INVALID;
+			?></li>
 		</ul>
 	</div>
 </div><?php
 	}
 ?><form action="#wss_account" method="post" class="wssC wssC3" enctype="multipart/form-data"><dl class="wssD"><dt class="wssD1"><label for="wss_license" class="wssE"><?php 
 	echo _WEBO_LOGIN_LICENSE;
-?>:</label></dt><dd class="wssD2"><input id="wss_license" name="wss_license" title="<?php
+?>:</label></dt><dd class="wssD2<?php
+	if (!empty($error[4])) {
+			?> wssD8<?php
+	}
+			?>"><input id="wss_license" name="wss_license" title="<?php
 	echo _WEBO_LOGIN_ENTERLICENSE;
 ?>" class="wssF" value="<?php
 	if (empty($submit) || !empty($license)) {
 		echo htmlspecialchars($license);
 	}?>"/><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
 		echo round($premium);
-	?>"/>
-		</dd>
+	?>"/><?php
+		if (!empty($expires) && $expires > -1) {
+		?><span class="wssD4"><?php
+			echo _WEBO_ACCOUNT_EXPIRES;
+			?> <?php
+			echo date("Y-m-d", time() + $expires*86400);
+			?></span><?php
+		}
+		?></dd>
 		<dt class="wssD1">
 			<label for="wss_name" class="wssE"><?php 
 	echo _WEBO_LOGIN_USERNAME;
@@ -223,55 +241,19 @@
 		<span class="wssRB1"><span class="wssRB2">&bull;</span></span>
 		<span class="wssRB3"><span class="wssRB4">&bull;</span></span>
 	</div>
-	<div class="wssH">
-		<h2 class="wssB"><?php
-	echo _WEBO_ABOUT_ABOUT;
-		?></h2>
-		<ul class="wssO">
-			<li class="wssO4"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_DASHBOARD_LINKS_WEBSITE;
-			?></a></li>
-			<li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/features.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_FEATURES;
-			?></a></li>
-			<li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/benefits.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_BENEFITS;
-			?></a></li>
-			<li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/requirements.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_REQUIREMENTS;
-			?></a></li>
-			<li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/buzz.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_BUZZ;
-			?></a></li>
-			<li class="wssO4"><a href="#wss_promo" class="wssJ"><?php
-	echo _WEBO_SPLASH2_COMPARISON;
-			?></a></li>
-		</ul>
-	</div>
 	<div class="wssH1">
 		<h2 class="wssB"><?php
 	echo _WEBO_ABOUT_SUPPORT;
 		?></h2>
-		<ul class="wssO">
-			<li class="wssO4"><a href="http://code.google.com/p/web-optimizator/w/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_DASHBOARD_LINKS_UG;
-			?></a></li>
-			<li class="wssO4"><a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_DASHBOARD_LINKS_ISSUES;
-			?></a></li>
-			<li class="wssO4"><a href="http://code.google.com/p/web-optimizator/wiki/InstallingIssues?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_SUPPORT_INSTALLING;
-			?></a></li>
-			<li class="wssO4"><a href="http://code.google.com/p/web-optimizator/wiki/ClientSideIssues?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_SUPPORT_CLIENT;
-			?></a></li>
-			<li class="wssO4"><a href="http://code.google.com/p/web-optimizator/wiki/ServerSideIssues?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
-	echo _WEBO_ABOUT_SUPPORT_SERVER;
-			?></a></li>
-			<li class="wssO4"><a href="http://web-optimizer.us/support/" class="wssJ"><?php
-	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
-			?></a></li>
-		</ul>
+		<p class="wssI"><?php
+	echo _WEBO_ACCOUNT_LICENSEINFO;
+		?></p>
+		<p class="wssI"><?php
+	echo _WEBO_ACCOUNT_LICENSEINFO2;
+		?></p>
+		<p class="wssI"><?php
+	echo _WEBO_ACCOUNT_LICENSEINFO3;
+		?></p>
 	</div>
 	<div class="wssRB">
 		<span class="wssRB5"><span class="wssRB6">&bull;</span></span>

@@ -8,8 +8,10 @@ case 'promo':if(g){g.style.display='none'}break;
 case 'account':wss_premium=_('#wss_premium')[0].value;switch(wss_premium){case '1':_('.wssw1')[0].style.display='none';_('.wssw2')[0].style.display='inline';_('.wssw3')[0].style.display='none';break;case '2':_('.wssw1')[0].style.display='none';_('.wssw2')[0].style.display='none';_('.wssw3')[0].style.display='inline';break;default:_('.wssw1')[0].style.display='inline';_('.wssw2')[0].style.display='none';_('.wssw3')[0].style.display='none';break}break;
 case 'options':
 _.x('?wss_page=options_configuration&wss__password='+wss_pass,'GET',null,function(){if(this.readyState==4&&this.status==200){
-_.config=new Object();
+_.config={current:_('#wss_config')[0].value};
 eval(this.responseText);
+_('.wssU3')[0].innerHTML=_.config[_.config.current][0][1];
+_('.wssU4')[0].innerHTML=_.config[_.config.current][1][1];
 }});
 case 'system':var a=_('.wssO4 .wssJ'),b,c=0;while(b=a[c++]){b.onclick=function(e){e=e||_.win.event;e=e.target||e.srcElement;while(!e.href){e=e.parentNode}var a=e.hash,b=_('fieldset'),c,d=0;while(c=b[d++]){c.style.display='none'}_(a)[0].style.display='block';b=_('.wssO4');d=0;while(c=b[d++]){c.className='wssO4'}e.parentNode.className='wssO4 wssO5';return false}}}if(g){g.style.display=wss_premium=='0'?'block':'none'}if(g=_('#wss_feed')[0]){setTimeout(function(){if(_.feeds[0]&&_.feeds[1]){var t='<ul class="wssO wssO3">',i,e,g=_('#wss_feed')[0];for(i=0;i<4;i++){e=_.feeds[0].entries[i];t+='<li class="wssO4"><p class="wssI">'+e.publishedDate.substr(0,17)+'</p><p class="wssI"><a href="'+e.link+'" class="wssJ">'+e.title+'</a></p></li>'}if(g){g.innerHTML=t+'</ul>';_.r(g,'wssN21')}g=_("#wss_upd")[0];if(g){g.innerHTML='<p class="wssI">'+g.title+'</p>'+_.feeds[1].entries[0].content.replace('<ul','<ul class="wssO wssO3"').replace(/<li/g,'<li class="wssO4"').replace(/<div.*\/div>/,"")+'<p class="wssI"><a href="#wss_install" class="wssJ wssJ5" onclick="_.a(this)">'+wss_install+'<span class="wssJ6"></span></a></p>';_.r(g,'wssN21')}}else{setTimeout(arguments.callee,1000)}},200)}_('.wssg')[1].focus()};
 _.bind=function(a,b,c){if(typeof a==='string'){var d=_(a),e=0;while(a=d[e++]){_.bind(a,b,c)}}else{b='on'+b;var d=a[b];if(d){a[b]=function(){d();c()}}else{a[b]=c}}}
@@ -27,7 +29,10 @@ _.y=function(){if(this.readyState==4&&this.status==200){_('.wssX')[0].innerHTML=
 _.c=function(a){};
 _.d=function(a){};
 _.e=function(a){_('.wssU')[0].style.display='none';_('.wssU0')[0].style.display='block'};
-_.f=function(a){if(_.config.current===a){_.e(a)}else{_.config.current=a;
+_.f=function(a){if(_.config.current===a){_.e(a)}else{
+_.config.current=a;
+_('.wssU3')[0].innerHTML=_.config[a][0][1];
+_('.wssU4')[0].innerHTML=_.config[a][1][1];
 _('.wssU12')[0].className='wssU11';
 var b=_('.wssU11 a'),c=0,d,e=_('.wssC6')[0],f;
 while(d=b[c++]){if(d.rel===a){d.parentNode.className='wssU11 wssU12'}}
