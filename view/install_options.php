@@ -453,7 +453,7 @@ if ($submit) {
 			<a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;
 			?></a> <a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
-	echo _WEBO_OPTIONS_APPLY;
+	echo _WEBO_SPLASH1_SAVE;
 			?>
 				<span class="wssJ6"></span>
 			</a>
