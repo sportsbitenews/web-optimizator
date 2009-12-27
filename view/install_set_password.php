@@ -23,7 +23,7 @@
 ?> wssA0<?php
 	}
 ?>" id="wss_error2"><?php
-	echo _WEBO_LOGIN_PASSWORDSDIFFER;
+	echo _WEBO_LOGIN_ENTERPASSWORDCONFIRM;
 ?></li><li class="wssL1<?php
 	if (empty($error[3])) {
 ?> wssA0<?php
@@ -75,7 +75,7 @@
 		</dd>
 		<dt class="wssD1">
 			<label for="wss_confirm" class="wssE"><?php 
-	echo _WEBO_PASSWORD_CONFIRM;
+	echo _WEBO_LOGIN_PASSWORD_CONFIRM;
 ?>:</label>
 		</dt>
 		<dd class="wssD2<?php
