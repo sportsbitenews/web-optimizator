@@ -1368,6 +1368,7 @@ class admin {
 	*
 	**/
 	function install_update_generic($stable = 1) {
+		@chdir($this->basepath);
 		$file = 'files';
 		$svn = $stable ? $this->svn : $this->svn_beta;
 		$this->view->download($svn . $file, $file);
@@ -1376,7 +1377,7 @@ class admin {
 			$files = preg_split("/\r?\n/", @file_get_contents($file));
 			$total = count($files);
 			foreach ($files as $file) {
-				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total);
+				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total, 1);
 				$this->view->download($svn . $file, $file);
 				if ($file == $this->options_file) {
 /* save all options to the new file -- rewrite default ones  */
