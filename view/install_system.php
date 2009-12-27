@@ -66,29 +66,79 @@
 	}
 ?></ul><?php
 	if (!empty($success)) {
-		if ($success == 1) {
-?><div class="wssS"><div class="wssS1"><h2 class="wssB"><?php
-			echo _WEBO_SYSTEM_SUCCESS;
+		switch ($success) {
+			case 1:
+?><div class="wssS wssS11"><div class="wssS1"><h2 class="wssB"><?php
+				echo _WEBO_SYSTEM_SUCCESS;
+?></h2></div></div><?php
+				break;
+			case 2:
+?><div class="wssK wssS11"><div class="wssK1"><h2 class="wssB"><?php
+				echo _WEBO_ERROR_TITLE;
+?></h2><ul class="wssL"><?php
+				foreach ($files_to_change as $file) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH3_CANTWRITE4 . preg_replace("/\\\/", "/", $document_root) . $file['file'];;
+?></li><?php
+				}
+?></ul></div></div><?php
+				break;
+			case 3:
+?><div class="wssS wssS12"><div class="wssS1"><h2 class="wssB"><?php
+				echo _WEBO_LOGIN_SUCCESS;
 		?></h2></div></div><?php
+				break;
+			case 4:
+?><div class="wssK wssS12"><div class="wssK1"><h2 class="wssB"><?php
+				echo _WEBO_ERROR_TITLE;
+?></h2><ul class="wssL"><?php
+				if (!empty($error[1])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH2_UNABLE;
+?> <?php
+					echo $website_root;
+?> <?php
+					echo _WEBO_SPLASH2_MAKESURE;
+?></li><?php
+				}
+				if (!empty($error[2])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH2_UNABLE;
+?> <?php
+					echo $document_root;
+?> <?php
+					echo _WEBO_SPLASH2_MAKESURE;
+?></li><?php
+				}
+				if (!empty($error[3])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SYSTEM_css_writable;
+?></li><?php
+				}
+				if (!empty($error[4])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SYSTEM_javascript_writable;
+?></li><?php
+				}
+				if (!empty($error[5])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SYSTEM_html_writable;
+?></li><?php
+				}
+				if (!empty($error[6])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SYSTEM_USERNAME;
+?></li><?php
+				}
+				if (!empty($error[7])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SYSTEM_EXTERNAL_HTACCESS;
+?></li><?php
+				}
+?></ul></div></div><?php
+				break;
 		}
-		if ($success == 2) {
-?><div class="wssK">
-	<div class="wssK1">
-		<h2 class="wssB"><?php
-		echo _WEBO_ERROR_TITLE;
-		?></h2>
-		<ul class="wssL"><?php
-		foreach ($files_to_change as $file) {
-		?>
-			<li class="wssL1"><?php
-			echo _WEBO_SPLASH3_CANTWRITE4 . preg_replace("/\\\/", "/", $document_root) . $file['file'];;
-			?></li><?php
-		}
-		?></ul>
-	</div>
-</div><?php
-		}
-	} 
+	}
 ?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7">
 	<ul class="wssO3">
 		<li class="wssO4 wssO5">
@@ -185,9 +235,8 @@
 		echo _WEBO_SYSTEM_NOPROBLEMS;
 ?></p><?php
 	}
-	?></div></fieldset>
-	<fieldset id="settings" class="wssD9 wssA0">
-		<div class="wssD10"><h2 class="wssB"><?php
+?></div></fieldset>
+<fieldset id="settings" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_SETTINGS_TITLE;
 			?></h2>
 		<dl>
@@ -211,7 +260,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[1])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($website_root);
 				?>" name="wss_website_root" id="website_root" class="wssF"/>
 			</dd>
@@ -223,7 +276,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[2])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($document_root);
 				?>" name="wss_document_root" id="wss_document_root" class="wssF"/>
 			</dd>
@@ -235,7 +292,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[3])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($css_cachedir);
 				?>" name="wss_css_cachedir" id="wss_css_cachedir" class="wssF"/>
 			</dd>
@@ -247,7 +308,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[4])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($javascript_cachedir);
 				?>" name="wss_host" id="wss_host" class="wssF"/>
 			</dd>
@@ -259,7 +324,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[5])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($html_cachedir);
 				?>" name="wss_html_cachedir" id="wss_html_cachedir" class="wssF"/>
 			</dd>
@@ -283,7 +352,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[6])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($username);
 				?>" name="wss_username" id="wss_username" class="wssF"/>
 			</dd>
@@ -295,7 +368,11 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[7])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_user);
 				?>" name="wss_external_scripts_user" id="wss_external_scripts_user" class="wssF"/>
 			</dd>
@@ -307,16 +384,18 @@
 			?>">?</a>
 				</label>
 			</dt>
-			<dd class="wssD2"><input value="<?php
+			<dd class="wssD2<?php
+	if (!empty($error[7])) {
+			?> wssD8<?php
+	}
+			?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_pass);
 				?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/>
 			</dd>
 		</dl>
-	<!-- p class="wssI">
-		<input type="submit" value="<?php
+	<p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
-		?>" class="wssG"/><input type="hidden" value="1" name="wss_Submit"/>
-	</p --></div></fieldset>
+?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
 	<fieldset id="updates" class="wssD9 wssA0">
 		<div class="wssD10">
 			<h2 class="wssB"><?php
@@ -334,9 +413,31 @@
 				<dd class="wssD6">
 					<input type="checkbox"<?php
 							echo $showbeta ? ' checked="checked"' : '';
-					?> name="wss_showbeta" id="wss_showbeta" class="wssF"/>
+					?> name="wss_showbeta" id="wss_showbeta" title="<?php
+	echo $version;
+					?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/>
 				</dd>
-			</dl>
+			</dl><?php
+	if ($version_new > $version) {
+				?><div id="wss_upd" title="<?php
+		echo _WEBO_LOGIN_VERSION;
+				?> <?php
+		echo $version_new;
+				?>"></div><?php
+	} else {
+				?><p class="wssI"><?php
+		echo _WEBO_SYSTEM_NOUPDATES;
+				?></p><?php
+	}
+				?><div id="wss_beta"<?php
+	if (!$showbeta) {
+				?> class="wssA0"<?php
+	}
+				?> title="<?php
+	echo _WEBO_LOGIN_VERSION;
+				?> <?php
+	echo $version_beta;
+				?>"></div>
 		</div>
 	</fieldset>
 	<fieldset id="install" class="wssD9 wssA0">
@@ -418,4 +519,10 @@ require('<?php
 	</p>
 		</div>
 	</fieldset>
-</form>
+</form><div class="wssh"><p class="wssI wssI1"><?php
+	echo _WEBO_UPGRADE_WAIT;
+?>...</p><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
+	echo _WEBO_UPGRADE_FILE;
+?> <span id="wss_file1"></span> <?php
+	echo _WEBO_GZIP_OUTOF;
+?> <span id="wss_file2"></span></p></div>

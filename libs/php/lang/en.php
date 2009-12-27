@@ -101,7 +101,7 @@ define('_WEBO_SPLASH2_OPTIONS', 'Options');
 define('_WEBO_SPLASH2_YES', 'Yes:');
 define('_WEBO_SPLASH2_NO', 'No:');
 define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
-define('_WEBO_SPLASH2_MAKESURE', '.<br/>Please make sure the directory exists and it is your root directory.');
+define('_WEBO_SPLASH2_MAKESURE', '.Please make sure the directory exists.');
 
 /* WEBO Site SpeedUp options */
 define('_WEBO_general', 'General options');
@@ -454,6 +454,7 @@ define('_WEBO_SYSTEM_memory_limit', 'Memory is limited');
 define('_WEBO_SYSTEM_STATUS', 'Status');
 define('_WEBO_SYSTEM_SETTINGS', 'Settings');
 define('_WEBO_SYSTEM_UPDATES', 'Updates');
+define('_WEBO_SYSTEM_NOUPDATES', 'You are using the latest version of WEBO Site SpeedUp.');
 define('_WEBO_SYSTEM_INSTALL', 'Install &amp; uninstall');
 define('_WEBO_SYSTEM_ISSUES', 'Issues and warnings');
 define('_WEBO_SYSTEM_SETTINGS_TITLE', 'WEBO Site SpeedUp Settings');
@@ -463,6 +464,8 @@ define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp is installed for');
 define('_WEBO_SYSTEM_INSTALLINFO', 'The following changes made during WEBO Site SpeedUp installation can be rolled back if you press button &quot;Uninstall&quot;:');
 define('_WEBO_SYSTEM_INSTALLINFO2', 'You can restore initial application calls in system files anytime. To perform this please press &quot;Install&quot; (or &quot;Re-install&quot;). In case of application uninstall all cache files and configuration options will be saved.');
 define('_WEBO_SYSTEM_SUCCESS', 'All changes in source files were successfully performed.');
+define('_WEBO_SYSTEM_USERNAME', 'Please enter username to rectrict WEBO Site SpeedUp by .htaccess.');
+define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Please enter username and password to access to the website via HTTP Basic Authorization.');
 define('_WEBO_showbeta', 'Show information about beta version');
 define('_WEBO_showbeta_HELP', 'By default only stable WEBO Site SpeedUp updates are shown. You can also enable check for beta (potentially unstable) versions.');
 

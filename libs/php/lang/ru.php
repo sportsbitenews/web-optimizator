@@ -101,7 +101,7 @@ define('_WEBO_SPLASH2_OPTIONS', 'Настройка');
 define('_WEBO_SPLASH2_YES', 'Да:');
 define('_WEBO_SPLASH2_NO', 'Нет:');
 define('_WEBO_SPLASH2_UNABLE', 'Невозможно открыть');
-define('_WEBO_SPLASH2_MAKESURE', '.<br/>Пожалуйста, убедитесь, что такая директория существует и она располагается в корне сайта.');
+define('_WEBO_SPLASH2_MAKESURE', '. Пожалуйста, убедитесь, что такая директория существует.');
 
 /* WEBO Site SpeedUp options */
 define('_WEBO_general', 'Общие настройки');
@@ -458,6 +458,7 @@ define('_WEBO_SYSTEM_memory_limit', 'Память ограничена');
 define('_WEBO_SYSTEM_STATUS', 'Состояние');
 define('_WEBO_SYSTEM_SETTINGS', 'Параметры');
 define('_WEBO_SYSTEM_UPDATES', 'Обновление');
+define('_WEBO_SYSTEM_NOUPDATES', 'Вы используете самую последнюю версию WEBO Site SpeedUp.');
 define('_WEBO_SYSTEM_INSTALL', 'Установка и удаление');
 define('_WEBO_SYSTEM_ISSUES', 'Проблемы и замечания');
 define('_WEBO_SYSTEM_SETTINGS_TITLE', 'Параметры WEBO Site SpeedUp');
@@ -467,6 +468,8 @@ define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp установлен на');
 define('_WEBO_SYSTEM_INSTALLINFO', 'Приведенные ниже изменения, осуществленные во время установки WEBO Site SpeedUp, могут быть отменены по нажатию на кнопку &laquo;Удалить&raquo;:');
 define('_WEBO_SYSTEM_INSTALLINFO2', 'Вы в любое время можете восстановить вызовы приложения в исходных файлах системы. Для этого достаточно нажать кнопку &laquo;Установить&raquo; (или &laquo;Переустановить&raquo;). В случае удаления приложения все файлы в кэше и настройки будут сохранены.');
 define('_WEBO_SYSTEM_SUCCESS', 'Все изменения исходных файлов успешно проведены.');
+define('_WEBO_SYSTEM_USERNAME', 'Пожалуйста, введите логин для ограничения доступа к WEBO Site SpeedUp по .htaccess.');
+define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Пожалуйста, введите логин и пароль для доступа к сайту через HTTP Basic Authorization.');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Отключен');

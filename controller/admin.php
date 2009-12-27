@@ -38,15 +38,31 @@ class admin {
 		if (in_array($this->input['wss_page'],
 			array('install_dashboard',
 				'install_set_password',
-				'install_enter_password'))) {
+				'install_enter_password',
+				'install_system',
+				'install_update',
+				'install_beta',
+				'install_stable'))) {
 			$this->view->download($this->svn . 'version', $version_new_file);
 		}
+		$this->version_new = $this->version;
 		if (@is_file($version_new_file)) {
 			$this->version_new = @file_get_contents($version_new_file);
 			@unlink($version_new_file);
-		} else {
-			$this->version_new = $this->version;
 		}
+		$this->version_beta = $this->version;
+/* check for beta version */
+		if (in_array($this->input['wss_page'],
+			array('install_system',
+				'install_beta',
+				'install_stable'))) {
+			$this->view->download($this->svn_beta . 'version', $version_new_file);
+			if (@is_file($version_new_file)) {
+				$this->version_beta = @file_get_contents($version_new_file);
+				@unlink($version_new_file);
+			}
+		}
+/* validate license */
 		if (!empty($compress_options)) {
 			$this->compress_options['license'] =
 				empty($this->input['wss_license']) ?
@@ -83,6 +99,9 @@ class admin {
 				'install_renew' => 1,
 				'install_options' => 1,
 				'install_system' => 1,
+				'install_update' => 1,
+				'install_stable' => 1,
+				'install_beta' => 1,
 				'dashboard_cache' => 1,
 				'dashboard_system' => 1,
 				'dashboard_options' => 1,
@@ -895,6 +914,70 @@ class admin {
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
+		$submit = $this->input['wss_Submit'];
+		$error = array();
+		if (!empty($submit)) {
+			$this->compress_options['host'] = empty($this->input['wss_host']) ?
+				$this->compress_options['host'] : $this->input['wss_host'];
+			$this->compress_options['website_root'] = empty($this->input['wss_website_root']) ?
+				$this->compress_options['website_root'] : $this->input['wss_website_root'];
+			$this->compress_options['document_root'] = empty($this->input['wss_document_root']) ?
+				$this->compress_options['document_root'] : $this->input['wss_document_root'];
+			$this->compress_options['css_cachedir'] = empty($this->input['wss_css_cachedir']) ?
+				$this->compress_options['css_cachedir'] : $this->input['wss_css_cachedir'];
+			$this->compress_options['javascript_cachedir'] = empty($this->input['wss_javascript_cachedir']) ?
+				$this->compress_options['javascript_cachedir'] : $this->input['wss_javascript_cachedir'];
+			$this->compress_options['html_cachedir'] = empty($this->input['wss_html_cachedir']) ?
+				$this->compress_options['html_cachedir'] : $this->input['wss_html_cachedir'];
+			$this->compress_options['htaccess']['access'] = empty($this->input['wss_htaccess_access']) ?
+				$this->compress_options['htaccess']['access'] : 1;
+			$this->compress_options['username'] = empty($this->input['wss_username']) ?
+				$this->compress_options['username'] : $this->input['wss_username'];
+			$this->compress_options['external_scripts']['user'] = empty($this->input['wss_external_scripts_user']) ?
+				$this->compress_options['external_scripts']['user'] : $this->input['wss_external_scripts_user'];
+			$this->compress_options['external_scripts']['pass'] = empty($this->input['wss_external_scripts_pass']) ?
+				$this->compress_options['external_scripts']['pass'] : $this->input['wss_external_scripts_pass'];
+			if (!@is_dir($this->compress_options['website_root'])) {
+				$error[1] = 1;
+			}
+			if (!@is_dir($this->compress_options['document_root'])) {
+				$error[2] = 1;
+			}
+			if (!@is_writable($this->compress_options['css_cachedir'])) {
+				$error[3] = 1;
+			}
+			if (!@is_writable($this->compress_options['javascript_cachedir'])) {
+				$error[4] = 1;
+			}
+			if (!@is_writable($this->compress_options['html_cachedir'])) {
+				$error[5] = 1;
+			}
+			if (!empty($this->compress_options['htaccess']['access']) &&
+				empty($this->compress_options['username'])) {
+					$error[6] = 1;
+			}
+			if ((!empty($this->compress_options['external_scripts']['user']) &&
+				empty($this->compress_options['external_scripts']['pass'])) ||
+				(!empty($this->compress_options['external_scripts']['pass']) &&
+				empty($this->compress_options['external_scripts']['user']))) {
+					$error[7] = 1;
+			}
+			if (!count($error)) {
+				$this->save_option("['host']", $this->compress_options['host']);
+				$this->save_option("['website_root']", $this->compress_options['website_root']);
+				$this->save_option("['document_root']", $this->compress_options['document_root']);
+				$this->save_option("['css_cachedir']", $this->compress_options['css_cachedir']);
+				$this->save_option("['javascript_cachedir']", $this->compress_options['javascript_cachedir']);
+				$this->save_option("['html_cachedir']", $this->compress_options['html_cachedir']);
+				$this->save_option("['htaccess']['access']", $this->compress_options['htaccess']['access']);
+				$this->save_option("['username']", $this->compress_options['username']);
+				$this->save_option("['external_scripts']['user']", $this->compress_options['external_scripts']['user']);
+				$this->save_option("['external_scripts']['pass']", $this->compress_options['external_scripts']['pass']);
+				$success = 3;
+			} else {
+				$success = 4;
+			}
+		}
 /* get basic errors / warnings */
 		$page_variables = $this->dashboard_system(1);
 /* sey all other variables */
@@ -906,7 +989,7 @@ class admin {
 		$page_variables['active'] = $this->compress_options['active'];
 		$page_variables['website'] = $_SERVER['HTTP_HOST'];
 		$page_variables['cache_folder'] = str_replace($this->compress_options['document_root'],
-				"/", $this->compress_options['html_cachedir']);
+			"/", $this->compress_options['html_cachedir']);
 		$page_variables['host'] = $this->compress_options['host'];
 		$page_variables['website_root'] = $this->compress_options['website_root'];
 		$page_variables['document_root'] = $this->compress_options['document_root'];
@@ -922,6 +1005,10 @@ class admin {
 		$page_variables['files_to_change'] = $this->system_files($this->cms_version);
 		$page_variables['cms_version'] = $this->cms_version;
 		$page_variables['success'] = $success;
+		$page_variables['error'] = $error;
+		$page_variables['version'] = $this->version;
+		$page_variables['version_new'] = $this->version_new;
+		$page_variables['version_beta'] = $this->version_beta;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
@@ -1250,16 +1337,47 @@ class admin {
 	}
 
 	/**
-	* Upgrade page
+	* Update from System Status (beta)
 	*
-	**/	 
-	function install_upgrade() {
+	**/
+	function install_beta () {
+		$this->install_update_generic(0);
+		$this->install_system();
+	}
+
+	/**
+	* Update from System Status (stable)
+	*
+	**/
+	function install_stable () {
+		$this->install_update_generic();
+		$this->install_system();
+	}
+
+	/**
+	* Update from dashboard
+	*
+	**/
+	function install_update () {
+		$this->install_update_generic();
+		$this->install_dashboard();
+	}
+
+	/**
+	* Generic update function
+	*
+	**/
+	function install_update_generic($stable = 1) {
 		$file = 'files';
-		$this->view->download($this->svn . $file, $file);
+		$svn = $stable ? $this->svn : $this->svn_beta;
+		$this->view->download($svn . $file, $file);
+		$i = 1;
 		if (@is_file($file)) {
 			$files = preg_split("/\r?\n/", @file_get_contents($file));
+			$total = count($files);
 			foreach ($files as $file) {
-				$this->view->download($this->svn . $file, $file);
+				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total);
+				$this->view->download($svn . $file, $file);
 				if ($file == $this->options_file) {
 /* save all options to the new file -- rewrite default ones  */
 					foreach($this->compress_options as $key => $option) {
@@ -1272,12 +1390,8 @@ class admin {
 						}
 					}
 				}
+				$i++;
 			}
-/* redirect to the main page */
-			header("Location: index.php?upgraded=1");
-			die();
-		} else {
-			$this->error("<p>". _WEBO_UPGRADE_UNABLE ."</p>");
 		}
 	}
 

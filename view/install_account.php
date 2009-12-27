@@ -122,7 +122,7 @@
 ?>" class="wssF" value="<?php
 	if (empty($submit) || !empty($license)) {
 		echo htmlspecialchars($license);
-	}?>"/><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
+	}?>"/><span class="wssD3">*</span><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
 		echo round($premium);
 	?>"/><?php
 		if (!empty($expires) && $expires > -1) {

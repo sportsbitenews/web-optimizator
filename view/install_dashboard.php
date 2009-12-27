@@ -93,17 +93,23 @@
 			<div class="wssN2 wssN21">
 				<h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_UPDATES;
-				?></a></h2>
-				<div id="wss_upd" title="<?php
-	echo _WEBO_LOGIN_VERSION;
+				?></a></h2><?php
+	if ($version_new > $version) {
+				?><div id="wss_upd" title="<?php
+		echo _WEBO_LOGIN_VERSION;
 				?> <?php
-	echo $version_new;
+		echo $version_new;
 				?>">
 					<p class="wssI3"><?php 
-	echo _WEBO_DASHBOARD_LOADING;
+		echo _WEBO_DASHBOARD_LOADING;
 					?></p>
-				</div>
-				<a class="wssJ20" href="javascript:_.hide('wss_updates')"></a>
+				</div><?php
+	} else {
+				?><p class="wssI"><?php
+		echo _WEBO_SYSTEM_NOUPDATES;
+				?></p><?php
+	}
+				?><a class="wssJ20" href="javascript:_.hide('wss_updates')"></a>
 			</div>
 		</div>
 		<div class="wssN5<?php
