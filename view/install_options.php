@@ -14,6 +14,17 @@ if ($submit) {
 		?></h2>
 		<ul class="wssL">
 			<li class="wssL1<?php
+		if (empty($error[0])) {
+			?> wssA0<?php
+		}
+			?>"><?php
+		echo _WEBO_SPLASH3_CANTWRITE4 .
+			' config.' .
+			$options['config'] .
+			'.php . ' .
+			_WEBO_SPLASH3_HTACCESS_CHMOD;
+			?></li>
+			<li class="wssL1<?php
 		if (empty($error[1])) {
 			?> wssA0<?php
 		}
@@ -257,14 +268,17 @@ if ($submit) {
 			echo $c;
 							?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
-								?>"></span><?php
-			echo _WEBO_OPTIONS_EXTREME;
-							?></a>
+								?>"></span><span></span></a>
 						</li><?php
 		}
 	}
+	$new = 'user' . (count($configs) ? count($configs) : '');
 						?><li class="wssU11 wssU20">
-							<a class="wssJ" href="javascript:_.c('user');void(0)"><?php
+							<a class="wssJ" href="javascript:_.c('<?php
+	echo $new;
+							?>');void(0)" rel="<?php
+	echo $new;
+							?>"><?php
 	echo _WEBO_OPTIONS_CREATENEW;
 							?></a>
 						</li>

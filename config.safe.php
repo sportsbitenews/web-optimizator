@@ -40,9 +40,6 @@ $compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js 
 $compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
-## To get through HTTP Basic Authorization
-$compress_options['external_scripts']['user'] = "";
-$compress_options['external_scripts']['pass'] = "";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
 ## Quick checksum for head section

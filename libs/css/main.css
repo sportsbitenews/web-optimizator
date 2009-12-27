@@ -355,6 +355,7 @@ a.wssN3:hover{color:#0002bf}
 a.wssJ:hover .wssU13{background:url(apply.hover.png) no-repeat;display:block;height:17px;left:96px;position:absolute;top:7px;width:17px}
 a.wssJ:hover .wssU14{background:url(edit.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:29px;width:17px}
 a.wssJ:hover .wssU15{background:url(delete.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:51px;width:17px}
+.wssU16{background-image:url(config.user.png)}
 .wssU12 a.wssJ:hover .wssU13{background-image:url(apply.active.png)}
 .wssU12 a.wssJ:hover .wssU14{background-image:url(edit.active.png)}
 .wssU12 a.wssJ:hover .wssU15{background-image:url(delete.active.png)}

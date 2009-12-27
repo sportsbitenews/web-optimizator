@@ -1394,6 +1394,23 @@ class admin {
 				$i++;
 			}
 		}
+/* make a fix to create new user config file if older config exists */
+		$this->options_file = 'config.user.php';
+		if (!@is_file($this->basepath . $this->options_file)) {
+			@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
+			$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
+			$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
+			foreach($this->compress_options as $key => $option) {
+				if (is_array($option)) {
+					foreach($option as $option_name => $option_value) {
+						$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+						}
+					}
+				} else {
+					$this->save_option("['" . strtolower($key) . "']", $option);
+				}
+			}
+		}
 	}
 
 	/**
@@ -1618,16 +1635,7 @@ class admin {
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		if ($submit) {
 			$this->error == array();
-			$this->set_options($options);
-			if (!@is_writable($this->input['wss_css_cachedir'])) {
-				$this->error[2] = 1;
-			}
-			if (!@is_writable($this->input['wss_javascript_cachedir'])) {
-				$this->error[3] = 1;
-			}
-			if (!@is_writable($this->input['wss_html_cachedir'])) {
-				$this->error[4] = 1;
-			}
+			$this->set_options();
 			$this->write_htaccess();
 		}
 /* get list of users configs */
@@ -2110,10 +2118,10 @@ class admin {
 	}
 
 	/**
-	* Save all options
+	* Save / check all options
 	*
 	**/
-	function set_options($options) {
+	function set_options() {
 /* fix multiple lines in textarea */
 		foreach (array(
 			'wss_minify_css_file',
@@ -2132,14 +2140,10 @@ class admin {
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',
-			'wss_javascript_cachedir',
-			'wss_css_cachedir',
-			'wss_html_cachedir',
-			'wss_website_root',
-			'wss_document_root',
-			'wss_host',
-			'wss_external_scripts_user',
-			'wss_external_scripts_pass') as $val) {
+			'wss_description',
+			'wss_title',
+			'wss_config',
+			'wss_host') as $val) {
 				$this->input[$val] = str_replace(array("\r\n", "\n", '"'), array(" ", " ", "&quot;"), $this->input[$val]);
 		}
 /* make numeric options save */
@@ -2350,7 +2354,24 @@ class admin {
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
 		} else {
-/* Save the options	*/
+/* Save the options	to work config */
+			foreach($this->compress_options as $key => $option) {
+				if (is_array($option)) {
+					foreach($option as $option_name => $option_value) {
+						if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)]);
+						}
+					}
+				} else {
+					if (isset($this->input['wss_' . strtolower($key)])) {
+						$this->save_option("['" . strtolower($key) . "']", $this->input['wss_' . strtolower($key)]);
+					}
+				}
+			}
+/* Save the options to backup config */
+			$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
+			$this->save_option("['title']", $this->input['wss_title']);
+			$this->save_option("['description']", $this->input['wss_description']);
 			foreach($this->compress_options as $key => $option) {
 				if (is_array($option)) {
 					foreach($option as $option_name => $option_value) {
@@ -3247,10 +3268,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 /* See if file exists */
 		$option_file = $this->basepath . $this->options_file;
-		if (file_exists($option_file)) {
+		if (!@is_file($option_file)) {
+			@copy($this->basepath . 'config.safe.php', $option_file);
+			@chmod($option_file, octdec("0644"));
+		}
+		if (@is_writable($option_file)) {
 			$content = @file_get_contents($option_file);
 			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			$this->write_file($option_file, $content);
+		} else {
+			$this->error[0] = 1;
 		}
 	}
 
