@@ -12,6 +12,8 @@ libs/css/all.png
 libs/css/apply.active.png
 libs/css/apply.hover.png
 libs/css/apply.png
+libs/css/button.back.hover.png
+libs/css/button.back.png
 libs/css/button.blue.hover.png
 libs/css/button.blue.png
 libs/css/button.bw.hover.png
@@ -28,6 +30,10 @@ libs/css/buzz.hover.png
 libs/css/buzz.png
 libs/css/cache.hover.png
 libs/css/cache.png
+libs/css/config.active.png
+libs/css/config.new.png
+libs/css/config.png
+libs/css/config.user.png
 libs/css/corner.disabled.gif
 libs/css/corner.disabled.png
 libs/css/corner.gif
@@ -120,7 +126,7 @@ libs/php/packer5.php
 libs/php/view.php
 libs/php/wo.static.php
 libs/yuicompressor/yuicompressor.jar
-plugins/joomla15.php
+plugins/
 view/admin_container.php
 view/compress_gzip.php
 view/dashboard_cache.php
@@ -132,6 +138,7 @@ view/install_account.php
 view/install_cache.php
 view/install_dashboard.php
 view/install_enter_password.php
+view/install_gzip.php
 view/install_image.php
 view/install_options.php
 view/install_promo.php
