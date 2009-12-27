@@ -56,7 +56,6 @@ define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Пароли не совпадают');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
 define('_WEBO_LOGIN_VERSION', 'Версия');
-define('_WEBO_UPGRADE_WAIT', 'Подождите, идет обновление WEBO Site SpeedUp');
 define('_WEBO_UPGRADE_FILE', 'Обновляем файл');
 
 /* Uninstall */

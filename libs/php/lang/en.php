@@ -56,7 +56,6 @@ define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Passwords don\'t match');
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
 define('_WEBO_LOGIN_VERSION', 'Version');
-define('_WEBO_UPGRADE_WAIT', 'WEBO Site SpeedUp is being upgraded. Please wait');
 define('_WEBO_UPGRADE_FILE', 'Upgrading file');
 
 /* Uninstall */
