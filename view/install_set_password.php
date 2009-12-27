@@ -129,7 +129,7 @@
 		</dd>
 		<dt class="wssD5">
 			<label for="wss_confirmagreement" class="wssE"><?php 
-	echo 'I confirm <a href="javascript:document.getElementById(\'wss_eula1\').style.display=\'block\';document.getElementById(\'wss_eula2\').style.display=\'block\';void(0)	">license agreement</a>';
+	echo _WEBO_LOGIN_LICENSEAGREEMENT.'<a href="javascript:document.getElementById(\'wss_eula1\').style.display=\'block\';document.getElementById(\'wss_eula2\').style.display=\'block\';void(0)	">'._WEBO_LOGIN_LICENSEAGREEMENT2.'</a>';
 ?>:</label>
 		</dt>
 		<dd class="wssD6 wssD7<?php
@@ -139,7 +139,7 @@
 			?>">
 			<span class="wssD3">*</span>
 			<input type="checkbox" id="wss_confirmagreement" name="wss_confirmagreement" title="<?php
-	echo "Confirm license agreement";
+	echo _WEBO_LOGIN_CONFIRMLICENSEAGREEMENT;
 ?>"<?php
 	if (empty($submit) || !empty($confirmagreement)) {
 		?> checked="checked"<?php
