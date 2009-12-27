@@ -1404,7 +1404,6 @@ class admin {
 				if (is_array($option)) {
 					foreach($option as $option_name => $option_value) {
 						$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
-						}
 					}
 				} else {
 					$this->save_option("['" . strtolower($key) . "']", $option);
