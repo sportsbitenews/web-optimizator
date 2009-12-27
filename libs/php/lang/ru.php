@@ -527,7 +527,7 @@ define('_WEBO_OPTIONS_TITLES_user', 'Пользовательская конфи
 define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'Все настройки тщательно подобраны таким образом, чтобы обеспечить максимальная производительность WEBO Site SpeedUp, но при этом гарантированно не причинить никакого вреда сайту.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_optimal', 'Оптимальные настройки позволяют добиться более высокой скорости загрузки, но в некоторых случаях могут привести к  неработоспособности сайта.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'Экстремальные настройки обеспечивают, практически, максимально возможную производительность. Но обязательно должны быть проверены перед применением для сайта.');
-define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользователькие настройки.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользовательские настройки.');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Сравнение версий WEBO Site SpeedUp');

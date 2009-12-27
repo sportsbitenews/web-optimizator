@@ -1395,19 +1395,23 @@ class admin {
 			}
 		}
 /* make a fix to create new user config file if older config exists */
-		$this->options_file = 'config.user.php';
-		if (!@is_file($this->basepath . $this->options_file)) {
+		if (!@is_file($this->basepath . 'config.user.php')) {
 			@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
-			$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
-			$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
-			foreach($this->compress_options as $key => $option) {
-				if (is_array($option)) {
-					foreach($option as $option_name => $option_value) {
-						$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+			if (@is_file($this->basepath . 'config.user.php')) {
+				$this->save_option("['config']", "user");
+				$this->options_file = 'config.user.php';
+				$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
+				$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
+				foreach($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+						}
+					} else {
+						$this->save_option("['" . strtolower($key) . "']", $option);
 					}
-				} else {
-					$this->save_option("['" . strtolower($key) . "']", $option);
 				}
+				$this->save_option("['config']", "user");
 			}
 		}
 	}
