@@ -199,9 +199,7 @@
 	<?php
 	}
 ?>
-<div class="wssh"><p class="wssI wssI1"><?php
-	echo _WEBO_GZIP_OPTIMIZATION;
-?>...</p><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
+<div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
 	echo _WEBO_GZIP_PROCESSING;
 ?> <span id="wss_file1"></span> <?php
 	echo _WEBO_GZIP_OUTOF;
