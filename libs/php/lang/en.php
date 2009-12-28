@@ -372,8 +372,10 @@ define('_WEBO_DASHBOARD_STATUS_WORKING3', ' or bring the application back to deb
 define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'not active');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'debug&nbsp;mode');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'You can debug the application:');
-define('_WEBO_DASHBOARD_STATUS_TESTING2', 'via GET-parameter <code>web_optimizer_debug</code>'); /* COMMENT: only '<code>web_optimizer_debug</code>' text should be a hyperlink */
-define('_WEBO_DASHBOARD_STATUS_COOKIE', 'or just via cookie'); /* COMMENT: only 'via cookie' text should be a hyperlink */
+define('_WEBO_DASHBOARD_STATUS_TESTING2', 'via GET-parameter ');
+define('_WEBO_DASHBOARD_STATUS_TESTING3', '<code>web_optimizer_debug</code>');
+define('_WEBO_DASHBOARD_STATUS_COOKIE', 'or just ');
+define('_WEBO_DASHBOARD_STATUS_COOKIE2', 'via cookie');
 define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp in live mode.');
 define('_WEBO_DASHBOARD_STATUS_ENABLE', 'Enable');
 define('_WEBO_DASHBOARD_STATUS_DISABLE', 'Disable');
