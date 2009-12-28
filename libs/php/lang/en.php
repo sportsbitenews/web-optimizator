@@ -78,11 +78,8 @@ define('_WEBO_NEW_NOSCRIPT', 'JavaScript must be enabled for correct work!');
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'WEBO Site SpeedUp uninstallation');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Thank you for using WEBO Site SpeedUp. Please help us to improve our product and tell us the uninstall reason.');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS2', ''); /* COMMENT: DELETED */
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Also feel free to visit <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">our company website</a> and submit any <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">related issues</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'You can reinstall WEBO Site SpeedUp anytime by visiting <a href="http://">WEBO Site SpeedUp page</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_BACK2', ''); /* COMMENT: DELETED */
-define('_WEBO_SPLASH1_UNINSTALL_HELP', ''); /* COMMENT: DELETED */
 define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Send message');
 define('_WEBO_SPLASH1_NEXT', 'Install');
 define('_WEBO_SPLASH1_BACK', 'Back');
@@ -373,7 +370,7 @@ define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'not active');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'debug&nbsp;mode');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'You can debug the application:');
 define('_WEBO_DASHBOARD_STATUS_TESTING2', 'via GET-parameter ');
-define('_WEBO_DASHBOARD_STATUS_TESTING3', '<code>web_optimizer_debug</code>');
+define('_WEBO_DASHBOARD_STATUS_TESTING4', '<code>web_optimizer_debug</code>');
 define('_WEBO_DASHBOARD_STATUS_COOKIE', 'or just ');
 define('_WEBO_DASHBOARD_STATUS_COOKIE2', 'via cookie');
 define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp in live mode.');
