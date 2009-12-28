@@ -376,7 +376,6 @@ define('_WEBO_DASHBOARD_STATUS_TESTING2', 'используя GET-парамет
 define('_WEBO_DASHBOARD_STATUS_TESTING4', '<code>web_optimizer_debug</code>');
 define('_WEBO_DASHBOARD_STATUS_COOKIE', 'или просто ');
 define('_WEBO_DASHBOARD_STATUS_COOKIE2', 'при помощи cookies');
-define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp in live mode.');
 define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Нажмите кнопку &laquo;Включить&raquo;, когда вы захотите перевести WEBO&nbsp;Site&nbsp;SpeedUp в рабочий режим.');
 define('_WEBO_DASHBOARD_STATUS_ENABLE', 'Включить');
 define('_WEBO_DASHBOARD_STATUS_DISABLE', 'Отключить');
