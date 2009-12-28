@@ -125,7 +125,7 @@
 		</tr>
 	</thead>
 	<tfoot class="wssT1">
-		<tr class="wssT8">
+		<tr class="wssT8 wssT19">
 			<th class="wssT9" colspan="3"><?php
 		echo _WEBO_CACHE_TOTAL;
 			?>:</th>
@@ -133,6 +133,19 @@
 		echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($total / 1024));
 			?> <?php
 		echo _WEBO_LOGIN_EFFICIENCY_KB;
+			?></th>
+		</tr>
+		<tr class="wssT8 wssA0 wssT21">
+			<th class="wssT9" colspan="3"><?php
+		echo _WEBO_CACHE_SELECTED;
+			?>:</th>
+			<th class="wssT9" colspan="2"><span class="wssT22"></span> <?php
+		echo _WEBO_LOGIN_EFFICIENCY_KB;
+			?></th>
+		</tr>
+		<tr class="wssT8 wssA0 wssT20">
+			<th class="wssT9" colspan="5"><?php
+		echo _WEBO_CACHE_NOTHING;
 			?></th>
 		</tr>
 	</tfoot>

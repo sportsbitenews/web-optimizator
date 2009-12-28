@@ -39,8 +39,13 @@ define('_WEBO_LOGIN_USERNAME_HELP', 'Эта информация будет ис
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введите ваше имя');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введите пароль');
+<<<<<<< .mine
+define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Подтверждение пароля');
+define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Подтвердите ваш пароль');
+=======
 define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Подтверждение пароля');
 define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Подтвердите пароль');
+>>>>>>> .r1024
 define('_WEBO_LOGIN_LICENSE', 'Лицензионный ключ');
 define('_WEBO_LOGIN_ENTERLICENSE', 'Введите ваш лицензионный ключ');
 define('_WEBO_SPLAHS1_PROTECTED', 'Защищенный режим');
@@ -54,10 +59,16 @@ define('_WEBO_LOGIN_ALLOW_HELP', 'Если эта опция включена, �
 define('_WEBO_LOGIN_SUCCESS', 'Все настройки успешно сохранены');
 define('_WEBO_LOGIN_ENTEROLDPASSWORD', 'Введите текущий пароль');
 define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Пароли не совпадают');
+<<<<<<< .mine
+define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я прочитал и согласен с ');
+define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионным соглашением');
+define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы прочитали и согласны с лицензионным соглашением');
+=======
 define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я ознакомился с ');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионным соглашением');
 define('_WEBO_LOGIN_LICENSEAGREEMENT3', ' и принимаю его');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы ознакомились с лицензионным соглашением и принимаете его');
+>>>>>>> .r1024
 
 
 /* Upgrade */
@@ -79,12 +90,20 @@ define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с при
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Удалить');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Удаление WEBO Site SpeedUp');
+<<<<<<< .mine
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование WEBO Site SpeedUp. Пожалуйста, помогите нам улучшить продукт и сообщите причину его удаления.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Мы будем рады видеть отзывы о системе на <a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">сайте WEBO Site SpeedUp</a>, вы также можете отправить <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">любые проблемные вопросы</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Теперь можно вернуться обратно к <a href="');
+define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашему сайту</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_HELP', 'Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
+=======
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование WEBO Site SpeedUp. Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Вы можете посетить <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">сайт нашей компании</a> и <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">отправить запрос</a> на любую тему, связанную с WEBO Site SpeedUp.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Вы можете также в любой момент переустановить WEBO Site SpeedUp просто зайдя на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">страницу WEBO Site SpeedUp</a>.');
+>>>>>>> .r1024
 define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Отправить сообщение');
-define('_WEBO_SPLASH1_NEXT', 'Далее');
+define('_WEBO_SPLASH1_NEXT', 'Установить');
 define('_WEBO_SPLASH1_BACK', 'Назад');
 
 /* Change password */
@@ -102,8 +121,6 @@ define('_WEBO_PASSWORD_SUCCESSFULL', 'Пароль успешно обновле
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_CONTROLPANEL', 'Панель управления');
 define('_WEBO_SPLASH2_OPTIONS', 'Настройка');
-define('_WEBO_SPLASH2_YES', 'Да:');
-define('_WEBO_SPLASH2_NO', 'Нет:');
 define('_WEBO_SPLASH2_UNABLE', 'Невозможно открыть');
 define('_WEBO_SPLASH2_MAKESURE', '. Пожалуйста, убедитесь, что такая директория существует.');
 
@@ -370,9 +387,15 @@ define('_WEBO_DASHBOARD_INSTALL', 'Установить');
 define('_WEBO_DASHBOARD_STATUS_IS', '');
 define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'работает');
 define('_WEBO_DASHBOARD_STATUS_LIVE', 'рабочий&nbsp;режим');
+<<<<<<< .mine
+define('_WEBO_DASHBOARD_STATUS_WORKING', 'Вы можете ');
+define('_WEBO_DASHBOARD_STATUS_WORKING2', 'проверить ваш сайт');
+define('_WEBO_DASHBOARD_STATUS_WORKING3', ' или перевести приложение обратно в режим отладки. Для этого надо нажать &laquo;Отключить&raquo;.');
+=======
 define('_WEBO_DASHBOARD_STATUS_WORKING', 'Теперь вы можете ');
 define('_WEBO_DASHBOARD_STATUS_WORKING2', 'перейти на свой сайт');
 define('_WEBO_DASHBOARD_STATUS_WORKING3', ' или перевести приложение в <a href="#wss_system" class="wssJ">режим отладки</a>, нажав кнопку &laquo;Отключить&raquo;.');
+>>>>>>> .r1024
 define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'не работает');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'режим&nbsp;отладки');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'Вы можете отладить работу приложения:');
@@ -507,7 +530,9 @@ define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Извините, но регист�
 
 /* Cache page */
 define('_WEBO_CACHE_EMPTY', 'В кэше ничего нет');
-define('_WEBO_CACHE_TOTAL', 'Текущий размер всех файлов в кэше');
+define('_WEBO_CACHE_TOTAL', 'Общий размер всех файлов в кэше');
+define('_WEBO_CACHE_SELECTED', 'Общий размер выбранных файлов');
+define('_WEBO_CACHE_NOTHING', 'Нет файлов, удовлетворяющих условию');
 define('_WEBO_CACHE_FILENAME', 'Имя файла');
 define('_WEBO_CACHE_TYPE', 'Тип');
 define('_WEBO_CACHE_BROWSER', 'Браузер');
@@ -517,6 +542,7 @@ define('_WEBO_CACHE_ALL', 'Все файлы');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Применить');
+define('_WEBO_OPTIONS_CONFIRM', 'Вы уверены, что хотите удалить конфигурацию "');
 define('_WEBO_OPTIONS_CONFIGURATION', 'Конфигурация');
 define('_WEBO_OPTIONS_DESCRIPTION', 'Описание');
 define('_WEBO_OPTIONS_APPLYCONFIG', 'применить конфигурацию');
@@ -634,6 +660,7 @@ define('_WEBO_GZIP_FINAL_TOTAL', 'Размер сжатых файлов');
 define('_WEBO_GZIP_SAVINGS', 'Суммарная экономия');
 define('_WEBO_GZIP_INITIAL', 'Исходный размер');
 define('_WEBO_GZIP_FINAL', 'Уменьшение размера');
+define('_WEBO_GZIP_NOTHING', 'Ничего не найдено');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Вы можете уменьшить размеры графических файлов на вашем сайте (без изменения качества изображения). Для этого введите исходную директорию. Она будет рекурсивно просмотрена на наличие необходимых файлов, текущие <code>.backup</code>-версии файлов будут обновлены при необходимости.');

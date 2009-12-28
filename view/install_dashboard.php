@@ -602,4 +602,6 @@
 	echo _WEBO_DASHBOARD_INSTALL;
 ?>";wss_kb="<?php
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
+?>";wss_confirm="<?php
+	echo str_replace('"', '\"', _WEBO_OPTIONS_CONFIRM);
 ?>"</script>

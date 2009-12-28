@@ -79,7 +79,7 @@ define('_WEBO_NEW_NOSCRIPT', 'JavaScript must be enabled for correct work!');
 define('_WEBO_SPLASH1_UNINSTALL', 'Uninstall');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'WEBO Site SpeedUp uninstallation');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Thank you for using WEBO Site SpeedUp. Please help us to improve our product and tell us the uninstall reason.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Also feel free to visit <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">our company website</a> and submit any <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">related issues</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Also feel free to visit <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">our company website</a> and submit any <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">related issues</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'You can reinstall WEBO Site SpeedUp anytime by visiting <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">WEBO Site SpeedUp page</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Send message');
@@ -101,8 +101,6 @@ define('_WEBO_PASSWORD_SUCCESSFULL', 'Password has been changed');
 /* Second splash -- set options */
 define('_WEBO_SPLASH2_CONTROLPANEL', 'Control Panel');
 define('_WEBO_SPLASH2_OPTIONS', 'Options');
-define('_WEBO_SPLASH2_YES', 'Yes:');
-define('_WEBO_SPLASH2_NO', 'No:');
 define('_WEBO_SPLASH2_UNABLE', 'Unable to open');
 define('_WEBO_SPLASH2_MAKESURE', '. Please Make sure the directory exists.');
 
@@ -366,7 +364,7 @@ define('_WEBO_DASHBOARD_STATUS_IS', 'is');
 define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'active');
 define('_WEBO_DASHBOARD_STATUS_LIVE', 'live&nbsp;mode');
 define('_WEBO_DASHBOARD_STATUS_WORKING', 'Now you can ');
-define('_WEBO_DASHBOARD_STATUS_WORKING2', 'review your site');
+define('_WEBO_DASHBOARD_STATUS_WORKING2', 'review your website');
 define('_WEBO_DASHBOARD_STATUS_WORKING3', ' or bring the application back to debug mode by clicking the &quot;Disable&quot; button.');
 define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'not active');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'debug&nbsp;mode');
@@ -506,6 +504,8 @@ define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Sorry, but registration server is un
 /* Cache page */
 define('_WEBO_CACHE_EMPTY', 'Cache is empty');
 define('_WEBO_CACHE_TOTAL', 'Total size of all cache files');
+define('_WEBO_CACHE_SELECTED', 'Total size of selected files');
+define('_WEBO_CACHE_NOTHING', 'No files found according to this condition');
 define('_WEBO_CACHE_FILENAME', 'File name');
 define('_WEBO_CACHE_TYPE', 'Type');
 define('_WEBO_CACHE_BROWSER', 'Browser');
@@ -515,6 +515,7 @@ define('_WEBO_CACHE_ALL', 'All files');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Apply');
+define('_WEBO_OPTIONS_CONFIRM', 'Are you sure to delete the configuration "');
 define('_WEBO_OPTIONS_CONFIGURATION', 'Configuration');
 define('_WEBO_OPTIONS_DESCRIPTION', 'Description');
 define('_WEBO_OPTIONS_APPLYCONFIG', 'Apply configuration');
@@ -632,6 +633,7 @@ define('_WEBO_GZIP_FINAL', 'Savings');
 define('_WEBO_GZIP_PROCESSING', 'Processing file');
 define('_WEBO_GZIP_OUTOF', 'out of');
 define('_WEBO_GZIP_OPTIMIZATION', 'Optimization in action. Please wait');
+define('_WEBO_GZIP_NOTHING', 'Nothing found');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Using this tool you can decrease size of images without quality loss in any specified directory on your website. For each optimized file <code>.backup</code> version will be created during optimization process. GIF files are replaced with PNG ones if latter are smaller.');

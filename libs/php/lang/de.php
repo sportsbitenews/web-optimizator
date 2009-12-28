@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Enth&auml;lt alle DE Lokalisationkonstanten
  * Danke f&uuml;r Joerg Schumacher
  *
@@ -8,80 +8,85 @@
 
 /* general layout */
 define('_WEBO_CHARSET', 'utf-8');
-define('_WEBO_GENERAL_TITLE', 'Web Optimizer Konfiguration');
+define('_WEBO_GENERAL_TITLE', 'WEBO Site SpeedUp Konfiguration');
 define('_WEBO_GENERAL_FOOTER', 'Schneller als ein Blitz!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Kaufen Premium-Ausgabe</a>');
-define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
-define('_WEBO_GENERAL_DEMOVERSION', 'Gemeinschaftausgabe');
+define('_WEBO_GENERAL_BUYNOW', '<a href="https://secure.plimus.com/jsp/buynow.jsp?contractId=2586666&amp;currency=USD" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Kaufen</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://secure.plimus.com/jsp/buynow.jsp?contractId=2597306&amp;currency=USD" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Kaufen</a>');
+define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
+define('_WEBO_GENERAL_BUY', 'Kaufen');
+define('_WEBO_GENERAL_PREMIUM', 'Premium');
+define('_WEBO_GENERAL_EDITION', 'Ausgabe');
+
+/* lang menu */
+define('_WEBO_GENERAL_LANGUAGE', 'Choose language');
+define('_WEBO_GENERAL_ru', 'Русский');
+define('_WEBO_GENERAL_de', 'Deutsch');
+define('_WEBO_GENERAL_es', 'Español');
+define('_WEBO_GENERAL_ua', 'Українська');
+define('_WEBO_GENERAL_en', 'English');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Hmmm..., wir haben ein Problem');
 define('_WEBO_ERROR_ERROR', 'Oopps! Etwas ist schief gegangen');
 
 /* Enter login and password */
-define('_WEBO_LOGIN_TITLE', 'Tragen Sie Ihre Anmeldedaten ein');
-define('_WEBO_LOGIN_INSTALLED', 'Sie haben Web Optimizer ');
-define('_WEBO_LOGIN_INSTALLED2', ' auf dieser Website schon installiert. Tragen Sie Ihre Anmeldedaten ein, um Zugriff auf alle Einstellungen zu erhalten:');
-define('_WEBO_LOGIN_INSTALLED3', '. Klicken Sie auf <strong>Weiter</strong>, um Zugriff auf alle Einstellungen zu erhalten.');
-define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Achtung:</strong> Kann keine Ergebnisse der T&auml;tigkeit von Web Optimizer auf Ihret Website finden. Pr&uuml;fen Sie das Vorhandensein der Aufrufe in den Quelldateien Ihres Websystems oder installieren Sie Web Optimizer noch einmal.');
+define('_WEBO_LOGIN_TITLE', 'Authorization');
+define('_WEBO_LOGIN_LOGIN', 'Login');
+define('_WEBO_LOGIN_NOTINSTALLED', '<strong>Achtung:</strong> Kann keine Ergebnisse der T&auml;tigkeit von WEBO Site SpeedUp auf Ihret Website finden. Pr&uuml;fen Sie das Vorhandensein der Aufrufe in den Quelldateien Ihres Websystems oder installieren Sie WEBO Site SpeedUp noch einmal.');
 define('_WEBO_LOGIN_EFFICIENCY', 'Optimierungsergebnisse pro Hit:<br/>gespart');
 define('_WEBO_LOGIN_EFFICIENCY_KB', 'Kb');
-define('_WEBO_LOGIN_EFFICIENCY_S', 'Sekunden');
-define('_WEBO_LOGIN_USERNAME', 'Benutzername');
-define('_WEBO_LOGIN_ENTERLOGIN', 'Tragen Sie Ihre Anmeldedaten ein');
+define('_WEBO_LOGIN_EFFICIENCY_S', 'S');
+define('_WEBO_LOGIN_USERNAME', 'First and last name');
+define('_WEBO_LOGIN_ENTERLOGIN', 'This information will be used mainly in e-mail messages.');
 define('_WEBO_LOGIN_PASSWORD', 'Kennwort');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Kennwort eintragen');
+define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Password confirmation');
+define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Confirm the password');
 define('_WEBO_LOGIN_LICENSE', 'Lizenz-Schl&uuml;ssel');
 define('_WEBO_LOGIN_ENTERLICENSE', 'Geben Sie Lizenz-Schl&uuml;ssel');
 define('_WEBO_SPLAHS1_PROTECTED', 'Gesch&uuml;tzter Modus');
-define('_WEBO_SPLAHS1_PROTECTED2', 'Web Optimizer Installation ist sicher gesch&uuml;tzt. Sie k&ouml;nnen erneut konfigurieren.');
+define('_WEBO_SPLAHS1_PROTECTED2', 'WEBO Site SpeedUp Installation ist sicher gesch&uuml;tzt. Sie k&ouml;nnen erneut konfigurieren.');
+define('_WEBO_LOGIN_EMAIL', 'E-mail');
+define('_WEBO_LOGIN_EMAIL_HELP', 'This e-mail address will be used only for information about urgent updates, greetings, and special offers.');
+define('_WEBO_LOGIN_ENTEREMAIL', 'Enter your e-mail');
+define('_WEBO_LOGIN_EMAILNOTICE', 'This e-mail address will be used only for information about urgent updates, greetings, and special offers.');
+define('_WEBO_LOGIN_ALLOW', 'Allow to use my data about optimization results');
+define('_WEBO_LOGIN_ALLOW_HELP', 'Statistical information about website acceleration will be sent to WEBO Software servers. This information won\'t be published and will be used only to improve WEBO Site SpeedUp efficiency. No private data will be sent.');
+define('_WEBO_LOGIN_SUCCESS', 'All settings have been successfully saved');
+define('_WEBO_LOGIN_ENTEROLDPASSWORD', 'Enter the current password');
+define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Passwords don\'t match');
+define('_WEBO_LOGIN_LICENSEAGREEMENT', 'I have read and agreed with the ');
+define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'license agreement');
+define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirm that you have read and agreed with the license agreement');
+
 /* Upgrade */
-define('_WEBO_LOGIN_UPGRADE', 'Upgrade');
-define('_WEBO_LOGIN_UPGRADE_BETA', 'To beta');
-define('_WEBO_LOGIN_UPGRADE_STABLE', 'To stable');
-define('_WEBO_LOGIN_UPGRADENOTICE', 'Sie k&ouml;nnen Ihre Version (');
-define('_WEBO_LOGIN_UPGRADENOTICE2', ') von Web Optimizer auf die neueste Version aktualisieren. Tragen Sie Ihre Benutzernamen und Kennwort ein und klicken Sie auf <strong>Upgrade</strong>. Web Optimizer wird aktualisiert auf Version <strong>');
-define('_WEBO_LOGIN_UPGRADENOTICE3', '</strong>.');
-define('_WEBO_LOGIN_UPGRADENOTICE4', ') von Web Optimizer auf die neueste Version aktualisieren &mdash; <strong>');
-define('_WEBO_UPGRADE_SUCCESSFULL', 'Sie haben erfolgreich auf Version ');
-define('_WEBO_UPGRADE_SUCCESSFULL2', ' aktualisiert');
-define('_WEBO_UPGRADE_UNABLE', 'Kann die neueste Version nicht downloaden. Pr&uuml;fen Sie die Internetverbindung zum Server und die Curl-Existenz.');
+define('_WEBO_LOGIN_UPGRADE', 'Update');
+define('_WEBO_LOGIN_VERSION', 'Version');
+define('_WEBO_UPGRADE_FILE', 'Updating file');
+
 /* Uninstall */
-define('_WEBO_LOGIN_UNINSTALL', 'Um Web Optimizer von Ihrem System zu entfernen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Deinstall</strong>');
-define('_WEBO_LOGIN_UNINSTALL2', 'Web Optimizer kann f&uuml;r Ihre Website ganz einfach unwirksam gemacht werden. Sie m&uuml;ssen das Tool nur l&ouml;schen.');
-define('_WEBO_LOGIN_UNINSTALLME', 'Web Optimizer deinstallieren');
+define('_WEBO_LOGIN_UNINSTALLME', 'WEBO Site SpeedUp deinstallieren');
 define('_WEBO_LOGIN_FAILED', 'Login fehlgeschlagen');
-define('_WEBO_LOGIN_ACCESS', 'Sie m&uuml;ssen angemeldet sein, um diese Seite anzusehen');
-define('_WEBO_LOGIN_LOGGED', 'Angemeldet');
-define('_WEBO_SPLASH1_CLEAR', 'Cache bereinigen');
-define('_WEBO_SPLASH1_CLEAR_CACHE', 'Um den Cachespeicher von Web Optimizer zu reinigen, tragen Sie Benutzernamen und Kennwort ein und klicken auf <strong>Cache bereinigen</strong>. ');
-define('_WEBO_SPLASH1_CLEAR_CACHE2', 'Alle gespeicherten Versionen erstellter Dateien werden aus Cache-Ordner gel&ouml;scht.');
-define('_WEBO_CLEAR_UNABLE', 'Einige Dateien konnten nicht aus dem Cache-Ordner gel&ouml;scht werden');
-define('_WEBO_CLEAR_SUCCESSFULL', 'Alle Dateien in Cache-Ordnern sind gel&ouml;scht worden');
+define('_WEBO_UNINSTALL_MESSAGE', 'WEBO Site SpeedUp uninstall reason');
+define('_WEBO_UNINSTALL_SUCCESS', 'WEBO Site SpeedUp was successfully uninstalled.');
 
 /* Set login and password */
-define('_WEBO_NEW_TITLE', 'Installation - Kennwort einrichten');
-define('_WEBO_NEW_PROTECT', '<p>Tragen Sie Benutzernamen und Kennwort ein, um diese Installation zu sch&uuml;tzen.</p><p>Kontrollieren Sie vor der Installation die Schreibrechte f&uuml;r die root <code>.htaccess</code> und f&uuml;r die Quelldateien Web-Systems (w&auml;hrend Installation wird Web Optimizer Backups Ihrer Dateien erstellen).</p><p>Web Optimizer kann alle Funktionen des Servers pr&uuml;fen und die Installation automatisch vollenden. Benutzen Sie daf&uuml;r die Option <strong>"Express-Installation"</strong>. Nach Fertigstellung k&ouml;nnen Sie beliebige Einstellungen &uuml;ber die administative Schnittstelle &auml;ndern</p>.<p>Wenn Sie die Benutzung von Web Optimizer selbst einstellen wollen, dann klicken Sie auf <strong>"Weiter"</strong>. Sie k&ouml;nnen alle Einstellungen vor der eigentlichen Installation von Web Optimizer auf Ihrer Website p&uuml;rfen und ver&auml;ndern.</p><p><a href="http://code.google.com/p/web-optimizator/wiki/StandaloneInstallation?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer - Installation</a></p>');
-define('_WEBO_NEW_USERDATA', 'Benutzername und Kennwort');
-define('_WEBO_NEW_ENTER', 'Tragen Sie das Kennwort f&uuml;r die Installation ein');
-define('_WEBO_NEW_ORDERINSTALLATION', 'Auftrag Web Optimizer Installation und Konfiguration f&uuml;r Ihre Website');
+define('_WEBO_NEW_TITLE', 'Installation');
+define('_WEBO_NEW_PROTECT', '<p class="wssI">During installation root .htaccess file and some other source files of your web system will be changed so please make sure they are writable (each changed file will be automatically backed up).</p><p class="wssI">If no valid license key will be entered, WEBO Site SpeedUp <a href="http://www.web-optimizer.us/ru/web-optimizer/comparison.html">Community edition</a> will be installed.</p><p class="wssI">When installed, WEBO Site SpeedUp will be automatically configured based on current server capabilites. You can review and change any options later using this administative interface.</p><p class="wssI">More information on WEBO Site SpeedUp installing and configuring you can get from <a href="http://code.google.com/p/web-optimizator/wiki/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">online documentation</a>.</p>');
 define('_WEBO_NEW_NOSCRIPT', 'F&uuml;r die korrekte Arbeit muss JavaScript aktiviert sein!');
 
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Deinstall');
-define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Deinstallation');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer</a>. Sie k&ouml;nnen das Tool erneut installieren nach einem Besuch der <a href =� http: //');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '"> Web Optimizer Seite</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Besuchen Sie die <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Web Optimizer Website</a> und <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer"> machen Sie Vorschl&auml;ge</a>.');
+define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'WEBO Site SpeedUp Deinstallation');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Vielen Dank f&uuml;r den Einsatz von WEBO Site SpeedUp. Please help us to improve our product and tell us the uninstall reason.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Also feel free to visit <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">our company website</a> and submit any <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">related issues</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Jetzt k&ouml;nnen Sie Zur&uuml;kkehrenzu <a href="');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">Ihrer Website</a>.');
-define('_WEBO_SPLASH1_NEXT', 'Weiter');
+define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Send message');
+define('_WEBO_SPLASH1_NEXT', 'Install');
 define('_WEBO_SPLASH1_BACK', 'Zur&uuml;ck');
-define('_WEBO_SPLASH1_EXPRESS', 'Express-Installation');
 
 /* Change password */
-define('_WEBO_PASSWORD_TITLE', 'Kennwort &auml;ndern');
-define('_WEBO_PASSWORD_INSTALLED', 'Es gibt Web Optimizer installiert f&uuml;r die aktuelle Website. Sie k&ouml;nnen Kennwort zu &auml;ndern um seine Funktionen zugreifen: Einstellungen &auml;ndern, Cache s&auml;ubern, Upgrade, Deaktivieren und Deinstallieren.');
 define('_WEBO_PASSWORD_OLD', 'Altes Kennwort');
 define('_WEBO_PASSWORD_ENTERPASSWORD', 'Geben Sie altes Kennwort');
 define('_WEBO_PASSWORD_NEW', 'Neues Kennwort');
@@ -94,125 +99,245 @@ define('_WEBO_PASSWORD_EMPTY', 'Neues Kennwort ist nicht gesetzt!');
 define('_WEBO_PASSWORD_SUCCESSFULL', 'Kennwort wurde ge&auml;ndert');
 
 /* Second splash -- set options */
-define('_WEBO_SPLASH2_TITLE', 'Installation - Abschnitt 2');
-define('_WEBO_SPLASH2_OPTIONS', 'Komprimierungsoptionen');
-define('_WEBO_SPLASH2_CACHE', 'Cache-Ordner');
-define('_WEBO_SPLASH2_CACHE_JS', 'Javascript-Cache in');
-define('_WEBO_SPLASH2_CACHE_CSS', 'CSS-Cache in');
-define('_WEBO_SPLASH2_CACHE_HTML', 'HTML-Cache in');
-define('_WEBO_SPLASH2_WEBSITEROOT', 'Website ist in');
-define('_WEBO_SPLASH2_DOCUMENTROOT', 'Host points to (document root)');
-define('_WEBO_SPLASH2_HOST', 'Website-Host (auf statische Ressourcen), z. B. seite.de');
-define('_WEBO_SPLASH2_SPACE', 'Trennen Sie mit Leerzeichen:');
-define('_WEBO_SPLASH2_YES', 'Ja:');
-define('_WEBO_SPLASH2_NO', 'Nein:');
+define('_WEBO_SPLASH2_CONTROLPANEL', 'Control Panel');
+define('_WEBO_SPLASH2_OPTIONS', 'Optionen');
 define('_WEBO_SPLASH2_UNABLE', '&Ouml;ffnen nicht m&ouml;glich');
-define('_WEBO_SPLASH2_MAKESURE', '.<br/>Stellen Sie sicher, dass das Verzeichnis existiert und das es das Root-Verzeichnis ist.');
-/* Web Optimizer options */
-define('_WEBO_SPLASH2_MINIFY', 'Minimierungsoptionen');
-define('_WEBO_SPLASH2_MINIFY_INFO', '<p>Die Minimierung entfernt Leerzeichen und andere unn&ouml;tige Zeichen.</p><p>Au&szlig;erdem k&ouml;nnen Sie das Werkzeug w&auml;hlen, um CSS/JavaScript zu minimieren oder zu verschleiern.</p><p>Bitte seien Sie vorsichtig bei der Anwendung der Optionen "HTML-Kommentare entfernen" oder "HTML auf einen String verkleinern". Die erste Option kann dazu f&uuml;hren auf die Beseitigung von ein paar Z&auml;hler (JavaScript-Code innerhalb von Kommentaren), die zweite - zus&auml;tzliche Belastung des Servers auf jeder Seite zu sehen.</p>');
-define('_WEBO_SPLASH2_UNOBTRUSIVE', '"Unauff&auml;lliges" JavaScript');
-define('_WEBO_SPLASH2_UNOBTRUSIVE_INFO', '<p>Unauff&auml;lliges JavaScript wird unmittelbar geladen, nachdem der gesamte Inhalt in einem Browser geladen wurde.</p><p>Das kann das Laden einer Webseite signifikant beschleunigen. Aber in einigen F&auml;llen kann die Client-seitige Logik zerst&ouml;rt werden. Verwenden Sie diese Option also vorsichtig.</p><p>Sie k&ouml;nnen auch den Aufruf des gesamten JavaScript vor <code>&lt;/body&gt;</code> verschieben &mdash; das kann das Laden des Inhalts Ihrer Webseite signifikant beschleunigen.</p><p><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive JavaScript</a>, <a href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/">Non-blocking JavaScript Downloads</a>, <a href="http://dean.edwards.name/weblog/2005/09/busted/">The <code>window.onload</code> Problem - Solved!</a>, <a href="http://dean.edwards.name/weblog/2006/06/again/"><code>window.onload</code> (again)</a></p>');
-define('_WEBO_SPLASH2_EXTERNAL', 'Externe und Inline-Skripts');
-define('_WEBO_SPLASH2_EXTERNAL_INFO', '<p>Mit dieser Option werden alle Skripts (einschlie&szlig;lich externer Dateien und der Inline-Skripts) zu einem einzelnen Skript verbunden und unmittelbar nach der CSS-Datei eingef&uuml;gt.</p><p>Das kann in den F&auml;llen n&uuml;tzlich sein, wenn es eine Vilezahl unterschiedlicher Plug-ins und Module im Kopfbereich gibt und diese Logik nicht in unauff&auml;lliges Laden verschoben werden kann.</p><p>Sie k&ouml;nnen au&szlig;erdem eine Liste ausgeschlossener Dateien definieren (d.h. ga.js jquery.min.js).</p><p><a href="http://thinkvitamin.com/features/webapps/serving-javascript-fast/">JavaScript schnell bereitstellen</a></p>');
-define('_WEBO_SPLASH2_MTIME', 'File-mtime verifizieren');
-define('_WEBO_SPLASH2_MTIME_INFO', '<p>&Uml;blicherweise pr&uuml;ft Web Optimizer, ob Dateien seit dem letzten Zugriff auf die Seite ver&auml;ndert wurden. Die erhaltenen Informationen werden benutzt, um die Dateien aus dem Cache zu benutzen oder einen neuen zu generieren.</p><p>Wenn das aus Sicht der Server-seitigen Optimierung nicht gut ist, dann k&ouml;nnen Sie die Einstellung deaktivieren.</p><p>Beim Einschalten der Option m&uuml;ssen Sie die den Web Optimizer Cache manuell von veralteten Dateien bereinigen, wenn neue Assets verf&uuml;gbar sind.</p>');
-define('_WEBO_SPLASH2_GZIP', 'Gzip-Optionen');
-define('_WEBO_SPLASH2_GZIP_INFO', '<p>Gzipping komprimiert den Code via Gzip-Komprimierung. Das ist nur f&uuml;r kleindimensionierte Seiten empfohlen und ist als Standard ausgeschaltet.</p><p>F&uuml;r gr&ouml;&szlig;ere Seiten sollten Sie Gzip via Web-Server ausf&uuml;hren.</p><p><a href="http://paulbuchheit.blogspot.com/2009/04/make-your-site-faster-and-cheaper-to.html">Make your site faster and cheaper to operate in one easy step</a></p>');
-define('_WEBO_SPLASH2_EXPIRES', 'Klient-Seite Cachen');
-define('_WEBO_SPLASH2_EXPIRES_INFO', '<p>Dies f&uuml;gt einen Ablauf-Header in Ihre JavaScript und CSS-Dateien ein, der sicherstellt, dass sie Client-seitig durch den Browser zwischengespeichert werden.</p><p>Wenn Sie JS oder CSS &auml;ndern, wird ein neuer Dateiname erstellt und die letzte Version wird deshalb heruntergeladen und zwischengespeichert.</p><p><a href="http://developer.yahoo.com/performance/rules.html#expires">Ablauf- oder Cache-Control Header hinzuf&uuml;gen</a></p>');
-define('_WEBO_SPLASH2_HTMLCACHE', 'Server-Seite Cachen');
-define('_WEBO_SPLASH2_HTMLCACHE_INFO', '<p>Diese Option erm&ouml;glicht Web Optimizer den erstellten HTML-Output zwischenzusoeichern und so eine Menge Server-seitige Arbeit f&uuml;r die Erstelluing abzuwenden.</p><p>Beachten Sie, dass diese Option alle Server-abh&auml;ngige Logik abschaltet. Alle Seiten werden vollst&auml;ndig statisch. Schalten Sie diese Option nur an, wenn Sie v&ouml;llig sicher sind.</p><p><a href="http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/">Flushing the Document Early</a> and <a href="http://blog.port80software.com/2006/11/08/">On Streaming, Chunking, and Finding the End</a></p>');
-define('_WEBO_SPLASH2_SPRITES', 'CSS-Sprites');
-define('_WEBO_SPLASH2_SPRITES_INFO', '<p>Es ist m&ouml;glich, CSS-Hintergrundbilder als CSS-Sprites zu speichern. Das kann die Zahl der HTTP-Requests beim Laden der Website signifikant reduzieren.</p><p>Diese Technik wird von modernen Browsern vollst&auml;ndig unterst&uuml;tzt. Sie k&ouml;nnen in einen agressiveren Modus umschalten, wenn Sie Ihre CSS-Richtlinien sicher beherrschen.</p><p>Sie k&ouml;nnen auch Images definieren, die von der Erstellung der CSS-Sprites ausgeschlossen werden (z.B. logo.png bg.gif)</p><p><a href="www.alistapart.com/articles/sprites">CSS-Sprites Image Slicing\'s Kiss of Death</a></p>');
-define('_WEBO_SPLASH2_DATAURI', 'Daten-URIs');
-define('_WEBO_SPLASH2_DATAURI_INFO', '<p>Es ist m&ouml;glich, CSS-Hintergrundbilder als Daten-URIs zu speichern. Das hilft Ihnen, die Zahl der HTTP-Requests weiter einzuschr&auml;nken.</p><p>Beachten Sie, dass <code>data:URI</code> nicht mit dem Internet Explorer (bis zu Version 7.0) funktioniert. Sie m&uuml;ssen f&uuml;r diese Browsern <code>mhtml</code> Technik nutzen.</p><p><a href="http://www.websiteoptimization.com/speed/tweak/inline-images/">Inline Images with Data URLs</a> and <a href="http://yuiblog.com/blog/2008/11/14/imageopt-3/">Four Steps to File Size Reduction</a></p>');
-define('_WEBO_SPLASH2_PARALLEL', 'Multiple Hosts');
-define('_WEBO_SPLASH2_PARALLEL_INFO', '<p>Web Optimizer kann multiple Hosts hinzuf&uuml;gen, um statische Dateien (Images) bereitzustellen und das Laden der Website zu beschleunigen. Mit mehreren Hosts f&uuml;r statische Assets k&ouml;nnen Browser mehrere Verbindungen zu einem einzelnen Server &ouml;ffnen.</p><p>Um diese Option richtig zu aktivieren, m&uuml;ssen Sie der Server-Konfiguration einige Aliasse f&uuml;r den Main-Host hinzuf&uuml;gen, z.B.: <code>i1.site.com</code> <code>i2.site.com</code> <code>i3.site.com</code> <code>i4.site.com</code>. Au&szlig;erdem m&uuml;ssen Sie korrespondirende Datens&auml;tze zum DNS hinzuf&uuml;gen (zum Verweis auf die Haupt-Website) Web Optimizer pr&uuml;ft die Verf&uuml;gbarkeit aller gelisteten Hosts automatisch.</p><p>Bevor Sie diese Auto-Pr&uuml;fung ausschalten, stellen Sie sicher, dass die Hosts existieren, sonst l&auml;uft HTTP GET in einen 4040-Fehler.</p><p><a href="http://www.ajaxperformance.com/2006/12/18/circumventing-browser-connection-limits-for-fun-and-profit/">Circumventing browser connection limits for fun and profit</a></p>');
-define('_WEBO_SPLASH2_HTACCESS', '.htaccess verwenden');
-define('_WEBO_SPLASH2_HTACCESS_INFO', '<p>Die meistenb der Gzip- und Cacxhe-Optionen k&ouml;nnen f&uuml;r die Konfiguration Ihrer Webseite geschrieben werden (und so zus&auml;tzliche Arebeit vermeiden). Dazu kann die Datei <code>.htaccess</code> verwendet werden (und sp&auml;ter k&ouml;nnen Sie optionen von dort herausschneiden, falls n&ouml;tig und in die Datei <code>httpd.cond</code> verschieben).</p><p><a href="http://httpd.apache.org/docs/2.0/mod/mod_deflate.html">mod_deflate</a>, <a href="http://httpd.apache.org/docs/2.2/mod/mod_filter.html">mod_filter</a>, <a href="http://httpd.apache.org/docs/1.3/mod/mod_mime.html">mod_mime</a>, <a href="http://httpd.apache.org/docs/2.0/mod/mod_headers.html">mod_headers</a>, <a href="http://httpd.apache.org/docs/2.0/mod/mod_expires.html">mod_expires</a>, <a href="http://httpd.apache.org/docs/1.3/mod/mod_setenvif.html">mod_setenvif</a>.</p><p>Verf&uuml;gbare Optionen: ');
-define('_WEBO_SPLASH2_FOOTER', 'Backlink and spot');
-define('_WEBO_SPLASH2_FOOTER_INFO', '<p>Web Optimizer kann einen Link in die Fu&szlig;zeile Ihres Blogs einf&uuml;gen , der auf die Website von Web Optimizer zeigt. Der Link kann ein Textlink, ein kleines Bild oder beides sein.</p><p>Bitte unterst&uuml;tzen Sie Web Optimizer durch Aktivieren dieses Links.</p>');
-define('_WEBO_SPLASH2_AUTOCHANGE', '/index.php &auml;ndern');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO', '<p>Web Optimizer kann zu Ihrer Website hinzugef&uuml;gt werden auf der Basis ');
-define('_WEBO_SPLASH2_AUTOCHANGE_INFO2', ' aller erforderlichen &Auml;nderungen (nur f&uuml;r /index.php).</p><p>Anmerkung: Setzen Sie diese Option vorsichtig ein, sie kann Probleme bis hin zur Serverkonfiguration hervorrufen</p>');
-define('_WEBO_unobtrusive_on', 'Unauff&auml;lliges JavaScript aktivieren');
-define('_WEBO_unobtrusive_body', 'JavaScript Datei vor <code>&lt;/body&gt;</code> einflie&szlig;en lassen');
-define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
-define('_WEBO_unobtrusive_informers', 'JavaScript Informer Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
-define('_WEBO_unobtrusive_counters', 'Counter Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
-define('_WEBO_unobtrusive_ads', 'Werbung (Kontext und Banner vor <code>&lt;/body&gt;</code> verschieben');
-define('_WEBO_unobtrusive_iframes', 'Make iframes\' load delayed');
-define('_WEBO_external_scripts_on', 'Vermischung von externem JavaScript aktivieren');
-define('_WEBO_external_scripts_inline', 'Vermischung von Inline JavaScript aktivieren');
-define('_WEBO_external_scripts_head_end', 'Verschiebung aller vermischten Scripts nach <code>&lt;/head&gt;</code> erzwingen');
-define('_WEBO_external_scripts_css', 'Vermischung von externem Styles aktivieren');
-define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktivieren');
-define('_WEBO_external_scripts_ignore_list', 'Datei vom Vermischen ausschlie&szlig;en');
-define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
+define('_WEBO_SPLASH2_MAKESURE', ' .Stellen Sie sicher, dass das Verzeichnis existiert und das es das Root-Verzeichnis ist.');
+
+/* WEBO Site SpeedUp options */
+define('_WEBO_general', 'General options');
+define('_WEBO_combinecss', 'Combine CSS');
+define('_WEBO_combine_js', 'Combine JavaScript');
+define('_WEBO_minify', 'Minify');
+define('_WEBO_gzip', 'Gzip');
+define('_WEBO_clientside', 'Client side cache');
+define('_WEBO_htaccess', '.htaccess');
+define('_WEBO_backlink', 'Backlink');
+define('_WEBO_performance', 'Performance');
+define('_WEBO_data_uri', 'data:URI');
+define('_WEBO_css_sprites', 'CSS Sprites');
+define('_WEBO_serverside', 'Server side cache');
+define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
+define('_WEBO_multiple_hosts', 'Multiple hosts');
+
+define('_WEBO_javascript_cachedir', 'Path to JavaScript cache directory');
+define('_WEBO_javascript_cachedir_HELP', 'This directory contains all files of JavaScript cache.');
+define('_WEBO_css_cachedir', 'Path to CSS cache directory');
+define('_WEBO_css_cachedir_HELP', 'This directory contains all files of CSS cache.');
+define('_WEBO_html_cachedir', 'Path to HTML cache directory');
+define('_WEBO_html_cachedir_HELP', 'This directory contains all files of HTML cache.');
+define('_WEBO_website_root', 'Path to website root directory');
+define('_WEBO_website_root_HELP', 'Absolute path to the root directory of your website.');
+define('_WEBO_document_root', 'Path to <code>DOCUMENT_ROOT</code>');
+define('_WEBO_document_root_HELP', 'Absolute path to the root directory of th website\'s host.');
+define('_WEBO_host', 'Website address');
+define('_WEBO_host_HELP', 'Domain name or IP address of your website. For example: mysite.com');
 define('_WEBO_external_scripts_user', 'Username (to access via HTTP Basic Authorization)');
+define('_WEBO_external_scripts_user_HELP', 'If your website is protected via HTTP Basic Authorization you need to declare username and password so WEBO Site SpeedUp can process all required resources from the website.');
 define('_WEBO_external_scripts_pass', 'Password (to access via HTTP Basic Authorization)');
-define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
-define('_WEBO_performance_plain_string', 'Do not use regular expressions');
-define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code>');
-define('_WEBO_performance_cache_version', 'Cache version number (don\'t check files\' existence)');
-define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
-define('_WEBO_minify_javascript', 'JavaScript-Dateien kombinieren');
-define('_WEBO_minify_javascript_body', 'JavaScript-Dateien innerhalb <code>&lt;body&gt;</code> kombinieren');
-define('_WEBO_minify_with', 'JavaScript-Dateien minimieren');
-define('_WEBO_minify_with_jsmin', 'Mit JSMin minimieren');
-define('_WEBO_minify_with_packer', 'Mit Packer minimieren');
-define('_WEBO_minify_with_yui', 'Mit YUI Compressor mimimieren');
-define('_WEBO_minify_css', 'CSS-Dateien minimieren und kombinieren');
-define('_WEBO_minify_css_body', 'CSS-Dateien innerhalb <code>&lt;body&gt;</code> kombinieren');
-define('_WEBO_minify_page', 'HTML minimieren');
-define('_WEBO_minify_html_comments', 'HTML-Kommentare entfernen');
-define('_WEBO_minify_html_one_string', 'HTML auf einen String verkleinern');
+define('_WEBO_external_scripts_pass_HELP', 'If your website is protected via HTTP Basic Authorization you need to declare username and password so WEBO Site SpeedUp can process all required resources from the website.');
+
+define('_WEBO_combine_css', 'CSS-Dateien kombinieren');
+define('_WEBO_combine_css_HELP', 'Depending on this option CSS won\'t be combined, or there will be combined only CSS in &lt;head&gt; tag, or there will be combined the whole CSS on the page. All combined CSS code will be minified.');
+define('_WEBO_combine_css1', 'Don\'t combine CSS files');
+define('_WEBO_combine_css2', 'Combine only CSS included in tag <code>&lt;head&gt;</code>');
+define('_WEBO_combine_css3', 'Combine all CSS in tags <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code>');
+define('_WEBO_external_scripts_css', 'Vermischung von externem Styles aktivieren');
+define('_WEBO_external_scripts_css_HELP', 'There will be combined files located on all hosts. Otherwise WEBO Site SpeedUp will combine only files located on the same host that initial web page.');
+define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktivieren');
+define('_WEBO_external_scripts_css_inline_HELP', 'There will be combined all CSS included with the help of &lt;style&gt; and &lt;link&gt; tags. Otherwise WEBO Site SpeedUp will combine files included with &lt;link&gt; tag.');
 define('_WEBO_minify_css_file', 'Combined CSS file name');
+define('_WEBO_minify_css_file_HELP', 'File name can include only latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_external_scripts_ignore_list', 'CSS-Dateien vom Vermischen ausschlie&szlig;en');
+define('_WEBO_external_scripts_additional_list_HELP', 'Defined files won\'t be included into combined CSS file. You need to define only file names, not absolute paths to them.');
+define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
+define('_WEBO_external_scripts_include_code_HELP', 'Entered CSS code will be added to the end of each combined CSS file. This field allows you to define additional styles for website working under WEBO Site SpeedUp.');
+
+define('_WEBO_minify_javascript', 'JavaScript-Dateien kombinieren');
+define('_WEBO_minify_javascript_HELP', 'Depending on this option JavaScript won\'t be combined, or there will be combined only JavaScript in &lt;head&gt; tag, or there will be combined the whole JavaScript on the page.');
+define('_WEBO_minify_javascript1', 'Don\'t combine JavaScript files');
+define('_WEBO_minify_javascript2', 'Combine only JavaScript included in tag <code>&lt;head&gt;</code>');
+define('_WEBO_minify_javascript3', 'Combine all JavaScript in tags <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code>');
+define('_WEBO_external_scripts_inline', 'Vermischung von Inline JavaScript aktivieren');
+define('_WEBO_external_scripts_inline_HELP', 'There will be combined both inline code in tags &lt;script&gt; and JavaScript code from external files. Otherwise there will be combined only JavaScript included via &lt;script src=&quot;...&quot;&gt;.');
+define('_WEBO_external_scripts_on', 'Vermischung von externem JavaScript aktivieren');
+define('_WEBO_external_scripts_on_HELP', 'There will be combined files located on all hosts. Otherwise WEBO Site SpeedUp will combine only files located on the same host that initial web page.');
 define('_WEBO_minify_javascript_file', 'Combined JavaScript file name');
-define('_WEBO_gzip_javascript', 'Gzip JavaScript');
+define('_WEBO_minify_javascript_file_HELP', 'File name can include only latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_external_scripts_ignore_list', 'JavaScript-Dateien vom Vermischen ausschlie&szlig;en');
+define('_WEBO_external_scripts_ignore_list_HELP', 'Defined files won\'t be included into combined JavaScript file. You need to define only file names, not absolute paths to them.');
+define('_WEBO_external_scripts_head_end', 'Verschiebung aller vermischten Scripts nach <code>&lt;/head&gt;</code> erzwingen');
+define('_WEBO_external_scripts_head_end_HELP', 'Combined JavaScript file call will be moved to closing tag &lt;/head&gt;.');
+
+define('_WEBO_minify_css', 'CSS-Dateien minimieren');
+define('_WEBO_minify_css_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined CSS file.');
+define('_WEBO_minify_js', 'JavaScript-Dateien minimieren');
+define('_WEBO_minify_js_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined JavaScript file. Library choice affects minify algorithm and compression rate. Maximum compression can be achieved with any of these libraries depending on initial conditions.');
+define('_WEBO_minify_js1', 'Don\'t minify JavaScript');
+define('_WEBO_minify_js2', 'Mit JSMin minimieren');
+define('_WEBO_minify_js3', 'Mit YUI Compressor mimimieren');
+define('_WEBO_minify_js4', 'Mit Packer minimieren');
+define('_WEBO_minify_page', 'HTML minimieren');
+define('_WEBO_minify_page_HELP', 'HTML code will be cleaned from double spaces, double line breaks, empty symbols at the beginning of every string and spaces before tag ends. Tags &lt;pre&gt;, &lt;textarea&gt;, &lt;script&gt; will be excluded from all actions .');
+define('_WEBO_minify_html_comments', 'HTML-Kommentare entfernen');
+define('_WEBO_minify_html_comments_HELP', 'All HTML comments will be removed. This can break conditional comments and some JavaScript counters.');
+define('_WEBO_minify_html_one_string', 'HTML auf einen String verkleinern');
+define('_WEBO_minify_html_one_string_HELP', 'HTML code of result web page will be compressed to one string. This can help with removing extra spaces and line breaks. But this is CPU intensive and should be used carefully.');
+
+define('_WEBO_unobtrusive_on', 'Unauff&auml;lliges JavaScript aktivieren');
+define('_WEBO_unobtrusive_on_HELP', 'Every web page load will be accelerated with unobtrusive JavaScript according to options in this section.');
+define('_WEBO_unobtrusive_body', 'JavaScript Datei vor <code>&lt;/body&gt;</code> einflie&szlig;en lassen');
+define('_WEBO_unobtrusive_body_HELP', 'Combined JavaScript files will be moved to closing &lt;/body&gt; tag. This option has more priority than &quot;Force moving combined script to &lt;/head&gt;&quot;.');
+define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
+define('_WEBO_unobtrusive_all_HELP', 'All JavaScript calls will be moved to closing &lt;/body&gt; tag according to their initial order on the web page.');
+define('_WEBO_unobtrusive_informers', 'JavaScript Informer Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
+define('_WEBO_unobtrusive_informers_HELP', 'The whole JavaScript code from widgets calls will be moved to &lt;/body&gt;.');
+define('_WEBO_unobtrusive_counters', 'Counter Aufrufe vor <code>&lt;/body&gt;</code> verschieben');
+define('_WEBO_unobtrusive_counters_HELP', 'The whole JavaScript code from counters calls will be moved to &lt;/body&gt;.');
+define('_WEBO_unobtrusive_ads', 'Werbung vor <code>&lt;/body&gt;</code> verschieben');
+define('_WEBO_unobtrusive_ads_HELP', 'The whole JavaScript code from ads (context and banners) calls will be moved to &lt;/body&gt;.');
+define('_WEBO_unobtrusive_iframes', 'Make iframes\' load delayed');
+define('_WEBO_unobtrusive_iframes_HELP', 'The whole HTML code from iframes calls will be moved to &lt;/body&gt;.');
+
 define('_WEBO_gzip_css', 'Gzip CSS');
-define('_WEBO_gzip_page', 'Gzip HTML');
-define('_WEBO_gzip_noie', 'Use <code>deflate</code> instead of <code>gzip</code> for IE6/7');
-define('_WEBO_gzip_cookie', 'M&ouml;glichkeit f&uuml;r Gzip via Cokkies pr&uuml;fen');
+define('_WEBO_gzip_css_HELP', 'All CSS files will be compressed via gzip.');
+define('_WEBO_gzip_javascript', 'Gzip JavaScript');
+define('_WEBO_gzip_javascript_HELP', 'All JavaScript files will be compressed via gzip.');
 define('_WEBO_gzip_fonts', 'Gzip Fonts');
+define('_WEBO_gzip_fonts_HELP', 'All fonts files (.eot, .ttf, .otf etc) will be compressed via gzip.');
+define('_WEBO_gzip_page', 'Gzip HTML');
+define('_WEBO_gzip_page_HELP', 'All HTML files (.eot, .ttf, .otf etc) will be compressed via gzip.');
+define('_WEBO_gzip_noie', 'Use <code>deflate</code> instead of <code>gzip</code> for IE6/7');
+define('_WEBO_gzip_noie_HELP', 'In some cases gzip in IE6 and IE7 browsers can lead to incorrect page view. This option allows you to force alternative compression technique usage for these browsers.');
+define('_WEBO_gzip_cookie', 'M&ouml;glichkeit f&uuml;r Gzip via Cokkies pr&uuml;fen');
+define('_WEBO_gzip_cookie_HELP', 'WEBO Site SpeedUp can perform additional check for gzip support in browsers. If it\'s been defined all data will be compressed regardless Accept-Encoding header.');
+
 define('_WEBO_far_future_expires_javascript', 'JavaScript zwischenspeichern');
+define('_WEBO_far_future_expires_javascript_HELP', 'All JavaScript files will have caching headers set to far future.');
 define('_WEBO_far_future_expires_css', 'CSS zwischenspeichern');
+define('_WEBO_far_future_expires_css_HELP', 'All CSS files will have caching headers set to far future.');
 define('_WEBO_far_future_expires_images', 'Bilder zwischenspeichern');
-define('_WEBO_far_future_expires_video', 'Video-Dateien zwischenspeichern');
-define('_WEBO_far_future_expires_static', 'Statische Assets zwischenspeichern');
-define('_WEBO_far_future_expires_html', 'HTML zwischenspeichern');
-define('_WEBO_far_future_expires_html_timeout', 'Standard-Timeout f&uuml;r das Cachen von HTML, in Sekunden');
+define('_WEBO_far_future_expires_images_HELP', 'All images will have caching headers set to far future.');
 define('_WEBO_far_future_expires_fonts', 'Fonts zwischenspeichern');
+define('_WEBO_far_future_expires_fonts_HELP', 'All fonts files will have caching headers set to far future. This option is applied via .htaccess.');
+define('_WEBO_far_future_expires_video', 'Video-Dateien zwischenspeichern');
+define('_WEBO_far_future_expires_video_HELP', 'All video files will have caching headers set to far future. This option is applied via .htaccess.');
+define('_WEBO_far_future_expires_static', 'Statische Assets zwischenspeichern');
+define('_WEBO_far_future_expires_static_HELP', 'All other static files will have caching headers set to far future. This option is applied via .htaccess.');
+define('_WEBO_far_future_expires_html', 'HTML zwischenspeichern');
+define('_WEBO_far_future_expires_html_HELP', 'All images will have caching headers. Cache timeout will be set according to option &quot;Default timeout to cache HTML&quot;.');
+define('_WEBO_far_future_expires_html_timeout', 'Standard-Timeout f&uuml;r das Cachen von HTML, in Sekunden');
+define('_WEBO_far_future_expires_html_timeout_HELP', 'Time to cache HTML files. Zero value means zero timeout.');
 define('_WEBO_far_future_expires_external', 'Cache external files');
+define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be cached and served fro mthe same host that web page itself.');
+
 define('_WEBO_html_cache_enabled', 'Generierte HTML-Dateien zwischenspeichern');
+define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout set in option &quot;Default HTML cache timeout&quot;. This option allows you to significantly speedup web pages load with long generation time. But this is reasonable only for static pages without dynamic content.');
 define('_WEBO_html_cache_timeout', 'Standard-Timeout, in Sekunden');
+define('_WEBO_html_cache_timeout_HELP', 'After this time all cached HTML pages will be recreated on server side.');
 define('_WEBO_html_cache_flush_only', 'Nur das fr&uuml;here Sp&uuml;len von Inhalt aktivieren');
+define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whole web page but the first n bytes of it (set in option &quot;Flush content size&raquo;). And this amount of data will be flushed to browser earlier than the rest web page content. So browser will receive calls to required resources earlier and don\'t wait the rest of the page to start their load.');
 define('_WEBO_html_cache_flush_size', 'Gr&ouml;&szlig;e des zu sp&uuml;lenden Inhalts (in Bytes)');
+define('_WEBO_html_cache_flush_size_HELP', 'Size of cached flushed part of a web page. It can be fixed (to avoid any issues with browsers or network connection). Empty (or zero) value leads to flush the whole web page content before closing &lt;/head&gt; tag.');
 define('_WEBO_html_cache_ignore_list', 'Liste der Teile von URLs, die beim Zwischenspeichern ignoriert werden');
+define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching.');
 define('_WEBO_html_cache_allowed_list', 'Liste der USER AGENTS (Robots), die zwischengespeichert werden');
-define('_WEBO_footer_text', 'Link auf Web Optimizer hinzuf&uuml;gen');
-define('_WEBO_footer_image', 'Web Optimizer-Bild hinzuf&uuml;gen');
+define('_WEBO_html_cache_allowed_list_HELP', 'This option allows you to set a list of USER AGENTS which will receive only cached HTML pages. For example caching HTML pages for all search engines can reduce server side load.');
+
+define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
+define('_WEBO_performance_mtime_HELP', 'There will be gained additional speedup (on server side). But to refresh combined files you will need to change calls of initial files in HTML code or to refresh WEBO Site SpeedUp cache.');
+define('_WEBO_performance_plain_string', 'Do not use regular expressions');
+define('_WEBO_performance_plain_string_HELP', 'Regular expressions usage damages server performance and they can be replaced with simple string operations. But in the latter case probability of incorrect HTML parsing (for invalid (X)HTML documents only) will be higher.');
+define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code> tag');
+define('_WEBO_performance_quick_check_HELP', 'There can be gained additional benefit with simplified cache integrity check (only via general content of &lt;head&gt; tag. But this can\'t be used if any external files must be excluded from merging.');
+define('_WEBO_performance_cache_version', 'Cache version number');
+define('_WEBO_performance_cache_version_HELP', 'Cache version defines version of all files in cache. To refresh cache on client side (in browsers) you need to change this number.');
+define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
+define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quo;tCache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
+define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
+define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
+
+define('_WEBO_footer_text', 'Link auf WEBO Site SpeedUp hinzuf&uuml;gen');
+define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');
+define('_WEBO_footer_image', 'WEBO Site SpeedUp-Bild hinzuf&uuml;gen');
+define('_WEBO_footer_image_HELP', 'File name with WEBO Site SpeedUp logo. All allowed files are located in: &lt;WEBO Site SpeedUp path&gt;/web-optimizer/images/. If this option is empty a text defined in &quot;Text for backlink&quot; option will be shown.');
 define('_WEBO_footer_link', 'Text for backlink');
+define('_WEBO_footer_link_HELP', 'If option &quot;Add a WEBO Site SpeedUp image&quot; is disabled this text will be shown in a link. Otherwise is will used as a title for image.');
 define('_WEBO_footer_css_code', 'Styles for backlink placement');
+define('_WEBO_footer_css_code_HELP', 'These styles will be applied for WEBO Site SpeedUp link. You can define link placement, its color, background, size, etc.');
 define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
+define('_WEBO_footer_spot_HELP', 'Attribute lang=&quot;wo&quot; existence indicates that WEBO Site SpeedUp successfully parses this page It\'s used in internal algorithms.');
+
 define('_WEBO_data_uris_on', '<code>data:URI</code> anwenden');
+define('_WEBO_data_uris_on_HELP', 'Background images will be converted to base64 format and included directly into CSS files for all browsers which support data:URI.');
 define('_WEBO_data_uris_mhtml', '<code>mhtml</code> anwenden');
+define('_WEBO_data_uris_mhtml_HELP', 'Background images will be converted to mhtml format and included directly into CSS files for all versions of Internet Explorer which don\'t support data:URI.');
 define('_WEBO_data_uris_separate', 'Separate images from CSS code');
+define('_WEBO_data_uris_separate_HELP', 'Combined CSS code and images in base64 and mtml formats will be stored in different files. This should increase cachebility.');
 define('_WEBO_data_uris_domloaded', 'Load images on <code>DOMready</code> event');
+define('_WEBO_data_uris_domloaded_HELP', 'Background images\' load will be delayed to DOMReady event. This will increase initial web page render speed in browsers.');
 define('_WEBO_data_uris_size', 'Maximale Bildgr&ouml;szlig;e f&uuml;r <code>data:URI</code> (in Bytes)');
+define('_WEBO_data_uris_size_HELP', 'Images which size is greater than given number won\'t be converted to base64 format. No value or zero value means no limit.');
 define('_WEBO_data_uris_mhtml_size', 'Maximale Bildgr&ouml;szlig;e f&uuml;r <code>mhtml</code> (in Bytes)');
-define('_WEBO_data_uris_smushit', 'Alle CSS-Bilder via smush.it optimieren');
+define('_WEBO_data_uris_mhtml_size_HELP', 'Images which size is greater than given number won\'t be converted to mhtml format. No value or zero value means no limit.');
 define('_WEBO_data_uris_ignore_list', 'Dateien von <code>data:URI</code> ausschlie&szlig;en');
+define('_WEBO_data_uris_ignore_list_HELP', 'Images listed in this option won\'t be converted to data:URI. Please provide only file names not absolute paths.');
 define('_WEBO_data_uris_additional_list', 'Dateien von <code>mhtml</code> ausschlie&szlig;en');
+define('_WEBO_data_uris_additional_list_HELP', 'Images listed in this option won\'t be converted to mhtml. Please provide only file names not absolute paths.');
+
 define('_WEBO_css_sprites_enabled', 'CSS Sprites anwenden');
-define('_WEBO_css_sprites_truecolor_in_jpeg', 'Truecolor-Bilder als JPEG speichern');
-define('_WEBO_css_sprites_aggressive', '"Aggressive" Kombinationsmethode f&uuml;r CSS Sprites');
+define('_WEBO_css_sprites_enabled_HELP', 'Background images will be combined with the help of CSS Sprites technique. Related CSS code will be safely modified.');
+define('_WEBO_css_sprites_truecolor_in_jpeg', 'Images\' format');
+define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'If you choose automated format detection possibility of any side effects in CSS Sprites images will be minimal. If you choose JPEG format rate quality/size for true color images will the best but there will be no transparency.');
+define('_WEBO_css_sprites_truecolor_in_jpeg1', 'Detect proper format automatically');
+define('_WEBO_css_sprites_truecolor_in_jpeg2', 'Prefer JPEG format');
+define('_WEBO_css_sprites_aggressive', '&quot;Aggressive&quot; Kombinationsmethode f&uuml;r CSS Sprites');
+define('_WEBO_css_sprites_aggressive_HELP', 'Number of CSS Sprites images and their size will be lower but this may lead to graphical artefacts on web pages.');
 define('_WEBO_css_sprites_extra_space', 'Freien Platz f&uuml;r CSS Sprites hinzuf&uuml;gen');
-define('_WEBO_css_sprites_no_ie6', 'IE6 ausschlie&szlig;en (via CSS Hacks)');
+define('_WEBO_css_sprites_extra_space_HELP', 'Images in CSS Sprites will be rounded with free space to prevent side effects on web page scale in browsers. CSS Sprites file size will be a bit greater.');
+define('_WEBO_css_sprites_no_ie6', 'IE6 ausschlie&szlig;en');
+define('_WEBO_css_sprites_no_ie6_HELP', 'IE6 will receive its own CSS file without CSS Sprites.');
 define('_WEBO_css_sprites_memory_limited', 'Speicherbenutzung beschr&auml;nken');
+define('_WEBO_css_sprites_memory_limited_HELP', 'In case of available memory excess during CSS Sprites creation some images won\'t be included into final CSS Sprites.');
 define('_WEBO_css_sprites_dimensions_limited', 'Bilder gr&ouml;&szlig;er als eine vorgegebene Zahl in einer Dimension ausschlie&szlig;en');
+define('_WEBO_css_sprites_dimensions_limited_HELP', 'Images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
 define('_WEBO_css_sprites_ignore_list', 'Dateien von CSS Sprites ausschlie&szlig;en');
+define('_WEBO_css_sprites_ignore_list_HELP', 'Images listed in this option won\'t be included to CSS Sprites. Please provide only file names not absolute paths.');
+
+define('_WEBO_parallel_enabled', 'Multiple Hosts aktivieren');
+define('_WEBO_parallel_enabled_HELP', 'All images called on web page will be automatically distributed through multiple hosts (mirrors). For example URL http://www.site.com/i/logo.png or /i/bg.jpg can be replaced with http://i1.site.com/i/logo.png and http://i2.site.com/i/bg.jpg in case if both hosts i1 and i2 are available and listed in option &quot;Allowed hosts&quot;.');
+define('_WEBO_parallel_check', 'Verf&uuml;gbarkeit von hosts automatisch pr&uuml;fen');
+define('_WEBO_parallel_check_HELP', 'Available hosts will be checked automatically for images\' existence.');
+define('_WEBO_parallel_allowed_list', 'Erlaubte Hosts');
+define('_WEBO_parallel_allowed_list_HELP', 'Listed hosts will be used to distribute images. Please define no more than 4 hosts.');
+define('_WEBO_parallel_additional', 'Additional websites with multiple hosts (separated by space)');
+define('_WEBO_parallel_additional_HELP', 'If there is several websites using images\' distribution you can use WEBO Site SpeedUp to distribute their images through all these hosts.');
+define('_WEBO_parallel_additional_list', 'Hosts on these websites (separated by space)');
+define('_WEBO_parallel_additional_list_HELP', 'These hosts are used to distribute images which are located on websites defined in &quot;Additional websites with multiple hosts&quot; option.');
+
+define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
+define('_WEBO_htaccess_enabled_HELP', 'This option will create (or modify) .htaccess file in website root directory. Also it creates backup version of this file. .htaccess file content depends on the other options in this group.');
+define('_WEBO_htaccess_mod_deflate', 'Use <code>mod_deflate</code> + <code>mod_filter</code>');
+define('_WEBO_htaccess_mod_deflate_HELP', 'This is required for dynamic gzip compression. It\'s an alternative for mod_gzip.');
+define('_WEBO_htaccess_mod_gzip', 'Use <code>mod_gzip</code>');
+define('_WEBO_htaccess_mod_gzip_HELP', 'This is required for dynamic gzip compression. It\'s an alternative for mod_deflate.');
+define('_WEBO_htaccess_mod_expires', 'Use <code>mod_expires</code>');
+define('_WEBO_htaccess_mod_expires_HELP', 'This is required for client side cache headers set.');
+define('_WEBO_htaccess_mod_headers', 'Use <code>mod_headers</code>');
+define('_WEBO_htaccess_mod_headers_HELP', 'This is required to support proxy servers and old browsers with correct headers.');
+define('_WEBO_htaccess_mod_setenvif', 'Use <code>mod_setenvif</code>');
+define('_WEBO_htaccess_mod_setenvif_HELP', 'This is required to support proxy servers and old browsers with correct headers.');
+define('_WEBO_htaccess_mod_mime', 'Use <code>mod_mime</code>');
+define('_WEBO_htaccess_mod_mime_HELP', 'This is required for static gzip.');
+define('_WEBO_htaccess_mod_rewrite', 'Use <code>mod_rewrite</code>');
+define('_WEBO_htaccess_mod_rewrite_HELP', 'This is required for static gzip or forced caching.');
+define('_WEBO_htaccess_local', 'Place <code>.htaccess</code> file locally (not to Document Root)');
+define('_WEBO_htaccess_local_HELP', '<code>.htaccess</code> file will be located in local website folder but not document root of website host.');
+define('_WEBO_htaccess_access', 'Protect WEBO Site SpeedUp installation via <code>htpasswd</code>');
+define('_WEBO_htaccess_access_HELP', 'This option provides additional security for WEBO Site SpeedUp installation with the help of HTTP Basic Authorization and .htaccess and .htpasswd files.');
+define('_WEBO_htaccess_login', 'Login to protect WEBO Site SpeedUp with <code>.htpasswd</code>');
+define('_WEBO_htaccess_login_HELP', 'To protect WEBO Site SpeedUp with .htpasswd you need to define login and password. Login is set with this option. Password is equal to WEBO Site SpeedUp installation password.');
+
 define('_WEBO_parallel_enabled', 'Multiple Hosts aktivieren');
 define('_WEBO_parallel_check', 'Verf&uuml;gbarkeit von hosts automatisch pr&uuml;fen');
 define('_WEBO_parallel_allowed_list', 'Erlaubte Hosts, z.B. img i1 i2');
@@ -227,7 +352,7 @@ define('_WEBO_htaccess_mod_setenvif', '<code>mod_setenvif</code> verwenden');
 define('_WEBO_htaccess_mod_mime', '<code>mod_mime</code> verwenden');
 define('_WEBO_htaccess_mod_rewrite', '<code>mod_rewrite</code> verwenden');
 define('_WEBO_htaccess_local', 'Datei <code>.htaccess</code> lokal platzieren (nicht in die Dokument-Root)');
-define('_WEBO_htaccess_access', 'Web Optimizer Installation via <code>htpasswd</code> sch&uuml;tzen');
+define('_WEBO_htaccess_access', 'WEBO Site SpeedUp Installation via <code>htpasswd</code> sch&uuml;tzen');
 define('_WEBO_auto_rewrite_enabled', 'Auto-Rewrite aktivieren');
 define('_WEBO_auto_rewrite_chained', 'Ketten-Optimierung aktivieren');
 
@@ -268,7 +393,7 @@ define('_WEBO_SPLASH3_REWRITE_DESCRIPTION2', ' gepatcht. Sie k&ouml;nnen das <a 
 define('_WEBO_SPLASH3_REWRITE_DESCRIPTION3', '">Ergebnis pr&uuml;fen</a>.');
 define('_WEBO_SPLASH3_WORKING', 'Es funktioniert. OK?');
 define('_WEBO_SPLASH3_WORKING_REQUIRED', 'Erforderliche &Auml;nderungen f&uuml;r ');
-define('_WEBO_SPLASH3_ADD', 'Jetzt sollten Sie den <a href="#modify">Web Optimizer Code hinzuf&uuml;gen</a> zu Ihren eigenen PHP-Seiten(');
+define('_WEBO_SPLASH3_ADD', 'Jetzt sollten Sie den <a href="#modify">WEBO Site SpeedUp Code hinzuf&uuml;gen</a> zu Ihren eigenen PHP-Seiten(');
 define('_WEBO_SPLASH3_ADD_', '). Es macht Vielses einfacher, wenn Sie eine PHP-Datei haben, die alle Seiten Ihrer Website bedient, so dass Sie nur diese Datei &auml;ndern m&uuml;ssen.');
 define('_WEBO_SPLASH3_MODIFY', 'So modifizieren Sie Ihre PHP Dateien:');
 define('_WEBO_SPLASH3_TOFILE', 'Zu Datei');
@@ -294,7 +419,7 @@ define('_WEBO_SPLASH3_HTACCESS_CHMOD', 'Stellen Sie sicher, dass die Root Ihrer 
 define('_WEBO_SPLASH3_HTACCESS_CHMOD2', 'CHMOD 775 oder CHMOD 777 oder <code>.htaccess</code> dort im Lese/Schreibmodus erstellen oder CHMOD der aktuellen <code>.htaccess</code> zu 664 oder 777.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD3', 'Stellen Sie sicher, dass die Root Ihrer Website Lese- und Schreibrechte f&uuml;r Prozesse Ihres Webservers hat oder eine beschreibbare <code>.htaccess</code>-Datei existiert.');
 define('_WEBO_SPLASH3_HTACCESS_CHMOD4', 'CHMOD 775 oder CHMOD 777 oder <code>.htaccess</code> dort im Lese/Schreibmodus erstellen oder CHMOD der aktuellen <code>.htaccess</code> zu 664 oder 777.');
-define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Stellen Sie sicher, dass Sie Web Optimizer installiert haben nach');
+define('_WEBO_SPLASH3_HTACCESS_CHMOD5', 'Stellen Sie sicher, dass Sie WEBO Site SpeedUp installiert haben nach');
 define('_WEBO_SPLASH3_CONFSAVED', 'Konfiguration gespeichert');
 define('_WEBO_SPLASH3_CONFIGERROR', 'Kann Konfigurationsdatei nicht zum Schreiben &ouml;ffnen. &Auml;ndern Sie die Eigenschaften der <code>config.webo.php</code> so, dass sie beschreibbar ist.');
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Sie k&ouml;nnen das &uuml;blicherweise &uuml;ber Ihren FTP-Client erledigen. Navigieren Sie zu <strong>');
@@ -302,11 +427,11 @@ define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , klicken Sie mit der rechten Ma
 define('_WEBO_SPLASH3_CONFIGERROR4', 'Wenn Sie das getan haben, aktualisieren Sie diese Seite.');
 define('_WEBO_SPLASH3_CONFIGERROR5', 'Konfigurationsdatei existiert nicht. Laden Sie das vollst&auml;ndige Script von <a href="http://code.google.com/p/web-optimizator/downloads/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>');
 define('_WEBO_SPLASH3_ADDITIONAL', 'Einstellungen f&uuml;r optimale Performance');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Sie k&ouml;nnen erweiterte Einstellungen auf Ihre Website anwenden, damit Web Optimizer effizienter arbeitet. Pr&uuml;fen Sie Folgendes:');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Machen Sie Ihre Webseite Standard-Beschwerde (HTML, JavaScript und CSS).</strong> Non-Standard externen Dateien Eingliederung f&uuml;ren zu falschen Web Optimizer Verhalten und ihre disconfiguration.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Alle f&uuml;r Ihre Website erforderlichen JavaScript- und CSS-Dateienin die <code>head</code>-Sektion verschieben.</strong> Das erm&ouml;glicht Web Optimizer das Zusammenf&uuml;hren und Minimieren.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Multiple Hosts f&uuml;r Ihre Website hinzuf&uuml;gen.</strong> Sie m&uuml;ssen zu Ihrer DNS den Record <code>* IN A your_server_IP_address</code> hinzuf&uuml;gen und dann passende Subdomains (z.B. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) in Ihre Serverkonfiguration hinzuf&uuml;gen und Web Optimizer erneut installieren. Web Optimizer wird die existierenden Hosts automatisch ermitteln (wenn nicht, f&uuml;gen Sie diese manuell hinzu) und die Bilder auf sie verteilen.');
-define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Inline CSS und JavaScript in exterene Dateien verschieben.</strong> Das macht die Verwaltung von &Auml;nderungen am Design und Verhalten Ihrer Website einfacher. Au&szlig;erdem erm&ouml;glicht es Web Optimizer das Zusammenf&uuml;hren, Minimieren und Zwischenspeichern aller Styles und Scripts, die auf Ihrer Website benutzt werden.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO', 'Sie k&ouml;nnen erweiterte Einstellungen auf Ihre Website anwenden, damit WEBO Site SpeedUp effizienter arbeitet. Pr&uuml;fen Sie Folgendes:');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_1', '<strong>Machen Sie Ihre Webseite Standard-Beschwerde (HTML, JavaScript und CSS).</strong> Non-Standard externen Dateien Eingliederung f&uuml;ren zu falschen WEBO Site SpeedUp Verhalten und ihre disconfiguration.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_2', '<strong>Alle f&uuml;r Ihre Website erforderlichen JavaScript- und CSS-Dateienin die <code>head</code>-Sektion verschieben.</strong> Das erm&ouml;glicht WEBO Site SpeedUp das Zusammenf&uuml;hren und Minimieren.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_3', '<strong>Multiple Hosts f&uuml;r Ihre Website hinzuf&uuml;gen.</strong> Sie m&uuml;ssen zu Ihrer DNS den Record <code>* IN A your_server_IP_address</code> hinzuf&uuml;gen und dann passende Subdomains (z.B. <code>i1</code> <code>i2</code> <code>i3</code> <code>i4</code>) in Ihre Serverkonfiguration hinzuf&uuml;gen und WEBO Site SpeedUp erneut installieren. WEBO Site SpeedUp wird die existierenden Hosts automatisch ermitteln (wenn nicht, f&uuml;gen Sie diese manuell hinzu) und die Bilder auf sie verteilen.');
+define('_WEBO_SPLASH3_ADDITIONAL_INFO_4', '<strong>Inline CSS und JavaScript in exterene Dateien verschieben.</strong> Das macht die Verwaltung von &Auml;nderungen am Design und Verhalten Ihrer Website einfacher. Au&szlig;erdem erm&ouml;glicht es WEBO Site SpeedUp das Zusammenf&uuml;hren, Minimieren und Zwischenspeichern aller Styles und Scripts, die auf Ihrer Website benutzt werden.');
 
 /* System check info on the first screen */
 define('_WEBO_SYSTEM_CHECK', '&Uuml;berpr&uuml;fung des Server Konfiguration...');
