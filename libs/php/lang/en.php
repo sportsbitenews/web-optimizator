@@ -72,6 +72,7 @@ define('_WEBO_UNINSTALL_SUCCESS', 'WEBO Site SpeedUp was successfully uninstalle
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation');
+define('_WEBO_NEW_ENTER', 'Enter details');
 define('_WEBO_NEW_PROTECT', '<p class="wssI">During installation root .htaccess file and some other source files of your web system will be changed so please make sure they are writable (each changed file will be automatically backed up).</p><p class="wssI">If no valid license key will be entered, WEBO Site SpeedUp <a href="http://www.web-optimizer.us/ru/web-optimizer/comparison.html">Community edition</a> will be installed.</p><p class="wssI">When installed, WEBO Site SpeedUp will be automatically configured based on current server capabilites. You can review and change any options later using this administative interface.</p><p class="wssI">More information on WEBO Site SpeedUp installing and configuring you can get from <a href="http://code.google.com/p/web-optimizator/wiki/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">online documentation</a>.</p>');
 define('_WEBO_NEW_NOSCRIPT', 'JavaScript must be enabled for correct work!');
 

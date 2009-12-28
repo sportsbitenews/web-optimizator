@@ -35,7 +35,7 @@
 ?> wssA0<?php
 	}
 ?>" id="wss_error4"><?php
-	echo "Please confirm license agreement";
+	echo _WEBO_LOGIN_LICENSEAGREEMENT . _WEBO_LOGIN_LICENSEAGREEMENT2;
 ?></li></ul></div></div>
 <h2 class="wssB"><?php
 	echo _WEBO_NEW_ENTER;
@@ -147,7 +147,7 @@
 		</dd>
 		<dt class="wssD1 wssA0" id="wss_eula1">
 			<label class="wssE"><?php 
-	echo "User agreement";
+	echo _WEBO_LOGIN_LICENSEAGREEMENT2;
 ?>:</label>
 		</dt>
 		<dd class="wssD2 wssA0" id="wss_eula2">

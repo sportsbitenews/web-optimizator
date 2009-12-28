@@ -72,6 +72,7 @@ define('_WEBO_UNINSTALL_SUCCESS', 'WEBO Site SpeedUp was successfully uninstalle
 
 /* Set login and password */
 define('_WEBO_NEW_TITLE', 'Installation');
+define('_WEBO_NEW_ENTER', 'Enter details');
 define('_WEBO_NEW_PROTECT', '<p class="wssI">During installation root .htaccess file and some other source files of your web system will be changed so please make sure they are writable (each changed file will be automatically backed up).</p><p class="wssI">If no valid license key will be entered, WEBO Site SpeedUp <a href="http://www.web-optimizer.us/ru/web-optimizer/comparison.html">Community edition</a> will be installed.</p><p class="wssI">When installed, WEBO Site SpeedUp will be automatically configured based on current server capabilites. You can review and change any options later using this administative interface.</p><p class="wssI">More information on WEBO Site SpeedUp installing and configuring you can get from <a href="http://code.google.com/p/web-optimizator/wiki/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">online documentation</a>.</p>');
 define('_WEBO_NEW_NOSCRIPT', 'F&uuml;r die korrekte Arbeit muss JavaScript aktiviert sein!');
 
@@ -148,7 +149,7 @@ define('_WEBO_external_scripts_css_inline', 'Vermischung von Inline Styles aktiv
 define('_WEBO_external_scripts_css_inline_HELP', 'There will be combined all CSS included with the help of &lt;style&gt; and &lt;link&gt; tags. Otherwise WEBO Site SpeedUp will combine files included with &lt;link&gt; tag.');
 define('_WEBO_minify_css_file', 'Combined CSS file name');
 define('_WEBO_minify_css_file_HELP', 'File name can include only latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
-define('_WEBO_external_scripts_ignore_list', 'CSS-Dateien vom Vermischen ausschlie&szlig;en');
+define('_WEBO_external_scripts_additional_list', 'CSS-Dateien vom Vermischen ausschlie&szlig;en');
 define('_WEBO_external_scripts_additional_list_HELP', 'Defined files won\'t be included into combined CSS file. You need to define only file names, not absolute paths to them.');
 define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
 define('_WEBO_external_scripts_include_code_HELP', 'Entered CSS code will be added to the end of each combined CSS file. This field allows you to define additional styles for website working under WEBO Site SpeedUp.');

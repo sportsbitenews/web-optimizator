@@ -268,7 +268,7 @@ if ($submit) {
 			echo $c;
 							?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
-								?>"></span><span></span></a>
+								?>"></span><span>&nbsp;</span></a>
 						</li><?php
 		}
 	}

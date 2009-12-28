@@ -45,8 +45,7 @@ if (!$ajax) {
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;
-	if (0) {
-	foreach (array('de', 'ru', 'es', 'ua') as $lang) {
+	foreach (array('de') as $lang) {
 		if ($lang != $language) {
 ?><li class="wsse<?php
 			echo $i == 2 ? ' wsse2' : '';
@@ -57,7 +56,6 @@ if (!$ajax) {
 ?></a></li><?php
 			$i++;
 		}
-	}
 	}
 ?></ul><a id="wss_promo" href="#wss_promo" title="<?php
 	echo _WEBO_GENERAL_BUY;
