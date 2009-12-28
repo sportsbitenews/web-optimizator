@@ -18,10 +18,10 @@ define('_WEBO_GENERAL_EDITION', 'Edition');
 
 /* lang menu */
 define('_WEBO_GENERAL_LANGUAGE', 'Choose language');
-define('_WEBO_GENERAL_ru', 'Русский');
+define('_WEBO_GENERAL_ru', 'Р СѓСЃСЃРєРёР№');
 define('_WEBO_GENERAL_de', 'Deutsch');
-define('_WEBO_GENERAL_es', 'Espa?ol');
-define('_WEBO_GENERAL_ua', 'Українська');
+define('_WEBO_GENERAL_es', 'EspaГ±ol');
+define('_WEBO_GENERAL_ua', 'РЈРєСЂР°С—РЅСЃСЊРєР°');
 define('_WEBO_GENERAL_en', 'English');
 
 /* error layout */

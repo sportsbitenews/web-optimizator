@@ -39,6 +39,8 @@ define('_WEBO_LOGIN_USERNAME_HELP', 'Эта информация будет ис
 define('_WEBO_LOGIN_ENTERLOGIN', 'Введите ваше имя');
 define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введите пароль');
+define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Подтверждение пароля');
+define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Подтвердите пароль');
 define('_WEBO_LOGIN_LICENSE', 'Лицензионный ключ');
 define('_WEBO_LOGIN_ENTERLICENSE', 'Введите ваш лицензионный ключ');
 define('_WEBO_SPLAHS1_PROTECTED', 'Защищенный режим');
@@ -52,6 +54,9 @@ define('_WEBO_LOGIN_ALLOW_HELP', 'Если эта опция включена, �
 define('_WEBO_LOGIN_SUCCESS', 'Все настройки успешно сохранены');
 define('_WEBO_LOGIN_ENTEROLDPASSWORD', 'Введите текущий пароль');
 define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Пароли не совпадают');
+define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я ознакомился с лицензионным соглашением и принимаю его');
+define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы ознакомились с лицензионным соглашением и принимаете его');
+
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
@@ -72,12 +77,10 @@ define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с при
 /* First splash -- set document root */
 define('_WEBO_SPLASH1_UNINSTALL', 'Удалить');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Удаление WEBO Site SpeedUp');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">WEBO Site SpeedUp</a>. Вы можете в любой момент установить его снова просто зайдя на <a href="http://');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS2', '">страницу WEBO Site SpeedUp</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Мы будем рады видеть отзывы о системе на <a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">сайте WEBO Site SpeedUp</a>, вы также можете отправить <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">любые проблемные вопросы</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Теперь можно вернуться обратно к <a href="');
-define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашему сайту</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_HELP', 'Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
+define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование WEBO Site SpeedUp. Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
+define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Вы можете посетить <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">сайт нашей компании</a> и <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">отправить запрос</a> на любую тему, связанную с WEBO Site SpeedUp.');
+define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Вы можете также в любой момент переустановить WEBO Site SpeedUp просто зайдя на <a href="http://');
+define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">страницу WEBO Site SpeedUp</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_SEND', 'Отправить сообщение');
 define('_WEBO_SPLASH1_NEXT', 'Далее');
 define('_WEBO_SPLASH1_BACK', 'Назад');
@@ -368,10 +371,13 @@ define('_WEBO_DASHBOARD_STATUS_LIVE', 'рабочий&nbsp;режим');
 define('_WEBO_DASHBOARD_STATUS_WORKING', 'Вы можете перевести приложение в <a href="#wss_system" class="wssJ">режим отладки</a>. Для этого надо нажать &laquo;Отключить&raquo;.');
 define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'не работает');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'режим&nbsp;отладки');
-define('_WEBO_DASHBOARD_STATUS_TESTING', 'Вы можете отладить работу приложения');
-define('_WEBO_DASHBOARD_STATUS_TESTING2', 'используя параметр <code>web_optimizer_debug</code>');
-define('_WEBO_DASHBOARD_STATUS_COOKIE', 'или выставив cookie');
-define('_WEBO_DASHBOARD_STATUS_TESTING3', 'После этого, пожалуйста, нажмите &laquo;Включить&raquo;.');
+define('_WEBO_DASHBOARD_STATUS_TESTING', 'Вы можете отладить работу приложения:');
+define('_WEBO_DASHBOARD_STATUS_TESTING2', 'используя GET-параметр ');
+define('_WEBO_DASHBOARD_STATUS_TESTING4', '<code>web_optimizer_debug</code>');
+define('_WEBO_DASHBOARD_STATUS_COOKIE', 'или просто ');
+define('_WEBO_DASHBOARD_STATUS_COOKIE2', 'при помощи cookies');
+define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp in live mode.');
+define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Нажмите кнопку &laquo;Включить&raquo;, когда вы захотите перевести WEBO&nbsp;Site&nbsp;SpeedUp в рабочий режим.');
 define('_WEBO_DASHBOARD_STATUS_ENABLE', 'Включить');
 define('_WEBO_DASHBOARD_STATUS_DISABLE', 'Отключить');
 define('_WEBO_DASHBOARD_STATUS0','Начинаем оптимизацию');
@@ -460,7 +466,7 @@ define('_WEBO_SYSTEM_UPDATES', 'Обновление');
 define('_WEBO_SYSTEM_NOUPDATES', 'Вы используете самую последнюю версию WEBO Site SpeedUp.');
 define('_WEBO_SYSTEM_INSTALL', 'Установка и удаление');
 define('_WEBO_SYSTEM_ISSUES', 'Проблемы и замечания');
-define('_WEBO_SYSTEM_SETTINGS_TITLE', 'Параметры WEBO Site SpeedUp');
+define('_WEBO_SYSTEM_SETTINGS_TITLE', 'Параметры приложения');
 define('_WEBO_SYSTEM_UPDATES_TITLE', 'Обновление программы');
 define('_WEBO_SYSTEM_INSTALL_TITLE', 'Установка и удаление WEBO Site SpeedUp');
 define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp установлен на');
@@ -493,7 +499,8 @@ define('_WEBO_ACCOUNT_EXPIRES', 'Срок действия истекает');
 define('_WEBO_ACCOUNT_LICENSEINFO', 'WEBO Site SpeedUp распространяется по годовой подписке. Использование некоммерческой версии возможно только для некоммерческих сайтов (<a href="http://www.web-optimizer.us/ru/web-optimizer/questions-answers.html" class="wssJ">ознакомьтесь с ответами на часто задаваемые вопросы</a>). Для коммерческих сайтов (т.е. сайтов, деятельность которых связана с извлечением прибыли) WEBO Site SpeedUp доступен в двух редакциях: облегченной и полной (<a href="#wss_promo" class="wssJ">сравнение версий</a>).');
 define('_WEBO_ACCOUNT_LICENSEINFO2', 'Регистрация лицензионного ключа осуществляется автоматически: его нужно просто ввести в поле слева. После регистрации будет выводиться информация о сроке истечения его действия. По его окончанию вы можете приобрести продление лицензии WEBO Site SpeedUp.');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'Все вопросы касательно политики лицензирования программы можно задать, <a href="http://www.web-optimizer.us/ru/about/comtacts.html" class="wssJ">используя контакты, приведенные на официальном сайте</a>.');
-define('_WEBO_ACCOUNT_INVALID', 'Не удается активировать лицензионный ключ');
+define('_WEBO_ACCOUNT_INVALID', 'Введите правильный лицензионный ключ или оставьте поле пустым');
+define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Извините, но регистрационный сервер сейчас недоступен. Попробуйте зарегистрироваться позже');
 
 /* Cache page */
 define('_WEBO_CACHE_EMPTY', 'В кэше ничего нет');
