@@ -203,11 +203,11 @@
 			?><a href="http://<?php
 		echo $website;
 			?>/?web_optimizer_debug=1" class="wssJ"><?php
-		echo _WEBO_DASHBOARD_STATUS_TESTING2;
-			?></a>,</li><li class="wssO8"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
-			?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+			?></a>,</li><li class="wssO8"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
+			?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
 			?></a>.</li></ul><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING3;
 			?></p>
