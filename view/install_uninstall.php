@@ -96,13 +96,11 @@
 	echo _WEBO_UNINSTALL_SUCCESS;
 		?></h2>
 		<p class="wssI"><?php
-	echo _WEBO_SPLASH1_UNINSTALL_THANKS . $_SERVER['HTTP_HOST'] . str_replace($document_root, "/", $basepath) . _WEBO_SPLASH1_UNINSTALL_THANKS2;
+	echo _WEBO_SPLASH1_UNINSTALL_THANKS;
 		?></p><p class="wssI"><?php
 	echo _WEBO_SPLASH1_UNINSTALL_VISIT;
 		?></p><p class="wssI"><?php
-	echo _WEBO_SPLASH1_UNINSTALL_BACK . str_replace($document_root, "/", $website_root) . _WEBO_SPLASH1_UNINSTALL_BACK2;
-		?></p><p class="wssI"><?php
-	echo _WEBO_SPLASH1_UNINSTALL_HELP;
+	echo _WEBO_SPLASH1_UNINSTALL_BACK . $_SERVER['HTTP_HOST'] . str_replace($document_root, "/", $basepath) . _WEBO_SPLASH1_UNINSTALL_BACK2;
 		?></p>
 	</div>
 	<div class="wssRB">
