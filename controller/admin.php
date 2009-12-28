@@ -1396,7 +1396,7 @@ class admin {
 		}
 /* make a fix to create new user config file if older config exists */
 		if (!@is_file($this->basepath . 'config.user.php')) {
-			@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
+			@copy($this->basepath . 'config.safe.php', $this->basepath . 'config.user.php');
 			if (@is_file($this->basepath . 'config.user.php')) {
 				$this->save_option("['config']", "user");
 				$this->options_file = 'config.user.php';
