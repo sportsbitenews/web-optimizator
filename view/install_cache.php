@@ -79,17 +79,17 @@
 		<ul class="wssO3">
 			<li class="wssO4"><a href="javascript:_.u()" class="wssJ wssJ1"><?php
 	echo _WEBO_CACHE_ALL;
-			?></a></li>
-			<li class="wssO4"><a href="javascript:_.u(1)" class="wssJ">.css</a></li>
-			<li class="wssO4"><a href="javascript:_.u(2)" class="wssJ">.css.gz</a></li>
-			<li class="wssO4"><a href="javascript:_.u(3)" class="wssJ">.css.css</a></li>
-			<li class="wssO4"><a href="javascript:_.u(4)" class="wssJ">.js</a></li>
-			<li class="wssO4"><a href="javascript:_.u(5)" class="wssJ">.js.gz</a></li>
-			<li class="wssO4"><a href="javascript:_.u(6)" class="wssJ">.php</a></li>
-			<li class="wssO4"><a href="javascript:_.u(7)" class="wssJ">.php.gz</a></li>
-			<li class="wssO4"><a href="javascript:_.u(8)" class="wssJ">.png</a></li>
-			<li class="wssO4"><a href="javascript:_.u(9)" class="wssJ">.jpg</a></li>
-			<li class="wssO4"><a href="javascript:_.u(10)" class="wssJ">.gz</a></li>
+			?><span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(1)" class="wssJ">.css<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(2)" class="wssJ">.css.gz<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(3)" class="wssJ">.css.css<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(4)" class="wssJ">.js<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(5)" class="wssJ">.js.gz<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(6)" class="wssJ">.php<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(7)" class="wssJ">.php.gz<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(8)" class="wssJ">.png<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(9)" class="wssJ">.jpg<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(10)" class="wssJ">.gz<span class="wssJ2"></span></a></li>
 		</ul>
 		<p class="wssI">
 			<a href="#wss_renew" class="wssJ7">
