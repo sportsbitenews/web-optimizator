@@ -54,9 +54,10 @@ define('_WEBO_LOGIN_ALLOW_HELP', 'Statistical information about website accelera
 define('_WEBO_LOGIN_SUCCESS', 'All settings have been successfully saved');
 define('_WEBO_LOGIN_ENTEROLDPASSWORD', 'Enter the current password');
 define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Passwords don\'t match');
-define('_WEBO_LOGIN_LICENSEAGREEMENT', 'I have read and agreed with the ');
+define('_WEBO_LOGIN_LICENSEAGREEMENT', 'I have read the ');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'license agreement');
-define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirm that you have read and agreed with the license agreement');
+define('_WEBO_LOGIN_LICENSEAGREEMENT3', 'and I accept it');
+define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirm that you have read and accepted the license agreement');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Update');

@@ -54,7 +54,9 @@ define('_WEBO_LOGIN_ALLOW_HELP', 'Если эта опция включена, �
 define('_WEBO_LOGIN_SUCCESS', 'Все настройки успешно сохранены');
 define('_WEBO_LOGIN_ENTEROLDPASSWORD', 'Введите текущий пароль');
 define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Пароли не совпадают');
-define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я ознакомился с лицензионным соглашением и принимаю его');
+define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я ознакомился с ');
+define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионным соглашением');
+define('_WEBO_LOGIN_LICENSEAGREEMENT3', ' и принимаю его');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы ознакомились с лицензионным соглашением и принимаете его');
 
 
