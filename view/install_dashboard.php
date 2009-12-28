@@ -259,6 +259,12 @@
 			?>).</p>
 			<p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING;
+			?><a href="http://<?php
+		echo $website;
+			?>/" class="wssJ"><?php
+		echo _WEBO_DASHBOARD_STATUS_WORKING2;
+			?></a><?php
+		echo _WEBO_DASHBOARD_STATUS_WORKING3;
 			?></p>
 			<p class="wssI"><a href="#wss_status" class="wssJ wssJ5"><?php
 		echo _WEBO_DASHBOARD_STATUS_DISABLE;
