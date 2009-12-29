@@ -41,8 +41,6 @@ define('_WEBO_LOGIN_PASSWORD', 'Пароль');
 define('_WEBO_LOGIN_ENTERPASSWORD', 'Введите пароль');
 define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Подтверждение пароля');
 define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Подтвердите ваш пароль');
-define('_WEBO_LOGIN_PASSWORD_CONFIRM', 'Подтверждение пароля');
-define('_WEBO_LOGIN_ENTERPASSWORDCONFIRM', 'Подтвердите пароль');
 define('_WEBO_LOGIN_LICENSE', 'Лицензионный ключ');
 define('_WEBO_LOGIN_ENTERLICENSE', 'Введите ваш лицензионный ключ');
 define('_WEBO_SPLAHS1_PROTECTED', 'Защищенный режим');
@@ -191,10 +189,10 @@ define('_WEBO_minify_js3', 'Минимизировать с помощью YUI C
 define('_WEBO_minify_js4', 'Минимизировать с помощью Packer');
 define('_WEBO_minify_page', 'Минимизировать HTML');
 define('_WEBO_minify_page_HELP', 'Из кода страниц будут удаляться двойные пробелы, двойные переводы строк, пустые символы в начале каждой строки и пробелы перед окончанием тэга. Все операции будут проводиться за исключением содержимого тэгов &lt;pre&gt;, &lt;textarea&gt;, &lt;script&gt;.');
-define('_WEBO_minify_html_one_string', 'Удалить HTML-комментарии');
-define('_WEBO_minify_html_one_string_HELP', 'Все HTML-комментарии будут удаляться, что может повлечь за собой неработоспособность условных комментариев, а также ряда счетчиков.');
-define('_WEBO_minify_html_comments', 'Сжать HTML до 1 строки');
-define('_WEBO_minify_html_comments_HELP', 'Код итоговой страницы будет вытянут в одну строку. С одной стороны подобная мера позволяет получить дополнительный выигрыш за счет удаления избыточных пробелов, табуляций и переводов строк, но с другой стороны требует значительных серверных ресурсов и должна быть использована с осторожностью.');
+define('_WEBO_minify_html_comments', 'Удалить HTML-комментарии');
+define('_WEBO_minify_html_comments_HELP', 'Все HTML-комментарии будут удаляться, что может повлечь за собой неработоспособность условных комментариев, а также ряда счетчиков.');
+define('_WEBO_minify_html_one_string', 'Сжать HTML до 1 строки');
+define('_WEBO_minify_html_one_string_HELP', 'Код итоговой страницы будет вытянут в одну строку. С одной стороны подобная мера позволяет получить дополнительный выигрыш за счет удаления избыточных пробелов, табуляций и переводов строк, но с другой стороны требует значительных серверных ресурсов и должна быть использована с осторожностью.');
 
 define('_WEBO_unobtrusive_on', 'Включить &laquo;ненавязчивый&raquo; JavaScript');
 define('_WEBO_unobtrusive_on_HELP', 'Ко всем страницам будет применяться технология ненавязчивого JavaScript в соответствии с остальными опциями данного раздела.');

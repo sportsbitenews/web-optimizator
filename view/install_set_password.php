@@ -129,7 +129,7 @@
 		</dd>
 		<dt class="wssD5">
 			<label for="wss_confirmagreement" class="wssE"><?php 
-	echo _WEBO_LOGIN_LICENSEAGREEMENT . '<a href="javascript:document.getElementById(\'wss_eula1\').style.display=\'block\';document.getElementById(\'wss_eula2\').style.display=\'block\';void(0)	">'._WEBO_LOGIN_LICENSEAGREEMENT2.'</a>' . _WEBO_LOGIN_LICENSEAGREEMENT3;
+	echo _WEBO_LOGIN_LICENSEAGREEMENT . '<a href="javascript:document.getElementById(\'wss_eula2\').style.display=\'block\';void(0)">' . _WEBO_LOGIN_LICENSEAGREEMENT2.'</a>' . _WEBO_LOGIN_LICENSEAGREEMENT3;
 ?>:</label>
 		</dt>
 		<dd class="wssD6 wssD7<?php
@@ -145,11 +145,6 @@
 		?> checked="checked"<?php
 	}?>/>
 		</dd>
-		<dt class="wssD1 wssA0" id="wss_eula1">
-			<label class="wssE"><?php 
-	echo _WEBO_LOGIN_LICENSEAGREEMENT2;
-?>:</label>
-		</dt>
 		<dd class="wssD2 wssA0" id="wss_eula2">
 			<pre class="wssF wssF1"><?php
 	if ($language == 'ru') {

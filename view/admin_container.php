@@ -45,7 +45,7 @@ if (!$ajax) {
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;
-	foreach (array('de') as $lang) {
+	foreach (array('de', 'ru', 'es', 'ua') as $lang) {
 		if ($lang != $language) {
 ?><li class="wsse<?php
 			echo $i == 2 ? ' wsse2' : '';

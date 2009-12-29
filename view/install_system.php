@@ -188,6 +188,12 @@
 			?>).</p>
 			<p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING;
+			?><a href="http://<?php
+		echo $website;
+			?>/" class="wssJ"><?php
+		echo _WEBO_DASHBOARD_STATUS_WORKING2;
+			?></a><?php
+		echo _WEBO_DASHBOARD_STATUS_WORKING3;
 			?></p>
 			<p class="wssI"><a href="#wss_status" class="wssJ wssJ5"><?php
 		echo _WEBO_DASHBOARD_STATUS_DISABLE;
@@ -198,13 +204,13 @@
 			?>)</p>
 			<p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING;
-			?></p><ul class="wssO7"><li class="wssO8"><?php
+			?></p><ul class="wssO wssO3"><li class="wssO4"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING2;
 			?><a href="http://<?php
 		echo $website;
 			?>/?web_optimizer_debug=1" class="wssJ"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
-			?></a>,</li><li class="wssO8"><?php
+			?></a>,</li><li class="wssO4"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
 			?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
@@ -214,7 +220,7 @@
 			<p class="wssI"><a href="#wss_status" class="wssJ wssJ7"><?php
 		echo _WEBO_DASHBOARD_STATUS_ENABLE;
 	}
-		?><span class="wssJ6"></span></a></p><h2 class="wssB"><?php
+			?><span class="wssJ6"></span></a></p><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_ISSUES;
 			?></h2><?php
 	if ($e + $w) {
