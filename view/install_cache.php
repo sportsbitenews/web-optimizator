@@ -87,9 +87,11 @@
 			<li class="wssO4"><a href="javascript:_.u(5)" class="wssJ">.js.gz<span class="wssJ2"></span></a></li>
 			<li class="wssO4"><a href="javascript:_.u(6)" class="wssJ">.php<span class="wssJ2"></span></a></li>
 			<li class="wssO4"><a href="javascript:_.u(7)" class="wssJ">.php.gz<span class="wssJ2"></span></a></li>
-			<li class="wssO4"><a href="javascript:_.u(8)" class="wssJ">.png<span class="wssJ2"></span></a></li>
-			<li class="wssO4"><a href="javascript:_.u(9)" class="wssJ">.jpg<span class="wssJ2"></span></a></li>
-			<li class="wssO4"><a href="javascript:_.u(10)" class="wssJ">.gz<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(8)" class="wssJ">.html<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(9)" class="wssJ">.html.gz<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(10)" class="wssJ">.png<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(11)" class="wssJ">.jpg<span class="wssJ2"></span></a></li>
+			<li class="wssO4"><a href="javascript:_.u(12)" class="wssJ">.gz<span class="wssJ2"></span></a></li>
 		</ul>
 		<p class="wssI">
 			<a href="#wss_renew" class="wssJ7">

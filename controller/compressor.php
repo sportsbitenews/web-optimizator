@@ -1,6 +1,6 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page.
  * Can also gzip and minify the page itself
  * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
@@ -117,10 +117,11 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 /* skip gzip/deflate if plugins are enabled - they can have onCache */
-			$file = $this->options['page']['cachedir'] . '/' . $this->uri .
+			$file = $this->options['page']['cachedir'] . $this->uri .
+				$this->ua_mod . '.html' .
 				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
-					$this->ua_mod : $this->encoding_ext);
-			if (file_exists($file)) {
+					'' : $this->encoding_ext);
+			if (@file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
 				$timestamp = 0;
@@ -498,7 +499,8 @@ class web_optimizer {
 							!empty($option['unobtrusive_ads']) ||
 							!empty($option['unobtrusive_counters']) ||
 							!empty($option['unobtrusive_informers']) ||
-							!empty($option['unobtrusive_iframes'])) {
+							!empty($option['unobtrusive_iframes']) ||
+							!empty($option['cache'])) {
 								if (!empty($this->web_optimizer_stage)) {
 									$this->write_progress($this->web_optimizer_stage++);
 								}
@@ -711,7 +713,17 @@ class web_optimizer {
 		$this->content = str_replace("﻿", "", $this->content);
 /* strip from content flushed part */
 		if (!empty($this->flushed)) {
-			$this->content = substr($this->content, $options['flush_size']);
+			if (empty($options['flush_size'])) {
+				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
+					$source = substr($this->content, $headpos + 7);
+				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
+					$source = substr($this->content, $headpos + 7);
+				} else {
+					$content_to_write = preg_replace("!.*<\/head>!is", "", $this->content);
+				}
+			} else {
+				$this->content = substr($this->content, $options['flush_size']);
+			}
 		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
@@ -747,27 +759,39 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 			$file = $options['cachedir'] .
-				$this->uri .
-				(empty($this->encoding_ext) ? $this->ua_mod : $this->encoding_ext);
+				$this->uri . $this->ua_mod . '.html' .
+				(empty($this->encoding_ext) ? '' : $this->encoding_ext);
 			if (file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
 				$timestamp = 0;
 			}
 /* set ETag, thx to merzmarkus */
-			header("ETag: \"" .
-				md5($this->content) .
-				(empty($this->encoding) ? '' : '-' .
-					str_replace("x-", "", $this->encoding)) .
-				"\"");
+			if (empty($options['flush'])) {
+				header("ETag: \"" .
+					md5($this->content) .
+					(empty($this->encoding) ? '' : '-' .
+						str_replace("x-", "", $this->encoding)) .
+					"\"");
+			}
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
 				if (!empty($options['gzip']) && !empty($this->encoding)) {
 					$content_to_write = $this->create_gz_compress($this->content,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* can't write a part of gzipped file */
 				} elseif (!empty($options['flush']) && empty($this->encoding)) {
-					$content_to_write =
-						substr($content_to_write, 0, $options['flush_size']);
+					if (empty($options['flush_size'])) {
+						if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
+							$source = substr($this->content, 0, $headpos + 7);
+						} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
+							$source = substr($this->content, 0, $headpos + 7);
+						} else {
+							$content_to_write = preg_replace("!(.*<\/head>).*!is", "$1", $this->content);
+						}
+					} else {
+						$content_to_write =
+							substr($this->content, 0, $options['flush_size']);
+					}
 /* or just write non-gzipped content */
 				} else {
 					$content_to_write = $this->content;
@@ -969,9 +993,6 @@ class web_optimizer {
 			$this->options['css']['data_uris'] = 0;
 			$this->options['css']['mhtml'] = 0;
 			$this->options['css']['data_uris_separate'] = 0;
-		}
-		if (!empty($this->encoding_ext)) {
-			$this->encoding_ext = $this->ua_mod . '.' . $this->encoding_ext;
 		}
 	}
 	
@@ -2336,25 +2357,12 @@ class web_optimizer {
 				}
 			}
 /* split XHTML behavior from HTML */
-			$xhtml = strpos($this->content, 'XHTML 1');
 			$this->xhtml = $xhtml > 34 && $xhtml < 100;
-/* add Web Optimizer spot */
+/* add WEBO Site SpeedUp spot */
 			if (!empty($this->options['page']['spot'])) {
-				$spot = ' ' . ($this->xhtml ? 'xml:' : '') . 'lang="wo"';
-				if (!empty($this->options['page']['html_tidy']) &&
-					($titlepos = strpos($this->content, '<title'))) {
-						$this->content = substr_replace($this->content,
-							$spot, $titlepos + 6, 0);
-				} elseif (!empty($this->options['page']['html_tidy']) &&
-					($titlepos = strpos($this->content, '<TITLE'))) {
-						$this->content = substr_replace($this->content,
-							$spot, $titlepos + 6, 0);
-				} else {
-					$this->content = preg_replace('!(<title)!is', "$1" .
-						$spot, $this->content);
-				}
+				$this->content .= '<!--WSS-->';
 			}
-/* add Web Optimizer stamp */
+/* add WEBO Site SpeedUp stamp */
 			if (!empty($this->options['page']['footer'])) {
 				$style = empty($this->options['page']['footer_style']) ? '' :
 					 ' style="' . $this->options['page']['footer_style'] . '"';
@@ -2650,7 +2658,7 @@ class web_optimizer {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Web Optimizer; Faster than Lightning; http://www.web-optimizer.us/) Firefox 3.5.3");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Faster than Lightning; http://www.web-optimizer.us/) Firefox 3.5.3");
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
 					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
 				}

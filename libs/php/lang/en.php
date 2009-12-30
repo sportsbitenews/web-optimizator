@@ -266,8 +266,8 @@ define('_WEBO_footer_link', 'Text for backlink');
 define('_WEBO_footer_link_HELP', 'If option &quot;Add a WEBO Site SpeedUp image&quot; is disabled this text will be shown in a link. Otherwise is will used as a title for image.');
 define('_WEBO_footer_css_code', 'Styles for backlink placement');
 define('_WEBO_footer_css_code_HELP', 'These styles will be applied for WEBO Site SpeedUp link. You can define link placement, its color, background, size, etc.');
-define('_WEBO_footer_spot', 'Add <code>lang="wo"</code> to <code>title</code>');
-define('_WEBO_footer_spot_HELP', 'Attribute lang=&quot;wo&quot; existence indicates that WEBO Site SpeedUp successfully parses this page It\'s used in internal algorithms.');
+define('_WEBO_footer_spot', 'Add <code>&lt;!--WSS--&gt;</code> to HTML document');
+define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; existence indicates that WEBO Site SpeedUp successfully parses this page. It\'s used in internal algorithms.');
 
 define('_WEBO_data_uris_on', 'Apply <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Background images will be converted to base64 format and included directly into CSS files for all browsers which support data:URI.');

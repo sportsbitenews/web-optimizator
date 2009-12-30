@@ -1059,7 +1059,7 @@ class admin {
 	function install_enter_password () {
 /* check for Web Optimizer existence on the website */
 		if (@filesize($this->index_check)) {
-			$installed = strpos(@file_get_contents($this->index_check), 'lang="wo"') || empty($this->compress_options['footer']['spot']);
+			$installed = strpos(@file_get_contents($this->index_check), '<!--WSS-->') || empty($this->compress_options['footer']['spot']);
 			@unlink($this->index_check);
 		} else {
 /* curl doesn't work -- can't check existence */
