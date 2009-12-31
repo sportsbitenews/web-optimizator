@@ -2357,34 +2357,54 @@ class admin {
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
 		} else {
+/* Apply options or just save them? */
+			if (!empty($this->input['wss_apply'])) {
 /* Save the options	to work config */
-			foreach($this->compress_options as $key => $option) {
-				if (is_array($option)) {
-					foreach($option as $option_name => $option_value) {
-						if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)]);
+				foreach($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
+								$this->save_option("['" .
+									strtolower($key) . "']['" .
+									strtolower($option_name) . "']",
+									$this->input['wss_' .
+									strtolower($key) . '_' .
+									strtolower($option_name)]);
+						}	
 						}
-					}
-				} else {
-					if (isset($this->input['wss_' . strtolower($key)])) {
-						$this->save_option("['" . strtolower($key) . "']", $this->input['wss_' . strtolower($key)]);
+					} else {
+						if (isset($this->input['wss_' . strtolower($key)])) {
+							$this->save_option("['" . strtolower($key)
+								. "']", $this->input['wss_' . strtolower($key)]);
+						}
 					}
 				}
 			}
 /* Save the options to backup config */
-			$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
-			$this->save_option("['title']", $this->input['wss_title']);
-			$this->save_option("['description']", $this->input['wss_description']);
-			foreach($this->compress_options as $key => $option) {
-				if (is_array($option)) {
-					foreach($option as $option_name => $option_value) {
-						if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)]);
+			if (strpos($this->input['wss_config'], 'user') !== false) {
+				$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
+				$this->save_option("['title']", $this->input['wss_title']);
+				$this->save_option("['description']", $this->input['wss_description']);
+				foreach($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							if (isset($this->input['wss_' . strtolower($key) .
+								'_' . strtolower($option_name)])) {
+									$this->save_option("['" . strtolower($key) .
+									"']['" .
+									strtolower($option_name) .
+									"']",
+									$this->input['wss_' .
+									strtolower($key) .
+									'_' .
+									strtolower($option_name)]);
+							}
 						}
-					}
-				} else {
-					if (isset($this->input['wss_' . strtolower($key)])) {
-						$this->save_option("['" . strtolower($key) . "']", $this->input['wss_' . strtolower($key)]);
+					} else {
+						if (isset($this->input['wss_' . strtolower($key)])) {
+							$this->save_option("['" . strtolower($key) . "']",
+								$this->input['wss_' . strtolower($key)]);
+						}
 					}
 				}
 			}

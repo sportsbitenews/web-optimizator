@@ -517,6 +517,7 @@ define('_WEBO_CACHE_ALL', 'All files');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Apply');
+define('_WEBO_OPTIONS_EDIT', 'Edit');
 define('_WEBO_OPTIONS_CONFIRM', 'Are you sure to delete the configuration "');
 define('_WEBO_OPTIONS_CONFIGURATION', 'Configuration');
 define('_WEBO_OPTIONS_DESCRIPTION', 'Description');

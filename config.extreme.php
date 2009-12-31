@@ -105,11 +105,11 @@ $compress_options['far_future_expires']['html_timeout'] = "60";
 ## Add caching for external files
 $compress_options['far_future_expires']['external'] = "1";
 ## Cache generated HTML files
-$compress_options['html_cache']['enabled'] = "0";
+$compress_options['html_cache']['enabled'] = "1";
 ## Cache timeout for generated HTML files, in seconds
-$compress_options['html_cache']['timeout'] = "600";
+$compress_options['html_cache']['timeout'] = "3600";
 ## Flush head section with first N bytes of body?
-$compress_options['html_cache']['flush_only'] = "1";
+$compress_options['html_cache']['flush_only'] = "0";
 ## Flush size of HTML body
 $compress_options['html_cache']['flush_size'] = "1024";
 ## Parts of ignore URL for HTML cache, separated by space

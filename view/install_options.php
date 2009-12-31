@@ -199,7 +199,7 @@ if ($submit) {
 					<ul class="wssU10">
 						<li class="wssU11<?php
 	if ($config == 'safe') {
-						?> wssU12<?php
+						?> wssU12 wssU17<?php
 	}
 						?>">
 							<a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe">
@@ -214,7 +214,7 @@ if ($submit) {
 						</li>
 						<li class="wssU11<?php
 	if ($config == 'optimal') {
-						?> wssU12<?php
+						?> wssU12 wssU17<?php
 	}
 						?>">
 							<a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal">
@@ -229,7 +229,7 @@ if ($submit) {
 						</li>
 						<li class="wssU11<?php
 	if ($config == 'extreme') {
-						?> wssU12<?php
+						?> wssU12 wssU17<?php
 	}
 						?>">
 							<a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme">
@@ -246,7 +246,7 @@ if ($submit) {
 		foreach ($configs as $c) {
 						?><li class="wssU11<?php
 			if ($config == $c) {
-						?> wssU12<?php
+						?> wssU12 wssU17<?php
 			}
 						?>">
 							<a class="wssJ" href="javascript:_.f('<?php
@@ -274,7 +274,7 @@ if ($submit) {
 	}
 	$new = 'user' . (count($configs) ? count($configs) : '');
 						?><li class="wssU11 wssU20">
-							<a class="wssJ" href="javascript:_.c('<?php
+							<a class="wssJ" href="javascript:_.e('<?php
 	echo $new;
 							?>');void(0)" rel="<?php
 	echo $new;
@@ -291,6 +291,16 @@ if ($submit) {
 			</div>
 		</dd>
 	</dl>
+	<p class="wssI wssU18">
+		<a href="javascript:_.c();void(0)" class="wssJ7"><?php
+	echo _WEBO_OPTIONS_APPLY;
+			?><span class="wssJ6"></span>
+		</a>
+		<a href="javascript:_.e();void(0)" class="wssJ5"><?php
+	echo _WEBO_OPTIONS_EDIT;
+			?><span class="wssJ6"></span>
+		</a>
+	</p>
 	<h3 class="wssB"><?php
 	echo _WEBO_OPTIONS_ATTENTION;
 	?></h3>
@@ -309,7 +319,7 @@ if ($submit) {
 			<dd class="wssU3">
 				<input name="wss_title" id="wss_title" class="wssF" value="<?php
 	echo htmlspecialchars($options['title']);
-				?>"/>
+				?>"/><input name="wss_apply" id="wss_apply" type="hidden" value="1"/>
 			</dd>
 			<dt class="wssU2">
 				<label for="wss_description"><?php
@@ -449,11 +459,15 @@ if ($submit) {
 		</fieldset><?php
 	}
 ?>
-		<p class="wssI">
+		<p class="wssI wssU18">
 			<a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;
-			?></a> <a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
+			?></a> <a href="javascript:_('#wss_apply')[0].value=0;_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
+			?>
+				<span class="wssJ6"></span>
+			</a> <a href="javascript:_('#wss_apply')[0].value=1;_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ7"><?php
+	echo _WEBO_OPTIONS_APPLY;
 			?>
 				<span class="wssJ6"></span>
 			</a>

@@ -528,6 +528,7 @@ define('_WEBO_CACHE_ALL', 'Все файлы');
 
 /* Options page */
 define('_WEBO_OPTIONS_APPLY', 'Применить');
+define('_WEBO_OPTIONS_EDIT', 'Изменить');
 define('_WEBO_OPTIONS_CONFIRM', 'Вы уверены, что хотите удалить конфигурацию "');
 define('_WEBO_OPTIONS_CONFIGURATION', 'Конфигурация');
 define('_WEBO_OPTIONS_DESCRIPTION', 'Описание');
