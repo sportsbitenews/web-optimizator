@@ -370,10 +370,16 @@ a.wssN3:hover{color:#0002bf}
 #wss_cache{padding-top:4px}
 
 * html .wssM{height:25px}
-* html .wssM1{display:block;width:140px;float:left}
+* html .wssM1{display:inline;position:relative}
 * html .wssN4{margin-left:1.5%}
+* html .wssM2{position:relative;top:-1px}
+* html .wssM3{position:relative;top:-7px}
+* html .wssM5{position:absolute;right:0}
 
 *+html .wssM{height:25px}
-*+html .wssM1{display:block;width:140px;float:left}
+*+html .wssM1{display:inline;position:relative}
 *+html .wssa{width:900px}
+*+html .wssM2{position:relative;top:-1px}
+*+html .wssM3{position:relative;top:-7px}
+*+html .wssM5{position:absolute;right:0}
 *+html .wssN4{margin-left:1.8%}
