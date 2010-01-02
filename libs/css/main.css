@@ -1,14 +1,14 @@
 html,body{background:#fff;margin:0;padding:0}
 .wssa{margin:10px auto;position:relative;min-width:770px;max-width:1180px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
-.wssc{color:#666;font:700 10px Verdana,Sans-serif;left:290px;position:absolute;top:11px}
-.wssd{left:295px;position:absolute;top:-1px}
-.wssd1{top:-25px}
-.wsse{display:none;height:24px;width:120px}
+.wssc{color:#666;font:700 10px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:9px}
+.wssd{left:324px;margin:0;padding:0;position:absolute;top:17px}
+.wssd1{top:-7px}
+.wsse{display:none;height:24px;margin:0;padding:0;width:120px}
 .wssd1 .wsse{display:block}
 .wssf{display:block;width:120px}
-.wssg{background:#9c9c9c url(lang.png) no-repeat;color:#fff;display:block;font:700 14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;outline:0;padding:3px 0 2px;text-decoration:none;text-indent:9px}
-a.wssg:hover{background:#ff7f00 url(lang.hover.png) no-repeat}
+.wssg{background:#9c9c9c url(lang.png) no-repeat;color:#fff;display:block;font:700 13px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;outline:0;padding:3px 0 2px;text-decoration:none;text-indent:9px}
+a.wssg:hover,a.wssg:active,a.wssg:focus{background:#ff7f00 url(lang.hover.png) no-repeat;color:#fff}
 .wssd1 .wssg{background:#9c9c9c;width:103px}
 .wssd1 a.wssg:hover{background-image:url(lang.selected.hover.png)}
 .wssd1 .wssf .wssg,.wssd1 .wssf a.wssg:hover{background-image:url(lang.selected.png);width:120px}
@@ -217,6 +217,7 @@ a.wssJ20:hover{background-image:url(corner.gif)}
 .wssM{margin:2px 0 0 -5px;padding:0}
 .wssM1{display:inline-block;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 10px 0 0;padding:0}
 .wssM2{background:#88b9d1 url(menu.png) no-repeat;color:#fff;display:block;height:30px;text-decoration:none}
+a.wssM2:hover,a.wssM2:focus,a.wssM2:active{color:#fff}
 .wssM3{color:#808080;display:block;outline:0;text-decoration:none}
 a.wssM3:hover{color:#569abc}
 .wssM4{display:block;font-weight:400;padding:8px 2px 0 28px}

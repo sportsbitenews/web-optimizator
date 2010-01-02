@@ -23,7 +23,7 @@ if (is_file($basepath . "libs/php/lang/" . $language . ".php")) {
 }
 
 /* set encoding via header */
-header("Content-Type: text/html;charset=" . _WEBO_CHARSET);
+header("Content-Type: text/html;charset=\"" . _WEBO_CHARSET . "\"");
 
 /* Merge _GET and _POST */
 $input = array_merge($_GET, $_POST);

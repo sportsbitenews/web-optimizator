@@ -19,7 +19,8 @@ class admin {
 		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
-		if (empty($this->skip_render)) {
+		$this->skip_render = empty($this->skip_render) ? 0 : $this->skip_render;
+		if (!$this->skip_render) {
 /* Ensure no caching */
 			header('Expires: ' . date("r"));
 			header("Cache-Control: no-store, no-cache, must-revalidate, private");	
@@ -27,7 +28,7 @@ class admin {
 		}
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
-		require_once($this->basepath . $this->options_file);
+		require($this->basepath . $this->options_file);
 		$this->compress_options = empty($compress_options) ? '' : $compress_options;
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
@@ -148,8 +149,7 @@ class admin {
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
-			method_exists($this, $this->input['wss_page']) &&
-			empty($this->skip_render)) {
+			method_exists($this, $this->input['wss_page'])) {
 				$func = $this->input['wss_page'];
 				$this->$func();
 		}
@@ -195,7 +195,8 @@ class admin {
 			"file" => $file,
 			"size" => $size,
 			"compressed" => $compressed_size,
-			"success" => $success
+			"success" => $success,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("compress_gzip", $page_variables);
 	}
@@ -227,7 +228,8 @@ class admin {
 			"file" => $file,
 			"size" => $size,
 			"compressed" => $gzipped_size,
-			"success" => $success
+			"success" => $success,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("compress_gzip", $page_variables);
 	}
@@ -289,7 +291,7 @@ class admin {
 			"name" => $name,
 			"license" => $license,
 			"error" => $error,
-			
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_account", $page_variables);
 	}
@@ -320,7 +322,8 @@ class admin {
 			"premium" => $this->premium,
 			"email" => $email,
 			"message" => $message,
-			"error" => $error
+			"error" => $error,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_about", $page_variables);
 	}
@@ -463,7 +466,8 @@ class admin {
 		$page_variables = array(
 			'files' => $files,
 			'total' => $total,
-			'premium' => $this->premium
+			'premium' => $this->premium,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_cache", $page_variables);
 	}
@@ -550,7 +554,8 @@ class admin {
 			'html' => $html,
 			'sprites' => $sprites,
 			'imgs' => $imgs,
-			'total' => $css + $js + $res + $html + $sprites + $imgs
+			'total' => $css + $js + $res + $html + $sprites + $imgs,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("dashboard_cache", $page_variables);
 	}
@@ -590,7 +595,8 @@ class admin {
 			's_before' => $s_before,
 			'kb_after' => $kb_after,
 			'kb_before' => $kb_before,
-			'premium' => $this->premium
+			'premium' => $this->premium,
+			"skip_render" => $this->skip_render
 		);
 /* Output data */
 		$this->view->render("dashboard_speed", $page_variables);
@@ -783,7 +789,8 @@ class admin {
 		$page_variables = array(
 			'errors' => $errors,
 			'delta' => $delta,
-			'premium' => $this->premium
+			'premium' => $this->premium,
+			"skip_render" => $this->skip_render
 		);
 /* Output data */
 		$this->view->render("dashboard_options", $page_variables);
@@ -896,7 +903,8 @@ class admin {
 			'errors' => $errors,
 			'warnings' => $warnings,
 			'e' => $e,
-			'w' => $w
+			'w' => $w,
+			"skip_render" => $this->skip_render
 		);
 		if (!$return) {
 /* Output data */
@@ -1009,6 +1017,7 @@ class admin {
 		$page_variables['version'] = $this->version;
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['version_beta'] = $this->version_beta;
+		$page_variables['skip_render'] = $this->skip_render;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
@@ -1075,7 +1084,8 @@ class admin {
 			"page" => 'install_enter_password',
 			"version" => $this->version,
 			"premium" => true,
-			"language" => $this->language
+			"language" => $this->language,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
@@ -1092,7 +1102,8 @@ class admin {
 			"promo" => true,
 			"premium" => true,
 			"password" => $this->compress_options['password'],
-			"language" => $this->language
+			"language" => $this->language,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
@@ -1115,7 +1126,8 @@ class admin {
 			"website" => $_SERVER['HTTP_HOST'],
 			"cache_folder" => str_replace($this->compress_options['document_root'],
 				"/", $this->compress_options['html_cachedir']),
-			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks']
+			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
@@ -1178,7 +1190,8 @@ class admin {
 					"submit" => $submit,
 					"premium" => true,
 					"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir']),
-					"language" => $this->language
+					"language" => $this->language,
+					"skip_render" => $this->skip_render
 				);
 /* Show the install page */
 				$this->view->render("admin_container", $page_variables);
@@ -1305,7 +1318,8 @@ class admin {
 			"directory" => $directory,
 			"premium" => $this->premium,
 			"recursive" => $recursive,
-			"submit" => $submit
+			"submit" => $submit,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_image", $this->page_variables);
 	}
@@ -1331,7 +1345,8 @@ class admin {
 			"directory" => $directory,
 			"premium" => $this->premium,
 			"recursive" => $recursive,
-			"submit" => $submit
+			"submit" => $submit,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_gzip", $this->page_variables);
 	}
@@ -1535,7 +1550,8 @@ class admin {
 			"basepath" => $this->basepath,
 			"version" => $this->version,
 			"premium" => $this->premium,
-			"language" => $this->language
+			"language" => $this->language,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_uninstall", $this->page_variables);
 	}
@@ -1624,7 +1640,8 @@ class admin {
 			}
 		}
 		$this->page_variables = array(
-			"options" => $options
+			"options" => $options,
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("options_configuration", $this->page_variables);
 	}
@@ -1656,7 +1673,8 @@ class admin {
 			"error" => $this->error,
 			"basepath" => $thos->basepath,
 			"configs" => $configs,
-			"config" => $this->compress_options['config']
+			"config" => $this->compress_options['config'],
+			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_options", $this->page_variables);
 	}
@@ -2168,6 +2186,7 @@ class admin {
 			'wss_unobtrusive_body',
 			'wss_unobtrusive_all',
 			'wss_unobtrusive_informers',
+			'wss_unobtrusive_ads',
 			'wss_unobtrusive_counters',
 			'wss_unobtrusive_iframes',
 			'wss_external_scripts_on',
@@ -3317,25 +3336,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$this->input['wss__password'])) {
 						$this->access = true;
 		}
-	}
-	
-	/**
-	* Display an error
-	* 
-	**/		
-	function error($string) {
-		$page_variables = array(
-			"title" => _WEBO_ERROR_ERROR,
-			"paths" => $this->view->paths,
-			"error" => $string,
-			"version" => $this->version,
-			"version_new" => $this->version_new,
-			"page" => 'error',
-			"premium" => $this->premium
-		);
-/* Show the install page */
-		$this->view->render("admin_container", $page_variables);
-		die();
 	}
 
 	/**
