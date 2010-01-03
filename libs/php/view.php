@@ -32,7 +32,9 @@ class compressor_view {
 		}
 /* Avoiding problems with Denwer */
 		if (empty($this->paths['full']['document_root']) || !@is_dir($this->paths['full']['document_root']) || !@is_file($this->paths['full']['document_root'] . getenv("SCRIPT_NAME"))) {
-			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr(getenv("SCRIPT_FILENAME"), 0, strpos(getenv("SCRIPT_FILENAME"), getenv("SCRIPT_NAME")))));
+			$name = str_replace("//", "/", $this->unify_dir_separator(getenv("SCRIPT_NAME")));
+			$filename = str_replace("//", "/", $this->unify_dir_separator(getenv("SCRIPT_FILENAME")));
+			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr($filename, 0, strpos($filename, $name))));
 		}
 		$this->paths['full']['document_root'] = str_replace("//", "/", $this->paths['full']['document_root']);
 /* Get the view directory */

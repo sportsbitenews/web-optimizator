@@ -341,7 +341,7 @@ define('_WEBO_footer_link', 'Текст обратной ссылки');
 define('_WEBO_footer_link_HELP', 'Если поле &laquo;Изображение обратной ссылки&raquo; заполнено, текст этого поля будет использоваться в качестве альтернативного текста для изображения. В противном случае это будет непосредственно текст ссылки.');
 define('_WEBO_footer_css_code', 'Стили для размещения ссылки');
 define('_WEBO_footer_css_code_HELP', 'Эти стили будут присвоены ссылке на WEBO Site SpeedUp. Вы можете вручную задать положение ссылки, ее цвет, фон, размер и т.д.');
-define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--WSS--&gt;</code> в <code>title</code> оптимизированных страниц');
+define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--WSS--&gt;</code> в <code>body</code> оптимизированных страниц');
 define('_WEBO_footer_spot_HELP', 'Наличие &lt;!--WSS--&gt; сигнализирует о том, что WEBO Site SpeedUp успешно обработал текущую страницу, и используется во внутренних алгоритмах.');
 
 define('_WEBO_htaccess_access', 'Защитить установку WEBO Site SpeedUp с помощью <code>htpasswd</code>');

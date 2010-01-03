@@ -342,7 +342,7 @@ define('_WEBO_footer_link', 'Текст обратной ссылки');
 define('_WEBO_footer_link_HELP', 'Если поле &laquo;Изображение обратной ссылки&raquo; заполнено, текст этого поля будет использоваться в качестве альтернативного текста для изображения. В противном случае это будет непосредственно текст ссылки.');
 define('_WEBO_footer_css_code', 'Стили для размещения ссылки');
 define('_WEBO_footer_css_code_HELP', 'Эти стили будут присвоены ссылке на WEBO Site SpeedUp. Вы можете вручную задать положение ссылки, ее цвет, фон, размер и т.д.');
-define('_WEBO_footer_spot', 'Добавлять <code>lang="wo"</code> в <code>title</code> оптимизированных страниц');
+define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--wss--&gt;</code> в <code>body</code> оптимизированных страниц');
 define('_WEBO_footer_spot_HELP', 'Наличие аттрибута lang=&quot;wo&quot; сигнализирует о том, что WEBO Site SpeedUp успешно обработал текущую страницу, и используется во внутренних алгоритмах.');
 
 define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');

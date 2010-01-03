@@ -164,16 +164,18 @@
 				?>
 				<span class="wssJ6"></span>
 			</a>
-		</li>
-		<li class="wssO4">
+		</li><?php
+	if (!$internal) {
+		?><li class="wssO4">
 			<a href="#install" class="wssJ">
 				<?php
-	echo _WEBO_SYSTEM_INSTALL;
+		echo _WEBO_SYSTEM_INSTALL;
 				?>
 				<span class="wssJ6"></span>
 			</a>
-		</li>
-	</ul>
+		</li><?php
+	}
+	?></ul>
 	<fieldset id="status" class="wssD9">
 		<div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_STATUS;
@@ -341,36 +343,38 @@
 			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($html_cachedir);
 				?>" name="wss_html_cachedir" id="wss_html_cachedir" class="wssF"/>
-			</dd>
-			<dt class="wssD5">
+			</dd><?php
+	if (!$internal) {
+			?><dt class="wssD5">
 				<label class="wssE" for="wss_htpasswd"><?php
-	echo _WEBO_htaccess_access;
+		echo _WEBO_htaccess_access;
 				?> <a class="wssJ9" href="#" title="<?php
-						echo _WEBO_htaccess_access_HELP;
+		echo _WEBO_htaccess_access_HELP;
 			?>">?</a>
 				</label>
 			</dt>
 			<dd class="wssD6"><input type="checkbox"<?php
-							echo $htpasswd ? ' checked="checked"' : '';
+		echo $htpasswd ? ' checked="checked"' : '';
 				?> name="wss_htpasswd" id="wss_htpasswd" class="wssF"/>
 			</dd>
 			<dt class="wssD1">
 				<label class="wssE" for="wss_username"><?php
-	echo _WEBO_htaccess_login;
+		echo _WEBO_htaccess_login;
 				?> <a class="wssJ9" href="#" title="<?php
-						echo _WEBO_htaccess_login_HELP;
+		echo _WEBO_htaccess_login_HELP;
 			?>">?</a>
 				</label>
 			</dt>
 			<dd class="wssD2<?php
-	if (!empty($error[6])) {
+		if (!empty($error[6])) {
 			?> wssD8<?php
-	}
+		}
 			?>"><span class="wssD3"></span><input value="<?php
-	echo htmlspecialchars($username);
+		echo htmlspecialchars($username);
 				?>" name="wss_username" id="wss_username" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
+			</dd><?php
+	}
+			?><dt class="wssD1">
 				<label class="wssE" for="wss_external_scripts_user"><?php
 	echo _WEBO_external_scripts_user;
 				?> <a class="wssJ9" href="#" title="<?php
@@ -449,19 +453,20 @@
 	echo $version_beta;
 				?>"></div>
 		</div>
-	</fieldset>
-	<fieldset id="install" class="wssD9 wssA0">
+	</fieldset><?php
+	if (!$internal) {
+	?><fieldset id="install" class="wssD9 wssA0">
 		<div class="wssD10">
 			<h2 class="wssB"><?php
-	echo _WEBO_SYSTEM_INSTALL_TITLE;
+		echo _WEBO_SYSTEM_INSTALL_TITLE;
 			?></h2>
 			<p class="wssI"><?php
-	echo _WEBO_SYSTEM_INSTALLED;
+		echo _WEBO_SYSTEM_INSTALLED;
 			?>: <?php
-	echo htmlspecialchars($cms_version);
+		echo htmlspecialchars($cms_version);
 			?></p>
 			<p class="wssI"><?php
-	echo _WEBO_SYSTEM_INSTALLINFO;
+		echo _WEBO_SYSTEM_INSTALLINFO;
 			?></p>
 			<ol class="wssO7"><?php
 		foreach ($files_to_change as $file) {
@@ -509,23 +514,24 @@ require('<?php
 ?></li><?php
 		}
 ?></ol><p class="wssI"><?php
-	echo _WEBO_SYSTEM_INSTALLINFO2;
+		echo _WEBO_SYSTEM_INSTALLINFO2;
 			?></p><p class="wssI">
 		<a href="#wss_install" class="wssJ7">
 			<?php
-	echo _WEBO_DASHBOARD_INSTALL;
+		echo _WEBO_DASHBOARD_INSTALL;
 			?>
 			<span class="wssJ6"></span>
 		</a><a href="#wss_uninstall" class="wssJ5">
 			<?php
-	echo _WEBO_SPLASH1_UNINSTALL;
+		echo _WEBO_SPLASH1_UNINSTALL;
 			?>
 			<span class="wssJ6"></span>
 		</a>
 	</p>
-		</div>
-	</fieldset>
-</form><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
+	</div>
+</fieldset><?php
+	}
+?></form><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?> <span id="wss_file1"></span> <?php
 	echo _WEBO_GZIP_OUTOF;

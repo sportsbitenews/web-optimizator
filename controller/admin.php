@@ -146,6 +146,10 @@ class admin {
 			'imgs' => array('*.png', '*.jpg', '*.gif', '*.bmp'),
 			'html' => array('*+*')
 		);
+/* define if we can skip some info */
+		$this->internal = strpos($this->basepath, 'wp-content') ||
+			strpos($this->basepath, 'administrator') ||
+			strpos($this->basepath, 'modules');
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -250,7 +254,7 @@ class admin {
 			$license = trim($this->input['wss_license']);
 			$name = $this->input['wss_name'];
 			if (md5($this->input['wss_password']) !=
-				$this->input['wss__password']) {
+				$this->input['wss__password'] && !$this->internal) {
 				$error[1] = 1;
 			}
 			if (empty($this->input['wss_email']) ||
@@ -260,7 +264,7 @@ class admin {
 			if (!empty($this->input['wss_new']) &&
 				(empty($this->input['wss_confirm']) ||
 					$this->input['wss_confirm'] !=
-						$this->input['wss_new'])) {
+						$this->input['wss_new']) && !$this->internal) {
 				$error[3] = 1;
 			}
 			$this->premium = $this->view->validate_license($license);
@@ -291,7 +295,8 @@ class admin {
 			"name" => $name,
 			"license" => $license,
 			"error" => $error,
-			"skip_render" => $this->skip_render
+			"skip_render" => $this->skip_render,
+			"internal" => $this->internal
 		);
 		$this->view->render("install_account", $page_variables);
 	}
@@ -1018,6 +1023,7 @@ class admin {
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['version_beta'] = $this->version_beta;
 		$page_variables['skip_render'] = $this->skip_render;
+		$page_variables['internal'] = $this->internal;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
@@ -2165,7 +2171,7 @@ class admin {
 			'wss_title',
 			'wss_config',
 			'wss_host') as $val) {
-				$this->input[$val] = str_replace(array("\r\n", "\n", '"'), array(" ", " ", "&quot;"), $this->input[$val]);
+				$this->input[$val] = str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"), $this->input[$val]);
 		}
 /* make numeric options save */
 		foreach (array(
@@ -2435,9 +2441,9 @@ class admin {
 	**/
 	function detect_htaccess () {
 		if (empty($this->compress_options['htaccess']['local'])) {
-			$htaccess = $this->view->paths['full']['document_root'] . '.htaccess';
+			$htaccess = $this->compress_options['document_root'] . '.htaccess';
 		} else {
-			$htaccess = $this->view->paths['absolute']['document_root'] . '.htaccess';
+			$htaccess = $this->compress_options['website_root'] . '.htaccess';
 		}
 		return $htaccess;
 	}
@@ -2475,13 +2481,18 @@ class admin {
 	function write_htaccess ($base = '/') {
 /* additional check for .htaccess -- need to open exact file */
 		if (!empty($this->input['wss_htaccess_enabled'])) {
-			$this->view->set_paths($this->input['wss_document_root']);
+			$this->view->set_paths($this->compress_options['document_root']);
+/* re-check base */
+			if ($base == '/' && !empty($this->compress_options['htaccess']['local'])) {
+				$base = str_replace($this->compress_options['document_root'], '/',
+					$this->compress_options['website_root']);
+			}
 /* delete previous Web Optimizer rules */
 			$this->htaccess = $this->detect_htaccess();
 			$content_saved = $this->clean_htaccess();
 			if (!@is_writable($this->htaccess)) {
 				$this->error = $this->error ? $this->error : array();
-				$this->error[5] = 1;
+				$this->error[0] = 1;
 			}
 /* create backup */
 			@copy($this->htaccess, $this->htaccess . '.backup');

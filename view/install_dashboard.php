@@ -331,7 +331,7 @@
 		}
 	?>">
 		<div class="wssN2 wssN21">
-			<h2 class="wssB"><span href="#wss_options" class="wssN3"><?php
+			<h2 class="wssB"><span class="wssN3"><?php
 	echo _WEBO_DASHBOARD_ALL;
 			?></span></h2><?php
 	foreach (array(

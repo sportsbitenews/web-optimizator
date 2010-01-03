@@ -170,53 +170,55 @@
 			<span class="wssD4"><?php
 	echo _WEBO_LOGIN_EMAILNOTICE;
 			?></span>
-		</dd>
-		<dt class="wssD1">
+		</dd><?php
+	if (!$internal) {
+		?><dt class="wssD1">
 			<label for="wss_password" class="wssE"><?php 
-	echo _WEBO_PASSWORD_OLD;
+		echo _WEBO_PASSWORD_OLD;
 ?>:</label>
 		</dt>
 		<dd class="wssD2<?php
-	if (!empty($error[1])) {
+		if (!empty($error[1])) {
 			?> wssD8<?php
-	}
+		}
 			?>">
 			<span class="wssD3">*</span>
 			<input type="password" id="wss_password" name="wss_password" title="<?php
-	echo _WEBO_PASSWORD_ENTERPASSWORD;
+		echo _WEBO_PASSWORD_ENTERPASSWORD;
 ?>" class="wssF"/>
 		</dd>
 		<dt class="wssD1">
 			<label for="wss_new" class="wssE"><?php 
-	echo _WEBO_PASSWORD_NEW;
+		echo _WEBO_PASSWORD_NEW;
 ?>:</label>
 		</dt>
 		<dd class="wssD2<?php
-	if (!empty($error[3])) {
+		if (!empty($error[3])) {
 			?> wssD8<?php
-	}
+		}
 			?>">
 			<span class="wssD3"> </span>
 			<input type="password" id="wss_new" name="wss_new" title="<?php
-	echo _WEBO_PASSWORD_ENTERPASSWORDNEW;
+		echo _WEBO_PASSWORD_ENTERPASSWORDNEW;
 ?>" class="wssF"/>
 		</dd>
 		<dt class="wssD1">
 			<label for="wss_confirm" class="wssE"><?php 
-	echo _WEBO_PASSWORD_CONFIRM;
+		echo _WEBO_PASSWORD_CONFIRM;
 ?>:</label>
 		</dt>
 		<dd class="wssD2<?php
-	if (!empty($error[3])) {
+		if (!empty($error[3])) {
 			?> wssD8<?php
-	}
+		}
 			?>">
 			<span class="wssD3"> </span>
 			<input type="password" id="wss_confirm" name="wss_confirm" title="<?php
-	echo _WEBO_PASSWORD_ENTERPASSWORDCONFIRM;
+		echo _WEBO_PASSWORD_ENTERPASSWORDCONFIRM;
 ?>" class="wssF"/>
-		</dd>
-<dt class="wssD5">
+		</dd><?php
+	}
+	?><dt class="wssD5">
 			<label for="wss_allow" class="wssE1"><?php 
 	echo _WEBO_LOGIN_ALLOW;
 ?>:</label>
