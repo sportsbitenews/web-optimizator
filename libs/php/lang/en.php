@@ -244,6 +244,8 @@ define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from cac
 define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching.');
 define('_WEBO_html_cache_allowed_list', 'List of USER AGENTS (robots) to add to caching (separated by space)');
 define('_WEBO_html_cache_allowed_list_HELP', 'This option allows you to set a list of USER AGENTS which will receive only cached HTML pages. For example caching HTML pages for all search engines can reduce server side load.');
+define('_WEBO_html_cache_additional_list', 'List of COOKIE to exclude from server side caching (separated by space)');
+define('_WEBO_html_cache_ignore_list_HELP', 'You can also skip server side caching for user who have one of the COOKIE from this list. This can be useful for authorized users or during the work with shopping cart.');
 
 define('_WEBO_performance_mtime', 'Ignore file modification time stamp (mtime)');
 define('_WEBO_performance_mtime_HELP', 'There will be gained additional speedup (on server side). But to refresh combined files you will need to change calls of initial files in HTML code or to refresh WEBO Site SpeedUp cache.');
@@ -374,7 +376,7 @@ define('_WEBO_DASHBOARD_STATUS_TESTING2', 'via GET-parameter ');
 define('_WEBO_DASHBOARD_STATUS_TESTING4', '<code>web_optimizer_debug</code>');
 define('_WEBO_DASHBOARD_STATUS_COOKIE', 'or just ');
 define('_WEBO_DASHBOARD_STATUS_COOKIE2', 'via cookie');
-define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp in live mode.');
+define('_WEBO_DASHBOARD_STATUS_TESTING3', 'Press &quot;Enable&quot; button when you are ready to bring WEBO&nbsp;Site&nbsp;SpeedUp into the live mode.');
 define('_WEBO_DASHBOARD_STATUS_ENABLE', 'Enable');
 define('_WEBO_DASHBOARD_STATUS_DISABLE', 'Disable');
 define('_WEBO_DASHBOARD_STATUS0','Starting optimization');

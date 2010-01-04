@@ -87,6 +87,7 @@ class web_optimizer {
 		$this->flushed = false;
 		$excluded_html_pages = '';
 		$included_user_agents = '';
+		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore'])) {
@@ -95,24 +96,37 @@ class web_optimizer {
 			if (!empty($this->options['page']['allowed_user_agents'])) {
 				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
 			}
+			if (!empty($this->options['page']['exclude_cookies'])) {
+				$cookies = explode(" ", $this->options['page']['exclude_cookies']);
+				foreach ($cookies as $cookie) {
+					if (isset($_COOKIE[$cookie])) {
+						$retricted_cookie = 1;
+					}
+				}
+			}
 		}
 /* cache if
   - option is enabled,
-  - don't parse excluded pages
+  - don't parse excluded pages,
   - or parse included USER AGENTS,
+  - don't parse pages with excluded coockies,
   - flush or gzip for HTML are disabled,
+  - headers have not been sent,
   - page is requested by GET,
-  - no chained optimization.
+  - no chained optimization,
+  - external cache restriction.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
 				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
 				preg_match("!" . $included_user_agents . "!is", $this->ua)) &&
+			!$retricted_cookie &&
 			(empty($this->options['page']['gzip']) ||
 				empty($this->options['page']['flush'])) &&
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
-			empty($this->web_optimizer_stage);
+			empty($this->web_optimizer_stage) &&
+			empty($no_cache);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -373,6 +387,7 @@ class web_optimizer {
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
+				"exclude_cookies" => $this->options['html_cache']['additional_list'],
 				"parallel" => $this->options['parallel']['enabled'] &&
 					($this->premium > 1),
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
