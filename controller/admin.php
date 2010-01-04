@@ -116,9 +116,6 @@ class admin {
 				round(empty($this->input['web_optimizer_stage']) ? 0 :
 					$this->input['web_optimizer_stage']);
 			$this->display_progress = false;
-/* if we use .htaccess */
-			$this->protected = isset($_SERVER['PHP_AUTH_USER']) &&
-				$this->compress_options['username'] == md5($_SERVER['PHP_AUTH_USER']);
 /* grade URL from webo.name */
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
 				$_SERVER['HTTP_HOST'] . '/' .
@@ -901,7 +898,9 @@ class admin {
 			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules),
 			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
-			'protected_mode' => empty($this->protected) ? 0 : 1,
+			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
+				$this->compress_options['htaccess']['access']) ||
+				$this->internal ? 1 : 0,
 			'cms' => $this->system_info($website_root),
 			'memory_limit' => round($memory_limit) > 32
 		);
@@ -942,7 +941,7 @@ class admin {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
 		$submit = $this->input['wss_Submit'];
-		$error = array();
+		$this->error = array();
 		if (!empty($submit)) {
 			$this->compress_options['host'] = empty($this->input['wss_host']) ?
 				$this->compress_options['host'] : $this->input['wss_host'];
@@ -965,31 +964,33 @@ class admin {
 			$this->compress_options['external_scripts']['pass'] = empty($this->input['wss_external_scripts_pass']) ?
 				$this->compress_options['external_scripts']['pass'] : $this->input['wss_external_scripts_pass'];
 			if (!@is_dir($this->compress_options['website_root'])) {
-				$error[1] = 1;
+				$this->error[1] = 1;
 			}
 			if (!@is_dir($this->compress_options['document_root'])) {
-				$error[2] = 1;
+				$this->error[2] = 1;
 			}
 			if (!@is_writable($this->compress_options['css_cachedir'])) {
-				$error[3] = 1;
+				$this->error[3] = 1;
 			}
 			if (!@is_writable($this->compress_options['javascript_cachedir'])) {
-				$error[4] = 1;
+				$this->error[4] = 1;
 			}
 			if (!@is_writable($this->compress_options['html_cachedir'])) {
-				$error[5] = 1;
+				$this->error[5] = 1;
 			}
 			if (!empty($this->compress_options['htaccess']['access']) &&
 				empty($this->compress_options['username'])) {
-					$error[6] = 1;
+					$this->error[6] = 1;
+			} else {
+				$this->protect_installation();
 			}
 			if ((!empty($this->compress_options['external_scripts']['user']) &&
 				empty($this->compress_options['external_scripts']['pass'])) ||
 				(!empty($this->compress_options['external_scripts']['pass']) &&
 				empty($this->compress_options['external_scripts']['user']))) {
-					$error[7] = 1;
+					$this->error[7] = 1;
 			}
-			if (!count($error)) {
+			if (!count($this->error)) {
 				$this->save_option("['host']", $this->compress_options['host']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
@@ -1032,7 +1033,7 @@ class admin {
 		$page_variables['files_to_change'] = $this->system_files($this->cms_version);
 		$page_variables['cms_version'] = $this->cms_version;
 		$page_variables['success'] = $success;
-		$page_variables['error'] = $error;
+		$page_variables['error'] = $this->error;
 		$page_variables['version'] = $this->version;
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['version_beta'] = $this->version_beta;
@@ -1216,6 +1217,8 @@ class admin {
 /* Show the install page */
 				$this->view->render("admin_container", $page_variables);
 			} else {
+				$this->save_option("['htpasswd']",
+					":" . $this->encrypt_password($this->input['wss_password']));
 				$this->compress_options['password'] = md5($this->input['wss_password']);
 				$this->save_option("['password']", $this->compress_options['password']);
 				$this->save_option("['email']", htmlspecialchars($this->input['wss_email']));
@@ -3368,12 +3371,19 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	**/		
 	function check_password ($rewrite = 0) {
 /* If passing a username and pass, don't md5 encode */
-		if (!empty($this->input['wss_password']) &&
-				($this->compress_options['password'] ==
-					md5($this->input['wss_password'])) ||
-				($this->compress_options['password'] ==
-					$this->input['wss__password'])) {
-						$this->access = true;
+		if ((!empty($this->input['wss_password']) &&
+			($this->compress_options['password'] ==
+			md5($this->input['wss_password'])) ||
+			($this->compress_options['password'] ==
+			$this->input['wss__password'])) ||
+/* if we use .htaccess */
+			(isset($_SERVER['PHP_AUTH_USER']) &&
+			$this->compress_options['username'] ==
+			$_SERVER['PHP_AUTH_USER'] &&
+			$this->compress_options['htaccess']['access'])) {
+				$this->access = 1;
+		} else {
+				$this->access = 0;
 		}
 	}
 
@@ -3388,19 +3398,20 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
 		$htaccess_content .= '
 # Web Optimizer protection';
-		$protected = !empty($this->compress_options['htaccess']['access']) ||
-			!empty($this->input['user']['htaccess']['access']);
 		$this->error = $this->error ? $this->error : array();
-		if ($protected) {
+		if (!empty($this->compress_options['htaccess']['access'])) {
+			$this->write_file($this->basepath . '.htpasswd',
+				$this->compress_options['username'] .
+				$this->compress_options['htpasswd']);
 			if (@is_file($this->basepath . '.htpasswd')) {
 /* add secure protection via htpasswd */
 				$htaccess_content .= '
 AuthType Basic
-AuthName "Web Optimizer Installation"
-AuthUserFile .htpasswd
+AuthName "WEBO Site SpeedUp Installation"
+AuthUserFile ' . $this->basepath . '.htpasswd
 require valid-user';
 			} else {
-				$this->error[0] = 1;
+				$this->error[8] = 1;
 			}
 		}
 		$htaccess_content .= '
@@ -3410,8 +3421,9 @@ require valid-user';
 # Web Optimizer protection end';
 /* create backup */
 		@copy($htaccess, $htaccess . '.backup');
-		if (!$this->write_file($htaccess, $htaccess_content) && $protected) {
-			$this->error[1] = 1;
+		if (!$this->write_file($htaccess, $htaccess_content) &&
+			!empty($this->compress_options['htaccess']['access'])) {
+				$this->error[9] = 1;
 		}
 	}
 	/**

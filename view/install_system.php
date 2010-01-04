@@ -135,6 +135,16 @@
 					echo _WEBO_SYSTEM_EXTERNAL_HTACCESS;
 ?></li><?php
 				}
+				if (!empty($error[8])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH3_CANTWRITE4 . realpath(dirname(__FILE__) . '/../') . '/.htpasswd';
+?></li><?php
+				}
+				if (!empty($error[9])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH3_CANTWRITE4 . realpath(dirname(__FILE__) . '/../') . '/.htaccess';
+?></li><?php
+				}
 ?></ul></div></div><?php
 				break;
 		}
@@ -346,7 +356,7 @@
 			</dd><?php
 	if (!$internal) {
 			?><dt class="wssD5">
-				<label class="wssE" for="wss_htpasswd"><?php
+				<label class="wssE" for="wss_htaccess_access"><?php
 		echo _WEBO_htaccess_access;
 				?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_htaccess_access_HELP;
@@ -355,7 +365,7 @@
 			</dt>
 			<dd class="wssD6"><input type="checkbox"<?php
 		echo $htpasswd ? ' checked="checked"' : '';
-				?> name="wss_htpasswd" id="wss_htpasswd" class="wssF"/>
+				?> name="wss_htaccess_access" id="wss_htaccess_access" class="wssF"/>
 			</dd>
 			<dt class="wssD1">
 				<label class="wssE" for="wss_username"><?php
