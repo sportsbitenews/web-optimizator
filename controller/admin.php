@@ -147,9 +147,7 @@ class admin {
 			'html' => array('*+*')
 		);
 /* define if we can skip some info */
-		$this->internal = strpos($this->basepath, 'wp-content') ||
-			strpos($this->basepath, 'administrator') ||
-			strpos($this->basepath, 'modules');
+		$this->internal = preg_match("@wp-content|components|modules|administrator@", $this->basepath);
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -1265,12 +1263,7 @@ class admin {
 						$this->compress_options['document_root'], "/" ,
 							$this->compress_options['website_root']) . 'index.php');
 				}
-/* redirect to the main page */
-				header("Location: index.php?cleared=1");
-				die();
 			}
-		} elseif (!$ajax) {
-			$this->error("<p>". _WEBO_CLEAR_UNABLE ."</p>");
 		}
 	}
 
@@ -3362,6 +3355,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 # Web Optimizer protection';
 		$protected = !empty($this->compress_options['htaccess']['access']) ||
 			!empty($this->input['user']['htaccess']['access']);
+		$this->error = $this->error ? $this->error : array();
 		if ($protected) {
 			if (@is_file($this->basepath . '.htpasswd')) {
 /* add secure protection via htpasswd */
@@ -3371,8 +3365,7 @@ AuthName "Web Optimizer Installation"
 AuthUserFile .htpasswd
 require valid-user';
 			} else {
-				$this->error("<p>" . _WEBO_SPLASH2_UNABLE . " ".
-					$this->basepath . ".htpasswd</p>");
+				$this->error[0] = 1;
 			}
 		}
 		$htaccess_content .= '
@@ -3383,8 +3376,7 @@ require valid-user';
 /* create backup */
 		@copy($htaccess, $htaccess . '.backup');
 		if (!$this->write_file($htaccess, $htaccess_content) && $protected) {
-			$this->error("<p>" . _WEBO_SPLASH2_UNABLE . " ".
-				$this->basepath . ".htaccess</p>");
+			$this->error[1] = 1;
 		}
 	}
 	/**

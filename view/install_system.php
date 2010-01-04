@@ -326,7 +326,7 @@
 	}
 			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($javascript_cachedir);
-				?>" name="wss_host" id="wss_host" class="wssF"/>
+				?>" name="wss_javascript_cachedir" id="wss_javascript_cachedir" class="wssF"/>
 			</dd>
 			<dt class="wssD1">
 				<label class="wssE" for="wss_html_cachedir"><?php
