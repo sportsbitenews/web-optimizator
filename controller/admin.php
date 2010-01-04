@@ -2059,6 +2059,11 @@ class admin {
 					'value' => $this->compress_options['html_cache']['allowed_list'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'html_cache_additional_list' => array(
+					'value' => $this->compress_options['html_cache']['additional_list'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0
 				)
 			),
 			'unobtrusive' => array(
@@ -2157,6 +2162,7 @@ class admin {
 			'wss_css_sprites_ignore_list',
 			'wss_html_cache_ignore_list',
 			'wss_html_cache_allowed_list',
+			'wss_html_cache_additional_list',
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',
