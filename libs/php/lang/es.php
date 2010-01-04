@@ -246,7 +246,7 @@ define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be
 define('_WEBO_html_cache_allowed_list', 'Lista de USER AGENTS (robots) para a&ntilde;adir a la memoria Cache');
 define('_WEBO_html_cache_allowed_list_HELP', 'This option allows you to set a list of USER AGENTS which will receive only cached HTML pages. For example caching HTML pages for all search engines can reduce server side load.');
 define('_WEBO_html_cache_additional_list', 'List of COOKIE to exclude from server side caching (separated by space)');
-define('_WEBO_html_cache_ignore_list_HELP', 'You can also skip server side caching for user who have one of the COOKIE from this list. This can be useful for authorized users or during the work with shopping cart.');
+define('_WEBO_html_cache_additional_list_HELP', 'You can also skip server side caching for user who have one of the COOKIE from this list. This can be useful for authorized users or during the work with shopping cart.');
 
 define('_WEBO_performance_mtime', 'No revisa mtime de archivos (y contenido)');
 define('_WEBO_performance_mtime_HELP', 'There will be gained additional speedup (on server side). But to refresh combined files you will need to change calls of initial files in HTML code or to refresh WEBO Site SpeedUp cache.');
