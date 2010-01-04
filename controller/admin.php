@@ -387,9 +387,25 @@ class admin {
 	function install_status () {
 		if (empty($this->compress_options['active'])) {
 			$this->chained_load('/');
+			$options = $this->get_options();
+			$this->input = array();
+			foreach ($options as $group) {
+				if (is_array($group)) {
+					foreach ($group as $key => $option) {
+						if (is_array($option)) {
+							$this->input['wss_' . $key] = $option['value'];
+						}
+					}
+				}
+			}
+			$this->set_options();
 			$this->write_htaccess();
 			$this->compress_options['active'] = 1;
 		} else {
+			$this->input = array(
+				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled']
+			);
+			$this->write_htaccess();
 			$this->save_option("['active']", 0);
 			$this->compress_options['active'] = 0;
 		}
@@ -2260,6 +2276,19 @@ class admin {
 			$this->input['wss_htaccess_mod_headers'] = 0;
 			$this->input['wss_htaccess_mod_setenvif'] = 0;
 			$this->input['wss_htaccess_mod_rewrite'] = 0;
+		} else {
+			foreach (array(
+				'mod_deflate',
+				'mod_gzip',
+				'mod_expires',
+				'mod_mime',
+				'mod_headers',
+				'mod_setenvif',
+				'mod_rewrite') as $module) {
+					if (!in_array($module, $this->apache_modules)) {
+						$this->input['wss_htaccess_' . $module] = 0;
+					}
+			}
 		}
 /* make specific fake option for Apache envs. */
 		$this->input['wss_htaccess_mod_symlinks'] = in_array('mod_symlinks', $this->apache_modules);
@@ -2405,7 +2434,7 @@ class admin {
 				}
 			}
 /* Save the options to backup config */
-			if (strpos($this->input['wss_config'], 'user') !== false) {
+			if (!empty($this->input['wss_config']) && strpos($this->input['wss_config'], 'user') !== false) {
 				$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
 				$this->save_option("['title']", $this->input['wss_title']);
 				$this->save_option("['description']", $this->input['wss_description']);
