@@ -1458,8 +1458,6 @@ class admin {
 	* 
 	**/	
 	function install_uninstall () {
-/* delete last optimization grade */
-		@unlink('index.after');
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
@@ -1547,8 +1545,7 @@ class admin {
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
 /* remove all optimization results */
-		@unlink($index_after);
-		@unlink($index_before);
+		@unlink($this->basepath . $index_after);
 		$error = array();
 		if ($submit) {
 			if (empty($email) ||

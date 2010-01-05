@@ -726,20 +726,6 @@ class web_optimizer {
 		}
 /* remove BOM */
 		$this->content = str_replace("﻿", "", $this->content);
-/* strip from content flushed part */
-		if (!empty($this->flushed)) {
-			if (empty($options['flush_size'])) {
-				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
-					$source = substr($this->content, $headpos + 7);
-				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
-					$source = substr($this->content, $headpos + 7);
-				} else {
-					$content_to_write = preg_replace("!.*<\/head>!is", "", $this->content);
-				}
-			} else {
-				$this->content = substr($this->content, $options['flush_size']);
-			}
-		}
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
@@ -773,6 +759,21 @@ class web_optimizer {
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
+/* prepare flushed part of content */
+			if (!empty($options['flush']) && empty($this->encoding)) {
+				if (empty($options['flush_size'])) {
+					if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
+						$content_to_write = substr($this->content, 0, $headpos + 7);
+					} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
+						$content_to_write = substr($this->content, 0, $headpos + 7);
+					} else {
+						$content_to_write = preg_replace("!(.*<\/head>).*!is", "$1", $this->content);
+					}
+				} else {
+					$content_to_write =
+						substr($this->content, 0, $options['flush_size']);
+				}
+			}
 			$file = $options['cachedir'] .
 				$this->uri . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) ? '' : $this->encoding_ext);
@@ -793,22 +794,8 @@ class web_optimizer {
 				if (!empty($options['gzip']) && !empty($this->encoding)) {
 					$content_to_write = $this->create_gz_compress($this->content,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
-/* can't write a part of gzipped file */
-				} elseif (!empty($options['flush']) && empty($this->encoding)) {
-					if (empty($options['flush_size'])) {
-						if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
-							$source = substr($this->content, 0, $headpos + 7);
-						} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
-							$source = substr($this->content, 0, $headpos + 7);
-						} else {
-							$content_to_write = preg_replace("!(.*<\/head>).*!is", "$1", $this->content);
-						}
-					} else {
-						$content_to_write =
-							substr($this->content, 0, $options['flush_size']);
-					}
-/* or just write non-gzipped content */
-				} else {
+/* or just write full or non-gzipped content */
+				} elseif (empty($options['flush']) || !empty($this->encoding)) {
 					$content_to_write = $this->content;
 				}
 				$this->write_file($file, $content_to_write);
@@ -832,6 +819,13 @@ class web_optimizer {
 						$web_optimizer_plugin->onCache($this->content);
 				}
 			}
+		}
+/* strip from content flushed part */
+		if (!empty($this->flushed)) {
+			if (empty($options['flush_size'])) {
+				$options['flush_size'] = strlen($content_to_write);
+			}
+			$this->content = substr($this->content, $options['flush_size']);
 		}
 /* Gzip page itself */
 		if(!empty($options['gzip']) && !empty($this->encoding)) {
@@ -2366,7 +2360,7 @@ class web_optimizer {
 			}
 /* get head+body if required */
 			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
-				preg_match("!<head(\s+[^>]+)?>.*?(</body>|$)!is", $this->content, $matches);
+				preg_match("!<head.*!is", $this->content, $matches);
 				if (!empty($matches[0])) {
 					$this->body = $this->prepare_html($matches[0], empty($this->options['javascript']['minify_body']));
 				}
