@@ -191,7 +191,7 @@
 	echo _WEBO_DASHBOARD_STATUS;
 			?></h2>
 			<p class="wssI">WEBO Site SpeedUp <?php
-		echo _WEBO_DASHBOARD_STATUS_IS;
+	echo _WEBO_DASHBOARD_STATUS_IS;
 			?> <strong><?php
 	if ($active) {
 		echo _WEBO_DASHBOARD_STATUS_ACTIVE;

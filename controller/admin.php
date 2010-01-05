@@ -398,6 +398,9 @@ class admin {
 			$this->set_options();
 			$this->write_htaccess();
 			$this->compress_options['active'] = 1;
+			if (!@is_file($this->basepath . $this->index_after)) {
+				$this->view->download($this->webo_grade . '&refresh=on', $this->index_after, 2);
+			}
 		} else {
 			$this->input = array(
 				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled']
@@ -1077,7 +1080,7 @@ class admin {
 /* Request to re-check should be done on options save */
 					$this->view->download($this->webo_grade, $this->index_after, 1);
 			} elseif (empty($before) || $before < 200) {
-				$this->view->download($this->webo_grade, $this->index_before, 1);
+				$this->view->download($this->webo_grade . '&first=1', $this->index_before, 1);
 			}
 		}
 	}
@@ -1097,9 +1100,9 @@ class admin {
 		}
 /* fix double gzip: WO isn't installed, but page is gzipped */
 		if (!$installed && !empty($gzipped)) {
-			$this->save_option("['gzip']['wss_page']", 0);
+			$this->save_option("['gzip']['page']", 0);
 		}
-		$this->check_acceleration;
+		$this->check_acceleration();
 		$page_variables = array(
 			"title" => _WEBO_LOGIN_TITLE,
 			"page" => 'install_enter_password',
@@ -1167,10 +1170,11 @@ class admin {
 		$confirmagreement = empty($this->input['wss_confirmagreement']) ? '' : $this->input['wss_confirmagreement'];
 		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 /* try to get reliminary optimization grade for the website */
-		if ($no_initial_grade) {
-			$this->view->download($this->webo_grade, $this->index_before, 1);
-		}
+		$this->view->download($this->webo_grade, $this->index_before, 1);
 		$gzipped = $this->view->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $this->index_check);
+		if (!empty($gzipped)) {
+			$this->save_option("['gzip']['page']", 0);
+		}
 		if (!empty($this->compress_options['password'])) {
 			$this->install_enter_password($this->index_check, $this->index_before);
 		} else {
@@ -1535,13 +1539,16 @@ class admin {
 				}
 			}
 		}
-/* clean up all Web Optimzier rules from .htaccess */
+/* clean up all WEBO Site SpeedUp rules from .htaccess */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
 		$this->write_file($this->htaccess, $content_saved, $return);
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
+/* remove all optimization results */
+		@unlink($index_after);
+		@unlink($index_before);
 		$error = array();
 		if ($submit) {
 			if (empty($email) ||
@@ -1689,7 +1696,7 @@ class admin {
 			"premium" => $this->premium,
 			"submit" => $submit,
 			"error" => $this->error,
-			"basepath" => $thos->basepath,
+			"basepath" => $this->basepath,
 			"configs" => $configs,
 			"config" => $this->compress_options['config'],
 			"skip_render" => $this->skip_render
@@ -2434,6 +2441,10 @@ class admin {
 								. "']", $this->input['wss_' . strtolower($key)]);
 						}
 					}
+				}
+/* re-check grade if application is active */
+				if (!empty($this->compress_options['active'])) {
+					$this->view->download($this->webo_grade . '&refresh=on', $index_after, 2);
 				}
 			}
 /* Save the options to backup config */
