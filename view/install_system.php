@@ -541,8 +541,6 @@ require('<?php
 	</div>
 </fieldset><?php
 	}
-?></form><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
+?></form><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
-?> <span id="wss_file1"></span> <?php
-	echo _WEBO_GZIP_OUTOF;
-?> <span id="wss_file2"></span></p></div>
+?></span></div>

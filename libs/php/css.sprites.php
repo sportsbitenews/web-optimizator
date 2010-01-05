@@ -483,12 +483,16 @@ __________________
 							$this->css_image = substr($image, 4, strlen($image) - 5);
 							if (!empty($this->css_image)) {
 								$sprited = strpos($this->css_image, 'ebo.' . $this->optimizer->timestamp);
-								if (!empty($this->optimizer->data_uris) && !$this->optimizer->ie) {
+								if (!empty($this->optimizer->data_uris) &&
+									!$this->optimizer->ie) {
 /* convert image to data:URI */
-									$this->css_image = $this->optimizer->get_image(1, 0, $this->css_image);
-								} elseif (!empty($this->optimizer->data_uris) && !empty($this->optimizer->mhtml)) {
+										$this->css_image = $this->optimizer->get_image(1, 0, $this->css_image);
+								} elseif (!empty($this->optimizer->data_uris) &&
+									!empty($this->optimizer->mhtml) &&
+									$this->optimizer->ie &&
+									!$this->optimizer->ie7v) {
 /* convert image to mhtml: */
-									$this->css_image = $this->optimizer->get_image(2, $location++, $this->css_image);
+										$this->css_image = $this->optimizer->get_image(2, $location++, $this->css_image);
 								}
 								if (substr($this->css_image, 0, 5) !== 'data:' && substr($this->css_image, 0, 6) !== 'mhtml:') {
 /* skip images on different hosts */

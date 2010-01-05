@@ -360,7 +360,9 @@
 	}
 		?></div>
 	</div>
-</div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess">Current Status</p></div><script type="text/javascript">wss_pass='<?php
+</div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+	echo _WEBO_UPGRADE_FILE;
+?></span></div><script type="text/javascript">wss_pass='<?php
 	echo $password;
 ?>';wss_c='<?php
 	echo $cache_folder;
@@ -604,4 +606,6 @@
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
 ?>";wss_confirm="<?php
 	echo str_replace('"', '\"', _WEBO_OPTIONS_CONFIRM);
+?>";wss_outof="<?php
+	echo str_replace('"', '\"', _WEBO_GZIP_OUTOF);
 ?>"</script>

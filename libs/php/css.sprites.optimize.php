@@ -80,7 +80,9 @@ class css_sprites_optimize {
 /* current USER AGENT spot */
 			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
 /* is USER AGENT old IE? */
-			$this->ie = in_array($this->ua, array('ie5', 'ie6', 'ie7'));
+			$this->ie = in_array($this->ua, array('ie4', 'ie5', 'ie6', 'ie7'));
+/* or IE7@Vista? */
+			$this->ie7v = $this->ua == ie4 ? 1 : 0;
 			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';

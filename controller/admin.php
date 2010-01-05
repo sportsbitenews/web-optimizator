@@ -956,13 +956,13 @@ class admin {
 			$this->compress_options['html_cachedir'] = empty($this->input['wss_html_cachedir']) ?
 				$this->compress_options['html_cachedir'] : $this->input['wss_html_cachedir'];
 			$this->compress_options['htaccess']['access'] = empty($this->input['wss_htaccess_access']) ?
-				$this->compress_options['htaccess']['access'] : 1;
+				0 : 1;
 			$this->compress_options['username'] = empty($this->input['wss_username']) ?
-				$this->compress_options['username'] : $this->input['wss_username'];
+				'' : $this->input['wss_username'];
 			$this->compress_options['external_scripts']['user'] = empty($this->input['wss_external_scripts_user']) ?
-				$this->compress_options['external_scripts']['user'] : $this->input['wss_external_scripts_user'];
+				'' : $this->input['wss_external_scripts_user'];
 			$this->compress_options['external_scripts']['pass'] = empty($this->input['wss_external_scripts_pass']) ?
-				$this->compress_options['external_scripts']['pass'] : $this->input['wss_external_scripts_pass'];
+				'' : $this->input['wss_external_scripts_pass'];
 			if (!@is_dir($this->compress_options['website_root'])) {
 				$this->error[1] = 1;
 			}
@@ -3395,20 +3395,21 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$htaccess = $this->basepath . '.htaccess';
 		$htaccess_content = @file_get_contents($htaccess);
 /* clean current content */
-		$htaccess_content = preg_replace("!# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
+		$htaccess_content = preg_replace("!\r?\n# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
 		$htaccess_content .= '
 # Web Optimizer protection';
 		$this->error = $this->error ? $this->error : array();
 		if (!empty($this->compress_options['htaccess']['access'])) {
-			$this->write_file($this->basepath . '.htpasswd',
+			$htpasswd = $this->basepath . '.htpasswd';
+			$this->write_file($htpasswd,
 				$this->compress_options['username'] .
 				$this->compress_options['htpasswd']);
-			if (@is_file($this->basepath . '.htpasswd')) {
+			if (@is_file($htpasswd)) {
 /* add secure protection via htpasswd */
 				$htaccess_content .= '
 AuthType Basic
 AuthName "WEBO Site SpeedUp Installation"
-AuthUserFile ' . $this->basepath . '.htpasswd
+AuthUserFile ' . $htpasswd . '
 require valid-user';
 			} else {
 				$this->error[8] = 1;
