@@ -6,7 +6,7 @@
 +e) Auto-updater
 +f) Chained optimization (for complex cases and manual mode) -- to prevent PHP timeout
 +g) Memory usage (maximum -- 32MB)
- h) Donate / ads block (for basic edition)
+-h) Donate / ads block (for basic edition)
 +i) Cache cleaner
 +j) Secure installation
 +k) Saved traffic / visitors' seconds
@@ -69,7 +69,9 @@
 +a) Manual including 2 strings
 +b) Auto including (root index.php)
 +c) Auto-gzip for CSS / JS files
- d) Auto-optimize for images
++d) Auto-optimize for images
+ e) SVG + fonts optimizer
+ g) Trash cleaner (i.e. Thumbs.db)
 
 7. CDN integration
  a) Google Apps Engine
@@ -78,6 +80,7 @@
  d) ?
  e) NGENIX
 +f) Apply multiple static hosts if possible
++g) General CDN support
 
 8. Server cache integration
 +a) Raw files (cache directory)
@@ -143,8 +146,9 @@
 ?d) Hebrew
 +e) Ukranian
 +f) Spanish
- g) French
+?g) French
  h) Italian
+?i) Latvian
  
  13) Plugin API
  +a) Possiblity to add plugin for any system

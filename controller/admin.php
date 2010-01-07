@@ -1,7 +1,7 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
- * Provides admin interface for Web Optimizer standalone application.
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * Provides admin interface.
  *
  **/
 class admin {

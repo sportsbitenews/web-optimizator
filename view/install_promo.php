@@ -102,8 +102,8 @@
 	</thead>
 	<tfoot>
 		<tr>
-			<th> </th>
-			<th> </th>
+			<th class="wssT7"> </th>
+			<th class="wssT7"> </th>
 			<td class="wssT7"><?php
 	echo _WEBO_GENERAL_BUYNOWLITE;
 				?>

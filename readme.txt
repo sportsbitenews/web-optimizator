@@ -1,45 +1,52 @@
-Web Optimizer
+WEBO Site SpeedUp
 -----------------------
-Web Optimizer is a PHP solution that automatically speeds up your website by
+WEBO Site SpeedUp is a PHP solution that automatically speeds up your website by
 combining and compressing your JavaScript and CSS assets.
 It can also GZIP these assets, and the page itself (via PHP or .htaccess
 options). Also it applies CSS Sprites and data:URI techniques. It supports
-unobtrusive JavaScript conversion, multiple hosts, and a lot of other useful
-options.
-Actually Web Optimizer applies all known client side optimization approaches to
-completely speed up your website. Average acceleration is 2.5 times. Web
-Optimizer was initially based on PHP Speedy.
+unobtrusive JavaScript conversion, multiple hosts, CDN, and a lot of other
+useful options.
+Actually WEBO Site SpeedUp applies all known client side optimization approaches
+to completely speed up your website. Average acceleration is 2.5 times. WEBO
+Site SpeedUp is based on Web Optimizer which was initially based on PHP Speedy.
 
-Web Optimizer native plugin for Wordpress:
+WEBO Site SpeedUp native plugin for Wordpress:
 http://wordpress.org/extend/plugins/web-optimizer/
 
-Web Optimizer native plugin for Joomla! 1.5 and Joomla! 1.0:
+WEBO Site SpeedUp native component+plugin for Joomla! 1.5 and Joomla! 1.0:
 http://extensions.joomla.org/extensions/site-management/cache/10152
 
-Web Optimizer native plugin for Drupal 6.x and Drupal 5.x:
-http://code.google.com/p/web-optimizator/downloads/
+WEBO Site SpeedUp native module for Drupal 6.x and Drupal 5.x:
+http://www.web-optimizer.us/web-optimizer/download.html
+
+WEBO Site SpeedUp native module for Bitrix:
+http://www.web-optimizer.us/web-optimizer/download.html
 
 Installation
 -----------------------
-1. Download and UNZIP the Web Optimizer package into its own directory (if you
-   haven't already).
-2. Point your browser to the Web Optimizer directory (/web-optimizer -- that you
-   have just created)
+1. Download and UNZIP the WEBO Site SpeedUp package into its own directory (if
+   you haven't already done this).
+2. Point your browser to the WEBO Site SpeedUp directory (/web-optimizer -- the
+   one you have just created).
 2a. If you are using advanced framework (such as CodeIgniter, Zend Framework,
-    Symfony, etc) please disable default Rewrite rules to setup Web Optimizer
-    properly. I.e. comment these lines
+    Symfony, etc) please disable default Rewrite rules to setup WEBO Site
+	SpeedUp properly. I.e. comment these lines
 	  RewriteCond %{REQUEST_FILENAME} !-f
 	  RewriteRule .* index.php
     in your .htaccess
 2b. Or you can just try to go to /web-optimizer/index.php
-3. Follow the installation instructions. For Express Install please make sure
-   that
+3. Please also check that
    * website root is writable for your web server process or(and) there is
      writable .htaccess file
    * default cache folder (web-optimizer/cache) is writable for your web server
      process
    * config.webo.php is writable for your web server process
-4. Enjoy your accelerated website!
+   * (optional) web-optimizer folder is also writable (is required to save
+     custom configurations)
+4. Tune and debug the application.
+5. After your website is ready - just activate WEBO Site SpeedUp from
+   administrative interface.
+6. Enjoy your accelerated website!
 
 Support and bug reports
 -----------------------
@@ -60,12 +67,19 @@ Please find all coordinates for donation here: http://sprites.in/donate/
 
 Upgrade issues
 -----------------------
+Upgrade procedure from version 0.6.7 to 0.9.5+ should be a common one. But
+please store config.webo.php somewhere and only then upgrade via program
+interface. If configuration file isn't applied properly - you will need to copy
+all previous settings to the new file (there are a number of new options there).
+
 To proper upgrade from version 0.5.9 and below please after upgrade save
 configuration options once more - this will create all necessary rules in
 .htaccess.
+
 Auto-upgrade is included since version 0.3.8. Please just enter username and
 password at your Web Optimizer Admin interface and press 'Upgrade'. For
 auto-upgrade curl must be enabled on the server.
+
 Please note that on upgrading from version 0.2 and below you need to replace in
 the last part in index.php file 'compressor' to 'web_optimizer'.
 
@@ -84,25 +98,30 @@ A lot of different persons contributed to this project. Some of them:
  * sunnybear (ported core, unit tests, htaccess, CSS Sprites, multiple hosts,
    unobtrusive logic, performance tuning, promotion, investment raising, other
    stuff)
- * fade (design, logo, general usability)
- * gkondratenko (documentation, integration, interfaces, known issues gathering)
- * markusmerz (a lot of minor bugs found and overall beta testing perfromed)
+ * fade (design, logo, general usability, product interface)
+ * gkondratenko (documentation, integration, interface & usability, make up
+   fixes, known issues gathering)
+ * markusmerz (a lot of minor bugs found and overall beta testing perfromed,
+   DE localization of 0.9+ versions)
  * ShimON (Java branch, CSS Sprites unit-tests)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
  * janvarev (files MTIME check)
  * crazyyy (UA localization)
  * Ajexandro (ES localization)
- * jos (DE localization)
+ * jos (DE localization of 0.6+ versions)
+ * veroniquemckay (FR localization of 0.9+ versions)
+ * vadims (LT localization of 0.9+ versions)
  
- License
- -----------------------
- Web Optimizer is licensed under WEBO Software license (LICENSE.txt). It's
- located in this package. For Russian users there is LICENSE.ru.txt
- Some parts of Web Optimizer are open source and licensed under different
- licenses:
-  * JSMin library - GNU GPLv2
-  * Packer library - GNU LGPLv2
-  * YUI Compressor binary - BSD License
-  * YASS library - MIT License
-  * CSS Tidy library - GNU LGPLv2
+License
+-----------------------
+WEBO Site SpeedUp is licensed under WEBO Software license (LICENSE.txt). It's
+located in this package. For Russian users there is LICENSE.ru.txt or
+LICENSE.ru.utf8.txt
+Some parts of WEBO Site SpeedUp are open source and licensed under different
+licenses:
+ * JSMin library - GNU GPLv2
+ * Packer library - GNU LGPLv2
+ * YUI Compressor binary - BSD License
+ * YASS library - MIT License
+ * CSS Tidy library - GNU LGPLv2

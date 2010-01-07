@@ -3,8 +3,9 @@
  * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page.
  * Can also gzip and minify the page itself
- * Initially based on PHP Speedy, Leon Chevalier (http://www.aciddrop.com)
- /* version 1.0 = Festinus Optimus
+ * and 100+ other cool web performance optimization techniques
+ * Based on Web Optimizer, which was based on PHP Speedy
+ *
  **/
 class web_optimizer {
 
