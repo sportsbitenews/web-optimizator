@@ -3672,6 +3672,9 @@ require valid-user';
 /* Geeklog 1.6.1 */
 		} elseif (@is_file($root . '/images/icons/geeklog.gif')) {
 			return 'Geeklog';
+/* PrestaShop 1.2.5 */
+		} elseif (@is_file($root . '/modules/paypal/prestashop_paypal.png')) {
+			return 'PrestaShop';
 		}
 		return 'CMS 42';
 	}
