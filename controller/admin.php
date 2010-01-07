@@ -117,9 +117,9 @@ class admin {
 					$this->input['web_optimizer_stage']);
 /* grade URL from webo.name */
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
-				$_SERVER['HTTP_HOST'] . '/' .
-				str_replace($this->view->paths['full']['document_root'], '',
-					$this->view->paths['absolute']['document_root']) .
+				$this->compress_options['host'] . '/' .
+				str_replace($this->compress_options['document_root'], '/',
+					$this->compress_options['website_root']) .
 				'&mode=xml&source=wo';
 /* download counter */
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
