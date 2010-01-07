@@ -14,7 +14,7 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", $total);
 ?> <?php
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
-?></td></tr></tfoot><tbody class="wssY15"><?php
+?></td></tr></tfoot><tbody class="wssT15"><?php
 	if ($css) {
 ?><tr><th class="wssT2"><?php
 		echo _WEBO_DASHBOARD_CACHE_CSS;
