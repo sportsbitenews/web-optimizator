@@ -63,8 +63,6 @@ class css_sprites_optimize {
 			$this->dimensions_limited = $options['dimensions_limited'];
 /* only compress CSS and convert images to data:URI */
 			$this->no_sprites = $options['no_css_sprites'];
-/* optimiza all CSS images via smush.it? */
-			$this->image_optimization = $options['image_optimization'];
 /* multiple hosts */
 			$this->multiple_hosts = $options['multiple_hosts'];
 			if (count($this->multiple_hosts) > 4) {
@@ -82,7 +80,7 @@ class css_sprites_optimize {
 /* is USER AGENT old IE? */
 			$this->ie = in_array($this->ua, array('ie4', 'ie5', 'ie6', 'ie7'));
 /* or IE7@Vista? */
-			$this->ie7v = $this->ua == ie4 ? 1 : 0;
+			$this->ie7v = $this->ua == 'ie4' ? 1 : 0;
 			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
@@ -133,10 +131,6 @@ class css_sprites_optimize {
 			if (!is_file($css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($css_image, "://")) {
 				$css_image = $image_saved;
 				return $css_image;
-			}
-/* image optimization */
-			if ($this->image_optimization && !strpos($css_image, "/webo.")) {
-				$this->smushit($css_image);
 			}
 		}
 		switch ($mode) {

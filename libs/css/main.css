@@ -1,6 +1,5 @@
 html,body{margin:0;padding:0}
 .wssa{background:#fff;margin:10px auto;position:relative;min-width:770px;max-width:1180px}
-.left-corner .wssa{padding:10px;top:-50px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
 .wssc{color:#808080;font:700 10px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:9px}
 .wssd{left:324px;margin:0;padding:0;position:absolute;top:17px}
@@ -387,3 +386,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssM3{position:relative;top:-7px}
 *+html .wssM5{position:absolute;right:0}
 *+html .wssN4{margin-left:1.8%}
+
+.left-corner .wssa{padding:10px;top:-50px}
+#element-box{position:relative;top:-22px}

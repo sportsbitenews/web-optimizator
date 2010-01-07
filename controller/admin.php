@@ -115,7 +115,6 @@ class admin {
 			$this->web_optimizer_stage =
 				round(empty($this->input['web_optimizer_stage']) ? 0 :
 					$this->input['web_optimizer_stage']);
-			$this->display_progress = false;
 /* grade URL from webo.name */
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
 				$_SERVER['HTTP_HOST'] . '/' .
@@ -1061,21 +1060,19 @@ class admin {
 	* Write installation progress to JavaScript file
 	* 
 	**/	
-	function write_progress ($progress, $init = false) {
+	function write_progress ($progress) {
 		$file = (empty($this->compress_options['javascript_cachedir']) ?
 			($this->view->paths['full']['current_directory'] . 'cache/') :
 				$this->compress_options['javascript_cachedir']) .
 					'progress.html';
-		if ($this->display_progress || $init) {
-			$return = $this->write_file($file, $progress, 1);
-			if (!empty($return)) {
-				if ($progress == 100) {
-					@unlink($file);
-				}
-				return true;
+		$return = $this->write_file($file, $progress, 1);
+		if (!empty($return)) {
+			if ($progress == 100) {
+				@unlink($file);
 			}
-			return false;
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -1193,8 +1190,6 @@ class admin {
 			if (!empty($gzip)) {
 				$this->save_option("['gzip']['wss_page']", 0);
 			}
-/* check if we can display progress bar */
-			$this->display_progress = $this->write_progress($this->web_optimizer_stage = 0, true);
 			$error = array();
 			if (!empty($submit)) {
 				if (empty($password)) {
@@ -2878,7 +2873,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	* Final stage
 	* 
 	**/	
-	function install_install($skip = false) {
+	function install_install ($skip = false) {
 		$auto_rewrite = 0;
 /* define CMS */
 		if (empty($this->cms_version)) {
@@ -2891,11 +2886,17 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$this->compress_options['website_root'] = empty($this->compress_options['website_root']) ?
 			$this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'];
 		$this->compress_options['css_cachedir'] = empty($this->compress_options['css_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['css_cachedir'];
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
+				$this->compress_options['css_cachedir'];
 		$this->compress_options['javascript_cachedir'] = empty($this->compress_options['javascript_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['javascript_cachedir'];
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
+				$this->compress_options['javascript_cachedir'];
 		$this->compress_options['html_cachedir'] = empty($this->compress_options['html_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['html_cachedir'];
+			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
+				$this->compress_options['html_cachedir'];
+		$this->compress_options['host'] = empty($this->compress_options['host']) ?
+			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
+				$this->compress_options['host'];
 		foreach (array(
 			'document_root',
 			'website_root',
@@ -3314,6 +3315,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	function chained_load ($index = false) {
 /* force cache reload via index.php */
 		if ($index) {
+			$this->write_progress(8);
 /* deactivate Web Optimizer */
 			$this->save_option("['active']", 0, 0);
 /* load home page in DEBUG mode */
