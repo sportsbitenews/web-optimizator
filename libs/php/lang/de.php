@@ -553,7 +553,7 @@ define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Speedup');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU-Unkosten');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'and more');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
-define('_WEBO_SPLASH2_COMPARISON_UPTO2', 'bis zu');
+define('_WEBO_SPLASH2_COMPARISON_UPTO', 'bis zu');
 define('_WEBO_SPLASH2_COMPARISON_UPTO2', 'bis zu');
 define('_WEBO_SPLASH2_COMPARISON_TRAFFIC', 'weniger Traffic');
 define('_WEBO_SPLASH2_COMPARISON_LOAD', 'CPU-Last');

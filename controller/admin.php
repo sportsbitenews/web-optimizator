@@ -148,7 +148,9 @@ class admin {
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
-			method_exists($this, $this->input['wss_page'])) {
+			method_exists($this, $this->input['wss_page']) &&
+			($this->input['wss_page'] != 'install_set_password' ||
+			empty($this->internal))) {
 				$func = $this->input['wss_page'];
 				$this->$func();
 		}
@@ -242,8 +244,9 @@ class admin {
 		$email = $this->compress_options['email'];
 		$name = $this->compress_options['name'];
 		$license = $this->compress_options['license'];
+		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 		$error = array();
-		if (!empty($this->input['wss_Submit'])) {
+		if (!empty($submit)) {
 			$email = $this->input['wss_email'];
 			$allow = empty($this->input['wss_allow']) ? 0 : 1;
 			$license = trim($this->input['wss_license']);
@@ -283,7 +286,7 @@ class admin {
 		$page_variables = array(
 			"version" => $this->version,
 			"premium" => $this->premium,
-			"submit" => $this->input['wss_Submit'],
+			"submit" => $submit,
 			"expires" => $expires,
 			"allow" => $allow,
 			"email" => $email,
@@ -359,8 +362,11 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
-		$this->chained_load('/');
-		$this->save_option("['performance']['cache_version']", $this->compress_options['performance']['cache_version']);
+		$this->chained_load(str_replace(
+			$this->compress_options['document_root'], "/" ,
+			$this->compress_options['website_root']) . 'index.php');
+		$this->save_option("['performance']['cache_version']",
+			$this->compress_options['performance']['cache_version']);
 		$this->install_cache();
 	}
 
@@ -372,8 +378,11 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
-		$this->chained_load('/');
-		$this->save_option("['performance']['cache_version']", $this->compress_options['performance']['cache_version']);
+		$this->chained_load(str_replace(
+			$this->compress_options['document_root'], "/" ,
+			$this->compress_options['website_root']) . 'index.php');
+		$this->save_option("['performance']['cache_version']",
+			$this->compress_options['performance']['cache_version']);
 		$this->install_dashboard();
 	}
 
@@ -383,7 +392,9 @@ class admin {
 	**/
 	function install_status () {
 		if (empty($this->compress_options['active'])) {
-			$this->chained_load('/');
+			$this->chained_load(str_replace(
+				$this->compress_options['document_root'], "/" ,
+				$this->compress_options['website_root']) . 'index.php');
 			$options = $this->get_options();
 			$this->input = array();
 			foreach ($options as $group) {
@@ -943,7 +954,7 @@ class admin {
 		if (empty($this->cms_version)) {
 			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		}
-		$submit = $this->input['wss_Submit'];
+		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 		$this->error = array();
 		if (!empty($submit)) {
 			$this->compress_options['host'] = empty($this->input['wss_host']) ?
@@ -1051,9 +1062,9 @@ class admin {
 	* 
 	**/	
 	function write_progress ($progress, $init = false) {
-		$file = (empty($this->input['user']['javascript_cachedir']) ?
+		$file = (empty($this->compress_options['javascript_cachedir']) ?
 			($this->view->paths['full']['current_directory'] . 'cache/') :
-				$this->input['user']['javascript_cachedir']) .
+				$this->compress_options['javascript_cachedir']) .
 					'progress.html';
 		if ($this->display_progress || $init) {
 			$return = $this->write_file($file, $progress, 1);
@@ -1080,7 +1091,8 @@ class admin {
 /* Request to re-check should be done on options save */
 					$this->view->download($this->webo_grade, $this->index_after, 1);
 			} elseif (empty($before) || $before < 200) {
-				$this->view->download($this->webo_grade . '&first=1', $this->index_before, 1);
+				$this->view->download($this->webo_grade . '&first=1&email=' .
+					$this->compress_options['email'], $this->index_before, 1);
 			}
 		}
 	}
@@ -1161,7 +1173,6 @@ class admin {
 	* 
 	**/	
 	function install_set_password() {
-		$no_initial_grade = !@filesize($this->index_before);
 		$username = empty($this->input['wss_username']) ? '' : $this->input['wss_username'];
 		$password = empty($this->input['wss_password']) ? '' : $this->input['wss_password'];
 		$confirm = empty($this->input['wss_confirm']) ? '' : $this->input['wss_confirm'];
@@ -1169,14 +1180,14 @@ class admin {
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
 		$confirmagreement = empty($this->input['wss_confirmagreement']) ? '' : $this->input['wss_confirmagreement'];
 		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
-/* try to get reliminary optimization grade for the website */
-		$this->view->download($this->webo_grade, $this->index_before, 1);
+/* try to get preliminary optimization grade for the website */
+		$this->check_acceleration();
 		$gzipped = $this->view->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $this->index_check);
 		if (!empty($gzipped)) {
 			$this->save_option("['gzip']['page']", 0);
 		}
 		if (!empty($this->compress_options['password'])) {
-			$this->install_enter_password($this->index_check, $this->index_before);
+			$this->install_enter_password();
 		} else {
 /* disable gzip for HTML as we alsredy have it */
 			if (!empty($gzip)) {
@@ -1200,7 +1211,7 @@ class admin {
 					$error[4] = 1;
 				}
 			}
-			if (count($error) || empty($this->input['wss_Submit'])) {
+			if (count($error) || empty($submit)) {
 				$page_variables = array(
 					"title" => _WEBO_NEW_ENTER,
 					"page" => 'install_set_password',
@@ -1222,12 +1233,13 @@ class admin {
 				$this->view->render("admin_container", $page_variables);
 			} else {
 				$this->save_option("['htpasswd']",
-					":" . $this->encrypt_password($this->input['wss_password']));
-				$this->compress_options['password'] = md5($this->input['wss_password']);
+					":" . $this->encrypt_password($password));
+				$this->compress_options['password'] = md5($password);
 				$this->save_option("['password']", $this->compress_options['password']);
-				$this->save_option("['email']", htmlspecialchars($this->input['wss_email']));
-				$this->save_option("['username']", htmlspecialchars($this->input['wss_username']));
-				$this->save_option("['name']", htmlspecialchars($this->input['wss_username']));
+				$this->save_option("['email']", htmlspecialchars($email));
+				$this->save_option("['username']", htmlspecialchars($username));
+				$this->save_option("['name']", htmlspecialchars($username));
+				$this->save_option("['license']", htmlspecialchars($license));
 				$this->install_install(1);
 				$this->install_dashboard();
 			}
@@ -1277,16 +1289,6 @@ class admin {
 				}
 			}
 			$success = true;
-		}
-		if ($success && $deleted_css && $deleted_js && $deleted_html) {
-			if ($redirect || !$ajax) {
-				if (!empty($this->compress_options['auto_rewrite']['chained'])) {
-/* create all new cached files */
-					$this->chained_load(str_replace(
-						$this->compress_options['document_root'], "/" ,
-							$this->compress_options['website_root']) . 'index.php');
-				}
-			}
 		}
 	}
 
@@ -1545,6 +1547,7 @@ class admin {
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
 /* remove all optimization results */
+		@unlink($this->basepath . $index_before);
 		@unlink($this->basepath . $index_after);
 		$error = array();
 		if ($submit) {
@@ -1675,8 +1678,8 @@ class admin {
 	function install_options () {
 		$options = $this->get_options();
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
+		$this->error = array();
 		if ($submit) {
-			$this->error == array();
 			$this->set_options();
 			$this->write_htaccess();
 		}
@@ -2045,7 +2048,7 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
 				'css_sprites_truecolor_in_jpeg' => array(
-					'value' => $compress_options['css_sprites']['truecolor_in_jpeg'],
+					'value' => $this->compress_options['css_sprites']['truecolor_in_jpeg'],
 					'type' => 'radio',
 					'count' => 2,
 					'hidden' => $this->premium < 2 ? 1 : 0
@@ -2884,9 +2887,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 /* sve initial options */
 		$this->compress_options['document_root'] = empty($this->compress_options['document_root']) ?
-			$this->view->paths['absolute']['document_root'] : $this->compress_options['document_root'];
+			$this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
 		$this->compress_options['website_root'] = empty($this->compress_options['website_root']) ?
-			$this->view->paths['full']['document_root'] : $this->compress_options['website_root'];
+			$this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'];
 		$this->compress_options['css_cachedir'] = empty($this->compress_options['css_cachedir']) ?
 			$this->view->paths['absolute']['document_root'] . 'webo/cache/' : $this->compress_options['css_cachedir'];
 		$this->compress_options['javascript_cachedir'] = empty($this->compress_options['javascript_cachedir']) ?
@@ -3190,6 +3193,20 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				}
 			}
 		}
+/* write .htaccess */
+		$options = $this->get_options();
+		$this->input = array();
+		foreach ($options as $group) {
+			if (is_array($group)) {
+				foreach ($group as $key => $option) {
+					if (is_array($option)) {
+						$this->input['wss_' . $key] = $option['value'];
+					}
+				}
+			}
+		}
+		$this->set_options();
+		$this->write_htaccess();
 		return $auto_rewrite;
 	}
 
@@ -3382,7 +3399,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if ((!empty($this->input['wss_password']) &&
 			($this->compress_options['password'] ==
 			md5($this->input['wss_password'])) ||
-			($this->compress_options['password'] ==
+			(!empty($this->input['wss__password']) &&
+			$this->compress_options['password'] ==
 			$this->input['wss__password'])) ||
 /* if we use .htaccess */
 			(isset($_SERVER['PHP_AUTH_USER']) &&
@@ -3503,7 +3521,7 @@ require valid-user';
 			return 'Drupal ' . trim($drupal_version);
 /* Joomla 1.5 */
 		} elseif (@is_file($root . 'libraries/joomla/version.php')) {
-			return 'Joomla!';
+			return 'Joomla! 1.5';
 		} elseif (@is_dir($root . 'includes')) {
 /* for PHP-Nuke 8.0 */
 			if (@is_file($root . 'modules/Journal/copyright.php') && @is_file($root . 'footer.php') && @is_file($root . 'mainfile.php')) {

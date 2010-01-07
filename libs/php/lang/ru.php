@@ -57,10 +57,6 @@ define('_WEBO_LOGIN_PASSWORDSDIFFER', 'Пароли не совпадают');
 define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я прочитал и согласен с ');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионным соглашением');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы прочитали и согласны с лицензионным соглашением');
-define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я ознакомился с ');
-define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионным соглашением');
-define('_WEBO_LOGIN_LICENSEAGREEMENT3', ' и принимаю его');
-define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы ознакомились с лицензионным соглашением и принимаете его');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
@@ -83,11 +79,7 @@ define('_WEBO_NEW_NOSCRIPT', 'Для корректной работы с при
 define('_WEBO_SPLASH1_UNINSTALL', 'Удалить');
 define('_WEBO_SPLASH1_UNINSTALL_TITLE', 'Удаление WEBO Site SpeedUp');
 define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование WEBO Site SpeedUp. Пожалуйста, помогите нам улучшить продукт и сообщите причину его удаления.');
-define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Мы будем рады видеть отзывы о системе на <a href="http://www.web-optimizer.ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">сайте WEBO Site SpeedUp</a>, вы также можете отправить <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">любые проблемные вопросы</a>.');
-define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Теперь можно вернуться обратно к <a href="');
-define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">вашему сайту</a>.');
 define('_WEBO_SPLASH1_UNINSTALL_HELP', 'Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
-define('_WEBO_SPLASH1_UNINSTALL_THANKS', 'Спасибо за использование WEBO Site SpeedUp. Помогите сделать наш продукт лучше, сообщите нам причину удаления WEBO Site SpeedUp.');
 define('_WEBO_SPLASH1_UNINSTALL_VISIT', 'Вы можете посетить <a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">сайт нашей компании</a> и <a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">отправить запрос</a> на любую тему, связанную с WEBO Site SpeedUp.');
 define('_WEBO_SPLASH1_UNINSTALL_BACK', 'Вы можете также в любой момент переустановить WEBO Site SpeedUp просто зайдя на <a href="http://');
 define('_WEBO_SPLASH1_UNINSTALL_BACK2', '">страницу WEBO Site SpeedUp</a>.');
@@ -381,9 +373,6 @@ define('_WEBO_DASHBOARD_STATUS_LIVE', 'рабочий&nbsp;режим');
 define('_WEBO_DASHBOARD_STATUS_WORKING', 'Вы можете ');
 define('_WEBO_DASHBOARD_STATUS_WORKING2', 'проверить ваш сайт');
 define('_WEBO_DASHBOARD_STATUS_WORKING3', ' или перевести приложение обратно в режим отладки. Для этого надо нажать &laquo;Отключить&raquo;.');
-define('_WEBO_DASHBOARD_STATUS_WORKING', 'Теперь вы можете ');
-define('_WEBO_DASHBOARD_STATUS_WORKING2', 'перейти на свой сайт');
-define('_WEBO_DASHBOARD_STATUS_WORKING3', ' или перевести приложение в <a href="#wss_system" class="wssJ">режим отладки</a>, нажав кнопку &laquo;Отключить&raquo;.');
 define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'не работает');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'режим&nbsp;отладки');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'Вы можете отладить работу приложения:');

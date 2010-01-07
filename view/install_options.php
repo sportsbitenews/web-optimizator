@@ -165,13 +165,13 @@ if ($submit) {
 	echo _WEBO_OPTIONS_CONFIGURATION;
 		?>:</dt>
 		<dd class="wssU3"><?php
-	echo $configuration_title;
+	echo $options['title'];
 		?></dd>
 		<dt class="wssU2"><?php
 	echo _WEBO_OPTIONS_DESCRIPTION;
 		?>:</dt>
 		<dd class="wssU4"><?php
-	echo $configuration_decription;
+	echo $options['description'];
 		?></dd>
 	</dl>
 	<ul class="wssO3">

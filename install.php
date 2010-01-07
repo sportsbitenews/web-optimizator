@@ -11,7 +11,7 @@ require($basepath . "controller/admin.php");
 require($basepath . "libs/php/view.php");
 
 /* include language file */
-$language = strtolower(preg_replace("/[-,;].*/", "", empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? '' : $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+$language = strtolower(preg_replace("/[-,;].*/", "", empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? 'en' : $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
 if (!empty($_COOKIE['wss_lang'])) {
 	$language = strtolower($_COOKIE['wss_lang']);
 }

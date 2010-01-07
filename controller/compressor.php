@@ -330,7 +330,6 @@ class web_optimizer {
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
 				"data_uris_exclude_mhtml" => round($this->options['data_uris']['additional_list']),
-				"image_optimization" => $this->options['data_uris']['smushit'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] &&
 					($this->premium > 1),
 				"css_sprites_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
@@ -2366,6 +2365,7 @@ class web_optimizer {
 					$this->body = $this->prepare_html($matches[0], empty($this->options['javascript']['minify_body']));
 				}
 			}
+			$xhtml = strpos($this->content, 'XHTML');
 /* split XHTML behavior from HTML */
 			$this->xhtml = $xhtml > 34 && $xhtml < 100;
 /* add WEBO Site SpeedUp spot */

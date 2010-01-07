@@ -180,16 +180,16 @@ a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf url(button.blue.ho
 .wssC7 .wssJ5,.wssC7 .wssJ6{background-image:url(button.blue.png)}
 .wssC4 a.wssJ5:hover,.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ5:hover,.wssU18 a.wssJ6:hover{background-image:url(button.bw.hover.png)}
 .wssC7 .wssJ5,.wssC7 .wssJ7{margin-bottom:21px}
-.wssC7 a.wssJ5:hover,.wssC7 a.wssJ6:hover{background-image:url(button.blue.hover.png)}
+.wssC7 a.wssJ5:hover,.wssC7 a.wssJ5:hover a.wssJ6{background-image:url(button.blue.hover.png)}
 .wssU18 a.wssJ5{margin:0 5px}
 .wssJ6{background:url(button.blue.png) -186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
-a.wssJ5:hover .wssJ6{background-image:url(button.blue.hover.png)}
+a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background-image:url(button.blue.hover.png)}
 .wssC6 .wssO4 .wssJ6{display:none}
 .wssC6 .wssO5 .wssJ6{background:#f7f4e9;display:block;border-bottom:1px solid #fbf9f3;border-top:1px solid #fbf9f3;height:28px;left:185px;top:-1px;width:4px;z-index:2}
 .wssJ7 .wssJ6{background-image:url(button.orange.png)}
 .wssJ7{background:#ffb163 url(button.orange.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
 a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(button.orange.hover.png) no-repeat;color:#fff!important}
-a.wssJ7:hover .wssJ6{background-image:url(button.orange.hover.png)}
+a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background-image:url(button.orange.hover.png)}
 .wssC4 .wssJ7,.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7,.wssU18 .wssJ7 .wssJ6{background-image:url(button.ow.png)}
 .wssC4 .wssH .wssJ7,.wssC4 .wssH .wssJ7 .wssJ6{background-image:url(button.orange.png)}
 .wssC4 a.wssJ7:hover,.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover,.wssU18 a.wssJ7:hover .wssJ6{background-image:url(button.ow.hover.png)}
@@ -283,7 +283,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU .wssO3{left:0;height:60px;margin:0 0 -68px;position:relative;padding:0;top:38px}
 #wss_opt .wssO3{margin:10px 0 -8px;padding:0}
 #wss_news .wssO3{padding-top:9px}
-.wssO1{background:url(error-config.png) 0 3px no-repeat;color:#f00;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 0 0 12px;padding:0 0 2px 19px}
+.wssO1{background:url(error-config.png) 0 3px no-repeat;color:#f00;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style:none;margin:0 0 0 12px;padding:0 0 2px 19px}
 .wssC6 .wssO1{margin-left:0}
 #wss_opt .wssO1{background:none;border-left:1px solid #ccc;color:#808080;font-size:10px;height:18px;left:0;line-height:14px;list-style:none;margin:0;position:absolute;top:7px;width:16%}
 .wssO2{background-image:url(error-warning.png);color:#ff4000}
