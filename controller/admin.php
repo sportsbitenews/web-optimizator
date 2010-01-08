@@ -398,6 +398,8 @@ class admin {
 			$this->chained_load(str_replace(
 				$this->compress_options['document_root'], "/" ,
 				$this->compress_options['website_root']) . 'index.php');
+			$this->compress_options['active'] = 1;
+			$this->save_option("['active']", 1);
 			$options = $this->get_options();
 			$this->input = array();
 			foreach ($options as $group) {
@@ -411,8 +413,6 @@ class admin {
 			}
 			$this->set_options();
 			$this->write_htaccess();
-			$this->compress_options['active'] = 1;
-			$this->save_option("['active']", 1);
 			if (!@is_file($this->basepath . $this->index_after)) {
 				$this->view->download($this->webo_grade . '&refresh=on', $this->index_after, 2);
 			}
