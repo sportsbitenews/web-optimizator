@@ -358,8 +358,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU3{color:#bf6200;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;height:25px;margin:0 0 12px 175px;padding:0}
 .wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
 .wssU5{margin:0;padding:0}
-.wssU10{list-style:none;margin:0;padding:0}
-.wssU11{background:url(config.png) 24px 12px no-repeat;display:inline-block;height:118px;margin:0 8px 0 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+.wssU10{list-style:none;margin:0;padding:0;overflow: hidden;}
+.wssU11{background:url(config.png) 24px 12px no-repeat;display:inline-block;float: left;height:118px;margin:0 8px 0 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU12{background:#ff8200 url(config.active.png) 24px 12px no-repeat}
 .wssU17 .wssU13{background:url(apply.hover.png) no-repeat;display:block;height:17px;left:96px;position:absolute;top:7px;width:17px}
 .wssU17 .wssU14{background:url(edit.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:29px;width:17px}
@@ -387,7 +387,5 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssM5{position:absolute;right:0}
 *+html .wssN4{margin-left:1.8%}
 
-.wssU10{overflow: hidden;}
-.wssU11{float: left;}
 .left-corner .wssa{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
