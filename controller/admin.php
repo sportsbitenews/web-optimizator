@@ -2913,6 +2913,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* copy some files */
 		@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
 		@copy($this->basepath . 'libs/js/wo.cookie.php', $this->compress_options['html_cachedir'] . 'wo.cookie.php');
+		@copy($this->basepath . 'libs/js/wo.static.php', $this->compress_options['html_cachedir'] . 'wo.static.php');
 		@copy($this->basepath . 'libs/js/yass.loader.js', $this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 /* dirty hack for PHP-Nuke */
 		if ($this->cms_version == 'PHP-Nuke') {

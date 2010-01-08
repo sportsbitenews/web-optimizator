@@ -706,10 +706,9 @@ class web_optimizer {
 	**/
 	function page ($options, $type) {
 		if (empty($this->web_optimizer_stage) && $options['clientside_cache']) {
-/* setting cache headers for HTML file */
-			@date_default_timezone_set(@date_default_timezone_get());
-			$ExpStr = gmdate("D, d M Y H:i:s",
-			$this->time + $this->options['page']['clientside_timeout']) . " GMT";
+/* not really GMT but is valid locally */
+			$ExpStr = date("D, d M Y H:i:s",
+				$this->time + $this->options['page']['clientside_timeout']) . " GMT";
 			header("Cache-Control: private, max-age=" .
 				$this->options['page']['clientside_timeout']);
 			header("Expires: " . $ExpStr);
@@ -983,16 +982,16 @@ class web_optimizer {
 			$ae = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
 			if (strpos($ae, "x-gzip") !== false && $gzip_no_ie) {
 				$this->encoding = "x-gzip";
-				$this->encoding_ext = 'gz';
+				$this->encoding_ext = '.gz';
 			} elseif ((strpos($ae, "gzip") !== false || !empty($_COOKIE['_wo_gzip'])) && $gzip_no_ie) {
 				$this->encoding = "gzip";
-				$this->encoding_ext = 'gz';
+				$this->encoding_ext = '.gz';
 			} elseif (strpos($ae, "x-deflate") !== false) {
 				$this->encoding = "x-deflate";
-				$this->encoding_ext = 'df';
+				$this->encoding_ext = '.df';
 			} elseif (strpos($ae, "deflate") !== false) {
 				$this->encoding = "deflate";
-				$this->encoding_ext = 'df';
+				$this->encoding_ext = '.df';
 			}
 		}
 /* skip all browser-dependent features */
