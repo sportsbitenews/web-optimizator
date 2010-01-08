@@ -2,7 +2,7 @@ html,body{margin:0;padding:0}
 .wssa{background:#fff;margin:10px auto;position:relative;min-width:770px;max-width:1180px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
 .wssc{color:#808080;font:700 10px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:9px}
-.wssd{left:324px;margin:0;padding:0;position:absolute;top:17px}
+.wssd{left:324px;margin:0;padding:0;position:absolute;top:17px;z-index:1;}
 .wssd1{top:-7px}
 .wsse{display:none;height:24px;margin:0;padding:0;width:120px}
 .wssd1 .wsse{display:block}
@@ -358,8 +358,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU3{color:#bf6200;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;height:25px;margin:0 0 12px 175px;padding:0}
 .wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
 .wssU5{margin:0;padding:0}
-.wssU10{list-style:none;margin:0;padding:0;overflow: hidden;}
-.wssU11{background:url(config.png) 24px 12px no-repeat;display:inline-block;float: left;height:118px;margin:0 8px 0 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+.wssU10{list-style:none;margin:0;overflow: hidden;padding:0;}
+.wssU11{background:url(config.png) 24px 12px no-repeat;display:inline-block;float: left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU12{background:#ff8200 url(config.active.png) 24px 12px no-repeat}
 .wssU17 .wssU13{background:url(apply.hover.png) no-repeat;display:block;height:17px;left:96px;position:absolute;top:7px;width:17px}
 .wssU17 .wssU14{background:url(edit.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:29px;width:17px}
