@@ -161,7 +161,7 @@ a.wssJ9:hover .wssJ0{display:block}
 .wssU11 .wssJ{border:1px solid #f7f4e9;color:#808080!important;display:block;height:24px;outline:0;padding-top:93px;position:relative;text-align:center;text-decoration:none!important;width:117px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
 .wssU12 .wssJ,.wssU12 a.wssJ:hover,.wssU12 a.wssJ:focus,.wssU12 a.wssJ:active{color:#fff!important;border-color:#ff8200}
-.wssU17 .wssJ,.wssU17 a.wssJ:hover{border-color:#ff8200}
+.wssU17 .wssJ,.wssU17 a.wssJ:hover,.wssU17 a.wssJ:focus,.wssU17 a.wssJ:active{border-color:#ff8200}
 .wssJ1{background:#f7f4e9;display:block;left:-1px;position:absolute;top:0}
 .wssO13 .wssJ1{text-align:right;width:110%}
 .wssC5 .wssJ1{background:#ff8200;color:#fff!important;position:relative}
@@ -175,24 +175,24 @@ a.wssJ9:hover .wssJ0{display:block}
 .wssJ5{background:#84a3ff url(button.blue.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
 a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf url(button.blue.hover.png) no-repeat;color:#fff!important}
 #wss_upd .wssJ5{left:-4px}
-.wssC4 .wssJ5,.wssC4 .wssJ6,.wssU18 .wssJ5,.wssU18 .wssJ6{background-image:url(button.bw.png)}
-.wssC7 .wssJ5,.wssC7 .wssJ6{background-image:url(button.blue.png)}
-.wssC4 a.wssJ5:hover,.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ5:hover,.wssU18 a.wssJ6:hover{background-image:url(button.bw.hover.png)}
 .wssC7 .wssJ5,.wssC7 .wssJ7{margin-bottom:21px}
-.wssC7 a.wssJ5:hover,.wssC7 a.wssJ5:hover a.wssJ6{background-image:url(button.blue.hover.png)}
 .wssU18 a.wssJ5{margin:0 5px}
 .wssJ6{background:url(button.blue.png) -186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
-a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background-image:url(button.blue.hover.png)}
+a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background-image:url(button.blue.hover.png)!important}
 .wssC6 .wssO4 .wssJ6{display:none}
 .wssC6 .wssO5 .wssJ6{background:#f7f4e9;display:block;border-bottom:1px solid #fbf9f3;border-top:1px solid #fbf9f3;height:28px;left:185px;top:-1px;width:4px;z-index:2}
-.wssJ7 .wssJ6{background-image:url(button.orange.png)}
+.wssJ7 .wssJ6{background-image:url(button.orange.png)!important}
+.wssC4 .wssJ5,.wssC4 .wssJ6,.wssU18 .wssJ5,.wssU18 .wssJ6{background-image:url(button.bw.png)!important}
+.wssC7 .wssJ5,.wssC7 .wssJ6{background-image:url(button.blue.png)!important}
+.wssC7 a.wssJ5:hover,.wssC7 a.wssJ5:hover a.wssJ6{background-image:url(button.blue.hover.png)!important}
+.wssC4 a.wssJ5:hover,.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ5:hover,.wssU18 a.wssJ6:hover{background-image:url(button.bw.hover.png)}
 .wssJ7{background:#ffb163 url(button.orange.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
 a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(button.orange.hover.png) no-repeat;color:#fff!important}
-a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background-image:url(button.orange.hover.png)}
-.wssC4 .wssJ7,.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7,.wssU18 .wssJ7 .wssJ6{background-image:url(button.ow.png)}
-.wssC4 .wssH .wssJ7,.wssC4 .wssH .wssJ7 .wssJ6{background-image:url(button.orange.png)}
-.wssC4 a.wssJ7:hover,.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover,.wssU18 a.wssJ7:hover .wssJ6{background-image:url(button.ow.hover.png)}
-.wssC4 .wssH a.wssJ7:hover,.wssC4 .wssH a.wssJ7:hover .wssJ6{background-image:url(button.orange.hover.png)}
+a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background-image:url(button.orange.hover.png)!important}
+.wssC4 .wssJ7,.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7,.wssU18 .wssJ7 .wssJ6{background-image:url(button.ow.png)!important}
+.wssC4 .wssH .wssJ7,.wssC4 .wssH .wssJ7 .wssJ6{background-image:url(button.orange.png)!important}
+.wssC4 a.wssJ7:hover,.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover,.wssU18 a.wssJ7:hover .wssJ6{background-image:url(button.ow.hover.png)!important}
+.wssC4 .wssH a.wssJ7:hover,.wssC4 .wssH a.wssJ7:hover .wssJ6{background-image:url(button.orange.hover.png)!important}
 .wssJ8{float:right;margin-right:10%}
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
 .wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat}
