@@ -361,9 +361,11 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
+		$this->save_option("['active']", 0);
 		$this->chained_load(str_replace(
 			$this->compress_options['document_root'], "/" ,
 			$this->compress_options['website_root']) . 'index.php');
+		$this->save_option("['active']", $this->compress_options['active']);
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
 		$this->install_cache();
@@ -377,9 +379,11 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
+		$this->save_option("['active']", 0);
 		$this->chained_load(str_replace(
 			$this->compress_options['document_root'], "/" ,
 			$this->compress_options['website_root']) . 'index.php');
+		$this->save_option("['active']", $this->compress_options['active']);
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
 		$this->install_dashboard();
@@ -408,6 +412,7 @@ class admin {
 			$this->set_options();
 			$this->write_htaccess();
 			$this->compress_options['active'] = 1;
+			$this->save_option("['active']", 1);
 			if (!@is_file($this->basepath . $this->index_after)) {
 				$this->view->download($this->webo_grade . '&refresh=on', $this->index_after, 2);
 			}
@@ -3316,8 +3321,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* force cache reload via index.php */
 		if ($index) {
 			$this->write_progress(8);
-/* deactivate Web Optimizer */
-			$this->save_option("['active']", 0, 0);
 /* load home page in DEBUG mode */
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index .
 				'?web_optimizer_stage=10&cache_version=' .
@@ -3327,8 +3330,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			if (@is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
 				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			}
-/* activate Web Optimizer back */
-			$this->save_option("['active']", 1, 0);
 /* or via cached HTML */
 		} else {
 			$test_file = $this->basepath . 'cache/optimizing.php';
