@@ -604,7 +604,7 @@
 	echo _WEBO_LOGIN_UPGRADE;
 ?> <?php
 	echo _WEBO_LOGIN_UPGRADE_TO;
-?>";wss_kb="<?php
+?> ";wss_kb="<?php
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
 ?>";wss_confirm="<?php
 	echo str_replace('"', '\"', _WEBO_OPTIONS_CONFIRM);
