@@ -3374,7 +3374,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	function save_option ($option_name, $option_value) {
 /* make password salt safe */
 		if ($option_name == "['htpasswd']") {
-			$option_value = str_replace('$', '\\\\$', str_replace('\\', '\\\\', $option_value));
+			$option_value = str_replace('$', '#', $option_value);
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		} else {
 			$option_value = str_replace('//', '/', str_replace('\\', '/', $option_value));
@@ -3433,7 +3433,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$htpasswd = $this->basepath . '.htpasswd';
 			$this->write_file($htpasswd,
 				$this->compress_options['username'] .
-				$this->compress_options['htpasswd']);
+				str_replace("#", "$", $this->compress_options['htpasswd']));
 			if (@is_file($htpasswd)) {
 /* add secure protection via htpasswd */
 				$htaccess_content .= '
