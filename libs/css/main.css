@@ -162,12 +162,13 @@ a.wssJ9:hover .wssJ0{display:block}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
 .wssU12 .wssJ,.wssU12 a.wssJ:hover,.wssU12 a.wssJ:focus,.wssU12 a.wssJ:active{color:#fff!important;border-color:#ff8200}
 .wssU17 .wssJ,.wssU17 a.wssJ:hover,.wssU17 a.wssJ:focus,.wssU17 a.wssJ:active{border-color:#ff8200}
+.wssU .wssO3 { width: 170px; }
 .wssJ1{background:#f7f4e9;display:block;left:-1px;position:absolute;top:0}
 .wssO13 .wssJ1{text-align:right;width:110%}
 .wssC5 .wssJ1{background:#ff8200;color:#fff!important;position:relative}
 .wssC5 a.wssJ1:hover,.wssC5 a.wssJ1:focus,.wssC5 a.wssJ1:active{color:#fff!important}
 .wssJ2{font:12px/14px Trebuchet MS,Arial,Tahoma,Sans-serif}
-.wssC5 .wssJ1 .wssJ2{background:#ff8200;border-right:5px solid #ff8200;border-bottom:9px solid #f7f4e9;border-top:8px solid #f7f4e9;display:block;left:-10px;position:absolute;top:0;width:5px}
+.wssC5 .wssJ1 .wssJ2{background:#ff8200;border-right:5px solid #ff8200;border-bottom:9px solid #f7f4e9;border-top:8px solid #f7f4e9;display:block;height: 0;left:-10px;position:absolute;top:0;width:5px}
 #wss_opt .wssJ2{font-size:14px;font-weight:700}
 #wss_links .wssJ2{font-size:14px}
 .wssJ3{background:#e5e5e5;display:block;height:21px;position:absolute}
@@ -286,7 +287,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssC6 .wssO1{margin-left:0}
 #wss_opt .wssO1{background:none;border-left:1px solid #ccc;color:#808080;font-size:10px;height:18px;left:0;line-height:14px;list-style:none;margin:0;position:absolute;top:7px;width:16%}
 .wssO2{background-image:url(error-warning.png);color:#ff4000}
-.wssO4{margin:0;padding:0 5px 5px 0}
+.wssO4{margin:0;padding:0 5px 5px 0; list-style: none;}
 .wssN20 .wssO4{color:#b2b2b2}
 .wssO3 .wssO4,.wssO7 .wssO8{background:none;color:#808080;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style-type:disc;margin:0 0 0 24px;padding-left:2px}
 .wssC5 .wssO4{list-style:none;margin:0;padding:0}
@@ -356,7 +357,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssC6 .wssU1{padding:0}
 .wssU2{color:#808080;float:left;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:0}
 .wssU3{color:#bf6200;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 0 12px 175px;padding:0}
-.wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;padding:0}
+.wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
 .wssU5{margin:0;padding:0}
 .wssU10{list-style:none;margin:0;overflow: hidden;padding:0;}
 .wssU11{background:url(config.png) 24px 12px no-repeat;display:inline-block;float: left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
@@ -386,6 +387,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssM3{position:relative;top:-7px}
 *+html .wssM5{position:absolute;right:0}
 *+html .wssN4{margin-left:1.8%}
+*+html .wssU1 .wssF1 {margin-left: -183px}
 
 .left-corner .wssa{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
