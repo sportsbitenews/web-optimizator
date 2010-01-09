@@ -61,6 +61,8 @@ define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что в
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
+define('_WEBO_LOGIN_UPGRADE_ROLLBACK', 'Откатить');
+define('_WEBO_LOGIN_UPGRADE_TO', 'до версии');
 define('_WEBO_LOGIN_VERSION', 'Версия');
 define('_WEBO_UPGRADE_FILE', 'Обновляем файл');
 

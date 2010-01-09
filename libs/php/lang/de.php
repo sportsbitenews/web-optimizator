@@ -61,6 +61,8 @@ define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirm that you have read and ag
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Update');
+define('_WEBO_LOGIN_UPGRADE_ROLLBACK', 'Rollback');
+define('_WEBO_LOGIN_UPGRADE_TO', 'to version');
 define('_WEBO_LOGIN_VERSION', 'Version');
 define('_WEBO_UPGRADE_FILE', 'Updating file');
 

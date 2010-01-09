@@ -601,7 +601,9 @@
 ?>","<?php
 	echo _WEBO_DASHBOARD_STATUS100;
 ?>"];wss_install="<?php
-	echo _WEBO_DASHBOARD_INSTALL;
+	echo _WEBO_LOGIN_UPGRADE;
+?> <?php
+	echo _WEBO_LOGIN_UPGRADE_TO;
 ?>";wss_kb="<?php
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
 ?>";wss_confirm="<?php
