@@ -84,6 +84,15 @@ if ($submit) {
 			' ' .
 			_WEBO_SPLASH3_HTACCESS_CHMOD4;
 			?></li>
+			<li class="wssL1<?php
+		if (empty($error[5])) {
+			?> wssA0<?php
+		}
+			?>"><?php
+		echo _WEBO_SPLASH3_CANTWRITE4 .
+			htmlspecialchars($config) .
+			_WEBO_SPLASH3_HTACCESS_CHMOD;
+			?></li>
 		</ul>
 	</div>
 </div><?php

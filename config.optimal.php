@@ -133,9 +133,9 @@ $compress_options['footer']['spot'] = "1";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "1";
 ## Should Web Optimizer separate CSS for rules and images?
-$compress_options['data_uris']['separate'] = "1";
+$compress_options['data_uris']['separate'] = "0";
 ## Should Web Optimizer load resource CSS on DOMloaded event?
-$compress_options['data_uris']['domloaded'] = "1";
+$compress_options['data_uris']['domloaded'] = "0";
 ## Maximum size of images to be converted, in bytes
 $compress_options['data_uris']['size'] = "24576";
 ## data:URI ignore list, files separated by space, i.e. head.jpg

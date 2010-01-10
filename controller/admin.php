@@ -109,7 +109,8 @@ class admin {
 				'dashboard_speed' => 1,
 				'compress_gzip' => 1,
 				'compress_image' => 1,
-				'options_configuration' => 1
+				'options_configuration' => 1,
+				'options_delete' => 1
 			);
 /* inializa stage for chained optimization */
 			$this->web_optimizer_stage =
@@ -117,7 +118,7 @@ class admin {
 					$this->input['web_optimizer_stage']);
 /* grade URL from webo.name */
 			$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
-				$this->compress_options['host'] . '/' .
+				$this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], '/',
 					$this->compress_options['website_root']) .
 				'&mode=xml&source=wo';
@@ -413,7 +414,7 @@ class admin {
 			}
 			$this->set_options();
 			$this->write_htaccess();
-			if (!@is_file($this->basepath . $this->index_after)) {
+			if (!@is_file($this->basepath . $this->index_after) && $this->premium > 1) {
 				$this->view->download($this->webo_grade . '&refresh=on', $this->index_after, 2);
 			}
 		} else {
@@ -601,8 +602,8 @@ class admin {
 	function dashboard_speed () {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $saved_percent = 0;
-		$before = @file_get_contents($this->index_before);
-		$after = @file_get_contents($this->index_after);
+		$before = @file_get_contents($this->basepath . $this->index_before);
+		$after = @file_get_contents($this->basepath . $this->index_after);
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
 			$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>') - 6);
@@ -1085,8 +1086,8 @@ class admin {
 	* 
 	**/		
 	function check_acceleration () {
-		$before = @filesize($this->index_before);
-		$after = @filesize($this->index_after);
+		$before = @filesize($this->basepath . $this->index_before);
+		$after = @filesize($this->basepath . $this->index_after);
 		if ($this->premium > 1) {
 			if (!empty($this->compress_options['active']) &&
 				$before && (empty($after) || $after < 200)) {
@@ -1547,8 +1548,8 @@ class admin {
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
 /* remove all optimization results */
-		@unlink($this->basepath . $index_before);
-		@unlink($this->basepath . $index_after);
+		@unlink($this->basepath . $this->index_before);
+		@unlink($this->basepath . $this->index_after);
 		$error = array();
 		if ($submit) {
 			if (empty($email) ||
@@ -1649,6 +1650,36 @@ class admin {
 		return trim($allowed_hosts);
 	}
 
+	/**
+	* Delete given configuration
+	**/	
+	function options_delete () {
+		$config = $this->input['wss_config'];
+		$config_file = $this->basepath . 'config.' .
+			preg_replace("/[^a-z]/","", $config) . '.php';
+		@unlink($config_file);
+		$this->error = array();
+		if (@is_file($config_file)) {
+			$this->error[5] = 1;
+/* switch to safe config is we deleting current one */
+		} else {
+			if ($config == $this->compress_options['config']) {
+				$this->save_option("['config']", "safe");
+			}
+		}
+		$this->page_variables = array(
+			"page" => 'options_delete',
+			"email" => $email,
+			"submit" => 1,
+			"error" => $error,
+			"config" => $config_file
+		);
+		$this->view->render("install_options", $this->page_variables);
+	}
+
+	/**
+	* Return all configuration as JSON-array
+	**/
 	function options_configuration () {
 /* get all available configurations */
 		$options = array();
@@ -2194,8 +2225,7 @@ class admin {
 			'wss_parallel_additional_list',
 			'wss_description',
 			'wss_title',
-			'wss_config',
-			'wss_host') as $val) {
+			'wss_config') as $val) {
 				$this->input[$val] = str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"), $this->input[$val]);
 		}
 /* make numeric options save */
@@ -2420,6 +2450,16 @@ class admin {
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
 		} else {
+/* Try to re-define configuration name from predefined set */
+			if (in_array($this->input['wss_config'], array('safe', 'optimial', 'extreme'))) {
+				if (@is_file($this->bacepath . 'config.user.php')) {
+					$i = 1;
+					while (@is_file($this->bacepath . 'config.user'. ($i++) .'.php')) {}
+					$this->input['wss_config'] = 'user' . ($i - 1);
+				} else {
+					$this->input['wss_config'] = 'user';
+				}
+			}
 /* Apply options or just save them? */
 			if (!empty($this->input['wss_apply'])) {
 /* Save the options	to work config */
@@ -2443,8 +2483,9 @@ class admin {
 					}
 				}
 /* re-check grade if application is active */
-				if (!empty($this->compress_options['active'])) {
-					$this->view->download($this->webo_grade . '&refresh=on', $index_after, 2);
+				if (!empty($this->compress_options['active']) && $this->premium > 1) {
+					@unlink($this->basepath . $this->index_after);
+					$this->view->download($this->webo_grade . '&refresh=on', $index_after, 1);
 				}
 			}
 /* Save the options to backup config */
@@ -2907,7 +2948,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			'website_root',
 			'css_cachedir',
 			'javascript_cachedir',
-			'html_cachedir') as $val) {
+			'html_cachedir',
+			'host') as $val) {
 				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
 		}
 /* copy some files */
