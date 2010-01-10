@@ -145,6 +145,11 @@
 					echo _WEBO_SPLASH3_CANTWRITE4 . realpath(dirname(__FILE__) . '/../') . '/.htaccess';
 ?></li><?php
 				}
+				if (!empty($error[10])) {
+?><li class="wssL1"><?php
+					echo _WEBO_SPLASH3_HTACCESS_CHMOD3 . ' ' . _WEBO_SPLASH3_HTACCESS_CHMOD4;
+?></li><?php
+				}
 ?></ul></div></div><?php
 				break;
 		}

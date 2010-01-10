@@ -888,9 +888,9 @@ class admin {
 		);
 		$warnings = array(
 			'htaccess_writable' => !$htaccess_available ||
-				is_writable($website_root) ||
-				is_writable($website_root . '.htaccess'),
-			'index_writable' => is_writable($website_root . 'index.php'),
+				@is_writable($website_root) ||
+				@is_writable($website_root . '.htaccess'),
+			'index_writable' => @is_writable($website_root . 'index.php'),
 			'curl_possibility' => in_array('curl', $extensions) &&
 				function_exists('curl_init'),
 			'gzip_possibility' => in_array('zlib', $extensions) &&
@@ -1500,10 +1500,10 @@ class admin {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 			}
 			$this->cleanup_file($index, $return);
-			$content_saved = $this->clean_htaccess($return);
-			$htaccess = $this->detect_htaccess();
+			$this->htaccess = $this->detect_htaccess();
+			$content_saved = $this->clean_htaccess();
 			if (empty($this->error)) {
-				$this->write_file($htaccess, $content_saved, $return);	
+				$this->write_file($this->htaccess, $content_saved, $return);	
 			}
 /* additional change of cache plugins */
 			if (substr($this->cms_version, 0, 7) == "Joomla!" || substr($this->cms_version, 0, 5) == "XOOPS") {
@@ -2451,13 +2451,15 @@ class admin {
 			$this->error[1] = 1;
 		} else {
 /* Try to re-define configuration name from predefined set */
-			if (in_array($this->input['wss_config'], array('safe', 'optimial', 'extreme'))) {
-				if (@is_file($this->bacepath . 'config.user.php')) {
-					$i = 1;
-					while (@is_file($this->bacepath . 'config.user'. ($i++) .'.php')) {}
-					$this->input['wss_config'] = 'user' . ($i - 1);
-				} else {
-					$this->input['wss_config'] = 'user';
+			if (empty($this->input['wss_apply'])) {
+				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme'))) {
+					if (@is_file($this->basepath . 'config.user.php')) {
+						$i = 1;
+						while (@is_file($this->basepath . 'config.user'. ($i++) .'.php')) {}
+						$this->input['wss_config'] = 'user' . ($i - 1);
+					} else {
+						$this->input['wss_config'] = 'user';
+					}
 				}
 			}
 /* Apply options or just save them? */
@@ -2491,6 +2493,10 @@ class admin {
 /* Save the options to backup config */
 			if (!empty($this->input['wss_config']) && strpos($this->input['wss_config'], 'user') !== false) {
 				$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
+				if (!@is_file($this->basepath . $this->options_file)) {
+					@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
+					@chmod($this->basepath . $this->options_file, octdec("0644"));
+				}
 				$this->save_option("['title']", $this->input['wss_title']);
 				$this->save_option("['description']", $this->input['wss_description']);
 				foreach($this->compress_options as $key => $option) {
@@ -2535,26 +2541,8 @@ class admin {
 	* Cleans all previous rules from .htaccess file content
 	**/
 	function clean_htaccess () {
-		$content_saved = '';
-/* remove rules from .htaccess */
-		if (@is_file($this->htaccess)) {
-			$fp = @fopen($this->htaccess, 'r');
-			if ($fp) {
-				$stop_saving = 0;
-				while ($htaccess_string = fgets($fp)) {
-					if (preg_match("/# Web Optimizer (options|path)/", $htaccess_string)) {
-						$stop_saving = 1;
-					}
-					if (!$stop_saving && $htaccess_string != "\n") {
-						$content_saved .= $htaccess_string;
-					}
-					if (preg_match("/# Web Optimizer (path )?end/", $htaccess_string)) {
-						$stop_saving = 0;
-					}
-				}
-				fclose($fp);
-			}
-		}
+		$content_saved = @file_get_contents($this->htaccess);
+		$content_saved = preg_replace("@# Web Optimizer (options|path).*# Web Optimizer (path )?end@", "", $content_saved);
 		return $content_saved;
 	}
 	
@@ -2575,7 +2563,7 @@ class admin {
 			$content_saved = $this->clean_htaccess();
 			if (!@is_writable($this->htaccess)) {
 				$this->error = $this->error ? $this->error : array();
-				$this->error[0] = 1;
+				$this->error[10] = 1;
 			}
 /* create backup */
 			@copy($this->htaccess, $this->htaccess . '.backup');
@@ -3427,11 +3415,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			@copy($this->basepath . 'config.safe.php', $option_file);
 			@chmod($option_file, octdec("0644"));
 		}
-		if (@is_writable($option_file)) {
-			$content = @file_get_contents($option_file);
-			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-			$this->write_file($option_file, $content);
-		} else {
+		$content = @file_get_contents($option_file);
+		$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
+		if (!$this->write_file($option_file, $content, 1)) {
 			$this->error[0] = 1;
 		}
 	}

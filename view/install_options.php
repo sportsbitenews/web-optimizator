@@ -76,7 +76,7 @@ if ($submit) {
 			_WEBO_SPLASH3_CANTWRITE3;
 			?></li>
 			<li class="wssL1<?php
-		if (empty($error[4])) {
+		if (empty($error[10])) {
 			?> wssA0<?php
 		}
 			?>"><?php

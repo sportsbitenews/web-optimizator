@@ -1,8 +1,8 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
  * Sends cache headers among the content of requested file.
- * Also gzippes known types of files (that can be gzipped).
+ * Also adds GZip for known types of files (that can be gzipped).
  * Resticted filename to document root only.
  * Helps when there is no mod_expires and(or) no mod_deflate on the server.
  *
@@ -239,7 +239,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		if ($gzip) {
 /* try to get gzipped content from file */
 			$extension = strpos($encoding, "gzip") !== false ? 'gz' : 'df';
-			$compressed = $filename . '.gz';
+			$compressed = $filename . '.' . $extension;
 /* check file's existence and its mtime */
 			if (is_file($compressed) && @filemtime($compressed) === $mtime) {
 				$contents = @file_get_contents($compressed);
