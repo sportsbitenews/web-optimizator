@@ -2920,14 +2920,11 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$this->compress_options['website_root'] = empty($this->compress_options['website_root']) ?
 			$this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'];
 		$this->compress_options['css_cachedir'] = empty($this->compress_options['css_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
-				$this->compress_options['css_cachedir'];
+			$this->basepath . 'cache/' : $this->compress_options['css_cachedir'];
 		$this->compress_options['javascript_cachedir'] = empty($this->compress_options['javascript_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
-				$this->compress_options['javascript_cachedir'];
+			$this->basepath . 'cache/' : $this->compress_options['javascript_cachedir'];
 		$this->compress_options['html_cachedir'] = empty($this->compress_options['html_cachedir']) ?
-			$this->view->paths['absolute']['document_root'] . 'webo/cache/' :
-				$this->compress_options['html_cachedir'];
+			$this->basepath . 'cache/' : $this->compress_options['html_cachedir'];
 		$this->compress_options['host'] = empty($this->compress_options['host']) ?
 			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
 				$this->compress_options['host'];
