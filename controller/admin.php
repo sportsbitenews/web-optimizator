@@ -516,8 +516,11 @@ class admin {
 	**/
 	function dashboard_cache_size ($mask) {
 		$return = 0;
-		foreach (glob($mask) as $filename) {
-			$return += @filesize($filename);
+		$files = glob($mask);
+		if (is_array($files)) {
+			foreach ($files as $filename) {
+				$return += @filesize($filename);
+			}
 		}
 		return $return;
 	}
