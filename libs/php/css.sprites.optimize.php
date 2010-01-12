@@ -82,6 +82,8 @@ class css_sprites_optimize {
 /* or IE7@Vista? */
 			$this->ie7v = $this->ua == 'ie4' ? 1 : 0;
 			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
+/* punypng API key */
+			$this->punypng_key = $options['punypng'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -858,10 +860,42 @@ class css_sprites_optimize {
 			}
 		}
 	}
+/* image optimization via punypng.com */
+	function punypng ($file) {
+		$tmp_file = $file . ".tmp";
+		$this->download_file('http://www.gracepointafterfive.com/punypng/api/optimize?img=http://' .
+			$_SERVER['HTTP_HOST'] . '/' .
+			str_replace($this->website_root, "", $file) .
+			'&key=' . $this->punypng_key, $tmp_file);
+		if (is_file($tmp_file)) {
+			$str = @file_get_contents($tmp_file);
+			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
+				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*optimized_url['\"]:\s?['\"]/", "", $str)));
+				if (!is_file($file . '.backup')) {
+					@copy($file, $file . '.backup');
+				}
+				$this->download_file($optimized, $file, 'http://www.gracepointafterfive.com/');
+				if (!@filesize($file) || strpos(@file_get_contents($file), "DOCTYPE")) {
+					@copy($file . '.backup', $file);
+				} else {
+					@unlink($file . '.backup');
+				}
+			}
+			@unlink($tmp_file);
+		}
+		if (!@filesize($file)) {
+			sleep(1);
+/* if can't optimize file - try once more */
+			@copy($file . '.backup', $file);
+			$this->smushit($file);
+		}
+	}
 /* image optimization via smush.it */
 	function smushit ($file) {
 		$tmp_file = $file . ".tmp";
-		$this->download_file("http://www.smushit.com/ysmush.it/ws.php?img=http://" . $_SERVER['HTTP_HOST'] . '/' . str_replace($this->website_root, "", $file), $tmp_file);
+		$this->download_file("http://www.smushit.com/ysmush.it/ws.php?img=http://" .
+			$_SERVER['HTTP_HOST'] . '/' .
+			str_replace($this->website_root, "", $file), $tmp_file);
 		if (is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
 			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {

@@ -493,72 +493,64 @@ class web_optimizer {
 		$query = explode('.', $_SERVER['QUERY_STRING']);
 		$ext = strtolower($query[count($query) - 1]);
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
-		$spot = substr($this->content, 0, 20);
+		$spot = substr($this->content, 0, 50);
 /* skip RSS, SMF xml format */
-		if (!$skip && !strpos($spot, "<rss") && !strpos($spot, "<smf") && !in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx'))) {
-			if (empty($this->options['quick_check'])) {
+		if (!$skip &&
+			strpos($spot, '<rss') === false &&
+			strpos($spot, '<smf') === false &&
+			strpos($spot, '<feed') === false &&
+			!in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx'))) {
+				if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
-				$this->get_script_array();
-			} else {
-				$this->get_head_status();
-			}
+					$this->get_script_array();
+				} else {
+					$this->get_head_status();
+				}
 /* Run the functions specified in options */
-			if (is_array($this->options)) {
-				foreach ($this->options as $func => $option) {
-					if (method_exists($this, $func)) {
-						if (!empty($option['gzip']) ||
-							!empty($option['minify']) ||
-							!empty($option['far_future_expires']) ||
-							!empty($option['parallel']) ||
-							!empty($option['unobtrusive_all']) ||
-							!empty($option['unobtrusive_ads']) ||
-							!empty($option['unobtrusive_counters']) ||
-							!empty($option['unobtrusive_informers']) ||
-							!empty($option['unobtrusive_iframes']) ||
-							!empty($option['cache'])) {
-								if (!empty($this->web_optimizer_stage)) {
-									$this->write_progress($this->web_optimizer_stage++);
-								}
-								$this->$func($option, $func);
+				if (is_array($this->options)) {
+					foreach ($this->options as $func => $option) {
+						if (method_exists($this, $func)) {
+							if (!empty($option['gzip']) ||
+								!empty($option['minify']) ||
+								!empty($option['far_future_expires']) ||
+								!empty($option['parallel']) ||
+								!empty($option['unobtrusive_all']) ||
+								!empty($option['unobtrusive_ads']) ||
+								!empty($option['unobtrusive_counters']) ||
+								!empty($option['unobtrusive_informers']) ||
+								!empty($option['unobtrusive_iframes']) ||
+								!empty($option['cache'])) {
+									if (!empty($this->web_optimizer_stage)) {
+										$this->write_progress($this->web_optimizer_stage++);
+									}
+									$this->$func($option, $func);
+							}
 						}
 					}
 				}
-			}
-			if (!empty($this->web_optimizer_stage)) {
-				$this->write_progress($this->web_optimizer_stage);
+				if (!empty($this->web_optimizer_stage)) {
+					$this->write_progress($this->web_optimizer_stage);
 /* redirect to installation page if chained optimization if finished */
-				if ($this->web_optimizer_stage > 85) {
-					if ($this->chained_redirect === 'optimizing.php') {
-						$this->write_progress(97);
-						header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&user[_username]=' .
-								$this->username .
-							'&user[_password]=' .
-								$this->password .
-							'&user[auto_rewrite][enabled]=' .
-								$this->auto_rewrite .
-							'&user[performance][cache_version]=' .
-								$this->cache_version);
-					}
+					if ($this->web_optimizer_stage > 85) {
+						if ($this->chained_redirect === 'optimizing.php') {
+							$this->write_progress(97);
+							header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password]=' .
+								$this->password);
+						}
 /* else redirect to the next stage */
-				} else {
-					header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
+					} else {
+						header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
 							$this->web_optimizer_stage .
-						'&username=' .
-							$this->username .
-						'&password=' .
+							'&password=' .
 							$this->password .
-						'&auto_rewrite=' .
-							$this->auto_rewrite .
-						'&cache_version=' .
-							$this->cache_version .
-						'&web_optimizer_debug=1');
+							'&web_optimizer_debug=1');
+					}
+					die();
 				}
-				die();
-			}
 		}
 /* Return content to requestor */
 		if ($content) {
-			return $this->content;
+				return $this->content;
 /* or echo content to the browser */
 		} else {
 /* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */

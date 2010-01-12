@@ -362,7 +362,8 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
-		$this->save_option("['active']", 0);
+/* need to make these async requests safe somehow
+		$this->save_option("['active']", 0); */
 		$this->chained_load(str_replace(
 			$this->compress_options['document_root'], "/" ,
 			$this->compress_options['website_root']) . 'index.php');
@@ -380,7 +381,8 @@ class admin {
 		$this->write_progress(1);
 		$this->install_clean_cache(0, 1);
 		$this->save_option("['performance']['cache_version']", 0);
-		$this->save_option("['active']", 0);
+/* need to make these async requests safe somehow
+		$this->save_option("['active']", 0); */
 		$this->chained_load(str_replace(
 			$this->compress_options['document_root'], "/" ,
 			$this->compress_options['website_root']) . 'index.php');
@@ -994,12 +996,18 @@ class admin {
 			if (!@is_dir($this->compress_options['document_root'])) {
 				$this->error[2] = 1;
 			}
+			@mkdir($this->compress_options['css_cachedir']);
+			@chmod($this->compress_options['css_cachedir'], octdec("0755"));
 			if (!@is_writable($this->compress_options['css_cachedir'])) {
 				$this->error[3] = 1;
 			}
+			@mkdir($this->compress_options['javascript_cachedir']);
+			@chmod($this->compress_options['javascript_cachedir'], octdec("0755"));
 			if (!@is_writable($this->compress_options['javascript_cachedir'])) {
 				$this->error[4] = 1;
 			}
+			@mkdir($this->compress_options['html_cachedir']);
+			@chmod($this->compress_options['html_cachedir'], octdec("0755"));
 			if (!@is_writable($this->compress_options['html_cachedir'])) {
 				$this->error[5] = 1;
 			}
@@ -1042,7 +1050,7 @@ class admin {
 		$page_variables['active'] = $this->compress_options['active'];
 		$page_variables['website'] = $_SERVER['HTTP_HOST'];
 		$page_variables['cache_folder'] = str_replace($this->compress_options['document_root'],
-			"/", $this->compress_options['html_cachedir']);
+			"/", $this->compress_options['javascript_cachedir']);
 		$page_variables['host'] = $this->compress_options['host'];
 		$page_variables['website_root'] = $this->compress_options['website_root'];
 		$page_variables['document_root'] = $this->compress_options['document_root'];
@@ -1170,7 +1178,7 @@ class admin {
 			"active" => $this->compress_options['active'],
 			"website" => $_SERVER['HTTP_HOST'],
 			"cache_folder" => str_replace($this->compress_options['document_root'],
-				"/", $this->compress_options['html_cachedir']),
+				"/", $this->compress_options['javascript_cachedir']),
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
 			"skip_render" => $this->skip_render
 		);
@@ -1424,16 +1432,25 @@ class admin {
 			$total = count($files);
 			foreach ($files as $file) {
 				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total, 1);
-				$this->view->download($svn . $file, $file);
-				if ($file == $this->options_file) {
+				$tmp = $file . '.tmp';
+				$this->view->download($svn . $file, $tmp);
+				if (@is_file($tmp)) {
+					@copy($tmp, $file);
+					@unlink($tmp);
+					if ($file == $this->options_file) {
 /* save all options to the new file -- rewrite default ones  */
-					foreach($this->compress_options as $key => $option) {
-						if(is_array($option)) {
-							foreach($option as $option_name => $option_value) {
-								$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+						foreach($this->compress_options as $key => $option) {
+							if(is_array($option)) {
+								foreach($option as $option_name => $option_value) {
+									$this->save_option("['" .
+										strtolower($key) . "']['" .
+										strtolower($option_name) . "']",
+										$option_value);
+								}
+							} else {
+								$this->save_option("['" . strtolower($key) .
+									"']", $option);
 							}
-						} else {
-							$this->save_option("['" . strtolower($key) . "']", $option);
 						}
 					}
 				}
@@ -2455,7 +2472,7 @@ class admin {
 		}
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
-		} else {
+		} elseif ($this->input['wss_page'] == 'install_options') {
 /* Try to re-define configuration name from predefined set */
 			if (empty($this->input['wss_apply'])) {
 				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme'))) {
@@ -2495,37 +2512,43 @@ class admin {
 					@unlink($this->basepath . $this->index_after);
 					$this->view->download($this->webo_grade . '&refresh=on', $index_after, 1);
 				}
-			}
 /* Save the options to backup config */
-			if (!empty($this->input['wss_config']) && strpos($this->input['wss_config'], 'user') !== false) {
-				$this->options_file = 'config.' . preg_replace("/[^a-zA-Z0-9]*/", "", $this->input['wss_config']) . '.php';
-				if (!@is_file($this->basepath . $this->options_file)) {
-					@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
-					@chmod($this->basepath . $this->options_file, octdec("0644"));
-				}
-				$this->save_option("['title']", $this->input['wss_title']);
-				$this->save_option("['description']", $this->input['wss_description']);
-				foreach($this->compress_options as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							if (isset($this->input['wss_' . strtolower($key) .
-								'_' . strtolower($option_name)])) {
-									$this->save_option("['" . strtolower($key) .
-									"']['" .
-									strtolower($option_name) .
-									"']",
-									$this->input['wss_' .
-									strtolower($key) .
-									'_' .
-									strtolower($option_name)]);
+				if (!empty($this->input['wss_config']) &&
+					strpos($this->input['wss_config'], 'user') !== false) {
+						$this->options_file = 'config.' .
+							preg_replace("/[^a-zA-Z0-9]*/", "",
+							$this->input['wss_config']) . '.php';
+						if (!@is_file($this->basepath . $this->options_file)) {
+							@copy($this->basepath . 'config.safe.php',
+								$this->basepath . $this->options_file);
+							@chmod($this->basepath . $this->options_file,
+								octdec("0644"));
+						}
+						$this->save_option("['title']",
+							$this->input['wss_title']);
+						$this->save_option("['description']",
+							$this->input['wss_description']);
+						foreach($this->compress_options as $key => $option) {
+							if (is_array($option)) {
+								foreach($option as $option_name => $option_value) {
+									if (isset($this->input['wss_' . strtolower($key) .
+										'_' . strtolower($option_name)])) {
+											$this->save_option("['" . strtolower($key) .
+											"']['" .
+											strtolower($option_name) .
+											"']",
+											$this->input['wss_' .
+											strtolower($key) . '_' .
+											strtolower($option_name)]);
+									}
+								}
+							} else {
+								if (isset($this->input['wss_' . strtolower($key)])) {
+									$this->save_option("['" . strtolower($key) . "']",
+										$this->input['wss_' . strtolower($key)]);
+								}
 							}
 						}
-					} else {
-						if (isset($this->input['wss_' . strtolower($key)])) {
-							$this->save_option("['" . strtolower($key) . "']",
-								$this->input['wss_' . strtolower($key)]);
-						}
-					}
 				}
 			}
 		}

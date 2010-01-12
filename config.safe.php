@@ -8,8 +8,6 @@ $compress_options['title'] = "";
 $compress_options['description'] = "";
 ## Active configuration
 $compress_options['config'] = "safe";
-## Host name, to include before static resources
-$compress_options['host'] = "";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add merged script right before </body>

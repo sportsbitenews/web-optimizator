@@ -203,6 +203,8 @@ $compress_options['htaccess']['mod_mime'] = "1";
 $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
+## Punypng api key
+$compress_options['punypng'] = "";
 ## List of enabled plugins for server side performance
 $compress_options['plugins'] = "";
 ## Web Optimizer license, empty for free edition
