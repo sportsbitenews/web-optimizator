@@ -434,19 +434,22 @@ class admin {
 	**/
 	function install_cache_info ($mask, $type) {
 		$return = array();
-		foreach (glob($mask) as $filename) {
-			$browser = 0;
-			if ($a = strpos($filename, '.ie')) {
-				$browser = round($filename{$a+3}) - 4;
+		$files = glob($mask);
+		if (is_array($files)) {
+			foreach ($files as $filename) {
+				$browser = 0;
+				if ($a = strpos($filename, '.ie')) {
+					$browser = round($filename{$a+3}) - 4;
 /* switch ie4 case to IE7@Vista */
-				$browser = $browser ? $browser : 10;
+					$browser = $browser ? $browser : 10;
+				}
+				$return[$filename] = array(
+					$type,
+					@filemtime($filename),
+					@filesize($filename),
+					$browser
+				);
 			}
-			$return[$filename] = array(
-				$type,
-				@filemtime($filename),
-				@filesize($filename),
-				$browser
-			);
 		}
 		return $return;
 	}
