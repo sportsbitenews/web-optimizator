@@ -538,9 +538,9 @@ define('_WEBO_OPTIONS_TITLES_safe', 'Safe configuration');
 define('_WEBO_OPTIONS_TITLES_optimal', 'Optimal configuration');
 define('_WEBO_OPTIONS_TITLES_extreme', 'Extreme configuration');
 define('_WEBO_OPTIONS_TITLES_user', 'User configuration');
-define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'Carefully tested configuration that provides significant speeup for your website and don\'t harms it anyway.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'Carefully tested configuration which provides significant speedup for your website and don\'t harms it anyway.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_optimal', 'Provides optimal acceleration for your website but can result in slight failures on rare occasions.');
-define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'Combines all client side acceleration methods to guarantee maximum acceleration possible. This configuration must be carefully tested in debug mode as it may cause some unwanted changes in website view or its behavior.');
+define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'Combines all client side acceleration methods to guarantee maximum acceleration possible. This configuration must be carefully tested in debug mode because it may cause some unwanted changes in website view or its behavior.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'User configuration description.');
 
 /* Version comparison */
