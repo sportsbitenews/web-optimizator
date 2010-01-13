@@ -3278,9 +3278,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	*
 	**/
 	function get_modules () {
-	/* check for Apache installation */
+/* check for Apache installation, only if curl is disabled */
 		if (function_exists('apache_get_modules')) {
-			$apache_modules = apache_get_modules();
+				$apache_modules = apache_get_modules();
 		} else {
 /* if PHP installed as CGI module -- we don't need .htaccess */	
 			$apache_modules = array();
@@ -3307,17 +3307,21 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if (in_array('mod_rewrite', $apache_modules)) {
 			$this->apache_modules[] = 'mod_rewrite';
 		}
-		$javascript_cachedir = empty($this->compress_options['javascript_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['javascript_cachedir'];
-		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
+		$cachedir = empty($this->compress_options['javascript_cachedir']) ?
+			$this->view->paths['full']['current_directory'] . 'cache/' :
+			$this->compress_options['javascript_cachedir'];
+		$root = empty($this->compress_options['document_root']) ?
+			$this->view->paths['full']['document_root'] :
+			$this->compress_options['document_root'];
 /* detect if hosting is compatible with SynLinks rule (included in core) */
-		if ($this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $document_root, $javascript_cachedir, 'mod_symlinks')) {
+		if ($this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $root, $cachedir, 'mod_symlinks')) {
 			$this->apache_modules[] = 'mod_symlinks';
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
-		$this->view->download(str_replace($document_root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $javascript_cachedir . 'htaccess.test');
-		if (@filesize($javascript_cachedir . 'htaccess.test') == @filesize($this->basepath . 'libs/php/css.sprites.php')) {
+		$this->view->download(str_replace($root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $cachedir . 'htaccess.test');
+		if (@filesize($cachedir . 'htaccess.test') == @filesize($this->basepath . 'libs/php/css.sprites.php')) {
 			$this->apache_modules = array();
-		} elseif (!count($this->apache_modules) && function_exists('curl_init')) {
+		} elseif (count($this->apache_modules) < 2 && function_exists('curl_init')) {
 			$modules = array(
 				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
 				'mod_gzip' => 'mod_gzip_on Yes',
@@ -3330,31 +3334,30 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
-				if ($this->check_apache_module($value, $document_root, $javascript_cachedir, $key)) {
+				if ($this->check_apache_module($value, $root, $cachedir, $key)) {
 					$this->apache_modules[] = $key;
 				}
 			}
 		}
-		@unlink($javascript_cachedir . 'htaccess.test');
+		@unlink($cachedir . 'htaccess.test');
 	}
 
 	/**
 	* Checks exitence of current Apache module
 	*
 	**/
-	function check_apache_module ($rule, $document_root, $javascript_cachedir, $module) {
+	function check_apache_module ($rule, $root, $cachedir, $module) {
 		$testfile = 'libs/js/yass.loader.js';
 		$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
 		$recursive = 0;
-		while (!($filesize = @filesize($javascript_cachedir . 'module.test')) &&
-			$recursive < 10) {
-				$curl = $this->view->download(str_replace(realpath($document_root),
+		while (!($filesize = @filesize($cachedir . 'module.test')) &&
+			$recursive++ < 10) {
+				$curl = $this->view->download(str_replace(realpath($root),
 					"http://" . $_SERVER['HTTP_HOST'],
 					realpath($this->basepath)) . '/' .
-					$curlfile, $javascript_cachedir . 'module.test');
-				$recursive++;
+					$curlfile, $cachedir . 'module.test');
 		}
 /* it it's possible to get file => module works */
 		if ($filesize == @filesize($this->basepath . $testfile)) {
@@ -3364,7 +3367,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if ((strpos($rule, 'DEFLATE') || strpos($rule, 'gzip')) && !$curl) {
 			$return = false;
 		}
-		@unlink($javascript_cachedir . 'module.test');
+		@unlink($cachedir . 'module.test');
 		@unlink($this->basepath . 'libs/js/.htaccess');
 		return $return;
 	}
@@ -3433,7 +3436,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$option_value = str_replace('$', '#', $option_value);
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		} else {
-			$option_value = str_replace('//', '/', str_replace('\\', '/', $option_value));
+			$option_value = str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)));
 		}
 /* See if file exists */
 		$option_file = $this->basepath . $this->options_file;
