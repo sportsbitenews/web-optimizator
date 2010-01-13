@@ -2860,35 +2860,37 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 /* add Expires headers via PHP script if we don't have mod_expires */
-			} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
-				$cachedir = str_replace($this->compress_options['website_root'], "/", $this->compress_options['html_cachedir']);
-				$content .= "
+			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
+				@is_file($this->compress_options['html_cachedir'] . 'wo.static.php')) {
+					$cachedir = str_replace($this->compress_options['website_root'],
+						"/", $this->compress_options['html_cachedir']);
+					$content .= "
 <IfModule mod_rewrite.c>";
-				if (!empty($this->input['wss_far_future_expires_css'])) {
-					$content .= "
+					if (!empty($this->input['wss_far_future_expires_css'])) {
+						$content .= "
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?$1.css [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_javascript'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_javascript'])) {
+						$content .= "
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?$1.js [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_images'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_images'])) {
+						$content .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_video'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_video'])) {
+						$content .= "
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_static'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_static'])) {
+						$content .= "
 	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_fonts'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_fonts'])) {
+						$content .= "
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?$1.$2 [L]";
-				}
-				$content .= "
+					}
+					$content .= "
 </IfModule>";
 			}
 			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
