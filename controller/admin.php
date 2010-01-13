@@ -1119,18 +1119,6 @@ class admin {
 	* 
 	**/	
 	function install_enter_password () {
-/* check for Web Optimizer existence on the website */
-		if (@filesize($this->index_check)) {
-			$installed = strpos(@file_get_contents($this->index_check), '<!--WSS-->') || empty($this->compress_options['footer']['spot']);
-			@unlink($this->index_check);
-		} else {
-/* curl doesn't work -- can't check existence */
-			$installed = 1;
-		}
-/* fix double gzip: WO isn't installed, but page is gzipped */
-		if (!$installed && !empty($gzipped)) {
-			$this->save_option("['gzip']['page']", 0);
-		}
 		$this->check_acceleration();
 		$page_variables = array(
 			"title" => _WEBO_LOGIN_TITLE,
@@ -1199,17 +1187,9 @@ class admin {
 		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 /* try to get preliminary optimization grade for the website */
 		$this->check_acceleration();
-		$gzipped = $this->view->download('http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'], $this->index_check);
-		if (!empty($gzipped)) {
-			$this->save_option("['gzip']['page']", 0);
-		}
 		if (!empty($this->compress_options['password'])) {
 			$this->install_enter_password();
 		} else {
-/* disable gzip for HTML as we alsredy have it */
-			if (!empty($gzip)) {
-				$this->save_option("['gzip']['wss_page']", 0);
-			}
 			$error = array();
 			if (!empty($submit)) {
 				if (empty($password)) {
