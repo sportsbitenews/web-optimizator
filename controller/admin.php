@@ -1024,6 +1024,18 @@ class admin {
 					$this->error[7] = 1;
 			}
 			if (!count($this->error)) {
+/* copy some files */
+				$image = $this->compress_options['footer']['image'];
+				if (!empty($image)) {
+					@copy($this->basepath . 'images/' . $image,
+						$this->compress_options['css_cachedir'] . $image);
+				}
+				@copy($this->basepath . 'libs/js/wo.cookie.php',
+					$this->compress_options['html_cachedir'] . 'wo.cookie.php');
+				@copy($this->basepath . 'libs/js/yass.loader.js',
+					$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
+				@copy($this->basepath . 'libs/php/wo.static.php',
+				$this->compress_options['html_cachedir'] . 'wo.static.php');
 				$this->save_option("['host']", $this->compress_options['host']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
@@ -2450,6 +2462,11 @@ class admin {
 				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 0;
 				break;
 		}
+		$image = $this->input['wss_footer_image'];
+		if (!empty($image)) {
+			@copy($this->basepath . 'images/' . $image,
+				$this->compress_options['css_cachedir'] . $image);
+		}
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
 		} elseif ($this->input['wss_page'] == 'install_options') {
@@ -2752,7 +2769,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['wss_htaccess_mod_expires'])) {
+			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
 				$content .= "
 <IfModule mod_expires.c>
 	ExpiresActive On";
@@ -2787,7 +2804,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType text/vbscript A315360000
 	ExpiresByType text/fluffscript A315360000";
 				}
-				if (!empty($this->input['wss_far_future_expires_images']) && !empty($this->premium)) {
+				if (!empty($this->input['wss_far_future_expires_images'])) {
 					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
 		ExpiresDefault \"access plus 10 years\"
@@ -2798,7 +2815,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType image/x-icon A315360000
 	ExpiresByType image/bmp A315360000";
 				}
-				if (!empty($this->input['wss_far_future_expires_fonts']) && !empty($this->premium)) {
+				if (!empty($this->input['wss_far_future_expires_fonts'])) {
 					$content .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
 		ExpiresDefault \"access plus 10 years\"
@@ -2814,7 +2831,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType application/vnd.ms-fontobject A315360000
 	ExpiresByType font/woff A315360000";
 				}
-				if (!empty($this->input['wss_far_future_expires_video']) && !empty($this->premium)) {
+				if (!empty($this->input['wss_far_future_expires_video'])) {
 					$content .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
 		ExpiresDefault \"access plus 10 years\"
@@ -2828,7 +2845,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType video/x-ms-wmx A315360000
 	ExpiresByType video/x-ms-wm A315360000";
 				}
-				if (!empty($this->input['wss_far_future_expires_static']) && !empty($this->premium)) {
+				if (!empty($this->input['wss_far_future_expires_static'])) {
 					$content .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 		ExpiresDefault \"access plus 10 years\"
@@ -2844,7 +2861,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 </IfModule>";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
-				$cachedir = str_replace($this->input['wss_website_root'], "/", $this->input['wss_html_cachedir']);
+				$cachedir = str_replace($this->compress_options['website_root'], "/", $this->compress_options['html_cachedir']);
 				$content .= "
 <IfModule mod_rewrite.c>";
 				if (!empty($this->input['wss_far_future_expires_css'])) {
@@ -2949,8 +2966,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* copy some files */
 		@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
 		@copy($this->basepath . 'libs/js/wo.cookie.php', $this->compress_options['html_cachedir'] . 'wo.cookie.php');
-		@copy($this->basepath . 'libs/js/wo.static.php', $this->compress_options['html_cachedir'] . 'wo.static.php');
 		@copy($this->basepath . 'libs/js/yass.loader.js', $this->compress_options['javascript_cachedir'] . 'yass.loader.js');
+		@copy($this->basepath . 'libs/php/wo.static.php', $this->compress_options['html_cachedir'] . 'wo.static.php');
 /* dirty hack for PHP-Nuke */
 		if ($this->cms_version == 'PHP-Nuke') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
