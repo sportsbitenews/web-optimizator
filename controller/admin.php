@@ -3202,11 +3202,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$content_saved .= '$web_optimizer->finish();';
 				}
 				@fclose($fp);
+/* restrict changes in binary files, i.e. Zend Optimized ones */
+				if (substr($content_saved, 0, 12) != '<?php @Zend;') {
 /* create backup */
-				@copy($index, $index . '.backup');
-				$return = $this->write_file($index, $content_saved, 1);
-				if (!empty($return)) {
-					$auto_rewrite = 1;
+					@copy($index, $index . '.backup');
+					$return = $this->write_file($index, $content_saved, 1);
+					if (!empty($return)) {
+						$auto_rewrite = 1;
+					}
+				} else {
+					$auto_rewrite = 3;
 				}
 /* additional change of cache plugins */
 				if (preg_match("/Joomla! 1\.[56789]/", $this->cms_version)) {
@@ -3250,9 +3255,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					}
 				}
 			}
-			if (!$skip) {
-				$this->install_system(2 - $auto_rewrite);
-			}
 		}
 
 /* execute plugin-specific logic */
@@ -3280,7 +3282,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 		$this->set_options();
 		$this->write_htaccess();
-		return $auto_rewrite;
+		if (!$skip) {
+			$this->install_system(2 - $auto_rewrite);
+		}
 	}
 
 	/**
