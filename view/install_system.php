@@ -293,7 +293,7 @@
 	}
 			?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($website_root);
-				?>" name="wss_website_root" id="website_root" class="wssF"/>
+				?>" name="wss_website_root" id="wss_website_root" class="wssF"/>
 			</dd>
 			<dt class="wssD1">
 				<label class="wssE" for="wss_document_root"><?php
