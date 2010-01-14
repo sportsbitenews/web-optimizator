@@ -212,10 +212,21 @@ class admin {
 		$size = @filesize($file);
 		$gzipped = $file . '.gz';
 		$gzipped_size = $size;
+		$success = 0;
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
 			if (!@is_file($gzipped) || $mtime != @filemtime($gzipped)) {
-				$success = $this->write_file($gzipped,
-					@gzencode(file_get_contents($file), 9, FORCE_GZIP));
+				$raw = !function_exists('shell_exec');
+				$success = 1;
+				if (!$raw) {
+					@shell_exec('gz -c -n -9 ' . $file . ' > ' . $gzipped);
+					if (!@is_file($gzipped)) {
+						$raw = 1;
+					}
+				}
+				if ($raw) {
+					$success = $this->write_file($gzipped,
+						@gzencode(@file_get_contents($file), 9, FORCE_GZIP));
+				}
 				if ($success) {
 					@touch($gzipped, $mtime);
 					$gzipped_size = @filesize($gzipped);
