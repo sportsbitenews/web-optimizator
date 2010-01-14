@@ -1085,7 +1085,7 @@ class admin {
 		$page_variables['username'] = $this->compress_options['username'];
 		$page_variables['external_scripts_user'] = $this->compress_options['external_scripts']['user'];
 		$page_variables['external_scripts_pass'] = $this->compress_options['external_scripts']['pass'];
-		$page_variables['showbeta'] = $this->compress_options['showbeta'];
+		$page_variables['showbeta'] = $this->compress_options['showbeta'] || strpos($this->version, 'b');
 		$page_variables['files_to_change'] = $this->system_files($this->cms_version);
 		$page_variables['cms_version'] = $this->cms_version;
 		$page_variables['success'] = $success;
