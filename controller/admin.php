@@ -1681,7 +1681,7 @@ class admin {
 	function options_delete () {
 		$config = $this->input['wss_config'];
 		$config_file = $this->basepath . 'config.' .
-			preg_replace("/[^a-z]/","", $config) . '.php';
+			preg_replace("/[^a-z0-9]/","", $config) . '.php';
 		@unlink($config_file);
 		$this->error = array();
 		if (@is_file($config_file)) {

@@ -281,7 +281,18 @@ if ($submit) {
 						</li><?php
 		}
 	}
-	$new = 'user' . (count($configs) ? count($configs) : '');
+	$i = count($configs);
+	$new = 'user' . ($i ? $i : '');
+	$oncemore = 1;
+	while ($oncemore) {
+		$oncemore = 0;
+		foreach ($configs as $c) {
+			if ($c == $new) {
+				$new = 'user' . (++$i);
+				$oncemore = 1;
+			}
+		}
+	}
 						?><li class="wssU11 wssU20">
 							<a class="wssJ" href="javascript:_.e('<?php
 	echo $new;
