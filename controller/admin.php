@@ -1525,11 +1525,6 @@ class admin {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 			}
 			$this->cleanup_file($index, $return);
-			$this->htaccess = $this->detect_htaccess();
-			$content_saved = $this->clean_htaccess();
-			if (empty($this->error)) {
-				$this->write_file($this->htaccess, $content_saved, $return);	
-			}
 /* additional change of cache plugins */
 			if (substr($this->cms_version, 0, 7) == "Joomla!" || substr($this->cms_version, 0, 5) == "XOOPS") {
 /* Joomla! 1.5 System-Cache plugin */
@@ -1567,8 +1562,14 @@ class admin {
 		}
 /* clean up all WEBO Site SpeedUp rules from .htaccess */
 		$this->htaccess = $this->detect_htaccess();
-		$content_saved = $this->clean_htaccess();
-		$this->write_file($this->htaccess, $content_saved, $return);
+		if (empty($this->error)) {
+			if (!@is_file($this->htaccess . '.backup')) {
+				$content_saved = $this->clean_htaccess();
+				$this->write_file($this->htaccess, $content_saved, $return);
+			} else {
+				@copy($this->htaccess . '.backup', $this->htaccess);
+			}
+		}
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
@@ -2602,7 +2603,9 @@ class admin {
 				$this->error[10] = 1;
 			}
 /* create backup */
-			@copy($this->htaccess, $this->htaccess . '.backup');
+			if (!@is_file($this->htaccess . '.backup')) {
+				@copy($this->htaccess, $this->htaccess . '.backup');
+			}
 			$content = '# Web Optimizer options';
 			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
 				$content .= "
@@ -2692,6 +2695,13 @@ http://www.phpied.com/gzip-your-font-face-files/ */
 				$content .= "
 </IfModule>";
 			}
+/* prevent 403 error due to no FollowSymLinks
+http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
+http://code.google.com/p/web-optimizator/issues/detail?id=156 */
+			if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
+				$content .= "
+Options +FollowSymLinks +SymLinksIfOwnerMatch";
+			}
 /* try to add static gzip */
 			if (!empty($this->input['wss_htaccess_mod_mime'])) {
 				$content .= "
@@ -2699,29 +2709,21 @@ http://www.phpied.com/gzip-your-font-face-files/ */
 	AddEncoding gzip .gz
 	AddEncoding deflate .df
 </IfModule>";
-			}
-			if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
-/* prevent 403 error due to no FollowSymLinks
-http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
-http://code.google.com/p/web-optimizator/issues/detail?id=156 */
-				if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
+				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 					$content .= "
-Options +FollowSymLinks +SymLinksIfOwnerMatch";
-				}
-				$content .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
-				if (!empty($this->input['wss_far_future_expires_css'])) {
-					$content .= "
+					if (!empty($this->input['wss_far_future_expires_css'])) {
+						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
-				}
-				if (!empty($this->input['wss_far_future_expires_javascript'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_javascript'])) {
+						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
-				}
-				if (!empty($this->input['wss_gzip_page'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_page'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2736,9 +2738,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.xml\.gz$>
 		ForceType text/xml
 	</FilesMatch>";
-				}
-				if (!empty($this->input['wss_gzip_css'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_css'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2746,9 +2748,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.css\.gz$>
 		ForceType text/css
 	</FilesMatch>";
-				}
-				if (!empty($this->input['wss_gzip_javascript'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_javascript'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2756,9 +2758,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.js\.gz$>
 		ForceType application/x-javascript
 	</FilesMatch>";
-				}
-				if (!empty($this->input['wss_gzip_fonts'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_fonts'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2775,9 +2777,10 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.eot\.gz$>
 		ForceType application/vnd.ms-fontobject
 	</FilesMatch>";
-				}
-				$content .= "
+					}
+					$content .= "
 </IfModule>";
+				}
 			}
 			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
 				$content .= "
