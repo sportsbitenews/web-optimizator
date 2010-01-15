@@ -470,6 +470,7 @@ define('_WEBO_SYSTEM_STATUS', 'Состояние');
 define('_WEBO_SYSTEM_SETTINGS', 'Параметры');
 define('_WEBO_SYSTEM_UPDATES', 'Обновление');
 define('_WEBO_SYSTEM_NOUPDATES', 'Вы используете самую последнюю версию WEBO Site SpeedUp.');
+define('_WEBO_SYSTEM_ROLLBACK', 'Откатить до версии');
 define('_WEBO_SYSTEM_INSTALL', 'Установка и удаление');
 define('_WEBO_SYSTEM_ISSUES', 'Проблемы и замечания');
 define('_WEBO_SYSTEM_SETTINGS_TITLE', 'Параметры приложения');

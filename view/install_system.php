@@ -447,7 +447,7 @@
 					?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/>
 				</dd>
 			</dl><?php
-	if ($version_new > $version) {
+	if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
 				?><div id="wss_upd" title="<?php
 		echo _WEBO_LOGIN_VERSION;
 				?> <?php
@@ -457,6 +457,16 @@
 				?><p class="wssI"><?php
 		echo _WEBO_SYSTEM_NOUPDATES;
 				?></p><?php
+		if (strpos($version, 'b')) {
+				?><p class="wssI">
+					<a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
+			echo _WEBO_SYSTEM_ROLLBACK;
+						?> <?php
+			echo $version_new;
+						?><span class="wssJ6"></span>
+					</a>
+				</p><?php
+		}
 	}
 				?><div id="wss_beta"<?php
 	if (!$showbeta) {

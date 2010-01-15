@@ -81,7 +81,6 @@ class admin {
 			}
 /* default multiple hosts */
 			$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
-			$this->version_new_exists = round(preg_replace("/\./", "", $this->version)) < round(preg_replace("/\./", "", $this->version_new)) ? 1 : 0;
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
 			$this->page_functions = array(
 				'install_set_password' => 1,
