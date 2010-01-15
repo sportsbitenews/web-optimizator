@@ -456,7 +456,9 @@
 	} else {
 				?><p class="wssI"><?php
 		echo _WEBO_SYSTEM_NOUPDATES;
-				?></p><?php
+				?> (<?php
+		echo $version;
+				?>).</p><?php
 		if (strpos($version, 'b')) {
 				?><p class="wssI">
 					<a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
