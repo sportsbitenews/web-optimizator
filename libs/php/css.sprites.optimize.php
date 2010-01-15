@@ -861,11 +861,11 @@ class css_sprites_optimize {
 		}
 	}
 /* image optimization via punypng.com */
-	function punypng ($file) {
+	function punypng ($file, $recursion = 0) {
 		$tmp_file = $file . ".tmp";
-		$this->download_file('http://www.gracepointafterfive.com/punypng/api/optimize?img=http://' .
-			$_SERVER['HTTP_HOST'] . '/' .
-			str_replace($this->website_root, "", $file) .
+		$this->download_file('http://www.gracepointafterfive.com/punypng/api/optimize?img=http%3A%2F%2F' .
+			urlencode($_SERVER['HTTP_HOST']) . '%2F' .
+			urlencode(str_replace($this->website_root, "", $file)) .
 			'&key=' . $this->punypng_key, $tmp_file);
 		if (is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
@@ -884,19 +884,25 @@ class css_sprites_optimize {
 			@unlink($tmp_file);
 		}
 		if (!@filesize($file)) {
-			sleep(1);
+			if ($recursion < 10) {
+				sleep(1);
 /* if can't optimize file - try once more */
-			@copy($file . '.backup', $file);
-			$this->smushit($file);
+				@copy($file . '.backup', $file);
+				$this->punypng($file, ++$recursion);
+/* just restore backed up copy */
+			} else {
+				@copy($file . '.backup', $file);
+				@unlink($file . '.backup');
+			}
 		}
 	}
 /* image optimization via smush.it */
-	function smushit ($file) {
+	function smushit ($file, $recursion = 0) {
 		$tmp_file = $file . ".tmp";
-		$this->download_file("http://www.smushit.com/ysmush.it/ws.php?img=http://" .
-			$_SERVER['HTTP_HOST'] . '/' .
-			str_replace($this->website_root, "", $file), $tmp_file);
-		if (is_file($tmp_file)) {
+		$this->download_file("http://www.smushit.com/ysmush.it/ws.php?img=http%3A%2F%2F" .
+			urlencode($_SERVER['HTTP_HOST']) . '%2F' .
+			urlencode(str_replace($this->website_root, "", $file)), $tmp_file);
+		if (@is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
 			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
@@ -913,10 +919,16 @@ class css_sprites_optimize {
 			@unlink($tmp_file);
 		}
 		if (!@filesize($file)) {
-			sleep(1);
+			if ($recursion < 10) {
+				sleep(1);
 /* if can't optimize file - try once more */
-			@copy($file . '.backup', $file);
-			$this->smushit($file);
+				@copy($file . '.backup', $file);
+				$this->smushit($file, ++$recursion);
+/* just restore backed up copy */
+			} else {
+				@copy($file . '.backup', $file);
+				@unlink($file . '.backup');
+			}
 		}
 	}
 /* calculate smallest common multiple, NOK */

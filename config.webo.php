@@ -68,7 +68,7 @@ $compress_options['performance']['cache_version'] = "0";
 ## Uniform cache files through all browsers
 $compress_options['performance']['uniform_cache'] = "0";
 ## Minify options, JS
-$compress_options['minify']['javascript'] = "1";
+$compress_options['minify']['javascript'] = "0";
 ## Minify JS inside <body> tag. Please be carefull
 $compress_options['minify']['javascript_body'] = "0";
 ## Minify JS with JSMin from Douglas Crockford
@@ -78,7 +78,7 @@ $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
 $compress_options['minify']['with_yui'] = "0";
 ## Minify CSS
-$compress_options['minify']['css'] = "1";
+$compress_options['minify']['css'] = "0";
 ## Minify CSS inside <body> tag
 $compress_options['minify']['css_body'] = "0";
 ## Remove whitespaces

@@ -1380,7 +1380,7 @@ class admin {
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$results = array();
 		if ($submit) {
-			$results = $this->get_directory_files($directory, '\\.(css|js|ico|ttf|otf|eot|svg|)$', $recursive, 'gz');
+			$results = $this->get_directory_files($directory, '\\.(xml|css|js|ico|ttf|otf|eot|svg|)$', $recursive, 'gz');
 		}
 		$this->page_variables = array(
 			"results" => $results,
