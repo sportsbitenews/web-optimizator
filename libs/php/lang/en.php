@@ -239,7 +239,7 @@ define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout s
 define('_WEBO_html_cache_timeout', 'Default HTML cache timeout (in seconds)');
 define('_WEBO_html_cache_timeout_HELP', 'After this time all cached HTML pages will be recreated on server side.');
 define('_WEBO_html_cache_flush_only', 'Only cache first n bytes of content (flush early)');
-define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whole web page but the first n bytes of it (set in option &quot;Flush content size&raquo;). And this amount of data will be flushed to browser earlier than the rest web page content. So browser will receive calls to required resources earlier and don\'t wait the rest of the page to start their load.');
+define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whole web page but the first n bytes of it (set in option &quot;Flush content size&quot;). And this amount of data will be flushed to browser earlier than the rest web page content. So browser will receive calls to required resources earlier and don\'t wait the rest of the page to start their load.');
 define('_WEBO_html_cache_flush_size', 'Flush content size (in bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Size of cached flushed part of a web page. It can be fixed (to avoid any issues with browsers or network connection). Empty (or zero) value leads to flush the whole web page content before closing &lt;/head&gt; tag.');
 define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from caching (separated by space)');
@@ -258,7 +258,7 @@ define('_WEBO_performance_quick_check_HELP', 'There can be gained additional ben
 define('_WEBO_performance_cache_version', 'Cache version number');
 define('_WEBO_performance_cache_version_HELP', 'Cache version defines version of all files in cache. To refresh cache on client side (in browsers) you need to change this number.');
 define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
-define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quo;tCache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
+define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quot;Cache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
 define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
 
