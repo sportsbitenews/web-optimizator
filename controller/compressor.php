@@ -421,8 +421,10 @@ class web_optimizer {
 				$this->options['performance']['uniform_cache'],
 			"quick_check" => $this->options['performance']['quick_check'] &&
 				($this->premium > 1),
-			"plugins" => ($this->premium > 1)&&
+			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
+			"punypng" => ($this->premium > 1) &&
+				!empty($this->options['punypng']) ? $this->options['punypng'] : ''
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -2592,7 +2594,8 @@ class web_optimizer {
 			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites'],
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
-			'user_agent' => $this->ua_mod
+			'user_agent' => $this->ua_mod,
+			'punypng' => $options['punypng']
 		));
 		return $css_sprites->process();
 	}

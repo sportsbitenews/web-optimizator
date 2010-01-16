@@ -974,9 +974,7 @@ class admin {
 	* 
 	**/		
 	function install_system ($success = 0) {
-		if (empty($this->cms_version)) {
-			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-		}
+		$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 		$submit = empty($this->input['wss_Submit']) ? '' : $this->input['wss_Submit'];
 		$this->error = array();
 		if (!empty($submit)) {
@@ -1258,7 +1256,54 @@ class admin {
 				$this->save_option("['name']", htmlspecialchars($username));
 				$this->save_option("['license']", htmlspecialchars($license));
 				$this->install_install(1);
+				$this->install_favicon();
 				$this->install_dashboard();
+			}
+		}
+	}
+
+	/**
+	* Detect and put favicon.ico to the website root
+	* 
+	**/		
+	function install_favicon () {
+		$file = $this->compress_options['document_root'] . 'favicon.ico';
+		if (@!is_file($file)) {
+/* download website index */
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] .
+				str_replace($this->compress_options['document_root'], '/',
+				$this->compress_options['website_root']),
+				$this->basedir . $this->index_check, 2);
+/* calculate favicon */
+			$favicon = preg_replace("@.*(<link.*rel=['\"\s](shortcut\s)?icon[^>]*>).*@is", "$1",
+				@file_get_contents($this->basedir . $this->index_check));
+			if (strlen($favicon) < 1000) {
+				$favicon = preg_replace("@.*href\s*=[\s'\"](.*?)[\s'\"].*@is", "$1",
+					$favicon);
+/* clear external favicon from current website host */
+				$favicon = preg_replace("@https?://(www.)" .
+					preg_replace("@www.@i", "", $_SERVER['HTTP_HOST']) . "@", "",
+					$favicon);
+			} else {
+				$favicon = $this->svn . 'favicon.ico';
+			}
+/* absolute paths */
+			if ($favicon{0} == '/') {
+/* external resource */
+				if ($favicon{1} == '/') {
+					$this->view->download('http:' . $favicon, $file, 2);
+				} else {
+					@copy($this->compress_options['document_root'] . $favicon, $file);
+				}
+/* relative paths */
+			} else {
+/* external file */
+				if ((substr($favicon, 0, 5) == 'http:' ||
+					substr($favicon, 0, 6) == 'https:')) {
+						$this->view->download($favicon, $file, 2);
+				} else {
+					@copy($this->compress_options['website_root'] . $favicon, $file);
+				}
 			}
 		}
 	}
@@ -1486,9 +1531,7 @@ class admin {
 	* 
 	**/	
 	function install_uninstall () {
-		if (empty($this->cms_version)) {
-			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-		}
+		$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
 		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce'))  || substr($this->cms_version, 0, 10) == 'Open Slaed') {
 			if ($this->cms_version == 'Bitrix') {
@@ -1523,6 +1566,10 @@ class admin {
 /* fix for NetCat */
 			if ($this->cms_version == 'NetCat') {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
+			}
+/* fix for PHP Fusion */
+			if ($this->cms_version == 'PHP Fusion') {
+				$index = $this->view->paths['absolute']['document_root'] . 'themes/templates/footer.php';
 			}
 			$this->cleanup_file($index, $return);
 /* additional change of cache plugins */
@@ -2932,9 +2979,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			}
 			$content .= "\n# Web Optimizer end";
 /* define CMS */
-			if (empty($this->cms_version)) {
-				$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
-			}
+			$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 			$cms_frameworks = array('Zend Framework', 'Symfony', 'CodeIgniter', 'Kohana', 'Yii', 'CakePHP');
 /* prevent rewrite to admin access on frameworks */
 			if (in_array($this->cms_version, $cms_frameworks)) {
@@ -2950,11 +2995,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	**/	
 	function install_install ($skip = false) {
 		$auto_rewrite = 0;
-/* define CMS */
-		if (empty($this->cms_version)) {
-			$this->cms_version =
-				$this->system_info($this->view->paths['absolute']['document_root']);
-		}
 /* sve initial options */
 		$this->compress_options['document_root'] = empty($this->compress_options['document_root']) ?
 			$this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
@@ -2978,6 +3018,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			'host') as $val) {
 				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
 		}
+/* define CMS */
+		$this->cms_version = $this->system_info($this->compress_options['website_root']);
 /* copy some files */
 		@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
 		@copy($this->basepath . 'libs/js/wo.cookie.php', $this->compress_options['html_cachedir'] . 'wo.cookie.php');
@@ -3141,6 +3183,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$index = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
 			} elseif ($this->cms_version == 'NetCat') {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
+			} elseif ($this->cms_version == 'PHP Fusion') {
+				$index = $this->view->paths['absolute']['document_root'] . 'themes/templates/footer.php';
 			}
 			$fp = @fopen($index, "r");
 			if ($fp) {
@@ -3166,6 +3210,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* fix for UMI.CMS */							
 				} elseif (substr($this->cms_version, 0, 7) == 'UMI.CMS') {
 					$content_saved = preg_replace("/(sha1.*)\r?\n([\s\t]*echo\s*\\\$res;)/", "$1\n" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$2", $content_saved);
+/* fix for PHP Fusion */							
+				} elseif ($this->cms_version == 'PHP Fusion') {
+					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
 					$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
@@ -3191,6 +3238,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				} elseif (substr($this->cms_version, 0, 6) == 'MaxDev') {
 					$content_saved = preg_replace("/(\\\$output->PrintPage\(\);)/", "$1" . '$web_optimizer->finish();', $content_saved);
 					$content_saved = preg_replace("/(\}[\r\n\t\s]+)(exit;)/", "$1" . '$web_optimizer->finish();' . "$2", $content_saved);
+/* fix for PHP Fusion */							
+				} elseif ($this->cms_version == 'PHP Fusion') {
+					$content_saved = preg_replace("/(echo handle_output\(\\\$output\);\r?\n)/", "$1" . '$web_optimizer->finish();', $content_saved);
 				} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 					if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -3579,6 +3629,9 @@ require valid-user';
 	* 
 	**/
 	function system_info($root) {
+		if (!empty($this->cms_version)) {
+			return $this->cms_version;
+		}
 /* Wordpress */
 		if (@is_file($root . 'wp-includes/version.php')) {
 			$wp_version = '1.0.0';
@@ -3647,6 +3700,9 @@ require valid-user';
 /* MaxDev Pro */
 			} elseif (@is_file($root . 'includes/mdHTML.php')) {
 				return 'MaxDev Pro';
+/* PHP Fusion */
+			} elseif (@is_dir($root . 'infusions')) {
+				return 'PHP Fusion';
 			}
 /* Typo 3 */
 		} elseif (@is_dir($root . 'typo3conf')) {
@@ -4091,6 +4147,20 @@ require valid-user';
 						'file' => 'includes/application_bottom.php',
 						'mode' => 'finish',
 						'location' => 'end'
+					)
+				);
+/* PHP Fusion */
+			case 'PHP':
+				$files = array(
+					array(
+						'file' => 'themes/templates/footer.php',
+						'mode' => 'start',
+						'location' => 'require_once INCLUDES."footer_includes.php";'
+					),
+					array(
+						'file' => 'themes/templates/footer.php',
+						'mode' => 'finish',
+						'location' => 'echo handle_output($output);'
 					)
 				);
 /* all other systems */
