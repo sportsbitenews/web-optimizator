@@ -1651,9 +1651,15 @@ class web_optimizer {
 					unset($this->initial_files[$key]);
 /* rewrite skipped file with caching proxy */
 					if (!empty($value['file']) &&
-						$this->options['page']['far_future_expires_external']) {
+						((($this->options['css']['far_future_expires_external'] ||
+						$this->options['css']['gzip']) &&
+						$value['tag'] == 'link') ||
+						(($this->options['javascript']['far_future_expires_external'] ||
+						$this->options['javascript']['gzip']) &&
+						$value['tag'] == 'script')) &&
+						empty($this->options['htaccess']['mod_rewrite'])) {
 							$new_src =
-								$this->options['html']['cachedir_relative'] . 
+								$this->options['page']['cachedir_relative'] . 
 								'wo.static.php?' . $value['file'];
 							$new_script = str_replace($value['file'],
 								$new_src, $value['file_raw']);
