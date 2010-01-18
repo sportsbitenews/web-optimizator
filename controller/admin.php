@@ -673,10 +673,6 @@ class admin {
 			$errors = array();
 			$value = 5;
 /* first priority issues */
-			if (empty($this->compress_options['data_uris']['on']) &&
-				$this->premium > 0) {
-					$errors['data_uris_on'] = $value;
-			}
 			if (empty($this->compress_options['css_sprites']['enabled']) &&
 				$this->premium > 1) {
 					$errors['css_sprites_enabled'] = $value;
@@ -730,6 +726,10 @@ class admin {
 			}
 /* third priority issues */
 			$value = 3;
+			if (empty($this->compress_options['data_uris']['on']) &&
+				$this->premium > 0) {
+					$errors['data_uris_on'] = $value;
+			}
 			if (empty($this->compress_options['performance']['cache_version']) &&
 				$this->premium > 1) {
 				$errors['performance_cache_version'] = $value;
@@ -750,6 +750,10 @@ class admin {
 			}
 /* fourth priority issues */
 			$value = 2;
+			if (empty($this->compress_options['data_uris']['mhtml']) &&
+				$this->premium > 0) {
+					$errors['data_uris_mhtml'] = $value;
+			}
 			if (empty($this->compress_options['minify']['css'])) {
 				$errors['minify_css'] = $value;
 			}
@@ -763,13 +767,15 @@ class admin {
 			if (empty($this->compress_options['gzip']['javascript'])) {
 				$errors['gzip_javascript'] = $value;
 			}
-			if (empty($this->compress_options['minify']['html_comments']) &&
-				$this->premium > 1) {
-					$errors['minify_html_comments'] = $value;
-			}
+/* fifth priority issues */
+			$value = 1;
 			if (empty($this->compress_options['data_uris']['separate']) &&
 				$this->premium > 1) {
 					$errors['data_uris_separate'] = $value;
+			}
+			if (empty($this->compress_options['data_uris']['domloaded']) &&
+				$this->premium > 1) {
+					$errors['data_uris_domloaded'] = $value;
 			}
 			if (empty($this->compress_options['htaccess']['mod_rewrite']) ||
 				!in_array('mod_rewrite', $this->apache_modules)) {
@@ -778,8 +784,6 @@ class admin {
 			if (empty($this->compress_options['far_future_expires']['css'])) {
 				$errors['far_future_expires_css'] = $value;
 			}
-/* fifth priority issues */
-			$value = 1;
 			if (empty($this->compress_options['far_future_expires']['javascript'])) {
 				$errors['far_future_expires_javascript'] = $value;
 			}
@@ -795,6 +799,17 @@ class admin {
 			}
 			if (empty($this->compress_options['minify']['javascript'])) {
 				$errors['minify_javascript'] = $value;
+			}
+			if (empty($this->compress_options['minify']['page'])) {
+				$errors['minify_page'] = $value;
+			}
+			if (empty($this->compress_options['minify']['html_comments']) &&
+				$this->premium > 1) {
+				$errors['minify_html_comments'] = $value;
+			}
+			if (empty($this->compress_options['minify']['html_one_string']) &&
+				$this->premium > 1) {
+				$errors['minify_html_one_string'] = $value;
 			}
 			if (empty($this->compress_options['external_scripts']['css'])) {
 				$errors['external_scripts_css'] = $value;
@@ -827,6 +842,12 @@ class admin {
 			}
 			if (empty($this->compress_options['far_future_expires']['static'])) {
 				$errors['far_future_expires_static'] = $value;
+			}
+			if (empty($this->compress_options['minify']['with_jsmin']) &&
+				empty($this->compress_options['minify']['with_yui']) &&
+				empty($this->compress_options['minify']['with_packer']) &&
+				empty($this->compress_options['minify']['with_google'])) {
+				$errors['minify_js'] = $value;
 			}
 /* count delta */
 			$deltas = array(58, 48, 0);
@@ -908,7 +929,8 @@ class admin {
 			'htaccess_writable' => !$htaccess_available ||
 				@is_writable($website_root) ||
 				@is_writable($website_root . '.htaccess'),
-			'index_writable' => @is_writable($website_root . 'index.php'),
+			'index_writable' => @is_writable($website_root . 'index.php') ||
+				$this->internal,
 			'curl_possibility' => in_array('curl', $extensions) &&
 				function_exists('curl_init'),
 			'gzip_possibility' => in_array('zlib', $extensions) &&
