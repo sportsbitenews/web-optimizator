@@ -199,7 +199,7 @@
 	<?php
 	}
 ?>
-<div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"><?php
+<div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"><?php
 	echo _WEBO_GZIP_PROCESSING;
 ?> <span id="wss_file1"></span> <?php
 	echo _WEBO_GZIP_OUTOF;

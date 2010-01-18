@@ -231,4 +231,4 @@
 	echo _WEBO_DASHBOARD_CACHE_REFRESH;
 		?><span class="wssJ6"></span>
 	</a>
-</p></div><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess">Current Status</p></div>
+</p></div><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess">Current Status</p></div>
