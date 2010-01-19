@@ -1651,13 +1651,10 @@ class web_optimizer {
 					unset($this->initial_files[$key]);
 /* rewrite skipped file with caching proxy */
 					if (!empty($value['file']) &&
-						((($this->options['css']['far_future_expires_external'] ||
-						$this->options['css']['gzip']) &&
+						(($this->options['css']['far_future_expires_external'] &&
 						$value['tag'] == 'link') ||
-						(($this->options['javascript']['far_future_expires_external'] ||
-						$this->options['javascript']['gzip']) &&
-						$value['tag'] == 'script')) &&
-						empty($this->options['htaccess']['mod_rewrite'])) {
+						($this->options['javascript']['far_future_expires_external'] &&
+						$value['tag'] == 'script'))) {
 							$new_src =
 								$this->options['page']['cachedir_relative'] . 
 								'wo.static.php?' . $value['file'];
@@ -1693,7 +1690,7 @@ class web_optimizer {
 /* exclude files from the same host */
 						if(!preg_match("!https?://(www\.)?". $this->host . "!s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
-							if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+								if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
 								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
@@ -1712,6 +1709,9 @@ class web_optimizer {
 									unset($this->initial_files[$key]);
 								}
 							}
+						} else {
+							$value['file'] = preg_replace("!https?://(www\.)?".
+								$this->host . "!s", "", $value['file']);
 						}
 					}
 					$content_from_file = '';
