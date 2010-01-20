@@ -2557,6 +2557,10 @@ class web_optimizer {
 			foreach($matches[1] as $key => $file) {
 				$absolute_path = $this->convert_path_to_absolute($file, $path);
 				if (!empty($absolute_path)) {
+/* add quotes if there is not plain URL */
+					if (strpos($absolute_path, ' ')) {
+						$absolute_path = "'" . $absolute_path . "'";
+					}
 /* replace path in initial CSS */
 					$content = preg_replace("!url\s*\(\s*['\"]?" . $file . "['\"]?\s*\)!", "url(" . $absolute_path . ")", $content);
 				}

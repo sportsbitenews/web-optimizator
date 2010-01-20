@@ -2648,7 +2648,7 @@ class admin {
 	**/
 	function clean_htaccess () {
 		$content_saved = @file_get_contents($this->htaccess);
-		$content_saved = preg_replace("@# Web Optimizer (options|path).*# Web Optimizer (path )?end@is", "", $content_saved);
+		$content_saved = preg_replace("@# Web Optimizer (options|path).*# Web Optimizer (path )?end\r?\n@is", "", $content_saved);
 		return $content_saved;
 	}
 	
