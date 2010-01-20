@@ -301,6 +301,9 @@ class css_sprites {
 						$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->optimizer->timestamp .'.png';
 						$img = trim(str_replace("!important", "", $image['background-image']));
 						$this->css_image = substr($img, 4, strlen($img) - 5);
+						if ($this->css_image{0} == '"' || $this->css_image{0} == "'") {
+							$this->css_image = substr($this->css_image, 1, strlen($this->css_image) - 2);
+						}
 						list($width, $height) = $this->optimizer->get_image(0, 0, $this->css_image);
 /* restrict images by ~64x64 if memory is limited */
 						if ($width &&
@@ -481,6 +484,9 @@ __________________
 						if (!empty($background['background-image'])) {
 							$image = trim(str_replace("!important", "", $background['background-image']));
 							$this->css_image = substr($image, 4, strlen($image) - 5);
+							if ($this->css_image{0} == '"' || $this->css_image{0} == "'") {
+								$this->css_image = substr($this->css_image, 1, strlen($this->css_image) - 2);
+							}
 							if (!empty($this->css_image)) {
 								$sprited = strpos($this->css_image, 'ebo.' . $this->optimizer->timestamp);
 								if (!empty($this->optimizer->data_uris) &&
