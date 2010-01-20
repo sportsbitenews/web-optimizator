@@ -328,8 +328,8 @@ class web_optimizer {
 				"data_uris_domloaded" => $this->options['data_uris']['domloaded'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
-				"data_uris_exclude" => round($this->options['data_uris']['ignore_list']),
-				"data_uris_exclude_mhtml" => round($this->options['data_uris']['additional_list']),
+				"data_uris_exclude" => $this->options['data_uris']['ignore_list'],
+				"data_uris_exclude_mhtml" => $this->options['data_uris']['additional_list'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] &&
 					($this->premium > 1),
 				"css_sprites_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
