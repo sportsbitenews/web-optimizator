@@ -900,38 +900,48 @@ class csstidy_optimise
 		$have['style'] = false; $have['variant'] = false;
 		$have['weight'] = false; $have['size'] = false;
 		$have['family'] = false;
-			
-		$str_value = csstidy_optimise::explode_ws(' ',trim($str_value));
 
-		for($j = 0; $j < count($str_value); $j++)
+		// Workaround with multiple font-family
+		$str_value = csstidy_optimise::explode_ws(',',trim($str_value));
+		
+		$str_value[0] = csstidy_optimise::explode_ws(' ',trim($str_value[0]));
+
+		for($j = 0; $j < count($str_value[0]); $j++)
 		{
-			if($have['weight'] === false && in_array($str_value[$j], $font_weight))
+			if($have['weight'] === false && in_array($str_value[0][$j], $font_weight))
 			{
-				$return['font-weight'] = $str_value[$j];
+				$return['font-weight'] = $str_value[0][$j];
 				$have['weight'] = true;
 			}
-			elseif($have['variant'] === false && in_array($str_value[$j], $font_variant))
+			elseif($have['variant'] === false && in_array($str_value[0][$j], $font_variant))
 			{
-				$return['font-variant'] = $str_value[$j];
+				$return['font-variant'] = $str_value[0][$j];
 				$have['variant'] = true;
 			}
-			elseif($have['style'] === false && in_array($str_value[$j], $font_style))
+			elseif($have['style'] === false && in_array($str_value[0][$j], $font_style))
 			{
-				$return['font-style'] = $str_value[$j];
+				$return['font-style'] = $str_value[0][$j];
 				$have['style'] = true;
 			}
-			elseif ($have['size'] === false && is_numeric($str_value[$j]{0}))
+			elseif ($have['size'] === false && is_numeric($str_value[0][$j]{0}))
 			{
-				$str_value[$j] = csstidy_optimise::explode_ws('/',trim($str_value[$j]));
-				$return['font-size'] = $str_value[$j][0];
-				$return['line-height'] = $str_value[$j][1];
+				$size = csstidy_optimise::explode_ws('/',trim($str_value[0][$j]));
+				$return['font-size'] = $size[0];
+				if (isset($size[1])) {
+					$return['line-height'] = $size[1];
+				}
 				$have['size'] = true;
 			}
-			elseif(!$have['family'])
+			elseif($have['family'] === false)
 			{
-				$return['font-family'] = str_replace(", ", ",", $str_value[$j]);
+				$return['font-family'] = $str_value[0][$j];
 				$have['family'] = true;
 			}
+		}
+		$i = 1;
+		while (isset($str_value[$i])) {
+			$return['font-family'] .= ','.trim($str_value[$i]);
+			$i++;
 		}
 		
 		// Fix for 100 and more font-size
