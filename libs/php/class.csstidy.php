@@ -25,7 +25,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Nikolay Matsievsky (speed at webo dot name) 2009
+ * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
  */
 
 /**
@@ -276,6 +276,11 @@ function csstidy()
 	$this->settings['compress_colors'] = true;
 	$this->settings['compress_font-weight'] = true;
 	$this->settings['lowercase_s'] = false;
+/*
+1 common shorthands optimization
+  + font property optimization
+2 + background property optimization
+*/
 	$this->settings['optimise_shorthands'] = 1;
 	$this->settings['remove_last_;'] = true;
 /* rewrite all properties with low case, better for later gzip */
