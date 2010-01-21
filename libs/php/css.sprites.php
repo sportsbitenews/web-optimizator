@@ -454,7 +454,7 @@ __________________
 				!empty($this->optimizer->multiple_hosts_count) ||
 				!empty($this->proxy) ||
 				!empty($this->optimizer->proxy_rewrite)) {
-					$this->optimizer->css_to_data_uri();
+					$this->css_to_data_uri();
 			}
 /* after 0.6.2 return array of separated files */
 			return array(html_entity_decode($this->optimizer->css->print->formatted(), ENT_QUOTES), $this->optimizer->compressed_mhtml . ($this->optimizer->ie && $this->optimizer->separated ? "\n*/" : ""));
