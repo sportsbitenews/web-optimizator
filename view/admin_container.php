@@ -46,7 +46,7 @@ if (!$ajax) {
 ?></a></li><?php
 			break;
 	}
-?><li class="wss_e wss_f"><a class="wss_g" href="javascript:if(_('.wss_d1')[0]){_('.wssd1')[0].className='wss_d'}else{_('.wss_d')[0].className='wss_d wss_d1'}void(0)"><?php
+?><li class="wss_e wss_f"><a class="wss_g" href="javascript:if(_('.wss_d1')[0]){_('.wss_d1')[0].className='wss_d'}else{_('.wss_d')[0].className='wss_d wss_d1'}void(0)"><?php
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;

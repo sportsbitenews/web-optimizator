@@ -558,6 +558,6 @@ require('<?php
 	</div>
 </fieldset><?php
 	}
-?></form><div class="wssh"><h4 class="wssl"><span id="wss_prog">0</span>%<span class="wssm"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div>

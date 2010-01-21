@@ -2077,9 +2077,11 @@ class web_optimizer {
 	**/
 	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $inline = false) {
 		$return = '';
+		$initial_height = empty($height) ? 0 : $height;
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
+				$height = $initial_height;
 				if (empty($height)) {
 /* try to calculate height for AdWords */
 					switch ($stuff) {
