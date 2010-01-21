@@ -65,7 +65,7 @@
 	</li><?php
 	}
 ?></ul>
-<h1 class="wssA wssA3"><?php
+<h1 class="wssA wssA7"><?php
 	echo _WEBO_SPLASH2_COMPARISON;
 ?></h1>
 <table class="wssT wssT0">

@@ -253,9 +253,9 @@ if ($submit) {
 						</li><?php
 	if (count($configs)) {
 		foreach ($configs as $c) {
-						?><li class="wssU11<?php
+						?><li class="wssU11 wssU16<?php
 			if ($config == $c) {
-						?> wssU12 wssU17<?php
+						?> wssU12 wssU17 wssU19<?php
 			}
 						?>">
 							<a class="wssJ" href="javascript:_.f('<?php
