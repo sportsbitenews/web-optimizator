@@ -190,6 +190,15 @@ class web_optimizer {
 /* can't gzip twice via php, so flush only if gzip via php disabled */
 					if (empty($this->options['page']['gzip'])) {
 						if (!empty($content)) {
+							if (empty($this->web_optimizer_stage) &&
+								$options['clientside_cache']) {
+/* not really GMT but is valid locally */
+								$ExpStr = date("D, d M Y H:i:s",
+									$this->time + $this->options['page']['clientside_timeout']) . " GMT";
+								header("Cache-Control: private, max-age=" .
+									$this->options['page']['clientside_timeout']);
+								header("Expires: " . $ExpStr);
+							}
 							echo $content;
 							flush();
 							$this->flushed = true;
@@ -492,16 +501,28 @@ class web_optimizer {
 		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 			$skip = 1;
 		}
-		$query = explode('.', $_SERVER['QUERY_STRING']);
-		$ext = strtolower($query[count($query) - 1]);
+/* also skip some CMS-ralted parameters */
+		if (!empty($_GET['no_html']) {
+			$skip = 1;
+		}
+/* skip some extensions */
+		if (!empty($_SERVER['QUERY_STRING'])) {
+			$query = explode('.', $_SERVER['QUERY_STRING']);
+			$ext = strtolower($query[count($query) - 1]);
+			if (in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx')) {
+				$skip = 1;
+			}
+		}
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
 		$spot = substr($this->content, 0, 50);
+/* skip some known cases of non-HTML content */
+		if (strpos($spot, '<rss') !== false ||
+			strpos($spot, '<smf') !== false ||
+			strpos($spot, '<feed') !== false) {
+				$skip = 1;
+		}
 /* skip RSS, SMF xml format */
-		if (!$skip &&
-			strpos($spot, '<rss') === false &&
-			strpos($spot, '<smf') === false &&
-			strpos($spot, '<feed') === false &&
-			!in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx'))) {
+		if (!$skip) {
 				if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
 					$this->get_script_array();
@@ -699,7 +720,7 @@ class web_optimizer {
 	*
 	**/
 	function page ($options, $type) {
-		if (empty($this->web_optimizer_stage) && $options['clientside_cache']) {
+		if (empty($this->web_optimizer_stage) && $options['clientside_cache'] && empty($this->flushed)) {
 /* not really GMT but is valid locally */
 			$ExpStr = date("D, d M Y H:i:s",
 				$this->time + $this->options['page']['clientside_timeout']) . " GMT";

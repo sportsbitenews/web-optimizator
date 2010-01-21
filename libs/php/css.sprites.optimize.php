@@ -910,7 +910,8 @@ class css_sprites_optimize {
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.smushit.com/ysmush.it/');
-				if (!@filesize($file) || strpos(@file_get_contents($file), "DOCTYPE")) {
+				$content = @file_get_contents($file);
+				if (!@filesize($file) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
 				} else {
 					@unlink($file . '.backup');
