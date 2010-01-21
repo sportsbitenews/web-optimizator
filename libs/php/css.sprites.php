@@ -16,9 +16,9 @@ class css_sprites {
 		$this->optimizer = new css_sprites_optimize($options);
 		if (!empty($css_code)) {
 /* convert CSS code to hash */
-			$this->css = new csstidy();
-			$this->css->load_template($this->optimizer->root_dir . 'libs/php/css.template.tpl');
-			$this->css->parse($css_code);
+			$this->optimizer->css = new csstidy();
+			$this->optimizer->css->load_template($this->optimizer->root_dir . 'libs/php/css.template.tpl');
+			$this->optimizer->css->parse($css_code);
 		}
 	}
 	/**
@@ -27,8 +27,8 @@ class css_sprites {
 	**/
 	function process() {
 		
-		if (empty($this->optimizer->no_sprites) && !empty($this->css)) {
-			foreach ($this->css->css as $import => $token) {
+		if (empty($this->optimizer->no_sprites) && !empty($this->optimizer->css)) {
+			foreach ($this->optimizer->css->css as $import => $token) {
 /* create array for selectors with background images */
 				$this->optimizer->media[$import] = array();
 				foreach ($token as $tags => $rule) {
@@ -37,7 +37,7 @@ class css_sprites {
 						if (strpos(" ". $key, "background")) {
 /* rewrite current background with strict none */
 							if ($key == 'background' && ($value == 'none !important' || $value == 'none')) {
-								$this->css->css[$import][$tags]['background'] = $this->optimizer->none;
+								$this->optimizer->css->css[$import][$tags]['background'] = $this->optimizer->none;
 							}
 							foreach (explode(",", $tags) as $tag) {
 /* create new item (array) if required */
@@ -50,7 +50,7 @@ class css_sprites {
 									if ($value == 'none') {
 										$background = array('background-image' => $this->optimizer->none);
 									} else {
-										$background = $this->css->optimise->dissolve_short_bg($value);
+										$background = $this->optimizer->css->optimise->dissolve_short_bg($value);
 									}
 									foreach ($background as $bg => $property) {
 /* skip default properties */
@@ -107,7 +107,7 @@ class css_sprites {
 				}
 			}
 /* fill images arrays with possible dimensions */
-			foreach ($this->css->css as $import => $token) {
+			foreach ($this->optimizer->css->css as $import => $token) {
 				foreach ($token as $tags => $rule) {
 					foreach ($rule as $property => $value) {
 						if ($property == 'width' || $property == 'height' || strpos(" " .$property, 'padding')) {
@@ -119,7 +119,7 @@ class css_sprites {
 									if (in_array($key, explode(",", $tags)) || in_array($fixed_key, explode(",", $tags))) {
 										if (strpos(" " .$property, 'padding')) {
 											if ($property == 'padding') {
-												$padding = $this->css->optimise->dissolve_4value_shorthands($property, $value);
+												$padding = $this->optimizer->css->optimise->dissolve_4value_shorthands($property, $value);
 											} else {
 												$padding = array(
 													$property => $value
@@ -300,11 +300,11 @@ class css_sprites {
 					if (!empty($image['background-image']) && $image['background-image'] != $this->optimizer->none && count($this->optimizer->css_images[$image['background-image']]) < 2) {
 						$this->sprite = 'webo'. preg_replace("/(repeat-|no-repeat)/", "", $image['background-repeat']) .'.' . $this->optimizer->timestamp .'.png';
 						$img = trim(str_replace("!important", "", $image['background-image']));
-						$this->css_image = substr($img, 4, strlen($img) - 5);
-						if ($this->css_image{0} == '"' || $this->css_image{0} == "'") {
-							$this->css_image = substr($this->css_image, 1, strlen($this->css_image) - 2);
+						$this->optimizer->css_image = substr($img, 4, strlen($img) - 5);
+						if ($this->optimizer->css_image{0} == '"' || $this->optimizer->css_image{0} == "'") {
+							$this->optimizer->css_image = substr($this->optimizer->css_image, 1, strlen($this->optimizer->css_image) - 2);
 						}
-						list($width, $height) = $this->optimizer->get_image(0, 0, $this->css_image);
+						list($width, $height) = $this->optimizer->get_image(0, 0, $this->optimizer->css_image);
 /* restrict images by ~64x64 if memory is limited */
 						if ($width &&
 							$height &&
@@ -360,7 +360,7 @@ class css_sprites {
 								$this->optimizer->css_images[$this->sprite]['images'] = array();
 							}
 /* fast fix for recalculating Sprites from PNG to JPEG -- don't touch files themselves */
-							if (preg_match("/\.jpe?g$/i", $this->css_image) && $this->optimizer->truecolor_in_jpeg) {
+							if (preg_match("/\.jpe?g$/i", $this->optimizer->css_image) && $this->optimizer->truecolor_in_jpeg) {
 								$this->optimizer->css_images[$this->sprite]['jpeg'] = 1;
 							}
 							$shift_x = $shift_y = $top = $left = 0;
@@ -422,7 +422,7 @@ __________________
 |            shift|
 |_________________|
 */
-							$this->optimizer->css_images[$this->sprite]['images'][] = array($this->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
+							$this->optimizer->css_images[$this->sprite]['images'][] = array($this->optimizer->css_image, $width, $height, $left, $top, $shift_x, $shift_y, $import, $key);
 						}
 					}
 				}
@@ -435,7 +435,7 @@ __________________
 			$this->optimizer->merge_sprites(6, 'webob.'. $this->optimizer->timestamp .'.png');
 		}
 /* create first part of CSS Sprites */
-		if ($this->optimizer->partly || empty($this->css)) {
+		if ($this->optimizer->partly || empty($this->optimizer->css)) {
 			return array('', '');
 		} else {
 			if (empty($this->optimizer->no_sprites)) {
@@ -454,17 +454,17 @@ __________________
 				!empty($this->optimizer->multiple_hosts_count) ||
 				!empty($this->proxy) ||
 				!empty($this->optimizer->proxy_rewrite)) {
-					$this->css_to_data_uri();
+					$this->optimizer->css_to_data_uri();
 			}
 /* after 0.6.2 return array of separated files */
-			return array(html_entity_decode($this->css->print->formatted(), ENT_QUOTES), $this->optimizer->compressed_mhtml . ($this->optimizer->ie && $this->optimizer->separated ? "\n*/" : ""));
+			return array(html_entity_decode($this->optimizer->css->print->formatted(), ENT_QUOTES), $this->optimizer->compressed_mhtml . ($this->optimizer->ie && $this->optimizer->separated ? "\n*/" : ""));
 		}
 	}
 /* convert all CSS images to base64 */
 	function css_to_data_uri () {
 /* location for mhtml */
 		$location = 0;
-		foreach ($this->css->css as $import => $token) {
+		foreach ($this->optimizer->css->css as $import => $token) {
 /* open @media definition*/
 			if (!empty($this->optimizer->separated) && !$this->optimizer->ie && !round($import)) {
 				$this->optimizer->compressed_mhtml .= '@import ' . $import . '{';
@@ -476,47 +476,47 @@ __________________
 						$background = array();
 						if ($key == 'background') {
 /* resolve background property */
-							$background = $this->css->optimise->dissolve_short_bg($value);
+							$background = $this->optimizer->css->optimise->dissolve_short_bg($value);
 						} else {
 /* skip default properties */
 							$background[$key] = $value;
 						}
 						if (!empty($background['background-image'])) {
 							$image = trim(str_replace("!important", "", $background['background-image']));
-							$this->css_image = substr($image, 4, strlen($image) - 5);
-							if ($this->css_image{0} == '"' || $this->css_image{0} == "'") {
-								$this->css_image = substr($this->css_image, 1, strlen($this->css_image) - 2);
+							$this->optimizer->css_image = substr($image, 4, strlen($image) - 5);
+							if ($this->optimizer->css_image{0} == '"' || $this->optimizer->css_image{0} == "'") {
+								$this->optimizer->css_image = substr($this->optimizer->css_image, 1, strlen($this->optimizer->css_image) - 2);
 							}
-							if (!empty($this->css_image)) {
-								$sprited = strpos($this->css_image, 'ebo.' . $this->optimizer->timestamp);
+							if (!empty($this->optimizer->css_image)) {
+								$sprited = strpos($this->optimizer->css_image, 'ebo.' . $this->optimizer->timestamp);
 								if (!empty($this->optimizer->data_uris) &&
 									!$this->optimizer->ie) {
 /* convert image to data:URI */
-										$this->css_image = $this->optimizer->get_image(1, 0, $this->css_image);
+										$this->optimizer->css_image = $this->optimizer->get_image(1, 0, $this->optimizer->css_image);
 								} elseif (!empty($this->optimizer->data_uris) &&
 									!empty($this->optimizer->mhtml) &&
 									$this->optimizer->ie &&
 									!$this->optimizer->ie7v) {
 /* convert image to mhtml: */
-										$this->css_image = $this->optimizer->get_image(2, $location++, $this->css_image);
+										$this->optimizer->css_image = $this->optimizer->get_image(2, $location++, $this->optimizer->css_image);
 								}
-								if (substr($this->css_image, 0, 5) !== 'data:' && substr($this->css_image, 0, 6) !== 'mhtml:') {
+								if (substr($this->optimizer->css_image, 0, 5) !== 'data:' && substr($this->optimizer->css_image, 0, 6) !== 'mhtml:') {
 /* skip images on different hosts */
-									$this->css_image = $this->distribute_image($this->css_image);
+									$this->optimizer->css_image = $this->distribute_image($this->optimizer->css_image);
 								}
 /* separate background-image rules from the others? */
 								if (empty($this->optimizer->separated)) {
-									$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
-										$this->css_image .
+									$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+										$this->optimizer->css_image .
 										")$1", $value);
 								} else {
 /* add for IE add call to mhtml resource file */
 									if ($this->optimizer->ie) {
-										$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)/", "url(" . $this->css_image . ")$1", $value);	
+										$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)/", "url(" . $this->optimizer->css_image . ")$1", $value);	
 /* for others just remove background-image call */
 									} else {
-										$this->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)/", "", $value);
-										$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->css_image . ')!important}';
+										$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)/", "", $value);
+										$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->optimizer->css_image . ')!important}';
 									}
 								}
 							}
@@ -649,11 +649,11 @@ __________________
 			if ($restored_selector != $selector) {
 				if (!count($restored_selectors)) {
 /* just copy existing element to this array */
-					if (!empty($this->css->css[$import][$restored_selector])) {
+					if (!empty($this->optimizer->css->css[$import][$restored_selector])) {
 						$restored_selectors[] = $restored_selector;
 					}
 /* and try to find any selectors containing calculated one */
-					$selectors = array_keys($this->css->css[$import]);
+					$selectors = array_keys($this->optimizer->css->css[$import]);
 					foreach ($selectors as $possible_selector) {
 						if (strpos($possible_selector, "," . $restored_selector) ||
 							strpos($possible_selector, ", " . $restored_selector) ||
@@ -669,25 +669,25 @@ __________________
 					foreach ($restored_selectors as $restored_selector) {
 /* try to resolve background shorthand */
 						if (strpos($property, "ackground") &&
-							empty($this->css->css[$import][$restored_selector][$property]) &&
-							!empty($this->css->css[$import][$restored_selector]['background'])) {
-								$background = $this->css->optimise->dissolve_short_bg($this->css->css[$import][$restored_selector]['background']);
+							empty($this->optimizer->css->css[$import][$restored_selector][$property]) &&
+							!empty($this->optimizer->css->css[$import][$restored_selector]['background'])) {
+								$background = $this->optimizer->css->optimise->dissolve_short_bg($this->optimizer->css->css[$import][$restored_selector]['background']);
 /* in resolved property these is no give key */
 								if (!empty($background[$property])) {
 									$return = $background[$property];
 								}
 /* try to resolve padding shorthand */
 						} elseif (strpos($property, "adding") &&
-							empty($this->css->css[$import][$restored_selector][$property]) &&
-							!empty($this->css->css[$import][$restored_selector][$property]['padding'])) {
-								$padding = $this->css->optimise->dissolve_4value_shorthands('padding', $this->css->css[$import][$restored_selector][$property]['padding']);
+							empty($this->optimizer->css->css[$import][$restored_selector][$property]) &&
+							!empty($this->optimizer->css->css[$import][$restored_selector][$property]['padding'])) {
+								$padding = $this->optimizer->css->optimise->dissolve_4value_shorthands('padding', $this->optimizer->css->css[$import][$restored_selector][$property]['padding']);
 /* in resolved property these is no given key */
 								if (!empty($padding[$property])) {
 									$return = $padding[$property];
 								}
 /* property is defined w/o shorthands */
-						} elseif (!empty($this->css->css[$import][$restored_selector][$property])) {
-							$return = $this->css->css[$import][$restored_selector][$property];
+						} elseif (!empty($this->optimizer->css->css[$import][$restored_selector][$property])) {
+							$return = $this->optimizer->css->css[$import][$restored_selector][$property];
 						}
 					}
 /* remember restored selectors for future properties */
