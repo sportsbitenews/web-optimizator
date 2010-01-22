@@ -502,14 +502,14 @@ class web_optimizer {
 			$skip = 1;
 		}
 /* also skip some CMS-ralted parameters */
-		if (!empty($_GET['no_html']) {
+		if (!empty($_GET['no_html'])) {
 			$skip = 1;
 		}
 /* skip some extensions */
 		if (!empty($_SERVER['QUERY_STRING'])) {
 			$query = explode('.', $_SERVER['QUERY_STRING']);
 			$ext = strtolower($query[count($query) - 1]);
-			if (in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx')) {
+			if (in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx'))) {
 				$skip = 1;
 			}
 		}
