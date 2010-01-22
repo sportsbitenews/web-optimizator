@@ -164,6 +164,8 @@ class css_sprites_optimize {
 					if (strtolower(preg_replace("/.*\./", "", $css_image)) == 'gif' && $this->is_animated_gif($css_image)) {
 						return array(0, 0);
 					}
+/* rewrite calculated path */
+					$this->css_image = $css_image;
 /* get dimensions from downloaded image */
 					return @getimagesize($css_image);
 				} else {

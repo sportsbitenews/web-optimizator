@@ -157,6 +157,10 @@ class css_sprites {
 			foreach ($this->optimizer->media as $import => $images) {
 				foreach ($images as $key => $image) {
 					$back = empty($image['background-image']) ? '' : $image['background-image'];
+/* remove quotes from background image */
+					if ($back{0} == '"' || $back{0} == "'") {
+						$back = substr($back, 1, strlen($back) - 2);
+					}
 					if (empty($back)) {
 /* try to find w/o CSS3 pseudo-selectors, i.e. :focus, :hover, etc */
 						$key_fixed = $this->fix_css3_selectors($key);
