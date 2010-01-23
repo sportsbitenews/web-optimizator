@@ -433,7 +433,9 @@ class web_optimizer {
 			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 			"punypng" => ($this->premium > 1) &&
-				!empty($this->options['punypng']) ? $this->options['punypng'] : ''
+				!empty($this->options['punypng']) ? $this->options['punypng'] : '',
+			"restricted" => ($this->premium > 1) &&
+				!empty($this->options['restricted']) ? $this->options['restricted'] : ''
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -498,28 +500,43 @@ class web_optimizer {
 			}
 		}
 /* also skip AJAX requests with X-Requested-With: XMLHttpRequest */
-		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-			$skip = 1;
+		if (!$skip &&
+			!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+			$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+				$skip = 1;
 		}
 /* also skip some CMS-ralted parameters */
-		if (!empty($_GET['no_html'])) {
+		if (!$skip && !empty($_GET['no_html'])) {
 			$skip = 1;
 		}
 /* skip some extensions */
-		if (!empty($_SERVER['QUERY_STRING'])) {
+		if (!$skip && !empty($_SERVER['QUERY_STRING'])) {
 			$query = explode('.', $_SERVER['QUERY_STRING']);
 			$ext = strtolower($query[count($query) - 1]);
 			if (in_array($ext, array('pdf', 'doc', 'xls', 'docx', 'xlsx'))) {
 				$skip = 1;
 			}
 		}
-/* reduce amount of viewing content, accelerate 'fast check' by 1% */
-		$spot = substr($this->content, 0, 50);
 /* skip some known cases of non-HTML content */
-		if (strpos($spot, '<rss') !== false ||
-			strpos($spot, '<smf') !== false ||
-			strpos($spot, '<feed') !== false) {
-				$skip = 1;
+		if (!$skip) {
+/* reduce amount of viewing content, accelerate 'fast check' by 1% */
+			$spot = substr($this->content, 0, 50);
+			if (strpos($spot, '<rss') !== false ||
+				strpos($spot, '<smf') !== false ||
+				strpos($spot, '<feed') !== false) {
+					$skip = 1;
+			}
+		}
+/* restrict URL from configuration */
+		if (!$skip &&
+			!empty($this->options['restricted'])) {
+				if (preg_match("@" . preg_replace("/ /", "|",
+					preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/",
+					"\\\\$1",
+					$this->options['restricted'])) . "@",
+					$_SERVER['REQUEST_URI'])) {
+						$skip = 1;
+				}
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {

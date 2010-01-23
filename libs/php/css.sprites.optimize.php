@@ -318,6 +318,9 @@ class css_sprites_optimize {
 						$image[5] = $final_x;
 						$image[6] = $final_y;
 						$j = $y;
+/* fix for negative initial positions */
+						$x -= $final_x < 0 ? $final_x : 0;
+						$y += $final_y < 0 ? $final_y : 0;
 /* check for 3 points: left, middle and right for the top border */
 						while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
 							$j--;
@@ -721,19 +724,26 @@ class css_sprites_optimize {
 								}
 							}
 
-							if (!empty($this->css->css[$import][$key]['background-color']) || $css_left || $css_top || !empty($this->css->css[$import][$key]['background-attachement']) || !empty($this->css->css[$import][$key]['background'])) {
+							if (!empty($this->css->css[$import][$key]['background-color']) ||
+								!empty($css_left) ||
+								!empty($css_top) ||
+								!empty($this->css->css[$import][$key]['background-attachement']) ||
+								!empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
-								$this->css->css[$import][$key]['background'] =
-									trim(((!empty($this->media[$import][$key]['background-color']) &&
+									$this->css->css[$import][$key]['background'] =
+										trim(((!empty($this->media[$import][$key]['background-color']) &&
 										$this->media[$import][$key]['background-color'] != 'transparent') ?
 											$this->media[$import][$key]['background-color'] . ' ' : '') .
-									(empty($css_left) || $css_left == 'left' ? '0' : ($css_left . (is_numeric($css_left) ? 'px' : ''))) .
-									' ' .
-									(empty($css_top) || $css_top == 'top' ? '0' : ($css_top . (is_numeric($css_top) ? 'px' : ''))) .
-									' ' .
-									$css_repeat .
-									' ' .
-									(!empty($this->media[$import][$key]['background-attachement']) ? $this->media[$import][$key]['background-attachement'] . ' ' : ''));
+										(empty($css_left) || $css_left == 'left' ?
+											'0' : ($css_left . (is_numeric($css_left) ? 'px' : ''))) .
+										' ' .
+										(empty($css_top) || $css_top == 'top' ?
+											'0' : ($css_top . (is_numeric($css_top) ? 'px' : ''))) .
+										' ' .
+										(empty($css_repeat) ? '' : $css_repeat) .
+										' ' .
+										(!empty($this->media[$import][$key]['background-attachement']) ?
+											$this->media[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
 						} else {

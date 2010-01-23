@@ -140,6 +140,8 @@ define('_WEBO_external_scripts_user', 'Логин для доступа по HTT
 define('_WEBO_external_scripts_user_HELP', 'В случае, если доступ на сайт, где используется WEBO Site SpeedUp, ограничен посредством HTTP Basic Authorization, необходимо указать логин и пароль, чтобы WEBO Site SpeedUp мог обрабатывать необходимые ресурсы с сайта.');
 define('_WEBO_external_scripts_pass', 'Пароль для доступа по HTTP Basic Authorization');
 define('_WEBO_external_scripts_pass_HELP', 'В случае, если доступ на сайт, где используется WEBO Site SpeedUp, ограничен посредством HTTP Basic Authorization, необходимо указать логин и пароль, чтобы WEBO Site SpeedUp мог обрабатывать необходимые ресурсы с сайта.');
+define('_WEBO_restricted', 'Исключить обработку следующих URL');
+define('_WEBO_restricted_HELP', 'В некоторых случаях необходимо исключить часть разделов сайта из логики работы WEBO Site SpeedUp. В этом случае необходимо задать характерные части этих разделов (маски) через пробел.');
 
 define('_WEBO_combine_css', 'Объединение CSS-файлов');
 define('_WEBO_combine_css_HELP','В зависимости от выбранной опции CSS либо не будет объединяться вовсе, либо будет объединяться только код, подключенный в тэге &lt;head&gt;, либо же будет объединяться весь CSS на странице. Весь объединенный код будет минимизироваться.');

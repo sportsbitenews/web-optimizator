@@ -145,7 +145,7 @@ class admin {
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator@", $this->basepath);
 /* fix for not supported languages */
-		$this->language = in_array($this-language, array('en', 'de', 'es', 'ru', 'ua')) ? $this-language : 'en';
+		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua')) ? $this->language : 'en';
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -1025,6 +1025,8 @@ class admin {
 				'' : $this->input['wss_external_scripts_user'];
 			$this->compress_options['external_scripts']['pass'] = empty($this->input['wss_external_scripts_pass']) ?
 				'' : $this->input['wss_external_scripts_pass'];
+			$this->compress_options['restricted'] = empty($this->input['wss_restricted']) ?
+				'' : str_replace(array("\r\n", "\n"), array(' ', ' '), $this->input['wss_restricted']);
 			if (!@is_dir($this->compress_options['website_root'])) {
 				$this->error[1] = 1;
 			}
@@ -1081,6 +1083,7 @@ class admin {
 				$this->save_option("['username']", $this->compress_options['username']);
 				$this->save_option("['external_scripts']['user']", $this->compress_options['external_scripts']['user']);
 				$this->save_option("['external_scripts']['pass']", $this->compress_options['external_scripts']['pass']);
+				$this->save_option("['restricted']", $this->compress_options['restricted']);
 				$success = 3;
 			} else {
 				$success = 4;

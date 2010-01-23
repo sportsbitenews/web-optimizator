@@ -420,8 +420,22 @@
 			?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_pass);
 				?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/>
-			</dd>
-		</dl>
+			</dd><?php
+	if ($premium > 1) {
+			?><dt class="wssD1">
+				<label class="wssE" for="wss_restricted"><?php
+		echo _WEBO_restricted;
+				?> <a class="wssJ9" href="#" title="<?php
+		echo _WEBO_restricted_HELP;
+			?>">?</a>
+				</label>
+			</dt>
+			<dd class="wssD2"><textarea name="wss_restricted" id="wss_restricted" cols="80" rows="2" class="wssF wssF1"><?php
+		echo htmlspecialchars($restricted);
+				?></textarea>
+			</dd><?php
+	}
+		?></dl>
 	<p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>

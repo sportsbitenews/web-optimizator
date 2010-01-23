@@ -241,23 +241,27 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 			$extension = strpos($encoding, "gzip") !== false ? 'gz' : 'df';
 			$compressed = $filename . '.' . $extension;
 /* check file's existence and its mtime */
-			if (is_file($compressed) && @filemtime($compressed) === $mtime) {
+			if (@is_file($compressed) && @filemtime($compressed) === $mtime) {
 				$contents = @file_get_contents($compressed);
 			} else {
 				$content = @file_get_contents($filename);
 				if (!empty($content)) {
 /* Make compressed contents */
 					if ($extension === 'gz') {
-						$contents = gzencode($content, $gzip_level, FORCE_GZIP);
+						$contents = @gzencode($content, $gzip_level, FORCE_GZIP);
 					} else {
-						$contents = gzdeflate($content, $gzip_level);
+						$contents = @gzdeflate($content, $gzip_level);
 					}
-					$fp = @fopen($compressed, "wb");
-					if ($fp) {
-						@fwrite($fp, $contents);
-						@fclose($fp);
+					if (!empty($contents)) {
+						$fp = @fopen($compressed, "wb");
+						if ($fp) {
+							@fwrite($fp, $contents);
+							@fclose($fp);
 /* set the same mtime for compressed file as for the main one */
-						@touch($compressed, $mtime);
+							@touch($compressed, $mtime);
+						}
+					} else {
+						$contents = $content;
 					}
 				} else {
 					$contents = $content;

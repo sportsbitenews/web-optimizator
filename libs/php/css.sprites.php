@@ -471,61 +471,84 @@ __________________
 		foreach ($this->optimizer->css->css as $import => $token) {
 /* open @media definition*/
 			if (!empty($this->optimizer->separated) && !$this->optimizer->ie && !round($import)) {
-				$this->optimizer->compressed_mhtml .= '@import ' . $import . '{';
+				$this->optimizer->compressed_mhtml .= '@media ' . $import . '{';
 			}
 			foreach ($token as $tags => $rule) {
-				foreach ($rule as $key => $value) {
-/* standartize all background values from input, skip IE6/7 hacks */
-					if (strpos(" " . $key, "background")) {
-						$background = array();
-						if ($key == 'background') {
+/* skip IE6/7 hacks */
+				if (!empty($this->optimizer->mhtml) ||
+					(strpos($tags, '* html') === false &&
+					strpos($tags, '*+html') === false)) {
+						foreach ($rule as $key => $value) {
+/* standartize all background values from input */
+							if (strpos(" " . $key, "background")) {
+								$background = array();
+								if ($key == 'background') {
 /* resolve background property */
-							$background = $this->optimizer->css->optimise->dissolve_short_bg($value);
-						} else {
-/* skip default properties */
-							$background[$key] = $value;
-						}
-						if (!empty($background['background-image'])) {
-							$image = trim(str_replace("!important", "", $background['background-image']));
-							$this->optimizer->css_image = substr($image, 4, strlen($image) - 5);
-							if ($this->optimizer->css_image{0} == '"' || $this->optimizer->css_image{0} == "'") {
-								$this->optimizer->css_image = substr($this->optimizer->css_image, 1, strlen($this->optimizer->css_image) - 2);
-							}
-							if (!empty($this->optimizer->css_image)) {
-								$sprited = strpos($this->optimizer->css_image, 'ebo.' . $this->optimizer->timestamp);
-								if (!empty($this->optimizer->data_uris) &&
-									!$this->optimizer->ie) {
-/* convert image to data:URI */
-										$this->optimizer->css_image = $this->optimizer->get_image(1, 0, $this->optimizer->css_image);
-								} elseif (!empty($this->optimizer->data_uris) &&
-									!empty($this->optimizer->mhtml) &&
-									$this->optimizer->ie &&
-									!$this->optimizer->ie7v) {
-/* convert image to mhtml: */
-										$this->optimizer->css_image = $this->optimizer->get_image(2, $location++, $this->optimizer->css_image);
-								}
-								if (substr($this->optimizer->css_image, 0, 5) !== 'data:' && substr($this->optimizer->css_image, 0, 6) !== 'mhtml:') {
-/* skip images on different hosts */
-									$this->optimizer->css_image = $this->distribute_image($this->optimizer->css_image);
-								}
-/* separate background-image rules from the others? */
-								if (empty($this->optimizer->separated)) {
-									$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
-										$this->optimizer->css_image .
-										")$1", $value);
+									$background = $this->optimizer->css->optimise->dissolve_short_bg($value);
 								} else {
+/* skip default properties */
+									$background[$key] = $value;
+								}
+								if (!empty($background['background-image'])) {
+									$image = trim(str_replace("!important", "", $background['background-image']));
+									$this->optimizer->css_image = substr($image, 4, strlen($image) - 5);
+									if ($this->optimizer->css_image{0} == '"' ||
+										$this->optimizer->css_image{0} == "'") {
+											$this->optimizer->css_image =
+												substr($this->optimizer->css_image, 1,
+												strlen($this->optimizer->css_image) - 2);
+									}
+									if (!empty($this->optimizer->css_image)) {
+										$sprited =
+											strpos($this->optimizer->css_image,
+											'ebo.' . $this->optimizer->timestamp);
+										if (!empty($this->optimizer->data_uris) &&
+											!$this->optimizer->ie) {
+/* convert image to data:URI */
+												$this->optimizer->css_image =
+													$this->optimizer->get_image(1, 0,
+													$this->optimizer->css_image);
+										} elseif (!empty($this->optimizer->data_uris) &&
+											!empty($this->optimizer->mhtml) &&
+											$this->optimizer->ie &&
+											!$this->optimizer->ie7v) {
+/* convert image to mhtml: */
+												$this->optimizer->css_image =
+													$this->optimizer->get_image(2,
+													$location++,
+													$this->optimizer->css_image);
+										}
+										if (substr($this->optimizer->css_image, 0, 5) !== 'data:' &&
+											substr($this->optimizer->css_image, 0, 6) !== 'mhtml:') {
+/* skip images on different hosts */
+											$this->optimizer->css_image =
+												$this->distribute_image($this->optimizer->css_image);
+										}
+/* separate background-image rules from the others? */
+										if (empty($this->optimizer->separated)) {
+											$this->optimizer->css->css[$import][$tags][$key] =
+												preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+												$this->optimizer->css_image .
+												")$1", $value);
+										} else {
 /* add for IE add call to mhtml resource file */
-									if ($this->optimizer->ie) {
-										$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)(\s*)/", "url(" . $this->optimizer->css_image . ")$1", $value);	
+											if ($this->optimizer->ie) {
+												$this->optimizer->css->css[$import][$tags][$key] =
+													preg_replace("/url\([^\)]+\)(\s*)/", "url(" .
+													$this->optimizer->css_image . ")$1", $value);	
 /* for others just remove background-image call */
-									} else {
-										$this->optimizer->css->css[$import][$tags][$key] = preg_replace("/url\([^\)]+\)/", "", $value);
-										$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->optimizer->css_image . ')!important}';
+											} else {
+												$this->optimizer->css->css[$import][$tags][$key] =
+													preg_replace("/url\([^\)]+\)/", "", $value);
+												$this->optimizer->compressed_mhtml .=
+													$tags . '{background-image:url(' .
+													$this->optimizer->css_image . ')!important}';
+											}
+										}
 									}
 								}
 							}
 						}
-					}
 				}
 			}
 /* close @media definition*/
@@ -659,11 +682,8 @@ __________________
 /* and try to find any selectors containing calculated one */
 					$selectors = array_keys($this->optimizer->css->css[$import]);
 					foreach ($selectors as $possible_selector) {
-						if (strpos($possible_selector, "," . $restored_selector) ||
-							strpos($possible_selector, ", " . $restored_selector) ||
-							strpos($possible_selector, $restored_selector . ",") ||
-							strpos($possible_selector, $restored_selector . " ,")) {
-								$restored_selectors[] = $possible_selector;
+						if (preg_match("@(^|,)" . $restored_selector . "(,|$)@", $possible_selector)) {
+							$restored_selectors[] = $possible_selector;
 						}
 					}
 				}

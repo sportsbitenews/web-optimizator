@@ -21,7 +21,7 @@ if (!$ajax) {
 		echo $title
 ?></title><meta http-equiv="content-type" content="text/html;charset=<?php
 		echo _WEBO_CHARSET;
-?>"/><link href="libs/css/main.css?<?php
+?>"/><link href="libs/css/wss.css?<?php
 		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
 			echo $version;
 		}
