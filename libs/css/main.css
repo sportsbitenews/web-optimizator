@@ -1,3 +1,32 @@
+/*
+Small notices about CSS deploymner.
+1. You can use any order / format inside selectors. But please don't change
+   selectors' order (please add new ones to the end of block / the whole file).
+2. To create CSS package please go to http://sprites.in/
+ a) Convert to data:URI - enabled
+ b) Add additional space - enabled
+ c) List of files to exclude
+  stamp.png stamp.full.png apply.png edit.png delete.png button.red.png button.red.hover.png
+3. Download new package and deploy it
+4. Final list of files
+ main.css
+ apply.png
+ buttons.png
+ button.red.png
+ button.red.hover.png
+ corner.gif
+ corner.disabled.gif
+ edit.png
+ delete.png
+ lang.hover.png
+ lang.selected.png
+ load.gif
+ progress.png
+ promo.over.png
+ stamp.png
+ stamp.full.png
+ wss.png
+*/
 html,body{margin:0;padding:0}
 .wss_a{background:#fff;margin:10px auto;position:relative;min-width:770px;max-width:1180px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
@@ -11,12 +40,13 @@ html,body{margin:0;padding:0}
 a.wss_g:hover{background:#ff8200 url(lang.hover.png) no-repeat;color:#fff!important}
 a.wss_g:active,a.wss_g:focus{color:#fff!important}
 .wss_d1 .wss_g{background:#9c9c9c;width:103px}
-.wss_d1 a.wss_g:hover{background-image:url(lang.selected.hover.png)}
-.wss_d1 .wss_f .wss_g,.wss_d1 .wss_f a.wss_g:hover{background-image:url(lang.selected.png);width:120px}
-.wss_e1 .wss_g{background-image:url(lang.top.png)}
-.wss_e1 a.wss_g:hover{background-image:url(lang.top.hover.png)}
-.wss_e2 .wss_g{background-image:url(lang.bottom.png)}
-.wss_e2 a.wss_g:hover{background-image:url(lang.bottom.hover.png)}
+.wss_d1 a.wss_g:hover{background:#ff8200 url(lang.selected.hover.png) no-repeat;width:103px}
+.wss_d1 .wss_f .wss_g{background:url(lang.selected.png) no-repeat;width:120px}
+.wss_d1 .wss_f a.wss_g:hover{background:#ff8200 url(lang.selected.png) no-repeat;width:120px}
+.wss_e1 .wss_g{background:#9c9c9c url(lang.top.png) no-repeat}
+.wss_e1 a.wss_g:hover{background:#ff8200 url(lang.top.hover.png) no-repeat}
+.wss_e2 .wss_g{background:#9c9c9c url(lang.bottom.png) no-repeat}
+.wss_e2 a.wss_g:hover{background:#ff8200 url(lang.bottom.hover.png) no-repeat}
 .wss_h{background:#fff;left:0;opacity:0;position:absolute;visibility:hidden;top:100px;width:100%;height:90%}
 .wssC4 .wss_h{display:none;height:250px;opacity:100;position:static;visibility:visible}
 .wss_l{background:url(stamp.png) no-repeat;color:#808080;float:left;font:54px/119px Trebuchet MS,Arial,Tahoma,Sans-serif;height:119px;margin:200px 38% 30px;padding-left:136px;position:relative;width:280px}
@@ -153,7 +183,7 @@ a.wssJ9:hover .wssJ0{display:block}
 .wssN20 .wssO4 .wssJ{color:#b2b2b2!important}
 .wssN .wssI1 .wssJ{color:red}
 .wssT7 .wssJ{background:url(button.red.png) no-repeat;color:#fff!important;font:400 14px/28px Trebuchet MS,Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:30px;text-shadow:#808080 -1px 0 1px;width:100px}
-.wssT7 a.wssJ:hover,.wssT7 a.wssJ:focus,.wssT7 a.wssJ:active{background-image:url(button.red.hover.png);color:#fff!important}
+.wssT7 a.wssJ:hover,.wssT7 a.wssJ:focus,.wssT7 a.wssJ:active{background:url(button.red.hover.png) no-repeat;color:#fff!important}
 .wssH .wssJ{font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif}
 .wssC5 .wssJ{font-size:12px;line-height:18px;padding-left:3px}
 .wssC6 .wssO4 .wssJ{border:1px solid #fff;color:#808080!important;display:block;outline:0;padding:6px 16px;position:relative;text-decoration:none!important;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-moz-border-radius-topleft:8px;-moz-border-radius-bottomleft:8px;border-top-left-radius:8px;border-bottom-left-radius:8px}
@@ -163,7 +193,7 @@ a.wssJ9:hover .wssJ0{display:block}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
 .wssU12 .wssJ,.wssU12 a.wssJ:hover,.wssU12 a.wssJ:focus,.wssU12 a.wssJ:active{color:#fff!important;border-color:#ff8200}
 .wssU17 .wssJ,.wssU17 a.wssJ:hover,.wssU17 a.wssJ:focus,.wssU17 a.wssJ:active{border-color:#ff8200}
-.wssU .wssO3 { width: 170px; }
+.wssU .wssO3{width:170px}
 .wssJ1{background:#f7f4e9;display:block;left:-1px;position:absolute;top:0}
 .wssO13 .wssJ1{text-align:right;width:110%}
 .wssC5 .wssJ1{background:#ff8200;color:#fff!important;position:relative}
@@ -174,42 +204,49 @@ a.wssJ9:hover .wssJ0{display:block}
 #wss_links .wssJ2{font-size:14px}
 .wssJ3{background:#e5e5e5;display:block;height:21px;position:absolute}
 .wssJ4{background:#2680ac;color:#fff;display:block;height:20px;line-height:20px;position:absolute;text-align:center;top:0;width:23px}
-.wssJ5{background:#84a3ff url(button.blue.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
-a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf url(button.blue.hover.png) no-repeat;color:#fff!important}
+.wssJ5{background:#84a3ff url(buttons.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
+a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf url(buttons.png) 0 -38px no-repeat;color:#fff!important}
 #wss_upd .wssJ5{left:-4px}
 .wssC7 .wssJ5,.wssC7 .wssJ7{margin-bottom:21px}
 .wssU18 a.wssJ5{margin:0 5px}
-.wssJ6{background:url(button.blue.png) -186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
-a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background-image:url(button.blue.hover.png)}
+.wssJ6{background:url(buttons.png) -186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
+a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background:url(buttons.png) -186px -38px no-repeat}
 .wssC6 .wssO4 .wssJ6{display:none}
 .wssC6 .wssO5 .wssJ6{background:#f7f4e9;display:block;border-bottom:1px solid #fbf9f3;border-top:1px solid #fbf9f3;height:28px;left:185px;top:-1px;width:4px;z-index:2}
-.wssJ7 .wssJ6{background-image:url(button.orange.png)}
-.wssC7 .wssJ5 {background-image:url(button.blue.png)}
-.wssC4 .wssJ5,.wssC4 .wssJ6,.wssU18 .wssJ5,.wssU18 .wssJ6{background-image:url(button.bw.png)}
-.wssC7 a.wssJ5:hover,.wssC7 a.wssJ5:hover a.wssJ6{background-image:url(button.blue.hover.png)}
-.wssC4 a.wssJ5:hover,.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ5:hover,.wssU18 a.wssJ6:hover{background-image:url(button.bw.hover.png)}
-.wssJ7{background:#ffb163 url(button.orange.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
-a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(button.orange.hover.png) no-repeat;color:#fff!important}
-a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background-image:url(button.orange.hover.png)}
-.wssC4 .wssJ7,.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7,.wssU18 .wssJ7 .wssJ6{background-image:url(button.ow.png)}
-.wssC4 .wssH .wssJ7,.wssC4 .wssH .wssJ7 .wssJ6{background-image:url(button.orange.png)}
-.wssC4 a.wssJ7:hover,.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover,.wssU18 a.wssJ7:hover .wssJ6{background-image:url(button.ow.hover.png)}
-.wssC4 .wssH a.wssJ7:hover,.wssC4 .wssH a.wssJ7:hover .wssJ6{background-image:url(button.orange.hover.png)}
+.wssJ7 .wssJ6{background:url(buttons.png) -186px -76px no-repeat}
+.wssC7 .wssJ5{background:#84a3ff url(buttons.png) no-repeat}
+.wssC4 .wssJ5,.wssU18 .wssJ5{background:#84a3ff url(buttons.png) 0 -152px no-repeat}
+.wssC4 .wssJ6,.wssU18 .wssJ6{background:url(buttons.png) -186px -152px no-repeat}
+.wssC7 a.wssJ5:hover{background:#717daf url(buttons.png) 0 -38px no-repeat}
+.wssC7 a.wssJ5:hover a.wssJ6{background:url(buttons.png) -186px -38px no-repeat}
+.wssC4 a.wssJ5:hover,.wssU18 a.wssJ5:hover{background:#717daf url(buttons.png) 0 -190px no-repeat}
+.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ6:hover{background:url(buttons.png) -186px -190px no-repeat}
+.wssJ7{background:#ffb163 url(buttons.png) 0 -76px no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
+a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(buttons.png) 0 -112px no-repeat;color:#fff!important}
+a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:url(buttons.png) -186px -112px no-repeat}
+.wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 url(button.ow.png) no-repeat}
+.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:url(button.ow.png) -186px 0 no-repeat}
+.wssC4 .wssH .wssJ7{background-position:0 -76px}
+.wssC4 .wssH .wssJ7 .wssJ6{background-position:-186px -76px}
+.wssC4 a.wssJ7:hover,.wssU18 a.wssJ7:hover{background:#ff7e53 url(buttons.png) 0 -270px no-repeat}
+.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover .wssJ6{background:url(buttons.png) -186px -270px no-repeat}
+.wssC4 .wssH a.wssJ7:hover{background-position:0 -112px}
+.wssC4 .wssH a.wssJ7:hover .wssJ6{background-position:-186px -112px}
 .wssJ8{float:right;margin-right:10%}
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
-.wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat}
+.wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat;height:28px;padding-left:30px;width:52px}
 .wssT1 .wssJ8{margin-right:7%}
 .wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 7px;position:relative;text-decoration:none!important}
-a.wssJ9:hover{background-image:url(hlp.hover.png)}
+a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 .wssJ10{background:url(icon.twitter.png) no-repeat}
 .wssJ11{background:url(icon.facebook.png) no-repeat}
 .wssJ12{background:url(icon.blogger.png) no-repeat}
 .wssJ13{background:url(icon.joomla.png) no-repeat}
 .wssJ14{background:url(icon.wordpress.png) no-repeat}
 .wssJ20{background:url(corner.png) no-repeat;display:block;height:37px;outline:0;position:absolute;right:-2px;top:-2px;width:37px}
-a.wssJ20:hover{background-image:url(corner.gif)}
-.wssN20 .wssJ20{background-image:url(corner.disabled.png)}
-.wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
+a.wssJ20:hover{background:url(corner.gif) no-repeat}
+.wssN20 .wssJ20{background:url(corner.disabled.png) no-repeat;height:37px;width:37px}
+.wssN20 a.wssJ20:hover{background:url(corner.disabled.gif) no-repeat}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK1{border:1px solid #fff;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}
@@ -227,20 +264,20 @@ a.wssM3:hover,a.wssM3:focus,a.wssM3:active{color:#569abc!important}
 .wssM5{display:block;float:right;height:30px;margin-right:-6px;width:6px}
 .wssM2 .wssM5{background:url(menu.png) -194px 0 no-repeat}
 .wssM10{background:url(dashboard.png) no-repeat}
-.wssM2 .wssM10{background-image:url(dashboard.active.png)}
-a.wssM3:hover .wssM10{background-image:url(dashboard.hover.png)}
+.wssM2 .wssM10{background:url(dashboard.active.png) no-repeat}
+a.wssM3:hover .wssM10{background:url(dashboard.hover.png) no-repeat}
 .wssM11{background:url(settings.menu.png) no-repeat}
-.wssM2 .wssM11{background-image:url(settings.menu.active.png)}
-a.wssM3:hover .wssM11{background-image:url(settings.menu.hover.png)}
+.wssM2 .wssM11{background:url(settings.menu.active.png) no-repeat}
+a.wssM3:hover .wssM11{background:url(settings.menu.hover.png) no-repeat}
 .wssM12{background:url(system.menu.png) no-repeat}
-.wssM2 .wssM12{background-image:url(system.menu.active.png)}
-a.wssM3:hover .wssM12{background-image:url(system.menu.hover.png)}
+.wssM2 .wssM12{background:url(system.menu.active.png) no-repeat}
+a.wssM3:hover .wssM12{background:url(system.menu.hover.png) no-repeat}
 .wssM13{background:url(cache.menu.png) no-repeat}
-.wssM2 .wssM13{background-image:url(cache.menu.active.png)}
-a.wssM3:hover .wssM13{background-image:url(cache.menu.hover.png)}
+.wssM2 .wssM13{background:url(cache.menu.active.png) no-repeat}
+a.wssM3:hover .wssM13{background:url(cache.menu.hover.png) no-repeat}
 .wssM14{background:url(account.png) no-repeat}
-.wssM2 .wssM14{background-image:url(account.active.png)}
-a.wssM3:hover .wssM14{background-image:url(account.hover.png)}
+.wssM2 .wssM14{background:url(account.active.png) no-repeat}
+a.wssM3:hover .wssM14{background:url(account.hover.png) no-repeat}
 
 .wssN{margin:20px 0 0 -5px}
 .wssN1{border:1px solid #ffd9b2;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin-top:15px;width:32%}
@@ -257,25 +294,25 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_updates .wssN3{background:url(updates.png) no-repeat}
 #wss_updates a.wssN3:hover{background:url(updates.hover.png) no-repeat}
 #wss_sys .wssN3{background:url(system.png) no-repeat}
-#wss_sys a.wssN3:hover{background-image:url(system.hover.png)}
+#wss_sys a.wssN3:hover{background:url(system.hover.png) no-repeat}
 #wss_opt .wssN3{background:url(settings.png) no-repeat}
-#wss_opt a.wssN3:hover{background-image:url(settings.hover.png)}
+#wss_opt a.wssN3:hover{background:url(settings.hover.png) no-repeat}
 #wss_buzz .wssN3{background:url(buzz.png) no-repeat}
-#wss_buzz a.wssN3:hover{background-image:url(buzz.hover.png)}
+#wss_buzz a.wssN3:hover{background:url(buzz.hover.png) no-repeat}
 #wss_che .wssN3{background:url(cache.png) no-repeat}
-#wss_che a.wssN3:hover{background-image:url(cache.hover.png)}
+#wss_che a.wssN3:hover{background:url(cache.hover.png) no-repeat}
 #wss_news .wssN3{background:url(news.png) no-repeat}
-#wss_news a.wssN3:hover{background-image:url(news.hover.png)}
+#wss_news a.wssN3:hover{background:url(news.hover.png) no-repeat}
 #wss_links .wssN3{background:url(links.png) no-repeat}
-#wss_links a.wssN3:hover{background-image:url(links.hover.png)}
+#wss_links a.wssN3:hover{background:url(links.hover.png) no-repeat}
 #wss_sp .wssN3{background:url(speed.png) no-repeat}
-#wss_sp a.wssN3:hover{background-image:url(speed.hover.png)}
+#wss_sp a.wssN3:hover{background:url(speed.hover.png) no-repeat}
 #wss_status .wssN3{background:url(status.png) no-repeat}
-#wss_status a.wssN3:hover{background-image:url(status.hover.png)}
+#wss_status a.wssN3:hover{background:url(status.hover.png) no-repeat}
 #wss_tools .wssN3{background:url(tools.png) no-repeat}
 .wssN12 .wssN3{background:url(all.png) no-repeat}
 .wssN11 .wssN3{background:url(help.png) no-repeat}
-.wssN11 a.wssN3:hover{background-image:url(help.hover.png)}
+.wssN11 a.wssN3:hover{background:url(help.hover.png) no-repeat}
 .wssN0{margin:110px auto 150px}
 
 .wssO{margin:0;padding:8px 0 0}
@@ -290,7 +327,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO1{background:url(error-config.png) no-repeat;color:#f00;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style:none;margin:0 0 0 12px;padding:0 0 2px 19px}
 .wssC6 .wssO1{margin-left:0}
 #wss_opt .wssO1{background:none;border-left:1px solid #ccc;color:#808080;font-size:10px;height:18px;left:0;line-height:14px;list-style:none;margin:0;position:absolute;top:7px;width:16%}
-.wssO2{background-image:url(error-warning.png);color:#ff4000}
+.wssO2{background:url(error-warning.png) no-repeat;color:#ff4000}
 .wssO4{margin:0;padding:0 5px 5px 0; list-style: none;}
 .wssN20 .wssO4{color:#b2b2b2}
 .wssO3 .wssO4,.wssO7 .wssO8{background:none;color:#808080;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style-type:disc;margin:0 0 0 24px;padding-left:2px}
@@ -303,9 +340,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO4{font-size:14px;line-height:16px;list-style:none;position:static;margin:0 0 2px 16px}
 #wss_upd .wssO4{font-size:10px;line-height:12px;list-style-type:disc!important}
 #wss_news .wssO4{font-size:10px;list-style-type:disc!important;margin-left:27px;padding-bottom:11px}
-.wssU .wssO11{background:url(apply.png) no-repeat}
-.wssU .wssO12{background:url(edit.png) no-repeat}
-.wssU .wssO13{background:url(delete.png) no-repeat}
+.wssU .wssO11{background:url(apply.png) no-repeat!important}
+.wssU .wssO12{background:url(edit.png) no-repeat!important}
+.wssU .wssO13{background:url(delete.png) no-repeat!important}
 #wss_opt .wssO11{color:#ff8200;left:22%}
 #wss_opt .wssO12{color:#ff4000;left:57%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
@@ -364,17 +401,17 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
 .wssU5{margin:0;padding:0}
 .wssU10{list-style:none;margin:0;overflow: hidden;padding:0;}
-.wssU11{background:url(config.png) no-repeat;display:inline-block;float: left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
-.wssU12{background:#ff8200 url(config.active.png) no-repeat}
+.wssU11{background:url(config.png) no-repeat;display:inline-block;float:left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+.wssU12{background:#ff8200 url(config.active.png) no-repeat;height:118px;width:118px}
 .wssU17 .wssU13{background:url(apply.hover.png) no-repeat;display:block;height:17px;left:96px;position:absolute;top:7px;width:17px}
 .wssU17 .wssU14{background:url(edit.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:29px;width:17px}
 .wssU17 .wssU15{background:url(delete.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:51px;width:17px}
-.wssU16{background-image:url(config.user.png)}
-.wssU12 .wssU13{background-image:url(apply.active.png)}
-.wssU12 .wssU14{background-image:url(edit.active.png)}
-.wssU12 .wssU15{background-image:url(delete.active.png)}
-.wssU19{background:#ff8200 url(config.user.active.png) no-repeat}
-.wssU20{background-image:url(config.new.png)}
+.wssU16{background:url(config.user.png) no-repeat;height:118px;width:118px}
+.wssU12 .wssU13{background:url(apply.active.png) no-repeat;height:17px;width:17px}
+.wssU12 .wssU14{background:url(edit.active.png) no-repeat;height:17px;width:17px}
+.wssU12 .wssU15{background:url(delete.active.png) no-repeat;height:17px;width:17px}
+.wssU19{background:#ff8200 url(config.user.active.png) no-repeat;height:118px;width:118px}
+.wssU20{background:url(config.new.png) no-repeat;height:118px;width:118px}
 
 #wss_cache{padding-top:4px}
 
@@ -384,6 +421,20 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wssM2{position:relative;top:-1px}
 * html .wssM3{position:relative;top:-7px}
 * html .wssM5{position:absolute;right:0}
+* html a.wss_g:hover{background-image:url(lang.hover.png)}
+* html .wssU .wssO11{background-image:url(apply.png)}
+* html .wssJ5,* html .wssJ6,* html .wssJ7{background-image:url(buttons.png)}
+* html .wssT7 .wssJ{background-image:url(button.red.png)}
+* html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
+* html a.wssJ20:hover{background-image:url(corner.gif)}
+* html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
+* html .wssU .wssO12{background-image:url(edit.png)}
+* html .wssU .wssO13{background-image:url(delete.png)}
+* html .wssI3{background-image:url(load.gif)}
+* html #wss_opt .wssI{background-image:url(progress.png)}
+* html .wss_n{background-image:url(promo.over.png)}
+* html .wss_l{background-image:url(stamp.png)}
+* html .wss_m{background-image:url(stamp.full.png)}
 
 *+html .wssM{height:25px}
 *+html .wssM1{display:inline;position:relative}
@@ -393,6 +444,20 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssM5{position:absolute;right:0}
 *+html .wssN4{margin-left:1.8%}
 *+html .wssU1 .wssF1{margin-left: -183px}
+*+html a.wss_g:hover{background-image:url(lang.hover.png)}
+*+html .wssU .wssO11{background-image:url(apply.png)}
+*+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)}
+*+html .wssT7 .wssJ{background-image:url(button.red.png)}
+*+html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
+*+html a.wssJ20:hover{background-image:url(corner.gif)}
+*+html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
+*+html .wssU .wssO12{background-image:url(edit.png)}
+*+html .wssU .wssO13{background-image:url(delete.png)}
+*+html .wssI3{background-image:url(load.gif)}
+*+html #wss_opt .wssI{background-image:url(progress.png)}
+*+html .wss_n{background-image:url(promo.over.png)}
+*+html .wss_l{background-image:url(stamp.png)}
+*+html .wss_m{background-image:url(stamp.full.png)}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
