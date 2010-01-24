@@ -831,7 +831,10 @@ class web_optimizer {
 				} elseif (empty($options['flush']) || !empty($this->encoding)) {
 					$content_to_write = $this->content;
 				}
-				$this->write_file($file, $content_to_write);
+/* don't create empty files */
+				if (!empty($content_to_write)) {
+					$this->write_file($file, $content_to_write);
+				}
 /* create uncompressed file for plugins */
 				if (is_array($this->options['plugins']) &&
 					!empty($this->encoding_ext)) {

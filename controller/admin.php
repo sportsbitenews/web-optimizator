@@ -33,7 +33,7 @@ class admin {
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
 		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
-		$this->version = @file_get_contents($this->basepath . 'version');
+		$this->version = str_replace("\r\n", "", @file_get_contents($this->basepath . 'version'));
 /* get the latest version */
 		$version_new_file = 'version.new';
 		if (in_array($this->input['wss_page'],
@@ -321,8 +321,9 @@ class admin {
 	function install_about () {
 		$email = empty($this->input['wss_email']) ? '' : $this->input['wss_email'];
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
+		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$error = array();
-		if (!empty($this->input['wss_Submit'])) {
+		if ($submit) {
 			if (empty($email) ||
 				!preg_match("/.+@.+\..+/", $email)) {
 				$error[1] = 1;
@@ -341,6 +342,7 @@ class admin {
 			"email" => $email,
 			"message" => $message,
 			"error" => $error,
+			"submit" => $submit,
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_about", $page_variables);
@@ -350,13 +352,52 @@ class admin {
 	* Sends a message from given e-mail
 	*
 	**/
-	function send_message ($email, $message) {
+	function send_message ($email, $message, $uninstall = false) {
 		$headers = 'From: ' . $email . "\r\n" . 'Reply-To: ' . $email . "\r\n";
 		$headers .= 'Content-Type: text/plain; charset=utf-8'."\r\n";
 		$headers .= 'Content-Transfer-Encoding: base64';
-		$message .= "\r\n\r\nSystem Info:\r\n" .
-			"Host: " . $_SERVER['HTTP_HOST'] . "\r\n";
-			"Options: host => " . $this->compress_options['host'] . "\r\n";
+/* general info */
+		$message = "On " . date("Y-m-d") . " at " . date("H:i:s") .
+			$this->compress_options['name'] .
+			" (" . $this->compress_options['email'] . ") send a message: " .
+			($uninstall ? " (after uninstalltion) " : "") . "\r\n" . $message;
+/* application info */
+		$this->cms_version = $this->system_info($this->compress_options['document_root']);
+		$message .= "\r\n\r\nWEBO Site SpeedUp " . $this->version . " was " .
+			($this->compress_options['active'] ? "enabled" : "disabled") .
+			" on " . $this->cms_version . ($this->internal ? " (plugin)" : "") .
+			" and has the following warnings / errors:\r\n";
+/* get basic errors / warnings */
+		$page_variables = $this->dashboard_system(1);
+		if (count($page_variables['errors'])) {
+			foreach ($page_variables['errors'] as $key => $value) {
+				if (empty($value)) {
+					$message .= "* " . $key . "\r\n";
+				}
+			}
+		}
+		if (count($page_variables['warnings'])) {
+			foreach ($page_variables['warnings'] as $key => $value) {
+				if (empty($value)) {
+					$message .= "* " . $key . "\r\n";
+				}
+			}
+		}
+		$message .= "\r\n\r\nActive configuration (" .
+			$this->compress_options['config'] .
+			") parameters:\r\n" .
+			"License: " . $this->compress_options['license'] . "\r\n" .
+			"HTTP_HOST: " . $_SERVER['HTTP_HOST'] . "\r\n" . 
+			"DOCUMENT_ROOT: " . $_SERVER['DOCUMENT_ROOT'] . "\r\n" .
+			"Configuration options:\r\n" .
+			"document_root => " . $this->compress_options['document_root'] . "\r\n" .
+			"website_root => " . $this->compress_options['website_root'] . "\r\n" .
+			"javascript_cachedir => " . $this->compress_options['javascript_cachedir'] . "\r\n" .
+			"css_cachedir => " . $this->compress_options['css_cachedir'] . "\r\n" .
+			"html_cachedir => " . $this->compress_options['html_cachedir'] . "\r\n" .
+			"restricted => " . $this->compress_options['restricted'] . "\r\n" .
+			"plugins => " . $this->compress_options['plugins'] . "\r\n" .
+			"host => " . $this->compress_options['host'] . "\r\n";
 		foreach ($this->compress_options as $ko => $opts) {
 			if (is_array($opts)) {
 				foreach ($opts as $k => $v) {
@@ -1665,7 +1706,7 @@ class admin {
 			}
 /* send a email to info@webo.name */
 			if (!count($error)) {
-				$this->send_message($email, $message);
+				$this->send_message($email, $message, 1);
 			}
 		}
 		$this->page_variables = array(
