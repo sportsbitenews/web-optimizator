@@ -1678,10 +1678,10 @@ class web_optimizer {
 		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if (is_array($this->initial_files)) {
 /* enable caching / gzipping proxy? */
-			$rewrite_css = ($this->options['css']['far_future_expires_external'] ||
+			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['css']['gzip']) &&
 				empty($this->options['css']['minify']);
-			$rewrite_js = ($this->options['javascript']['far_future_expires_external'] ||
+			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['javascript']['gzip']) &&
 				empty($this->options['javascript']['minify']);
 /* Remove empty sources and any externally linked files */
@@ -2652,7 +2652,7 @@ class web_optimizer {
 			'no_css_sprites' => !$options['css_sprites'],
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
 			'user_agent' => $this->ua_mod,
-			'punypng' => $options['punypng']
+			'punypng' => $this->options['punypng']
 		));
 		return $css_sprites->process();
 	}
