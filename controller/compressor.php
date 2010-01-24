@@ -91,8 +91,11 @@ class web_optimizer {
 		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
 /* HTML cache ? */
-			if (!empty($this->options['page']['cache_ignore'])) {
-				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
+			if (!empty($this->options['page']['cache_ignore']) ||
+				!empty($this->options['restricted'])) {
+				$list = (empty($this->options['page']['cache_ignore']) ? '' : $this->options['page']['cache_ignore']) . ' ' .
+					(empty($this->options['restricted']) ? '' : $this->options['restricted']);
+				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $list));
 			}
 			if (!empty($this->options['page']['allowed_user_agents'])) {
 				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
@@ -115,8 +118,7 @@ class web_optimizer {
   - headers have not been sent,
   - page is requested by GET,
   - no chained optimization,
-  - external cache restriction,
-  - exclude some URL from general logic.
+  - external cache restriction.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
@@ -128,13 +130,7 @@ class web_optimizer {
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
-			empty($no_cache) &&
-			(empty($this->options['restricted']) ||
-				!preg_match("@" . preg_replace("/ /", "|",
-				preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/",
-				"\\\\$1",
-				$this->options['restricted'])) . "@",
-				$_SERVER['REQUEST_URI']));
+			empty($no_cache);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
