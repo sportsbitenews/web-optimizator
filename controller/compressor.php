@@ -115,7 +115,8 @@ class web_optimizer {
   - headers have not been sent,
   - page is requested by GET,
   - no chained optimization,
-  - external cache restriction.
+  - external cache restriction,
+  - exclude some URL from general logic.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
@@ -127,7 +128,13 @@ class web_optimizer {
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
-			empty($no_cache);
+			empty($no_cache) &&
+			(empty($this->options['restricted']) ||
+				!preg_match("@" . preg_replace("/ /", "|",
+				preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/",
+				"\\\\$1",
+				$this->options['restricted'])) . "@",
+				$_SERVER['REQUEST_URI']));
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
