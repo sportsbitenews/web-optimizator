@@ -1591,7 +1591,7 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		$curl = function_exists('curl_init');
-		if (!empty($this->options['javascript']['minify'])) {
+		if (!empty($this->options['javascript']['minify']) || !empty($this->options['javascript']['gzip'])) {
 			if (empty($this->options['javascript']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -1626,7 +1626,7 @@ class web_optimizer {
 				}
 			}
 		}
-		if (!empty($this->options['css']['minify'])) {
+		if (!empty($this->options['css']['minify']) || !empty($this->options['css']['gzip'])) {
 			if (empty($this->options['css']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -1677,6 +1677,13 @@ class web_optimizer {
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if (is_array($this->initial_files)) {
+/* enable caching / gzipping proxy? */
+			$rewrite_css = ($this->options['css']['far_future_expires_external'] ||
+				$this->options['css']['gzip']) &&
+				empty($this->options['css']['minify']);
+			$rewrite_js = ($this->options['javascript']['far_future_expires_external'] ||
+				$this->options['javascript']['gzip']) &&
+				empty($this->options['javascript']['minify']);
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
@@ -1691,19 +1698,16 @@ class web_optimizer {
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
 					unset($this->initial_files[$key]);
 /* rewrite skipped file with caching proxy */
-					if (!empty($value['file']) &&
-						(($this->options['css']['far_future_expires_external'] &&
-						$value['tag'] == 'link') ||
-						($this->options['javascript']['far_future_expires_external'] &&
-						$value['tag'] == 'script'))) {
-							$new_src =
-								$this->options['page']['cachedir_relative'] . 
-								'wo.static.php?' . $value['file'];
-							$new_script = str_replace($value['file'],
-								$new_src, $value['file_raw']);
-							$this->content = str_replace($value['file_raw'],
-								$new_script, $this->content);
-					}
+				} elseif (!empty($value['file']) &&
+					(($value['tag'] == 'link' && $rewrite_css) ||
+					($value['tag'] == 'script' && $rewrite_js))) {
+						$new_src =
+							$this->options['page']['cachedir_relative'] . 
+							'wo.static.php?' . $value['file'];
+						$new_script = str_replace($value['file'],
+							$new_src, $value['file_raw']);
+						$this->content = str_replace($value['file_raw'],
+							$new_script, $this->content);
 				}
 			}
 /* skip mining files' content if don't check MTIME */
