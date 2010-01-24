@@ -813,8 +813,12 @@ class css_sprites_optimize {
 							unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 /* otherwise restore background-image */
 						} else {
-							$this->css->css[$import][$key]['background'] = $image[10];
-							$this->css->css[$import][$key]['background-image'] = $image[11];
+							if (!empty($image[10])) {
+								$this->css->css[$import][$key]['background'] = $image[10];
+							}
+							if (!empty($image[11])) {
+								$this->css->css[$import][$key]['background-image'] = $image[11];
+							}
 						}
 					}
 

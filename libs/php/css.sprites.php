@@ -468,6 +468,9 @@ __________________
 	function css_to_data_uri () {
 /* location for mhtml */
 		$location = 0;
+		$general_access = !empty($this->optimizer->mhtml) ||
+			!empty($this->optimizer->proxy_rewrite) ||
+			!empty($this->multiple_hosts);
 		foreach ($this->optimizer->css->css as $import => $token) {
 /* open @media definition*/
 			if (!empty($this->optimizer->separated) && !$this->optimizer->ie && !round($import)) {
@@ -475,7 +478,7 @@ __________________
 			}
 			foreach ($token as $tags => $rule) {
 /* skip IE6/7 hacks */
-				if (!empty($this->optimizer->mhtml) ||
+				if ($general_access ||
 					(strpos($tags, '* html') === false &&
 					strpos($tags, '*+html') === false)) {
 						foreach ($rule as $key => $value) {
