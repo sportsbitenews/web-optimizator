@@ -10,7 +10,7 @@ define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'WEBO Site SpeedUp Configuration');
 define('_WEBO_GENERAL_FOOTER', 'Faster than lightning!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Buy Now</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://secure.plimus.com/jsp/buynow.jsp?contractId=2597306&amp;currency=USD" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Buy Now</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Buy Now</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Buy now');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
