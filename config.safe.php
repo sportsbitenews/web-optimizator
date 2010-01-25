@@ -75,7 +75,7 @@ $compress_options['minify']['javascript_file'] = "";
 ## Gzip options
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "0";
-$compress_options['gzip']['css'] = "1";
+$compress_options['gzip']['css'] = "0";
 ## Gzip font files (SVG, TTF, OTF, etc)
 $compress_options['gzip']['fonts'] = "1";
 ## Check for gzip possibility via cookie
