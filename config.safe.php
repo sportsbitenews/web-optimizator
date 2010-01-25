@@ -89,7 +89,7 @@ $compress_options['gzip']['css_level'] = "9";
 $compress_options['gzip']['fonts_level'] = "9";
 ## Caching
 $compress_options['far_future_expires']['javascript'] = "1";
-$compress_options['far_future_expires']['css'] = "1";
+$compress_options['far_future_expires']['css'] = "0";
 ## Cache static assets via .htaccess or PHP proxy
 $compress_options['far_future_expires']['images'] = "0";
 $compress_options['far_future_expires']['fonts'] = "0";
