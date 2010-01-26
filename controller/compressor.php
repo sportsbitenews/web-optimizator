@@ -93,8 +93,8 @@ class web_optimizer {
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore']) ||
 				!empty($this->options['restricted'])) {
-				$list = (empty($this->options['page']['cache_ignore']) ? '' : $this->options['page']['cache_ignore']) . ' ' .
-					(empty($this->options['restricted']) ? '' : $this->options['restricted']);
+				$list = (empty($this->options['page']['cache_ignore']) ? '' : $this->options['page']['cache_ignore']) .
+					(empty($this->options['restricted']) ? '' : ' ' . $this->options['restricted']);
 				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $list));
 			}
 			if (!empty($this->options['page']['allowed_user_agents'])) {
