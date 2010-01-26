@@ -1,5 +1,5 @@
 /*
-Small notices about CSS deploymner.
+Short notice about CSS deploymner.
 1. You can use any order / format inside selectors. But please don't change
    selectors' order (please add new ones to the end of block / the whole file).
 2. To create CSS package please go to http://sprites.in/
@@ -224,8 +224,8 @@ a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background:url(b
 .wssJ7{background:#ffb163 url(buttons.png) 0 -76px no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
 a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(buttons.png) 0 -112px no-repeat;color:#fff!important}
 a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:url(buttons.png) -186px -112px no-repeat}
-.wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 url(button.ow.png) no-repeat}
-.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:url(button.ow.png) -186px 0 no-repeat}
+.wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 url(buttons.png) 0 -76px no-repeat}
+.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:url(buttons.png) -186px -76px no-repeat}
 .wssC4 .wssH .wssJ7{background-position:0 -76px}
 .wssC4 .wssH .wssJ7 .wssJ6{background-position:-186px -76px}
 .wssC4 a.wssJ7:hover,.wssU18 a.wssJ7:hover{background:#ff7e53 url(buttons.png) 0 -270px no-repeat}
