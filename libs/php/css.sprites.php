@@ -158,7 +158,7 @@ class css_sprites {
 				foreach ($images as $key => $image) {
 					$back = empty($image['background-image']) ? '' : $image['background-image'];
 /* remove quotes from background image */
-					if ($back{0} == '"' || $back{0} == "'") {
+					if (!empty($back) && ($back{0} == '"' || $back{0} == "'")) {
 						$back = substr($back, 1, strlen($back) - 2);
 					}
 					if (empty($back)) {
