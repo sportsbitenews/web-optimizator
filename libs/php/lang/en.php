@@ -152,7 +152,7 @@ define('_WEBO_external_scripts_css_HELP', 'There will be combined files located 
 define('_WEBO_external_scripts_css_inline', 'Enable inline styles merging');
 define('_WEBO_external_scripts_css_inline_HELP', 'There will be combined all CSS included with the help of &lt;style&gt; and &lt;link&gt; tags. Otherwise WEBO Site SpeedUp will combine files included with &lt;link&gt; tag.');
 define('_WEBO_minify_css_file', 'Combined CSS file name');
-define('_WEBO_minify_css_file_HELP', 'File name can include only latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_minify_css_file_HELP', 'File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
 define('_WEBO_external_scripts_additional_list', 'Exclude CSS file(s) from merging (separated by space)');
 define('_WEBO_external_scripts_additional_list_HELP', 'Defined files won\'t be included into combined CSS file. You need to define only file names, not absolute paths to them.');
 define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
@@ -168,7 +168,7 @@ define('_WEBO_external_scripts_inline_HELP', 'There will be combined both inline
 define('_WEBO_external_scripts_on', 'Enable external JavaScript merging');
 define('_WEBO_external_scripts_on_HELP', 'There will be combined files located on all hosts. Otherwise WEBO Site SpeedUp will combine only files located on the same host that initial web page.');
 define('_WEBO_minify_javascript_file', 'Combined JavaScript file name');
-define('_WEBO_minify_javascript_file_HELP', 'File name can include only latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_minify_javascript_file_HELP', 'File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file(s) from combining');
 define('_WEBO_external_scripts_ignore_list_HELP', 'Defined files won\'t be included into combined JavaScript file. You need to define only file names, not absolute paths to them.');
 define('_WEBO_external_scripts_head_end', 'Force moving combined script to <code>&lt;/head&gt;</code>');
@@ -245,7 +245,7 @@ define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whol
 define('_WEBO_html_cache_flush_size', 'Flush content size (in bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Size of cached flushed part of a web page. It can be fixed (to avoid any issues with browsers or network connection). Empty (or zero) value leads to flush the whole web page content before closing &lt;/head&gt; tag.');
 define('_WEBO_html_cache_ignore_list', 'List of parts of URLs to ignore from caching (separated by space)');
-define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching.');
+define('_WEBO_html_cache_ignore_list_HELP', 'Often server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching.');
 define('_WEBO_html_cache_allowed_list', 'List of USER AGENTS (robots) to add to caching (separated by space)');
 define('_WEBO_html_cache_allowed_list_HELP', 'This option allows you to set a list of USER AGENTS which will receive only cached HTML pages. For example caching HTML pages for all search engines can reduce server side load.');
 define('_WEBO_html_cache_additional_list', 'List of COOKIE to exclude from server side caching (separated by space)');
@@ -260,7 +260,7 @@ define('_WEBO_performance_quick_check_HELP', 'There can be gained additional ben
 define('_WEBO_performance_cache_version', 'Cache version number');
 define('_WEBO_performance_cache_version_HELP', 'Cache version defines version of all files in cache. To refresh cache on client side (in browsers) you need to change this number.');
 define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
-define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quot;Cache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
+define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quot;Cache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. There will be standard cache files existence check performed with this option enabled.');
 define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
 
@@ -299,15 +299,15 @@ define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'If you choose automated form
 define('_WEBO_css_sprites_truecolor_in_jpeg1', 'Detect proper format automatically');
 define('_WEBO_css_sprites_truecolor_in_jpeg2', 'Prefer JPEG format');
 define('_WEBO_css_sprites_aggressive', '&quot;Aggressive&quot; combine mode for CSS Sprites');
-define('_WEBO_css_sprites_aggressive_HELP', 'Number of CSS Sprites images and their size will be lower but this may lead to graphical artefacts on web pages.');
+define('_WEBO_css_sprites_aggressive_HELP', 'Number of CSS Sprites images and their size will be lower but this may lead to graphical artifacts on web pages.');
 define('_WEBO_css_sprites_extra_space', 'Add free space for CSS Sprites');
 define('_WEBO_css_sprites_extra_space_HELP', 'Images in CSS Sprites will be rounded with free space to prevent side effects on web page scale in browsers. CSS Sprites file size will be a bit greater.');
 define('_WEBO_css_sprites_no_ie6', 'Exclude IE6');
 define('_WEBO_css_sprites_no_ie6_HELP', 'IE6 will receive its own CSS file without CSS Sprites.');
 define('_WEBO_css_sprites_memory_limited', 'Restrict memory usage');
 define('_WEBO_css_sprites_memory_limited_HELP', 'In case of available memory excess during CSS Sprites creation some images won\'t be included into final CSS Sprites.');
-define('_WEBO_css_sprites_dimensions_limited', 'Maximum width and height of images (in px)');
-define('_WEBO_css_sprites_dimensions_limited_HELP', 'Images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
+define('_WEBO_css_sprites_dimensions_limited', 'Maximum width and height of images (in pixels)');
+define('_WEBO_css_sprites_dimensions_limited_HELP', 'Images higher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
 define('_WEBO_css_sprites_ignore_list', 'Exclude files from CSS Sprites (separated by space)');
 define('_WEBO_css_sprites_ignore_list_HELP', 'Images listed in this option won\'t be included to CSS Sprites. Please provide only file names not absolute paths.');
 
