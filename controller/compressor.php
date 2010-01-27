@@ -2293,11 +2293,18 @@ class web_optimizer {
 				'aa' => array(
 					'marker' => 'amazon_ad',
 					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*amazon_ad_tag.*?ads.js\"></script>"
-				
+/* BlogBang */
+				), 'bb' => array(
+					'marker' => 'blogbang.com/d.php',
+					'regexp' => "<script src=\"http://www.blogbang.com/d.php\?id=.*?</script>"
 /* Begun */
 				), 'bu' => array(
 					'marker' => 'autocontext.begun.ru',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2.js\"></script>"
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2\.js\"></script>"
+/* eBuzzing */
+				), 'eb' => array(
+					'marker' => 'ebuzzing.com/player',
+					'regexp' => "<script type='text/javascript' src='http://www.ebuzzing.com/player/player.php\?parametre=[0-9]+'></script>"
 /* Google AdWords */
 				), 'gw' => array(
 					'marker' => 'pagead2.googlesyndication.com',
