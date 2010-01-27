@@ -234,7 +234,7 @@ define('_WEBO_far_future_expires_html_HELP', 'All images will have caching heade
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML (in seconds)');
 define('_WEBO_far_future_expires_html_timeout_HELP', 'Time to cache HTML files. Zero value means zero timeout.');
 define('_WEBO_far_future_expires_external', 'Cache external files');
-define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be cached and served fro mthe same host that web page itself.');
+define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be cached and served from the same host that web page itself.');
 
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout set in option &quot;Default HTML cache timeout&quot;. This option allows you to significantly speedup web pages load with long generation time. But this is reasonable only for static pages without dynamic content.');
