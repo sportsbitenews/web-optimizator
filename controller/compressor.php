@@ -936,15 +936,21 @@ class web_optimizer {
 							$absolute_src =
 								$this->convert_path_to_absolute($old_src,
 									array('file' => $this->view->paths['relative']['document_root']));
+/* calculating unique sum from image src */
+							$sum = 0;
+							$i = ceil(strlen($old_src)/2);
+							while (isset($old_src{$i++})) {
+								$sum += ord($old_src{$i-1});
+							}
 							$new_src = "http" .
 								$this->https .
 								"://" .
-								$hosts[strlen($old_src)%$count] .
+								$hosts[$sum%$count] .
 								"." .
 								$this->host .
 								$absolute_src .
 								preg_replace("!(www\.)?" . $this->host . "!i",
-									$hosts[strlen($old_src)%$count] .
+									$hosts[$sum%$count] .
 										"." . $this->host,
 									$old_src_param);
 						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
