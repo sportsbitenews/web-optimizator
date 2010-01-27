@@ -204,32 +204,32 @@ a.wssJ9:hover .wssJ0{display:block}
 #wss_links .wssJ2{font-size:14px}
 .wssJ3{background:#e5e5e5;display:block;height:21px;position:absolute}
 .wssJ4{background:#2680ac;color:#fff;display:block;height:20px;line-height:20px;position:absolute;text-align:center;top:0;width:23px}
-.wssJ5{background:#84a3ff url(buttons.png) no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
-a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf url(buttons.png) 0 -38px no-repeat;color:#fff!important}
+.wssJ5{background:#84a3ff no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
+a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf 0 -38px no-repeat;color:#fff!important}
 #wss_upd .wssJ5{left:-4px}
 .wssC7 .wssJ5,.wssC7 .wssJ7{margin-bottom:21px}
 .wssU18 a.wssJ5{margin:0 5px}
-.wssJ6{background:url(buttons.png) -186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
-a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background:url(buttons.png) -186px -38px no-repeat}
+.wssJ6{background:-186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
+a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background:-186px -38px no-repeat}
 .wssC6 .wssO4 .wssJ6{display:none}
-.wssC6 .wssO5 .wssJ6{background:#f7f4e9;display:block;border-bottom:1px solid #fbf9f3;border-top:1px solid #fbf9f3;height:28px;left:185px;top:-1px;width:4px;z-index:2}
-.wssJ7 .wssJ6{background:url(buttons.png) -186px -76px no-repeat}
-.wssC7 .wssJ5{background:#84a3ff url(buttons.png) no-repeat}
-.wssC4 .wssJ5,.wssU18 .wssJ5{background:#84a3ff url(buttons.png) 0 -152px no-repeat}
-.wssC4 .wssJ6,.wssU18 .wssJ6{background:url(buttons.png) -186px -152px no-repeat}
-.wssC7 a.wssJ5:hover{background:#717daf url(buttons.png) 0 -38px no-repeat}
-.wssC7 a.wssJ5:hover a.wssJ6{background:url(buttons.png) -186px -38px no-repeat}
-.wssC4 a.wssJ5:hover,.wssU18 a.wssJ5:hover{background:#717daf url(buttons.png) 0 -190px no-repeat}
-.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ6:hover{background:url(buttons.png) -186px -190px no-repeat}
-.wssJ7{background:#ffb163 url(buttons.png) 0 -76px no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
-a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 url(buttons.png) 0 -112px no-repeat;color:#fff!important}
-a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:url(buttons.png) -186px -112px no-repeat}
-.wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 url(buttons.png) 0 -76px no-repeat}
-.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:url(buttons.png) -186px -76px no-repeat}
+.wssC6 .wssO5 .wssJ6{background:#f7f4e9!important;display:block;border-bottom:1px solid #fbf9f3;border-top:1px solid #fbf9f3;height:28px;left:185px;top:-1px;width:4px;z-index:2}
+.wssJ7 .wssJ6{background:-186px -76px no-repeat}
+.wssC7 .wssJ5{background:#84a3ff no-repeat}
+.wssC4 .wssJ5,.wssU18 .wssJ5{background:#84a3ff 0 -152px no-repeat}
+.wssC4 .wssJ6,.wssU18 .wssJ6{background:-186px -152px no-repeat}
+.wssC7 a.wssJ5:hover{background:#717daf 0 -38px no-repeat}
+.wssC7 a.wssJ5:hover a.wssJ6{background:-186px -38px no-repeat}
+.wssC4 a.wssJ5:hover,.wssU18 a.wssJ5:hover{background:#717daf 0 -190px no-repeat}
+.wssC4 a.wssJ5:hover .wssJ6,.wssU18 a.wssJ6:hover{background:-186px -190px no-repeat}
+.wssJ7{background:#ffb163 0 -76px no-repeat;color:#fff!important;display:inline-block;font-size:14px;line-height:28px;height:28px;margin-top:3px;padding:0 14px;position:relative;text-decoration:none!important;text-shadow:#808080 -1px 0 1px}
+a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 0 -112px no-repeat;color:#fff!important}
+a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186px -112px no-repeat}
+.wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 0 -228px no-repeat}
+.wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:-186px -228px no-repeat}
 .wssC4 .wssH .wssJ7{background-position:0 -76px}
 .wssC4 .wssH .wssJ7 .wssJ6{background-position:-186px -76px}
-.wssC4 a.wssJ7:hover,.wssU18 a.wssJ7:hover{background:#ff7e53 url(buttons.png) 0 -270px no-repeat}
-.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover .wssJ6{background:url(buttons.png) -186px -270px no-repeat}
+.wssC4 a.wssJ7:hover,.wssU18 a.wssJ7:hover{background:#ff7e53 0 -270px no-repeat}
+.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover .wssJ6{background:-186px -270px no-repeat}
 .wssC4 .wssH a.wssJ7:hover{background-position:0 -112px}
 .wssC4 .wssH a.wssJ7:hover .wssJ6{background-position:-186px -112px}
 .wssJ8{float:right;margin-right:10%}
@@ -413,6 +413,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU19{background:#ff8200 url(config.user.active.png) no-repeat;height:118px;width:118px}
 .wssU20{background:url(config.new.png) no-repeat;height:118px;width:118px}
 
+.wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}
 
 * html .wssM{height:25px}
