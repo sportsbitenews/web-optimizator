@@ -407,9 +407,9 @@
 			</dd>
 			<dt class="wssD1">
 				<label class="wssE" for="wss_external_scripts_pass"><?php
-	echo _WEBO_external_scripts_user;
+	echo _WEBO_external_scripts_pass;
 				?> <a class="wssJ9" href="#" title="<?php
-						echo _WEBO_external_scripts_user_HELP;
+						echo _WEBO_external_scripts_pass_HELP;
 			?>">?</a>
 				</label>
 			</dt>

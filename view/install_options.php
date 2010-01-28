@@ -373,105 +373,107 @@ if ($submit) {
 		?>" class="wssD9<?php
 				echo $key != 'combinecss' ? ' wssA0' : '';
 			?>"><dl class="wssD10"><?php
-		foreach ($group as $option => $value) {
-			if (is_array($value)) {
-				if ($value['type'] != 'radio' || !empty($value['hidden'])) {
-					$value['count'] = 1;
-				}
-				$i = 0;
-				if ($value['type'] == 'radio') {
+		if (is_array($group)) {
+			foreach ($group as $option => $value) {
+				if (is_array($value)) {
+					if ($value['type'] != 'radio' || !empty($value['hidden'])) {
+						$value['count'] = 1;
+					}
+					$i = 0;
+					if ($value['type'] == 'radio') {
 				?><dt class="wssD5"><label class="wssE" for="wss_<?php
-					echo $option;
+						echo $option;
 				?>1"><?php
-					echo constant('_WEBO_' . $option);
+						echo constant('_WEBO_' . $option);
 				?> <a class="wssJ9" href="#" title="<?php
-					echo constant('_WEBO_' . $option . '_HELP');
+						echo constant('_WEBO_' . $option . '_HELP');
 				?>">?</a></label></dt><?php
-				}
-				while ($i++ != $value['count']) {
-					if (empty($value['hidden'])) {
+					}
+					while ($i++ != $value['count']) {
+						if (empty($value['hidden'])) {
 				?><dt class="wssD<?php
-						echo strpos($value['type'], 'text') !== false ? 1 : 5;
+							echo strpos($value['type'], 'text') !== false ? 1 : 5;
 				?>"><label for="wss_<?php
-						echo $option . ($value['type'] == 'radio' ? $i : '');
+							echo $option . ($value['type'] == 'radio' ? $i : '');
 				?>" class="wssE"><?php
-						echo constant('_WEBO_' . $option . ($value['count'] > 1 ? $i : ''));
-						echo strpos($value['type'], 'text') !== false ? ':' : '';
-						if ($value['type'] != 'radio') {
+							echo constant('_WEBO_' . $option . ($value['count'] > 1 ? $i : ''));
+							echo strpos($value['type'], 'text') !== false ? ':' : '';
+							if ($value['type'] != 'radio') {
 				?> <a class="wssJ9" href="#" title="<?php
-							echo constant('_WEBO_' . $option . '_HELP');
+								echo constant('_WEBO_' . $option . '_HELP');
 				?>">?</a><?php
-						}
-				?></label></dt><?php
-					}
-					switch ($value['type']) {
-						case 'text':
-					?><dd class="wssD2"><input <?php
-							echo empty($value['hidden']) ? '' : ' type="hidden"';
-					?> value="<?php
-							echo htmlspecialchars($value['value']);
-					?>" name="wss_<?php
-							echo $option;
-					?>" id="wss_<?php
-							echo $option;
-					?>" class="wssF"/></dd><?php
-							break;
-						case 'smalltext':
-					?><dd class="wssD2"><input <?php
-							echo empty($value['hidden']) ? '' : ' type="hidden"';
-					?> value="<?php
-							echo htmlspecialchars($value['value']);
-					?>" name="wss_<?php
-							echo $option;
-					?>" id="wss_<?php
-							echo $option;
-					?>" class="wssF wssF3"/></dd><?php
-							break;
-						case 'radio':
-					?><dd class="wssD6"><input value="<?php
-							echo $i;
-					?>" type="<?php
-							echo empty($value['hidden']) ? 'radio' : 'hidden';
-					?>"<?php
-							echo $value['value'] == $i-1 ? ' checked="checked"' : '';
-					?>" name="wss_<?php
-							echo $option;
-					?>" id="wss_<?php
-							echo $option . $i;
-					?>" class="wssF"/></dd><?php
-							break;
-						case 'checkbox':
-					?><dd class="wssD6"><input type="<?php
-							echo empty($value['hidden']) ? 'checkbox' : 'hidden';
-					?>"<?php
-							echo $value['value'] ? ' checked="checked"' : '';
-					?>" name="wss_<?php
-							echo $option;
-					?>" id="wss_<?php
-							echo $option;
-					?>" class="wssF"/></dd><?php
-							break;
-						case 'textarea':
-							if (!empty($value['hidden'])) {
-					?><input type="hidden" name="wss_<?php
-								echo $option;
-					?>" id="wss_<?php
-								echo $option;
-					?>" value="<?php
-								echo htmlspecialchars($value['value']);
-					?>"/><?php
-							} else {
-					?><dd class="wssD2"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
-								echo $option;
-					?>" id="wss_<?php
-								echo $option;
-					?>"><?php
-								echo htmlspecialchars($value['value']);
-					?></textarea></dd><?php
 							}
-							break;
-					}
+				?></label></dt><?php
+						}
+						switch ($value['type']) {
+							case 'text':
+					?><dd class="wssD2"><input <?php
+								echo empty($value['hidden']) ? '' : ' type="hidden"';
+					?> value="<?php
+								echo htmlspecialchars($value['value']);
+					?>" name="wss_<?php
+								echo $option;
+					?>" id="wss_<?php
+								echo $option;
+					?>" class="wssF"/></dd><?php
+								break;
+							case 'smalltext':
+					?><dd class="wssD2"><input <?php
+								echo empty($value['hidden']) ? '' : ' type="hidden"';
+					?> value="<?php
+								echo htmlspecialchars($value['value']);
+					?>" name="wss_<?php
+								echo $option;
+					?>" id="wss_<?php
+								echo $option;
+					?>" class="wssF wssF3"/></dd><?php
+								break;
+							case 'radio':
+					?><dd class="wssD6"><input value="<?php
+								echo $i;
+					?>" type="<?php
+								echo empty($value['hidden']) ? 'radio' : 'hidden';
+					?>"<?php
+								echo $value['value'] == $i-1 ? ' checked="checked"' : '';
+					?>" name="wss_<?php
+								echo $option;
+					?>" id="wss_<?php
+								echo $option . $i;
+					?>" class="wssF"/></dd><?php
+								break;
+							case 'checkbox':
+					?><dd class="wssD6"><input type="<?php
+								echo empty($value['hidden']) ? 'checkbox' : 'hidden';
+					?>"<?php
+								echo $value['value'] ? ' checked="checked"' : '';
+					?>" name="wss_<?php
+								echo $option;
+					?>" id="wss_<?php
+								echo $option;
+					?>" class="wssF"/></dd><?php
+								break;
+							case 'textarea':
+								if (!empty($value['hidden'])) {
+					?><input type="hidden" name="wss_<?php
+									echo $option;
+					?>" id="wss_<?php
+									echo $option;
+					?>" value="<?php
+									echo htmlspecialchars($value['value']);
+					?>"/><?php
+								} else {
+					?><dd class="wssD2"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
+									echo $option;
+					?>" id="wss_<?php
+									echo $option;
+					?>"><?php
+									echo htmlspecialchars($value['value']);
+					?></textarea></dd><?php
+								}
+								break;
+						}
 				?></dd><?php
+					}
 				}
 			}
 		}

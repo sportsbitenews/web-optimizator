@@ -476,7 +476,7 @@ define('_WEBO_SYSTEM_UPDATES_TITLE', 'Available updates');
 define('_WEBO_SYSTEM_INSTALL_TITLE', 'Install and uninstall');
 define('_WEBO_SYSTEM_INSTALLED', 'WEBO Site SpeedUp is installed for');
 define('_WEBO_SYSTEM_INSTALLINFO', 'Following changes were made to files of your web system during WEBO Site SpeedUp installation.');
-define('_WEBO_SYSTEM_INSTALLINFO2', 'To rollback these changes press the &quot;Uninstall&quot; button (note that all WEBO Site SpeedUp files including configuration files and all cache files and will be preserved). To restore these changes anytime press &quot;Reinstall&quot; button.');
+define('_WEBO_SYSTEM_INSTALLINFO2', 'To rollback these changes press the &quot;Uninstall&quot; button (note that all WEBO Site SpeedUp files including configuration files and all cache files and will be preserved). To restore these changes anytime press &quot;Install&quot; button.');
 define('_WEBO_SYSTEM_SUCCESS', 'All changes for web system source files were made successfully.');
 define('_WEBO_SYSTEM_USERNAME', 'Please enter username to rectrict access to WEBO Site SpeedUp using .htaccess.');
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Please enter username and password to get access to the website using HTTP Basic Authorization.');
