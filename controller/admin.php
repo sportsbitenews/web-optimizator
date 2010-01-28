@@ -1148,7 +1148,7 @@ class admin {
 		$page_variables['css_cachedir'] = $this->compress_options['css_cachedir'];
 		$page_variables['javascript_cachedir'] = $this->compress_options['javascript_cachedir'];
 		$page_variables['html_cachedir'] = $this->compress_options['html_cachedir'];
-		$page_variables['current_directory'] = dirname(__FILE__) . '/';
+		$page_variables['current_directory'] = $this->basepath;
 		$page_variables['htpasswd'] = $this->compress_options['htaccess']['access'];
 		$page_variables['username'] = $this->compress_options['username'];
 		$page_variables['external_scripts_user'] = $this->compress_options['external_scripts']['user'];

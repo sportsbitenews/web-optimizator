@@ -256,13 +256,14 @@ a.wssJ20:hover{background:url(corner.gif) no-repeat}
 
 .wssM{margin:2px 0 0 -5px;padding:0}
 .wssM1{background:none;display:inline-block;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 10px 0 0;padding:0}
-.wssM2{background:#88b9d1 url(menu.png) no-repeat;color:#fff!important;display:block;height:30px;text-decoration:none!important}
+.wssM2{background:#88b9d1 no-repeat;color:#fff!important;display:block;height:30px;text-decoration:none!important}
 a.wssM2:hover,a.wssM2:focus,a.wssM2:active{color:#fff!important}
 .wssM3{color:#808080!important;display:block;outline:0;text-decoration:none!important}
 a.wssM3:hover,a.wssM3:focus,a.wssM3:active{color:#569abc!important}
 .wssM4{display:block;font-weight:400;padding:8px 2px 0 28px}
 .wssM5{display:block;float:right;height:30px;margin-right:-6px;width:6px}
-.wssM2 .wssM5{background:url(menu.png) -194px 0 no-repeat}
+.wssM2 .wssM5{background:-194px 0 no-repeat}
+.wssM2,.wssM2 .wssM5{background-image:url(menu.png)}
 .wssM10{background:url(dashboard.png) no-repeat}
 .wssM2 .wssM10{background:url(dashboard.active.png) no-repeat}
 a.wssM3:hover .wssM10{background:url(dashboard.hover.png) no-repeat}
@@ -416,49 +417,51 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}
 
+* html .wssJ5,* html .wssJ6,* html .wssJ7{background-image:url(buttons.png)!important}
 * html .wssM{height:25px}
 * html .wssM1{display:inline;position:relative}
 * html .wssN4{margin-left:1.5%}
-* html .wssM2{position:relative;top:-1px}
+* html .wssM2{position:relative;top:-1px;background-image:url(menu.png)}
 * html .wssM3{position:relative;top:-7px}
 * html .wssM5{position:absolute;right:0}
+* html .wssM2 .wssM5{background-image:url(menu.png)}
 * html a.wss_g:hover{background-image:url(lang.hover.png)}
 * html .wssU .wssO11{background-image:url(apply.png)}
-* html .wssJ5,* html .wssJ6,* html .wssJ7{background-image:url(buttons.png)}
 * html .wssT7 .wssJ{background-image:url(button.red.png)}
 * html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
 * html a.wssJ20:hover{background-image:url(corner.gif)}
 * html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
 * html .wssU .wssO12{background-image:url(edit.png)}
 * html .wssU .wssO13{background-image:url(delete.png)}
-* html .wssI3{background-image:url(load.gif)}
+* html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 * html #wss_opt .wssI{background-image:url(progress.png)}
 * html .wss_n{background-image:url(promo.over.png)}
-* html .wss_l{background-image:url(stamp.png)}
-* html .wss_m{background-image:url(stamp.full.png)}
+* html .wss_l{background:url(stamp.png) no-repeat}
+* html .wss_m{background:url(stamp.full.png) no-repeat}
 
+*+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
+*+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
 *+html .wssM{height:25px}
 *+html .wssM1{display:inline;position:relative}
 *+html .wss_a{width:900px}
-*+html .wssM2{position:relative;top:-1px}
+*+html .wssM2{position:relative;top:-1px;background-image:url(menu.png)}
 *+html .wssM3{position:relative;top:-7px}
 *+html .wssM5{position:absolute;right:0}
+*+html .wssM2 .wssM5{background-image:url(menu.png)}
 *+html .wssN4{margin-left:1.8%}
 *+html .wssU1 .wssF1{margin-left: -183px}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
 *+html .wssU .wssO11{background-image:url(apply.png)}
-*+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)}
 *+html .wssT7 .wssJ{background-image:url(button.red.png)}
 *+html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
 *+html a.wssJ20:hover{background-image:url(corner.gif)}
 *+html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
 *+html .wssU .wssO12{background-image:url(edit.png)}
 *+html .wssU .wssO13{background-image:url(delete.png)}
-*+html .wssI3{background-image:url(load.gif)}
 *+html #wss_opt .wssI{background-image:url(progress.png)}
 *+html .wss_n{background-image:url(promo.over.png)}
-*+html .wss_l{background-image:url(stamp.png)}
-*+html .wss_m{background-image:url(stamp.full.png)}
+*+html .wss_l{background:url(stamp.png) no-repeat}
+*+html .wss_m{background:url(stamp.full.png) no-repeat}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
