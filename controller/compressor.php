@@ -354,6 +354,10 @@ class web_optimizer {
 				"memory_limited" => $this->options['css_sprites']['memory_limited'],
 				"dimensions_limited" => round($this->options['css_sprites']['dimensions_limited']),
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
+				"punypng" => (!empty($this->options['punypng']) ? $this->options['punypng'] : '') &&
+					($this->premium > 1),
+				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
+					($this->premium > 1),
 				"unobtrusive" => false,
 				"unobtrusive_body" => false,
 				"parallel" => $this->options['parallel']['enabled'] &&
@@ -435,8 +439,6 @@ class web_optimizer {
 				($this->premium > 1),
 			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
-			"punypng" => ($this->premium > 1) &&
-				!empty($this->options['punypng']) ? $this->options['punypng'] : '',
 			"restricted" => ($this->premium > 1) &&
 				!empty($this->options['restricted']) ? $this->options['restricted'] : ''
 		);
@@ -708,6 +710,8 @@ class web_optimizer {
 					'dimensions_limited' => $options['dimensions_limited'],
 					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 					'css_sprites_expires_rewrite' => $options['css_sprites_expires_rewrite'],
+					'punypng' => $options['punypng'],
+					'css_restore_properties' => $options['css_restore_properties'],
 					'self_close' => true,
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
@@ -2668,7 +2672,8 @@ class web_optimizer {
 			'no_css_sprites' => !$options['css_sprites'],
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
 			'user_agent' => $this->ua_mod,
-			'punypng' => $this->options['punypng']
+			'punypng' => $options['punypng'],
+			'restore_properties' => $options['css_restore_properties']
 		));
 		return $css_sprites->process();
 	}

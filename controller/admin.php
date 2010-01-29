@@ -2141,6 +2141,11 @@ class admin {
 					'value' => $this->compress_options['performance']['uniform_cache'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'performance_restore_selectors' => array(
+					'value' => $this->compress_options['performance']['restore_selectors'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0
 				)
 			),
 			'data_uri' => array(

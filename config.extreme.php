@@ -48,6 +48,8 @@ $compress_options['performance']['plain_string'] = "1";
 $compress_options['performance']['cache_version'] = "0";
 ## Uniform cache files through all browsers
 $compress_options['performance']['uniform_cache'] = "0";
+## Restore missed CSS properties
+$compress_options['performance']['restore_properties'] = "1";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "1";
 ## Minify JS inside <body> tag. Please be carefull

@@ -264,6 +264,8 @@ define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
 define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quo;tCache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
 define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
+define('_WEBO_performance_restore_selectors', 'Restore CSS properties');
+define('_WEBO_performance_restore_selectors_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. ut this may lead to huge CPU overhead in case of large amount of CSS rules.');
 
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');

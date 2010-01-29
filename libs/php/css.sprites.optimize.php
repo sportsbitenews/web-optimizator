@@ -84,6 +84,8 @@ class css_sprites_optimize {
 			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* punypng API key */
 			$this->punypng_key = $options['punypng'];
+/* Restore or not missed CSS properties? */
+			$this->restore_properties = $options['restore_properties'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */

@@ -138,17 +138,26 @@ class css_sprites {
 					}
 				}
 			}
-			$properties = array('background-image', 'background-position', 'background-repeat', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 
-'width', 'height');
+			if ($this->optimizer->restore_properties) {
+				$properties = array(
+					'background-image',	'background-position',
+					'background-repeat','padding-left',
+					'padding-right',	'padding-top',
+					'padding-bottom',	'width', 'height');
 /* to remember already calculated selectors, by stages */
-/* need ro refactor to add fix_css3_selectors functionality and remove the latter at all */
-			$this->restored_selectors = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array(), 8 => array(), 9 => array(), 10 => array(), 11 => array(), 12 => array());
+				$this->restored_selectors = array(
+					1 => array(),	2 => array(),	3 => array(),
+					4 => array(),	5 => array(),	6 => array(),
+					7 => array(),	8 => array(),	9 => array(),
+					10 => array(),	11 => array(),	12 => array());
 /* try to restore property values from parent selectors */
-			foreach ($this->optimizer->media as $import => $images) {
-				foreach ($images as $key => $image) {
-					foreach ($properties as $property) {
-						if (empty($image[$property]) && preg_match("@[a-z\d][#\.\[][^#\.\[]+$@is", $key)) {
-							$this->optimizer->media[$import][$key][$property] = $this->restore_property($import, $key, $property);
+				foreach ($this->optimizer->media as $import => $images) {
+					foreach ($images as $key => $image) {
+						foreach ($properties as $property) {
+							if (empty($image[$property]) && preg_match("@[a-z\d][#\.\[][^#\.\[]+$@is", $key)) {
+								$uniformed_key = $this->fix_css3_selectors($key);
+								$this->optimizer->media[$import][$key][$property] = $this->restore_property($import, $uniformed_key, $property);
+							}
 						}
 					}
 				}
@@ -591,7 +600,13 @@ __________________
 	}
 /* return CSS selector w/o CSS3 pseudo-addons */
 	function fix_css3_selectors ($key) {
-		return preg_replace("/:(empty|root|nth-(child|of-type|last-of-type|last-child)\([^\)+]\)|(only|first|last)-(of-type|child)|hover|focus|visited|link|active|target|enabled|disabled|checked|before|after|lang\([^\)]+\))/", "", $key);
+		$uniformed_key = $key;
+		if (($semicolon = strpos($uniformed_key, ':')) !== false) {
+			$space = strpos($uniformed_key, ' ', $semicolon);
+			$space = $space ? $space : strlen($uniformed_key);
+			$uniformed_key = substr_replace($uniformed_key, '', $semicolon, $space - $semicolon);
+		}
+		return $key;
 	}
 /* try to restore CSS property from some parent selectors for a given one */
 	function restore_property ($import, $selector, $property, $stage = 1) {
