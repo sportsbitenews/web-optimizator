@@ -2142,8 +2142,8 @@ class admin {
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
-				'performance_restore_selectors' => array(
-					'value' => $this->compress_options['performance']['restore_selectors'],
+				'performance_restore_properties' => array(
+					'value' => $this->compress_options['performance']['restore_properties'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				)
@@ -2410,6 +2410,7 @@ class admin {
 			'wss_performance_plain_string',
 			'wss_performance_cache_version',
 			'wss_performance_uniform_cache',
+			'wss_performance_restore_properties',
 			'wss_minify_page',
 			'wss_minify_html_comments',
 			'wss_minify_html_one_string',
