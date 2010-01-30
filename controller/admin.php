@@ -360,7 +360,7 @@ class admin {
 		$message = "On " . date("Y-m-d") . " at " . date("H:i:s") .
 			$this->compress_options['name'] .
 			" (" . $this->compress_options['email'] . ") send a message: " .
-			($uninstall ? " (after uninstalltion) " : "") . "\r\n" . $message;
+			($uninstall ? "(after uninstalltion) " : "") . "\r\n" . $message;
 /* application info */
 		$this->cms_version = $this->system_info($this->compress_options['document_root']);
 		$message .= "\r\n\r\nWEBO Site SpeedUp " . $this->version . " was " .

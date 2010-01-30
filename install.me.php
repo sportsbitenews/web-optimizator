@@ -37,14 +37,14 @@
 		while (preg_match("/\//", $dir)) {
 			$directory = preg_replace("/\/.*/", "", $dir);
 			if (!is_dir($directory)) {
-				@mkdir($directory, 0755);
+				@mkdir($directory, octdec("0755"));
 				if (is_dir($directory)) {
 					@chdir($directory);
 				} else {
 					return;
 				}
 			} else {
-				@chmod($directory, 0755);
+				@chmod($directory, octdec("0755"));
 				@chdir($directory);
 			}
 			$dir = substr($dir, strlen($directory) + 1, strlen($dir));
@@ -61,7 +61,7 @@
 			@fclose($fp);
 		}
 /* set correct rights for a new file */
-		@chmod($install_directory . '/' . $file, 0644);
+		@chmod($install_directory . '/' . $file, octdec("0755"));
 	}
 
 /* check for curl installed */
@@ -74,7 +74,7 @@
 			@mkdir($install_directory);
 			if (!is_dir($install_directory)) {
 /* try to make current directory writable for group */
-				@chmod("./", 0775);
+				@chmod("./", octdec("0755"));
 			}
 			@mkdir($install_directory);
 			if (is_dir($install_directory)) {

@@ -2371,14 +2371,14 @@ class web_optimizer {
 /* Pull out the comment blocks, so as to avoid touching conditional comments,
 	and some semi-standard complaint hacks,
 	skip if we fetch body but not head */
-		if (!empty($this->options['javascript']['minify']) && !$cssonly) {
+		if (!empty($this->options['javascript']['inline_scripts']) && !$cssonly) {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					'//-->',		'--></script>'),
+					'<!--/*--><![CDATA[//><!--','//-->',		'--></script>'),
 				array('',			'',			'',				'',
 					'',				'',			'',				'',
-					'',				'</script>'), $dest);
+					'',							'',				'</script>'), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 		}
 		if ($dest !== $source) {
