@@ -536,6 +536,10 @@ __________________
 											$this->optimizer->css_image =
 												$this->distribute_image($this->optimizer->css_image);
 										}
+/* add quotes for background images with spaces */
+										if (strpos($this->optimizer->css_image, ' ')) {
+											$this->optimizer->css_image = "'" . $this->optimizer->css_image . "'";
+										}
 /* separate background-image rules from the others? */
 										if (empty($this->optimizer->separated)) {
 											$this->optimizer->css->css[$import][$tags][$key] =
