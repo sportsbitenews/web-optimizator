@@ -260,7 +260,7 @@ define('_WEBO_performance_quick_check_HELP', 'There can be gained additional ben
 define('_WEBO_performance_cache_version', 'Cache version number');
 define('_WEBO_performance_cache_version_HELP', 'Cache version defines version of all files in cache. To refresh cache on client side (in browsers) you need to change this number.');
 define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
-define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quo;tCache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
+define('_WEBO_performance_check_files_HELP', 'There will be no check for cache files existence with this option enabled. Cache version will be defined with option &quot;Cache version number&quot;. In this case to refresh cache files on client side (in browsers) you need to change cache version number. THere will be standard cache files existence check performed with this option enabled.');
 define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers');
 define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
 define('_WEBO_performance_restore_properties', 'Restore CSS properties');
