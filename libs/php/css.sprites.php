@@ -515,7 +515,8 @@ __________________
 											strpos($this->optimizer->css_image,
 											'ebo.' . $this->optimizer->timestamp);
 										if (!empty($this->optimizer->data_uris) &&
-											!$this->optimizer->ie) {
+											!$this->optimizer->ie &&
+											!preg_match("@^\*(\s|\+)\s*html/@s", $tags)) {
 /* convert image to data:URI */
 												$this->optimizer->css_image =
 													$this->optimizer->get_image(1, 0,
@@ -560,6 +561,13 @@ __________________
 													$tags . '{background-image:url(' .
 													$this->optimizer->css_image . ')!important}';
 											}
+/* skip empty background-image */
+											if (empty($this->optimizer->css->css[$import][$tags][$key])) {
+												unset($this->optimizer->css->css[$import][$tags][$key]);
+											}
+											if (!count($this->optimizer->css->css[$import][$tags])) {
+												unset($this->optimizer->css->css[$import][$tags]);
+											}
 										}
 									}
 								}
@@ -580,7 +588,7 @@ __________________
 				preg_match("/:\/\/(www\.)?" . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']) . "\//i", $image))) {
 /* add absolute path for sprited images */
 					if (0 === strpos($image, 'webo')) {
-						$image = str_replace($this->optimizer->website_root, "/", $this->optimizer->current_dir) . '/' . $image;
+						$image = str_replace($this->optimizer->website_root, "/", $this->optimizer->current_dir) . $image;
 					}
 					return "http" . $this->optimizer->https .
 						"://" .
