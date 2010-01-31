@@ -516,7 +516,7 @@ __________________
 											'ebo.' . $this->optimizer->timestamp);
 										if (!empty($this->optimizer->data_uris) &&
 											!$this->optimizer->ie &&
-											!preg_match("@^\*(\s|\+)\s*html/@s", $tags)) {
+											!preg_match("@^\*(\s|\+)\s*html@s", $tags)) {
 /* convert image to data:URI */
 												$this->optimizer->css_image =
 													$this->optimizer->get_image(1, 0,
