@@ -357,7 +357,7 @@ class admin {
 		$headers .= 'Content-Type: text/plain; charset=utf-8'."\r\n";
 		$headers .= 'Content-Transfer-Encoding: base64';
 /* general info */
-		$message = "On " . date("Y-m-d") . " at " . date("H:i:s") .
+		$message = "On " . date("Y-m-d") . " at " . date("H:i:s") . " " .
 			$this->compress_options['name'] .
 			" (" . $this->compress_options['email'] . ") send a message: " .
 			($uninstall ? "(after uninstalltion) " : "") . "\r\n" . $message;

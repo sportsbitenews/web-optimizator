@@ -2026,8 +2026,8 @@ class web_optimizer {
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
 			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
-/* remove \r symbols */
-			$source = strtr($source, "\r", '');
+/* replace ' />' with '/>', ' >' with '>', remove \r symbols */
+			$source = str_replace(array(' />', ' >', "\r"), array('/>', '>', ''), $source);
 		}
 /* one-strig-HTML takes about 20-50ms */
 		if (!empty($this->options['page']['minify_aggressive'])) {
@@ -2036,13 +2036,9 @@ class web_optimizer {
 /* replace breaks with space for inline tags */
 			$source = preg_replace("@(</?)(a|abbr|acronym|b|basefont|bdo|big|blackface|blink|button|cite|code|del|dfn|dir|em|font|i|img|input|ins|isindex|kbd|label|q|s|small|span|strike|strong|sub|sup|u)([\s/][^>]*)?>[\s\t\r\n]+@si", "$1$2$3> ", $source);
 		}
-/* replace ' />' with '/>' */
-		if (!empty($this->options['page']['minify'])) {
-			$source = str_replace(" />", "/>", $source);
 /* replace multiple spaces with single one 
 		$source = preg_replace("/[\s\t\r\n]+/", " ", $source); */
 /* replace script, textarea, pre blocks */
-		}
 		if (!empty($this->options['page']['unobtrusive_all']) ||
 			!empty($this->options['page']['minify'])) {
 				$before_body = '';
@@ -2079,6 +2075,12 @@ class web_optimizer {
 						}
 					}
 				}
+		}
+/* remove website host */
+		if (!empty($this->options['page']['minify_aggressive'])) {
+			$source = preg_replace("@(src|href)=(['\"])(http" .
+				$this->https . "://)(www\.)?" .
+				$this->host . "@", "$1=$2", $source);
 		}
 		return $source;
 	}
@@ -2316,7 +2318,7 @@ class web_optimizer {
 /* OpenX */
 				), 'ox' => array(
 					'marker' => 'ajs.php',
-					'regexp' => "<!--/*\sOpenX\sJavascript.*?</noscript>"
+					'regexp' => "<!--/\*\sOpenX\sJavascript.*?</noscript>"
 /* PredictAd */
 				), 'pa' => array(
 					'marker' => 'PredictAd',
