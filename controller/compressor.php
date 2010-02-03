@@ -957,9 +957,7 @@ class web_optimizer {
 								$new_host .
 								$absolute_src .
 								preg_replace("!(www\.)?" . $this->host . "!i",
-									$hosts[$sum%$count] .
-										"." . $this->host,
-									$old_src_param);
+									$new_host, $old_src_param);
 						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
 							$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
 /* check if we can distribute this image through satellites' hosts */
