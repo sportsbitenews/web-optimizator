@@ -946,12 +946,15 @@ class web_optimizer {
 							while (isset($old_src{$i++})) {
 								$sum += ord($old_src{$i-1});
 							}
+							$host = $hosts[$sum%$count];
+/* if we have dot in the distribution host - it's a domain name */
+							$new_host = $host .
+								((strpos($host, '.') === false) ?
+								'.' . $this->host : '');
 							$new_src = "http" .
 								$this->https .
 								"://" .
-								$hosts[$sum%$count] .
-								"." .
-								$this->host .
+								$new_host .
 								$absolute_src .
 								preg_replace("!(www\.)?" . $this->host . "!i",
 									$hosts[$sum%$count] .
