@@ -14,8 +14,7 @@ Short notice about CSS deploymner.
  buttons.png
  button.red.png
  button.red.hover.png
- corner.gif
- corner.disabled.gif
+ corners.gif
  edit.png
  delete.png
  lang.hover.png
@@ -244,9 +243,9 @@ a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 .wssJ13{background:url(icon.joomla.png) no-repeat}
 .wssJ14{background:url(icon.wordpress.png) no-repeat}
 .wssJ20{background:url(corner.png) no-repeat;display:block;height:37px;outline:0;position:absolute;right:-2px;top:-2px;width:37px}
-a.wssJ20:hover{background:url(corner.gif) no-repeat}
+a.wssJ20:hover{background:url(corners.gif) -37px 0 no-repeat}
 .wssN20 .wssJ20{background:url(corner.disabled.png) no-repeat;height:37px;width:37px}
-.wssN20 a.wssJ20:hover{background:url(corner.disabled.gif) no-repeat}
+.wssN20 a.wssJ20:hover{background-position:0 0}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK1{border:1px solid #fff;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}
@@ -429,8 +428,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wssU .wssO11{background-image:url(apply.png)}
 * html .wssT7 .wssJ{background-image:url(button.red.png)}
 * html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
-* html a.wssJ20:hover{background-image:url(corner.gif)}
-* html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
+* html a.wssJ20:hover{background-image:url(corners.gif)}
 * html .wssU .wssO12{background-image:url(edit.png)}
 * html .wssU .wssO13{background-image:url(delete.png)}
 * html .wssI3{background:url(load.gif) 50% 5px no-repeat}
@@ -454,8 +452,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssU .wssO11{background-image:url(apply.png)}
 *+html .wssT7 .wssJ{background-image:url(button.red.png)}
 *+html .wssT7 a.wssJ:hover{background-image:url(button.red.hover.png)}
-*+html a.wssJ20:hover{background-image:url(corner.gif)}
-*+html .wssN20 a.wssJ20:hover{background-image:url(corner.disabled.gif)}
+*+html a.wssJ20:hover{background-image:url(corners.gif)}
 *+html .wssU .wssO12{background-image:url(edit.png)}
 *+html .wssU .wssO13{background-image:url(delete.png)}
 *+html #wss_opt .wssI{background-image:url(progress.png)}
