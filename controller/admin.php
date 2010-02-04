@@ -665,7 +665,7 @@ class admin {
 	**/	
 	function dashboard_speed () {
 		$this->check_acceleration();
-		$saved_kb = $saved_s = $saved_percent = 0;
+		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = @file_get_contents($this->basepath . $this->index_before);
 		$after = @file_get_contents($this->basepath . $this->index_after);
 /* parse files' content for calculated load speed */
@@ -2359,7 +2359,7 @@ class admin {
 			'wss_minify_css_file',
 			'wss_minify_javascript_file',
 			'wss_external_scripts_include_code',
-			'wss_external_scripts_exclude_list',
+			'wss_external_scripts_ignore_list',
 			'wss_external_scripts_additional_list',
 			'wss_footer_image',
 			'wss_footer_link',
