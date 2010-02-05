@@ -1,6 +1,6 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Sends cache headers among the content of requested file.
  * Also adds GZip for known types of files (that can be gzipped).
  * Resticted filename to document root only.

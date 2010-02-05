@@ -1,6 +1,6 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Outputs login page
  *
  **/

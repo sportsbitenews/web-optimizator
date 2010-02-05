@@ -1,6 +1,6 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Gzips and minifies the JavaScript and CSS within the head tags of a page.
  * Can also gzip and minify the page itself
  * and 100+ other cool web performance optimization techniques

@@ -1,68 +1,38 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Outputs page with options (configuration)
  *
  **/
 ?><noscript><?php
 	echo _WEBO_NEW_NOSCRIPT;
-?></noscript><ul class="wssM"><li class="wssM1">
-		<a class="wssM3" href="#wss_dashboard" title="<?php
+?></noscript><ul class="wssM"><li class="wssM1"><a class="wssM3" href="#wss_dashboard" title="<?php
 	echo _WEBO_SPLASH2_CONTROLPANEL_TITLE;
-		?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM10"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM10"><?php
 	echo _WEBO_SPLASH2_CONTROLPANEL;
-			?></span>
-		</a>
-	</li><li class="wssM1">
-		<a href="#wss_options" class="wssM3" title="<?php
+?></span></a></li><li class="wssM1"><a href="#wss_options" class="wssM3" title="<?php
 	echo _WEBO_SPLASH2_OPTIONS_TITLE;
-		?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM11"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM11"><?php
 	echo _WEBO_SPLASH2_OPTIONS;
-			?></span>
-		</a>
-	</li><li class="wssM1">
-		<a href="#wss_system" class="wssM2" title="<?php
+?></span></a></li><li class="wssM1"><a href="#wss_system" class="wssM2" title="<?php
 	echo _WEBO_DASHBOARD_SYSTEM_TITLE;
-		?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM12"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM12"><?php
 	echo _WEBO_DASHBOARD_SYSTEM;
-			?></span>
-		</a>
-	</li><li class="wssM1">
-		<a href="#wss_cache" class="wssM3" title="<?php
+?></span></a></li><li class="wssM1"><a href="#wss_cache" class="wssM3" title="<?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
-		?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM13"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM13"><?php
 	echo _WEBO_DASHBOARD_CACHE;
-			?></span>
-		</a>
-	</li><li class="wssM1">
-		<a href="#wss_account" class="wssM3" title="<?php
+?></span></a></li><li class="wssM1"><a href="#wss_account" class="wssM3" title="<?php
 	echo _WEBO_DASHBOARD_ACCOUNT_TITLE
-		?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM14"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM14"><?php
 	echo _WEBO_DASHBOARD_ACCOUNT;
-			?></span>
-		</a>
-	</li><?php
+?></span></a></li><?php
 	if ($premium > 1 && 0) {
-	?><li class="wssM1">
-		<a href="#wss_speed" class="wssM3" title="<?php
+?><li class="wssM1"><a href="#wss_speed" class="wssM3" title="<?php
 	echo _WEBO_DASHBOARD_RESULTS;
-			?>">
-			<span class="wssM5"></span>
-			<span class="wssM4 wssM15"><?php
+?>"><span class="wssM5"></span><span class="wssM4 wssM15"><?php
 	echo _WEBO_DASHBOARD_SPEED;
-			?></span>
-		</a>
-	</li><?php
+?></span></a></li><?php
 	}
 ?></ul><?php
 	if (!empty($success)) {
@@ -86,7 +56,7 @@
 			case 3:
 ?><div class="wssS wssS12"><div class="wssS1"><h2 class="wssB"><?php
 				echo _WEBO_LOGIN_SUCCESS;
-		?></h2></div></div><?php
+?></h2></div></div><?php
 				break;
 			case 4:
 ?><div class="wssK wssS12"><div class="wssK1"><h2 class="wssB"><?php
@@ -154,92 +124,61 @@
 				break;
 		}
 	}
-?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7">
-	<ul class="wssO3">
-		<li class="wssO4 wssO5">
-			<a href="#status" class="wssJ">
-				<?php
+?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7"><ul class="wssO3"><li class="wssO4 wssO5"><a href="#status" class="wssJ"><?php
 	echo _WEBO_SYSTEM_STATUS;
-				?>
-				<span class="wssJ6"></span>
-			</a>
-		</li>
-		<li class="wssO4">
-			<a href="#settings" class="wssJ">
-				<?php
+?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#settings" class="wssJ"><?php
 	echo _WEBO_SYSTEM_SETTINGS;
-				?>
-				<span class="wssJ6"></span>
-			</a>
-		</li>
-		<li class="wssO4">
-			<a href="#updates" class="wssJ">
-				<?php
+?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#updates" class="wssJ"><?php
 	echo _WEBO_SYSTEM_UPDATES;
-				?>
-				<span class="wssJ6"></span>
-			</a>
-		</li><?php
+?><span class="wssJ6"></span></a></li><?php
 	if (!$internal) {
-		?><li class="wssO4">
-			<a href="#install" class="wssJ">
-				<?php
+?><li class="wssO4"><a href="#install" class="wssJ"><?php
 		echo _WEBO_SYSTEM_INSTALL;
-				?>
-				<span class="wssJ6"></span>
-			</a>
-		</li><?php
+?><span class="wssJ6"></span></a></li><?php
 	}
-	?></ul>
-	<fieldset id="status" class="wssD9">
-		<div class="wssD10"><h2 class="wssB"><?php
+?></ul><fieldset id="status" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_STATUS;
-			?></h2>
-			<p class="wssI">WEBO Site SpeedUp <?php
+?></h2><p class="wssI">WEBO Site SpeedUp <?php
 	echo _WEBO_DASHBOARD_STATUS_IS;
-			?> <strong><?php
+?> <strong><?php
 	if ($active) {
 		echo _WEBO_DASHBOARD_STATUS_ACTIVE;
-			?></strong> (<?php
+?></strong> (<?php
 		echo _WEBO_DASHBOARD_STATUS_LIVE;
-			?>).</p>
-			<p class="wssI"><?php
+?>).</p><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING;
-			?><a href="http://<?php
+?><a href="http://<?php
 		echo $website;
-			?>/" class="wssJ"><?php
+?>/" class="wssJ"><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING2;
-			?></a><?php
+?></a><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING3;
-			?></p>
-			<p class="wssI"><a href="#wss_status" class="wssJ wssJ5"><?php
+?></p><p class="wssI"><a href="#wss_status" class="wssJ wssJ5"><?php
 		echo _WEBO_DASHBOARD_STATUS_DISABLE;
 	} else {
 		echo _WEBO_DASHBOARD_STATUS_NOTACTIVE;
-			?></strong> (<?php
+?></strong> (<?php
 		echo _WEBO_DASHBOARD_STATUS_DEBUG;
-			?>)</p>
-			<p class="wssI"><?php
+?>)</p><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING;
-			?></p><ul class="wssO7"><li class="wssO8"><?php
+?></p><ul class="wssO7"><li class="wssO8"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING2;
-			?><a href="http://<?php
+?><a href="http://<?php
 		echo $website;
-			?>/?web_optimizer_debug=1" class="wssJ"><?php
+?>/?web_optimizer_debug=1" class="wssJ"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
-			?></a>,</li><li class="wssO8"><?php
+?></a>,</li><li class="wssO8"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
-			?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
-			?></a>.</li></ul><p class="wssI"><?php
+?></a>.</li></ul><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING3;
-			?></p>
-			<p class="wssI"><a href="#wss_status" class="wssJ wssJ7"><?php
+?></p><p class="wssI"><a href="#wss_status" class="wssJ wssJ7"><?php
 		echo _WEBO_DASHBOARD_STATUS_ENABLE;
 	}
-			?><span class="wssJ6"></span></a></p><h2 class="wssB"><?php
+?><span class="wssJ6"></span></a></p><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_ISSUES;
-			?></h2><?php
+?></h2><?php
 	if ($e + $w) {
 ?><ul class="wssO"><?php
 		foreach ($errors as $key => $value) {
@@ -262,254 +201,166 @@
 		echo _WEBO_SYSTEM_NOPROBLEMS;
 ?></p><?php
 	}
-?></div></fieldset>
-<fieldset id="settings" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
+?></div></fieldset><fieldset id="settings" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_SETTINGS_TITLE;
-			?></h2>
-		<dl>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_host"><?php
+?></h2><dl><dt class="wssD1"><label class="wssE" for="wss_host"><?php
 	echo _WEBO_host;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_host_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2"><input value="<?php
+?>">?</a></label></dt><dd class="wssD2"><input value="<?php
 	echo htmlspecialchars($host);
-				?>" name="wss_host" id="wss_host" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_website_root"><?php
+?>" name="wss_host" id="wss_host" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_website_root"><?php
 	echo _WEBO_website_root;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_website_root_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[1])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3">*</span><input value="<?php
+?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($website_root);
-				?>" name="wss_website_root" id="wss_website_root" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_document_root"><?php
+?>" name="wss_website_root" id="wss_website_root" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_document_root"><?php
 	echo _WEBO_document_root;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_document_root_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[2])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3">*</span><input value="<?php
+?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($document_root);
-				?>" name="wss_document_root" id="wss_document_root" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_css_cachedir"><?php
+?>" name="wss_document_root" id="wss_document_root" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_css_cachedir"><?php
 	echo _WEBO_css_cachedir;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_css_cachedir_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[3])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3">*</span><input value="<?php
+?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($css_cachedir);
-				?>" name="wss_css_cachedir" id="wss_css_cachedir" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_javascript_cachedir"><?php
+?>" name="wss_css_cachedir" id="wss_css_cachedir" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_javascript_cachedir"><?php
 	echo _WEBO_javascript_cachedir;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_javascript_cachedir_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[4])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3">*</span><input value="<?php
+?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($javascript_cachedir);
-				?>" name="wss_javascript_cachedir" id="wss_javascript_cachedir" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_html_cachedir"><?php
+?>" name="wss_javascript_cachedir" id="wss_javascript_cachedir" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_html_cachedir"><?php
 	echo _WEBO_html_cachedir;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_html_cachedir_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[5])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3">*</span><input value="<?php
+?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($html_cachedir);
-				?>" name="wss_html_cachedir" id="wss_html_cachedir" class="wssF"/>
-			</dd><?php
+?>" name="wss_html_cachedir" id="wss_html_cachedir" class="wssF"/></dd><?php
 	if (!$internal) {
-			?><dt class="wssD5">
-				<label class="wssE" for="wss_htaccess_access"><?php
+?><dt class="wssD5"><label class="wssE" for="wss_htaccess_access"><?php
 		echo _WEBO_htaccess_access;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_htaccess_access_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD6"><input type="checkbox"<?php
+?>">?</a></label></dt><dd class="wssD6"><input type="checkbox"<?php
 		echo $htpasswd ? ' checked="checked"' : '';
-				?> name="wss_htaccess_access" id="wss_htaccess_access" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_username"><?php
+?> name="wss_htaccess_access" id="wss_htaccess_access" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_username"><?php
 		echo _WEBO_htaccess_login;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_htaccess_login_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 		if (!empty($error[6])) {
-			?> wssD8<?php
+?> wssD8<?php
 		}
-			?>"><span class="wssD3"></span><input value="<?php
+?>"><span class="wssD3"></span><input value="<?php
 		echo htmlspecialchars($username);
-				?>" name="wss_username" id="wss_username" class="wssF"/>
-			</dd><?php
+?>" name="wss_username" id="wss_username" class="wssF"/></dd><?php
 	}
-			?><dt class="wssD1">
-				<label class="wssE" for="wss_external_scripts_user"><?php
+?><dt class="wssD1"><label class="wssE" for="wss_external_scripts_user"><?php
 	echo _WEBO_external_scripts_user;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_external_scripts_user_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[7])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3"></span><input value="<?php
+?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_user);
-				?>" name="wss_external_scripts_user" id="wss_external_scripts_user" class="wssF"/>
-			</dd>
-			<dt class="wssD1">
-				<label class="wssE" for="wss_external_scripts_pass"><?php
+?>" name="wss_external_scripts_user" id="wss_external_scripts_user" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_external_scripts_pass"><?php
 	echo _WEBO_external_scripts_pass;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_external_scripts_pass_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2<?php
+?>">?</a></label></dt><dd class="wssD2<?php
 	if (!empty($error[7])) {
-			?> wssD8<?php
+?> wssD8<?php
 	}
-			?>"><span class="wssD3"></span><input value="<?php
+?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_pass);
-				?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/>
-			</dd><?php
+?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/></dd><?php
 	if ($premium > 1) {
-			?><dt class="wssD1">
-				<label class="wssE" for="wss_restricted"><?php
+?><dt class="wssD1"><label class="wssE" for="wss_restricted"><?php
 		echo _WEBO_restricted;
-				?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_restricted_HELP;
-			?>">?</a>
-				</label>
-			</dt>
-			<dd class="wssD2"><textarea name="wss_restricted" id="wss_restricted" cols="80" rows="2" class="wssF wssF1"><?php
+?>">?</a></label></dt><dd class="wssD2"><textarea name="wss_restricted" id="wss_restricted" cols="80" rows="2" class="wssF wssF1"><?php
 		echo htmlspecialchars($restricted);
-				?></textarea>
-			</dd><?php
+?></textarea></dd><?php
 	}
-		?></dl>
-	<p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
+?></dl><p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
-?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
-	<fieldset id="updates" class="wssD9 wssA0">
-		<div class="wssD10">
-			<h2 class="wssB"><?php
+?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_UPDATES_TITLE;
-			?></h2>
-			<dl>
-				<dt class="wssD5">
-					<label class="wssE" for="wss_showbeta"><?php
+?></h2><dl><dt class="wssD5"><label class="wssE" for="wss_showbeta"><?php
 	echo _WEBO_showbeta;
-						?> <a class="wssJ9" href="#" title="<?php
+?> <a class="wssJ9" href="#" title="<?php
 	echo _WEBO_showbeta_HELP;
-						?>">?</a>
-					</label>
-				</dt>
-				<dd class="wssD6">
-					<input type="checkbox"<?php
+?>">?</a></label></dt><dd class="wssD6"><input type="checkbox"<?php
 							echo $showbeta ? ' checked="checked"' : '';
-					?> name="wss_showbeta" id="wss_showbeta" title="<?php
+?> name="wss_showbeta" id="wss_showbeta" title="<?php
 	echo $version;
-					?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/>
-				</dd>
-			</dl><?php
+?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/></dd></dl><?php
 	if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
-				?><div id="wss_upd" title="<?php
+?><div id="wss_upd" title="<?php
 		echo _WEBO_LOGIN_VERSION;
-				?> <?php
+?> <?php
 		echo $version_new;
-				?>"></div><?php
+?>"></div><?php
 	} else {
-				?><p class="wssI"><?php
+?><p class="wssI"><?php
 		echo _WEBO_SYSTEM_NOUPDATES;
-				?> (<?php
+?> (<?php
 		echo $version;
-				?>).</p><?php
+?>).</p><?php
 		if (strpos($version, 'b')) {
-				?><p class="wssI">
-					<a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
+?><p class="wssI"><a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
 			echo _WEBO_SYSTEM_ROLLBACK;
-						?> <?php
+?> <?php
 			echo $version_new;
-						?><span class="wssJ6"></span>
-					</a>
-				</p><?php
+?><span class="wssJ6"></span></a></p><?php
 		}
 	}
-				?><div id="wss_beta"<?php
+?><div id="wss_beta"<?php
 	if (!$showbeta) {
-				?> class="wssA0"<?php
+?> class="wssA0"<?php
 	}
-				?> title="<?php
+?> title="<?php
 	echo _WEBO_LOGIN_VERSION;
-				?> <?php
+?> <?php
 	echo $version_beta;
-				?>"></div>
-		</div>
-	</fieldset><?php
+?>"></div></div></fieldset><?php
 	if (!$internal) {
-	?><fieldset id="install" class="wssD9 wssA0">
-		<div class="wssD10">
-			<h2 class="wssB"><?php
+?><fieldset id="install" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 		echo _WEBO_SYSTEM_INSTALL_TITLE;
-			?></h2>
-			<p class="wssI"><?php
+?></h2><p class="wssI"><?php
 		echo _WEBO_SYSTEM_INSTALLED;
-			?>: <?php
+?>: <?php
 		echo htmlspecialchars($cms_version);
-			?></p>
-			<p class="wssI"><?php
+?></p><p class="wssI"><?php
 		echo _WEBO_SYSTEM_INSTALLINFO;
-			?></p>
-			<ol class="wssO7"><?php
+?></p><ol class="wssO7"><?php
 		foreach ($files_to_change as $file) {
 ?><li class="wssO8"><?php
 				if ($file['mode'] == 'start' && empty($file['location'])) {
@@ -556,21 +407,11 @@ require('<?php
 		}
 ?></ol><p class="wssI"><?php
 		echo _WEBO_SYSTEM_INSTALLINFO2;
-			?></p><p class="wssI">
-		<a href="#wss_install" class="wssJ7">
-			<?php
+?></p><p class="wssI"><a href="#wss_install" class="wssJ7"><?php
 		echo _WEBO_DASHBOARD_INSTALL;
-			?>
-			<span class="wssJ6"></span>
-		</a><a href="#wss_uninstall" class="wssJ5">
-			<?php
+?><span class="wssJ6"></span></a><a href="#wss_uninstall" class="wssJ5"><?php
 		echo _WEBO_SPLASH1_UNINSTALL;
-			?>
-			<span class="wssJ6"></span>
-		</a>
-	</p>
-	</div>
-</fieldset><?php
+?><span class="wssJ6"></span></a></p></div></fieldset><?php
 	}
 ?></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;

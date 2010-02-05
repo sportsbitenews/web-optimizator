@@ -1,7 +1,7 @@
 <?php
 /**
- * File from Web Optimizer, Alexander Beshkenadze, Nikolay Matsievsky
- * (http://www.web-optimizer.us/)
+ * File from Alexander Beshkenadze, WEBO Site SpeedUp, WEBO Software
+ * (http://www.webogroup.com/)
  * Envelopes YUI Compressor into PHP call
  * Outputs minified content
  *

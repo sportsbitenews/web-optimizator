@@ -2,9 +2,9 @@
 // ==============================================================================================
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
-// @author     Nikolay Matsievsky aka sunnybear (http://www.web-optimizer.us/)
+// @author     WEBO Software (http://www.webogroup.com/)
 // @version    1.0.0
-// @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
+// @copyright  Copyright &copy; 2009-2010 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
 $basepath = dirname(__FILE__) . '/';

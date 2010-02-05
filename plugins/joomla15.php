@@ -1,7 +1,7 @@
 <?php
 /**
- * File from Web Optimizer, Nikolay Matsievsky (http://webo.in/)
- * Provides a Web Optimizer plugin for Joomla 1.5.xxx
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
+ * Provides a WEBO Site SpeedUp plugin for Joomla 1.5.xxx
  * Adds some exlusions for System-Cache plugin, improves caching for
  * VirtueMart images, enables System-Cache and disables Debug
  *

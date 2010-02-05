@@ -1,6 +1,6 @@
 <?php
 /**
- * Archivo del WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/) 
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Contiene todas las constates en ES
  * by Alejandro Quezada
  *

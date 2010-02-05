@@ -1,6 +1,6 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Provides admin interface.
  *
  **/
@@ -1327,6 +1327,7 @@ class admin {
 				$this->save_option("['username']", htmlspecialchars($username));
 				$this->save_option("['name']", htmlspecialchars($username));
 				$this->save_option("['license']", htmlspecialchars($license));
+				$this->premium = $this->view->validate_license($license);
 				$this->install_install(1);
 				$this->install_favicon();
 				$this->install_dashboard();

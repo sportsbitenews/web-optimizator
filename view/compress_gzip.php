@@ -1,6 +1,6 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, Nikolay Matsievsky (http://www.web-optimizer.us/)
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Outputs info about compressed file
  * Result (success or failure), file name, file size, compressed size
  *

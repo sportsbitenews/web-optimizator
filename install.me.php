@@ -3,16 +3,16 @@
 // ==============================================================================================
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
-// @author     Nikolay Matsievsky aka sunnybear (http://webo.name)
+// @author     WEBO Software (http://www.webogroup.com/)
 // @version    1.0.0
-// @copyright  Copyright &copy; 2009 Nikolay Matsievsky, All Rights Reserved
+// @copyright  Copyright &copy; 2009-2010 WEBO Software, All Rights Reserved
 // ==============================================================================================
-// To install Web Optimizer please copy this file to the document root, make document root
+// To install WEBO Site SpeedUp please copy this file to the document root, make document root
 // writable for your web server (or create writable web-optimizer directory) and go
 // to /install.me.php in your browser.
 // ==============================================================================================
 // If you are using advanced framework (such as CodeIgniter, Zend Framework, Symfony, etc)
-// please disable default Rewrite rules to setup Web Optimizer properly. I.e. comment these lines
+// please disable default Rewrite rules to setup WEBO Site SpeedUp properly. I.e. comment these lines
 // RewriteCond %{REQUEST_FILENAME} !-f
 // RewriteRule .* index.php
 // in your .htaccess
@@ -110,12 +110,4 @@
 	}
 
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>WEBO Site SpeedUp Installation</title>
-</head>
-<body>
-<h1>We have some problems during WEBO Site SpeedUp installation</h1>
-<p><?php echo $error ?></p>
-</body>
-</html>
+?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>WEBO Site SpeedUp Installation</title></head><body><h1>We have some problems during WEBO Site SpeedUp installation</h1><p><?php echo $error ?></p></body></html>
