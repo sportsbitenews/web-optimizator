@@ -2740,19 +2740,31 @@ class web_optimizer {
 /* try to download remote file */
 			$ch = @curl_init($file);
 			$fp = @fopen($return_filename, "w");
+			$fph = @fopen($return_filename . '.headers', "w");
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Faster than Lightning; http://www.web-optimizer.us/) Firefox 3.5.3");
+				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_REFERER, $host);
+				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
 					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
 				}
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
+				@fclose($fph);
+/* check if we deal with 404 error, remove result */
+				$headers = @file_get_contents($return_filename . '.headers');
+				if (strpos($headers, '404 Not Found')) {
+					@unlink($return_filename);
+				}
+				@unlink($return_filename . '.headers');
 /* try to replace background images to local ones */
 				$contents = @file_get_contents($return_filename);
-				if ($contents) {
+				if (!empty($contents)) {
 					$fp = @fopen($return_filename, "w");
 					if ($fp) {
 /* replace only in CSS files */
