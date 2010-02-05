@@ -145,7 +145,7 @@ class admin {
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator@", $this->basepath);
 /* fix for not supported languages */
-		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua')) ? $this->language : 'en';
+		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr')) ? $this->language : 'en';
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&

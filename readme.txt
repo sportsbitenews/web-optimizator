@@ -102,7 +102,7 @@ A lot of different persons contributed to this project. Some of them:
  * gkondratenko (documentation, integration, interface & usability, make up
    fixes, known issues gathering)
  * markusmerz (a lot of minor bugs found and overall beta testing perfromed,
-   DE localization of 0.9+ versions)
+   DE localization of 1.0+ versions)
  * ShimON (Java branch, CSS Sprites unit-tests)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
@@ -110,8 +110,8 @@ A lot of different persons contributed to this project. Some of them:
  * crazyyy (UA localization)
  * Ajexandro (ES localization)
  * jos (DE localization of 0.6+ versions)
- * veroniquemckay (FR localization of 0.9+ versions)
- * vadims (LT localization of 0.9+ versions)
+ * veroniquemckay (FR localization of 1.0+ versions)
+ * vadims (LT localization of 1.0+ versions)
  
 License
 -----------------------

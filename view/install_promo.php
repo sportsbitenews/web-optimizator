@@ -273,21 +273,5 @@
 				?></span>
 			</td>
 		</tr>
-		<tr class="wssT8">
-			<th class="wssT9 wssT11"><?php
-	echo _WEBO_SPLASH2_COMPARISON_SUPPORT;
-			?></th>
-			<td class="wssT9 wssT14">-</td>
-			<td class="wssT9 wssT14">-</td>
-			<td class="wssT9">24/7</td>
-		</tr>
-		<tr class="wssT8 wssT12">
-			<th class="wssT9 wssT11"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPDATE;
-			?></th>
-			<td class="wssT9 wssT13">+</td>
-			<td class="wssT9 wssT13">+</td>
-			<td class="wssT9 wssT13">+</td>
-		</tr>
 	</tbody>
 </table>

@@ -24,6 +24,7 @@ define('_WEBO_GENERAL_de', 'Deutsch');
 define('_WEBO_GENERAL_es', 'Español');
 define('_WEBO_GENERAL_ua', 'Українська');
 define('_WEBO_GENERAL_en', 'English');
+define('_WEBO_GENERAL_fr', 'Français');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Хмм... у нас виникла проблема');
@@ -574,7 +575,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества'
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '399 руб.');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '499 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '1999 руб.');
 
 /* About */

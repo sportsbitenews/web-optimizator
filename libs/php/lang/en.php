@@ -23,6 +23,7 @@ define('_WEBO_GENERAL_de', 'Deutsch');
 define('_WEBO_GENERAL_es', 'Español');
 define('_WEBO_GENERAL_ua', 'Українська');
 define('_WEBO_GENERAL_en', 'English');
+define('_WEBO_GENERAL_fr', 'Français');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Hmmm... we have a problem');
@@ -571,7 +572,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'not included');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'All benefits');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Price');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'free');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '$19.99');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '$24.99');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '$99');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Updates');
 

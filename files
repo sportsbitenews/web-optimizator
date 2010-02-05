@@ -9,8 +9,7 @@ libs/css/apply.png
 libs/css/buttons.png
 libs/css/button.red.png
 libs/css/button.red.hover.png
-libs/css/corner.gif
-libs/css/corner.disabled.gif
+libs/css/corners.gif
 libs/css/edit.png
 libs/css/delete.png
 libs/css/lang.hover.png
@@ -28,6 +27,7 @@ libs/js/yass.loader.js
 libs/php/lang/de.php
 libs/php/lang/en.php
 libs/php/lang/es.php
+libs/php/lang/fr.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
 libs/php/.htaccess
