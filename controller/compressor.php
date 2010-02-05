@@ -289,6 +289,7 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
 					$this->options['htaccess']['enabled'] &&
+					$this->options['far_future_expires']['javascript'] &&
 					$this->premium,
 				"unobtrusive" => $this->options['unobtrusive']['on'] &&
 					!$this->options['unobtrusive']['body'] &&
@@ -326,6 +327,7 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
 					$this->options['htaccess']['enabled'] &&
+					$this->options['far_future_expires']['css'] &&
 					$this->premium,
 				"data_uris" => $this->options['data_uris']['on'] &&
 					$this->premium,
