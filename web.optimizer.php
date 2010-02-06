@@ -7,7 +7,7 @@
 // @copyright  Copyright &copy; 2009-2010 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
-$basepath = dirname(__FILE__) . '/';
+$basepath = realpath(dirname(__FILE__)) . '/';
 $compress_options['php'] = substr(phpversion(), 0, 1);
 
 if ($compress_options['php'] == 4) {
