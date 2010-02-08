@@ -1277,13 +1277,13 @@ class web_optimizer {
 			foreach ($this->libraries as $klass => $library) {
 /* it seems PHP4 receives on 1 parameter for class_exists */
 				if (!class_exists($klass)) {
-					require_once($options['installdir'] . 'libs/php/' . $library);
+					require($options['installdir'] . 'libs/php/' . $library);
 				}
 			}
 		} else {
 			foreach ($this->libraries as $klass => $library) {
 				if (!class_exists($klass, false)) {
-					require_once($options['installdir'] . 'libs/php/' . $library);
+					require($options['installdir'] . 'libs/php/' . $library);
 				}
 			}
 		}
