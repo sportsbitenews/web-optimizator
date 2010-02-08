@@ -969,7 +969,7 @@ class admin {
 			'css_writable' => is_writable($css_cachedir),
 			'html_writable' => is_writable($html_cachedir),
 			'config_writable' => is_writable($this->basepath . $this->options_file),
-			'memory_limit' => round($memory_limit) > 16 && round($memory_limit) < 33
+			'memory_limit' => round($memory_limit) > 16
 		);
 		$warnings = array(
 			'htaccess_writable' => !$htaccess_available ||
@@ -1007,7 +1007,7 @@ class admin {
 				$this->compress_options['htaccess']['access']) ||
 				$this->internal ? 1 : 0,
 			'cms' => $this->system_info($website_root),
-			'memory_limit' => round($memory_limit) > 32
+			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15
 		);
 		$e = $w = 0;
 /* count acturl troubles / warnings */
