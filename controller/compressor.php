@@ -367,7 +367,7 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"external_scripts" => $this->options['external_scripts']['css'],
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
-				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
+				"external_scripts_exclude" => $this->options['external_scripts']['additional_list'],
 				"include_code" => ($this->premium > 1) ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
@@ -1691,7 +1691,8 @@ class web_optimizer {
 			}
 		}
 /* strange thing: array is filled even if string is empty */
-		$excluded_scripts = explode(" ", $this->options['javascript']['external_scripts_exclude']);
+		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
+		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if (is_array($this->initial_files)) {
 /* enable caching / gzipping proxy? */
 			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
@@ -1703,15 +1704,19 @@ class web_optimizer {
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-				if (empty($value['file']) &&
+				if ($value['tag'] == 'script' && ((empty($value['file']) &&
 					!$this->options['javascript']['unobtrusive'] &&
-					((!$this->options['javascript']['inline_scripts'] &&
-							$value['tag'] == 'script') ||
-						(!$this->options['css']['inline_scripts'] &&
-							$value['tag'] == 'link')) ||
-					(!empty($excluded_scripts[0]) &&
+					!$this->options['javascript']['inline_scripts']) ||
+					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts))) {
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)))) {
+					unset($this->initial_files[$key]);
+/* but keep CSS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
+				} elseif ($value['tag'] == 'link' && ((empty($value['file']) &&
+					!$this->options['css']['inline_scripts']) ||
+					(!empty($excluded_scripts_css[0]) &&
+						!empty($value['file'] ) &&
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)))) {
 					unset($this->initial_files[$key]);
 /* rewrite skipped file with caching proxy */
 				} elseif (!empty($value['file']) &&

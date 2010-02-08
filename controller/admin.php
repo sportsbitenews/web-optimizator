@@ -969,7 +969,7 @@ class admin {
 			'css_writable' => is_writable($css_cachedir),
 			'html_writable' => is_writable($html_cachedir),
 			'config_writable' => is_writable($this->basepath . $this->options_file),
-			'memory_limit' => round($memory_limit) > 16
+			'memory_limit' => round($memory_limit) > 16 && round($memory_limit) < 33
 		);
 		$warnings = array(
 			'htaccess_writable' => !$htaccess_available ||
