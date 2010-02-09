@@ -618,7 +618,7 @@ __________________
 			$space = $space ? $space : strlen($uniformed_key);
 			$uniformed_key = substr_replace($uniformed_key, '', $semicolon, $space - $semicolon);
 		}
-		return $key;
+		return $uniformed_key;
 	}
 /* try to restore CSS property from some parent selectors for a given one */
 	function restore_property ($import, $selector, $property, $stage = 1) {

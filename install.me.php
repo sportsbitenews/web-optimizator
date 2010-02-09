@@ -91,7 +91,7 @@
 					if (is_file($install_directory . '/index.php')) {
 /* remove current file */
 						@unlink(__FILE__);
-/* redirect to Web Optimizer installation */
+/* redirect to WEBO Site SpeedUp installation */
 						header("Location: " . $install_directory . "/index.php");
 						die();
 					} else {
