@@ -35,7 +35,7 @@ class compressor_view {
 			$filename = str_replace("//", "/", $this->unify_dir_separator(getenv("SCRIPT_FILENAME")));
 			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr($filename, 0, strpos($filename, $name))));
 		}
-		$this->paths['full']['document_root'] = realpath(str_replace("//", "/", $this->paths['full']['document_root'])) . '/';
+		$this->paths['full']['document_root'] = str_replace("//", "/", $this->unify_dir_separator(realpath($this->paths['full']['document_root'])) . '/');
 /* Get the view directory */
 		if ($document_root && !empty($_SERVER['SCRIPT_NAME'])) {
 			$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->unify_dir_separator($document_root)) . $this->prevent_trailing_slash($this->unify_dir_separator(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME'])));
@@ -48,7 +48,7 @@ class compressor_view {
 		}
 
 		$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->unify_dir_separator($this->paths['full']['current_directory']));
-		$this->paths['full']['current_directory'] = str_replace("//", "/", $this->paths['full']['current_directory']);
+		$this->paths['full']['current_directory'] = $this->unify_dir_separator(str_replace("//", "/", $this->paths['full']['current_directory']));
 /* Set the current relative path */
 		$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
 /* Set the root relative path */

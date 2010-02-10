@@ -1227,7 +1227,7 @@ class web_optimizer {
 			$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
 /* just provide quick checksum of head / body status */
 		} elseif (empty($options['file'])) {
-			$cache_file = $this->head_status;
+			$cache_file = $this->head_status . $options['tag'];
 /* use general file if it has been defined */
 		} else {
 			$cache_file = $options['file'];
