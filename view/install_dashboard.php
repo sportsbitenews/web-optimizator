@@ -64,9 +64,9 @@
 	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
 ?>" id="wss_buzz"><div class="wssN2"><h2 class="wssB"><a href="#wss_about" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_BUZZ;
-?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.web-optimizer.us/" rel="nofollow" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')"></a></div></div><div class="wssN5<?php
+?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" rel="nofollow" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_news') !== false ? ' wssA0' : '';
-?>" id="wss_news"><div class="wssN2 wssN21"><h2 class="wssB"><a href="http://blog.web-optimizer.us/" class="wssN3"><?php
+?>" id="wss_news"><div class="wssN2 wssN21"><h2 class="wssB"><a href="http://blog.webogroup.com/" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_NEWS;
 ?></a></h2><div id="wss_feed"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
@@ -120,15 +120,15 @@
 	}
 ?><a class="wssJ20" href="javascript:_.hide('wss_tools')"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
-?>" id="wss_links"><div class="wssN2"><h2 class="wssB"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
+?>" id="wss_links"><div class="wssN2"><h2 class="wssB"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_LINKS;
-?></a></h2><ul class="wssO wssO3"><li class="wssO4"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+?></a></h2><ul class="wssO wssO3"><li class="wssO4"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_WEBSITE;
 ?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/w/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_UG;
 ?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_ISSUES;
-?></a></li><li class="wssO4"><a href="http://web-optimizer.us/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
 ?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')"></a></div></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_status') !== false ? ' wssA0' : '';

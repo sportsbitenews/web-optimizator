@@ -82,7 +82,7 @@ if (!$ajax) {
 	require($page.".php");
 
 	if (!$ajax) {
-?></div><p class="wss_y"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wss_x" title="WEBO Software"></a>&copy; 2009-<?php
+?></div><p class="wss_y"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wss_x" title="WEBO Software"></a>&copy; 2009-<?php
 		echo date("Y");
 ?> <a href="#wss_about" class="wss_z" title="About WEBO Site SpeedUp">WEBO Site SpeedUp</a><?php
 		if (empty($page) || (!empty($page) && $page != 'install_enter_password' && $page != 'install_set_password')) {

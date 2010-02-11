@@ -90,15 +90,15 @@
 	echo _WEBO_ABOUT_SEND;
 ?>" class="wssG"/><input type="hidden" name="wss_page" value="install_about"/><input type="hidden" name="wss_Submit" value="1"/></p></form><div class="wssH wssH3"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH"><h2 class="wssB"><?php
 	echo _WEBO_ABOUT_ABOUT;
-?></h2><ul class="wssO"><li class="wssO4"><a href="http://www.web-optimizer.us/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
+?></h2><ul class="wssO"><li class="wssO4"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_DASHBOARD_LINKS_WEBSITE;
-?></a></li><li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/features.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/site-speedup/features/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_ABOUT_FEATURES;
-?></a></li><li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/benefits.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/site-speedup/benefits/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_ABOUT_BENEFITS;
-?></a></li><li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/requirements.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/site-speedup/requirements/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_ABOUT_REQUIREMENTS;
-?></a></li><li class="wssO4"><a href="http://www.web-optimizer.us/web-optimizer/buzz.html?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/site-speedup/buzz/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_ABOUT_BUZZ;
 ?></a></li><li class="wssO4"><a href="#wss_promo" class="wssJ"><?php
 	echo _WEBO_SPLASH2_COMPARISON;
@@ -114,6 +114,6 @@
 	echo _WEBO_ABOUT_SUPPORT_CLIENT;
 ?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/wiki/ServerSideIssues?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ"><?php
 	echo _WEBO_ABOUT_SUPPORT_SERVER;
-?></a></li><li class="wssO4"><a href="http://web-optimizer.us/support/" class="wssJ"><?php
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/" class="wssJ"><?php
 	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
 ?></a></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div>
