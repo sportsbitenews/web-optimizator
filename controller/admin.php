@@ -1815,9 +1815,8 @@ class admin {
 		}
 		$this->page_variables = array(
 			"page" => 'options_delete',
-			"email" => $email,
 			"submit" => 1,
-			"error" => $error,
+			"error" => $this->error,
 			"config" => $config_file
 		);
 		$this->view->render("install_options", $this->page_variables);
