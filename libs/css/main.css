@@ -69,7 +69,7 @@ a.wss_z:hover,a.wss_z:focus,a.wss_z:active{color:#0002bf!important}
 a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 
 .wssA{color:#808080;font:400 20px/27px Tahoma,Arial,Tahoma,Sans-serif;margin:0;padding:2px 0 0 31px}
-.wssN0 .wssA{background:url(login.png) no-repeat;margin:8px 0 0 50px;padding:2px 0 0 29px}
+.wssN0 .wssA{background:url(login.png) no-repeat;margin:8px 0 0 50px;padding:2px 0 0 31px}
 .wssA2{background:url(install.png) no-repeat}
 .wssA3{background:url(info.png) no-repeat;padding:10px 0 10px 31px}
 .wssA4{background:url(uninstall.png) no-repeat}
@@ -242,10 +242,10 @@ a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 .wssJ12{background:url(icon.blogger.png) no-repeat}
 .wssJ13{background:url(icon.joomla.png) no-repeat}
 .wssJ14{background:url(icon.wordpress.png) no-repeat}
-.wssJ20{background:url(corner.png) no-repeat;display:block;height:37px;outline:0;position:absolute;right:-2px;top:-2px;width:37px}
-a.wssJ20:hover{background:url(corners.gif) -37px 0 no-repeat}
-.wssN20 .wssJ20{background:url(corner.disabled.png) no-repeat;height:37px;width:37px}
-.wssN20 a.wssJ20:hover{background-position:0 0}
+.wssJ20{background:url(corner.png) no-repeat;display:block;height:37px;outline:0;position:absolute;right:-2px;top:-2px;width:36px}
+a.wssJ20:hover{background:url(corners.gif) -38px 0 no-repeat}
+.wssN20 .wssJ20{background:url(corner.disabled.png) no-repeat;height:37px;width:36px}
+.wssN20 a.wssJ20:hover{background-position:0 -1px}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK1{border:1px solid #fff;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}

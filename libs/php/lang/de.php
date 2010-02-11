@@ -327,7 +327,7 @@ define('_WEBO_parallel_additional_list_HELP', 'These hosts are used to distribut
 
 define('_WEBO_htaccess_enabled', '<code>.htaccess</code> aktivieren');
 define('_WEBO_htaccess_enabled_HELP', 'This option will create (or modify) .htaccess file in website root directory. Also it creates backup version of this file. .htaccess file content depends on the other options in this group.');
-define('_WEBO_htaccess_mod_deflate', '<code>mod_deflate</code> verwenden');
+define('_WEBO_htaccess_mod_deflate', '<code>mod_deflate</code> + <code>mod_filter</code> verwenden');
 define('_WEBO_htaccess_mod_deflate_HELP', 'This is required for dynamic gzip compression. It\'s an alternative for mod_gzip.');
 define('_WEBO_htaccess_mod_gzip', '<code>mod_gzip</code> verwenden');
 define('_WEBO_htaccess_mod_gzip_HELP', 'This is required for dynamic gzip compression. It\'s an alternative for mod_deflate.');
@@ -453,7 +453,7 @@ define('_WEBO_SYSTEM_gd_possibility', '<code>gd</code> isn\'t available');
 define('_WEBO_SYSTEM_gd_full_support', '<code>gd</code> is partly available');
 define('_WEBO_SYSTEM_yui_possibility', 'YUI Compressor isn\'t available');
 define('_WEBO_SYSTEM_hosts_possibility', 'No multiple hosts support');
-define('_WEBO_SYSTEM_mod_deflate', 'No <code>mod_deflate</code> support');
+define('_WEBO_SYSTEM_mod_deflate', 'No <code>mod_deflate</code> + <code>mod_filter</code> support');
 define('_WEBO_SYSTEM_mod_gzip', 'No <code>mod_gzip</code> support');
 define('_WEBO_SYSTEM_mod_headers', 'No <code>mod_headers</code> support');
 define('_WEBO_SYSTEM_mod_expires', 'No <code>mod_expires</code> support');

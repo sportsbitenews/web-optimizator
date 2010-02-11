@@ -8,7 +8,7 @@
 
 /* general layout */
 define('_WEBO_CHARSET', "utf-8");
-define('_WEBO_GENERAL_TITLE', 'Конфігурація Web Optimizer');
+define('_WEBO_GENERAL_TITLE', 'Конфігурація WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Купить</a>');
 define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Купить</a>');
@@ -458,7 +458,7 @@ define('_WEBO_SYSTEM_gd_possibility', 'Расширение <code>gd</code> не
 define('_WEBO_SYSTEM_gd_full_support', 'Расширение <code>gd</code> доступно частично');
 define('_WEBO_SYSTEM_yui_possibility', 'YUI Compressor не доступен');
 define('_WEBO_SYSTEM_hosts_possibility', 'Нет множественных хостов');
-define('_WEBO_SYSTEM_mod_deflate', 'Нет поддержки <code>mod_deflate</code>');
+define('_WEBO_SYSTEM_mod_deflate', 'Нет поддержки <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_SYSTEM_mod_gzip', 'Нет поддержки <code>mod_gzip</code>');
 define('_WEBO_SYSTEM_mod_headers', 'Нет поддержки <code>mod_headers</code>');
 define('_WEBO_SYSTEM_mod_expires', 'Нет поддержки <code>mod_expires</code>');

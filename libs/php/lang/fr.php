@@ -454,7 +454,7 @@ define('_WEBO_SYSTEM_gd_possibility', 'Le <code>gd</code> n\'est pas disponible'
 define('_WEBO_SYSTEM_gd_full_support', 'Le <code>gd</code> est partiellement disponible');
 define('_WEBO_SYSTEM_yui_possibility', 'Le Compresseur YUI  n\'est pas disponible');
 define('_WEBO_SYSTEM_hosts_possibility', 'Pas de prise en charge d\'hébergeurs multiples');
-define('_WEBO_SYSTEM_mod_deflate', 'Pas de prise en charge <code>mod_deflate</code> ');
+define('_WEBO_SYSTEM_mod_deflate', 'Pas de prise en charge <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_SYSTEM_mod_gzip', 'Pas de prise en charge <code>mod_gzip</code> ');
 define('_WEBO_SYSTEM_mod_headers', 'Pas de prise en charge <code>mod_headers</code> ');
 define('_WEBO_SYSTEM_mod_expires', 'Pas de prise en charge <code>mod_expires</code> ');
