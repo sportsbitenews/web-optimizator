@@ -267,7 +267,7 @@ class web_optimizer {
 		$full_options = array(
 			"javascript" => array(
 				"cachedir" => $this->options['javascript_cachedir'],
-				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['javascript_cachedir']),
+				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['javascript_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] &&
@@ -308,7 +308,7 @@ class web_optimizer {
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
-				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['css_cachedir']),
+				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['css_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] &&
@@ -375,7 +375,7 @@ class web_optimizer {
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
-				"cachedir_relative" => str_replace($this->view->paths['full']['document_root'], "/", $this->options['html_cachedir']),
+				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['html_cachedir']),
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] &&
 					((!$this->options['htaccess']['mod_gzip'] &&
@@ -761,7 +761,9 @@ class web_optimizer {
 		if (!empty($options['minify']) ||
 			(!empty($options['parallel']) &&
 				!empty($options['parallel_hosts'])) ||
-			!empty($options['unobtrusive_all'])) {
+			!empty($options['unobtrusive_all']) ||
+			!empty($this->options['page']['far_future_expires_rewrite']) ||
+			!empty($this->options['page']['far_future_expires_external'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */

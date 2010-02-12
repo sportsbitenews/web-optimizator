@@ -2734,8 +2734,9 @@ class admin {
 			@copy($this->htaccess, $this->htaccess . '.backup');
 		}
 		$content = '# Web Optimizer options';
-		if (!empty($this->input['wss_htaccess_mod_gzip'])) {
-			$content .= "
+		if (!empty($this->input['wss_htaccess_enabled'])) {
+			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
+				$content .= "
 <IfModule mod_gzip.c>
 	mod_gzip_on Yes
 	mod_gzip_can_negotiate Yes
@@ -2749,21 +2750,21 @@ class admin {
 	mod_gzip_handle_methods GET POST
 	mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
 	mod_gzip_dechunk No";
-			if (!empty($this->input['wss_gzip_page'])) {
-				$content .= "
+				if (!empty($this->input['wss_gzip_page'])) {
+					$content .= "
 	mod_gzip_item_include mime ^text/plain$
 	mod_gzip_item_include mime ^text/html$
 	mod_gzip_item_include mime ^text/xml$
 	mod_gzip_item_include mime ^application/xhtml+xml$
 	mod_gzip_item_include mime ^image/x-icon$
 	mod_gzip_item_include mime ^httpd/unix-directory$";
-			}
-			if (!empty($this->input['wss_gzip_css'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_gzip_css'])) {
+					$content .= "
 	mod_gzip_item_include mime ^text/css$";
-			}
-			if (!empty($this->input['wss_gzip_javascript'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_gzip_javascript'])) {
+					$content .= "
 	mod_gzip_item_include mime ^text/javascript$
 	mod_gzip_item_include mime ^application/javascript$
 	mod_gzip_item_include mime ^application/x-javascript$
@@ -2772,9 +2773,9 @@ class admin {
 	mod_gzip_item_include mime ^application/ecmascript$
 	mod_gzip_item_include mime ^text/vbscript$
 	mod_gzip_item_include mime ^text/fluffscript$";
-			}
-			if (!empty($this->input['wss_gzip_fonts'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_gzip_fonts'])) {
+					$content .= "
 	mod_gzip_item_include mime ^image/svg+xml$
 	mod_gzip_item_include mime ^application/x-font$
 	mod_gzip_item_include mime ^application/x-font-ttf$
@@ -2785,72 +2786,72 @@ class admin {
 	mod_gzip_item_include mime ^application/x-font-truetype$
 	mod_gzip_item_include mime ^application/vnd.ms-fontobject
 	mod_gzip_item_include mime ^application/vnd.oasis.opendocument.formula-template$";
-			}
-			$content .= "
+				}
+				$content .= "
 </IfModule>";
-		}
-		if (!empty($this->input['wss_htaccess_mod_setenvif'])) {
-			$content .= "
+			}
+			if (!empty($this->input['wss_htaccess_mod_setenvif'])) {
+				$content .= "
 <IfModule mod_setenvif.c>
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
 	BrowserMatch SV1; !no_gzip
 	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 </IfModule>";
-		}
-		if (!empty($this->input['wss_htaccess_mod_deflate'])) {
-			$content .= "
+			}
+			if (!empty($this->input['wss_htaccess_mod_deflate'])) {
+				$content .= "
 <IfModule mod_deflate.c>";
-			if (!empty($this->input['wss_gzip_page'])) {
-				$content .= "
+				if (!empty($this->input['wss_gzip_page'])) {
+					$content .= "
 	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
-			}
-			if (!empty($this->input['wss_gzip_css'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_gzip_css'])) {
+					$content .= "
 	AddOutputFilterByType DEFLATE text/css";
-			}
-			if (!empty($this->input['wss_gzip_javascript'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_gzip_javascript'])) {
+					$content .= "
 	AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript";
-			}
+				}
 /* add gzip for fonts
 http://www.phpied.com/gzip-your-font-face-files/ */
-			if (!empty($this->input['wss_gzip_fonts'])) {
-				$content .= "
+				if (!empty($this->input['wss_gzip_fonts'])) {
+					$content .= "
 	AddOutputFilterByType DEFLATE image/svg+xml application/x-font-ttf application/x-font font/opentype font/otf font/ttf application/x-font-truetype application/x-font-opentype application/vnd.ms-fontobject application/vnd.oasis.opendocument.formula-template";
-			}
-			$content .= "
+				}
+				$content .= "
 </IfModule>";
-		}
+			}
 /* prevent 403 error due to no FollowSymLinks
 http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
 http://code.google.com/p/web-optimizator/issues/detail?id=156 */
-		if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
-			$content .= "
+			if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
+				$content .= "
 Options +FollowSymLinks +SymLinksIfOwnerMatch";
-		}
+			}
 /* try to add static gzip */
-		if (!empty($this->input['wss_htaccess_mod_mime'])) {
-			$content .= "
+			if (!empty($this->input['wss_htaccess_mod_mime'])) {
+				$content .= "
 <IfModule mod_mime.c>
 	AddEncoding gzip .gz
 	AddEncoding deflate .df
 </IfModule>";
-			if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
-				$content .= "
+				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
+					$content .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
-				if (!empty($this->input['wss_far_future_expires_css'])) {
-					$content .= "
+					if (!empty($this->input['wss_far_future_expires_css'])) {
+						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
 				}
-				if (!empty($this->input['wss_far_future_expires_javascript'])) {
-					$content .= "
+					if (!empty($this->input['wss_far_future_expires_javascript'])) {
+						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
 				}
-				if (!empty($this->input['wss_gzip_page'])) {
-					$content .= "
+					if (!empty($this->input['wss_gzip_page'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2873,8 +2874,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		ForceType text/plain
 	</FilesMatch>";
 				}
-				if (!empty($this->input['wss_gzip_css'])) {
-					$content .= "
+					if (!empty($this->input['wss_gzip_css'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2882,9 +2883,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.css\.gz$>
 		ForceType text/css
 	</FilesMatch>";
-				}
-				if (!empty($this->input['wss_gzip_javascript'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_javascript'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2892,9 +2893,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.js\.gz$>
 		ForceType application/x-javascript
 	</FilesMatch>";
-				}
-				if (!empty($this->input['wss_gzip_fonts'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_gzip_fonts'])) {
+						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -2911,30 +2912,30 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	<FilesMatch \.eot\.gz$>
 		ForceType application/vnd.ms-fontobject
 	</FilesMatch>";
-				}
-				$content .= "
+					}
+					$content .= "
 </IfModule>";
-			}
-		} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
-			$content .= "
+				}
+			} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
+				$content .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
-			if (!empty($this->input['wss_far_future_expires_css'])) {
-				$content .= "
+				if (!empty($this->input['wss_far_future_expires_css'])) {
+					$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
-			}
-			if (!empty($this->input['wss_far_future_expires_javascript'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_javascript'])) {
+					$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
+				}
 			}
-		}
-		if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
-			$content .= "
+			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
+				$content .= "
 <IfModule mod_expires.c>
 	ExpiresActive On";
-			if (!empty($this->input['wss_far_future_expires_html'])) {
-				$content .= "
+				if (!empty($this->input['wss_far_future_expires_html'])) {
+					$content .= "
 	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
 		ExpiresDefault \"access plus " . $this->input['wss_far_future_expires_html_timeout'] . " seconds\"
 	</FilesMatch>
@@ -2942,16 +2943,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType text/xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType application/xhtml+xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/plain A" . $this->input['wss_far_future_expires_html_timeout'];
-			}
-			if (!empty($this->input['wss_far_future_expires_css'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_css'])) {
+					$content .= "
 	<FilesMatch \.css$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType text/css A315360000";
-			}
-			if (!empty($this->input['wss_far_future_expires_javascript'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_javascript'])) {
+					$content .= "
 	<FilesMatch \.js$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -2963,9 +2964,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType application/ecmascript A315360000
 	ExpiresByType text/vbscript A315360000
 	ExpiresByType text/fluffscript A315360000";
-			}
-			if (!empty($this->input['wss_far_future_expires_images'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_images'])) {
+					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -2974,9 +2975,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType image/jpeg A315360000
 	ExpiresByType image/x-icon A315360000
 	ExpiresByType image/bmp A315360000";
-			}
-			if (!empty($this->input['wss_far_future_expires_fonts'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_fonts'])) {
+					$content .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -2990,9 +2991,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType image/svg+xml A315360000
 	ExpiresByType application/vnd.ms-fontobject A315360000
 	ExpiresByType font/woff A315360000";
-			}
-			if (!empty($this->input['wss_far_future_expires_video'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_video'])) {
+					$content .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -3004,9 +3005,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType video/x-ms-wax A315360000
 	ExpiresByType video/x-ms-wmx A315360000
 	ExpiresByType video/x-ms-wm A315360000";
-			}
-			if (!empty($this->input['wss_far_future_expires_static'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_far_future_expires_static'])) {
+					$content .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -3016,62 +3017,62 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType application/rtf A315360000
 	ExpiresByType application/vnd.ms-excel A315360000
 	ExpiresByType application/vnd.ms-powerpoint A315360000";
-			}
-			$content .= "
+				}
+				$content .= "
 </IfModule>";
 /* add Expires headers via PHP script if we don't have mod_expires */
-		} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
-			@is_file($this->compress_options['html_cachedir'] . 'wo.static.php')) {
-				$cachedir = str_replace($this->compress_options['document_root'],
-					"/", $this->compress_options['html_cachedir']);
-				$content .= "
-<IfModule mod_rewrite.c>";
-				if (!empty($this->input['wss_far_future_expires_css'])) {
+			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
+				@is_file($this->compress_options['html_cachedir'] . 'wo.static.php')) {
+					$cachedir = str_replace($this->compress_options['document_root'],
+						"/", $this->compress_options['html_cachedir']);
 					$content .= "
+<IfModule mod_rewrite.c>";
+					if (!empty($this->input['wss_far_future_expires_css'])) {
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_javascript'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_javascript'])) {
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
-				}
+					}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
-					$content .= "
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_video'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_video'])) {
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_static'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_static'])) {
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-				}
-				if (!empty($this->input['wss_far_future_expires_fonts'])) {
-					$content .= "
+					}
+					if (!empty($this->input['wss_far_future_expires_fonts'])) {
+						$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-				}
-				$content .= "
-</IfModule>";
-		}
-		if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
-			$content .= "
-<IfModule mod_headers.c>";
-			if (!empty($this->input['wss_htaccess_mod_deflate']) ||
-				!empty($this->input['wss_htaccess_mod_gzip'])) {
+					}
 					$content .= "
+</IfModule>";
+			}
+			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
+				$content .= "
+<IfModule mod_headers.c>";
+				if (!empty($this->input['wss_htaccess_mod_deflate']) ||
+					!empty($this->input['wss_htaccess_mod_gzip'])) {
+						$content .= "
 	<FilesMatch \.(css|js)$>
 		Header append Vary User-Agent
 		Header append Cache-Control private
 	</FilesMatch>";
-			}
-			if (!empty($this->input['wss_htaccess_mod_expires'])) {
-				$content .= "
+				}
+				if (!empty($this->input['wss_htaccess_mod_expires'])) {
+					$content .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
 		Header append Cache-Control public
 	</FilesMatch>
@@ -3079,9 +3080,10 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		Header unset Last-Modified
 		FileETag MTime
 	</FilesMatch>";
-			}
-			$content .= "
+				}
+				$content .= "
 </IfModule>";
+			}
 		}
 		$content .= "\n# Web Optimizer end";
 /* define CMS */
