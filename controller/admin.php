@@ -3028,26 +3028,32 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 <IfModule mod_rewrite.c>";
 				if (!empty($this->input['wss_far_future_expires_css'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 				}
 				if (!empty($this->input['wss_far_future_expires_javascript'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 				}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 				}
 				if (!empty($this->input['wss_far_future_expires_video'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 				}
 				if (!empty($this->input['wss_far_future_expires_static'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 				}
 				if (!empty($this->input['wss_far_future_expires_fonts'])) {
 					$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 				}
 				$content .= "
