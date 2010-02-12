@@ -192,6 +192,8 @@ $compress_options['parallel']['allowed_list'] = "";
 $compress_options['parallel']['additional'] = "";
 ## List of satellites' hosts, i.e. i1 i2 i3
 $compress_options['parallel']['additional_list'] = "";
+## Lisf of ignored images, separated by space, i.e. xxc.php
+$compress_options['parallel']['ignore_list'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "0";
 $compress_options['htaccess']['mod_deflate'] = "1";

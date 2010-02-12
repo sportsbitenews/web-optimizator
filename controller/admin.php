@@ -2337,6 +2337,11 @@ class admin {
 					'value' => $this->compress_options['parallel']['additional_list'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'parallel_ignore_list' => array(
+					'value' => $this->compress_options['parallel']['ignore_list'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0
 				)
 			)
 		);
@@ -2373,6 +2378,7 @@ class admin {
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',
+			'wss_parallel_ignore_list',
 			'wss_description',
 			'wss_title',
 			'wss_config') as $val) {

@@ -323,8 +323,10 @@ define('_WEBO_parallel_allowed_list', 'Les hôtes permis (séparer par un espace
 define('_WEBO_parallel_allowed_list_HELP', 'Les hôtes listés seront utilisés pour la distribution des images. Veuillez définir plus de 4 hôtes images. ');
 define('_WEBO_parallel_additional', 'Les sites additionnels avec hébergement multiple(séparer par un espace)');
 define('_WEBO_parallel_additional_HELP', 's\il y\' a plusieurs sites web utilisant les images vous pouvez utiliser  WEBO Site SpeedUp pour les distribuer à travers tous les hôtes.');
-define('_WEBO_parallel_additional_list', 'Les hôtes sur ces sites web. (séparer par un espace)');
+define('_WEBO_parallel_additional_list', 'Les hôtes sur ces sites web (séparer par un espace)');
 define('_WEBO_parallel_additional_list_HELP', 'Ces hôtes sont utilisé pour distribuer les images qui sont situés sur les sites web définis dans l\'option&quot;Additional websites with multiple hosts&quot;');
+define('_WEBO_parallel_ignore_list', 'Exclude the following files from distribution (séparer par un espace)');
+define('_WEBO_parallel_ignore_list_HELP', 'You can set a list of files (i.e. dynamic ones) to exclude from distibution logic.');
 
 define('_WEBO_htaccess_enabled', 'Permettre  <code>.htaccess</code>');
 define('_WEBO_htaccess_enabled_HELP', 'Cette option créera (ou modifiera) le fichier.htaccess file dans le répertoire racine du site web. Cela crée également une version de sauvegarde de ce fichier.  Le contenu du fichier .htaccess file dépends des autres options dans ce groupe.');

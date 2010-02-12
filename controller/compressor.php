@@ -411,6 +411,7 @@ class web_optimizer {
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"parallel_satellites" => $this->options['parallel']['additional'],
 				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
+				"parallel_ignore" => $this->options['parallel']['ignore_list'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -931,12 +932,17 @@ class web_optimizer {
 			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (!empty($imgs)) {
+			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			foreach ($imgs as $image) {
 				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
+/* image file name to check through ignore list */
+				$img = preg_replace("@.*/@", "", $old_src);
 				if (empty($replaced[$image[0]])) {
 /* are we operating with multiple hosts */
-					if (!empty($this->options['page']['parallel']) && !empty($this->options['page']['parallel_hosts'])) {
+					if (!empty($this->options['page']['parallel']) &&
+						!empty($this->options['page']['parallel_hosts']) &&
+						(!count($ignore_list) || !in_array($img, $ignore_list))) {
 /* skip images on different hosts */
 						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
 							$absolute_src =

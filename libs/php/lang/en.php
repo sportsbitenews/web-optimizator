@@ -324,6 +324,8 @@ define('_WEBO_parallel_additional', 'Additional websites with multiple hosts (se
 define('_WEBO_parallel_additional_HELP', 'If there is several websites using images\' distribution you can use WEBO Site SpeedUp to distribute their images through all these hosts.');
 define('_WEBO_parallel_additional_list', 'Hosts on these websites (separated by space)');
 define('_WEBO_parallel_additional_list_HELP', 'These hosts are used to distribute images which are located on websites defined in &quot;Additional websites with multiple hosts&quot; option.');
+define('_WEBO_parallel_ignore_list', 'Exclude the following files from distribution (separated by space)');
+define('_WEBO_parallel_ignore_list_HELP', 'You can set a list of files (i.e. dynamic ones) to exclude from distibution logic.');
 
 define('_WEBO_htaccess_enabled', 'Enable <code>.htaccess</code>');
 define('_WEBO_htaccess_enabled_HELP', 'This option will create (or modify) .htaccess file in website root directory. Also it creates backup version of this file. .htaccess file content depends on the other options in this group.');
