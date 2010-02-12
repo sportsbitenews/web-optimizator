@@ -145,6 +145,7 @@ class admin {
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator@", $this->basepath);
 /* fix for not supported languages */
+		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr')) ? $this->language : 'en';
 /* show page */
 		if (!empty($this->input) &&
@@ -1346,20 +1347,19 @@ class admin {
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] .
 				str_replace($this->compress_options['document_root'], '/',
 				$this->compress_options['website_root']),
-				$this->basedir . $this->index_check, 2);
+				$this->basepath . $this->index_check, 2);
 /* calculate favicon */
 			$favicon = preg_replace("@.*(<link.*rel=['\"\s](shortcut\s)?icon[^>]*>).*@is", "$1",
-				@file_get_contents($this->basedir . $this->index_check));
-			if (strlen($favicon) < 1000) {
+				@file_get_contents($this->basepath . $this->index_check));
+			if (!empty($favicon) && strlen($favicon) < 1000) {
 				$favicon = preg_replace("@.*href\s*=[\s'\"](.*?)[\s'\"].*@is", "$1",
 					$favicon);
 /* clear external favicon from current website host */
 				$favicon = preg_replace("@https?://(www.)" .
 					preg_replace("@www.@i", "", $_SERVER['HTTP_HOST']) . "@", "",
 					$favicon);
-			} else {
-				$favicon = $this->svn . 'favicon.ico';
 			}
+			$favicon = empty($favicon) ? $this->svn . 'favicon.ico' : $favicon;
 /* absolute paths */
 			if ($favicon{0} == '/') {
 /* external resource */
