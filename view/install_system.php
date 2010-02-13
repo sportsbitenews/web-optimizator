@@ -184,15 +184,19 @@
 		foreach ($errors as $key => $value) {
 			if (empty($value)) {
 ?><li class="wssO1"><?php
-				echo constant("_WEBO_SYSTEM_" . $key);
-?></li><?php
+				echo constant('_WEBO_SYSTEM_' . $key);
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
 			}
 		}
 		foreach ($warnings as $key => $value) {
 			if (empty($value)) {
 ?><li class="wssO1 wssO2"><?php
-				echo constant("_WEBO_SYSTEM_" . $key);
-?></li><?php
+				echo constant('_WEBO_SYSTEM_' . $key);
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
 			}
 		}
 ?></ul><?php

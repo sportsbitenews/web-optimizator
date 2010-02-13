@@ -14,18 +14,22 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 		foreach ($errors as $key => $value) {
 			if (empty($value) && $i < 3) {
 ?><li class="wssO1"><?php
-				echo constant("_WEBO_SYSTEM_" . $key);
+				echo constant('_WEBO_SYSTEM_' . $key);
 				$i++;
-?></li><?php
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
 			}
 		}
 		if ($i < 3) {
 			foreach ($warnings as $key => $value) {
 				if (empty($value) && $i < 3) {
 ?><li class="wssO1 wssO2"><?php
-					echo constant("_WEBO_SYSTEM_" . $key);
+					echo constant('_WEBO_SYSTEM_' . $key);
 					$i++;
-?></li><?php
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
 				}
 			}
 		}

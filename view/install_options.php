@@ -257,7 +257,7 @@ if ($submit) {
 ?>1"><?php
 						echo constant('_WEBO_' . $option);
 ?> <a class="wssJ9" href="#" title="<?php
-						echo constant('_WEBO_' . $option . '_HELP');
+						echo str_replace('"', '&quot;', constant('_WEBO_' . $option . '_HELP'));
 ?>">?</a></label></dt><?php
 					}
 					while ($i++ != $value['count']) {

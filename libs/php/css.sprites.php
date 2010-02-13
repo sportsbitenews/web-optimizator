@@ -110,27 +110,14 @@ class css_sprites {
 			foreach ($this->optimizer->css->css as $import => $token) {
 				foreach ($token as $tags => $rule) {
 					foreach ($rule as $property => $value) {
-						if ($property == 'width' || $property == 'height' || strpos(" " .$property, 'padding')) {
+						if ($property == 'width' || $property == 'height') {
 /* try to add all possible dimensial properties for selected tags with background */
 							foreach ($this->optimizer->media as $imp => $images) {
 								foreach ($images as $key => $image) {
 									$fixed_key = $this->fix_css3_selectors($key);
 /* remove pseudo-selectors, i.e. :focus, :hover, etc*/
 									if (in_array($key, explode(",", $tags)) || in_array($fixed_key, explode(",", $tags))) {
-										if (strpos(" " .$property, 'padding')) {
-											if ($property == 'padding') {
-												$padding = $this->optimizer->css->optimise->dissolve_4value_shorthands($property, $value);
-											} else {
-												$padding = array(
-													$property => $value
-												);
-											}
-											foreach ($padding as $prop => $val) {
-												$this->optimizer->media[$imp][$key][$prop] = $val;
-											}
-										} else {
-											$this->optimizer->media[$imp][$key][$property] = $value;
-										}
+										$this->optimizer->media[$imp][$key][$property] = $value;
 									}
 								}
 							}
@@ -141,9 +128,7 @@ class css_sprites {
 			if ($this->optimizer->restore_properties) {
 				$properties = array(
 					'background-image',	'background-position',
-					'background-repeat','padding-left',
-					'padding-right',	'padding-top',
-					'padding-bottom',	'width', 'height');
+					'background-repeat','width', 'height');
 /* to remember already calculated selectors, by stages */
 				$this->restored_selectors = array(
 					1 => array(),	2 => array(),	3 => array(),
@@ -326,13 +311,6 @@ class css_sprites {
 							(empty($this->optimizer->dimensions_limited) ||
 								($width < $this->optimizer->dimensions_limited &&
 									$height < $this->optimizer->dimensions_limited))) {
-/* fix image dimensions with paddings */
-							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
-								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
-								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
-							$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
-								+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
-								+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 /* fix background-position & repeat for fixed images */
 							if (!empty($image['width']) &&
 								$width == $image['width'] &&
@@ -729,15 +707,6 @@ __________________
 /* in resolved property these is no give key */
 								if (!empty($background[$property])) {
 									$return = $background[$property];
-								}
-/* try to resolve padding shorthand */
-						} elseif (strpos($property, "adding") &&
-							empty($this->optimizer->css->css[$import][$restored_selector][$property]) &&
-							!empty($this->optimizer->css->css[$import][$restored_selector][$property]['padding'])) {
-								$padding = $this->optimizer->css->optimise->dissolve_4value_shorthands('padding', $this->optimizer->css->css[$import][$restored_selector][$property]['padding']);
-/* in resolved property these is no given key */
-								if (!empty($padding[$property])) {
-									$return = $padding[$property];
 								}
 /* property is defined w/o shorthands */
 						} elseif (!empty($this->optimizer->css->css[$import][$restored_selector][$property])) {
