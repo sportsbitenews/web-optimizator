@@ -167,6 +167,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssT9 .wssI{color:#808080;display:block;padding:0 0 5px}
 #wss_opt .wssI{background:url(progress.png) 50% 0 no-repeat;height:20px;margin:12px 0 0 13px;padding:0;position:relative;width:93%}
 #wss_buzz .wssI{padding:5px 0 0 7px}
+#wss_sp .wssI{padding:3px 0 7px 17px}
+#wss_opt .wssI00{background:none}
 .wssI0{font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:10px 13px 2px}
 .wssC4 .wssI1{color:#808080;float:none;font-size:20px;margin:10px 0;padding:0;text-align:center}
 .wssP1 .wssI2{color:#000;font-size:17px}
@@ -175,10 +177,10 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 
 .wssJ{color:#2680ac!important}
 a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
-#wss_buzz .wssJ{display:block;line-height:17px;padding-left:21px}
+#wss_buzz .wssJ,#wss_opt .wssJ,#wss_sp .wssJ{display:block;line-height:17px;padding-left:21px}
 #wss_news .wssJ{font-size:13px}
 .wssJ0{-moz-border-radius:8px;-webkit-border-radius:8px;background:#262626;border-radius:8px;margin-bottom:14px;display:block;line-height:15px;padding:13px;width:400px}
-.wssJ00{bottom:0;color:#fff;display:none;left:-200px;position:absolute;z-index:1000}
+.wssJ00{bottom:0;color:#fff;display:none;left:-100px;position:absolute;z-index:1000}
 a.wssJ9:hover .wssJ00{display:block}
 .wssN20 .wssO4 .wssJ{color:#b2b2b2!important}
 .wssN .wssI1 .wssJ{color:red}

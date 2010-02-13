@@ -376,6 +376,11 @@ define('_WEBO_DASHBOARD_LINKS', 'Быстрые ссылки');
 define('_WEBO_DASHBOARD_AVAILABLE', 'Доступно в полной версии');
 define('_WEBO_DASHBOARD_ALL', 'Все блоки');
 define('_WEBO_DASHBOARD_INSTALL', 'Установить');
+define('_WEBO_DASHBOARD_SHARE_RESULTS', 'Поделиться результами в Twitter');
+define('_WEBO_DASHBOARD_SHARE_RESULTS1', 'Мой @wboptimizer - #WEBO Site SpeedUp - настроен на');
+define('_WEBO_DASHBOARD_SHARE_RESULTS2', '@wboptimizer - #WEBO Site SpeedUp - ускорил мой сайт на');
+define('_WEBO_DASHBOARD_SHARE_RESULTS3', '@wboptimizer - #WEBO Site SpeedUp - сэкономил мне');
+define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'трафика');
 
 /* Dashboard status block */
 define('_WEBO_DASHBOARD_STATUS_IS', '');

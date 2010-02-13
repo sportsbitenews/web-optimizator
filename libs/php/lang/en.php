@@ -370,6 +370,11 @@ define('_WEBO_DASHBOARD_LINKS', 'Quick Links');
 define('_WEBO_DASHBOARD_AVAILABLE', 'Available in Premium Edition');
 define('_WEBO_DASHBOARD_ALL', 'Available Blocks');
 define('_WEBO_DASHBOARD_INSTALL', 'Install');
+define('_WEBO_DASHBOARD_SHARE_RESULTS', 'Share results on Twitter');
+define('_WEBO_DASHBOARD_SHARE_RESULTS1', 'My @wboptimizer - #WEBO Site SpeedUp - tuned to');
+define('_WEBO_DASHBOARD_SHARE_RESULTS2', '@wboptimizer - #WEBO Site SpeedUp - accelerated my website by');
+define('_WEBO_DASHBOARD_SHARE_RESULTS3', '@wboptimizer - #WEBO Site SpeedUp - saved for my website');
+define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'of traffic');
 
 /* Dashboard status block */
 define('_WEBO_DASHBOARD_STATUS_IS', 'is');

@@ -38,6 +38,19 @@ if (($s_after || $kb_after) && $premium > 1) {
 		echo round(100 * (1 - $kb_after / $kb_before));
 ?></strong>%</dd></dl><?php
 	}
+	if ($s_after) {
+?><p class="wssI"><a href="http://twitter.com/home?status=<?php
+		echo urlencode(_WEBO_DASHBOARD_SHARE_RESULTS2 . " " . round(100 * $s_before / $s_after - 100) . '% - ' . $_SERVER['HTTP_HOST']);
+?>" class="wssJ wssJ10"><?php
+		echo _WEBO_DASHBOARD_SHARE_RESULTS;
+?></a></p><?php
+	} elseif ($kb_after) {
+?><p class="wssI"><a href="http://twitter.com/home?status=<?php
+		echo urlencode(_WEBO_DASHBOARD_SHARE_RESULTS3 . " " . round(100 * (1 - $kb_after / $kb_before)) . '% ' . _WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC . ' - ' . $_SERVER['HTTP_HOST']);
+?>" class="wssJ wssJ10"><?php
+		echo _WEBO_DASHBOARD_SHARE_RESULTS;
+?></a></p><?php
+	}
 } else {
 ?><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_SPEED_NODATA;

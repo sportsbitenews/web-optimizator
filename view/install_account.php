@@ -152,7 +152,7 @@
 ?> checked="checked"<?php
 	}
 ?>/></dd></dl><p class="wssD"><input type="submit" value="<?php
-	echo _WEBO_ABOUT_SEND;
+	echo _WEBO_SPLASH1_SAVE;
 ?>" class="wssG"/><input type="hidden" name="wss_page" value="install_account"/><input type="hidden" name="wss_Submit" value="1"/></p></form><div class="wssH wssH3 wssH4"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><h2 class="wssB"><?php
 	echo _WEBO_ABOUT_SUPPORT;
 ?></h2><p class="wssI"><?php

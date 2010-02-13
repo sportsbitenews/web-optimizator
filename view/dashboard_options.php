@@ -45,7 +45,11 @@ if ($delta && $delta != 100) {
 		echo _WEBO_DASHBOARD_AVAILABLE;
 ?></a></li><?php
 	}
-?></ul><?php
+?></ul><p class="wssI wssI00"><a href="http://twitter.com/home?status=<?php
+	echo urlencode(_WEBO_DASHBOARD_SHARE_RESULTS1 . " " . (100 - $delta)) . '/100 - ' . $_SERVER['HTTP_HOST'];
+?>" class="wssJ wssJ10"><?php
+	echo _WEBO_DASHBOARD_SHARE_RESULTS;
+?></a></p><?php
 } else {
 ?><p class="wssI0"><?php
 	echo _WEBO_SYSTEM_NOPROBLEMS;
