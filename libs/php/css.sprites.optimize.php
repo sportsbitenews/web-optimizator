@@ -406,7 +406,6 @@ class css_sprites_optimize {
 										}
 									}
 									break;
-									break;
 								case 5:
 /* glue image to the right edge */
 									$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] - $width;
@@ -428,14 +427,14 @@ class css_sprites_optimize {
 									$this->css_images[$sprite]['images'][$key][6] = $final_y;
 									$this->css_images[$sprite]['x'] = $this->SCM($width, $this->css_images[$sprite]['x'] ? $this->css_images[$sprite]['x'] : 1);
 									$this->css_images[$sprite]['y'] += $height + $final_y + $shift_y;
-								break;
+									break;
 								case 2:
 									$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;
 									$this->css_images[$sprite]['images'][$key][4] = 0;
 									$this->css_images[$sprite]['images'][$key][5] = $final_x;
 									$this->css_images[$sprite]['x'] += $width + $final_x + $shift_x;
 									$this->css_images[$sprite]['y'] = $this->SCM($height, $this->css_images[$sprite]['y'] ? $this->css_images[$sprite]['y'] : 1);
-								break;
+									break;
 							}
 							$counter_images[$filename] = 1;
 						}
@@ -599,8 +598,7 @@ class css_sprites_optimize {
 						}
 
 						if (!$image_used) {
-							if (!$file_exists) {
-								$im = null;
+							if (empty($im)) {
 /* flag semi-transparency, 0 - disabled, 1 - enabled */
 								$this->alpha = 0;
 /* try to copy initial image into sprite */
@@ -721,8 +719,9 @@ class css_sprites_optimize {
 										break;
 
 								}
-								if (!$file_exists) {
+								if (!empty($im)) {
 									@imagedestroy($im);
+									unset($im);
 								}
 							}
 
@@ -829,7 +828,8 @@ class css_sprites_optimize {
 			}
 
 		}
-
+/* unset done arrays */
+		unset($this->css_images[$sprite]);
 	}
 
 /**

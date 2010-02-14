@@ -165,7 +165,7 @@
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
 ?></a>,</li><li class="wssO4"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
-?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400000)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
 ?></a>.</li></ul><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING3;

@@ -3084,6 +3084,21 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 			}
+		} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
+			$content .= "
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase $base";
+			if (!empty($this->input['wss_far_future_expires_css'])) {
+				$content .= "
+	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
+			}
+			if (!empty($this->input['wss_far_future_expires_javascript'])) {
+				$content .= "
+	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
+			}
+			$content .= "
+</IfModule>";
 		}
 		$content .= "\n# Web Optimizer end";
 /* define CMS */

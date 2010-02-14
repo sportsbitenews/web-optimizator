@@ -144,7 +144,7 @@ $compress_options['footer']['text'] = "0";
 ## Image path for Web Optimizer, empty for text link
 $compress_options['footer']['image'] = "web.optimizer.stamp.png";
 ## Text for a text link
-$compress_options['footer']['link'] = "Accelerated with Web Optimizer";
+$compress_options['footer']['link'] = "Accelerated with WEBO Site SpeedUp";
 ## CSS styles to place Web Optimizer stamp
 $compress_options['footer']['css_code'] = "float:right;margin:-104px 4px -100px";
 ## Add a spot to <title>: lang="wo" or xml:lang="wo"
