@@ -390,9 +390,9 @@ class web_optimizer {
 				"remove_comments" => $this->options['minify']['html_comments'] &&
 					$this->premium,
 				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
-				"far_future_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
+				"far_future_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
-					!$this->options['htaccess']['enabled'] &&
+					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['images'],
 				"far_future_expires_external" => $this->options['far_future_expires']['external'] &&
 					($this->premium > 1),
@@ -434,6 +434,9 @@ class web_optimizer {
 				"html_tidy" => $this->options['performance']['plain_string'] &&
 					($this->premium > 1)
 			),
+			"document_root" => $this->options['document_root'],
+			"document_root_relative" => str_replace($this->options['document_root'], "/", $this->options['website_root']),
+			"website_root" => $this->options['website_root'],
 			"cache_version" => ($this->premium > 1) ?
 				round($this->options['performance']['cache_version']) : 0,
 			"uniform_cache" => ($this->premium > 1) &&
@@ -949,7 +952,7 @@ class web_optimizer {
 						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
 							$absolute_src =
 								$this->convert_path_to_absolute($old_src,
-									array('file' => $this->view->paths['relative']['document_root']));
+									array('file' => $this->options['document_root_relative']));
 /* calculating unique sum from image src */
 							$sum = 0;
 							$i = ceil(strlen($old_src)/2);
@@ -979,7 +982,7 @@ class web_optimizer {
 					} elseif (!empty($this->options['page']['far_future_expires_rewrite']) ||
 						!empty($this->options['page']['far_future_expires_external'])) {
 							$src = $this->convert_path_to_absolute($old_src,
-								array('file' => $this->view->paths['relative']['document_root']));
+								array('file' => $this->options['document_root_relative']));
 /* add static proxy for external images */
 							if (!$src &&
 								$this->options['page']['far_future_expires_external']) {
@@ -1242,7 +1245,7 @@ class web_optimizer {
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
-		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->view->paths['full']['document_root'], "/", $physical_file);
+		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->options['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
 			if (@is_file($physical_file)) {
 				$timestamp = @filemtime($physical_file);
@@ -1545,7 +1548,7 @@ class web_optimizer {
 		}
 		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host . "@", "", $file));
 		if (substr($file, 0, 1) == "/") {
-			return $this->view->prevent_trailing_slash($this->view->paths['full']['document_root']) . $file;
+			return $this->view->prevent_trailing_slash($this->options['document_root']) . $file;
 		} else {
 			return $this->view->paths['full']['current_directory'] . $file;
 		}
@@ -1597,7 +1600,7 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src), array('file' => str_replace($this->view->paths['full']['document_root'], "/", $this->get_file_name($src)))), $content);
+						$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
@@ -1799,7 +1802,7 @@ class web_optimizer {
 							}
 							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
 							if (@is_file($static_file)) {
-								$value['file'] = str_replace($this->view->paths['full']['document_root'], "/", $static_file);
+								$value['file'] = str_replace($this->options['document_root'], "/", $static_file);
 							} else {
 								unset($value['file']);
 							}
@@ -1828,7 +1831,7 @@ class web_optimizer {
 									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'],
-									array('file' => $this->view->paths['relative']['document_root']));
+									array('file' => $this->options['document_root_relative']));
 							}
 							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
 /* if we can't add to existing tag -- store for the future */
@@ -2469,8 +2472,7 @@ class web_optimizer {
 				if (empty($this->options['page']['footer_image'])) {
 					$background_image = $background_style = '';
 				} else {
-					$background_image = str_replace($this->view->paths['full']['document_root'], "/", $this->options['css']['cachedir']) .
-						$this->options['page']['footer_image'];
+					$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
 					$image_style =
 						'display:block;text-decoration:none;width:100px;height:100px;';
 					if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
@@ -2608,7 +2610,7 @@ class web_optimizer {
 	**/
 	function convert_path_to_absolute ($file, $path, $leave_querystring = false) {
 		$endfile = '';
-		$root = $this->view->paths['full']['document_root'];
+		$root = $this->options['document_root'];
 		if (!empty($path['file'])) {
 			$endfile = $path['file'];
 		}
@@ -2671,7 +2673,7 @@ class web_optimizer {
 			'root_dir' => $options['installdir'],
 			'current_dir' => $options['cachedir'],
 			'html_cache' => $this->options['page']['cachedir'],
-			'website_root' => $this->view->paths['full']['document_root'],
+			'website_root' => $this->options['document_root'],
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 			'aggressive' => $options['aggressive'],
 			'no_ie6' => $options['no_ie6'],
