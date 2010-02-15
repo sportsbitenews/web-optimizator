@@ -61,7 +61,7 @@ class web_optimizer {
 /* define head of the webpage for scripts / styles */
 		$this->head = '';
 /* remember current time */
-		$this->time = $_SERVER['REQUEST_TIME'];
+		$this->time = empty($_SERVER['REQUEST_TIME']) ? time() : $_SERVER['REQUEST_TIME'];
 		$this->host = $_SERVER['HTTP_HOST'];
 		if (strpos($_SERVER['HTTP_HOST'], "www.") !== false ||
 			strpos($_SERVER['HTTP_HOST'], "WWW.") !== false) {
@@ -2490,7 +2490,7 @@ class web_optimizer {
 				}
 /* choose between link or span */
 				if (empty($text)) {
-					$el = 'a href="http://www.web-optimizer.us/" rel="nofollow"';
+					$el = 'a href="http://www.webogroup.com/" rel="nofollow"';
 					$el_close = 'a';
 				} else {
 					$el = $el_close = 'span';
@@ -2623,14 +2623,23 @@ class web_optimizer {
 			return false;
 		}
 		$absolute_path = $file;
-/* Not absolute or external */
-		if (substr($file, 0, 1) != '/' && !preg_match("!^https?://!", $file)) {
-/* add relative directory. Need somehow parse current meta base... */
-			if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
-				$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+/* external source file */
+		if (preg_match("!^https?://!", $endfile) && !preg_match("!^https?://!", $file)) {
+			if (substr($file, 0, 1) != '/') {
+				$absolute_path = preg_replace("@[^\/]+$@", "", $endfile) . $absolute_path;
+			} else {
+				$absolute_path = preg_replace("@(https?://[^\/]+).*@", "$1", $endfile) . $absolute_path;
 			}
-			$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
-			$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
+		} else {
+/* Not absolute or external */
+			if (substr($file, 0, 1) != '/' && !preg_match("!^https?://!", $file)) {
+/* add relative directory. Need somehow parse current meta base... */
+				if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
+					$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+				}
+				$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
+				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
+			}
 		}
 /* remove HTTP host from absolute URL */
 		return preg_replace("!https?://(www\.)?". $this->host ."/!i", "/", $absolute_path);
@@ -2640,18 +2649,20 @@ class web_optimizer {
 	* Finds background images in the CSS and converts their paths to absolute
 	*
 	**/
-	function convert_paths_to_absolute ($content, $path) {
+	function convert_paths_to_absolute ($content, $path, $leave_querystring = false) {
 		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
 			foreach($matches[1] as $key => $file) {
-				$absolute_path = $this->convert_path_to_absolute($file, $path);
+				$absolute_path = $this->convert_path_to_absolute($file, $path, $leave_querystring);
 				if (!empty($absolute_path)) {
 /* add quotes if there is not plain URL */
 					if (strpos($absolute_path, ' ')) {
 						$absolute_path = "'" . $absolute_path . "'";
 					}
 /* replace path in initial CSS */
-					$content = preg_replace("!url\s*\(\s*['\"]?" . $file . "['\"]?\s*\)!", "url(" . $absolute_path . ")", $content);
+					$content = preg_replace("@url\s*\(\s*['\"]?" .
+						str_replace("?", "\?", $file) .
+						"['\"]?\s*\)@", "url(" . $absolute_path . ")", $content);
 				}
 			}
 		}
@@ -2761,7 +2772,7 @@ class web_optimizer {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Faster than Lightning; http://www.web-optimizer.us/) Firefox 3.5.3");
+				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Faster than Lightning; http://www.webogroup.com/) Firefox 3.5.3");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -2787,7 +2798,7 @@ class web_optimizer {
 /* replace only in CSS files */
 						if ($tag == 'link') {
 /* correct background-images */
-							$contents = $this->convert_paths_to_absolute($contents, array('file' => $file));
+							$contents = $this->convert_paths_to_absolute($contents, array('file' => $file), 1);
 						}
 						@fwrite($fp, $contents);
 						@fclose($fp);

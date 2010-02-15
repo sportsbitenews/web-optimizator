@@ -1,6 +1,6 @@
 IMPORTANT: READ CAREFULLY WEBO SOFTWARE NOTICE AND LICENSE
 
-http://www.web-optimizer.us/about/EULA.txt
+http://www.webogroup.com/about/EULA.txt
 
 This work (and included software, documentation such as READMEs, or
 other related items) is being provided by the copyright holders
@@ -26,8 +26,8 @@ from which the code is derived.)
 
 NOTE: you can use this software only according to its license key
 limitations. You are not allowed to re-distibute this software, or any
-part of its source codes (which don't belong to third-party libraries),
-or any services based on this software or its parts without a special
+parts of its source codes (which don't belong to third-party libraries),
+or any services based on this software, or its parts without a special
 agreement with WEBO Software.
 
 THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT
