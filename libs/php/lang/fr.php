@@ -60,6 +60,7 @@ define('_WEBO_LOGIN_LICENSEAGREEMENT', 'J\'ai pris connaissance de ');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'conditions de la licence');
 define('_WEBO_LOGIN_LICENSEAGREEMENT3', ' et je les accepte');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirmez que vous avez lu et accepté les conditions de licence.');
+define('_WEBO_LOGIN_TRIAL', 'Get trial license key');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Mise à jour');

@@ -60,6 +60,7 @@ define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я прочитал');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионное соглашение');
 define('_WEBO_LOGIN_LICENSEAGREEMENT3', 'и согласен с ним');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы прочитали и согласны с лицензионным соглашением');
+define('_WEBO_LOGIN_TRIAL', 'Получить тестовый ключ');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновити');

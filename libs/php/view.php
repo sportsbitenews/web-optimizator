@@ -136,7 +136,7 @@ class compressor_view {
 	function validate_license ($license, $cachedir = false, $host = false) {
 		if (strlen($license) == 29) {
 			$table = '123QWERTUIOP456ASDFGHJKLCVBNM7890ZXYqwertuiop456asdfghjklcvbnm7890zxy';
-			$l = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z'), array(), strtoupper($license));
+			$l = str_replace(array('-', '0', '9', 'X', 'Y', 'WEBOPTI', 'MIZATOR', 'Z', 'WEBOSIT', 'ESPEEDU'), array(), strtoupper($license));
 			$c1 = strpos($table, substr($l, 1, 1))*31 + strpos($table, substr($l, 0, 1));
 			$c2 = strpos($table, substr($l, 3, 1))*31 + strpos($table, substr($l, 2, 1));
 			$i = -1;

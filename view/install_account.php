@@ -89,6 +89,10 @@
 ?> <?php
 			echo date("Y-m-d", time() + $expires*86400);
 ?></span><?php
+		} else {
+?><span class="wssD4"><a class="wssJ" href="javascript:(function(){var s=_.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+_('#wss_name')[0].value+'&amp;email='+_('#wss_email')[0].value;_('head')[0].appendChild(s)}())"><?php
+			echo _WEBO_LOGIN_TRIAL;
+?></a></span><?php
 		}
 ?></dd><dt class="wssD1"><label for="wss_name" class="wssE"><?php 
 	echo _WEBO_LOGIN_USERNAME;
