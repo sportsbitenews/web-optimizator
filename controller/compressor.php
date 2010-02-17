@@ -2210,7 +2210,8 @@ class web_optimizer {
 					'</' .
 						$tag .
 					'><script type="text/javascript">(function(){var a=document.getElementById("' .
-						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/<' .
+						$stuff . '_src_' . $key . '"),b=document.getElementById("' .
+						$stuff . '_dst_' . $key . '").parentNode;b.innerHTML=b.innerHTML.replace(/<' .
 						$tag .
 					' id="' .
 						$stuff .
@@ -2218,8 +2219,7 @@ class web_optimizer {
 						$key .
 					'".*?><\/' . 
 						$tag .
-					'>/,document.getElementById("' .
-						$stuff . '_src_' . $key . '").innerHTML)}())</script>';
+					'>/,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
 			}
 		}
 		return $return;
