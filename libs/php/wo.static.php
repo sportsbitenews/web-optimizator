@@ -132,7 +132,7 @@ if ($_SERVER['QUERY_STRING']{0} === '/') {
 			':' . $_SERVER['QUERY_STRING'];
 	} else {
 		$filename = str_replace("\\", "/",
-			realpath($document_root . '/' . $_SERVER['QUERY_STRING']));
+			realpath($document_root . $_SERVER['QUERY_STRING']));
 	}
 } elseif (substr($_SERVER['QUERY_STRING'], 0, 4) !== 'http') {
 	$filename = str_replace("\\", "/",

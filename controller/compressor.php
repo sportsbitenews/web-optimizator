@@ -435,7 +435,7 @@ class web_optimizer {
 					($this->premium > 1)
 			),
 			"document_root" => $this->options['document_root'],
-			"document_root_relative" => str_replace($this->options['document_root'], "/", $this->options['website_root']),
+			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
 			"website_root" => $this->options['website_root'],
 			"cache_version" => ($this->premium > 1) ?
 				round($this->options['performance']['cache_version']) : 0,
@@ -2184,7 +2184,7 @@ class web_optimizer {
 				$pos = strpos($this->content, $value[0]);
 				$len = strlen($value[0]);
 				$tag = $inline ? 'span' : 'div';
-				$this->content = substr_replace($this->content, 
+				$this->content = substr_replace($this->content,
 					'<' .
 						$tag .
 					' id="' .
@@ -2209,9 +2209,17 @@ class web_optimizer {
 						$value[0] .
 					'</' .
 						$tag .
-					'><script type="text/javascript">document.getElementById("' .
-						$stuff . '_dst_' . $key . '").appendChild(document.getElementById("' .
-						$stuff . '_src_' . $key . '"))</script>';
+					'><script type="text/javascript">(function(){var a=document.getElementById("' .
+						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/<' .
+						$tag .
+					' id="' .
+						$stuff .
+					'_dst_' .
+						$key .
+					'".*?><\/' . 
+						$tag .
+					'>/,document.getElementById("' .
+						$stuff . '_src_' . $key . '").innerHTML)}())</script>';
 			}
 		}
 		return $return;
