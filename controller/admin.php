@@ -2146,6 +2146,11 @@ class admin {
 					'value' => $this->compress_options['performance']['restore_properties'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'performance_delete_old' => array(
+					'value' => $this->compress_options['performance']['delete_old'],
+					'type' => 'smalltext',
+					'hidden' => $this->premium < 2 ? 1 : 0
 				)
 			),
 			'data_uri' => array(
@@ -2390,6 +2395,7 @@ class admin {
 			'wss_minify_javascript',
 			'wss_minift_js',
 			'wss_performance_cache_version',
+			'wss_performance_delete_old',
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
 			'wss_html_cache_flush_size',

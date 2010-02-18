@@ -268,6 +268,8 @@ define('_WEBO_performance_uniform_cache', 'Uniform cache files for all browsers'
 define('_WEBO_performance_uniform_cache_HELP', 'All browsers will receive uniform CSS, JavaScript, and HTML code. This allows you to use external caching techniques safely but this disabled a number of optimization techniques such as data:URI.');
 define('_WEBO_performance_restore_properties', 'Restore CSS properties');
 define('_WEBO_performance_restore_properties_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. ut this may lead to huge CPU overhead in case of large amount of CSS rules.');
+define('_WEBO_performance_delete_old', 'Days to delete cache files');
+define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defining time to live for all cache files (in days). Zero value means no restriction.');
 
 define('_WEBO_footer_text', 'A&ntilde;ade un enlace a WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');

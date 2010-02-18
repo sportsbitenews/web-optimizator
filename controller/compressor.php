@@ -446,7 +446,9 @@ class web_optimizer {
 			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 			"restricted" => ($this->premium > 1) &&
-				!empty($this->options['restricted']) ? $this->options['restricted'] : ''
+				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
+			"days_to_delete" => ($this->premium > 1) ?
+				round($this->options['performance']['delete_old']) : 0,
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -1305,13 +1307,31 @@ class web_optimizer {
 /* If the file didn't exist, continue. Get files' content */
 		if (!empty($options['dont_check_file_mtime']) || !empty($this->options['quick_check'])) {
 			$this->get_script_content($options['tag']);
-/* replace existing array with the new content */
+/* Replace existing array with the new content */
 			$external_array = array();
 			foreach ($this->initial_files as $key => $file) {
 				if ($file['tag'] == $options['tag']) {
 					$external_array[] = $file;
 				}
 			}
+		}
+/* Delete old files from cache */
+		if (!empty($this->options['days_to_delete'])) {
+			$dir = @getcwd();
+			@chdir($options['cachedir']);
+			foreach (glob('*.' . $options['ext']) as $file) {
+				if ($this->time - filemtime($file) >
+					$this->options['days_to_delete'] * 86400) {
+						@unlink($file);
+				}
+			}
+			foreach (glob('*.' . $options['ext'] . '.gz') as $file) {
+				if ($this->time - filemtime($file) >
+					$this->options['days_to_delete'] * 86400) {
+						@unlink($file);
+				}
+			}
+			@chdir($dir);
 		}
 /* Create file */
 		$contents = "";
@@ -2213,13 +2233,13 @@ class web_optimizer {
 						$stuff . '_src_' . $key . '"),b=document.getElementById("' .
 						$stuff . '_dst_' . $key . '").parentNode;b.innerHTML=b.innerHTML.replace(/<' .
 						$tag .
-					' id="' .
+					'[^>]+id="' .
 						$stuff .
 					'_dst_' .
 						$key .
 					'".*?><\/' . 
 						$tag .
-					'>/,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
+					'>/i,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
 			}
 		}
 		return $return;
