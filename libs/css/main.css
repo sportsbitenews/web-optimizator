@@ -118,7 +118,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD8 .wssD3{background:url(error-input.png) no-repeat;text-indent:-99em;left:-19px;top:6px}
 .wssD7.wssD8 .wssD3{top:3px}
 .wssD9{border:1px solid #fbddb8;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin:0 0 0 182px;padding:0}
-.wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:430px;margin:0;position:relative;padding:11px 15px}
+.wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:450px;margin:0;position:relative;padding:11px 15px}
+.wssD11{height:400px}
 .wssC7 .wssD10{height:auto}
 
 .wssE{color:#000;display:block;font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:0 0 3px}
@@ -346,8 +347,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU .wssO11{background:url(apply.png) no-repeat!important}
 .wssU .wssO12{background:url(edit.png) no-repeat!important}
 .wssU .wssO13{background:url(delete.png) no-repeat!important}
-#wss_opt .wssO11{color:#ff8200;left:22%}
-#wss_opt .wssO12{color:#ff4000;left:57%}
+#wss_opt .wssO11{color:#ff8200;left:27%}
+#wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
 
 .wssP{margin:0;padding:0}

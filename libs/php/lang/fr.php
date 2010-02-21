@@ -526,6 +526,10 @@ define('_WEBO_showbeta_HELP', 'Uniquement les mises à jour stable de WEBO Site 
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Désactivez');
+define('_WEBO_DASHBOARD_OPTIONS_BARELY', 'Barely');
+define('_WEBO_DASHBOARD_OPTIONS_NORMALLY', 'Normally');
+define('_WEBO_DASHBOARD_OPTIONS_FAST', 'Fast');
+define('_WEBO_DASHBOARD_OPTIONS_FLYING', 'Flying');
 
 /* Dashboard speed block */
 define('_WEBO_DASHBOARD_SPEED_GAINED', 'L\'Accélération acquis');

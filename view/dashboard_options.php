@@ -8,14 +8,16 @@
 /* set correct content charset */
 header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 
+if ($delta && $delta != 100) {
+	$i = 0;
 ?><ul class="wssO"><li class="wssO1"><span class="wssJ1"><?php
-echo _WEBO_DASHBOARD_OPTIONS_DISABLED;
+echo _WEBO_DASHBOARD_OPTIONS_BARELY;
 ?></span></li><li class="wssO1 wssO11"><span class="wssJ1"><?php
-echo _WEBO_SPLASH2_COMPARISON_DEMO;
+echo _WEBO_DASHBOARD_OPTIONS_NORMALLY;
 ?></span></li><li class="wssO1 wssO12"><span class="wssJ1"><?php
-echo _WEBO_SPLASH2_COMPARISON_LITE;
+echo _WEBO_DASHBOARD_OPTIONS_FAST;
 ?></span></li><li class="wssO1 wssO13"><span class="wssJ1"><?php
-echo _WEBO_SPLASH2_COMPARISON_FULL;
+echo _WEBO_DASHBOARD_OPTIONS_FLYING;
 ?></span></li></ul><p class="wssI"><span class="wssJ3" style="left:<?php
 echo round((100 - $delta) * 1.04);
 ?>%;width:<?php
@@ -24,10 +26,7 @@ echo round($delta * 1.02);
 echo round((100 - $delta) * 0.94);
 ?>%"><?php
 echo 100 - $delta;
-?></span></p><?php
-if ($delta && $delta != 100) {
-	$i = 0;
-?><ul class="wssO3"><?php
+?></span></p><ul class="wssO3"><?php
 	foreach ($errors as $key => $value) {
 		if ($i < 3) {
 		?><li class="wssO4"><strong class="wssJ2">+<?php

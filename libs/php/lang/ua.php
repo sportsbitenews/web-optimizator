@@ -510,6 +510,10 @@ define('_WEBO_SYSTEM_memory_limit_HELP', 'На сайте существенно
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Отключен');
+define('_WEBO_DASHBOARD_OPTIONS_BARELY', 'Едва-едва');
+define('_WEBO_DASHBOARD_OPTIONS_NORMALLY', 'Нормально');
+define('_WEBO_DASHBOARD_OPTIONS_FAST', 'Быстро');
+define('_WEBO_DASHBOARD_OPTIONS_FLYING', 'Летает');
 
 /* Dashboard speed block */
 define('_WEBO_DASHBOARD_SPEED_GAINED', 'Полученное ускорение');
