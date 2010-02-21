@@ -1,4 +1,3 @@
-
 <?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
