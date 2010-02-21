@@ -319,6 +319,8 @@ define('_WEBO_css_sprites_html_sprites', 'Combine HTML images');
 define('_WEBO_css_sprites_html_sprites_HELP', 'A lot of of small HTML images can be merged together to reduce number of HTTP requests as well. In this case there is a transparent image inserted into HTML document instead of initial one (with data:URI if possible). And it has the initial image as a background.');
 define('_WEBO_css_sprites_html_limit', 'Maximum width and height of HTML images (in px)');
 define('_WEBO_css_sprites_html_limit_HELP', 'HTML images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
+define('_WEBO_css_sprites_html_page', 'Combine images for the current page only');
+define('_WEBO_css_sprites_html_page_HELP', 'HTML images can be combined for the current page only (this reduces size of the final file, but increases number of such files) or for all website pages. In the last case there will be used only 1 images for the whole website, but its size can be very large.');
 
 define('_WEBO_parallel_enabled', 'Multiple Hosts aktivieren');
 define('_WEBO_parallel_enabled_HELP', 'All images called on web page will be automatically distributed through multiple hosts (mirrors). For example URL http://www.site.com/i/logo.png or /i/bg.jpg can be replaced with http://i1.site.com/i/logo.png and http://i2.site.com/i/bg.jpg in case if both hosts i1 and i2 are available and listed in option &quot;Allowed hosts&quot;.');

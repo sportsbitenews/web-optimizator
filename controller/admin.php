@@ -2230,6 +2230,11 @@ class admin {
 					'type' => 'smalltext',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
+				'css_sprites_html_page' => array(
+					'value' => $this->compress_options['css_sprites']['html_page'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
 				'css_sprites_ignore_list' => array(
 					'value' => $this->compress_options['css_sprites']['ignore_list'],
 					'type' => 'textarea',
@@ -2462,6 +2467,7 @@ class admin {
 			'wss_css_sprites_extra_space',
 			'wss_css_sprites_no_ie6',
 			'wss_css_sprites_html_sprites',
+			'wss_css_sprites_html_page',
 			'wss_parallel_enabled',
 			'wss_parallel_check',
 			'wss_htaccess_enabled',

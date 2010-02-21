@@ -185,6 +185,8 @@ $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 $compress_options['css_sprites']['html_sprites'] = "0";
 ## Restrict large HTML images from merging
 $compress_options['css_sprites']['html_limit'] = "100";
+## Restrict HTML Sprites to the curent page only?
+$compress_options['css_sprites']['html_page'] = "1";
 ## Parallel downloads
 $compress_options['parallel']['enabled'] = "1";
 ## Check hosts availability or not?

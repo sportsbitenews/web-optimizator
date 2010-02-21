@@ -71,25 +71,26 @@ class html_sprites {
 			$width = $image[0];
 			$height = $image[1];
 			$class = $image[2];
+			$active = $image[3];
 			$filename = $this->options['document_root'] . $url;
 /* skip big images */
 			if ($width <= $this->options['page']['dimensions_limited'] &&
 				$height <= $this->options['page']['dimensions_limited'] &&
-				$width && $height && !empty($class)) {
-				$this->css_images[$url] = array($filename,
-					$width, $height, 0, 0, 0, 0, 42, '.' . $class);
-				$this->css[42]['.' . $class] = array(
-					'width' => $width . 'px',
-					'height' => $height . 'px',
-					'padding' => 0,
-					'background-image' => 'url(' . $url . ')',
-					'background-repeat' => 'no-repeat'
-				);
-				$str .= $url . "_" . $width . "_" . $height;
+				$width && $height && !empty($class) && !empty($active)) {
+					$this->css_images[$url] = array($filename,
+						$width, $height, 0, 0, 0, 0, 42, '.' . $class);
+					$this->css[42]['.' . $class] = array(
+						'width' => $width . 'px',
+						'height' => $height . 'px',
+						'padding' => 0,
+						'background-image' => 'url(' . $url . ')',
+						'background-repeat' => 'no-repeat'
+					);
+					$str .= $url . "_" . $width . "_" . $height;
 /* check if all images are equal - this makes Sprite calculation easier */
-				$w = empty($w) ? $width : $w;
-				$h = empty($h) ? $height : $h;
-				$equal = $equal && $w == $width && $h == $height;
+					$w = empty($w) ? $width : $w;
+					$h = empty($h) ? $height : $h;
+					$equal = $equal && $w == $width && $h == $height;
 			}
 		}
 /* skip creating if there is only 1 image */
@@ -137,7 +138,7 @@ class html_sprites {
 		}
 /* calculate all dimensions for new images */
 		if (!empty($imgs)) {
-			foreach ($imgs as $image) {
+			foreach ($imgs as $key => $image) {
 				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], 'src="'))) {
 					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), '"'));
 				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], "src='"))) {
@@ -165,6 +166,11 @@ class html_sprites {
 						$width && $height ? 'wo' . md5($absolute_src) : '';
 					$images[$absolute_src] = array($width, $height, $class);
 				}
+				if (!empty($this->options['page']['css_sprites_html_page'])) {
+					$images[$absolute_src][3] = 1;
+				}
+/* remember src for calculated images */
+				$imgs[$key] = $absolute_src;
 			}
 		}
 		if (!empty($need_refresh)) {
@@ -173,9 +179,17 @@ class html_sprites {
 			foreach ($images as $k => $i) {
 				$str .= "\n" . '$images[\'' . $k .
 					"'] = array(" . $i[0] . "," . $i[1] . ",'" . $i[2] . "');";
+				if (empty($this->options['page']['css_sprites_html_page'])) {
+					$images[$k][3] = 1;
+				}
 			}
 			$str .= "\n?>";
 			$this->main->write_file($this->options['page']['cachedir'] . 'wo.img.cache.php', $str);
+/* or just mark all images as active */
+		} elseif (empty($this->options['page']['css_sprites_html_page'])) {
+			foreach ($images as $k => $i) {
+				$images[$k][3] = 1;
+			}
 		}
 		return $images;
 	}

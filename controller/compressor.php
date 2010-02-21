@@ -1,3 +1,4 @@
+
 <?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
@@ -358,6 +359,7 @@ class web_optimizer {
 				"css_sprites_html_sprites" => $this->options['css_sprites']['html_sprites'] &&
 					($this->premium > 1),
 				"css_sprites_html_limit" => round($this->options['css_sprites']['html_limit']),
+				"css_sprites_html_page" => $this->options['css_sprites']['html_page'],
 				"punypng" => (!empty($this->options['punypng']) ? $this->options['punypng'] : '') &&
 					($this->premium > 1),
 				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
@@ -1372,12 +1374,31 @@ class web_optimizer {
 			$dir = @getcwd();
 			@chdir($options['cachedir']);
 			foreach (glob('*.' . $options['ext']) as $file) {
-				if ($this->time - filemtime($file) >
+				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js')) &&
+					$this->time - filemtime($file) >
 					$this->options['days_to_delete'] * 86400) {
 						@unlink($file);
 				}
 			}
 			foreach (glob('*.' . $options['ext'] . '.gz') as $file) {
+				if ($this->time - filemtime($file) >
+					$this->options['days_to_delete'] * 86400) {
+						@unlink($file);
+				}
+			}
+			foreach (glob('*.png') as $file) {
+				if ($this->time - filemtime($file) >
+					$this->options['days_to_delete'] * 86400) {
+						@unlink($file);
+				}
+			}
+			foreach (glob('*.gif') as $file) {
+				if ($file != '0.gif' && $this->time - filemtime($file) >
+					$this->options['days_to_delete'] * 86400) {
+						@unlink($file);
+				}
+			}
+			foreach (glob('*.jpg') as $file) {
 				if ($this->time - filemtime($file) >
 					$this->options['days_to_delete'] * 86400) {
 						@unlink($file);
