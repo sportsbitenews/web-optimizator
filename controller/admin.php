@@ -1114,7 +1114,9 @@ class admin {
 				@copy($this->basepath . 'libs/js/yass.loader.js',
 					$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 				@copy($this->basepath . 'libs/php/wo.static.php',
-				$this->compress_options['html_cachedir'] . 'wo.static.php');
+					$this->compress_options['html_cachedir'] . 'wo.static.php');
+				@copy($this->basepath . 'libs/php/0.gif',
+					$this->compress_options['html_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
@@ -1391,7 +1393,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
@@ -2213,13 +2215,18 @@ class admin {
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
-				'css_sprites_memory_limited' => array(
-					'value' => $this->compress_options['css_sprites']['memory_limited'],
+				'css_sprites_dimensions_limited' => array(
+					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
+					'type' => 'smalltext',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'css_sprites_html_sprites' => array(
+					'value' => $this->compress_options['css_sprites']['html_sprites'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
-				'css_sprites_dimensions_limited' => array(
-					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
+				'css_sprites_html_limit' => array(
+					'value' => $this->compress_options['css_sprites']['html_limit'],
 					'type' => 'smalltext',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
@@ -2238,7 +2245,7 @@ class admin {
 					'type' => 'radio',
 					'count' => 2,
 					'hidden' => $this->premium < 2 ? 1 : 0
-				)
+				),
 			),
 			'serverside' => array(
 				'premium' => $this->premium < 2 ? 1 : 0,
@@ -2401,7 +2408,8 @@ class admin {
 			'wss_html_cache_flush_size',
 			'wss_data_uris_size',
 			'wss_data_uris_mhtml_size',
-			'wss_data_uris_dimensions_limited',) as $val) {
+			'wss_css_sprites_dimensions_limited',
+			'wss_css_sprites_html_limit') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : round($this->input[$val]);
 		}
 		foreach (array(
@@ -2453,7 +2461,7 @@ class admin {
 			'wss_css_sprites_aggressive',
 			'wss_css_sprites_extra_space',
 			'wss_css_sprites_no_ie6',
-			'wss_css_sprites_memory_limited',
+			'wss_css_sprites_html_sprites',
 			'wss_parallel_enabled',
 			'wss_parallel_check',
 			'wss_htaccess_enabled',
@@ -3152,10 +3160,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* define CMS */
 		$this->cms_version = $this->system_info($this->compress_options['website_root']);
 /* copy some files */
-		@copy($this->basepath . 'images/web.optimizer.stamp.png', $this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
-		@copy($this->basepath . 'libs/js/wo.cookie.php', $this->compress_options['html_cachedir'] . 'wo.cookie.php');
-		@copy($this->basepath . 'libs/js/yass.loader.js', $this->compress_options['javascript_cachedir'] . 'yass.loader.js');
-		@copy($this->basepath . 'libs/php/wo.static.php', $this->compress_options['html_cachedir'] . 'wo.static.php');
+		@copy($this->basepath . 'images/web.optimizer.stamp.png',
+			$this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
+		@copy($this->basepath . 'libs/js/wo.cookie.php',
+			$this->compress_options['html_cachedir'] . 'wo.cookie.php');
+		@copy($this->basepath . 'libs/js/yass.loader.js',
+			$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
+		@copy($this->basepath . 'libs/php/wo.static.php',
+			$this->compress_options['html_cachedir'] . 'wo.static.php');
+		@copy($this->basepath . 'libs/php/0.gif',
+			$this->compress_options['html_cachedir'] . '0.gif');
 /* dirty hack for PHP-Nuke */
 		if ($this->cms_version == 'PHP-Nuke') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';

@@ -32,6 +32,7 @@ libs/php/lang/fr.php
 libs/php/lang/ru.php
 libs/php/lang/ua.php
 libs/php/.htaccess
+libs/php/0.gif
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
@@ -43,6 +44,7 @@ libs/php/css.sprites.optimize.php
 libs/php/css.sprites.php
 libs/php/css.template.tpl
 libs/php/data.inc.php
+libs/php/html.sprites.php
 libs/php/jsmin4.php
 libs/php/jsmin5.php
 libs/php/packer4.php

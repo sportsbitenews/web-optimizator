@@ -323,8 +323,6 @@ class css_sprites {
 /* restrict images by ~64x64 if memory is limited */
 						if ($width &&
 							$height &&
-							(!$this->optimizer->memory_limited ||
-								$width * $height < 4097) &&
 							(empty($this->optimizer->dimensions_limited) ||
 								($width < $this->optimizer->dimensions_limited &&
 									$height < $this->optimizer->dimensions_limited))) {

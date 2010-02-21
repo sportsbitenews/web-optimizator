@@ -268,7 +268,7 @@ define('_WEBO_performance_uniform_cache', 'Uniformiser les fichiers cache pour t
 define('_WEBO_performance_uniform_cache_HELP', 'Tous les serveurs recevront un code CSS, JavaScript, et HTML uniformisé. Ceci vous permets de utilisé des techniques de cache externe sans souci mais mets hors fonction un certain nombre de techniques d\'optimisation tel que data:URI.');
 define('_WEBO_performance_restore_properties', 'Restore CSS properties');
 define('_WEBO_performance_restore_properties_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. ut this may lead to huge CPU overhead in case of large amount of CSS rules.');
-define('_WEBO_performance_delete_old', 'Days to delete cache files');
+define('_WEBO_performance_delete_old', 'Days to store cache files');
 define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defining time to live for all cache files (in days). Zero value means no restriction.');
 
 define('_WEBO_footer_text', 'Ajouter un lien à WEBO Site SpeedUp');
@@ -311,12 +311,14 @@ define('_WEBO_css_sprites_extra_space', 'Ajouter de l\'espace libre pour les Spr
 define('_WEBO_css_sprites_extra_space_HELP', 'Les images en Sprites CSS seront arrondies avec un espace libre afin de limiter les effets secondaires sur la taille page web dans les navigateurs. La taille des fichiers Sprites CSS sera largement supérieure.');
 define('_WEBO_css_sprites_no_ie6', 'Exclure IE6');
 define('_WEBO_css_sprites_no_ie6_HELP', 'IE6 recevra un fichier CSS indépendant sans Sprites.');
-define('_WEBO_css_sprites_memory_limited', 'Limiter l\'utilisation de mémoire');
-define('_WEBO_css_sprites_memory_limited_HELP', 'Dans le cas d\'une excès d\'utilisation de mémoire pendant la création de sprites CSS, certains images seront exclus dans les Sprites CSS finales.');
 define('_WEBO_css_sprites_dimensions_limited', 'Hauteur et largeur maximum des images(en px)');
 define('_WEBO_css_sprites_dimensions_limited_HELP', 'Les images plus hautes et larges que défini ne seront pas incluses. Un champ vide ou un zéro indique sans restrictions.');
 define('_WEBO_css_sprites_ignore_list', 'Exclure les fichiers des Sprites CSS(séparés par un espace)');
 define('_WEBO_css_sprites_ignore_list_HELP', 'Les images listé dans cette option ne seron pas inclus dans les Sprites CSS. Ne fournir que les noms de fichiers et non pas leurs chemins absolus.');
+define('_WEBO_css_sprites_html_sprites', 'Combine HTML images');
+define('_WEBO_css_sprites_html_sprites_HELP', 'A lot of of small HTML images can be merged together to reduce number of HTTP requests as well. In this case there is a transparent image inserted into HTML document instead of initial one (with data:URI if possible). And it has the initial image as a background.');
+define('_WEBO_css_sprites_html_limit', 'Maximum width and height of HTML images (in px)');
+define('_WEBO_css_sprites_html_limit_HELP', 'HTML images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
 
 define('_WEBO_parallel_enabled', 'Permettre des hébergeurs multiple');
 define('_WEBO_parallel_enabled_HELP', 'Tous les images appelées sur une page web seront automatiquement distribué via les hôtes multiple (miroirs). Par exemple  l\' URL http://www.site.com/i/logo.png or /i/bg.jpg peut être remplacé par  http://i1.site.com/i/logo.png et http://i2.site.com/i/bg.jpg dans le cas ou les deux hôtes  i1 and i2 sont disponibles et listé dans l\'option  &quot;Allowed hosts&quot;.');

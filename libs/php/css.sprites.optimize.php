@@ -57,8 +57,6 @@ class css_sprites_optimize {
 			$this->partly = $options['partly'];
 /* exclude IE6 from CSS Sprites */
 			$this->no_ie6 = $options['no_ie6'];
-/* if there is a memory limit we need to restrict operating area for images */
-			$this->memory_limited = $options['memory_limited'];
 /* if there is initial images dimensional limit */
 			$this->dimensions_limited = $options['dimensions_limited'];
 /* only compress CSS and convert images to data:URI */
@@ -177,9 +175,9 @@ class css_sprites_optimize {
 		}
 	}
 /* find places for images in complicated Sprite */
-	function sprites_placement ($css_images, $css_icons) {
+	function sprites_placement ($css_images, $css_icons, $mode = 0) {
 /* initial matrix for css images */
-		$matrix = array(array(0));
+		$matrix = array();
 		$css_images['x'] = $css_images['y'] = $matrix_x = $matrix_y = 0;
 /* check if we have initial no-repeat images */
 		if (!empty($css_images['images'])) {
@@ -198,6 +196,8 @@ class css_sprites_optimize {
 			}
 /* sort images by square */
 			krsort($ordered_images);
+/* remember already filled square - to skip some looping */
+			$filled_square = 0;
 /* add images to matrix */
 			foreach ($ordered_images as $key => $image) {
 /* restrict square if no memory */
@@ -213,25 +213,53 @@ class css_sprites_optimize {
 						$height = $image[2] + ($image[4] > 0 ? $image[4] : 0) + $image[6] + ($this->extra_space && count($ordered_images) > 1 ? 5 : 0);
 						$shift_x = $image[3];
 						$shift_y = $image[4];
+/* all images have equal dimensions => loop with increased step */
+						$stepx = $mode == 2 ? $width : ($mode == 1 ? round($width/8) : 2);
+						$stepy = $mode == 2 ? $height : ($mode == 1 ? round($height/8) : 2);
 /* to remember the most 'full' place for new image */
 						$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
 						$no_space = 1;
-						for ($i = 0; $i < $matrix_x; $i++) {
-							for ($j = 0; $j < $matrix_y; $j++) {
+/**
+Some magic here: we shrink actual array with 16 values in 1 cell - to reduce overall memory size.
+This increases (in comparison to raw array[x][y] call) execution time by ~2x.
+**/
+						for ($i = $filled_square; $i < $matrix_x; $i = $i + $stepx) {
+							for ($j = $filled_square; $j < $matrix_y; $j = $j + $stepy) {
+								$j0 = ($j - $j%16)/16;
+								if ($mode < 2) {
+									$j1 = ($j + $height - ($j + $height)%16)/16;
+									$j2 = ($j + $height)%16;
+									if ($mode < 1) {
+										$j3 = ($j + ($height - $height%2)/2 - ($j + ($height - $height%2)/2)%16)/16;
+										$j4 = ($j + ($height - $height%2)/2)%16;
+									}
+								}
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
-								if (empty($matrix[$i][$j]) && 
-									empty($matrix[$i][$j + $height]) && 
-									empty($matrix[$i + $width][$j]) &&
-									empty($matrix[$i + $width][$j + $height]) &&
+								if ((empty($matrix[$i][$j0]) || !($matrix[$i][$j0] & (2<<($j%16)))) &&
+/* performance improvement - skip some checks if we have identical images */
+									($mode > 1 ||
+										((empty($matrix[$i][$j1]) ||
+											!($matrix[$i][$j1] & (2<<$j2)))) &&
+										(empty($matrix[$i + $width][$j0]) ||
+											!($matrix[$i + $width][$j0] & (2<<($j%16)))) &&
+										(empty($matrix[$i + $width][$j1]) ||
+											!($matrix[$i + $width][$j1] & (2<<$j2)))) &&
+/* one more performance improvement - skip some checks if we have HTML sprites */
+									($mode > 0 ||
 /* additionally check 4 points in the middle of edges + 1 center point */
-									empty($matrix[$i + round($width/2)][$j]) &&
-									empty($matrix[$i][$j + round($height/2)]) &&
-									empty($matrix[$i + $width][$j + round($height/2)]) &&
-									empty($matrix[$i + round($width/2)][$j + $height]) &&
-									empty($matrix[$i + round($width/2)][$j + round($height/2)])) {
+										((empty($matrix[$i + ($width - $width%2)/2][$j0]) ||
+											!($matrix[$i + ($width - $width%2)/2][$j0] & (2<<($j%16)))) &&
+										(empty($matrix[$i][$j3]) ||
+											!($matrix[$i][$j3] & (2<<$j4))) &&
+										(empty($matrix[$i + $width][$j3]) ||
+											!($matrix[$i + $width][$j3] & (2<<$j4))) &&
+										(empty($matrix[$i + ($width - $width%2)/2][$j1]) ||
+											!($matrix[$i + ($width - $width%2)/2][$j1] & (2<<$j4))) &&
+										(empty($matrix[$i + ($width - $width%2)/2][$j3]) ||
+											!($matrix[$i + ($width - $width%2)/2][$j3] & (2<<$j4)))))) {
 /* and Sprite is big enough */
-									if ($i + $width < $matrix_x && $j + $height < $matrix_y) {
+									if ($i + $width < $matrix_x && $j + ($height - $height%2)/2 < $matrix_y) {
 										$I = $i;
 										$J = $j;
 										$i = $matrix_x;
@@ -258,6 +286,8 @@ class css_sprites_optimize {
 								$I = 0;
 								$J = $matrix_y;
 							}
+						} else {
+							$filled_square = min($I, $J);
 						}
 /* calculate increase of matrix dimensions */
 						$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
@@ -265,7 +295,7 @@ class css_sprites_optimize {
 /* fill matrix for this image */
 						for ($i = $I; $i < $I + $width; $i++) {
 							for ($j = $J; $j < $J + $height; $j++) {
-								$matrix[$i][$j] = 1;
+								$matrix[$i][($j - $j%16)/16] += 2<<($j%16);
 							}
 						}
 /* remember coordinates for this image, keep top/left */
@@ -324,7 +354,7 @@ class css_sprites_optimize {
 						$x -= $final_x < 0 ? $final_x : 0;
 						$y += $final_y < 0 ? $final_y : 0;
 /* check for 3 points: left, middle and right for the top border */
-						while (empty($matrix[$i][$j]) && empty($matrix[$i + round($width/2)][$j]) && empty($matrix[$i + $width][$j]) && $j>0) {
+						while (empty($matrix[$i]{$j}) && empty($matrix[$i + round($width/2)]{$j}) && empty($matrix[$i + $width]{$j}) && $j>0) {
 							$j--;
 						}
 /* remember minimal distance */
@@ -362,7 +392,7 @@ class css_sprites_optimize {
 
 	}
 /* merge all images into final CSS Sprite */
-	function merge_sprites ($type, $sprite) {
+	function merge_sprites ($type, $sprite, $mode = 0) {
 
 		if ((!empty($this->css_images[$sprite]) || ($type == 4 && !empty($this->css_images['weboi.'. $this->timestamp .'.png'])))) {
 /* avoid re-calculating of images to switch from PNG to JPEG */
@@ -518,7 +548,7 @@ class css_sprites_optimize {
 				if ($type == 4) {
 					$icons_sprite = preg_replace("/webo/", "weboi", $sprite);
 					$icons = empty($this->css_images[$icons_sprite]) ? array() : $this->css_images[$icons_sprite];
-					$this->css_images[$sprite] = $this->sprites_placement($this->css_images[$sprite], $icons);
+					$this->css_images[$sprite] = $this->sprites_placement($this->css_images[$sprite], $icons, $mode);
 					$sprite_right = preg_replace("/webo/", "webor", $sprite);
 /* add right Sprite to the right top corner */
 					if (is_file($sprite_right)) {
@@ -732,7 +762,8 @@ class css_sprites_optimize {
 								!empty($this->css->css[$import][$key]['background'])) {
 /* update current styles in initial selector */
 									$this->css->css[$import][$key]['background'] =
-										trim(((!empty($this->media[$import][$key]['background-color']) &&
+										trim(((!empty($this->media) &&
+										!empty($this->media[$import][$key]['background-color']) &&
 										$this->media[$import][$key]['background-color'] != 'transparent') ?
 											$this->media[$import][$key]['background-color'] . ' ' : '') .
 										(empty($css_left) || $css_left == 'left' ?
@@ -743,7 +774,8 @@ class css_sprites_optimize {
 										' ' .
 										(empty($css_repeat) ? '' : $css_repeat) .
 										' ' .
-										(!empty($this->media[$import][$key]['background-attachement']) ?
+										(!empty($this->media) &&
+											!empty($this->media[$import][$key]['background-attachement']) ?
 											$this->media[$import][$key]['background-attachement'] . ' ' : ''));
 							}
 
@@ -752,21 +784,24 @@ class css_sprites_optimize {
 							if (!in_array($background{0}, array('-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'))) {
 								$background = substr($background, strpos($background, " ") + 1);
 							}
-							$background = (!empty($this->media[$import][$key]['background-color'])
-								&& $this->media[$import][$key]['background-color'] != 'transparent' ?
+							$background = (!empty($this->media) &&
+								!empty($this->media[$import][$key]['background-color']) &&
+								$this->media[$import][$key]['background-color'] != 'transparent' ?
 									$this->media[$import][$key]['background-color'] : '') . $background;
 							$this->css->css[$import][$key]['background'] = $background;
 						}
 /* update array with chosen selectors -- to mark this image as used */
 						$this->media[$import][$key]['background'] = 1;
 						$merged_selector[$import] = (empty($merged_selector[$import]) ? '' : $merged_selector[$import] . ",") . $key;
+						$tags = empty($this->media[$import][$key]['tags']) ? $key :
+							$this->media[$import][$key]['tags'];
 /* unset overwritten values, use remembered multiple selectors */
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-image']);
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-color']);
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-position']);
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-repeat']);
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-attachement']);
-						unset($this->css->css[$import][$this->media[$import][$key]['tags']]['background-image']);
+						unset($this->css->css[$import][$tags]['background-image']);
+						unset($this->css->css[$import][$tags]['background-color']);
+						unset($this->css->css[$import][$tags]['background-position']);
+						unset($this->css->css[$import][$tags]['background-repeat']);
+						unset($this->css->css[$import][$tags]['background-attachement']);
+						unset($this->css->css[$import][$tags]['background-image']);
 					}
 					if (!$file_exists) {
 /* try to add right and bottom Sprites to the main one */
@@ -837,7 +872,7 @@ class css_sprites_optimize {
  * Original at http://it.php.net/manual/en/function.imagecreatefromgif.php#59787
 **/
 	function is_animated_gif ($filename) {
-		$raw = file_get_contents($filename);
+		$raw = @file_get_contents($filename);
 		$offset = 0;
 		$frames = 0;
 		while ($frames < 2) {

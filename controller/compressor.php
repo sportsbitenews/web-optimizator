@@ -353,9 +353,11 @@ class web_optimizer {
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
 				"no_ie6" => $this->options['css_sprites']['no_ie6'],
-				"memory_limited" => $this->options['css_sprites']['memory_limited'],
 				"dimensions_limited" => round($this->options['css_sprites']['dimensions_limited']),
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
+				"css_sprites_html_sprites" => $this->options['css_sprites']['html_sprites'] &&
+					($this->premium > 1),
+				"css_sprites_html_limit" => round($this->options['css_sprites']['html_limit']),
 				"punypng" => (!empty($this->options['punypng']) ? $this->options['punypng'] : '') &&
 					($this->premium > 1),
 				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
@@ -432,7 +434,10 @@ class web_optimizer {
 				"htaccess_password" => $this->options['external_scripts']['pass'] &&
 					($this->premium > 1),
 				"html_tidy" => $this->options['performance']['plain_string'] &&
-					($this->premium > 1)
+					($this->premium > 1),
+				"sprites" => $this->options['css_sprites']['html_sprites'] &&
+					($this->premium > 1),
+				"dimensions_limited" => round($this->options['css_sprites']['html_limit']),
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
@@ -572,7 +577,8 @@ class web_optimizer {
 								!empty($option['unobtrusive_counters']) ||
 								!empty($option['unobtrusive_informers']) ||
 								!empty($option['unobtrusive_iframes']) ||
-								!empty($option['cache'])) {
+								!empty($option['cache']) ||
+								!empty($option['sprites'])) {
 									if (!empty($this->web_optimizer_stage)) {
 										$this->write_progress($this->web_optimizer_stage++);
 									}
@@ -655,7 +661,6 @@ class web_optimizer {
 					'css_sprites_exclude' => false,
 					'aggressive' => false,
 					'no_ie6' => false,
-					'memory_limited' => false,
 					'dimensions_limited' => false,
 					'css_sprites_extra_space' => false,
 					'data_uris' => false,
@@ -714,7 +719,6 @@ class web_optimizer {
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 					'aggressive' => $options['aggressive'],
 					'no_ie6' => $options['no_ie6'],
-					'memory_limited' => $options['memory_limited'],
 					'dimensions_limited' => $options['dimensions_limited'],
 					'css_sprites_extra_space' => $options['css_sprites_extra_space'],
 					'css_sprites_expires_rewrite' => $options['css_sprites_expires_rewrite'],
@@ -768,7 +772,8 @@ class web_optimizer {
 				!empty($options['parallel_hosts'])) ||
 			!empty($options['unobtrusive_all']) ||
 			!empty($this->options['page']['far_future_expires_rewrite']) ||
-			!empty($this->options['page']['far_future_expires_external'])) {
+			!empty($this->options['page']['far_future_expires_external']) ||
+			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove BOM */
@@ -938,23 +943,62 @@ class web_optimizer {
 		} elseif (empty($this->options['page']['html_tidy']) || $IMG) {
 			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
+		if (!empty($this->options['page']['sprites'])) {
+			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
+			$html_sprites = new html_sprites($imgs, $this->options, $this);
+			$content = $html_sprites->process($content);
+		}
 		if (!empty($imgs)) {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			foreach ($imgs as $image) {
-				$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
+				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], 'src="'))) {
+					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), '"'));
+				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], "src='"))) {
+					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), "'"));
+				} else {
+					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
+				}
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 /* image file name to check through ignore list */
 				$img = preg_replace("@.*/@", "", $old_src);
+				$absolute_src = $this->convert_path_to_absolute($old_src,
+					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
+					if (!empty($this->options['page']['sprites']) &&
+						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2])) {
+							$class = substr($html_sprites->css_images[$absolute_src][8], 1);
+							if (!empty($this->options['page']['html_tidy']) &&
+								(strpos($image[0], 'class') || strpos($image[0], 'CLASS'))) {
+									if ($pos=strpos($image[0], 'class="')) {
+										$end = strpos(substr($image[0], $pos + 7), '"');
+										$new_image = substr($image[0], 0, $pos + 7 + $end) .
+											' ' . $class . substr($image[0], $pos + 7 + $end);
+									} elseif ($pos=strpos($image[0], "class='")) {
+										$end = strpos(substr($image[0], $pos + 7), "'");
+										$new_image = substr($image[0], 0, $pos + 7 + $end) .
+											' ' . $class . substr($image[0], $end);
+									} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
+										$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
+											$class . "$4$5$6", $image[0]);
+									}
+							} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
+								$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
+									$class . "$4$5$6", $image[0]);
+							} else {
+								$new_image = substr($image[0], 0, 4) . ' class="' .
+									$class . '"' . substr($image[0], 4);
+							}
+/* add transparent GIF or data:URI chunk */
+							$new_src = empty($this->ua_mod) ||
+								substr($this->ua_mod, 3, 1) > 7 ?
+								'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' :
+								$this->options['page']['cachedir_relative'] . '0.gif';
 /* are we operating with multiple hosts */
-					if (!empty($this->options['page']['parallel']) &&
+					} elseif (!empty($this->options['page']['parallel']) &&
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array($img, $ignore_list))) {
 /* skip images on different hosts */
 						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
-							$absolute_src =
-								$this->convert_path_to_absolute($old_src,
-									array('file' => $this->options['document_root_relative']));
 /* calculating unique sum from image src */
 							$sum = 0;
 							$i = ceil(strlen($old_src)/2);
@@ -983,27 +1027,31 @@ class web_optimizer {
 /* or replacing images with rewrite to Expires setter? */
 					} elseif (!empty($this->options['page']['far_future_expires_rewrite']) ||
 						!empty($this->options['page']['far_future_expires_external'])) {
-							$src = $this->convert_path_to_absolute($old_src,
-								array('file' => $this->options['document_root_relative']));
 /* add static proxy for external images */
-							if (!$src &&
+							if (!$absolute_src &&
 								$this->options['page']['far_future_expires_external']) {
-									$src = $old_src;
+									$absolute_src = $old_src;
 							}
 /* do not touch dynamic images / styles / scripts -- how we can handle them? */
-							if ($src &&
-								(preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $src) ||
+							if ($absolute_src &&
+								(preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $absolute_src) ||
 									!empty($this->options['page']['far_future_expires_external']))) {
 										$new_src =
 											$this->options['page']['cachedir_relative'] .
-											'wo.static.php?' . $src;
+											'wo.static.php?' . $absolute_src;
 							}
 					}
 					if (!empty($new_src)) {
+						if (empty($new_image)) {
 /* prevent replacing images from oher domains with the same file name */
-						$new_src_image = str_replace($old_src, $new_src, $image[0]);
+							$new_src_image = str_replace($old_src, $new_src, $image[0]);
+						} else {
+/* replace src in image with new class */
+							$new_src_image = str_replace($old_src, $new_src, $new_image);
+						}
 						$content = str_replace($image[0], $new_src_image, $content);
 						$new_src = '';
+						$new_image = '';
 					}
 					$replaced[$image[0]] = 1;
 				}
@@ -1186,7 +1234,11 @@ class web_optimizer {
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
-				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=null}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}/*@cc_on d.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};@*/if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=null}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
+				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
+					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};';
+				}
+				$include .= 'if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
 					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
@@ -2056,7 +2108,8 @@ class web_optimizer {
 /* add multiple hosts or redirects for static images */
 		if ((!empty($this->options['page']['parallel']) &&
 				!empty($this->options['page']['parallel_hosts'])) ||
-			!empty($this->options['page']['far_future_expires_rewrite'])) {
+			!empty($this->options['page']['far_future_expires_rewrite']) ||
+			!empty($this->options['page']['sprites'])) {
 				$source = $this->add_multiple_hosts($source,
 					explode(" ", $this->options['page']['parallel_hosts']),
 					explode(" ", $this->options['page']['parallel_satellites']),
@@ -2432,6 +2485,18 @@ class web_optimizer {
 					'',							'',				'</script>'), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 		}
+/* remove comments from <style> constructions */
+		if (!empty($this->options['css']['inline_scripts'])) {
+			$dest = str_replace(
+				array("<style type=\"text/css\">\n<!--",	"-->\n</style>",
+					"<style type=\"text/css\">\r\n<!--",	"-->\r\n</style>",
+					"<style type='text/css'>\n<!--",
+					"<style type='text/css'>\r\n<!--"),
+				array('<style type=\"text/css\">',			'</style>',
+					'<style type=\"text/css\">',			'</style>',
+					"<style type='text/css'>",
+					"<style type='text/css'>"), $dest);
+		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
 			$this->content = str_replace($source, $dest, $this->content);
@@ -2728,7 +2793,6 @@ class web_optimizer {
 			'mhtml_size' => $options['mhtml_size'],
 			'mhtml_ignore_list' => $options['mhtml_exclude'],
 			'css_url' => $css_url,
-			'memory_limited' => $options['memory_limited'] && !(round(preg_replace("/M/", "000000", preg_replace("/K/", "000", @ini_get('memory_limit')))) < 64000000 ? 0 : 1),
 			'dimensions_limited' => $options['dimensions_limited'],
 			'no_css_sprites' => !$options['css_sprites'],
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
