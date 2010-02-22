@@ -353,9 +353,13 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 /* fix for negative initial positions */
 						$x -= $final_x < 0 ? $final_x : 0;
 						$y += $final_y < 0 ? $final_y : 0;
+						$j0 = ($j - $j%16)/16;
 /* check for 3 points: left, middle and right for the top border */
-						while (empty($matrix[$i]{$j}) && empty($matrix[$i + round($width/2)]{$j}) && empty($matrix[$i + $width]{$j}) && $j>0) {
-							$j--;
+						while ((empty($matrix[$i][$j0]) || !($matrix[$i][$j0] & (2<<($j%16)))) &&
+							(empty($matrix[$i + ($width - $width%2)/2][$j0]) || !($matrix[$i + ($width - $width%2)/2][$j0] & (2<<($j%16)))) &&
+							(empty($matrix[$i + $width][$j0]) || !($matrix[$i + $width][$j0] & (2<<($j%16)))) && $j>0) {
+								$j--;
+								$j0 = ($j - $j%16)/16;
 						}
 /* remember minimal distance */
 						if ($distance > $y - $j - 1) {

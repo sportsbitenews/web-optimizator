@@ -281,6 +281,10 @@ class admin {
 						$this->input['wss_new']) && !$this->internal) {
 				$error[3] = 1;
 			}
+/* reset license check */
+			if ($license != $this->compress_options['license']) {
+				@unliunk($this->compress_options['html_cachedir'] . 'wo');
+			}
 			$this->premium = $this->view->validate_license($license);
 /* save new options */
 			if (!count($error)) {
