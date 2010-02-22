@@ -6,17 +6,14 @@ Short notice about CSS deploymner.
  a) Convert to data:URI - enabled
  b) Add additional space - enabled
  c) List of files to exclude
-  stamp.png stamp.full.png apply.png edit.png delete.png button.red.png button.red.hover.png
+  stamp.png stamp.full.png button.red.png button.red.hover.png
 3. Download new package and deploy it
 4. Final list of files
  wss.css
- apply.png
  buttons.png
  button.red.png
  button.red.hover.png
  corners.gif
- edit.png
- delete.png
  lang.hover.png
  lang.selected.png
  load.gif
@@ -344,9 +341,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO4{font-size:14px;line-height:16px;list-style:none;position:static;margin:0 0 2px 16px}
 #wss_upd .wssO4{font-size:10px;line-height:12px;list-style-type:disc!important}
 #wss_news .wssO4{font-size:10px;list-style-type:disc!important;margin-left:27px;padding-bottom:11px}
-.wssU .wssO11{background:url(apply.png) no-repeat!important}
-.wssU .wssO12{background:url(edit.png) no-repeat!important}
-.wssU .wssO13{background:url(delete.png) no-repeat!important}
 #wss_opt .wssO11{color:#ff8200;left:27%}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}

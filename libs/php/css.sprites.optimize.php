@@ -295,7 +295,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 /* fill matrix for this image */
 						for ($i = $I; $i < $I + $width; $i++) {
 							for ($j = $J; $j < $J + $height; $j++) {
-								$matrix[$i][($j - $j%16)/16] += 2<<($j%16);
+								$j0 = ($j - $j%16)/16;
+								$matrix[$i][$j0] = (empty($matrix[$i][$j0]) ?
+									0 : $matrix[$i][$j0]) + 2<<($j%16);
 							}
 						}
 /* remember coordinates for this image, keep top/left */
@@ -555,7 +557,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					$this->css_images[$sprite] = $this->sprites_placement($this->css_images[$sprite], $icons, $mode);
 					$sprite_right = preg_replace("/webo/", "webor", $sprite);
 /* add right Sprite to the right top corner */
-					if (is_file($sprite_right)) {
+					if (@is_file($sprite_right)) {
 						$this->css_images[$sprite]['y'] += $this->css_images[$sprite_right]['y'];
 						$this->css_images[$sprite]['addon_y'] += $this->css_images[$sprite_right]['y'];
 /* change background image for the right Sprite selectors */
@@ -565,7 +567,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					}
 					$sprite_bottom = preg_replace("/webo/", "webob", $sprite);
 /* add bottom Sprite to the bottom left corner */
-					if (is_file($sprite_bottom)) {
+					if (@is_file($sprite_bottom)) {
 						$this->css_images[$sprite]['x'] += $this->css_images[$sprite_bottom]['x'];
 						$this->css_images[$sprite]['addon_x'] += $this->css_images[$sprite_bottom]['x'];
 /* change background image for the right Sprite selectors */
@@ -867,8 +869,10 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			}
 
 		}
-/* unset done arrays */
-		unset($this->css_images[$sprite]);
+		if (strpos($sprite, 'webor') !== false && strpos($sprite, 'webob') !== false) {
+/* unset done arrays, not for webor/webob cases - they can be used in the future */
+			unset($this->css_images[$sprite]);
+		}
 	}
 
 /**

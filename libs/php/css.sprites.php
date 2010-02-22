@@ -348,6 +348,7 @@ class css_sprites {
 							if (!empty($image['background-position']) &&
 								strpos($image['background-position'], '%')) {
 									$position = explode(" ", $image['background-position'], 2);
+									$position_x = $position_y = 0;
 /* re-calculate only relative numbers */
 									if (strpos($position[0], '%')) {
 										$position_x = round(round($position[0]) * ($image['width'] - $width) / 100);

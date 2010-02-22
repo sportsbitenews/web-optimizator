@@ -127,13 +127,7 @@ if ($submit) {
 	echo _WEBO_OPTIONS_DESCRIPTION;
 ?>:</dt><dd class="wssU4"><?php
 	echo $options['description'];
-?></dd></dl><ul class="wssO3"><li class="wssO4 wssO11">&mdash; <?php
-	echo _WEBO_OPTIONS_APPLYCONFIG;;
-?></li><li class="wssO4 wssO12">&mdash; <?php
-	echo _WEBO_OPTIONS_EDITCONFIG;;
-?></li><li class="wssO4 wssO13">&mdash; <?php
-	echo _WEBO_OPTIONS_DELETECONFIG;;
-?></li></ul><dl class="wssU1"><dt class="wssU2"><?php
+?></dd></dl><dl class="wssU1"><dt class="wssU2"><?php
 	echo _WEBO_OPTIONS_ALLCONFIGS;
 ?>:</dt><dd class="wssU5"><div class="wssH"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssU10"><li class="wssU11<?php
 	if ($config == 'safe') {
