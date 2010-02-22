@@ -283,7 +283,7 @@ class admin {
 			}
 /* reset license check */
 			if ($license != $this->compress_options['license']) {
-				@unliunk($this->compress_options['html_cachedir'] . 'wo');
+				@unlink($this->compress_options['html_cachedir'] . 'wo');
 			}
 			$this->premium = $this->view->validate_license($license);
 /* save new options */
