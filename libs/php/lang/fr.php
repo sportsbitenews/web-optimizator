@@ -320,7 +320,7 @@ define('_WEBO_css_sprites_html_sprites_HELP', 'A lot of of small HTML images can
 define('_WEBO_css_sprites_html_limit', 'Maximum width and height of HTML images (in px)');
 define('_WEBO_css_sprites_html_limit_HELP', 'HTML images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
 define('_WEBO_css_sprites_html_page', 'Combine images for the current page only');
-define('_WEBO_css_sprites_html_page_HELP', 'HTML images can be combined for the current page only (this reduces size of the final file, but increases number of such files) or for all website pages. In the last case there will be used only 1 images for the whole website, but its size can be very large.');
+define('_WEBO_css_sprites_html_page_HELP', 'HTML images can be combined for the current page only (this reduces size of the final file, but increases number of such files) or for all website pages. In the last case there will be used the only image for the whole website, but its size can be very large.');
 
 define('_WEBO_parallel_enabled', 'Permettre des hébergeurs multiple');
 define('_WEBO_parallel_enabled_HELP', 'Tous les images appelées sur une page web seront automatiquement distribué via les hôtes multiple (miroirs). Par exemple  l\' URL http://www.site.com/i/logo.png or /i/bg.jpg peut être remplacé par  http://i1.site.com/i/logo.png et http://i2.site.com/i/bg.jpg dans le cas ou les deux hôtes  i1 and i2 sont disponibles et listé dans l\'option  &quot;Allowed hosts&quot;.');
