@@ -173,7 +173,7 @@ class html_sprites {
 			$str = '<?php';
 			foreach ($images as $k => $i) {
 				$str .= "\n" . '$images[\'' . $k .
-					"'] = array(" . $i[0] . "," . $i[1] . ",'" . $i[2] . "');";
+					"'] = array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "');";
 				if (empty($this->options['page']['per_page'])) {
 					$images[$k][3] = 1;
 				}
