@@ -153,16 +153,9 @@ class html_sprites {
 /* fetch only non cached images */
 				if (!empty($absolute_src) && empty($images[$absolute_src]))  {
 					$need_refresh = 1;
-					$img_file = $this->options['document_root'] . $absolute_src;
-					if (@is_file($img_file)) {
-						list($width, $height) = @getimagesize($img_file);
-/* skip checking not found file with every page request */
-					}
-					$width = empty($width) ? 0 : $width;
-					$height = empty($height) ? 0 : $height;
-/* skip anumated GIF and dymanic images, need to download the last... */
+					list($width, $height) = $this->optimizer->get_image(0, '', $absolute_src);
+/* skip dymanic images, need to download the last... */
 					$class = preg_match("@\.(ico|gif|jpe?g|bmp|png)$@", $old_src) &&
-						!$this->optimizer->is_animated_gif($filename) &&
 						$width && $height ? 'wo' . md5($absolute_src) : '';
 					$images[$absolute_src] = array($width, $height, $class);
 				}

@@ -126,8 +126,8 @@ class css_sprites_optimize {
 				}
 			}
 		}
+		$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./", "", $css_image)));
 		if ($mode > 0) {
-			$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./i", "", $css_image)));
 			$filename = preg_replace("!.*/!", "", $css_image);
 /* Thx for htc for ali@ */
 			if (!is_file($css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($css_image, "://")) {
@@ -159,15 +159,27 @@ class css_sprites_optimize {
 				return $css_image;
 /* image dimensions */
 			default:
-				if (is_file($css_image)) {
+				if (@is_file($css_image)) {
 /* check for animation */
 					if (strtolower(preg_replace("/.*\./", "", $css_image)) == 'gif' && $this->is_animated_gif($css_image)) {
 						return array(0, 0);
 					}
 /* rewrite calculated path */
 					$this->css_image = $css_image;
+/* check for icons */
+					if ($extension == 'ico') {
+						$size = filesize($css_image);
+						if ($size < 1500) {
+							return array(16, 16);
+						} elseif ($size < 8000) {
+							return array(32, 32);
+						} else {
+							return array(48, 48);
+						}
+					} else {
 /* get dimensions from downloaded image */
-					return @getimagesize($css_image);
+						return @getimagesize($css_image);
+					}
 				} else {
 					return array(0, 0);
 				}
@@ -639,6 +651,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								$this->alpha = 0;
 /* try to copy initial image into sprite */
 								switch (strtolower(preg_replace("/.*\./", "", $filename))) {
+									case 'ico':
+										$im = $this->imagecreatefromico($filename, $width, $height);
+										break;
 									case 'gif':
 										$im = @imagecreatefromgif($filename);
 										break;
@@ -680,6 +695,10 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								}
 								if (empty($im)) {
 									$im = @imagecreatefromxbm($filename);
+									$this->alpha = 0;
+								}
+								if (empty($im)) {
+									$im = $this->imagecreatefromico($filename, $width, $height);
 									$this->alpha = 0;
 								}
 							}
@@ -1057,6 +1076,101 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				@imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
 				break;
 		}
+	}
+
+/** 
+ * Functions to operate with ICO files
+ * Based on Jakub Vrana's code
+ * Code from http://printf.ru/mediawiki/index.php?title=imagecreatefromico
+ **/
+
+	function imagecreatefromicoraw($data, $width, $height, $bitdepth) {
+		$image = imagecreatetruecolor($width, $height);
+		imagefilledrectangle($image, 0, 0, $width - 1, $height - 1,
+			imagecolorallocate($image, 255, 255, 255));
+		if ($bitdepth < 9) {
+			$cs = array();
+			for ($i = 0; $i < pow(2, $bitdepth); ++$i) {
+				$c = @unpack('Cb/Cg/Cr', substr($data, 4 * $i, 3));
+				$cs[] = imagecolorallocate($image, $c['r'], $c['g'], $c['b']);
+			}
+			$data = substr($data, 4 * pow(2, $bitdepth));
+		}
+		$stride = ceil($width * $bitdepth / 32);
+		for ($y = 0; $y < $height; ++$y) {
+			for ($x = 0; $x < $width; ++$x) {
+				$offset = 32 * $y * $stride + $x * $bitdepth;
+				$transparent = ord($data { 4 * $height * $stride + 4 * $y *
+					ceil($width / 32) + floor($x / 8) }) & (1 << (7 - $x % 8));
+				if ($bitdepth < 9) {
+					$c = $cs[ord($data { floor($offset / 8) }) >>
+						(8 - $bitdepth - $offset % 8) & (pow(2, $bitdepth) - 1)];
+				} elseif ($bitdepth == 16) {
+					$cs = @unpack('nbgr', substr($data, $offset / 8, 2));
+					$c = imagecolorallocate($image,
+						round(255 / 31 * ($cs['bgr'] & 31)),
+						round(255 / 63 * (($cs['bgr'] >> 5) & 63)),
+						round(255 / 31 * ($cs['bgr'] >> 11)));
+				} elseif ($bitdepth == 32) {
+					$cs = @unpack('Cb/Cg/Cr/Ca', substr($data, $offset / 8, 4));
+					$c = imagecolorallocate($image,
+						255 - $cs['a'] + round($cs['r'] * $cs['a'] / 255),
+						255 - $cs['a'] + round($cs['g'] * $cs['a'] / 255),
+						255 - $cs['a'] + round($cs['b'] * $cs['a'] / 255));
+				} else {
+					$cs = @unpack('Cb/Cg/Cr', substr($data, $offset / 8, 3));
+					$c = imagecolorallocate($image, $cs['r'], $cs['g'], $cs['b']);
+				}
+				if (!$transparent) imagesetpixel($image, $x, $height - $y - 1, $c);
+			}
+		}
+		return $image;
+	}
+
+	function imagecreatefromico($filename, $width = 16, $height = 16) {
+		if ($data = @file_get_contents($filename)) {
+			list(, $count) = @unpack('v', substr($data, 4, 2));
+			$icon = null;
+			for ($i = 0; $i < $count; ++$i) {
+				$meta = @unpack('Cwidth/Cheight/Ccolors/Creserved/vplanes/' .
+					'vbitdepth/Vlength/Voffset', substr($data, 16 * $i + 6, 16));
+				if ($meta) {
+					$meta_ = @unpack('vibitdepth/Vcompression',
+						substr($data, $meta['offset'] + 14, 6));
+					if ($meta_) {
+						$meta += $meta_;
+						if ($icon) {
+							if ($icon['width'] == $width &&
+								$icon['height'] == $height) {
+								if ($meta['width'] != $width ||
+									$meta['height'] != $height ||
+									$meta['ibitdepth'] < $icon['ibitdepth']) {
+									continue;
+								}
+							} elseif ($meta['width'] < $icon['width'] ||
+								$meta['height'] < $icon['height'] ||
+								$meta['ibitdepth'] < $icon['ibitdepth']) {
+								continue;
+							}
+						}
+						$icon = $meta;
+					}
+				}
+			}
+			if ($icon) {
+				$image = $this->imagecreatefromicoraw(substr($data,
+					$icon['offset'] + 40, $icon['length']),
+					$icon['width'], $icon['height'], $icon['ibitdepth']);
+				if ($icon['width'] != $width || $icon['height'] != $height) {
+					$image_ = imagecreatetruecolor($width, $height);
+					imagecopyresampled($image_, $image, 0, 0, 0, 0, $width,
+						$height, imagesx($image), imagesy($image));
+					return $image_;
+				}
+				return $image;
+			}
+		}
+		return false;
 	}
 
 }
