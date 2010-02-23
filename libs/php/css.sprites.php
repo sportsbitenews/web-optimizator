@@ -124,9 +124,9 @@ class css_sprites {
 												$padding = array (
 													$property => $value
 												);
-												foreach ($padding as $prop => $val) {
-													$this->optimizer->media[$imp][$key][$prop] = round($val);
-												}
+											}
+											foreach ($padding as $prop => $val) {
+												$this->optimizer->media[$imp][$key][$prop] = round($val);
 											}
 										} else {
 											$this->optimizer->media[$imp][$key][$property] = round($value);

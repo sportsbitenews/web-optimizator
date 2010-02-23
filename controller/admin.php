@@ -1612,7 +1612,9 @@ class admin {
 	function install_uninstall () {
 		$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
-		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce'))  || substr($this->cms_version, 0, 10) == 'Open Slaed') {
+		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce')) ||
+			substr($this->cms_version, 0, 10) == 'Open Slaed' ||
+			substr($this->cms_version, 0, 13) == 'Social Engine') {
 			if ($this->cms_version == 'Bitrix') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
@@ -1625,6 +1627,9 @@ class admin {
 			} elseif ($this->cms_version == 'VaM Shop' || $this->cms_version == 'osCommerce') {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
+			} elseif (substr($this->cms_version, 0, 13) == 'Social Engine') {
+				$mainfile = $this->view->paths['absolute']['document_root'] . 'header.php';
+				$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
 			} else {
 				$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
 				$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
@@ -3332,6 +3337,26 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$auto_rewrite = 1;
 				}
 			}
+/* and for Social Engine */
+		} elseif (substr($this->cms_version, 0, 13) == 'Social Engine') {
+			$mainfile = $this->view->paths['absolute']['document_root'] . 'header.php';
+			$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
+			$mainfile_content = @file_get_contents($mainfile);
+			$footer_content = @file_get_contents($footer);
+			if (!empty($mainfile_content) && !empty($footer_content)) {
+/* create backup */
+				@copy($mainfile, $mainfile . '.backup');
+/* update mainfile */
+				$return1 = $this->write_file($mainfile, preg_replace("/(<\?(php)?)/", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content), 1);
+/* create backup */
+				@copy($footer, $footer . '.backup');
+				$footer_content = preg_replace('!(exit\(\);\r?\n\?>)!s', '$web_optimizer->finish();' . "$1", $footer_content);
+/* update footer */
+				$return2 = $this->write_file($footer, $footer_content, 1);
+				if (!empty($return1) && !empty($return2)) {
+					$auto_rewrite = 1;
+				}
+			}
 		} else {
 			$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 			if (substr($this->cms_version, 0, 9) == 'vBulletin') {
@@ -3347,6 +3372,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				while ($index_string = fgets($fp)) {
 					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
 				}
+				@fclose($fp);
 /* fix for Joomla 1.0 */
 				if (preg_match("/Joomla! 1\.0/", $this->cms_version)) {
 					$content_saved = preg_replace("/(initGzip\(\);\r?\n)/i", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n$1", $content_saved);
@@ -3408,7 +3434,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* fix for Drupal / Joomla / others on not-closed ?> */
 					$content_saved .= '$web_optimizer->finish();';
 				}
-				@fclose($fp);
 /* restrict changes in binary files, i.e. Zend Optimized ones */
 				if (substr($content_saved, 0, 12) != '<?php @Zend;') {
 /* create backup */
@@ -3966,7 +3991,12 @@ require valid-user';
 /* XOOPS 2.3.3 */
 		} elseif (@is_file($root . 'include/version.php')) {
 			require($root . 'include/version.php');
-			return defined(XOOPS_VERSION) ? XOOPS_VERSION : 'XOOPS';
+/* SocialEngine 3.19 */
+			if (@is_file($root . '/include/database_config.php')) {
+				return 'Social Engine' . (empty($version) ? '' : ' ' . $version);
+			} else {
+				return defined(XOOPS_VERSION) ? XOOPS_VERSION : 'XOOPS';
+			}
 /* Website Baker 2.8 */
 		} elseif (@is_file($root . 'account/preferences.php')) {
 			return 'Website Baker';
@@ -4316,6 +4346,19 @@ require valid-user';
 						'file' => 'themes/templates/footer.php',
 						'mode' => 'finish',
 						'location' => 'echo handle_output($output);'
+					)
+				);
+/* Social Engine */
+			case 'Social':
+				$files = array(
+					array(
+						'file' => 'header.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'footer.php',
+						'mode' => 'finish',
+						'location' => '$smarty->display(\'$page.tpl\');'
 					)
 				);
 /* all other systems */
