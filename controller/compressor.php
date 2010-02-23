@@ -997,7 +997,7 @@ class web_optimizer {
 /* are we operating with multiple hosts */
 					} elseif (!empty($this->options['page']['parallel']) &&
 						!empty($this->options['page']['parallel_hosts']) &&
-						(!count($ignore_list) || !in_array($img, $ignore_list))) {
+						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
 						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
 /* calculating unique sum from image src */
