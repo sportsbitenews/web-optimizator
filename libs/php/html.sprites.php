@@ -154,12 +154,14 @@ class html_sprites {
 				if (!empty($absolute_src) && empty($images[$absolute_src]))  {
 					$need_refresh = 1;
 					list($width, $height) = $this->optimizer->get_image(0, '', $absolute_src);
+					$width = empty($width) ? 0 : $width;
+					$height = empty($height) ? 0 : $height;
 /* skip dymanic images, need to download the last... */
 					$class = preg_match("@\.(ico|gif|jpe?g|bmp|png)$@", $old_src) &&
 						$width && $height ? 'wo' . md5($absolute_src) : '';
 					$images[$absolute_src] = array($width, $height, $class);
 				}
-				if (!empty($this->options['page']['css_sprites_html_page'])) {
+				if (!empty($this->options['page']['per_page'])) {
 					$images[$absolute_src][3] = 1;
 				}
 /* remember src for calculated images */
@@ -172,7 +174,7 @@ class html_sprites {
 			foreach ($images as $k => $i) {
 				$str .= "\n" . '$images[\'' . $k .
 					"'] = array(" . $i[0] . "," . $i[1] . ",'" . $i[2] . "');";
-				if (empty($this->options['page']['css_sprites_html_page'])) {
+				if (empty($this->options['page']['per_page'])) {
 					$images[$k][3] = 1;
 				}
 			}

@@ -355,10 +355,6 @@ class web_optimizer {
 				"no_ie6" => $this->options['css_sprites']['no_ie6'],
 				"dimensions_limited" => round($this->options['css_sprites']['dimensions_limited']),
 				"css_sprites_extra_space" => $this->options['css_sprites']['extra_space'],
-				"css_sprites_html_sprites" => $this->options['css_sprites']['html_sprites'] &&
-					($this->premium > 1),
-				"css_sprites_html_limit" => round($this->options['css_sprites']['html_limit']),
-				"css_sprites_html_page" => $this->options['css_sprites']['html_page'],
 				"punypng" => (!empty($this->options['punypng']) ? $this->options['punypng'] : '') &&
 					($this->premium > 1),
 				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
@@ -439,6 +435,7 @@ class web_optimizer {
 				"sprites" => $this->options['css_sprites']['html_sprites'] &&
 					($this->premium > 1),
 				"dimensions_limited" => round($this->options['css_sprites']['html_limit']),
+				"per_page" => $this->options['css_sprites']['html_page']
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
