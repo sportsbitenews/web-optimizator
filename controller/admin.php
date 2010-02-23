@@ -570,6 +570,7 @@ class admin {
 			'premium' => $this->premium,
 			"skip_render" => $this->skip_render
 		);
+		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 		$this->view->render("install_cache", $page_variables);
 	}
 
@@ -1184,14 +1185,7 @@ class admin {
 			($this->view->paths['full']['current_directory'] . 'cache/') :
 				$this->compress_options['javascript_cachedir']) .
 					'progress.html';
-		$return = $this->write_file($file, $progress, 1);
-		if (!empty($return)) {
-			if ($progress == 100) {
-				@unlink($file);
-			}
-			return true;
-		}
-		return false;
+		return $this->write_file($file, $progress, 1);
 	}
 
 	/**
@@ -1603,6 +1597,7 @@ class admin {
 				$this->save_option("['config']", "user");
 			}
 		}
+		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 	}
 
 	/**
@@ -3633,9 +3628,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$this->cache_version .
 				'&web_optimizer_debug=1',
 				$this->compress_options['html_cachedir'] . 'chained.load', 29);
-			if (@is_file($this->compress_options['html_cachedir'] . 'chained.load')) {
-				@unlink($this->compress_options['html_cachedir'] . 'chained.load');
-			}
+			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 /* or via cached HTML */
 		} else {
 			$test_file = $this->basepath . 'cache/optimizing.php';

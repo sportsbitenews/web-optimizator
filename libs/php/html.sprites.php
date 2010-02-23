@@ -161,7 +161,7 @@ class html_sprites {
 					$width = empty($width) ? 0 : $width;
 					$height = empty($height) ? 0 : $height;
 /* skip anumated GIF and dymanic images, need to download the last... */
-					$class = preg_match("@\.(gif|jpe?g|bmp|png)$@", $old_src) &&
+					$class = preg_match("@\.(ico|gif|jpe?g|bmp|png)$@", $old_src) &&
 						!$this->optimizer->is_animated_gif($filename) &&
 						$width && $height ? 'wo' . md5($absolute_src) : '';
 					$images[$absolute_src] = array($width, $height, $class);
