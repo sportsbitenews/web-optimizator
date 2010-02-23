@@ -297,7 +297,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 							for ($j = $J; $j < $J + $height; $j++) {
 								$j0 = ($j - $j%16)/16;
 								$matrix[$i][$j0] = (empty($matrix[$i][$j0]) ?
-									0 : $matrix[$i][$j0]) + 2<<($j%16);
+									0 : $matrix[$i][$j0]) + (2<<($j%16));
 							}
 						}
 /* remember coordinates for this image, keep top/left */
