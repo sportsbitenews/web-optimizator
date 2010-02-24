@@ -2303,11 +2303,11 @@ class web_optimizer {
 						$stuff . '_src_' . $key . '"),b=document.getElementById("' .
 						$stuff . '_dst_' . $key . '").parentNode;b.innerHTML=b.innerHTML.replace(/<' .
 						$tag .
-					'[^>]+id="' .
+					'[^>]+id="?' .
 						$stuff .
 					'_dst_' .
 						$key .
-					'".*?><\/' . 
+					'"?.*?><\/' . 
 						$tag .
 					'>/i,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
 			}
