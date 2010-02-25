@@ -1822,6 +1822,7 @@ class web_optimizer {
 				} elseif (!empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js))) {
+						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
 							'wo.static.php?' . $value['file'];
@@ -2504,15 +2505,8 @@ class web_optimizer {
 		}
 /* remove comments from <style> constructions */
 		if (!empty($this->options['css']['inline_scripts'])) {
-			$dest = str_replace(
-				array("<style type=\"text/css\">\n<!--",	"-->\n</style>",
-					"<style type=\"text/css\">\r\n<!--",	"-->\r\n</style>",
-					"<style type='text/css'>\n<!--",
-					"<style type='text/css'>\r\n<!--"),
-				array('<style type=\"text/css\">',			'</style>',
-					'<style type=\"text/css\">',			'</style>',
-					"<style type='text/css'>",
-					"<style type='text/css'>"), $dest);
+			$dest = preg_replace("@(<style type=[\"']text/css[\"']>)[\t\s\r\n]*<!--@is", "$1", $dest);
+			$dest = preg_replace("@[\t\s\r\n]*-->(</style>)@is", "$1", $dest);
 		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
@@ -2536,7 +2530,11 @@ class web_optimizer {
 			if (!empty($this->options['page']['remove_comments'])) {
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
 			}
-/* skip parsing head if we includes both CSS and JavaScript from head+body */
+/* fix script positioning for DLE */
+			if (strpos($this->content, '<div id="loading-layer"')) {
+				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)[\r\n\t\s]*(<div id=\"loading-layer.*=10\); \"></div>)[\r\n\t\s]*(<script.*?)[\r\n\t\s]*(<body[^>]*>)?<(table|div)@is", "$3$5$1$2$6$4<$7", $this->content);
+			}
+/* skip parsing head if we include both CSS and JavaScript from head+body */
 			if (empty($this->options['javascript']['minify_body']) ||
 				empty($this->options['css']['minify_body'])) {
 					if (empty($this->options['page']['html_tidy'])) {
