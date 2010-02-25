@@ -2532,7 +2532,7 @@ class web_optimizer {
 			}
 /* fix script positioning for DLE */
 			if (strpos($this->content, '<div id="loading-layer"')) {
-				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)[\r\n\t\s]*(<div id=\"loading-layer.*=10\); \"></div>)[\r\n\t\s]*(<script.*?)[\r\n\t\s]*(<body[^>]*>)?<(table|div)@is", "$3$5$1$2$6$4<$7", $this->content);
+				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer.*=10\); \"></div>)[\r\n\t\s]*(<script.*?)<(body|div|table)@is", "$3$5$1$2$4<$6", $this->content);
 			}
 /* skip parsing head if we include both CSS and JavaScript from head+body */
 			if (empty($this->options['javascript']['minify_body']) ||
