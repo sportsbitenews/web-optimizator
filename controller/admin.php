@@ -2406,7 +2406,8 @@ class admin {
 			'wss_description',
 			'wss_title',
 			'wss_config') as $val) {
-				$this->input[$val] = str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"), $this->input[$val]);
+				$this->input[$val] = str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"),
+					empty($this->input[$val]) ? '' : $this->input[$val]);
 		}
 /* make numeric options save */
 		foreach (array(
@@ -2638,7 +2639,7 @@ class admin {
 		}
 		if (!@is_writable($this->basepath . $this->options_file)) {
 			$this->error[1] = 1;
-		} elseif ($this->input['wss_page'] == 'install_options') {
+		} elseif (!empty($this->input['wss_page']) && $this->input['wss_page'] == 'install_options') {
 /* Try to re-define configuration name from predefined set */
 			if (empty($this->input['wss_apply'])) {
 				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme'))) {
@@ -3628,9 +3629,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$this->write_progress(8);
 /* load home page in DEBUG mode */
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index .
-				'?web_optimizer_stage=10&cache_version=' .
-					$this->cache_version .
-				'&web_optimizer_debug=1',
+				'?web_optimizer_stage=10&web_optimizer_debug=1',
 				$this->compress_options['html_cachedir'] . 'chained.load', 29);
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 /* or via cached HTML */

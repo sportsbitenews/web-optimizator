@@ -352,7 +352,7 @@ define('_WEBO_htaccess_mod_mime_HELP', 'This is required for static gzip.');
 define('_WEBO_htaccess_mod_rewrite', '<code>mod_rewrite</code> verwenden');
 define('_WEBO_htaccess_mod_rewrite_HELP', 'This is required for static gzip or forced caching.');
 define('_WEBO_htaccess_local', 'Datei <code>.htaccess</code> lokal platzieren (nicht in die Dokument-Root)');
-define('_WEBO_htaccess_local_HELP', '<code>.htaccess</code> file will be located in local website folder but not document root of website host.');
+define('_WEBO_htaccess_local_HELP', '.htaccess file will be located in local website folder but not document root of website host.');
 define('_WEBO_htaccess_access', 'WEBO Site SpeedUp Installation via <code>htpasswd</code> sch&uuml;tzen');
 define('_WEBO_htaccess_access_HELP', 'This option provides additional security for WEBO Site SpeedUp installation with the help of HTTP Basic Authorization and .htaccess and .htpasswd files.');
 define('_WEBO_htaccess_login', 'Login to protect WEBO Site SpeedUp with <code>.htpasswd</code>');

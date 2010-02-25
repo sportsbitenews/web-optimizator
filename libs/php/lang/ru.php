@@ -163,7 +163,7 @@ define('_WEBO_external_scripts_include_code_HELP', 'Код введенный в
 
 define('_WEBO_minify_javascript', 'Объединение JavaScript-файлов');
 define('_WEBO_minify_javascript_HELP', 'В зависимости от выбранной опции JavaScript либо не будет объединяться вовсе, либо будет объединяться только JavaScript, подключенный в тэге &lt;head&gt;, либо будет объединяться весь JavaScript на странице.');
-define('_WEBO_minify_javascript1', 'Не объединить JavaScript-файлы');
+define('_WEBO_minify_javascript1', 'Не объединять JavaScript-файлы');
 define('_WEBO_minify_javascript2', 'Объединять только JavaScript, подключенный в тэге <code>&lt;head&gt;</code>');
 define('_WEBO_minify_javascript3', 'Объединять JavaScript, подключенный в тэгах <code>&lt;head&gt;</code> и <code>&lt;body&gt;</code>');
 define('_WEBO_external_scripts_inline', 'Объединять встроенный JavaScript-код');
@@ -315,7 +315,7 @@ define('_WEBO_css_sprites_html_page_HELP', 'HTML-изображения могу
 define('_WEBO_htaccess_enabled', 'Использовать <code>.htaccess</code>');
 define('_WEBO_htaccess_enabled_HELP', 'Создает в корневой директории сайта файл .htaccess, либо модифицирует существующий файл, сохраняя все его исходное содержимое, а также создавая резервную копию исходного файла. Содержимое файла .htaccess изменяется в зависимости от других опций.');
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
-define('_WEBO_htaccess_local_HELP', 'Файл <code>.htaccess</code> будет расположен в локальной папке сайта, а не корневой директории хоста.');
+define('_WEBO_htaccess_local_HELP', 'Файл .htaccess будет расположен в локальной папке сайта, а не корневой директории хоста.');
 define('_WEBO_htaccess_mod_deflate', 'Использовать <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_htaccess_mod_deflate_HELP', 'Требуется для динамического сжатия файлов и является альтернативой использованию mod_gzip.');
 define('_WEBO_htaccess_mod_gzip', 'Использовать <code>mod_gzip</code>');
