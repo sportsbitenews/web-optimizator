@@ -478,7 +478,8 @@ class admin {
 			$this->set_options();
 			$this->write_htaccess();
 			if (!@is_file($this->basepath . $this->index_after) && $this->premium > 1) {
-				$this->view->download($this->webo_grade . '&refresh=on', $this->index_after, 2);
+				$this->view->download($this->webo_grade . '&refresh=on',
+					$this->basepath . $this->index_after, 2);
 			}
 		} else {
 			$this->input = array(
@@ -1199,10 +1200,12 @@ class admin {
 			if (!empty($this->compress_options['active']) &&
 				$before && (empty($after) || $after < 200)) {
 /* Request to re-check should be done on options save */
-					$this->view->download($this->webo_grade, $this->index_after, 1);
+					$this->view->download($this->webo_grade,
+						$this->basepath . $this->index_after, 1);
 			} elseif (empty($before) || $before < 200) {
 				$this->view->download($this->webo_grade . '&first=1&email=' .
-					$this->compress_options['email'], $this->index_before, 1);
+					$this->compress_options['email'],
+						$this->basepath . $this->index_before, 1);
 			}
 		}
 	}
@@ -2673,7 +2676,8 @@ class admin {
 /* re-check grade if application is active */
 				if (!empty($this->compress_options['active']) && $this->premium > 1) {
 					@unlink($this->basepath . $this->index_after);
-					$this->view->download($this->webo_grade . '&refresh=on', $index_after, 1);
+					$this->view->download($this->webo_grade . '&refresh=on',
+						$this->basepath . $this->index_after, 1);
 				}
 			}
 /* Save the options to backup config */
