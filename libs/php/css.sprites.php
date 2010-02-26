@@ -390,18 +390,19 @@ class css_sprites {
 							switch ($image['background-repeat']) {
 /* repeat-x case w/ dimensions */
 								case 'repeat-x':
+/* shift for bottom left corner of the object, xl don't have height */
+									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 /* repeat-x case w/o dimensions - can be added safely only to the end of Sprite */
 								case 'repeat-xl':
 									$top = round($position[1]);
-/* shift for bottom left corner of the object */
-									$shift_y = $image['height'] > $height ? $image['height'] - $height : 0;
 									break;
 /* repeat-y case */
 								case 'repeat-y':
+/* shift for top right corner of the object, yl don't have height */
+									$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
 /* repeat-y case w/o dimensions - can be added safely only to the end of Sprite */
 								case 'repeat-yl':
 									$left = round($position[0]);
-									$shift_x = $image['width'] > $width ? $image['width'] - $width : 0;
 									break;
 /* no-repeat case w/ dimensions can be placed all together */
 								case 'no-repeat':

@@ -80,7 +80,7 @@
 	if (empty($submit) || !empty($license)) {
 		echo htmlspecialchars($license);
 	}
-?>"/><span class="wssD3">*</span><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
+?>" maxlength="29" size="29"/><span class="wssD3">*</span><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
 		echo round($premium);
 ?>"/><?php
 		if (!empty($expires) && $expires > -1) {
