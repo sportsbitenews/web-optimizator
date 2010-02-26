@@ -1822,7 +1822,7 @@ class web_optimizer {
 				} elseif (!empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js))) {
-						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/", "/", $value['file']);
+						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
 							'wo.static.php?' . $value['file'];
