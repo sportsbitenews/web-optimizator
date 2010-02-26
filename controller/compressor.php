@@ -2308,7 +2308,7 @@ class web_optimizer {
 						$stuff .
 					'_dst_' .
 						$key .
-					'"?.*?><\/' . 
+					'["\s>].*?<\/' . 
 						$tag .
 					'>/i,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
 			}
@@ -2490,9 +2490,8 @@ class web_optimizer {
 		$dest = $source;
 /* remove conditional comments for current browser */
 		$dest = $this->remove_conditional_comments($dest);
-/* Pull out the comment blocks, so as to avoid touching conditional comments,
-	and some semi-standard complaint hacks,
-	skip if we fetch body but not head */
+/* Pull out the comment blocks to avoid touching conditional comments,
+	and some semi-standard complaint hacks, skip if we fetch body but not head */
 		if (!empty($this->options['javascript']['inline_scripts']) && !$cssonly) {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
