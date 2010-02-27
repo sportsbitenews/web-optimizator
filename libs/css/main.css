@@ -14,6 +14,7 @@ Short notice about CSS deploymner.
  lang.hover.png
  lang.selected.png
  load.gif
+ loading.gif
  progress.png
  promo.over.png
  stamps.png
@@ -22,16 +23,16 @@ Short notice about CSS deploymner.
 html,body{margin:0;padding:0}
 .wss_a{background:#fff;margin:10px auto;position:relative;min-width:770px;max-width:1180px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
-.wss_c{color:#808080;font:700 10px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:9px}
-.wss_d{left:324px;margin:0;padding:0;position:absolute;top:17px;z-index:1;}
+.wss_c{color:#393961;font:700 12px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:7px}
+.wss_d{left:353px;margin:0;padding:0;position:absolute;top:17px;z-index:1;}
 .wss_d1{top:-7px}
 .wss_e{display:none;height:24px;margin:0;padding:0;width:120px}
 .wss_d1 .wss_e{display:block}
 .wss_f{display:block;width:120px}
-.wss_g{background:#9c9c9c url(lang.png) no-repeat;color:#fff!important;display:block;font:700 13px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;outline:0;padding:3px 0 2px;text-decoration:none!important;text-indent:9px}
-a.wss_g:hover{background:#ff8200 url(lang.hover.png) no-repeat;color:#fff!important}
-a.wss_g:active,a.wss_g:focus{color:#fff!important}
-.wss_d1 .wss_g{background:#9c9c9c;width:103px}
+.wss_g{background:#9c9c9c url(lang.png) no-repeat;color:#fff!important;display:block;font:700 13px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;opacity:0.4;outline:0;padding:3px 0 2px;text-decoration:none!important;text-indent:9px}
+a.wss_g:hover{background:#ff8200 url(lang.hover.png) no-repeat;color:#fff!important;opacity:1}
+a.wss_g:active,a.wss_g:focus{color:#fff!important;opacity:1}
+.wss_d1 .wss_g{background:#9c9c9c;width:103px;opacity:1}
 .wss_d1 a.wss_g:hover{background:#ff8200 url(lang.selected.hover.png) no-repeat;width:103px}
 .wss_d1 .wss_f .wss_g{background:url(lang.selected.png) no-repeat;width:120px}
 .wss_d1 .wss_f a.wss_g:hover{background:#ff8200 url(lang.selected.png) no-repeat;width:120px}
@@ -41,13 +42,13 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important}
 .wss_e2 a.wss_g:hover{background:#ff8200 url(lang.bottom.hover.png) no-repeat}
 .wss_h{background:#fff;left:0;opacity:0;position:absolute;visibility:hidden;top:100px;width:100%;height:90%}
 .wssC4 .wss_h{display:none;height:250px;opacity:100;position:static;visibility:visible}
-.wss_l{background:url(stamps.png) no-repeat;color:#808080;float:left;font:54px/119px Trebuchet MS,Arial,Tahoma,Sans-serif;height:119px;margin:200px 38% 30px;padding-left:136px;position:relative;width:280px}
+.wss_l{background:url(stamps.png) no-repeat;color:#808080;float:left;font:54px/119px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:119px;margin:200px 38% 30px;padding-left:136px;position:relative;width:280px}
 .wssC4 .wss_l{color:#808080;margin:20px 38%}
 .wss_m{background:0 -124px url(stamps.png) no-repeat;bottom:0;display:block;height:119px;left:0;position:absolute;width:119px}
 .wssC4 .wss_m{height:0}
-#wss_mess{color:#808080;font:18px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 auto;width:420px;text-align:center}
+#wss_mess{color:#808080;font:18px/20px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0 auto;width:420px;text-align:center}
 .wssC4 #wss_mess{color:#808080}
-#wss_promo{background:url(promo.png) no-repeat;color:#fff;display:block;font:11px/11px Trebuchet MS,Arial,Tahoma,Sans-serif;height:48px;outline:0;padding:18px 0;position:absolute;right:10px;text-align:center;text-decoration:none!important;text-transform:lowercase;top:0;width:84px}
+#wss_promo{background:url(promo.png) no-repeat;color:#fff;display:block;font:11px/11px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:48px;outline:0;padding:18px 0;position:absolute;right:10px;text-align:center;text-decoration:none!important;text-transform:lowercase;top:0;width:84px}
 .wss_n{background:url(promo.over.png) no-repeat;display:block;height:49px;position:absolute;right:1px;top:35px;width:47px}
 .wss_o{display:block;font:700 16px/16px Tahoma,Sans-serif;margin-top:-1px}
 .wss_p{display:block;font-size:10px;line-height:12px;text-indent:-13px}
@@ -56,7 +57,7 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important}
 .wss_q0{background:url(loading.gif) 20px 0 no-repeat;padding-left:41px}
 #wss_content{background:#fff;padding:16px 5px}
 .wss_x{background:url(webo.png) no-repeat;display:block;float:left;height:22px;margin:-3px 6px 0 3px;width:56px}
-.wss_y{clear:right;color:#808080;font:10px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:0}
+.wss_y{clear:right;color:#808080;font:10px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:0}
 .wss_z{color:#808080!important}
 a.wss_z:hover,a.wss_z:focus,a.wss_z:active{color:#0002bf!important}
 .wss_w{color:#f00!important}
@@ -82,8 +83,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC2 .wssB{padding:12px 0 0 12px}
 .wssS .wssB{color:#bf6200;padding-top:3px}
 .wssU .wssB{font-size:16px;margin:-7px 0 0 174px}
-.wssN .wssB1{color:#4c4c4c;font:14px/17px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:2px 0 2px 17px;padding:4px 0 0;text-decoration:none!important}
-.wssB2{color:#191919;font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
+.wssN .wssB1{color:#4c4c4c;font:14px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:2px 0 2px 17px;padding:4px 0 0;text-decoration:none!important}
+.wssB2{color:#191919;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
 
 .wssC{height:120px;margin:0;padding:0}
 .wssC1{height:780px}
@@ -105,8 +106,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssN0 .wssD2{margin:10px 0 0 80px}
 .wssD3{color:#d42828;display:block;height:13px;left:-12px;position:absolute;top:4px;width:14px}
 .wssD7 .wssD3{left:-8px;top:2px}
-.wssD4{display:block;font:10px/12px Trebuchet MS,Arial,Tahoma,Sans-serif;padding-bottom:3px;width:220px}
-.wssD5{font:12px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 0 11px 20px;padding:0}
+.wssD4{display:block;font:10px/12px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding-bottom:3px;width:220px}
+.wssD5{font:12px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0 0 11px 20px;padding:0}
 .wssC6 .wssD5{margin:2px 0 2px 20px}
 .wssD6{float:left;margin:-43px 0 0 -5px;padding:0}
 .wssC6 .wssD6{line-height:15px;height:15px;margin:-25px 0 0 1px;width:20px}
@@ -118,10 +119,10 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD11{height:400px}
 .wssC7 .wssD10{height:auto}
 
-.wssE{color:#000;display:block;font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:0 0 3px}
+.wssE{color:#000;display:block;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 3px}
 .wssC6 .wssE{line-height:23px}
 
-.wssF{border:1px solid #ccc;font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;height:19px;line-height:19px;margin:0 0 1px;padding:2px 5px;width:215px}
+.wssF{border:1px solid #ccc;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:19px;line-height:19px;margin:0 0 1px;padding:2px 5px;width:215px}
 .wssC4 .wssF{width:100%}
 .wssD8 .wssF{border-color:#ff7f7f}
 .wssN0 .wssF{border-color:#e5e5e5;width:94%}
@@ -133,7 +134,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC6 .wssF1{height:45px;width:80%}
 .wssF2{height:100px}
 
-.wssG{font:14px/28px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:2px 10px;text-align:center}
+.wssG{font:14px/28px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:2px 10px;text-align:center}
 .wssN0 .wssG{background:#ffb56b url(button.yellow.png) no-repeat;border:0;cursor:pointer;color:#fff;display:block;float:right;height:28px;outline:0;padding:0 10px 6px;text-indent:5px;width:90px}
 .wssN0 .wssG:hover{background:#ff845b url(button.yellow.hover.png) no-repeat}
 
@@ -148,7 +149,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssH4{margin-top:-463px}
 .wssH5{margin-top:-250px}
 
-.wssI{font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
+.wssI{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
 .wssC4 .wssI{float:right;margin:30px 0 0 9px;padding:0}
 .wssC5 .wssI{float:none;margin:20px 0 0 15px}
 .wssC5 .wssH .wssI{margin:20px -10px 0 -1%}
@@ -156,21 +157,21 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC7 .wssI{margin:0;padding:1px 0 4px}
 .wssN .wssI{color:#333;padding:6px 0 0 13px}
 #wss_updates .wssI{margin-bottom:-2px;padding-left:26px}
-.wssO .wssI{font:10px/11px Trebuchet MS,Arial,Tahoma,Sans-serif;margin-left:-2px;padding:0}
+.wssO .wssI{font:10px/11px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin-left:-2px;padding:0}
 .wssU .wssI{margin-left:186px;padding-top:6px}
 #wss_sys .wssI{border-top:1px solid #b2b2b2;margin:4px 16px 0;padding:4px 0 0 16px}
-#wss_che .wssI{font:11px/12px Trebuchet MS,Arial,Tahoma,Sans-serif;margin-left:3%;padding-left:10px}
+#wss_che .wssI{font:11px/12px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin-left:3%;padding-left:10px}
 .wssT7 .wssI{color:#808080;display:block;font-size:14px;padding:1px 0 0}
 .wssT9 .wssI{color:#808080;display:block;padding:0 0 5px}
 #wss_opt .wssI{background:url(progress.png) 50% 0 no-repeat;height:20px;margin:12px 0 0 13px;padding:0;position:relative;width:93%}
 #wss_buzz .wssI{padding:5px 0 0 7px}
 #wss_sp .wssI{padding:3px 0 7px 17px}
 #wss_opt .wssI00{background:none}
-.wssI0{font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:10px 13px 2px}
+.wssI0{font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:10px 13px 2px}
 .wssC4 .wssI1{color:#808080;float:none;font-size:20px;margin:10px 0;padding:0;text-align:center}
 .wssP1 .wssI2{color:#000;font-size:17px}
 .wssP2 .wssI2{font-size:32px;letter-spacing:-1px}
-.wssI3{background:url(load.gif) 50% 5px no-repeat;color:#d6d6d6;font:14px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;height:15px;padding-top:45px;text-align:center}
+.wssI3{background:url(load.gif) 50% 5px no-repeat;color:#d6d6d6;font:14px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:15px;padding-top:45px;text-align:center}
 
 .wssJ{color:#2680ac!important}
 a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
@@ -181,9 +182,9 @@ a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
 a.wssJ9:hover .wssJ00{display:block}
 .wssN20 .wssO4 .wssJ{color:#b2b2b2!important}
 .wssN .wssI1 .wssJ{color:red}
-.wssT7 .wssJ{background:url(buttons.red.png) no-repeat;color:#fff!important;font:400 14px/28px Trebuchet MS,Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:20px;text-shadow:#808080 -1px 0 1px;width:100px}
+.wssT7 .wssJ{background:url(buttons.red.png) no-repeat;color:#fff!important;font:400 14px/28px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:20px;text-shadow:#808080 -1px 0 1px;width:100px}
 .wssT7 a.wssJ:hover,.wssT7 a.wssJ:focus,.wssT7 a.wssJ:active{background-position:0 -33px;color:#fff!important}
-.wssH .wssJ{font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif}
+.wssH .wssJ{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssC5 .wssJ{font-size:12px;line-height:18px;padding-left:3px}
 .wssC6 .wssO4 .wssJ{border:1px solid #fff;color:#808080!important;display:block;outline:0;padding:6px 16px;position:relative;text-decoration:none!important;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-moz-border-radius-topleft:8px;-moz-border-radius-bottomleft:8px;border-top-left-radius:8px;border-bottom-left-radius:8px}
 .wssC6 .wssO4 a.wssJ:hover,.wssC6 .wssO4 a.wssJ:focus,.wssC6 .wssO4 a.wssJ:active{color:#2b83ae!important}
@@ -197,7 +198,7 @@ a.wssJ9:hover .wssJ00{display:block}
 .wssO13 .wssJ1{text-align:right;width:110%}
 .wssC5 .wssJ1{background:#ff8200;color:#fff!important;position:relative}
 .wssC5 a.wssJ1:hover,.wssC5 a.wssJ1:focus,.wssC5 a.wssJ1:active{color:#fff!important}
-.wssJ2{font:12px/14px Trebuchet MS,Arial,Tahoma,Sans-serif}
+.wssJ2{font:12px/14px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssC5 .wssJ1 .wssJ2{background:#ff8200;border-right:5px solid #ff8200;border-bottom:9px solid #f7f4e9;border-top:8px solid #f7f4e9;display:block;height: 0;left:-10px;position:absolute;top:0;width:5px}
 #wss_opt .wssJ2{font-size:14px;font-weight:700}
 #wss_links .wssJ2{font-size:14px}
@@ -251,10 +252,10 @@ a.wssJ20:hover{background:url(corners.gif) -38px 0 no-repeat}
 .wssK1{border:1px solid #fff;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}
 
 .wssL{margin:0;padding:9px 0 0 32px}
-.wssL1{font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style-type:disc!important;margin:5px 0;padding:0}
+.wssL1{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;list-style-type:disc!important;margin:5px 0;padding:0}
 
 .wssM{margin:2px 0 0 -5px;padding:0}
-.wssM1{background:none;display:inline-block;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 10px 0 0;padding:0}
+.wssM1{background:none;display:inline-block;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0 10px 0 0;padding:0}
 .wssM2{background:#88b9d1 no-repeat;color:#fff!important;display:block;height:30px;text-decoration:none!important}
 a.wssM2:hover,a.wssM2:focus,a.wssM2:active{color:#fff!important}
 .wssM3{color:#808080!important;display:block;outline:0;text-decoration:none!important}
@@ -324,13 +325,13 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU .wssO3{left:0;height:60px;margin:0 0 -68px;position:relative;padding:0;top:38px}
 #wss_opt .wssO3{margin:10px 0 -8px;padding:0}
 #wss_news .wssO3{padding-top:9px}
-.wssO1{background:url(error-config.png) no-repeat;color:#f00;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style:none;margin:0 0 0 12px;padding:0 0 2px 19px}
+.wssO1{background:url(error-config.png) no-repeat;color:#f00;font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;list-style:none;margin:0 0 0 12px;padding:0 0 2px 19px}
 .wssC6 .wssO1{margin-left:0}
 #wss_opt .wssO1{background:none;border-left:1px solid #ccc;color:#808080;font-size:10px;height:18px;left:0;line-height:14px;list-style:none;margin:0;position:absolute;top:7px;width:16%}
 .wssO2{background:url(error-warning.png) no-repeat;color:#ff4000}
 .wssO4{margin:0;padding:0 5px 5px 0; list-style: none;}
 .wssN20 .wssO4{color:#b2b2b2}
-.wssO3 .wssO4,.wssO7 .wssO8{background:none;color:#808080;font:14px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;list-style-type:disc;margin:0 0 0 24px;padding-left:2px}
+.wssO3 .wssO4,.wssO7 .wssO8{background:none;color:#808080;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;list-style-type:disc;margin:0 0 0 24px;padding-left:2px}
 .wssC5 .wssO4{list-style:none;margin:0;padding:0}
 .wssC6 .wssO4{border:1px solid #fff;font-size:13px;list-style:none;margin:0;padding:0;width:187px;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-moz-border-radius-topleft:8px;-moz-border-radius-bottomleft:8px;border-top-left-radius:8px;border-bottom-left-radius:8px}
 .wssC6 .wssO5{border-color:#fbddb8}
@@ -345,8 +346,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
 
 .wssP{margin:0;padding:0}
-.wssP1{color:#808080;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;height:20px;margin:0;padding:0 0 3px 17px}
-.wssP2{color:#808080;float:right;font:14px/35px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-35px 5px 0 0;padding:0}
+.wssP1{color:#808080;font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:20px;margin:0;padding:0 0 3px 17px}
+.wssP2{color:#808080;float:right;font:14px/35px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:-35px 5px 0 0;padding:0}
 
 .wssS{background:url(success.png) repeat;border:1px solid #c3dce8;margin:13px 0 1px -5px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssS1{border:1px solid #ddebf2;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}
@@ -355,19 +356,19 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssT0{margin:0;width:100%}
 .wssC5 .wssT0{width:82%}
 .wssT1{border-top:2px solid #ccc}
-.wssT2{border:0;color:#808080;font:400 14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:0 0 0 13px;text-align:left;vertical-align:top}
-.wssT3{color:#808080;font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:0 0 0 13px;vertical-align:top;white-space:nowrap}
+.wssT2{border:0;color:#808080;font:400 14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 0 13px;text-align:left;vertical-align:top}
+.wssT3{color:#808080;font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 0 13px;vertical-align:top;white-space:nowrap}
 .wssT4 .wssT3,.wssT4 .wssT2{border:0;font-weight:700;padding:5px 0 0 13px}
 .wssT4{border-top:1px solid #666}
 .wssT5{background:#cedee6 url(table-head.png) repeat-x;padding:0}
 .wssC4 .wssT5{background:#70abc8}
 .wssT6{height:92px}
 .wssC4 .wssT6{height:29px}
-.wssT7{color:#ff8200;font:400 17px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:7px 3px;vertical-align:top;text-align:center}
+.wssT7{color:#ff8200;font:400 17px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 3px;vertical-align:top;text-align:center}
 .wssC4 .wssT7{color:#fff;font-size:14px;line-height:15px;padding:4px 0 4px 16px;text-align:left}
-.wssT8{font:14px/19px Trebuchet MS,Arial,Tahoma,Sans-serif;height:37px}
+.wssT8{font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:37px}
 .wssC4 .wssT8{height:23px}
-.wssT9{border:0;font:13px/15px Trebuchet MS,Arial,Tahoma,Sans-serif;padding:5px 0 5px 20px;text-align:center}
+.wssT9{border:0;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:5px 0 5px 20px;text-align:center}
 .wssC4 .wssT9{color:#505050;font-size:12px;padding:0 0 0 16px;text-align:left}
 .wssT1 .wssT9{font-size:14px;font-weight:700}
 .wssT1>.wssT8 .wssT9{padding-top:8px}
@@ -393,9 +394,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU{position:relative}
 .wssU1{margin:15px 0 0 9px;padding:0}
 .wssC6 .wssU1{padding:0}
-.wssU2{color:#808080;float:left;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0;padding:0}
-.wssU3{color:#bf6200;font:17px/20px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:0 0 12px 175px;padding:0}
-.wssU4{color:#808080;font:13px/16px Trebuchet MS,Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
+.wssU2{color:#808080;float:left;font:17px/20px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:0}
+.wssU3{color:#bf6200;font:17px/20px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0 0 12px 175px;padding:0}
+.wssU4{color:#808080;font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:-3px 0 12px 175px;min-height:32px;padding:0}
 .wssU5{margin:0;padding:0}
 .wssU10{list-style:none;margin:0;overflow: hidden;padding:0;}
 .wssU11{background:url(config.png) no-repeat;display:inline-block;float:left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
