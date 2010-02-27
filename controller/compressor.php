@@ -2172,11 +2172,11 @@ class web_optimizer {
 				if (!empty($before_body)) {
 					if (!empty($this->options['page']['html_tidy']) &&
 						($bodypos = strpos($source, "</body>"))) {
-							$source = substr_replace($this->content,
+							$source = substr_replace($source,
 								$before_body, $bodypos, 0);
 					} elseif (!empty($this->options['page']['html_tidy']) &&
 						($bodypos = strpos($this->content, "</BODY>"))) {
-							$source = substr_replace($this->content,
+							$source = substr_replace($source,
 								$before_body, $bodypos, 0);
 					} else {
 						$source = preg_replace('@(</body>)@is',

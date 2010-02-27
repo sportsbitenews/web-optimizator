@@ -843,23 +843,35 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 /* output final sprite */
 						if ($this->truecolor_in_jpeg) {
 							$sprite = preg_replace("/png$/", "jpg", $sprite);
-							@imagejpeg($sprite_raw, $sprite, 80);
-						} else {
-							@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
-/* try to re-save image on GDLib error */
-							if (!is_file($sprite)) {
-								@imagepng($sprite_raw, $sprite, 9);
+							try {
+								@imagejpeg($sprite_raw, $sprite, 80);
+							} catch (Exception $e) {
+								$failed = 1;
 							}
-							if (!is_file($sprite)) {
-								@imagepng($sprite_raw, $sprite);
+						} else {
+							try {
+								@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+							} catch (Exception $e) {
+/* try to re-save image on GDLib error */
+								try {
+									@imagepng($sprite_raw, $sprite, 9);
+								} catch (Exception $e) {
+									try {
+										@imagepng($sprite_raw, $sprite);
+									} catch (Exception $e) {
+										$failed = 1;
+									}
+								}
 							}
 						}
 						@imagedestroy($sprite_raw);
 /* additional optimization via smush.it */
-						$this->smushit($this->current_dir . '/' . $sprite);
+						if (empty($failed)) {
+							$this->smushit($this->current_dir . '/' . $sprite);
+						}
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
-					if (is_file($sprite)) {
+					if (@is_file($sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
 							$this->css->css[$import][$keys]['background-image'] = 'url('. preg_replace("/webo[rb]/", "webo", $sprite) .')';
