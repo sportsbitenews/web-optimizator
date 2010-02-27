@@ -133,31 +133,19 @@ if ($submit) {
 	if ($config == 'safe') {
 ?> wssU12 wssU17<?php
 	}
-?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><span class="wssU13" onclick="_.c('safe');return false" title="<?php
-	echo _WEBO_OPTIONS_APPLYCONFIG;
-?>"></span><span class="wssU14" onclick="_.e('safe');return false" title="<?php
-	echo _WEBO_OPTIONS_EDITCONFIG;
-?>"></span><?php
+?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
 ?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
-?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><span class="wssU13" onclick="_.c('optimal');return false" title="<?php
-	echo _WEBO_OPTIONS_APPLYCONFIG;
-?>"></span><span class="wssU14" onclick="_.e('optimal');return false" title="<?php
-	echo _WEBO_OPTIONS_EDITCONFIG;
-?>"></span><?php
+?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
 ?></a></li><li class="wssU11<?php
 	if ($config == 'extreme') {
 ?> wssU12 wssU17<?php
 	}
-?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><span class="wssU13" onclick="_.c('extreme');return false" title="<?php
-	echo _WEBO_OPTIONS_APPLYCONFIG;
-?>"></span><span class="wssU14" onclick="_.e('extreme');return false" title="<?php
-	echo _WEBO_OPTIONS_EDITCONFIG;
-?>"></span><?php
+?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><?php
 	echo _WEBO_OPTIONS_EXTREME;
 ?></a></li><?php
 	if (count($configs)) {
@@ -170,15 +158,7 @@ if ($submit) {
 			echo $c;
 ?>');void(0)" rel="<?php
 			echo $c;
-?>"><span class="wssU13" onclick="_.c('<?php
-			echo $c;
-?>');return false" title="<?php
-			echo _WEBO_OPTIONS_APPLYCONFIG;
-?>"></span><span class="wssU14" onclick="_.e('<?php
-			echo $c;
-?>');return false" title="<?php
-			echo _WEBO_OPTIONS_EDITCONFIG;
-?>"></span><span class="wssU15" onclick="_.d('<?php
+?>"><span class="wssU15" onclick="_.d('<?php
 			echo $c;
 ?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;

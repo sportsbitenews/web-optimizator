@@ -16,6 +16,7 @@ define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/s
 define('_WEBO_GENERAL_BUY', 'Comprar');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
 define('_WEBO_GENERAL_EDITION', 'Edici&oacute;n');
+define('_WEBO_GENERAL_LOADING', 'Loading');
 
 /* lang menu */
 define('_WEBO_GENERAL_LANGUAGE', 'Choose language');

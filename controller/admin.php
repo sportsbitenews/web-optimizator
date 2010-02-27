@@ -1560,6 +1560,8 @@ class admin {
 				if (@is_file($tmp)) {
 					@copy($tmp, $file);
 					@unlink($tmp);
+/* remove old gzipped version */
+					@unlink($file . '.gz');
 					if ($file == $this->options_file) {
 /* save all options to the new file -- rewrite default ones  */
 						foreach($this->compress_options as $key => $option) {
@@ -3172,6 +3174,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			'host') as $val) {
 				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
 		}
+/* clean previous changes */
+		$this->install_uninstall();
 /* define CMS */
 		$this->cms_version = $this->system_info($this->compress_options['website_root']);
 /* copy some files */
