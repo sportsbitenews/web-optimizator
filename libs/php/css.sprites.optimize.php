@@ -79,7 +79,7 @@ class css_sprites_optimize {
 			$this->ie = in_array($this->ua, array('ie4', 'ie5', 'ie6', 'ie7'));
 /* or IE7@Vista? */
 			$this->ie7v = $this->ua == 'ie4' ? 1 : 0;
-			$this->compressed_mhtml = $this->ie && $this->separated ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
+			$this->compressed_mhtml = $this->ie ? "/*\nContent-Type:multipart/related;boundary=\"_\"" : '';
 /* punypng API key */
 			$this->punypng_key = $options['punypng'];
 /* Restore or not missed CSS properties? */
