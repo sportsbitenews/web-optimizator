@@ -77,7 +77,7 @@
 	if (empty($submit) || !empty($license)) {
 		echo htmlspecialchars($license);
 	}
-?>"/></dd><dt class="wssD1"><label for="wss_email" class="wssE"><?php 
+?>" size="29" maxlength="29"/></dd><dt class="wssD1"><label for="wss_email" class="wssE"><?php 
 	echo _WEBO_LOGIN_EMAIL;
 ?>:</label></dt><dd class="wssD2<?php
 	if (!empty($error[3])) {

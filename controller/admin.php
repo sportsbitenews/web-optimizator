@@ -4150,6 +4150,7 @@ require valid-user';
 						'location' => 'echo $r;'
 					)
 				);
+				break;
 /* Invision Power Board */
 			case 'Invision':
 				$files = array(
@@ -4330,6 +4331,7 @@ require valid-user';
 						'location' => 'end'
 					)
 				);
+				break;
 /* PHP Fusion */
 			case 'PHP':
 				$files = array(
@@ -4344,6 +4346,7 @@ require valid-user';
 						'location' => 'echo handle_output($output);'
 					)
 				);
+				break;
 /* Social Engine */
 			case 'Social':
 				$files = array(
@@ -4357,6 +4360,7 @@ require valid-user';
 						'location' => '$smarty->display(\'$page.tpl\');'
 					)
 				);
+				break;
 /* all other systems */
 			default:
 				$files = array(
