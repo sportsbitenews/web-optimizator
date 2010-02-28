@@ -6,7 +6,41 @@
  **/
 ?><noscript><?php
 	echo _WEBO_NEW_NOSCRIPT;
-?></noscript><ul class="wssM"><li class="wssM1"><a class="wssM2" href="#wss_dashboard" title="<?php
+?></noscript><div class="wssK wssK0"><div class="wssK1"><h1 class="wssB"><?php
+	echo _WEBO_DASHBOARD_CRITICAL;
+?></h1><h2 class="wssB1"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_FAILED;
+?></h2><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_DO;
+?>:</p><ol class="wssO7 wssK02" style="display:none">
+<li class="wssO8"><p class="wssI"><?php 
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_1;
+?></p></li><li class="wssO8"><p class="wssI"><?php 
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_2;
+?> (<code><?php
+	echo str_replace("//", "/", str_replace("\\", "/", realpath(dirname(__FILE__) . '/../') . '/'));
+?></code>).</p></li><li class="wssO8"><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_3;
+?></p></li><li class="wssO8"><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
+?></p></li></ol><ol class="wssO7 wssK03"><li class="wssO8"><p class="wssI"><?php 
+	echo _WEBO_DASHBOARD_CRITICAL_STEP2_1;
+?> <code><?php
+	echo str_replace("//", "/", str_replace("\\", "/", realpath(dirname(__FILE__) . '/../') . '/index.php'));
+?></code>.</p></li><li class="wssO8"><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_STEP2_2;
+?></p></li><li class="wssO8"><p class="wssI"><?php
+	echo echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
+?></p></li></ol><p class="wssI"><?php 
+	echo _WEBO_DASHBOARD_CRITICAL_REFER;
+?> <a href="http://code.google.com/p/web-optimizator/w/list" rel="nofollow" class="wssJ"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_DOCS;
+?></a> <?php
+	echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <a href="http://code.google.com/p/web-optimizator/issues/list" rel="nofollow" class="wssJ"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_ISSUES;
+?></a>.</p>
+</div></div><ul class="wssM"><li class="wssM1"><a class="wssM2" href="#wss_dashboard" title="<?php
 	echo _WEBO_SPLASH2_CONTROLPANEL_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM10"><?php
 	echo _WEBO_SPLASH2_CONTROLPANEL;

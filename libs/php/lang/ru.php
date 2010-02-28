@@ -389,6 +389,21 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS2', '@wboptimizer - #WEBO Site SpeedUp - у
 define('_WEBO_DASHBOARD_SHARE_RESULTS3', '@wboptimizer - #WEBO Site SpeedUp - сэкономил мне');
 define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'трафика');
 
+/* Dashboard error */
+define('_WEBO_DASHBOARD_CRITICAL', 'Возникла критическая ошибка');
+define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'Автоматическая установка WEBO Site SpeedUp провалилась');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Пожалуйста, выполните следующие шаги');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Откройте исходные файлы вашего сайта по FTP или SSH.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Найдите файл <code>config.webo.php</code> в установочной директории WEBO Site SpeedUp');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Откройте этот файл и измените значения констант <code>$compress_options[\'website_root\']</code> и <code>$compress_options[\'document_root\']</code> на правильые (фактическое расположение вашего сайта и DOCUMENT_ROOT). Если вы не представляете, что нужно изменить, проконсультирутесь со своим хостинг-провайдером.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'Перезагрузите страницу.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'Проверьте права и возможные ошибки (например, через лог-файлы) при доступе к файлу');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'Разрешите доступ к этому файлу черещ веб (по HTTP-протоколу).');
+define('_WEBO_DASHBOARD_CRITICAL_REFER', 'Если ощибка по-прежнему возникает, пожалуйста, обратитесь к');
+define('_WEBO_DASHBOARD_CRITICAL_DOCS', 'пользовательской документации');
+define('_WEBO_DASHBOARD_CRITICAL_OR', 'или');
+define('_WEBO_DASHBOARD_CRITICAL_ISSUES', 'известным проблемам');
+
 /* Dashboard status block */
 define('_WEBO_DASHBOARD_STATUS_IS', '');
 define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'работает');

@@ -384,6 +384,21 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS2', '@wboptimizer - #WEBO Site SpeedUp - ac
 define('_WEBO_DASHBOARD_SHARE_RESULTS3', '@wboptimizer - #WEBO Site SpeedUp - saved for my website');
 define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'of traffic');
 
+/* Dashboard error */
+define('_WEBO_DASHBOARD_CRITICAL', 'There is a critical issue');
+define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'WEBO Site SpeedUp automatic installation was failed');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Please do the following');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Open your website source files via FTP or SSH.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Find file <code>config.webo.php</code> in WEBO Site SpeedUp installation folder');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Open this file and change the value of constants <code>$compress_options[\'website_root\']</code> and <code>$compress_options[\'document_root\']</code> to the right one (actual location of your website and your document root). If you have no idea what there should be you can consult with your hosting provider.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'Reload this page.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'Check permissions and possible errors (i.e. via log files) while accessing the file');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'Allow this file to be accessed via web (through HTTP protocol).');
+define('_WEBO_DASHBOARD_CRITICAL_REFER', 'If error still occurs please refer to');
+define('_WEBO_DASHBOARD_CRITICAL_DOCS', 'user documentation');
+define('_WEBO_DASHBOARD_CRITICAL_OR', 'or');
+define('_WEBO_DASHBOARD_CRITICAL_ISSUES', 'known issues');
+
 /* Dashboard status block */
 define('_WEBO_DASHBOARD_STATUS_IS', 'is');
 define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'active');
