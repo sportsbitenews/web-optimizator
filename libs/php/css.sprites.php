@@ -192,15 +192,6 @@ class css_sprites {
 							}
 						}
 					}
-/* fix image dimensions with paddings */
-					$image['height'] = $this->optimizer->media[$import][$key]['height'] =
-						(empty($image['height']) ? 0 : round($image['height']))
-						+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
-						+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
-					$image['width'] = $this->optimizer->media[$import][$key]['width'] =
-						(empty($image['width']) ? 0 : round($image['width']))
-						+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
-						+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 /* define a few of constants for image */
 					$img_has = array();
 /* Does image have width? */
@@ -339,6 +330,13 @@ class css_sprites {
 							(empty($this->optimizer->dimensions_limited) ||
 								($width < $this->optimizer->dimensions_limited &&
 									$height < $this->optimizer->dimensions_limited))) {
+/* fix image dimensions with paddings */
+							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
+								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
+								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
+							$image['width'] = (empty($image['width']) ? 0 : round($image['width']))
+								+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
+								+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
 /* fix background-position & repeat for fixed images */
 							if (!empty($image['width']) &&
 								$width == $image['width'] &&
