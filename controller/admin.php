@@ -2718,6 +2718,10 @@ class admin {
 							}
 						}
 					}
+/* can't create new config file */
+					if (!empty($this->error[0])) {
+						$this->save_option("['config']", 'safe');
+					}
 			}
 		}
 	}
