@@ -154,7 +154,7 @@ class css_sprites {
 				foreach ($this->optimizer->media as $import => $images) {
 					foreach ($images as $key => $image) {
 						foreach ($properties as $property) {
-							if (empty($image[$property])) {
+							if (!isset($image[$property])) {
 								$uniformed_key = $this->fix_css3_selectors($key);
 								$this->optimizer->media[$import][$key][$property] = $this->restore_property($import, $uniformed_key, $property);
 							}
@@ -177,20 +177,37 @@ class css_sprites {
 							if (!empty($this->optimizer->media[$import][$key_fixed]['background-image'])) {
 								$back = $this->optimizer->media[$import][$key]['background-image'] =
 									$this->optimizer->media[$import][$key_fixed]['background-image'];
-								if (empty($image['width']) && !empty($this->optimizer->media[$import][$key_fixed]['width'])) {
+								if (!isset($image['width']) && isset($this->optimizer->media[$import][$key_fixed]['width'])) {
 									$image['width'] = $this->optimizer->media[$import][$key]['width'] =
 										$this->optimizer->media[$import][$key_fixed]['width'];
 								}
-								if (empty($image['height']) && !empty($this->optimizer->media[$import][$key_fixed]['height'])) {
+								if (!isset($image['height']) && isset($this->optimizer->media[$import][$key_fixed]['height'])) {
 									$image['height'] = $this->optimizer->media[$import][$key]['height'] =
 										$this->optimizer->media[$import][$key_fixed]['height'];
 								}
-								if (empty($image['background-repeat']) && !empty($this->optimizer->media[$import][$key_fixed]['background-repeat'])) {
+								if (!isset($image['background-repeat']) && isset($this->optimizer->media[$import][$key_fixed]['background-repeat'])) {
 									$image['background-repeat'] = $this->optimizer->media[$import][$key]['background-repeat'] =
 										$this->optimizer->media[$import][$key_fixed]['background-repeat'];
 								}
 							}
 						}
+					}
+/* preliminary fix image dimensions with paddings */
+					if (isset($image['height'])) {
+						$image['height'] = $this->optimizer->media[$import][$key]['height'] =
+							(empty($image['height']) ? 0 : round($image['height']))
+							+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
+							+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
+						unset($this->optimizer->media[$import][$key]['padding-top']);
+						unset($this->optimizer->media[$import][$key]['padding-bottom']);
+					}
+					if (isset($image['width'])) {
+						$image['width'] = $this->optimizer->media[$import][$key]['width'] =
+							(empty($image['width']) ? 0 : round($image['width']))
+							+ (empty($image['padding-left']) ? 0 : round($image['padding-left']))
+							+ (empty($image['padding-right']) ? 0 : round($image['padding-right']));
+						unset($this->optimizer->media[$import][$key]['padding-left']);
+						unset($this->optimizer->media[$import][$key]['padding-right']);
 					}
 /* define a few of constants for image */
 					$img_has = array();
@@ -330,7 +347,7 @@ class css_sprites {
 							(empty($this->optimizer->dimensions_limited) ||
 								($width < $this->optimizer->dimensions_limited &&
 									$height < $this->optimizer->dimensions_limited))) {
-/* fix image dimensions with paddings */
+/* finally fix image dimensions with paddings */
 							$image['height'] = (empty($image['height']) ? 0 : round($image['height']))
 								+ (empty($image['padding-top']) ? 0 : round($image['padding-top']))
 								+ (empty($image['padding-bottom']) ? 0 : round($image['padding-bottom']));
