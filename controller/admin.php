@@ -719,8 +719,10 @@ class admin {
 /* check if .htaccess is avaiable */
 			$htaccess_available = count($this->apache_modules) ? 1 : 0;
 			$apache2 = 0;
+/* Apache/1 indicates (for sure) Apache 1.3.0-1.3.11. Apache 1.3.12+ has
+   Prod in ServerTokens support, so can be false detected as Apache2 */
 			if (function_exists('apache_get_version')) {
-				$apache2 = strpos(apache_get_version(), "/2");
+				$apache2 = strpos(apache_get_version(), "/1") ? 0 : 1;
 			}
 /* fill array with errors */
 			$errors = array();
