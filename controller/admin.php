@@ -483,7 +483,10 @@ class admin {
 			}
 		} else {
 			$this->input = array(
-				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled']
+				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled'],
+				'wss_htaccess_mod_rewrite' => $this->compress_options['htaccess']['mod_rewrite'],
+				'wss_far_future_expires_css' => $this->compress_options['far_future_expires']['css'],
+				'wss_far_future_expires_javascript' => $this->compress_options['far_future_expires']['javascript']
 			);
 			$this->write_htaccess();
 			$this->save_option("['active']", 0);
