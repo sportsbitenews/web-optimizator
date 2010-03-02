@@ -30,7 +30,7 @@
 ?></code>.</p></li><li class="wssO8"><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_CRITICAL_STEP2_2;
 ?></p></li><li class="wssO8"><p class="wssI"><?php
-	echo echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
 ?></p></li></ol><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_REFER;
 ?> <a href="http://code.google.com/p/web-optimizator/w/list" rel="nofollow" class="wssJ"><?php

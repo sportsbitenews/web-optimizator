@@ -52,7 +52,7 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important;opacity:1}
 .wss_n{background:url(promo.over.png) no-repeat;display:block;height:49px;position:absolute;right:1px;top:35px;width:47px}
 .wss_o{display:block;font:700 16px/16px Tahoma,Sans-serif;margin-top:-1px}
 .wss_p{display:block;font-size:10px;line-height:12px;text-indent:-13px}
-.wss_q{background:url(buttons.red.png) -105px 0;color:#333;display:none;font-size:13px;font-weight:700;height:63px;left:30%;line-height:63px;position:absolute;top:120px;width:330px;z-index:1000}
+.wss_q{background:url(buttons.red.png) -105px 0;color:#333;display:none;font:700 14px/63px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:63px;left:30%;position:absolute;top:120px;width:330px;z-index:1000}
 .wss_aa .wss_q{display:block}
 .wss_q0{background:url(loading.gif) 20px 0 no-repeat;padding-left:41px}
 #wss_content{background:#fff;padding:16px 5px}
@@ -437,8 +437,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 * html #wss_opt .wssI{background-image:url(progress.png)}
 * html .wss_n{background-image:url(promo.over.png)}
-* html .wss_l{background:url(stamp.png) no-repeat}
-* html .wss_m{background:url(stamp.full.png) no-repeat}
 
 *+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 *+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
@@ -458,8 +456,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 *+html #wss_opt .wssI{background-image:url(progress.png)}
 *+html .wss_n{background-image:url(promo.over.png)}
-*+html .wss_l{background:url(stamp.png) no-repeat}
-*+html .wss_m{background:url(stamp.full.png) no-repeat}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
