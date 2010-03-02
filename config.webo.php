@@ -54,6 +54,8 @@ $compress_options['external_scripts']['ignore_list'] = "wpsf-js.php tiny_mce.js 
 $compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
+## Include try-catch construction to merged JS file
+$compress_options['external_scripts']['include_try'] = "1";
 ## To get through HTTP Basic Authorization
 $compress_options['external_scripts']['user'] = "";
 $compress_options['external_scripts']['pass'] = "";

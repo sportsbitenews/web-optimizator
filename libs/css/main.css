@@ -412,7 +412,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU10{list-style:none;margin:0;overflow: hidden;padding:0;}
 .wssU11{background:url(config.png) no-repeat;display:inline-block;float:left;height:118px;margin:0 8px 1px 0;padding:0;width:118px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU12{background:#ff8200 url(config.active.png) no-repeat;height:118px;width:118px}
-.wssU17 .wssU15{background:url(delete.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:51px;width:17px}
+.wssU17 .wssU15{background:url(delete.hover.png) no-repeat;display:block;height:17px;left:97px;position:absolute;top:7px;width:17px}
 .wssU16{background:url(config.user.png) no-repeat;height:118px;width:118px}
 .wssU12 .wssU15{background:url(delete.active.png) no-repeat;height:17px;width:17px}
 .wssU19{background:#ff8200 url(config.user.active.png) no-repeat;height:118px;width:118px}
@@ -432,9 +432,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html a.wss_g:hover{background-image:url(lang.hover.png)}
 * html .wssT7 .wssJ{background-image:url(buttons.png)}
 * html a.wssJ20:hover{background-image:url(corners.gif)}
-* html .wssU .wssO12{background-image:url(edit.png)}
-* html .wssU .wssO13{background-image:url(delete.png)}
 * html .wssI3{background:url(load.gif) 50% 5px no-repeat}
+* html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
+* html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 * html #wss_opt .wssI{background-image:url(progress.png)}
 * html .wss_n{background-image:url(promo.over.png)}
 * html .wss_l{background:url(stamp.png) no-repeat}
@@ -454,8 +454,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
 *+html .wssT7 .wssJ{background-image:url(buttons.red.png)}
 *+html a.wssJ20:hover{background-image:url(corners.gif)}
-*+html .wssU .wssO12{background-image:url(edit.png)}
-*+html .wssU .wssO13{background-image:url(delete.png)}
+*+html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
+*+html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 *+html #wss_opt .wssI{background-image:url(progress.png)}
 *+html .wss_n{background-image:url(promo.over.png)}
 *+html .wss_l{background:url(stamp.png) no-repeat}

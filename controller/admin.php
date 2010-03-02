@@ -1965,6 +1965,10 @@ class admin {
 				'external_scripts_head_end' => array(
 					'value' => $this->compress_options['external_scripts']['head_end'],
 					'type' => 'checkbox'
+				),
+				'external_scripts_include_try' => array(
+					'value' => $this->compress_options['external_scripts']['include_try'],
+					'type' => 'checkbox'
 				)
 			),
 			'minify' => array(
@@ -2442,6 +2446,7 @@ class admin {
 			'wss_external_scripts_head_end',
 			'wss_external_scripts_css',
 			'wss_external_scripts_css_inline',
+			'wss_external_scripts_include_try',
 			'wss_performance_mtime',
 			'wss_performance_quick_check',
 			'wss_performance_plain_string',

@@ -284,6 +284,7 @@ class web_optimizer {
 					'jsmin' : ($this->options['minify']['with_yui'] ?
 						'yui' : ($this->options['minify']['with_packer'] ?
 							'packer' : '')),
+				"minify_try" => $this->options['external_scripts']['include_try'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
@@ -651,6 +652,7 @@ class web_optimizer {
 					'minify' => $options['minify'],
 					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
+					'minify_try' => $options['minify_try'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
 					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
@@ -1408,7 +1410,19 @@ class web_optimizer {
 			foreach($external_array as $key => $info) {
 /* Get the code */
 				if ($file_contents = $info['content']) {
+					if (!empty($options['minify_try'])) {
+						$contents .= 'try{';
+					}
 					$contents .= $file_contents . "\n";
+					if (!empty($options['minify_try'])) {
+						$contents .= '}catch(e){';
+						if (!empty($info['file'])) {
+							$contents .= 'document.write("' .
+								str_replace(array('<', '"'), array('\x3c', '\"'), $info['source']) .
+								'")';
+						}
+						$contents .= '}';
+					}
 				}
 			}
 			if ($options['tag'] === 'link' && !empty($options['include_code'])) {

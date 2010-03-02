@@ -177,6 +177,8 @@ define('_WEBO_external_scripts_ignore_list', 'Excluye archivos de fusionamiento'
 define('_WEBO_external_scripts_ignore_list_HELP', 'Defined files won\'t be included into combined JavaScript file. You need to define only file names, not absolute paths to them.');
 define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scripts fusionados a <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_head_end_HELP', 'Combined JavaScript file call will be moved to closing tag &lt;/head&gt;.');
+define('_WEBO_external_scripts_include_try', 'Safe combine mode');
+define('_WEBO_external_scripts_include_try_HELP', 'With this option all external files will be enveloped into try-catch construction (with individual files\' inclusion on failed content execution in common scope). This reduces JavaScript performance but quarantee that there will be no broken JavaScript calls due to their combine.');
 
 define('_WEBO_minify_css', 'Minimizar archivos CSS');
 define('_WEBO_minify_css_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined CSS file.');

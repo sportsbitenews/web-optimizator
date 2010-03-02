@@ -177,6 +177,8 @@ define('_WEBO_external_scripts_ignore_list', 'Исключать из объед
 define('_WEBO_external_scripts_ignore_list_HELP', 'Указанные в этом поле файлы не будут включаться в объединенный файл. Необходимо указывать только имена файлов, а не абсолютные пути к ним.');
 define('_WEBO_external_scripts_head_end', 'Переносить вызов объединенного JavaScript-файла перед <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_head_end_HELP', 'Вызов объединенного файла JavaScript будет переноситься к закрывающему тэгу &lt;/head&gt;.');
+define('_WEBO_external_scripts_include_try', 'Безопасный режим объединения');
+define('_WEBO_external_scripts_include_try_HELP', 'При этом режиме все вызовы внешних файлов будут обернуты в конструкции try-catch (с подключением отдельных файлов, если их содержимое не удается выполнить в общем контексте). Это снижает JavaScript-производительность, но гарантирует работоспособность всех используемых библиотек.');
 
 define('_WEBO_minify_css', 'Минимизировать CSS-файлы');
 define('_WEBO_minify_css_HELP', 'Из всех объединенных файлов CSS будут удаляться лишние пробелы, символы табуляции, переносы строк и комментарии.');
