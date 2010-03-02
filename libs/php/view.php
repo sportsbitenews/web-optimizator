@@ -189,9 +189,14 @@ class compressor_view {
 				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Speed Up Your Website; http://www.webogroup.com/) Firefox 3.5.2");
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
+/* write headers - to get gzip info */
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+/* resolve 301/302 redirects */
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+/* skip SSL verification */
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
