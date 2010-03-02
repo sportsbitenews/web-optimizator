@@ -969,9 +969,12 @@ class admin {
 			@ini_set('memory_limit', '64M');
 			$memory_limit = @ini_get('memory_limit');
 		}
-		$apache2 = 0;
+		$apache2 = $nginx = 0;
 		if (function_exists('apache_get_version')) {
-			$apache2 = strpos(apache_get_version(), "/2");
+			$apache2 = strpos(apache_get_version(), "/1") ? 0 : 1;
+		}
+		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
+			$nginx = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx/') !== false;
 		}
 		$errors = array(
 			'javascript_writable' => is_writable($javascript_cachedir),
@@ -998,18 +1001,18 @@ class admin {
 					function_exists('imagecreatetruecolor')) ||
 				(!empty($gd['GIF Read Support']) &&
 					!empty($gd['GIF Create Support']) &&
-					!empty($gd['JPG Support']) &&
+					(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 					!empty($gd['PNG Support']) &&
 					!empty($gd['WBMP Support'])),
-			'mod_deflate' => in_array('mod_deflate', $this->apache_modules),
+			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) || $nginx,
 			'mod_gzip' => in_array('mod_gzip', $this->apache_modules) ||
-				$apache2,
-			'mod_headers' => in_array('mod_headers', $this->apache_modules),
-			'mod_expires' => in_array('mod_expires', $this->apache_modules),
-			'mod_mime' => in_array('mod_mime', $this->apache_modules),
-			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules),
-			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules),
-			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules),
+				$apache2 || $nginx,
+			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx,
+			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx,
+			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx,
+			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx,
+			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx,
+			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx,
 			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
