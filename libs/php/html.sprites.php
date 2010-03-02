@@ -203,6 +203,8 @@ class html_sprites {
 				foreach ($rules as $k => $v) {
 					if ($k == 'background-image') {
 						$v = 'url(' .
+							(empty($this->options['page']['far_future_expires_rewrite']) ?
+								'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
 							$this->options['page']['cachedir_relative'] .
 							substr($v, 4);
 					}

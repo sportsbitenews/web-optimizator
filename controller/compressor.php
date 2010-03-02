@@ -537,10 +537,11 @@ class web_optimizer {
 /* skip some known cases of non-HTML content */
 		if (!$skip) {
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
-			$spot = substr($this->content, 0, 50);
+			$spot = substr($this->content, 0, 60);
 			if (strpos($spot, '<rss') !== false ||
-				strpos($spot, '<smf') !== false ||
-				strpos($spot, '<feed') !== false) {
+				strpos($spot, '<feed') !== false ||
+				strpos($spot, '<urlset') !== false ||
+				strpos($spot, '<smf') !== false) {
 					$skip = 1;
 			}
 		}
@@ -992,7 +993,9 @@ class web_optimizer {
 							$new_src = empty($this->ua_mod) ||
 								substr($this->ua_mod, 3, 1) > 7 ?
 								'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' :
-								$this->options['page']['cachedir_relative'] . '0.gif';
+								((empty($this->options['page']['far_future_expires_rewrite']) ?
+									'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
+									$this->options['page']['cachedir_relative'] . '0.gif');
 /* are we operating with multiple hosts */
 					} elseif (!empty($this->options['page']['parallel']) &&
 						!empty($this->options['page']['parallel_hosts']) &&
