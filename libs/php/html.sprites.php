@@ -14,7 +14,7 @@ class html_sprites {
 		$t = time() + microtime();
 		$this->options = $options;
 		$this->main = $main;
-		if ($this->php == 4) {
+		if ($this->main->php == 4) {
 			if (!class_exists('css_sprites_optimize')) {
 				require($this->options['css']['installdir'] . 'libs/php/css.sprites.optimize.php');
 			}
@@ -25,7 +25,7 @@ class html_sprites {
 		}
 /* create CSS Sprites combiner */
 		$this->optimizer = new css_sprites_optimize(array(
-			'root_dir' => $this->options['page']['installdir'],
+			'root_dir' => $this->options['css']['installdir'],
 			'current_dir' => $this->options['page']['cachedir'],
 			'html_cache' => $this->options['page']['cachedir'],
 			'website_root' => $this->options['document_root'],
@@ -48,7 +48,7 @@ class html_sprites {
 			'no_css_sprites' => 0,
 			'multiple_hosts' => empty($this->options['page']['parallel']) ?
 				array() : explode(" ", $this->options['page']['parallel_hosts']),
-			'user_agent' => $this->ua_mod,
+			'user_agent' => $this->main->ua_mod,
 			'punypng' => $this->options['css']['punypng'],
 			'restore_properties' => 0
 		));
