@@ -17,7 +17,7 @@ $compress_options['unobtrusive']['all'] = "0";
 ## Put all known JS informers right before </body>
 $compress_options['unobtrusive']['informers'] = "1";
 ## Put all known JS counters right before </body>
-$compress_options['unobtrusive']['counters'] = "1";
+$compress_options['unobtrusive']['counters'] = "0";
 ## Put all known advertisement blocks right before </body>
 $compress_options['unobtrusive']['ads'] = "1";
 ## Load all iframes near </body>
