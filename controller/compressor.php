@@ -944,7 +944,7 @@ class web_optimizer {
 		} elseif (empty($this->options['page']['html_tidy']) || $IMG) {
 			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
-		if (!empty($this->options['page']['sprites'])) {
+		if (!empty($this->options['page']['sprites']) && !empty($imgs)) {
 			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
 			$html_sprites = new html_sprites($imgs, $this->options, $this);
 			$content = $html_sprites->process($content);
@@ -2318,8 +2318,7 @@ class web_optimizer {
 					'</' .
 						$tag .
 					'><script type="text/javascript">(function(){var a=document.getElementById("' .
-						$stuff . '_src_' . $key . '"),b=document.getElementById("' .
-						$stuff . '_dst_' . $key . '").parentNode;b.innerHTML=b.innerHTML.replace(/<' .
+						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/<' .
 						$tag .
 					'[^>]+id="?' .
 						$stuff .
@@ -2327,7 +2326,9 @@ class web_optimizer {
 						$key .
 					'["\s>].*?<\/' . 
 						$tag .
-					'>/i,a.innerHTML);a.parentNode.removeChild(a)}())</script>';
+					'>/i,document.getElementById("' .
+						$stuff . '_src_' . $key . '").innerHTML);a=document.getElementById("' .
+						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}())</script>';
 			}
 		}
 		return $return;
