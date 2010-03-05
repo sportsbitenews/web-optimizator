@@ -1617,7 +1617,7 @@ class admin {
 	* Uninstall page
 	* 
 	**/	
-	function install_uninstall () {
+	function install_uninstall ($skip = false) {
 		$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
 		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce')) ||
@@ -1716,35 +1716,37 @@ class admin {
 		@unlink($this->basepath . $this->index_before);
 		@unlink($this->basepath . $this->index_after);
 		$error = array();
-		if ($submit) {
-			if (empty($email) ||
-				!preg_match("/.+@.+\..+/", $email)) {
-				$error[1] = 1;
-			}
-			if (empty($message)) {
-				$error[2] = 1;
-			}
+		if (!$skip) {
+			if ($submit) {
+				if (empty($email) ||
+					!preg_match("/.+@.+\..+/", $email)) {
+					$error[1] = 1;
+				}
+				if (empty($message)) {
+					$error[2] = 1;
+				}
 /* send a email to info@webo.name */
-			if (!count($error)) {
-				$this->send_message($email, $message, 1);
+				if (!count($error)) {
+					$this->send_message($email, $message, 1);
+				}
 			}
+			$this->page_variables = array(
+				"title" => _WEBO_SPLASH1_UNINSTALL,
+				"page" => 'install_uninstall',
+				"document_root" => $this->view->paths['full']['document_root'],
+				"website_root" => $this->view->paths['absolute']['document_root'],
+				"message" => $message,
+				"email" => $email,
+				"submit" => $submit,
+				"error" => $error,
+				"basepath" => $this->basepath,
+				"version" => $this->version,
+				"premium" => $this->premium,
+				"language" => $this->language,
+				"skip_render" => $this->skip_render
+			);
+			$this->view->render("install_uninstall", $this->page_variables);
 		}
-		$this->page_variables = array(
-			"title" => _WEBO_SPLASH1_UNINSTALL,
-			"page" => 'install_uninstall',
-			"document_root" => $this->view->paths['full']['document_root'],
-			"website_root" => $this->view->paths['absolute']['document_root'],
-			"message" => $message,
-			"email" => $email,
-			"submit" => $submit,
-			"error" => $error,
-			"basepath" => $this->basepath,
-			"version" => $this->version,
-			"premium" => $this->premium,
-			"language" => $this->language,
-			"skip_render" => $this->skip_render
-		);
-		$this->view->render("install_uninstall", $this->page_variables);
 	}
 
 	/**
@@ -3192,7 +3194,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
 		}
 /* clean previous changes */
-		$this->install_uninstall();
+		$this->install_uninstall(1);
 /* define CMS */
 		$this->cms_version = $this->system_info($this->compress_options['website_root']);
 /* copy some files */
