@@ -3616,8 +3616,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	*
 	**/
 	function check_apache_module ($rule, $root, $cachedir, $module) {
-		$testfile = 'libs/js/yass.loader.js';
-		$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
+		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'gzip');
+		if ($gzip) {
+			$testfile = 'libs/js/yass.loader.js';
+			$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
+			$size = @filesize($this->basepath . $testfile);
+		} else {
+			$testfile = 'libs/js/wo.cookie.php';
+			$curlfile = 'libs/js/wo.cookie.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'php';
+			$size = 125;
+		}
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
 		$recursive = 0;
@@ -3629,11 +3637,11 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$curlfile, $cachedir . 'module.test');
 		}
 /* it it's possible to get file => module works */
-		if ($filesize == @filesize($this->basepath . $testfile)) {
+		if ($filesize == $size) {
 				$return = true;
 		}
 /* check for gzip / deflate support */
-		if ((strpos($rule, 'DEFLATE') || strpos($rule, 'gzip')) && !$curl) {
+		if ($gzip && !$curl) {
 			$return = false;
 		}
 		@unlink($cachedir . 'module.test');
