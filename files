@@ -68,6 +68,7 @@ view/install_set_password.php
 view/install_system.php
 view/install_uninstall.php
 view/options_configuration.php
+config.basic.php
 config.extreme.php
 config.optimal.php
 config.safe.php

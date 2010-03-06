@@ -1884,7 +1884,7 @@ class admin {
 		$configs = array();
 		@chdir($this->basepath);
 		foreach (glob("config.*.php") as $file) {
-			if (!in_array($file, array( 'config.webo.php', 'config.safe.php', 'config.optimal.php', 'config.extreme.php'))) {
+			if (!in_array($file, array( 'config.webo.php', 'config.basic.php', 'config.safe.php', 'config.optimal.php', 'config.extreme.php'))) {
 				$configs[] = str_replace(array("config.", ".php"), '', $file);
 			}
 		}
@@ -2659,7 +2659,7 @@ class admin {
 		} elseif (!empty($this->input['wss_page']) && $this->input['wss_page'] == 'install_options') {
 /* Try to re-define configuration name from predefined set */
 			if (empty($this->input['wss_apply'])) {
-				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme'))) {
+				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme', 'basic'))) {
 					if (@is_file($this->basepath . 'config.user.php')) {
 						$i = 1;
 						while (@is_file($this->basepath . 'config.user'. ($i++) .'.php')) {}

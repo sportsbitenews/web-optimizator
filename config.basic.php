@@ -7,21 +7,21 @@ $compress_options['title'] = "";
 ## Configuration description
 $compress_options['description'] = "";
 ## Active configuration
-$compress_options['config'] = "extreme";
+$compress_options['config'] = "safe";
 ## Add JS loader for all libraries on DOMloaded event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add merged script right before </body>
-$compress_options['unobtrusive']['body'] = "1";
+$compress_options['unobtrusive']['body'] = "0";
 ## Put all scripts right before </body>
-$compress_options['unobtrusive']['all'] = "1";
+$compress_options['unobtrusive']['all'] = "0";
 ## Put all known JS informers right before </body>
-$compress_options['unobtrusive']['informers'] = "1";
+$compress_options['unobtrusive']['informers'] = "0";
 ## Put all known JS counters right before </body>
-$compress_options['unobtrusive']['counters'] = "1";
+$compress_options['unobtrusive']['counters'] = "0";
 ## Put all known advertisement blocks right before </body>
-$compress_options['unobtrusive']['ads'] = "1";
+$compress_options['unobtrusive']['ads'] = "0";
 ## Load all iframes near </body>
-$compress_options['unobtrusive']['iframes'] = "1";
+$compress_options['unobtrusive']['iframes'] = "0";
 ## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head
@@ -39,19 +39,19 @@ $compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
 ## Include try-catch construction to merged JS file
-$compress_options['external_scripts']['include_try'] = "0";
+$compress_options['external_scripts']['include_try'] = "1";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
 ## Quick checksum for head section
-$compress_options['performance']['quick_check'] = "1";
+$compress_options['performance']['quick_check'] = "0";
 ## Don't use RegExp everywhere where it's possible
-$compress_options['performance']['plain_string'] = "1";
+$compress_options['performance']['plain_string'] = "0";
 ## Cache version, ignore cache integrity, no I/O overhead
 $compress_options['performance']['cache_version'] = "0";
 ## Uniform cache files through all browsers
 $compress_options['performance']['uniform_cache'] = "0";
 ## Restore missed CSS properties
-$compress_options['performance']['restore_properties'] = "1";
+$compress_options['performance']['restore_properties'] = "0";
 ## Days to delete old files from cache, 0 disables logic
 $compress_options['performance']['delete_old'] = "0";
 ## Minify options, JS
@@ -63,17 +63,17 @@ $compress_options['minify']['with_jsmin'] = "0";
 ## Minify JS with Dean Edwards Packer
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
-$compress_options['minify']['with_yui'] = "1";
+$compress_options['minify']['with_yui'] = "0";
 ## Minify CSS
 $compress_options['minify']['css'] = "1";
 ## Minify CSS inside <body> tag
-$compress_options['minify']['css_body'] = "1";
+$compress_options['minify']['css_body'] = "0";
 ## Remove whitespaces
-$compress_options['minify']['page'] = "1";
+$compress_options['minify']['page'] = "0";
 ## Remove comments from HTML. Some JS counters can be broken
-$compress_options['minify']['html_comments'] = "1";
+$compress_options['minify']['html_comments'] = "0";
 ## Shrink HTML code to 1 string, CPU intensive
-$compress_options['minify']['html_one_string'] = "1";
+$compress_options['minify']['html_one_string'] = "0";
 ## CSS file name (only if 1 CSS set for website is used)
 $compress_options['minify']['css_file'] = "";
 ## JS file name (only if 1 JS set for website is used)
@@ -85,9 +85,9 @@ $compress_options['gzip']['css'] = "1";
 ## Gzip font files (SVG, TTF, OTF, etc)
 $compress_options['gzip']['fonts'] = "1";
 ## Check for gzip possibility via cookie
-$compress_options['gzip']['cookie'] = "1";
+$compress_options['gzip']['cookie'] = "0";
 ## Exclude IE6/7 from gzip logic
-$compress_options['gzip']['noie'] = "1";
+$compress_options['gzip']['noie'] = "0";
 ## Compression levels for JS/HTML/CSS files, work only in PHP
 $compress_options['gzip']['javascript_level'] = "9";
 $compress_options['gzip']['page_level'] = "9";
@@ -98,22 +98,22 @@ $compress_options['far_future_expires']['javascript'] = "1";
 $compress_options['far_future_expires']['css'] = "1";
 ## Cache static assets via .htaccess or PHP proxy
 $compress_options['far_future_expires']['images'] = "1";
-$compress_options['far_future_expires']['fonts'] = "1";
+$compress_options['far_future_expires']['fonts'] = "0";
 ## Cache static assets (flash, video, etc) -- only via .htaccess
-$compress_options['far_future_expires']['video'] = "1";
-$compress_options['far_future_expires']['static'] = "1";
+$compress_options['far_future_expires']['video'] = "0";
+$compress_options['far_future_expires']['static'] = "0";
 ## Send cache headers for HTML files?
-$compress_options['far_future_expires']['html'] = "1";
+$compress_options['far_future_expires']['html'] = "0";
 ## Default timeout of client side HTML files caching, in seconds
 $compress_options['far_future_expires']['html_timeout'] = "60";
 ## Add caching for external files
-$compress_options['far_future_expires']['external'] = "1";
+$compress_options['far_future_expires']['external'] = "0";
 ## Cache generated HTML files
-$compress_options['html_cache']['enabled'] = "1";
+$compress_options['html_cache']['enabled'] = "0";
 ## Cache timeout for generated HTML files, in seconds
-$compress_options['html_cache']['timeout'] = "3600";
+$compress_options['html_cache']['timeout'] = "600";
 ## Flush head section with first N bytes of body?
-$compress_options['html_cache']['flush_only'] = "0";
+$compress_options['html_cache']['flush_only'] = "1";
 ## Flush size of HTML body
 $compress_options['html_cache']['flush_size'] = "1024";
 ## Parts of ignore URL for HTML cache, separated by space
@@ -135,31 +135,31 @@ $compress_options['footer']['css_code'] = "float:right;margin:-104px 4px -100px"
 ## Add a spot to <title>: lang="wo" or xml:lang="wo"
 $compress_options['footer']['spot'] = "1";
 ## Should Web Optimizer use data URIs for background images?
-$compress_options['data_uris']['on'] = "1";
+$compress_options['data_uris']['on'] = "0";
 ## Should Web Optimizer separate CSS for rules and images?
-$compress_options['data_uris']['separate'] = "1";
+$compress_options['data_uris']['separate'] = "0";
 ## Should Web Optimizer load resource CSS on DOMloaded event?
-$compress_options['data_uris']['domloaded'] = "1";
+$compress_options['data_uris']['domloaded'] = "0";
 ## Maximum size of images to be converted, in bytes
 $compress_options['data_uris']['size'] = "24576";
 ## data:URI ignore list, files separated by space, i.e. head.jpg
 $compress_options['data_uris']['ignore_list'] = "";
 ## Should Web Optimizer use mhtml for background images?
-$compress_options['data_uris']['mhtml'] = "1";
+$compress_options['data_uris']['mhtml'] = "0";
 ## Maximum size of images to be converted into mhtml, in bytes
 $compress_options['data_uris']['mhtml_size'] = "51200";
 ## mhtml ignore list, files separated by space, i.e. head.jpg
 $compress_options['data_uris']['additional_list'] = "";
 ## Should Web Optimizer use CSS Sprites for background images?
-$compress_options['css_sprites']['enabled'] = "1";
+$compress_options['css_sprites']['enabled'] = "0";
 ## Save 24bit images in JPEG not PNG
 $compress_options['css_sprites']['truecolor_in_jpeg'] = "0";
 ## Ignore no dimensions for repeat-x / repeat-y Sprites
 $compress_options['css_sprites']['aggressive'] = "0";
 ## Add additional 5px around images to CSS Sprites
-$compress_options['css_sprites']['extra_space'] = "1";
+$compress_options['css_sprites']['extra_space'] = "0";
 ## Exclude IE6 from CSS Sprites creation
-$compress_options['css_sprites']['no_ie6'] = "1";
+$compress_options['css_sprites']['no_ie6'] = "0";
 ## Restrict large Sprites creation on GDlib failure, in pixels
 $compress_options['css_sprites']['dimensions_limited'] = "900";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
@@ -167,13 +167,13 @@ $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Combine small HTML images to sprites?
 $compress_options['css_sprites']['html_sprites'] = "0";
 ## Restrict large HTML images from merging
-$compress_options['css_sprites']['html_limit'] = "200";
+$compress_options['css_sprites']['html_limit'] = "100";
 ## Restrict HTML Sprites to the curent page only?
 $compress_options['css_sprites']['html_page'] = "1";
 ## Parallel downloads
-$compress_options['parallel']['enabled'] = "1";
+$compress_options['parallel']['enabled'] = "0";
 ## Check hosts availability or not?
-$compress_options['parallel']['check'] = "1";
+$compress_options['parallel']['check'] = "0";
 ## List of hosts for parallel downloads, i.e. img i1 i2
 $compress_options['parallel']['allowed_list'] = "";
 ## List of websites (saellites) to distribute through them,

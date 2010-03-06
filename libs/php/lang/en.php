@@ -597,6 +597,7 @@ define('_WEBO_OPTIONS_CREATENEW', 'Create new');
 define('_WEBO_OPTIONS_EXTREME', 'Extreme');
 define('_WEBO_OPTIONS_OPTIMAL', 'Optimal');
 define('_WEBO_OPTIONS_SAFE', 'Safe');
+define('_WEBO_OPTIONS_BASIC', 'Basic');
 define('_WEBO_OPTIONS_ATTENTION', 'Warning!');
 define('_WEBO_OPTIONS_ATTENTION2', 'Configuration change can lead to website failure. Please bring the application into <a href="#wss_system" class="wssJ">debug mode</a> before applying any changes.');
 define('_WEBO_OPTIONS_TITLES_safe', 'Safe configuration');
@@ -607,6 +608,8 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'Carefully tested configuration which 
 define('_WEBO_OPTIONS_DESCRIPTIONS_optimal', 'Provides optimal acceleration for your website but can result in slight failures on rare occasions.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'Combines all client side acceleration methods to guarantee maximum acceleration possible. This configuration must be carefully tested in debug mode because it may cause some unwanted changes in website view or its behavior.');
 define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'User configuration description.');
+define('_WEBO_OPTIONS_TITLES_basic', 'Basic configuration');
+define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which provide balanced speedup for your website. In a few cases can be incompatible with server environment.');
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Version comparison');

@@ -136,6 +136,12 @@ if ($submit) {
 ?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
 ?></a></li><li class="wssU11<?php
+	if ($config == 'basic') {
+?> wssU12 wssU17<?php
+	}
+?>"><a class="wssJ" href="javascript:_.f('basic');void(0)" rel="basic"><?php
+	echo _WEBO_OPTIONS_BASIC;
+?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}

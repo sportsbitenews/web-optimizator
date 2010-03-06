@@ -598,16 +598,20 @@ define('_WEBO_OPTIONS_CREATENEW', 'Nouveau');
 define('_WEBO_OPTIONS_EXTREME', 'Extrême');
 define('_WEBO_OPTIONS_OPTIMAL', 'Optimale');
 define('_WEBO_OPTIONS_SAFE', 'Sécurisé');
+define('_WEBO_OPTIONS_BASIC', 'Basic');
 define('_WEBO_OPTIONS_ATTENTION', 'Attention!');
 define('_WEBO_OPTIONS_ATTENTION2', 'Les changements de configuration peuvent causer l\'échec de votre site. Veuillez mettre l\'application en  <a href="#wss_system" class="wssJ">mode débogage</a> avant d\'appliquer les changements.');
 define('_WEBO_OPTIONS_TITLES_safe', 'Configuration sans danger');
-define('_WEBO_OPTIONS_TITLES_optimal', 'Configuration optimale');
-define('_WEBO_OPTIONS_TITLES_extreme', 'Configuration extrême');
-define('_WEBO_OPTIONS_TITLES_user', 'Configuration utilisateur');
 define('_WEBO_OPTIONS_DESCRIPTIONS_safe', 'Configuration testé soigneusement qui fournit une accéleration significative de votre site sans l\'endommager.');
+define('_WEBO_OPTIONS_TITLES_basic', 'Basic configuration');
+define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which provide balanced speedup for your website. In a few cases can be incompatible with server environment.');
+define('_WEBO_OPTIONS_TITLES_optimal', 'Configuration optimale');
 define('_WEBO_OPTIONS_DESCRIPTIONS_optimal', 'Fournit une accélération optimale pour votre site web mais peut causer quelques problèmes parfois.');
+define('_WEBO_OPTIONS_TITLES_extreme', 'Configuration extrême');
 define('_WEBO_OPTIONS_DESCRIPTIONS_extreme', 'La  combinaison de tous les méthodes d\'accélération coté client garantie une accélération maximale. Cette configuration doit -être rigoureusement testé en mode débogage car il peut provoquer des changement d\'apparence et de comportement du site.');
+define('_WEBO_OPTIONS_TITLES_user', 'Configuration utilisateur');
 define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Description de configuration utilisateur.');
+
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Comparaison des versions ');
