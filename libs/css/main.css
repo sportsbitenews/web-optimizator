@@ -55,7 +55,7 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important;opacity:1}
 .wss_n{background:url(promo.over.png) no-repeat;display:block;height:49px;position:absolute;right:1px;top:35px;width:47px}
 .wss_o{display:block;font:700 16px/16px Tahoma,Sans-serif;margin-top:-1px}
 .wss_p{display:block;font-size:10px;line-height:12px;text-indent:-13px}
-.wss_q{background:url(buttons.red.png) -105px 0;color:#333;display:none;font-size:13px;font-weight:700;height:63px;left:30%;line-height:63px;position:absolute;top:120px;width:330px;z-index:1000}
+.wss_q{background:-105px 0;color:#333;display:none;font:700 13px/63px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:63px;left:30%;position:absolute;top:120px;width:330px;z-index:1000}
 .wss_aa .wss_q{display:block}
 .wss_q0{background:url(loading.gif) 20px 0 no-repeat;padding-left:41px}
 #wss_content{background:#fff;padding:16px 5px}
@@ -201,7 +201,8 @@ a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
 a.wssJ9:hover .wssJ00{display:block}
 .wssN20 .wssO4 .wssJ{color:#b2b2b2!important}
 .wssN .wssI1 .wssJ{color:red}
-.wssT7 .wssJ{background:url(buttons.red.png) no-repeat;color:#fff!important;font:400 14px/28px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:20px;text-shadow:#808080 -1px 0 1px;width:100px}
+.wssT7 .wssJ{background:no-repeat;color:#fff!important;font:400 14px/28px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:20px;text-shadow:#808080 -1px 0 1px;width:100px}
+.wssT7 .wssJ,.wss_q{background-image:url(buttons.red.png)}
 .wssT7 a.wssJ:hover,.wssT7 a.wssJ:focus,.wssT7 a.wssJ:active{background-position:0 -33px;color:#fff!important}
 .wssH .wssJ{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssC5 .wssJ{font-size:12px;line-height:18px;padding-left:3px}
@@ -467,7 +468,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wssM5{position:absolute;right:0}
 * html .wssM2 .wssM5{background-image:url(menu.png)}
 * html a.wss_g:hover{background-image:url(lang.hover.png)}
-* html .wssT7 .wssJ{background-image:url(buttons.png)}
+* html .wssT7 .wssJ,* html .wss_q{background-image:url(buttons.red.png)}
 * html a.wssJ20:hover{background-image:url(corners.gif)}
 * html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 * html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
@@ -489,7 +490,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssN4{margin-left:1.8%}
 *+html .wssU1 .wssF1{margin-left: -183px}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
-*+html .wssT7 .wssJ{background-image:url(buttons.red.png)}
+*+html .wssT7 .wssJ,*+html .wss_q{background-image:url(buttons.red.png)}
 *+html a.wssJ20:hover{background-image:url(corners.gif)}
 *+html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
 *+html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
