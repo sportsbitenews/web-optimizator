@@ -712,4 +712,28 @@ define('_WEBO_GZIP_NOTHING', 'Nothing found');
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Using this tool you can decrease size of images without quality loss in any specified directory on your website. For each optimized file <code>.backup</code> version will be created during optimization process. GIF files are replaced with PNG ones if latter are smaller.');
 define('_WEBO_IMAGE_INSTALLED2', 'One of the following services can be used for images optimization: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">terms of service</a>) or <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">terms of service</a>).');
+
+/* Help screen */
+define('_WEBO_HELP_WELCOME', 'Welcome to WEBO Site SpeedUp');
+define('_WEBO_HELP_MINIMIZE', 'Minimize');
+define('_WEBO_HELP_CLOSE', 'Close');
+define('_WEBO_HELP_FIRSTTIME', 'Are you first time here?');
+define('_WEBO_HELP_LICENSEKEY', 'Register your license key or get a trial key on');
+define('_WEBO_HELP_LICENSEKEY2', 'page. This allows you to use WEBO Site SpeedUp at full throttle. You can skip this step if you are going to use WEBO Site SpeedUp Community Edition.');
+define('_WEBO_HELP_TUNING', 'Choose the right configuration (from Safe, Basic, Optimal, or Extreme) or create your own one on');
+define('_WEBO_HELP_TUNING2', 'page. Don\'t forget to refresh cache if you change configuration. Hints near every option will help you to understand what it is about.');
+define('_WEBO_HELP_CONTROLPANEL', 'Open');
+define('_WEBO_HELP_CONTROLPANEL2', 'page and check WEBO Site SpeedUp functionality in debug mode. If your website is OK &mdash; just enable WEBO Site SpeedUp. Otherwise continue tuning on');
+define('_WEBO_HELP_CONTROLPANEL3', 'page. If you face any issues with WEBO Site SpeedUp &mdash; please refer to');
+define('_WEBO_HELP_LINK1', 'WEBO Software Website');
+define('_WEBO_HELP_LINK2', 'Knowledge Base');
+define('_WEBO_HELP_LINK3', 'Known Issues');
+define('_WEBO_HELP_LINK4', 'Support');
+define('_WEBO_HELP_LINK5', 'Online Store');
+define('_WEBO_HELP_MEDIA', 'Product Screenshots');
+define('_WEBO_HELP_FEATURES', 'New Features');
+define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">HTML Sprites</li><li class="wssO8">Safe JavaScript combine</li><li class="wssO8">Cache expiration timeframe</li><li class="wssO8">Better memory usage</li>');
+define('_WEBO_HELP_FEATURES_ALL', 'All features');
+define('_WEBO_HELP_FEATURES_BLOG', 'Official blog');
+define('_WEBO_HELP_HELP', 'Quick Help');
 ?>

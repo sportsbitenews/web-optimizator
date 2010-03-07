@@ -94,23 +94,31 @@
 		echo _WEBO_SYSTEM_NOUPDATES;
 ?></p><?php
 	}
-?><a class="wssJ20" href="javascript:_.hide('wss_updates')"></a></div></div><div class="wssN5<?php
+?><a class="wssJ20" href="javascript:_.hide('wss_updates')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
 ?>" id="wss_buzz"><div class="wssN2"><h2 class="wssB"><a href="#wss_about" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_BUZZ;
-?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" rel="nofollow" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')"></a></div></div><div class="wssN5<?php
+?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" rel="nofollow" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_news') !== false ? ' wssA0' : '';
 ?>" id="wss_news"><div class="wssN2 wssN21"><h2 class="wssB"><a href="http://blog.webogroup.com/" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_NEWS;
 ?></a></h2><div id="wss_feed"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_news')"></a></div></div></div><div class="wssN4"><div class="wssN5<?php
+?></p></div><a class="wssJ20" href="javascript:_.hide('wss_news')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div></div><div class="wssN4"><div class="wssN5<?php
 	echo strpos($cookie, 'wss_che') !== false ? ' wssA0' : '';
 ?>" id="wss_che"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_cache" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
 ?></a></h2><div id="wss_cache"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_che')"></a></div></div><div class="wssN5 wssN21<?php
+?></p></div><a class="wssJ20" href="javascript:_.hide('wss_che')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN5 wssN21<?php
 	echo ($premium < 2?' wssN20' : '') .
 		(strpos($cookie, 'wss_sp') !== false ? ' wssA0' : '');
 ?>" id="wss_sp"><div class="wssN2"><h2 class="wssB"><<?php
@@ -129,7 +137,9 @@
 		echo _WEBO_DASHBOARD_LOADING;
 ?></p></div><?php
 	}
-?><a class="wssJ20" href="javascript:_.hide('wss_sp')"></a></div></div><div class="wssN5<?php
+?><a class="wssJ20" href="javascript:_.hide('wss_sp')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN5<?php
 	echo ($premium<2 ? ' wssN20' : '') .
 		(strpos($cookie, 'wss_tools') !== false ? ' wssA0' : '');
 ?>" id="wss_tools"><div class="wssN2 wssN21"><h2 class="wssB"><span class="wssN3"><?php
@@ -152,7 +162,9 @@
 		echo _WEBO_DASHBOARD_AVAILABLE;
 ?></p><?php
 	}
-?><a class="wssJ20" href="javascript:_.hide('wss_tools')"></a></div></div><div class="wssN5<?php
+?><a class="wssJ20" href="javascript:_.hide('wss_tools')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
 ?>" id="wss_links"><div class="wssN2"><h2 class="wssB"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_LINKS;
@@ -164,7 +176,9 @@
 	echo _WEBO_DASHBOARD_LINKS_ISSUES;
 ?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
-?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')"></a></div></div></div><div class="wssN1<?php
+?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_status') !== false ? ' wssA0' : '';
 ?>" id="wss_status"><div class="wssN2"><h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_STATUS;
@@ -206,25 +220,29 @@
 ?></p><p class="wssI"><a href="#wss_status" class="wssJ wssJ7"><?php
 		echo _WEBO_DASHBOARD_STATUS_ENABLE;
 	}
-?><span class="wssJ6"></span></a></p><a class="wssJ20" href="javascript:_.hide('wss_status')"></a></div></div><div class="wssN1<?php
+?><span class="wssJ6"></span></a></p><a class="wssJ20" href="javascript:_.hide('wss_status')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_opt') !== false ? ' wssA0' : '';
 ?>" id="wss_opt"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_options" class="wssN3"><?php
 	echo _WEBO_SPLASH2_OPTIONS;
 ?></a></h2><div id="wss_options"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_opt')"></a></div></div><div class="wssN1<?php
+?></p></div><a class="wssJ20" href="javascript:_.hide('wss_opt')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_sys') !== false ? ' wssA0' : '';
 ?>" id="wss_sys"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_SYSTEM_TITLE;
 ?></a></h2><div id="wss_system"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_sys')"></a></div></div><div class="wssN1 wssN12<?php
-		if (!$cookie) {
-?> wssA0<?php
-		}
-?>"><div class="wssN2 wssN21"><h2 class="wssB"><span class="wssN3"><?php
+?></p></div><a class="wssJ20" href="javascript:_.hide('wss_sys')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div></div><div class="wssN1 wssN12"><div class="wssN2 wssN21"><h2 class="wssB"><span class="wssN3"><?php
 	echo _WEBO_DASHBOARD_ALL;
-?></span></h2><?php
+?></span></h2><p class="wssI"><a href="javascript:_('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
+	echo _WEBO_HELP_HELP;
+?></a></p><?php
 	foreach (array(
 		'wss_status' => '_WEBO_DASHBOARD_STATUS',
 		'wss_opt' => '_WEBO_SPLASH2_OPTIONS',

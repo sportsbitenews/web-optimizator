@@ -1272,6 +1272,7 @@ class admin {
 			"cache_folder" => str_replace($this->compress_options['document_root'],
 				"/", $this->compress_options['javascript_cachedir']),
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
+			"welcome" => $_COOKIE['wss_welcome'],
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("admin_container", $page_variables);

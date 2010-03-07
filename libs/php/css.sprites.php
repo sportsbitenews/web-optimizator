@@ -87,6 +87,14 @@ class css_sprites {
 													}
 													$this->optimizer->media[$import][$tag][$bg] = $property;
 										}
+/* set background-position to '' not to restore it */
+										if ($bg == 'background-position' &&
+												($property == '0 0 !important' ||
+												$property == 'top left !important' ||
+												$property == '0 0' ||
+												$property == 'top left')) {
+													$this->optimizer->media[$import][$tag][$bg] = '';
+										}
 									}
 								} else {
 									$value = $this->normalize_property($value);
@@ -128,7 +136,7 @@ class css_sprites {
 											foreach ($padding as $prop => $val) {
 												$this->optimizer->media[$imp][$key][$prop] = round($val);
 											}
-										} else {
+										} elseif(!strpos($value, '%')) {
 											$this->optimizer->media[$imp][$key][$property] = round($value);
 										}
 									}

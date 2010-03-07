@@ -697,4 +697,28 @@ define('_WEBO_GZIP_NOTHING', 'Ничего не найдено');
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Вы можете уменьшить размеры графических файлов на вашем сайте (без изменения качества изображения). Для этого введите исходную директорию. Она будет рекурсивно просмотрена на наличие необходимых файлов, текущие <code>.backup</code>-версии файлов будут обновлены при необходимости.');
 define('_WEBO_IMAGE_INSTALLED2', 'При оптимизации создаются резервные копии всех изображений (<code>.backup</code>). В дальнейшем вы можете отменить все изменения, используя эти резервные копии. Для оптимизации используется сервис <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">правила использования</a>) или <a href="http://punypng.com/" rel="nofollow" class="wssJ">punypng.com</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">правила использования</a>). GIF-файлы заменяются на PNG, если при этом происходит уменьшение в размере.');
+
+/* Help screen */
+define('_WEBO_HELP_WELCOME', 'Добро пожаловать в WEBO Site SpeedUp');
+define('_WEBO_HELP_MINIMIZE', 'Свернуть');
+define('_WEBO_HELP_CLOSE', 'Закрыть');
+define('_WEBO_HELP_FIRSTTIME', 'Используете приложение впервые?');
+define('_WEBO_HELP_LICENSEKEY', 'На странице');
+define('_WEBO_HELP_LICENSEKEY2', 'зарегистрируйте ваш лицензионный ключ или получите временный тестовый ключ, открывающий все возможности Полной версии WEBO Site SpeedUp. Вы можете пропустить этот шаг, если хотите использовать некоммерческую версию WEBO Site SpeedUp.');
+define('_WEBO_HELP_TUNING', 'Подберите наиболее эффективную конфигурацию для вашего сайта или создайте собственную конфигурацию на странице');
+define('_WEBO_HELP_TUNING2', '. Не забудьте обновить кэш, чтобы изменения конфигурации вступили в силу. Всплывающие подсказки около каждой настройки помогут лучше понять функционал продукта.');
+define('_WEBO_HELP_CONTROLPANEL', 'Откройте страницу');
+define('_WEBO_HELP_CONTROLPANEL2', 'и проверьте работу WEBO Site SpeedUp в режиме отладки. Если внешний вид сайта и логика его работы в порядке, включите рабочий режим. В противном случае необходимо продолжить настройку на странице');
+define('_WEBO_HELP_CONTROLPANEL3', '. Если в ходе работы с WEBO Site SpeedUp у вас возникнут какие-то вопросы, обратитесь к');
+define('_WEBO_HELP_LINK1', 'Официальный сайт WEBO Software');
+define('_WEBO_HELP_LINK2', 'База знаний');
+define('_WEBO_HELP_LINK3', 'Известные проблемы');
+define('_WEBO_HELP_LINK4', 'Техническая поддержка');
+define('_WEBO_HELP_LINK5', 'Онлайн-магазин');
+define('_WEBO_HELP_MEDIA', 'Скриншоты продукта');
+define('_WEBO_HELP_FEATURES', 'Новые возможности');
+define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">HTML-спрайты</li><li class="wssO8">Безопасное объединение JavaScript</li><li class="wssO8">Срок хранения файлов в кэше</li><li class="wssO8">Улучшенное использование памяти</li>');
+define('_WEBO_HELP_FEATURES_ALL', 'Все возможности');
+define('_WEBO_HELP_FEATURES_BLOG', 'официальный блог');
+define('_WEBO_HELP_HELP', 'Подсказка');
 ?>
