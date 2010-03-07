@@ -120,82 +120,84 @@ if (!$ajax) {
 				echo  _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span></a><?php
 		}
-		$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
-?></p><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
-		echo _WEBO_HELP_MINIMIZE;
+?></p><?php
+		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
+			$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
+?><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
+			echo _WEBO_HELP_MINIMIZE;
 ?>"></a><h1 class="wssB"><?php
-		echo _WEBO_HELP_WELCOME;
+			echo _WEBO_HELP_WELCOME;
 ?>!</h1><h2 class="wssB1"><?php
-		echo _WEBO_HELP_FIRSTTIME;
+			echo _WEBO_HELP_FIRSTTIME;
 ?></h2><ol class="wssO7"><li class="wssO8 wssO21"><a class="wssO22" href="#wss_account"><span class="wssO29<?php
-		echo $screens_lang;
+			echo $screens_lang;
 ?> wssO23" title="<?php
-		echo _WEBO_DASHBOARD_ACCOUNT;
+			echo _WEBO_DASHBOARD_ACCOUNT;
 ?>"></span></a><?php
-		echo _WEBO_HELP_LICENSEKEY;
+			echo _WEBO_HELP_LICENSEKEY;
 ?> <a href="#wss_account" class="wssJ"><?php
-		echo _WEBO_DASHBOARD_ACCOUNT;
+			echo _WEBO_DASHBOARD_ACCOUNT;
 ?></a> <?php
-		echo _WEBO_HELP_LICENSEKEY2;
+			echo _WEBO_HELP_LICENSEKEY2;
 ?></li><li class="wssO8 wssO24"><a class="wssO22" href="#wss_options"><span class="wssO29<?php
-		echo $screens_lang;
+			echo $screens_lang;
 ?> wssO25" title="<?php
-		echo _WEBO_SPLASH2_OPTIONS;
+			echo _WEBO_SPLASH2_OPTIONS;
 ?>"></span></a><?php
-		echo _WEBO_HELP_TUNING;
+			echo _WEBO_HELP_TUNING;
 ?> <a href="#wss_options" class="wssJ"><?php
-		echo _WEBO_SPLASH2_OPTIONS;
+			echo _WEBO_SPLASH2_OPTIONS;
 ?></a> <?php
-		echo _WEBO_HELP_TUNING2;
+			echo _WEBO_HELP_TUNING2;
 ?></li><li class="wssO8 wssO26"><a class="wssO22" href="#wss_dashboard"><span class="wssO29<?php
-		echo $screens_lang;
+			echo $screens_lang;
 ?> wssO27" title="<?php
-		echo _WEBO_SPLASH2_CONTROLPANEL;
+			echo _WEBO_SPLASH2_CONTROLPANEL;
 ?>"></span></a><?php
-		echo _WEBO_HELP_CONTROLPANEL;
+			echo _WEBO_HELP_CONTROLPANEL;
 ?> <a href="#wss_dashboard" class="wssJ"><?php
-		echo _WEBO_SPLASH2_CONTROLPANEL;
+			echo _WEBO_SPLASH2_CONTROLPANEL;
 ?></a> <?php
-		echo _WEBO_HELP_CONTROLPANEL2;
+			echo _WEBO_HELP_CONTROLPANEL2;
 ?> <a href="#wss_options" class="wssJ"><?php
-		echo _WEBO_SPLASH2_OPTIONS;
+			echo _WEBO_SPLASH2_OPTIONS;
 ?></a> <?php
-		echo _WEBO_HELP_CONTROLPANEL3;
+			echo _WEBO_HELP_CONTROLPANEL3;
 ?> <a href="http://code.google.com/p/web-optimizator/w/list" class="wssJ wssJ0"><?php
-		echo _WEBO_DASHBOARD_CRITICAL_DOCS;
+			echo _WEBO_DASHBOARD_CRITICAL_DOCS;
 ?></a> <?php
-		echo _WEBO_DASHBOARD_CRITICAL_OR;
+			echo _WEBO_DASHBOARD_CRITICAL_OR;
 ?> <a href="http://www.webogroup.com/home/support/" class="wssJ wssJ0"><?php
-		echo _WEBO_DASHBOARD_CRITICAL_ISSUES;
+			echo _WEBO_DASHBOARD_CRITICAL_ISSUES;
 ?></a>.</li></ol><div class="wss_r1"><div class="wssN wssN4"><h3 class="wssB2"><?php
-		echo _WEBO_ABOUT_SUPPORT;
+			echo _WEBO_ABOUT_SUPPORT;
 ?></h3><ul class="wssO7"><li class="wssO8"><a href="http://www.webogroup.com/" class="wssJ wssJ0"><?php
-		echo _WEBO_HELP_LINK1;
+			echo _WEBO_HELP_LINK1;
 ?></a></li><li class="wssO8"><a href="http://code.google.com/p/web-optimizator/w/list" class="wssJ wssJ0"><?php
-		echo _WEBO_HELP_LINK1;
+			echo _WEBO_HELP_LINK1;
 ?></a></li><li class="wssO8"><a href="http://code.google.com/p/web-optimizator/issues/list" class="wssJ wssJ0"><?php
-		echo _WEBO_HELP_LINK3;
+			echo _WEBO_HELP_LINK3;
 ?></a></li><li class="wssO8"><a href="http://www.webogroup.com/home/support/" class="wssJ wssJ0"><?php
-		echo _WEBO_HELP_LINK4;
+			echo _WEBO_HELP_LINK4;
 ?></a></li><li class="wssO8"><a href="http://www.webogroup.com/store/" class="wssJ wssJ0"><?php
-		echo _WEBO_HELP_LINK5;
-?></a></li>
-</ul></div><div class="wssN wssN4"><h3 class="wssB2"><?php
-		echo _WEBO_HELP_MEDIA;
+			echo _WEBO_HELP_LINK5;
+?></a></li></ul></div><div class="wssN wssN4"><h3 class="wssB2"><?php
+			echo _WEBO_HELP_MEDIA;
 ?></h3><a href="http://www.webogroup.com/home/site-speedup/screenshots/" class="wssO29 wssO30"><span class="wssO29<?php
-		echo $screens_lang;
-?> wssO31"></span></a>
-</div><div class="wssN"><h3 class="wssB2"><?php
-		echo _WEBO_HELP_FEATURES;
+			echo $screens_lang;
+?> wssO31"></span></a></div><div class="wssN"><h3 class="wssB2"><?php
+			echo _WEBO_HELP_FEATURES;
 ?></h3><ul class="wssO7"><?php
-		echo _WEBO_HELP_FEATURES_LIST;
+			echo _WEBO_HELP_FEATURES_LIST;
 ?></ul><p class="wssI"><a class="wssJ" href="http://www.webogroup.com/home/site-speedup/features/"><?php
-		echo _WEBO_HELP_FEATURES_ALL;
+			echo _WEBO_HELP_FEATURES_ALL;
 ?></a> / <a href="http://blog.webogroup.com/" class="wssJ"><?php
-		echo _WEBO_HELP_FEATURES_BLOG;
+			echo _WEBO_HELP_FEATURES_BLOG;
 ?></a></p><p class="wssI"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ wssJ5"><span class="wssJ6"></span><?php
-		echo _WEBO_HELP_CLOSE;
-?></a></p></div></div></div></div></div><script type="text/javascript">wss_premium=<?php
+			echo _WEBO_HELP_CLOSE;
+?></a></p></div></div></div></div><?php
+		}
+?></div><script type="text/javascript">wss_premium=<?php
 		echo (empty($page) || (!empty($page) && $page != 'install_enter_password' && $page != 'install_set_password')) ? round($premium) : 10;
 ?></script><?php
 		if (!$skip_render) {
