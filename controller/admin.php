@@ -3625,7 +3625,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		} else {
 			$testfile = 'libs/js/wo.cookie.php';
 			$curlfile = 'libs/js/wo.cookie.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'php';
-			$size = 125;
+			$size = 131;
 		}
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
