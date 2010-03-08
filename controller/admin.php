@@ -3119,6 +3119,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 						$content .= "
 	<FilesMatch \.(css|js)$>
 		Header append Vary User-Agent
+		Header append Vary Accept-Encoding
 		Header append Cache-Control private
 	</FilesMatch>";
 				}
