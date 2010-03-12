@@ -68,7 +68,7 @@ class admin {
 			$this->compress_options['license'] =
 				empty($this->input['wss_license']) ?
 					$this->compress_options['license'] :
-						$this->input['license'];
+						$this->input['wss_license'];
 			$this->premium = $this->view->validate_license($this->compress_options['license'],
 				$this->compress_options['html_cachedir'],
 					$this->compress_options['host']);
@@ -267,8 +267,9 @@ class admin {
 			$allow = empty($this->input['wss_allow']) ? 0 : 1;
 			$license = trim($this->input['wss_license']);
 			$name = $this->input['wss_name'];
-			if (md5($this->input['wss_password']) !=
-				$this->input['wss__password'] && !$this->internal) {
+			if (!$this->internal && (empty($this->input['wss_password']) ||
+				md5($this->input['wss_password']) !=
+				$this->input['wss__password'])) {
 				$error[1] = 1;
 			}
 			if (empty($this->input['wss_email']) ||
