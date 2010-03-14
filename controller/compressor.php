@@ -194,7 +194,7 @@ class web_optimizer {
 					if (empty($this->options['page']['gzip'])) {
 						if (!empty($content)) {
 							if (empty($this->web_optimizer_stage) &&
-								$options['clientside_cache']) {
+								$this->options['page']['clientside_cache']) {
 /* not really GMT but is valid locally */
 								$ExpStr = date("D, d M Y H:i:s",
 									$this->time + $this->options['page']['clientside_timeout']) . " GMT";
