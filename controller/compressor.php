@@ -247,9 +247,7 @@ class web_optimizer {
 /* IE 7.0 */
 				'.ie7',
 /* IE 8.0 */
-				'.ie8',
-/* IE 7.0 @ Vista, buggy mhtml */
-				'.ie4',
+				'.ie8'
 			);
 			$this->ua_mod = $mods[$this->cache_stage];
 		}
@@ -2718,10 +2716,6 @@ class web_optimizer {
 						}
 					}
 				}
-			}
-/* fix for IE7@Vista: skip both data:URI and mhtml approaches */
-			if ($this->ua_mod === '.ie7' && strpos($this->ua, 'NT 6.0')) {
-				$this->ua_mod === '.ie4';
 			}
 		} elseif (empty($this->options['uniform_cache']) && strpos($source, '<!--[if') !== false) {
 			$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
