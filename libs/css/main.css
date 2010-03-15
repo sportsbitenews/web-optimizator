@@ -193,7 +193,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 
 .wssJ{color:#2680ac!important}
 a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
-#wss_buzz .wssJ,#wss_opt .wssJ,#wss_sp .wssJ{display:block;line-height:17px;padding-left:21px}
+#wss_buzz .wssJ,#wss_opt .wssI .wssJ,#wss_sp .wssJ{display:block;line-height:17px;padding-left:21px}
 #wss_news .wssJ{font-size:13px}
 .wssJ0{-moz-border-radius:8px;-webkit-border-radius:8px;background:#262626;border-radius:8px;margin-bottom:14px;display:block;line-height:15px;padding:13px;width:400px}
 #wss_help .wssO8 .wssJ0{border:0;background:none;display:inline;font-weight:400!important;padding:0}
@@ -263,7 +263,7 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssT1 .wssJ8{margin-right:7%}
 .wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 7px;position:relative;text-decoration:none!important}
 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
-.wssJ10{background:url(icon.twitter.png) no-repeat}
+.wssJ10{background:url(icon.twitter.png) no-repeat;display:block}
 .wssJ11{background:url(icon.facebook.png) no-repeat}
 .wssJ12{background:url(icon.blogger.png) no-repeat}
 .wssJ13{background:url(icon.joomla.png) no-repeat}
