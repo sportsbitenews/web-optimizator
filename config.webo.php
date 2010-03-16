@@ -49,7 +49,7 @@ $compress_options['external_scripts']['css'] = "1";
 ## Merge inline styles in head
 $compress_options['external_scripts']['css_inline'] = "1";
 ## Ignore list, JS files separated by space
-$compress_options['external_scripts']['ignore_list'] = "topsy.js wpsf-js.php tiny_mce.js tiny_mce_src.js tiny_init.js tiny_mce_gzip.php fckeditor.js";
+$compress_options['external_scripts']['ignore_list'] = "joomla.javascript.js topsy.js wpsf-js.php tiny_mce.js tiny_mce_src.js tiny_init.js tiny_mce_gzip.php fckeditor.js";
 ## Ignore list, CSS files separated by space
 $compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
