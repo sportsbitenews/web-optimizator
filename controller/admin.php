@@ -3603,7 +3603,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
-				RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
+				RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
@@ -3620,14 +3620,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	*
 	**/
 	function check_apache_module ($rule, $root, $cachedir, $module) {
-		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'gzip');
-		if ($gzip) {
-			$testfile = 'libs/js/yass.loader.js';
-			$curlfile = 'libs/js/yass.loader.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'js';
+		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'mod_gzip');
+		if ($module != 'mod_rewrite') {
+			$testfile = $curlfile = 'libs/js/yass.loader.js';
 			$size = @filesize($this->basepath . $testfile);
 		} else {
 			$testfile = 'libs/js/wo.cookie.php';
-			$curlfile = 'libs/js/wo.cookie.' . ($module == 'mod_rewrite' ? 'wo123.' : '') . 'php';
+			$curlfile = 'libs/js/wo.cookie.wo123.php';
 			$size = 131;
 		}
 		$return = false;

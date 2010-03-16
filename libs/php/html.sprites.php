@@ -130,12 +130,9 @@ class html_sprites {
 	*
 	**/
 	function get_images_dimensions ($imgs) {
+		$images = array();
 /* load cached images' dimensions */
-		if (@is_file($this->options['page']['cachedir'] . 'wo.img.cache.php')) {
-			require($this->options['page']['cachedir'] . 'wo.img.cache.php');
-		} else {
-			$images = array();
-		}
+		@include($this->options['page']['cachedir'] . 'wo.img.cache.php');
 /* calculate all dimensions for new images */
 		if (!empty($imgs)) {
 			foreach ($imgs as $key => $image) {
@@ -150,19 +147,22 @@ class html_sprites {
 				$old_src = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, 0, $old_src_param_pos) : $old_src;
 				$absolute_src = $this->main->convert_path_to_absolute($old_src,
 					array('file' => $_SERVER['REQUEST_URI']));
-/* fetch only non cached images */
-				if (!empty($absolute_src) && empty($images[$absolute_src]))  {
-					$need_refresh = 1;
-					list($width, $height) = $this->optimizer->get_image(0, '', $absolute_src);
-					$width = empty($width) ? 0 : $width;
-					$height = empty($height) ? 0 : $height;
+/* fetch only non-cached images */
+				if (!empty($absolute_src)) {
+					if (empty($images[$absolute_src]))  {
+						$need_refresh = 1;
+						$width = $height = 0;
+						list($width, $height) = $this->optimizer->get_image(0, '', $absolute_src);
+						$width = empty($width) ? 0 : $width;
+						$height = empty($height) ? 0 : $height;
 /* skip dymanic images, need to download the last... */
-					$class = preg_match("@\.(ico|gif|jpe?g|bmp|png)$@", $old_src) &&
-						$width && $height ? 'wo' . md5($absolute_src) : '';
-					$images[$absolute_src] = array($width, $height, $class);
-				}
-				if (!empty($this->options['page']['per_page'])) {
-					$images[$absolute_src][3] = 1;
+						$class = preg_match("@\.(ico|gif|jpe?g|bmp|png)$@", $old_src) &&
+							$width && $height ? 'wo' . md5($absolute_src) : '';
+						$images[$absolute_src] = array($width, $height, $class);
+					}
+					if (!empty($this->options['page']['per_page'])) {
+						$images[$absolute_src][3] = 1;
+					}
 				}
 /* remember src for calculated images */
 				$imgs[$key] = $absolute_src;
