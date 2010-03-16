@@ -2672,7 +2672,8 @@ class admin {
 				}
 			}
 /* Apply options or just save them? */
-			if (!empty($this->input['wss_apply'])) {
+			if (!empty($this->input['wss_apply']) || 
+				($this->input['wss_config'] == $this->compress_options['config'])) {
 /* Save the options	to work config */
 				foreach($this->compress_options as $key => $option) {
 					if (is_array($option)) {
