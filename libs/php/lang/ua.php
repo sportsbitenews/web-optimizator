@@ -275,8 +275,6 @@ define('_WEBO_performance_restore_properties', 'Восстанавливать C
 define('_WEBO_performance_restore_properties_HELP', 'Пропущенные CSS-свойства могут быть восстановлены при создании CSS Sprites или data:URI, чтобы уменьшить результирующий размер файлов в кэше. Однако это может привести к существенным процессорным издержкам в случае большого количества CSS-правил.');
 define('_WEBO_performance_delete_old', 'Срок хранения файлов в кэше (в днях)');
 define('_WEBO_performance_delete_old_HELP', 'Вы можете ограничить общий размер кэша при помощи срока хранения файлов в нем (в днях). Нулевое значение отключает данное ограничение.');
-define('_WEBO_performance_reduce_memory', 'Уменьшить потребление памяти');
-define('_WEBO_performance_reduce_memory_HELP', 'WEBO Site SpeedUp может более эффективно использовать оперативную память, но при этом возрастает нагрузка на процессор и дисковую подсистему.');
 
 define('_WEBO_data_uris_on', 'Застосувати <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Фоновые изображения будут преобразовываться в формат base64 и подставляться в CSS-файлы для всех браузеров, поддерживающих технологию data:URI.');

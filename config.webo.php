@@ -73,8 +73,6 @@ $compress_options['performance']['uniform_cache'] = "0";
 $compress_options['performance']['restore_properties'] = "0";
 ## Days to delete old files from cache, 0 disables logic
 $compress_options['performance']['delete_old'] = "0";
-## Reduce memory usage by CPU/disk usage
-$compress_options['performance']['reduce_memory'] = "1";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "0";
 ## Minify JS inside <body> tag. Please be carefull

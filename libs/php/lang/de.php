@@ -273,8 +273,6 @@ define('_WEBO_performance_restore_properties', 'Restore CSS properties');
 define('_WEBO_performance_restore_properties_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. ut this may lead to huge CPU overhead in case of large amount of CSS rules.');
 define('_WEBO_performance_delete_old', 'Days to store cache files');
 define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defining time to live for all cache files (in days). Zero value means no restriction.');
-define('_WEBO_performance_reduce_memory', 'Reduce memory consumption');
-define('_WEBO_performance_reduce_memory_HELP', 'WEBO Site SpeedUp can use available memory more efficiently but this will lead to increasae CPU or I/O expenses.');
 
 define('_WEBO_footer_text', 'Link auf WEBO Site SpeedUp hinzuf&uuml;gen');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');
