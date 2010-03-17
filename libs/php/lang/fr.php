@@ -585,7 +585,7 @@ define('_WEBO_CACHE_EXT', 'Par extension');
 define('_WEBO_CACHE_ALL', 'Tous les fichiers');
 
 /* Options page */
-define('_WEBO_OPTIONS_APPLY', 'Appliquer');
+define('_WEBO_OPTIONS_APPLY', 'Make live');
 define('_WEBO_OPTIONS_EDIT', 'Modifier');
 define('_WEBO_OPTIONS_CONFIRM', 'Êtes vous sûr de vouloir effacer la configuration"');
 define('_WEBO_OPTIONS_CONFIGURATION', 'Configuration');
