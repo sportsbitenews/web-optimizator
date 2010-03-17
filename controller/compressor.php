@@ -451,6 +451,8 @@ class web_optimizer {
 				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
 			"days_to_delete" => ($this->premium > 1) ?
 				round($this->options['performance']['delete_old']) : 0,
+			"reduce_memory" => ($this->premium > 1) ?
+				$this->options['performance']['reduce_memory'] : 1,
 		);
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
@@ -2824,7 +2826,8 @@ class web_optimizer {
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
 			'user_agent' => $this->ua_mod,
 			'punypng' => $options['punypng'],
-			'restore_properties' => $options['css_restore_properties']
+			'restore_properties' => $options['css_restore_properties'],
+			'reduce_memory' => $this->options['reduce_memory']
 		));
 		return $css_sprites->process();
 	}

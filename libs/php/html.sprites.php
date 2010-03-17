@@ -50,7 +50,8 @@ class html_sprites {
 				array() : explode(" ", $this->options['page']['parallel_hosts']),
 			'user_agent' => $this->main->ua_mod,
 			'punypng' => $this->options['css']['punypng'],
-			'restore_properties' => 0
+			'restore_properties' => 0,
+			'reduce_memory' => $this->options['reduce_memory'],
 		));
 /* calculate all dimensions for images */
 		$this->images = $this->get_images_dimensions($imgs);

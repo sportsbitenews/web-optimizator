@@ -84,6 +84,8 @@ class css_sprites_optimize {
 			$this->punypng_key = $options['punypng'];
 /* Restore or not missed CSS properties? */
 			$this->restore_properties = $options['restore_properties'];
+/* Reduce memory usage by CPU / I/O ? */
+			$this->reduce_memory = $options['reduce_memory'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* CSS rule to avoid overlapping of properties */
@@ -232,62 +234,110 @@ class css_sprites_optimize {
 						$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
 						$no_space = 1;
+						if (!empty($this->reduce_memory)) {
 /**
 Some magic here: we shrink actual array with 16 values in 1 cell - to reduce overall memory size.
 This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 **/
-						for ($i = $filled_square; $i < $matrix_x; $i = $i + $stepx) {
-							for ($j = $filled_square; $j < $matrix_y; $j = $j + $stepy) {
-								$j0 = ($j - $j%16)/16;
-								if ($mode < 2) {
-									$j1 = ($j + $height - ($j + $height)%16)/16;
-									$j2 = ($j + $height)%16;
-									if ($mode < 1) {
-										$j3 = ($j + ($height - $height%2)/2 - ($j + ($height - $height%2)/2)%16)/16;
-										$j4 = ($j + ($height - $height%2)/2)%16;
+							for ($i = $filled_square; $i < $matrix_x; $i = $i + $stepx) {
+								for ($j = $filled_square; $j < $matrix_y; $j = $j + $stepy) {
+									$j0 = ($j - $j%16)/16;
+									if ($mode < 2) {
+										$j1 = ($j + $height - ($j + $height)%16)/16;
+										$j2 = ($j + $height)%16;
+										$i1 = $i + $width;
+										if ($mode < 1) {
+											$j3 = ($j + ($height - $height%2)/2 - ($j + ($height - $height%2)/2)%16)/16;
+											$j4 = ($j + ($height - $height%2)/2)%16;
+											$i3 = $i + ($width - $width%2)/2;
+										}
 									}
-								}
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
-								if ((empty($matrix[$i][$j0]) || !($matrix[$i][$j0] & (2<<($j%16)))) &&
+									if ((empty($matrix[$i][$j0]) || !($matrix[$i][$j0] & (2<<($j%16)))) &&
 /* performance improvement - skip some checks if we have identical images */
-									($mode > 1 ||
-										((empty($matrix[$i][$j1]) ||
-											!($matrix[$i][$j1] & (2<<$j2)))) &&
-										(empty($matrix[$i + $width][$j0]) ||
-											!($matrix[$i + $width][$j0] & (2<<($j%16)))) &&
-										(empty($matrix[$i + $width][$j1]) ||
-											!($matrix[$i + $width][$j1] & (2<<$j2)))) &&
+										($mode > 1 ||
+											((empty($matrix[$i][$j1]) ||
+												!($matrix[$i][$j1] & (2<<$j2)))) &&
+											(empty($matrix[$i1][$j0]) ||
+												!($matrix[$i1][$j0] & (2<<($j%16)))) &&
+											(empty($matrix[$i1][$j1]) ||
+												!($matrix[$i1][$j1] & (2<<$j2)))) &&
 /* one more performance improvement - skip some checks if we have HTML sprites */
-									($mode > 0 ||
+										($mode > 0 ||
 /* additionally check 4 points in the middle of edges + 1 center point */
-										((empty($matrix[$i + ($width - $width%2)/2][$j0]) ||
-											!($matrix[$i + ($width - $width%2)/2][$j0] & (2<<($j%16)))) &&
-										(empty($matrix[$i][$j3]) ||
-											!($matrix[$i][$j3] & (2<<$j4))) &&
-										(empty($matrix[$i + $width][$j3]) ||
-											!($matrix[$i + $width][$j3] & (2<<$j4))) &&
-										(empty($matrix[$i + ($width - $width%2)/2][$j1]) ||
-											!($matrix[$i + ($width - $width%2)/2][$j1] & (2<<$j4))) &&
-										(empty($matrix[$i + ($width - $width%2)/2][$j3]) ||
-											!($matrix[$i + ($width - $width%2)/2][$j3] & (2<<$j4)))))) {
+											((empty($matrix[$i3][$j0]) ||
+												!($matrix[$i3][$j0] & (2<<($j%16)))) &&
+											(empty($matrix[$i][$j3]) ||
+												!($matrix[$i][$j3] & (2<<$j4))) &&
+											(empty($matrix[$i1][$j3]) ||
+												!($matrix[$i1][$j3] & (2<<$j4))) &&
+											(empty($matrix[$i3][$j1]) ||
+												!($matrix[$i3][$j1] & (2<<$j4))) &&
+											(empty($matrix[$i3][$j3]) ||
+												!($matrix[$i3][$j3] & (2<<$j4)))))) {
 /* and Sprite is big enough */
-									if ($i + $width < $matrix_x && $j + ($height - $height%2)/2 < $matrix_y) {
-										$I = $i;
-										$J = $j;
-										$i = $matrix_x;
-										$j = $matrix_y;
-										$no_space = 0;
-									} else {
-/* else try to remember this placement -- it can be the optimal one */
-										if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
-/* if this place is better and we haven't chosen placement yet */
-											$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
+										if ($i + $width < $matrix_x && $j + ($height - $height%2)/2 < $matrix_y) {
 											$I = $i;
 											$J = $j;
+											$i = $matrix_x;
+											$j = $matrix_y;
+											$no_space = 0;
+										} else {
+/* else try to remember this placement -- it can be the optimal one */
+											if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
+/* if this place is better and we haven't chosen placement yet */
+												$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
+												$I = $i;
+												$J = $j;
+											}
 										}
 									}
 								}
 							}
+						} else {
+/* use memory-expensive but very fast logic */
+							for ($i = $filled_square; $i < $matrix_x; $i = $i + $stepx) {
+								for ($j = $filled_square; $j < $matrix_y; $j = $j + $stepy) {
+									if ($mode < 2) {
+										$j1 = $j + $height;
+										$i1 = $i + $width;
+										if ($mode < 1) {
+											$i2 = $i + ($width - $width%2)/2;
+											$j2 = $j + ($height - $height%2)/2;
+										}
+									}
+/* left top corner is empty and three other corners are empty -- we have a placeholder */
+									if (empty($matrix[$i][$j]) &&
+/* performance improvement - skip some checks if we have identical images */
+										($mode > 1 ||
+											(empty($matrix[$i][$j1]) &&
+											empty($matrix[$i1][$j]) &&
+											empty($matrix[$i1][$j1])) &&
+/* one more performance improvement - skip some checks if we have HTML sprites */
+										($mode > 0 ||
+/* additionally check 4 points in the middle of edges + 1 center point */
+											(empty($matrix[$i2][$j]) && empty($matrix[$i][$j2]) &&
+											empty($matrix[$i1][$j2]) && empty($matrix[$i2][$j1]) &&
+											empty($matrix[$i2][$j2]))))) {
+/* and Sprite is big enough */
+										if ($i + $width < $matrix_x && $j + ($height - $height%2)/2 < $matrix_y) {
+											$I = $i;
+											$J = $j;
+											$i = $matrix_x;
+											$j = $matrix_y;
+											$no_space = 0;
+										} else {
+/* else try to remember this placement -- it can be the optimal one */
+											if (!$I && !$J && ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x < $minimal_square ) {
+/* if this place is better and we haven't chosen placement yet */
+												$minimal_square = ($i + $width > $matrix_x ? $i + $width - $matrix_x : 0) * $height + ($j + $height > $matrix_y ? $j + $height - $matrix_y : 0) * $matrix_x;
+												$I = $i;
+												$J = $j;
+											}
+										}
+									}
+								}
+							}							
 						}
 						if ($no_space) {
 /* re-count minimal square with linear enlargement */
@@ -304,12 +354,21 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 /* calculate increase of matrix dimensions */
 						$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
 						$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
-/* fill matrix for this image */
-						for ($i = $I; $i < $I + $width; $i++) {
-							for ($j = $J; $j < $J + $height; $j++) {
-								$j0 = ($j - $j%16)/16;
-								$matrix[$i][$j0] = (empty($matrix[$i][$j0]) ?
-									0 : $matrix[$i][$j0]) + (2<<($j%16));
+/* fill matrix for this image, less memory */
+						if (!empty($this->reduce_memory)) {
+							for ($i = $I; $i < $I + $width; $i++) {
+								for ($j = $J; $j < $J + $height; $j++) {
+									$j0 = ($j - $j%16)/16;
+									$matrix[$i][$j0] = (empty($matrix[$i][$j0]) ?
+										0 : $matrix[$i][$j0]) + (2<<($j%16));
+								}
+							}
+						} else {
+/* fill matrix for this image, less CPU */
+							for ($i = $I; $i < $I + $width; $i++) {
+								for ($j = $J; $j < $J + $height; $j++) {
+									$matrix[$i][$j] = 1;
+								}
 							}
 						}
 /* remember coordinates for this image, keep top/left */
