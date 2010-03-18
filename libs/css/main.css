@@ -457,14 +457,14 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU19{background:#ff8200 url(config.user.active.png) no-repeat;height:118px;width:118px}
 .wssU20{background:url(config.new.png) no-repeat;height:118px;width:118px}
 
-.wssX{opacity:0}
-.wssX7{opacity:.2}
-.wssX6{opacity:.35;border:2px solid #ffb973;margin:-1px -1px 14px -1px}
-.wssX5{opacity:.5;border:3px solid #fe7d00;margin:-2px -2px 13px -2px}
-.wssX4{opacity:.65;border:3px solid #ffb973;margin:-2px -2px 13px -2px}
-.wssX3{opacity:.8;border:2px solid #ffb973;margin:-1px -1px 14px -1px}
-.wssX2{opacity:.9;border:1px solid #fbddb8}
-.wssX1{opacity:.95}
+.wssY{opacity:0}
+.wssY7{opacity:.2}
+.wssY6{opacity:.35;border:2px solid #ffb973;margin:-1px -1px 14px -1px}
+.wssY5{opacity:.5;border:3px solid #fe7d00;margin:-2px -2px 13px -2px}
+.wssY4{opacity:.65;border:3px solid #ffb973;margin:-2px -2px 13px -2px}
+.wssY3{opacity:.8;border:2px solid #ffb973;margin:-1px -1px 14px -1px}
+.wssY2{opacity:.9;border:1px solid #fbddb8}
+.wssY1{opacity:.95}
 
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}
