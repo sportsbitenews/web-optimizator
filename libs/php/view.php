@@ -186,7 +186,10 @@ class compressor_view {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Speed Up Your Website; http://www.webogroup.com/) Firefox 3.5.2");
+				@curl_setopt($ch, CURLOPT_USERAGENT,
+					empty($_SERVER['HTTP_USER_AGENT']) ?
+					"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
+					$_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 /* write headers - to get gzip info */

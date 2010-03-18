@@ -2872,7 +2872,11 @@ class web_optimizer {
 			} else {
 				@chdir($this->options['javascript']['cachedir']);
 			}
-			$return_filename = 'wo' . md5($file) . '.' . ($tag == 'link' ? 'css' : 'js');
+			$ua = empty($_SERVER['HTTP_USER_AGENT']) ||
+				!empty($this->options['uniform_cache']) ?
+				"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
+				$_SERVER['HTTP_USER_AGENT'];
+			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : 'js');
 			if (file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
 			} else {
@@ -2890,7 +2894,7 @@ class web_optimizer {
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (WEBO Site SpeedUp; Faster than Lightning; http://www.webogroup.com/) Firefox 3.5.3");
+				@curl_setopt($ch, CURLOPT_USERAGENT, $ua);
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
