@@ -183,7 +183,7 @@ if (!$ajax) {
 			echo _WEBO_HELP_LINK5;
 ?></a></li></ul></div><div class="wssN wssN4"><h3 class="wssB2"><?php
 			echo _WEBO_HELP_MEDIA;
-?></h3><a href="http://www.webogroup.com/home/site-speedup/screenshots/" class="wssO29 wssO30"><span class="wssO29<?php
+?></h3><a href="http://www.webogroup.com/home/site-speedup-joomla/video/" class="wssO29 wssO30"><span class="wssO29<?php
 			echo $screens_lang;
 ?> wssO31"></span></a></div><div class="wssN"><h3 class="wssB2"><?php
 			echo _WEBO_HELP_FEATURES;
