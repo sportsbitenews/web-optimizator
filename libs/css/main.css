@@ -12,6 +12,7 @@ Short notice about CSS deploymner.
  buttons.png
  buttons.red.png
  corners.gif
+ corner.welcome.gif
  lang.hover.png
  lang.selected.png
  load.gif
@@ -273,7 +274,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -38px 2px no-repeat}
 .wssN20 .wssJ20{background:#fff url(corner.disabled.png) 0 2px no-repeat;height:39px;width:38px}
 .wssN20 a.wssJ20:hover{background-position:0 1px}
 #wss_help .wssJ20{background:url(corner.welcome.png) no-repeat;height:35px;right:-1px;top:-1px;width:35px}
-#wss_help a.wssJ20:hover{background:url(corner.welcome.gif) no-repeat}
+#wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK0{border-color:#f00;display:none;left:2%;position:absolute;top:82px;width:96%;z-index:999}
