@@ -2561,7 +2561,7 @@ class admin {
 					} else {
 						require_once($this->basepath . 'libs/php/class.yuicompressor.php');
 					}
-					$YUI = new YuiCompressor($this->input['wss_javascript_cachedir'], $this->basepath);
+					$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
 					$YUI_checked = $YUI->check();
 				}
 				if (!$YUI_checked) {

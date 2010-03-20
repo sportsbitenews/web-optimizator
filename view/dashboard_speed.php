@@ -20,7 +20,7 @@ if (($s_after || $kb_after) && $premium > 1) {
 ?></strong> <?php
 		echo _WEBO_LOGIN_EFFICIENCY_S;
 ?></dt><dd class="wssP2"><strong class="wssI2"><?php
-		echo round(100 * $s_before / $s_after - 100);
+		echo round(100 * $s_before / ($s_after?$s_after:1) - 100);
 ?></strong>%</dd></dl><?php
 	}
 	if ($kb_after) {
