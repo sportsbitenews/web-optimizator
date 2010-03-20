@@ -828,7 +828,7 @@ class web_optimizer {
 			$file = $options['cachedir'] .
 				$this->uri . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) ? '' : $this->encoding_ext);
-			if (file_exists($file)) {
+			if (@file_exists($file)) {
 				$timestamp = @filemtime($file);
 			} else {
 				$timestamp = 0;
@@ -897,8 +897,8 @@ class web_optimizer {
 	* 
 	**/
 	function write_file ($file, $content) {
-		if (function_exists('file_put_contents')) {
-			file_put_contents($file, $content);
+		if (@function_exists('file_put_contents')) {
+			@file_put_contents($file, $content);
 		} else {
 			$fp = @fopen($file, "a");
 			if ($fp) {
@@ -1629,7 +1629,7 @@ class web_optimizer {
 			foreach($files AS $key => $value) {
 				if (!empty($value['file'])) {
 					$value['file'] = $this->get_file_name($value['file']);
-					if (file_exists($value['file'])) {
+					if (@file_exists($value['file'])) {
 						$thedate = filemtime($value['file']);
 						$dates[] = $thedate;
 					}
@@ -2877,7 +2877,7 @@ class web_optimizer {
 				"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
 				$_SERVER['HTTP_USER_AGENT'];
 			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : 'js');
-			if (file_exists($return_filename)) {
+			if (@file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
 			} else {
 				$timestamp = 0;

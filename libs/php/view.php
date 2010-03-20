@@ -43,7 +43,7 @@ class compressor_view {
 			$this->paths['full']['current_directory'] = $this->prevent_trailing_slash($this->paths['full']['document_root']) . $this->prevent_trailing_slash($this->unify_dir_separator(str_replace($this->get_basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME'])));
 		}
 
-		if (!file_exists($this->paths['full']['current_directory'])) {
+		if (!@file_exists($this->paths['full']['current_directory'])) {
 			$this->paths['full']['current_directory'] = @getcwd();
 		}
 
@@ -101,9 +101,9 @@ class compressor_view {
 		foreach ($vars as $key => $val) {
 			$$key = $val;
 		}
-		if (file_exists ($this->paths['full']['view'] . "$file_name.php")) {
+		if (@file_exists ($this->paths['full']['view'] . "$file_name.php")) {
 			include ($this->paths['full']['view'] . "$file_name.php");
-		 } elseif (file_exists ("view/" . "$file_name.php")) {
+		 } elseif (@file_exists ("view/" . "$file_name.php")) {
 		 	include ("view/" . "$file_name.php");
 		 } else {
 			echo "<body style='font-family:verdana;font-size:11px'><p>Rendering of template $file_name.php failed.<br/>Debug info:<p>Looking for file in: <ul><li>" . $this->paths['full']['view']."$file_name.php" . "</li><li>" . "view/"."$file_name.php" ."</li></ul></p><p>Server info: <ul><li><strong>Document root:</strong> " . $_SERVER['DOCUMENT_ROOT'] . "</li><li><strong>Script name:</strong> " . $_SERVER['SCRIPT_NAME']."</li></ul></p></p></body>";
