@@ -16,7 +16,7 @@ if ($submit) {
 ?>"><?php
 		echo _WEBO_SPLASH3_CANTWRITE4 .
 			' config.' .
-			$options['config'] .
+			$config .
 			'.php . ' .
 			_WEBO_SPLASH3_HTACCESS_CHMOD;
 ?></li><li class="wssL1<?php
