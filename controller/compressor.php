@@ -2520,7 +2520,7 @@ class web_optimizer {
 		}
 /* remove comments from <style> constructions */
 		if (!empty($this->options['css']['inline_scripts'])) {
-			$dest = preg_replace("@(<style type=[\"']text/css[\"']>)[\t\s\r\n]*<!--@is", "$1", $dest);
+			$dest = preg_replace("@(<style type=[\"']text/css[^>]*>)[\t\s\r\n]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@[\t\s\r\n]*-->(</style>)@is", "$1", $dest);
 		}
 		if ($dest !== $source) {
