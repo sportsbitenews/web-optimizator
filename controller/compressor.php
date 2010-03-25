@@ -443,8 +443,6 @@ class web_optimizer {
 				round($this->options['performance']['cache_version']) : 0,
 			"uniform_cache" => ($this->premium > 1) &&
 				$this->options['performance']['uniform_cache'],
-			"quick_check" => $this->options['performance']['quick_check'] &&
-				($this->premium > 1),
 			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 			"restricted" => ($this->premium > 1) &&
@@ -556,12 +554,8 @@ class web_optimizer {
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
-				if (empty($this->options['quick_check'])) {
 /* find all files in head to process */
-					$this->get_script_array();
-				} else {
-					$this->get_head_status();
-				}
+				$this->get_script_array();
 /* Run the functions specified in options */
 				if (is_array($this->options)) {
 					foreach ($this->options as $func => $option) {
@@ -634,7 +628,7 @@ class web_optimizer {
 				$script_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium) || (!empty($this->options['quick_check']) && !empty($this->head_status_js)))) {
+		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium))) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
@@ -691,7 +685,7 @@ class web_optimizer {
 				$link_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium) || !empty($this->options['quick_check']))) {
+		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium))) {
 /* Compress separately for each media type*/
 			$this->content = $this->do_compress(
 				array(
@@ -1272,7 +1266,7 @@ class web_optimizer {
 				$source = str_replace($h['source'], '', $source);
 			}
 		}
-		if (empty($this->options['quick_check']) && empty($options['file'])) {
+		if (empty($options['file'])) {
 /* Glue scripts' content / filenames */
 			$scripts_string = '';
 			foreach ($external_array as $script) {
@@ -1291,9 +1285,6 @@ class web_optimizer {
 			}
 /* Get the cache hash, restrict by 10 symbols */
 			$cache_file = substr(md5($scripts_string . $datestring . $optstring), 0, 10);
-/* just provide quick checksum of head / body status */
-		} elseif (empty($options['file'])) {
-			$cache_file = $this->head_status . $options['tag'];
 /* use general file if it has been defined */
 		} else {
 			$cache_file = $options['file'];
@@ -1320,9 +1311,7 @@ class web_optimizer {
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
-			if (empty($this->options['quick_check'])) {
-				$source = $this->_remove_scripts($external_array, $source);
-			}
+			$source = $this->_remove_scripts($external_array, $source);
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.css'))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
@@ -1353,12 +1342,8 @@ class web_optimizer {
 				}
 			}
 		}
-/* If the file didn't exist, get script array first */
-		if (!empty($this->options['quick_check'])) {
-			$this->get_script_array();
-		}
 /* If the file didn't exist, continue. Get files' content */
-		if (!empty($options['dont_check_file_mtime']) || !empty($this->options['quick_check'])) {
+		if (!empty($options['dont_check_file_mtime'])) {
 			$this->get_script_content($options['tag']);
 /* Replace existing array with the new content */
 			$external_array = array();
@@ -1523,9 +1508,7 @@ class web_optimizer {
 					$contents = $minified_content;
 				}
 			}
-			if (empty($this->options['quick_check'])) {
-				$source = $this->_remove_scripts($external_array, $source);
-			}
+			$source = $this->_remove_scripts($external_array, $source);
 		}
 		if (!empty($contents)) {
 /* Allow for minification of javascript */
@@ -2647,42 +2630,6 @@ class web_optimizer {
 					}
 				}
 			}
-		}
-	}
-
-	/**
-	* Gets the checksum of all required tags
-	*
-	**/
-	function get_head_status () {
-		$this->head_status = '';
-		$this->get_head();
-		if (!empty($this->options['css']['minify']) || !empty($this->options['javascript']['minify'])) {
-			if (empty($this->options['javascript']['minify_body']) && empty($this->options['css']['minify_body'])) {
-				$toparse = $this->head;
-			} else {
-				$toparse = $this->body;
-			}
-			$css = $javascript = '';
-			if (!empty($this->options['css']['minify'])) {
-				$css = "<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>|<style[^>]*>.*?</style>";
-			}
-			if (!empty($this->options['javascript']['minify'])) {
-				$javascript = "<script[^>]*>.*?</script>";
-			}
-			$regexp = "(" . $javascript . (empty($javascript) ? '' : '|') . $css .")";
-			preg_match_all("@" . $regexp . "@is", $toparse, $matches, PREG_SET_ORDER);
-			foreach ($matches as $match) {
-				$this->head_status .= $match[0];
-				$this->content = str_replace($match[0], "", $this->content);
-			}
-/* check if ant JS file exist. CSS exist in every case, hopefully... */
-			if (!empty($this->options['page']['html_tidy'])) {
-				$this->head_status_js = (strpos($this->head_status, '<script') !== false) || (strpos($this->head_status, '<SCRIPT') !== false);
-			} else {
-				$this->head_status_js = preg_match("@<script@is", $this->head_status);
-			}
-			$this->head_status = crc32($this->head_status);
 		}
 	}
 

@@ -260,8 +260,6 @@ define('_WEBO_performance_mtime', 'No revisa mtime de archivos (y contenido)');
 define('_WEBO_performance_mtime_HELP', 'Se ganará un poco de velocidad (por el lado del servidor). Pero para recargar los archivos combinados usted tendrá que cambiar llamados de archivos iniciales en código HTML o recargar el cache de WEBO Site SpeedUp.');
 define('_WEBO_performance_plain_string', 'No utilice expresiones regulares');
 define('_WEBO_performance_plain_string_HELP', 'Expresiones regulares daña la performance del servidor y pueden ser reemplazados con operaciones de enlace simples. Pero luego la probabilidad de parseado incorrecto del HTML (solo por documentos (X)HTML inválidos) será mayor.');
-define('_WEBO_performance_quick_check', 'Chequee la integridad del cache solo con el tag <code>head</code>');
-define('_WEBO_performance_quick_check_HELP', 'Puede haber ganado un beneficio adicional con un chequeo simplificado de la integridad del cache (solo vía contenido general del tag &lt;head&gt;. Pero esto no puede ser usado si cualquier archivo externo puede ser excluido de fusión.');
 define('_WEBO_performance_cache_version', 'Número de versión del Cache');
 define('_WEBO_performance_cache_version_HELP', 'La versión del cache define la versión de todos los archivos en el cache. Para recargar el cache del lado del cliente (en navegadores) usted debe cambiar este número.');
 define('_WEBO_performance_check_files', 'No chequee la existencia de archivos en el cache');

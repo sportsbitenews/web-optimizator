@@ -61,8 +61,6 @@ $compress_options['external_scripts']['user'] = "";
 $compress_options['external_scripts']['pass'] = "";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
-## Quick checksum for head section
-$compress_options['performance']['quick_check'] = "0";
 ## Don't use RegExp everywhere where it's possible
 $compress_options['performance']['plain_string'] = "0";
 ## Cache version, ignore cache integrity, no I/O overhead

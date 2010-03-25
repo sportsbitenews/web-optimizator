@@ -261,8 +261,6 @@ define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
 define('_WEBO_performance_mtime_HELP', 'There will be gained additional speedup (on server side). But to refresh combined files you will need to change calls of initial files in HTML code or to refresh WEBO Site SpeedUp cache.');
 define('_WEBO_performance_plain_string', 'Do not use regular expressions');
 define('_WEBO_performance_plain_string_HELP', 'Regular expressions usage damages server performance and they can be replaced with simple string operations. But in the latter case probability of incorrect HTML parsing (for invalid (X)HTML documents only) will be higher.');
-define('_WEBO_performance_quick_check', 'Check cache integrity only with <code>head</code> tag');
-define('_WEBO_performance_quick_check_HELP', 'There can be gained additional benefit with simplified cache integrity check (only via general content of &lt;head&gt; tag. But this can\'t be used if any external files must be excluded from merging.');
 define('_WEBO_performance_cache_version', 'Cache version number');
 define('_WEBO_performance_cache_version_HELP', 'Cache version defines version of all files in cache. To refresh cache on client side (in browsers) you need to change this number.');
 define('_WEBO_performance_check_files', 'Don\'t check cache files existence');
@@ -332,7 +330,7 @@ define('_WEBO_parallel_check_HELP', 'Available hosts will be checked automatical
 define('_WEBO_parallel_allowed_list', 'Erlaubte Hosts');
 define('_WEBO_parallel_allowed_list_HELP', 'Listed hosts will be used to distribute images. Please define no more than 4 hosts.');
 define('_WEBO_parallel_additional', 'Additional websites with multiple hosts (separated by space)');
-define('_WEBO_parallel_additional_HELP', 'If there is several websites using images\' distribution you can use WEBO Site SpeedUp to distribute their images through all these hosts.');
+define('_WEBO_parallel_additional_HELP', 'If there are several websites using images\' distribution you can use WEBO Site SpeedUp to distribute their images through all these hosts.');
 define('_WEBO_parallel_additional_list', 'Hosts on these websites (separated by space)');
 define('_WEBO_parallel_additional_list_HELP', 'These hosts are used to distribute images which are located on websites defined in &quot;Additional websites with multiple hosts&quot; option.');
 define('_WEBO_parallel_ignore_list', 'Exclude the following files from distribution (separated by space)');
@@ -687,7 +685,7 @@ define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , klicken Sie mit der rechten Ma
 
 /* create .gz versions of css/js file */
 define('_WEBO_GZIP_INSTALLED', 'Using this tool you can create in specified directory <code>.gz</code> versions of CSS and JS (and some other) files for static gzip usage.');
-define('_WEBO_GZIP_INSTALLED2', 'Modification time (mtime attribute) of compressed files is set to modification time of the initial (sorce) files during gzipping. Existing <code>.gz</code> files are refreshed when modification time of initial files and exising files are differ.');
+define('_WEBO_GZIP_INSTALLED2', 'Modification time (mtime attribute) of compressed files is set to modification time of the initial (source) files during gzipping. Existing <code>.gz</code> files are refreshed when modification time of initial files and exising files are different.');
 define('_WEBO_GZIP_RESULTS', 'Gzip results:');
 define('_WEBO_GZIP_ENTERDIRECTORY', 'Enter initial directory');
 define('_WEBO_GZIP_DIRECTORY', 'Directory');

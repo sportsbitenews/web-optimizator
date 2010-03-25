@@ -261,8 +261,6 @@ define('_WEBO_performance_mtime', 'Ignorez l\'empreinte temps du fichier modifi�
 define('_WEBO_performance_mtime_HELP', 'Il y aura une accélération supplémentaire (coté serveur). Pour raffraichir des fichiers combinés vous devez changer les requêtes des fichiers initiaux en code HTML ou raffraichir le cache de WEBO Site SpeedUp.');
 define('_WEBO_performance_plain_string', 'Ne pas utiliser d\' expressions régulières.');
 define('_WEBO_performance_plain_string_HELP', 'L\'usage d\'expressions régulieres endommage la performance du serveur et ils peuvent être remplacés par des opérations simple de classe. Dans ce dernier cas, une probabilité d\'erreur d\'analyse HTML sera plus probable. (pour les documents (X)HTML invalides uniquement).');
-define('_WEBO_performance_quick_check', 'Vérifier l\'intégrité du cache seulement avec la balise <code>head</code>');
-define('_WEBO_performance_quick_check_HELP', 'Il peut y avoir un gain supplémentaire avec une vérification de l\intégrité du cache (seulement via le contenu général du balise &lt;head&gt; balise. Mais ceci ne peut pas être utilisé si des fichiers externes doivent être exclus du fusion.');
 define('_WEBO_performance_cache_version', 'Numéro de version du cache');
 define('_WEBO_performance_cache_version_HELP', 'La version du cache définit tous les fichiers en cache. Pour rafraîchir le cache coté client (dans le navigateur) vous devez changer ce numéro.');
 define('_WEBO_performance_check_files', 'Ne pas vérifier l\'existence de fichier cache.');

@@ -766,10 +766,6 @@ class admin {
 				$this->premium > 1) {
 					$errors['gzip_cookie'] = $value;
 			}
-			if (empty($this->compress_options['performance']['quick_check']) &&
-				$this->premium > 1) {
-				$errors['performance_quick_check'] = $value;
-			}
 			if (empty($this->compress_options['unobtrusive']['body']) &&
 				$this->premium > 1) {
 					$errors['unobtrusive_body'] = $value;
@@ -2159,11 +2155,6 @@ class admin {
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
-				'performance_quick_check' => array(
-					'value' => $this->compress_options['performance']['quick_check'],
-					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
-				),
 				'performance_uniform_cache' => array(
 					'value' => $this->compress_options['performance']['uniform_cache'],
 					'type' => 'checkbox',
@@ -2458,7 +2449,6 @@ class admin {
 			'wss_external_scripts_css_inline',
 			'wss_external_scripts_include_try',
 			'wss_performance_mtime',
-			'wss_performance_quick_check',
 			'wss_performance_plain_string',
 			'wss_performance_cache_version',
 			'wss_performance_uniform_cache',
