@@ -340,10 +340,12 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_links .wssN3{background:url(links.png) no-repeat}
 #wss_links a.wssN3:hover{background:url(links.hover.png) no-repeat}
 #wss_sp .wssN3{background:url(speed.png) no-repeat}
+.wssN20#wss_sp .wssN3{background:url(speed.disabled.png) no-repeat}
 #wss_sp a.wssN3:hover{background:url(speed.hover.png) no-repeat}
 #wss_status .wssN3{background:url(status.png) no-repeat}
 #wss_status a.wssN3:hover{background:url(status.hover.png) no-repeat}
 #wss_tools .wssN3{background:url(tools.png) no-repeat}
+.wssN20#wss_tools .wssN3{background:url(tools.disabled.png) no-repeat}
 .wssN12 .wssN3{background:url(all.png) no-repeat}
 .wssN11 .wssN3{background:url(help.png) no-repeat}
 .wssN11 a.wssN3:hover{background:url(help.hover.png) no-repeat}

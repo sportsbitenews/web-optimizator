@@ -601,7 +601,7 @@ class web_optimizer {
 		}
 /* Return content to requestor */
 		if ($content) {
-				return $this->content;
+			return $this->content;
 /* or echo content to the browser */
 		} else {
 /* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
