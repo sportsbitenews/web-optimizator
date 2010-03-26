@@ -1043,7 +1043,7 @@ function css_add_property($media,$selector,$property,$new_val)
         if((csstidy::is_important($this->css[$media][$selector][$property]) && csstidy::is_important($new_val)) || !csstidy::is_important($this->css[$media][$selector][$property]))
         {
 			// quick fix to add multiple cursor properties
-			if ($property == 'cursor')
+			if (strtolower($property) == 'cursor')
 			{
 				$i = 0;
 				$prop = $property;
