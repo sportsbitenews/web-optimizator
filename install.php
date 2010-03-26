@@ -12,10 +12,11 @@ require($basepath . "libs/php/view.php");
 
 /* include language file */
 $language = strtolower(preg_replace("/[-,;].*/", "", empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? 'en' : $_SERVER["HTTP_ACCEPT_LANGUAGE"]));
+$language = preg_replace("/[^a-z]/", "", $language);
+$language = str_replace(array('uk'), array('ua'), $language);
 if (!empty($_COOKIE['wss_lang'])) {
 	$language = strtolower($_COOKIE['wss_lang']);
 }
-$language = preg_replace("/[^a-z]/", "", $language);
 if (is_file($basepath . "libs/php/lang/" . $language . ".php")) {
 	require($basepath . "libs/php/lang/" . $language . ".php");
 } else {
