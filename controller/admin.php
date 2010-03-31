@@ -3611,13 +3611,17 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	**/
 	function check_apache_module ($rule, $root, $cachedir, $module) {
 		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'mod_gzip');
-		if ($module != 'mod_rewrite') {
-			$testfile = $curlfile = 'libs/js/yass.loader.js';
-			$size = @filesize($this->basepath . $testfile);
-		} else {
+		if ($module == 'mod_rewrite') {
 			$testfile = 'libs/js/wo.cookie.php';
 			$curlfile = 'libs/js/wo.cookie.wo123.php';
 			$size = 131;
+		} elseif ($module == 'mod_symlinks') {
+			$testfile = 'libs/js/wo.cookie.php';
+			$curlfile = 'libs/js/wo.cookie.php';
+			$size = 131;
+		} else {
+			$testfile = $curlfile = 'libs/js/yass.loader.js';
+			$size = @filesize($this->basepath . $testfile);
 		}
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);

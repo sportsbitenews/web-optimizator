@@ -13,11 +13,12 @@ function dec_to_hex ($dec) {
 					6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 'a',
 					11 => 'b', 12 => 'c', 13 => 'd', 14 => 'e',
 					15 => 'f' );
+	$h = '';
 	do {
 		$h = $hex[($dec%16)] . $h;
 		$dec /= 16;
 	} while ($dec >= 1);
-	return $sign . $h;
+	return $h;
 }
  
 /* define gzip levels if they are not defines yet */

@@ -2080,7 +2080,7 @@ class web_optimizer {
 	**/
 	function minify_text ($txt) {
 /* Remove line breaks */
-		$txt = preg_replace('!\t?\r?\n?!', '', $txt);
+		$txt = preg_replace('!\t?\r?\n?!', ' ', $txt);
 /* Remove simple comments */
 		$txt = preg_replace('!/\*.*?\*/!', '', $txt);
 /* Compress whitespaces */
