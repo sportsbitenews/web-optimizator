@@ -24,20 +24,25 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
  * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
- * @version 1.0
+ * @version 1.1
  */
 
-/* ctype_space  Check for whitespace character(s) */
+/* ctype_space Check for character(s) representing a hexadecimal digit */
 if (!function_exists('ctype_space')) {
 	function ctype_space($text) {
         return !preg_match("/[^\s\r\n\t\f]/", $text);
     }
 }
-/* ctype_alpha  Check for alphabetic character(s) */
+/* ctype_alpha Check for character(s) representing a hexadecimal digit */
 if (!function_exists('ctype_alpha')) {
 	function ctype_alpha($text) {
         return preg_match("/[a-zA-Z]/", $text);
     }
 }
-
+/* ctype_xdigit Check for character(s) representing a hexadecimal digit */
+if (!function_exists("ctype_xdigit")){
+    function ctype_xdigit($string = ''){
+        return !strlen(trim($string, '1234567890abcdefABCDEF'));
+    }
+}
 ?>
