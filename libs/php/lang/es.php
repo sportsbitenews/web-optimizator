@@ -460,6 +460,7 @@ define('_WEBO_DASHBOARD_CACHE_HTML', 'HTML');
 define('_WEBO_DASHBOARD_CACHE_SPRITES', 'CSS Sprites');
 define('_WEBO_DASHBOARD_CACHE_IMAGES', 'Imágenes');
 define('_WEBO_DASHBOARD_CACHE_RESOURCES', 'data:URI + mhtml');
+define('_WEBO_DASHBOARD_CACHE_SCRIPTS', 'PHP scripts');
 define('_WEBO_DASHBOARD_CACHE_SIZE', 'Tamaño total');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Number');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Recargar el cache');
