@@ -95,7 +95,6 @@ class admin {
 				'install_status' => 1,
 				'install_account' => 1,
 				'install_refresh' => 1,
-				'install_cache' => 1,
 				'install_renew' => 1,
 				'install_options' => 1,
 				'install_system' => 1,
@@ -432,7 +431,7 @@ class admin {
 		$this->save_option("['active']", $this->compress_options['active']);
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
-		$this->install_cache();
+		$this->install_system();
 	}
 
 	/*
@@ -3626,11 +3625,24 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* force cache reload via index.php */
 		if ($index) {
 			$this->write_progress(8);
-/* load home page in DEBUG mode */
-			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index .
-				'?web_optimizer_stage=10&web_optimizer_debug=1',
-				$this->compress_options['html_cachedir'] . 'chained.load', 29);
+			$test_file = $this->compress_options['html_cachedir'] . 'optimizing.php';
+/* load home page */
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index, $test_file);
+			$contents = @file_get_contents($test_file);
+			$this->write_file($test_file, "<?php require('" .
+				$this->basepath . "web.optimizer.php'); ?>" .
+				preg_replace("/<\?xml[^>]+\?>/", "", $contents) .
+				'<?php $web_optimizer->finish(); ?>', 1);
+			$this->write_progress(9);
+/* then iterate through its local copy */
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/' .
+				str_replace($this->compress_options['document_root'], '',
+					$this->compress_options['html_cachedir']) .
+				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=1',
+				$this->compress_options['html_cachedir'] . 'chained.load', 25);
+			@unlink($this->compress_options['html_cachedir'] . 'progress.html');
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
+			@unlink($this->compress_options['html_cachedir'] . 'optimizing.php');
 /* or via cached HTML */
 		} else {
 			$test_file = $this->basepath . 'cache/optimizing.php';
