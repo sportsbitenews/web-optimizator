@@ -18,10 +18,6 @@
 	echo _WEBO_DASHBOARD_SYSTEM_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM12"><?php
 	echo _WEBO_DASHBOARD_SYSTEM;
-?></span></a></li><li class="wssM1"><a href="#wss_cache" class="wssM3" title="<?php
-	echo _WEBO_DASHBOARD_CACHE_TITLE;
-?>"><span class="wssM5"></span><span class="wssM4 wssM13"><?php
-	echo _WEBO_DASHBOARD_CACHE;
 ?></span></a></li><li class="wssM1"><a href="#wss_account" class="wssM3" title="<?php
 	echo _WEBO_DASHBOARD_ACCOUNT_TITLE
 ?>"><span class="wssM5"></span><span class="wssM4 wssM14"><?php
@@ -128,6 +124,8 @@
 	echo _WEBO_SYSTEM_STATUS;
 ?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#settings" class="wssJ"><?php
 	echo _WEBO_SYSTEM_SETTINGS;
+?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#cache" class="wssJ"><?php
+	echo _WEBO_DASHBOARD_CACHE;
 ?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#updates" class="wssJ"><?php
 	echo _WEBO_SYSTEM_UPDATES;
 ?><span class="wssJ6"></span></a></li><?php
@@ -315,7 +313,46 @@
 	}
 ?></dl><p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
-?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
+?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
+<fieldset id="cache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php
+	echo _WEBO_DASHBOARD_CACHE;
+?></h2><table class="wssT wssT0"><col width="38%"/><col width="18%"/><col width="17%"/><col width="10%"/><col width="16%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+	echo _WEBO_CACHE_TYPE;
+?></th><th class="wssT7"><?php
+	echo _WEBO_GZIP_SIZE;
+?></th><th class="wssT7"><?php
+	echo _WEBO_DASHBOARD_CACHE_NUMBER;
+?></th></tr></thead><tfoot class="wssT1"><tr class="wssT8 wssT19"><th class="wssT9"><?php
+	echo _WEBO_CACHE_TOTAL;
+?>:</th><th class="wssT9"><?php
+	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($size / 1024));
+?> <?php
+	echo _WEBO_LOGIN_EFFICIENCY_KB;
+?></th><th class="wssT9"><?php
+	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", $total);
+?></th></tr></tfoot><tbody><?php
+	$i = 0;
+	foreach ($files as $index => $group) {
+		foreach ($group as $mask => $file) {
+			if (count($file) && $file[1]) {
+?><tr class="wssT8 wssT1<?php
+				echo $i%2 ? 2 : 1;
+?>"><td class="wssT9"><?php
+				echo constant('_WEBO_DASHBOARD_CACHE_' . $index) . ' (' . str_replace('*', '', $mask) . ')';
+?></td><td class="wssT9"><?php
+				echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($file[0] / 1024));
+?> <?php
+	echo _WEBO_LOGIN_EFFICIENCY_KB;
+?></td><td class="wssT9"><?php
+				echo $file[1];
+?></td></tr><?php
+				$i++;
+			}
+		}
+	}
+?></tbody></table><p class="wssI"><a href="#wss_renew" class="wssJ7"><?php
+	echo _WEBO_DASHBOARD_CACHE_REFRESH;
+?><span class="wssJ6"></span></a></p></div></fieldset><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_UPDATES_TITLE;
 ?></h2><dl><dt class="wssD5"><label class="wssE" for="wss_showbeta"><?php
 	echo _WEBO_showbeta;

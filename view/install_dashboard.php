@@ -52,10 +52,6 @@
 	echo _WEBO_DASHBOARD_SYSTEM_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM12"><?php
 	echo _WEBO_DASHBOARD_SYSTEM;
-?></span></a></li><li class="wssM1"><a href="#wss_cache" class="wssM3" title="<?php
-	echo _WEBO_DASHBOARD_CACHE_TITLE;
-?>"><span class="wssM5"></span><span class="wssM4 wssM13"><?php
-	echo _WEBO_DASHBOARD_CACHE;
 ?></span></a></li><li class="wssM1"><a href="#wss_account" class="wssM3" title="<?php
 	echo _WEBO_DASHBOARD_ACCOUNT_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM14"><?php
@@ -78,7 +74,7 @@
 	echo _WEBO_DASHBOARD_SEND;
 ?><span class="wssJ6"></span></a></p></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_updates') !== false ? ' wssA0' : '';
-?>" id="wss_updates"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
+?>" id="wss_updates"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#updates" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_UPDATES;
 ?></a></h2><?php
 	if ($version_new > $version) {
@@ -100,7 +96,7 @@
 	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
 ?>" id="wss_buzz"><div class="wssN2"><h2 class="wssB"><a href="#wss_about" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_BUZZ;
-?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" rel="nofollow" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')" title="<?php
+?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/cache/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://wordpress.org/extend/plugins/web-optimizer/" rel="nofollow" class="wssJ wssJ14">WordPress</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_news') !== false ? ' wssA0' : '';
@@ -112,7 +108,7 @@
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div></div><div class="wssN4"><div class="wssN5<?php
 	echo strpos($cookie, 'wss_che') !== false ? ' wssA0' : '';
-?>" id="wss_che"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_cache" class="wssN3"><?php
+?>" id="wss_che"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#cache" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
 ?></a></h2><div id="wss_cache"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;

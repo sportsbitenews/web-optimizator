@@ -98,7 +98,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssB1{font-family:"Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssN .wssB1{color:#4c4c4c;font-size:14px;line-height:17px;margin:2px 0 2px 17px;padding:4px 0 0;text-decoration:none!important}
 .wssK0 .wssB1{color:#f00;font-size:16px;margin-bottom:11px}
-#wss_help .wssB1{color:#ff8200;font-size:20px;margin:12px 0 12px 23px}
+#wss_help .wssB1{background:none;color:#ff8200;font-size:20px;margin:12px 0 12px 23px}
 .wssB2{color:#191919;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
 #wss_help .wssB2{font-size:16px;font-weight:700;padding:2px 0 6px}
 
@@ -166,11 +166,11 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssH5{margin-top:-250px}
 
 .wssI{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
-.wssC4 .wssI{float:right;margin:30px 0 0 9px;padding:0}
 .wssC5 .wssI{float:none;margin:20px 0 0 15px}
 .wssC5 .wssH .wssI{margin:20px -10px 0 -1%}
 .wssC6 .wssI{margin-left:186px;padding-top:19px}
 .wssC7 .wssI{margin:0;padding:1px 0 4px}
+.wssC7 .wssC4 .wssI{padding:10px 0 0}
 .wssK0 .wssI{font-size:16px;padding:0}
 .wssK0 .wssO8 .wssI{font-size:14px;color:#000}
 .wssN .wssI{color:#333;padding:6px 0 0 13px}
@@ -230,6 +230,7 @@ a.wssJ9:hover .wssJ00{display:block}
 a.wssJ5:hover,a.wssJ5:focus,a.wssJ5:active{background:#717daf 0 -38px no-repeat;color:#fff!important}
 #wss_upd .wssJ5{left:-4px}
 .wssC7 .wssJ5,.wssC7 .wssJ7{margin-bottom:21px}
+.wssC7 .wssC4 .wssJ5,.wssC7 .wssC4 .wssJ7{margin:0}
 .wssU18 a.wssJ5{margin:0 5px}
 .wssJ6{background:-186px 0 no-repeat;display:block;height:28px;right:0;position:absolute;top:0;width:14px}
 a.wssJ5:hover .wssJ6,a.wssJ5:focus .wssJ6,a.wssJ5:active .wssJ6{background:-186px -38px no-repeat}
@@ -251,12 +252,10 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 0 -228px no-repeat}
 .wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:-186px -228px no-repeat}
 #wss_help .wssJ6{background-position:-186px -309px}
-.wssC4 .wssH .wssJ7{background-position:0 -76px}
-.wssC4 .wssH .wssJ7 .wssJ6{background-position:-186px -76px}
-.wssC4 a.wssJ7:hover,.wssU18 a.wssJ7:hover{background:#ff7e53 0 -270px no-repeat}
-.wssC4 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:hover .wssJ6{background:-186px -270px no-repeat}
-.wssC4 .wssH a.wssJ7:hover{background-position:0 -112px}
-.wssC4 .wssH a.wssJ7:hover .wssJ6{background-position:-186px -112px}
+.wssC7 .wssC4 .wssJ7{background-position:0 -76px}
+.wssC7 .wssC4 .wssJ7 .wssJ6{background-position:-186px -76px}
+.wssC7 .wssC4 a.wssJ7:hover{background:#ff7e53 0 -112px no-repeat}
+.wssC7 .wssC4 a.wssJ7:hover .wssJ6{background-position:-186px -112px}
 #wss_help a.wssJ5:hover .wssJ6,#wss_help a.wssJ5:active .wssJ6,#wss_help a.wssJ5:focus .wssJ6{background-position:-186px -348px}
 .wssJ8{float:right;margin-right:10%}
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
@@ -305,10 +304,6 @@ a.wssM3:hover .wssM10{background:url(dashboard.hover.png) no-repeat}
 a.wssM3:hover .wssM11{background:url(settings.menu.hover.png) no-repeat}
 .wssM12{background:url(system.menu.png) no-repeat}
 .wssM2 .wssM12{background:url(system.menu.active.png) no-repeat}
-a.wssM3:hover .wssM12{background:url(system.menu.hover.png) no-repeat}
-.wssM13{background:url(cache.menu.png) no-repeat}
-.wssM2 .wssM13{background:url(cache.menu.active.png) no-repeat}
-a.wssM3:hover .wssM13{background:url(cache.menu.hover.png) no-repeat}
 .wssM14{background:url(account.png) no-repeat}
 .wssM2 .wssM14{background:url(account.active.png) no-repeat}
 a.wssM3:hover .wssM14{background:url(account.hover.png) no-repeat}
@@ -427,7 +422,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssT1>.wssT8 .wssT9{padding-top:8px}
 .wssT10{padding-bottom:2px}
 .wssT11{font-weight:700;text-align:left}
-.wssT12{background:#f0f0f0}
+.wssT12{background:#fff}
 .wssT13{background:url(plus.png) 54% 50% no-repeat;text-indent:-999em}
 .wssT14{background:url(minus.png) 54% 50% no-repeat;text-indent:-999em}
 .wssT15{border:0}

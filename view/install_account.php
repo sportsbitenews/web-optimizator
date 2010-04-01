@@ -18,10 +18,6 @@
 	echo _WEBO_DASHBOARD_SYSTEM_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM12"><?php
 	echo _WEBO_DASHBOARD_SYSTEM;
-?></span></a></li><li class="wssM1"><a href="#wss_cache" class="wssM3" title="<?php
-	echo _WEBO_DASHBOARD_CACHE_TITLE;
-?>"><span class="wssM5"></span><span class="wssM4 wssM13"><?php
-	echo _WEBO_DASHBOARD_CACHE;
 ?></span></a></li><li class="wssM1"><a href="#wss_account" class="wssM2" title="<?php
 	echo _WEBO_DASHBOARD_ACCOUNT_TITLE
 ?>"><span class="wssM5"></span><span class="wssM4 wssM14"><?php

@@ -134,13 +134,13 @@ class admin {
 /* initialize info about cache types */
 		$this->cache_types = array(
 			'js' => array('*.js', '*.js.gz'),
-			'js_php' => array('*.php', '*.php.gz'),
+			'js_php' => array('*script.php', '*script.php.gz'),
 			'css' => array('*.css', '*.css.gz'),
-			'css_php' => array('*.php', '*.php.gz'),
+			'css_php' => array('*link.php', '*link.php.gz'),
 			'res' => array('*.css.css', '*.css.css.gz', '*.php.php', '*.php.php.gz'),
 			'sprites' => array('webo.*.png', 'webo.*.jpg'),
 			'imgs' => array('*.png', '*.jpg', '*.gif', '*.bmp'),
-			'html' => array('*+*')
+			'html' => array('*.html','*.html.gz', '*.html.df')
 		);
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator@", $this->basepath);
@@ -497,101 +497,21 @@ class admin {
 	}
 
 	/*
-	* Return info for specific files
+	* Return size and number of specific files
 	*
 	**/
-	function install_cache_info ($mask, $type) {
-		$return = array();
-		$files = glob($mask);
-		if (is_array($files)) {
-			foreach ($files as $filename) {
-				$browser = 0;
-				if ($a = strpos($filename, '.ie')) {
-					$browser = round($filename{$a+3}) - 4;
-/* switch ie4 case to IE7@Vista */
-					$browser = $browser ? $browser : 10;
-				}
-				$return[$filename] = array(
-					$type,
-					@filemtime($filename),
-					@filesize($filename),
-					$browser
-				);
-			}
-		}
-		return $return;
-	}
-
-	/*
-	* Return info about all cached files
-	*
-	**/
-	function install_cache () {
-		$files = array();
-		if (!empty($this->compress_options['css_cachedir'])) {
-			@chdir($this->compress_options['css_cachedir']);
-			foreach ($this->cache_types['css'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 2));
-			}
-			foreach ($this->cache_types['css_php'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 3));
-			}
-			foreach ($this->cache_types['res'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 4));
-			}
-			foreach ($this->cache_types['imgs'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 6));
-			}
-			foreach ($this->cache_types['sprites'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 5));
-			}
-		}
-		if (!empty($this->compress_options['javascript_cachedir'])) {
-			@chdir($this->compress_options['javascript_cachedir']);
-			foreach ($this->cache_types['js'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 0));
-			}
-			if (empty($this->compress_options['css_cachedir']) ||
-				$this->compress_options['css_cachedir'] != 
-				$this->compress_options['javascript_cachedir']) {
-				foreach ($this->cache_types['js_php'] as $mask) {
-					$files = array_merge($files, $this->install_cache_info($mask, 1));
-				}
-			}
-		}
-		if (!empty($this->compress_options['html_cachedir'])) {
-			@chdir($this->compress_options['html_cachedir']);
-			foreach ($this->cache_types['html'] as $mask) {
-				$files = array_merge($files, $this->install_cache_info($mask, 7));
-			}
-		}
-		$total = 0;
-		foreach ($files as $file) {
-			$total += $file[2];
-		}
-		$page_variables = array(
-			'files' => $files,
-			'total' => $total,
-			'premium' => $this->premium,
-			"skip_render" => $this->skip_render
-		);
-		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
-		$this->view->render("install_cache", $page_variables);
-	}
-
-	/*
-	* Return size of specific files
-	*
-	**/
-	function dashboard_cache_size ($mask) {
+	function dashboard_cache_size ($mask, $number = false) {
 		$return = 0;
 		$files = glob($mask);
 		if (is_array($files)) {
 			foreach ($files as $filename) {
 				$return += @filesize($filename);
+				if ($number) {
+					$number++;
+				}
 			}
 		}
-		return $return;
+		return $number ? array($return, $number - 1) : $return;
 	}
 
 	/*
@@ -641,14 +561,6 @@ class admin {
 			foreach ($this->cache_types['html'] as $mask) {
 				$html += $this->dashboard_cache_size($mask);
 			}
-		}
-/* distribute general PHP files between CSS and JS */
-		if (!empty($this->compress_options['css_cachedir']) &&
-			!empty($this->compress_options['javascript_cachedir']) &&
-			$this->compress_options['javascript_cachedir'] ==
-			$this->compress_options['css_cachedir']) {
-				$css_php = $css_php / 3;
-				$js_php = $js_php * 2 / 3;
 		}
 		$css += $css_php;
 		$js += $js_php;
@@ -718,7 +630,7 @@ class admin {
 	**/
 	function dashboard_options () {
 		if (!empty($this->compress_options['active'])) {
-/* get available Apache modules */
+/* get av¦ailable Apache modules */
 			$this->get_modules();
 /* check if .htaccess is avaiable */
 			$htaccess_available = count($this->apache_modules) ? 1 : 0;
@@ -1144,6 +1056,62 @@ class admin {
 				$success = 4;
 			}
 		}
+		$files = array(
+			'CSS' => array(),
+			'JS' => array(),
+			'HTML' => array(),
+			'SPRITES' => array(),
+			'IMAGES' => array(),
+			'RESOURCES' => array());
+		if (!empty($this->compress_options['css_cachedir'])) {
+			@chdir($this->compress_options['css_cachedir']);
+			foreach ($this->cache_types['css'] as $mask) {
+				$files['CSS'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['css_php'] as $mask) {
+				$files['CSS'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['res'] as $mask) {
+				$files['RESOURCES'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['imgs'] as $mask) {
+				$files['IMAGES'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['sprites'] as $mask) {
+				$files['SPRITES'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+		}
+		if (!empty($this->compress_options['javascript_cachedir'])) {
+			@chdir($this->compress_options['javascript_cachedir']);
+			foreach ($this->cache_types['js'] as $mask) {
+				$files['JS'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['js_php'] as $mask) {
+				$files['JS'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+		}
+		if (!empty($this->compress_options['html_cachedir'])) {
+			@chdir($this->compress_options['html_cachedir']);
+			foreach ($this->cache_types['html'] as $mask) {
+				$files['HTML'][$mask] = $this->dashboard_cache_size($mask, 1);
+			}
+			foreach ($this->cache_types['sprites'] as $mask) {
+				if (is_array($files[3][$mask])) {
+					$files['SPRITES'][$mask] = array_merge($files[3][$mask], $this->dashboard_cache_size($mask, 1));
+				} else {
+					$files['SPRITES'][$mask] = $this->dashboard_cache_size($mask, 1);
+				}
+			}
+		}
+		$total = $size = 0;
+		foreach ($files as $group) {
+			foreach ($group as $file) {
+				if (count($file)) {
+					$size += $file[0];
+					$total += $file[1];
+				}
+			}
+		}
 /* get basic errors / warnings */
 		$page_variables = $this->dashboard_system(1);
 /* sey all other variables */
@@ -1178,6 +1146,9 @@ class admin {
 		$page_variables['version_beta'] = $this->version_beta;
 		$page_variables['skip_render'] = $this->skip_render;
 		$page_variables['internal'] = $this->internal;
+		$page_variables['total'] = $total;
+		$page_variables['size'] = $size;
+		$page_variables['files'] = $files;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}

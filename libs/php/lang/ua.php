@@ -465,6 +465,7 @@ define('_WEBO_DASHBOARD_CACHE_SPRITES', 'CSS Sprites');
 define('_WEBO_DASHBOARD_CACHE_IMAGES', 'Картинки');
 define('_WEBO_DASHBOARD_CACHE_RESOURCES', 'data:URI + mhtml');
 define('_WEBO_DASHBOARD_CACHE_SIZE', 'Общий размер');
+define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Количество');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Обновить кэш');
 
 /* Dashboard system block */
