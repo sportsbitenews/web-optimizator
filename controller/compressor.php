@@ -2082,7 +2082,7 @@ class web_optimizer {
 /* Remove line breaks, compress whitespaces */
 		$txt = preg_replace('![\s\t\r\n]+!', ' ', $txt);
 /* Remove simple comments */
-		$txt = preg_replace('!/\*.*?\*/!', '', $txt);
+		$txt = preg_replace('!(/\*.*?\*/|^ | $)!', '', $txt);
 /* Remove spaces for }, {, ;, ,: */
 		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
 /* Remove excessive symbols */
