@@ -731,7 +731,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 										$css_top = -$final_y + $shift_y;
 										$css_repeat = 'no-repeat';
 										if (!$file_exists) {
-											$this->imagecopymerge_alpha($sprite_raw, $im, -$css_left + ($added ? $shift_x : 0), -$css_top + ($added ? $shift_y : 0), 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
+											$this->imagecopymerge_alpha($sprite_raw, $im, -$css_left + ($added || $shift_x > 0 ? $shift_x : 0), -$css_top + ($added || $shift_y > 0 ? $shift_y : 0), 0, 0, $width - ($final_x < 0 ? $final_x : 0), $height - ($final_y < 0 ? $final_y : 0));
 										}
 										break;
 /* repeat-y */
