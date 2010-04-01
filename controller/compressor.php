@@ -2079,12 +2079,10 @@ class web_optimizer {
 	*
 	**/
 	function minify_text ($txt) {
-/* Remove line breaks */
-		$txt = preg_replace('!\t?\r?\n?!', ' ', $txt);
+/* Remove line breaks, compress whitespaces */
+		$txt = preg_replace('![\s\t\r\n]+!', ' ', $txt);
 /* Remove simple comments */
 		$txt = preg_replace('!/\*.*?\*/!', '', $txt);
-/* Compress whitespaces */
-		$txt = preg_replace('![\t\s]+!', ' ', $txt);
 /* Remove spaces for }, {, ;, ,: */
 		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
 /* Remove excessive symbols */
