@@ -2721,7 +2721,7 @@ class admin {
 	**/
 	function clean_htaccess () {
 		$content_saved = @file_get_contents($this->htaccess);
-		$content_saved = preg_replace("@# Web Optimizer (options|path).*# Web Optimizer (path )?end\r?\n@is", "", $content_saved);
+		$content_saved = preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
 		return $content_saved;
 	}
 	
@@ -2738,7 +2738,7 @@ class admin {
 /* delete previous Web Optimizer rules */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
-		if (!@is_writable($this->htaccess)) {
+		if (!@is_writable($this->htaccess) && @is_file($this->htaccess)) {
 			$this->error = $this->error ? $this->error : array();
 			$this->error[10] = 1;
 		}
@@ -2747,6 +2747,7 @@ class admin {
 			@copy($this->htaccess, $this->htaccess . '.backup');
 		}
 		$content = '# Web Optimizer options';
+		$content2 = '';
 		if (!empty($this->input['wss_htaccess_enabled'])) {
 			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
 				$content .= "
@@ -2944,11 +2945,12 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				}
 			}
 			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
-				$content .= "
+				$content2 .= "
+# Web Optimizer options
 <IfModule mod_expires.c>
 	ExpiresActive On";
 				if (!empty($this->input['wss_far_future_expires_html'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
 		ExpiresDefault \"access plus " . $this->input['wss_far_future_expires_html_timeout'] . " seconds\"
 	</FilesMatch>
@@ -2958,14 +2960,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType text/plain A" . $this->input['wss_far_future_expires_html_timeout'];
 				}
 				if (!empty($this->input['wss_far_future_expires_css'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.css$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType text/css A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_javascript'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.js$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -2979,7 +2981,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType text/fluffscript A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -2990,7 +2992,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType image/bmp A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_fonts'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.(eot|ttf|otf|svg)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -3006,7 +3008,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType font/woff A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_video'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -3020,7 +3022,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType video/x-ms-wm A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_static'])) {
-					$content .= "
+					$content2 .= "
 	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
@@ -3031,47 +3033,50 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	ExpiresByType application/vnd.ms-excel A315360000
 	ExpiresByType application/vnd.ms-powerpoint A315360000";
 				}
-				$content .= "
-</IfModule>";
+				$content2 .= "
+</IfModule>
+# Web Optimizer end";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
 				@is_file($this->compress_options['html_cachedir'] . 'wo.static.php')) {
 					$cachedir = str_replace($this->compress_options['document_root'],
 						"/", $this->compress_options['html_cachedir']);
-					$content .= "
+					$content2 .= "
+# Web Optimizer options
 <IfModule mod_rewrite.c>";
 					if (!empty($this->input['wss_far_future_expires_css'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_javascript'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 					}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_video'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_static'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(swf|pdf|doc|rtf|xls|ppt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_fonts'])) {
-						$content .= "
+						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
-					$content .= "
-</IfModule>";
+					$content2 .= "
+</IfModule>
+# Web Optimizer end";
 			}
 			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
 				$content .= "
@@ -3125,7 +3130,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$this->view->paths['relative']['current_directory'] .
 				")\n# Web Optimizer path end\n$1", $content_saved);
 		}
-		$this->write_file($this->htaccess, $content . "\n" . $content_saved, 1);
+		$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
 	}
 
 	/**
