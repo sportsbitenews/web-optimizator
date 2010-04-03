@@ -301,7 +301,7 @@ class admin {
 		$expires = -1;
 		if (empty($this->premium) && !empty($license)) {
 			$error[4] = 1;
-		} else {
+		} elseif (@is_file($this->compress_options['html_cachedir'] . 'wo')) {
 			$expires = @file_get_contents($this->compress_options['html_cachedir'] . 'wo');
 		}
 		$page_variables = array(

@@ -732,7 +732,7 @@ define('_WEBO_HELP_LINK4', 'Support');
 define('_WEBO_HELP_LINK5', 'Online Store');
 define('_WEBO_HELP_MEDIA', 'Video tutorials');
 define('_WEBO_HELP_FEATURES', 'New Features');
-define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">HTML Sprites</li><li class="wssO8">Safe JavaScript combine</li><li class="wssO8">Cache expiration timeframe</li><li class="wssO8">Better memory usage</li>');
+define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">Better cache refresh</li><li class="wssO8">HTML Sprites</li><li class="wssO8">Safe JavaScript combine</li><li class="wssO8">Cache expiration timeframe</li>');
 define('_WEBO_HELP_FEATURES_ALL', 'All features');
 define('_WEBO_HELP_FEATURES_BLOG', 'Official blog');
 define('_WEBO_HELP_HELP', 'Quick Help');

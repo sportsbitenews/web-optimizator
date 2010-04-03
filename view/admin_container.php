@@ -121,7 +121,7 @@ if (!$ajax) {
 ?></span></a><?php
 		}
 ?></p><?php
-		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
+		if (empty($page) || ($page != 'install_enter_password' && $page != 'install_set_password')) {
 			$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
 ?><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
 			echo _WEBO_HELP_MINIMIZE;
@@ -174,7 +174,7 @@ if (!$ajax) {
 ?></h3><ul class="wssO7"><li class="wssO8"><a href="http://www.webogroup.com/" class="wssJ wssJ0"><?php
 			echo _WEBO_HELP_LINK1;
 ?></a></li><li class="wssO8"><a href="http://code.google.com/p/web-optimizator/w/list" class="wssJ wssJ0"><?php
-			echo _WEBO_HELP_LINK1;
+			echo _WEBO_HELP_LINK2;
 ?></a></li><li class="wssO8"><a href="http://code.google.com/p/web-optimizator/issues/list" class="wssJ wssJ0"><?php
 			echo _WEBO_HELP_LINK3;
 ?></a></li><li class="wssO8"><a href="http://www.webogroup.com/home/support/" class="wssJ wssJ0"><?php

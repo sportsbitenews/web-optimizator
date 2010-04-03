@@ -734,7 +734,7 @@ define('_WEBO_HELP_LINK4', 'Техническая поддержка');
 define('_WEBO_HELP_LINK5', 'Онлайн-магазин');
 define('_WEBO_HELP_MEDIA', 'Видео-руководства');
 define('_WEBO_HELP_FEATURES', 'Новые возможности');
-define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">HTML-спрайты</li><li class="wssO8">Безопасное объединение JavaScript</li><li class="wssO8">Срок хранения файлов в кэше</li><li class="wssO8">Улучшенное использование памяти</li>');
+define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">Улучшенное обновление кэша</li><li class="wssO8">HTML-спрайты</li><li class="wssO8">Безопасное объединение JavaScript</li><li class="wssO8">Срок хранения файлов в кэше</li>');
 define('_WEBO_HELP_FEATURES_ALL', 'Все возможности');
 define('_WEBO_HELP_FEATURES_BLOG', 'официальный блог');
 define('_WEBO_HELP_HELP', 'Подсказка');
