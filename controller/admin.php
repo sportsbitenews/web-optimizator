@@ -3614,7 +3614,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
-				RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
+RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
@@ -3656,7 +3656,10 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 /* it it's possible to get file => module works */
 		if ($filesize == $size) {
-				$return = true;
+			$return = true;
+/* fix for LiteSpeed bug on .htaccess rights + mod_rewrite */
+		} elseif ($gzip == 400 && $module == 'mod_rewrite' && strpos(phpinfo(), 'LiteSpeed')) {
+			$return = true;
 		}
 /* check for gzip / deflate support */
 		if ($gzip && !$curl) {
