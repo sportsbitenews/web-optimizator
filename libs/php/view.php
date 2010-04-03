@@ -208,13 +208,11 @@ class compressor_view {
 			if (@is_file($local_file_headers)) {
 				$headers = @file_get_contents($local_file_headers);
 				$gzip = preg_match('/content-encoding/i', $headers);
-				if (!$gzip) {
-					$gzip = round(preg_replace('!HTTP/1\.[01]\s([0-9][0-9][0-9])\s.*!', '$1', $headers));
-				}
+				$code = round(preg_replace('!HTTP/1\.[01]\s([0-9][0-9][0-9])\s.*!', '$1', $headers));
 				@unlink($local_file_headers);
 			}
 		}
-		return $gzip;
+		return array($gzip, $code);
 	}
 }
 ?>

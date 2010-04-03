@@ -3614,7 +3614,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
-RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
+RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
@@ -3632,17 +3632,16 @@ RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
 	**/
 	function check_apache_module ($rule, $root, $cachedir, $module) {
 		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'mod_gzip');
-		if ($module == 'mod_rewrite') {
-			$testfile = 'libs/js/wo.cookie.php';
-			$curlfile = 'libs/js/wo.cookie.wo123.php';
-			$size = 131;
-		} elseif ($module == 'mod_symlinks') {
+		if ($module == 'mod_symlinks') {
 			$testfile = 'libs/js/wo.cookie.php';
 			$curlfile = 'libs/js/wo.cookie.php';
 			$size = 131;
 		} else {
 			$testfile = $curlfile = 'libs/js/yass.loader.js';
 			$size = @filesize($this->basepath . $testfile);
+			if ($module == 'mod_rewrite') {
+				$curlfile = 'libs/js/yass.loader.wo123.js';
+			}
 		}
 		$return = false;
 		$this->write_file($this->basepath . 'libs/js/.htaccess', $rule);
@@ -3658,11 +3657,11 @@ RewriteRule ^(.*)\.wo[0-9]+\.php$ $1.php"
 		if ($filesize == $size) {
 			$return = true;
 /* fix for LiteSpeed bug on .htaccess rights + mod_rewrite */
-		} elseif ($gzip == 400 && $module == 'mod_rewrite' && strpos(phpinfo(), 'LiteSpeed')) {
+		} elseif ($curl[1] == 400 && $module == 'mod_rewrite' && strpos(phpinfo(), 'LiteSpeed')) {
 			$return = true;
 		}
 /* check for gzip / deflate support */
-		if ($gzip && !$curl) {
+		if ($gzip && !$curl[0]) {
 			$return = false;
 		}
 		@unlink($cachedir . 'module.test');
