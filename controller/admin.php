@@ -3657,7 +3657,10 @@ RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
 		if ($filesize == $size) {
 			$return = true;
 /* fix for LiteSpeed bug on .htaccess rights + mod_rewrite */
-		} elseif ($curl[1] == 400 && $module == 'mod_rewrite' && strpos(phpinfo(), 'LiteSpeed')) {
+		} elseif ($curl[1] == 400 &&
+			$module == 'mod_rewrite' &&
+			!empty($_SERVER["SERVER_SOFTWARE"]) &&
+			$_SERVER["SERVER_SOFTWARE"] == 'LiteSpeed') {
 			$return = true;
 		}
 /* check for gzip / deflate support */
