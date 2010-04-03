@@ -1216,9 +1216,15 @@ class admin {
 	**/		
 	function check_acceleration () {
 		$before = @filesize($this->basepath . $this->index_before);
-		$after = @filesize($this->basepath . $this->index_after);
+		$a = @file_get_contents($this->basepath . $this->index_after);
+		$after = strlen($a);
 		if ($this->premium > 1) {
-			if (!empty($this->compress_options['active']) &&
+/* re-check if there was 503 error */
+			if (!empty($this->compress_options['active']) && 
+				strpos($a, '503 Service')) {
+					$this->view->download($this->webo_grade . '&refresh=on',
+						$this->basepath . $this->index_after, 1);
+			} elseif (!empty($this->compress_options['active']) &&
 				$before && (empty($after) || $after < 200)) {
 /* Request to re-check should be done on options save */
 					$this->view->download($this->webo_grade,
