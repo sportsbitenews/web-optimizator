@@ -1816,10 +1816,11 @@ class web_optimizer {
 						!empty($value['file'] ) &&
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)))) {
 					unset($this->initial_files[$key]);
-/* rewrite skipped file with caching proxy */
+/* rewrite skipped file with caching proxy, skip dynamic files */
 				} elseif (!empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
-					($value['tag'] == 'script' && $rewrite_js))) {
+					($value['tag'] == 'script' && $rewrite_js)) &&
+					!preg_match("!\.php$!", $value['file'])) {
 						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
