@@ -3620,7 +3620,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
-RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
+RewriteRule yass\.loadbar.js$ " .
+str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
+"wp-content/plugins/web-optimizer/libs/js/yass.loader.js"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
@@ -3646,7 +3648,7 @@ RewriteRule ^(.*)\.wo[0-9]+\.js$ $1.js"
 			$testfile = $curlfile = 'libs/js/yass.loader.js';
 			$size = @filesize($this->basepath . $testfile);
 			if ($module == 'mod_rewrite') {
-				$curlfile = 'libs/js/yass.loader.wo123.js';
+				$curlfile = 'libs/js/yass.loadbar.js';
 			}
 		}
 		$return = false;
