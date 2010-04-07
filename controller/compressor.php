@@ -156,7 +156,8 @@ class web_optimizer {
 /* return visit and no modifications, so do not send anything */
 					header ("HTTP/1.0 304 Not Modified");
 					header ("Content-Length: 0");
-					exit();
+					while (@ob_end_clean());
+					die();
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
@@ -186,6 +187,7 @@ class web_optimizer {
 					if (!empty($this->options['page']['gzip'])) {
 						$this->set_gzip_header();
 					}
+					while (@ob_end_clean());
 					echo $content;
 					die();
 /* content is a head part, flush it after */
@@ -460,6 +462,7 @@ class web_optimizer {
 	**/
 	function start () {
 		ob_start();
+		ob_start();
 		ob_implicit_flush(0);
 	}
 
@@ -482,6 +485,8 @@ class web_optimizer {
 		}
 		if (!$content) {
 			$this->content = ob_get_clean();
+/* clear all other buffers */
+			while (@ob_end_clean());
 		} else {
 			$this->content = $content;
 		}
@@ -596,6 +601,7 @@ class web_optimizer {
 							$this->password .
 							'&web_optimizer_debug=1');
 					}
+					while (@ob_end_clean());
 					die();
 				}
 		}
@@ -611,6 +617,7 @@ class web_optimizer {
 			echo $this->content;
 /* It's obvious to send anything right after gzipped content */
 			if (!empty($this->encoding)) {
+				while (@ob_end_clean());
 				die();
 			}
 		}
@@ -1313,14 +1320,14 @@ class web_optimizer {
 			}
 			$source = $this->_remove_scripts($external_array, $source);
 /* Create the link to the new file with data:URI / mhtml */
-			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.css'))) {
-				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.css');
+			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.' . $options['ext']))) {
+				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.' . $options['ext']);
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 				if (empty($options['data_uris_domloaded'])) {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
-/* incldue via JS loader to provide fast flush of content */
+/* include via JS loader to provide fast flush of content */
 				} else {
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.css'));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.' . $options['ext']));
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
@@ -1435,6 +1442,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
+					while (@ob_end_clean());
 					die();
 /* prepare first 4 Sprites */
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 16)%15) && $this->web_optimizer_stage < 85) {
@@ -1452,6 +1460,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
+					while (@ob_end_clean());
 					die();
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 19)%15) && $this->web_optimizer_stage < 85) {
 /* Create CSS Sprites in CSS dir */
@@ -1469,6 +1478,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
+					while (@ob_end_clean());
 					die();
 				} else {
 /* we created all Sprites -- ready for data:URI + mhtml */
@@ -1479,25 +1489,26 @@ class web_optimizer {
 					if (!empty($options['data_uris_separate'])) {
 						$resource_file .=
 							($options['far_future_expires_rewrite'] ? '.wo' . $this->time : '') .
-							'.css' . 
+							'.' . $options['ext'] . 
 							(!$options['far_future_expires_rewrite'] ? '?' . $this->time : '');
 					}
 					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
+/* Allow for gzipping and headers */
+					if ($options['gzip'] || $options['far_future_expires']) {
+						$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
+					}
 /* write data:URI / mhtml content */
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
-						$this->write_file($physical_file . '.css',
-							$minified_resource);
-						$this->write_file($physical_file . '.css.gz',
-							@gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP));
-						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.css');
+						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource);
+						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file, or according to unobtrusive logic */
 						if (empty($options['data_uris_domloaded'])) {
 							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
-/* incldue via JS loader to provide fast flush of content */
+/* include via JS loader to provide fast flush of content */
 						} else {
-							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.css'));
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.' . $options['ext']));
 						}
 					} elseif (!empty($minified_content)) {
 						$ie = in_array($this->ua_mod, array('.ie5', '.ie6', '.ie7'));
