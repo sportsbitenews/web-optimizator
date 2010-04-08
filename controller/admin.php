@@ -101,6 +101,7 @@ class admin {
 				'install_update' => 1,
 				'install_stable' => 1,
 				'install_beta' => 1,
+				'install_awards' => 1,
 				'dashboard_cache' => 1,
 				'dashboard_system' => 1,
 				'dashboard_options' => 1,
@@ -249,6 +250,55 @@ class admin {
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("compress_gzip", $page_variables);
+	}
+
+/*
+	* Renders awards page
+	*
+	**/
+	function install_awards () {
+		$evaluation1 = @file_get_contents($this->basepath . $this->index_after);
+		$evaluation2 = @file_get_contents($this->basepath . $this->index_after);
+/* first level - WEBO grade (YSlow + Page Speed + WEBO) */
+		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
+		$level1 = $grade > 50 ? $grade > 70 ? $grade > 90 ? 3 : 2 : 1 : 0;
+/* second level - website home page size savings */
+		$size1 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation1));
+		$size2 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation2));
+		$delta = $size1 - $size2 / ($size1 + 0.01);
+		$level2 = $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
+/* third level - gained acceleration */
+		$time1 = round(preg_replace("!.*<high>([0-9]+)</high>.*!", "$1", $evaluation1) * 100);
+		$time2 = round(preg_replace("!.*<high>([0-9]+)</high>.*!", "$1", $evaluation2) * 100);
+		$delta = $time1 - $time2 / ($time1 + 0.01);
+		$level3 = $delta > 0.5 ? $delta > 0.65 ? $delta > 0.8 ? 3 : 2 : 1 : 0;
+/* fourth level - number of files on home page */
+		$grade = round(preg_replace("!.*<files>([0-9]+)</files>.*!", "$1", $evaluation2));
+		$level4 = $grade ? $grade < 30 ? $grade < 20 ? $grade < 10 ? 3 : 2 : 1 : 0 : 0;
+/* fifth level - WEBO Site SpeedUp options */
+		$errors = $this->options_count();
+/* count delta */
+		$deltas = array(58, 48, 0);
+		$delta = $deltas[round($this->premium)];
+		foreach ($errors as $key => $value) {
+			$delta += $value;
+		}
+		$level5 = $delta < 50 ? $delta < 25 ? $delta < 5 ? 3 : 2 : 1 : 0;
+		$page_variables = array(
+			"version" => $this->version,
+			"premium" => $this->premium,
+			"submit" => $submit,
+			"error" => $error,
+			"skip_render" => $this->skip_render,
+			"level1" => $level1,
+			"level2" => $level2,
+			"level3" => $level3,
+			"level4" => $level4,
+			"level5" => $level5,
+			"cachedir" => str_replace($this->compress_options['document_root'], "/",
+				$this->compress_options['html_cachedir'])
+		);
+		$this->view->render("install_awards", $page_variables);
 	}
 
 	/*
@@ -650,206 +700,210 @@ class admin {
 	}
 
 	/*
+	* Check WEBO Site SpeedUp options
+	*
+	**/
+	function options_count () {
+/* get av¦ailable Apache modules */
+		$this->get_modules();
+/* check if .htaccess is avaiable */
+		$htaccess_available = count($this->apache_modules) ? 1 : 0;
+		$apache2 = 0;
+/* Apache/1 indicates (for sure) Apache 1.3.0-1.3.11. Apache 1.3.12+ has
+   Prod in ServerTokens support, so can be false detected as Apache2 */
+		if (function_exists('apache_get_version')) {
+			$apache2 = strpos(apache_get_version(), "/1") ? 0 : 1;
+		}
+/* fill array with errors */
+		$errors = array();
+		$value = 5;
+/* first priority issues */
+		if (empty($this->compress_options['css_sprites']['enabled']) &&
+			$this->premium > 1) {
+				$errors['css_sprites_enabled'] = $value;
+		}
+		if (empty($this->compress_options['parallel']['enabled']) &&
+			$this->premium > 1) {
+				$errors['parallel_enabled'] = $value;
+		}
+		if (empty($this->compress_options['performance']['mtime']) &&
+			$this->premium > 0) {
+			$errors['performance_mtime'] = $value;
+		}
+		if (empty($this->compress_options['performance']['plain_string']) &&
+			$this->premium > 1) {
+				$errors['performance_plain_string'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['enabled']) ||
+			!$htaccess_available) {
+				$errors['htaccess_enabled'] = $value;
+		}
+/* second priority issues */
+		$value = 4;
+		if (empty($this->compress_options['unobtrusive']['ads']) &&
+			$this->premium > 1) {
+				$errors['unobtrusive_ads'] = $value;
+		}
+		if (empty($this->compress_options['unobtrusive']['informers']) &&
+			$this->premium > 1) {
+				$errors['unobtrusive_informers'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['cookie']) &&
+			$this->premium > 1) {
+				$errors['gzip_cookie'] = $value;
+		}
+		if (empty($this->compress_options['unobtrusive']['body']) &&
+			$this->premium > 1) {
+				$errors['unobtrusive_body'] = $value;
+		}
+		if ((empty($this->compress_options['htaccess']['mod_deflate']) ||
+			!in_array('mod_deflate', $this->apache_modules))) {
+				$errors['htaccess_mod_deflate'] = $value;
+		} elseif (!in_array('mod_deflate', $this->apache_modules) &&
+			(empty($this->compress_options['htaccess']['mod_gzip']) ||
+				!in_array('mod_gzip', $this->apache_modules)) &&
+			!$apache) {
+				$errors['htaccess_mod_gzip'] = $value;
+		}
+/* third priority issues */
+		$value = 3;
+		if (empty($this->compress_options['data_uris']['on']) &&
+			$this->premium > 0) {
+				$errors['data_uris_on'] = $value;
+		}
+		if (empty($this->compress_options['performance']['cache_version']) &&
+			$this->premium > 1) {
+			$errors['performance_cache_version'] = $value;
+		}
+		if (empty($this->compress_options['unobtrusive']['counters']) &&
+			$this->premium > 1) {
+				$errors['unobtrusive_informers'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['page'])) {
+			$errors['gzip_page'] = $value;
+		}
+		if (empty($this->compress_options['minify']['javascript'])) {
+			$errors['minify_javascript'] = $value;
+		}
+		if (empty($this->compress_options['unobtrusive']['iframes']) &&
+			$this->premium > 1) {
+				$errors['unobtrusive_iframes'] = $value;
+		}
+/* fourth priority issues */
+		$value = 2;
+		if (empty($this->compress_options['data_uris']['mhtml']) &&
+			$this->premium > 0) {
+				$errors['data_uris_mhtml'] = $value;
+		}
+		if (empty($this->compress_options['minify']['css'])) {
+			$errors['minify_css'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['mod_expires']) ||
+			!in_array('mod_expires', $this->apache_modules)) {
+				$errors['htaccess_mod_expires'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['css'])) {
+			$errors['gzip_css'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['javascript'])) {
+			$errors['gzip_javascript'] = $value;
+		}
+/* fifth priority issues */
+		$value = 1;
+		if (empty($this->compress_options['data_uris']['separate']) &&
+			$this->premium > 1) {
+				$errors['data_uris_separate'] = $value;
+		}
+		if (empty($this->compress_options['data_uris']['domloaded']) &&
+			$this->premium > 1) {
+				$errors['data_uris_domloaded'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['mod_rewrite']) ||
+			!in_array('mod_rewrite', $this->apache_modules)) {
+				$errors['htaccess_mod_rewrite'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['css'])) {
+			$errors['far_future_expires_css'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['javascript'])) {
+			$errors['far_future_expires_javascript'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['images'])) {
+			$errors['far_future_expires_images'] = $value;
+		}
+		if (empty($this->compress_options['external_scripts']['on'])) {
+			$errors['external_scripts_on'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['mod_headers']) ||
+			!in_array('mod_headers', $this->apache_modules)) {
+				$errors['htaccess_mod_headers'] = $value;
+		}
+		if (empty($this->compress_options['minify']['javascript'])) {
+			$errors['minify_javascript'] = $value;
+		}
+		if (empty($this->compress_options['minify']['page'])) {
+			$errors['minify_page'] = $value;
+		}
+		if (empty($this->compress_options['minify']['html_comments']) &&
+			$this->premium > 1) {
+			$errors['minify_html_comments'] = $value;
+		}
+		if (empty($this->compress_options['minify']['html_one_string']) &&
+			$this->premium > 1) {
+			$errors['minify_html_one_string'] = $value;
+		}
+		if (empty($this->compress_options['external_scripts']['css'])) {
+			$errors['external_scripts_css'] = $value;
+		}
+		if (empty($this->compress_options['external_scripts']['inline'])) {
+			$errors['external_scripts_inline'] = $value;
+		}
+		if (empty($this->compress_options['external_scripts']['css_inline'])) {
+			$errors['external_scripts_css_inline'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['fonts'])) {
+			$errors['gzip_fonts'] = $value;
+		}
+		if (empty($this->compress_options['minify']['page'])) {
+			$errors['minify_page'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['mod_setenvif']) ||
+			!in_array('mod_setenvif', $this->apache_modules)) {
+				$errors['htaccess_mod_setenvif'] = $value;
+		}
+		if (empty($this->compress_options['htaccess']['mod_mime']) ||
+			!in_array('mod_mime', $this->apache_modules)) {
+				$errors['htaccess_mod_mime'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['fonts'])) {
+			$errors['far_future_expires_fonts'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['video'])) {
+			$errors['far_future_expires_video'] = $value;
+		}
+		if (empty($this->compress_options['far_future_expires']['static'])) {
+			$errors['far_future_expires_static'] = $value;
+		}
+		if (empty($this->compress_options['minify']['with_jsmin']) &&
+			empty($this->compress_options['minify']['with_yui']) &&
+			empty($this->compress_options['minify']['with_packer']) &&
+			empty($this->compress_options['minify']['with_google'])) {
+			$errors['minify_js'] = $value;
+		}
+		return $errors;
+	}
+
+	/*
 	* Check Web Optimizer options
 	*
 	**/
 	function dashboard_options () {
-		if (!empty($this->compress_options['active'])) {
-/* get av¦ailable Apache modules */
-			$this->get_modules();
-/* check if .htaccess is avaiable */
-			$htaccess_available = count($this->apache_modules) ? 1 : 0;
-			$apache2 = 0;
-/* Apache/1 indicates (for sure) Apache 1.3.0-1.3.11. Apache 1.3.12+ has
-   Prod in ServerTokens support, so can be false detected as Apache2 */
-			if (function_exists('apache_get_version')) {
-				$apache2 = strpos(apache_get_version(), "/1") ? 0 : 1;
-			}
-/* fill array with errors */
-			$errors = array();
-			$value = 5;
-/* first priority issues */
-			if (empty($this->compress_options['css_sprites']['enabled']) &&
-				$this->premium > 1) {
-					$errors['css_sprites_enabled'] = $value;
-			}
-			if (empty($this->compress_options['parallel']['enabled']) &&
-				$this->premium > 1) {
-					$errors['parallel_enabled'] = $value;
-			}
-			if (empty($this->compress_options['performance']['mtime']) &&
-				$this->premium > 0) {
-				$errors['performance_mtime'] = $value;
-			}
-			if (empty($this->compress_options['performance']['plain_string']) &&
-				$this->premium > 1) {
-					$errors['performance_plain_string'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['enabled']) ||
-				!$htaccess_available) {
-					$errors['htaccess_enabled'] = $value;
-			}
-/* second priority issues */
-			$value = 4;
-			if (empty($this->compress_options['unobtrusive']['ads']) &&
-				$this->premium > 1) {
-					$errors['unobtrusive_ads'] = $value;
-			}
-			if (empty($this->compress_options['unobtrusive']['informers']) &&
-				$this->premium > 1) {
-					$errors['unobtrusive_informers'] = $value;
-			}
-			if (empty($this->compress_options['gzip']['cookie']) &&
-				$this->premium > 1) {
-					$errors['gzip_cookie'] = $value;
-			}
-			if (empty($this->compress_options['unobtrusive']['body']) &&
-				$this->premium > 1) {
-					$errors['unobtrusive_body'] = $value;
-			}
-			if ((empty($this->compress_options['htaccess']['mod_deflate']) ||
-				!in_array('mod_deflate', $this->apache_modules))) {
-					$errors['htaccess_mod_deflate'] = $value;
-			} elseif (!in_array('mod_deflate', $this->apache_modules) &&
-				(empty($this->compress_options['htaccess']['mod_gzip']) ||
-					!in_array('mod_gzip', $this->apache_modules)) &&
-				!$apache) {
-					$errors['htaccess_mod_gzip'] = $value;
-			}
-/* third priority issues */
-			$value = 3;
-			if (empty($this->compress_options['data_uris']['on']) &&
-				$this->premium > 0) {
-					$errors['data_uris_on'] = $value;
-			}
-			if (empty($this->compress_options['performance']['cache_version']) &&
-				$this->premium > 1) {
-				$errors['performance_cache_version'] = $value;
-			}
-			if (empty($this->compress_options['unobtrusive']['counters']) &&
-				$this->premium > 1) {
-					$errors['unobtrusive_informers'] = $value;
-			}
-			if (empty($this->compress_options['gzip']['page'])) {
-				$errors['gzip_page'] = $value;
-			}
-			if (empty($this->compress_options['minify']['javascript'])) {
-				$errors['minify_javascript'] = $value;
-			}
-			if (empty($this->compress_options['unobtrusive']['iframes']) &&
-				$this->premium > 1) {
-					$errors['unobtrusive_iframes'] = $value;
-			}
-/* fourth priority issues */
-			$value = 2;
-			if (empty($this->compress_options['data_uris']['mhtml']) &&
-				$this->premium > 0) {
-					$errors['data_uris_mhtml'] = $value;
-			}
-			if (empty($this->compress_options['minify']['css'])) {
-				$errors['minify_css'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['mod_expires']) ||
-				!in_array('mod_expires', $this->apache_modules)) {
-					$errors['htaccess_mod_expires'] = $value;
-			}
-			if (empty($this->compress_options['gzip']['css'])) {
-				$errors['gzip_css'] = $value;
-			}
-			if (empty($this->compress_options['gzip']['javascript'])) {
-				$errors['gzip_javascript'] = $value;
-			}
-/* fifth priority issues */
-			$value = 1;
-			if (empty($this->compress_options['data_uris']['separate']) &&
-				$this->premium > 1) {
-					$errors['data_uris_separate'] = $value;
-			}
-			if (empty($this->compress_options['data_uris']['domloaded']) &&
-				$this->premium > 1) {
-					$errors['data_uris_domloaded'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['mod_rewrite']) ||
-				!in_array('mod_rewrite', $this->apache_modules)) {
-					$errors['htaccess_mod_rewrite'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['css'])) {
-				$errors['far_future_expires_css'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['javascript'])) {
-				$errors['far_future_expires_javascript'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['images'])) {
-				$errors['far_future_expires_images'] = $value;
-			}
-			if (empty($this->compress_options['external_scripts']['on'])) {
-				$errors['external_scripts_on'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['mod_headers']) ||
-				!in_array('mod_headers', $this->apache_modules)) {
-					$errors['htaccess_mod_headers'] = $value;
-			}
-			if (empty($this->compress_options['minify']['javascript'])) {
-				$errors['minify_javascript'] = $value;
-			}
-			if (empty($this->compress_options['minify']['page'])) {
-				$errors['minify_page'] = $value;
-			}
-			if (empty($this->compress_options['minify']['html_comments']) &&
-				$this->premium > 1) {
-				$errors['minify_html_comments'] = $value;
-			}
-			if (empty($this->compress_options['minify']['html_one_string']) &&
-				$this->premium > 1) {
-				$errors['minify_html_one_string'] = $value;
-			}
-			if (empty($this->compress_options['external_scripts']['css'])) {
-				$errors['external_scripts_css'] = $value;
-			}
-			if (empty($this->compress_options['external_scripts']['inline'])) {
-				$errors['external_scripts_inline'] = $value;
-			}
-			if (empty($this->compress_options['external_scripts']['css_inline'])) {
-				$errors['external_scripts_css_inline'] = $value;
-			}
-			if (empty($this->compress_options['gzip']['fonts'])) {
-				$errors['gzip_fonts'] = $value;
-			}
-			if (empty($this->compress_options['minify']['page'])) {
-				$errors['minify_page'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['mod_setenvif']) ||
-				!in_array('mod_setenvif', $this->apache_modules)) {
-					$errors['htaccess_mod_setenvif'] = $value;
-			}
-			if (empty($this->compress_options['htaccess']['mod_mime']) ||
-				!in_array('mod_mime', $this->apache_modules)) {
-					$errors['htaccess_mod_mime'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['fonts'])) {
-				$errors['far_future_expires_fonts'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['video'])) {
-				$errors['far_future_expires_video'] = $value;
-			}
-			if (empty($this->compress_options['far_future_expires']['static'])) {
-				$errors['far_future_expires_static'] = $value;
-			}
-			if (empty($this->compress_options['minify']['with_jsmin']) &&
-				empty($this->compress_options['minify']['with_yui']) &&
-				empty($this->compress_options['minify']['with_packer']) &&
-				empty($this->compress_options['minify']['with_google'])) {
-				$errors['minify_js'] = $value;
-			}
+		$errors = $this->options_count();
 /* count delta */
-			$deltas = array(58, 48, 0);
-			$delta = $deltas[round($this->premium)];
-			foreach ($errors as $key => $value) {
-				$delta += $value;
-			}
-		} else {
-			$delta = 100;
-			$errors = array();
+		$deltas = array(58, 48, 0);
+		$delta = $deltas[round($this->premium)];
+		foreach ($errors as $key => $value) {
+			$delta += $value;
 		}
 /* set variables */
 		$page_variables = array(

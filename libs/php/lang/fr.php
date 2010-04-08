@@ -554,6 +554,10 @@ define('_WEBO_DASHBOARD_SPEED_GAINED', 'L\'Accélération acquis');
 define('_WEBO_DASHBOARD_SPEED_SAVINGS', 'Economies');
 define('_WEBO_DASHBOARD_SPEED_NODATA', 'Pas de données');
 
+/* Dashboard awards block */
+define('_WEBO_DASHBOARD_AWARDS_TITLE', 'Achievements');
+define('_WEBO_DASHBOARD_AWARDS', 'Website speedup achievements');
+
 /* Tools pages */
 define('_WEBO_TOOLS_GZIP', 'Outil Gzip Statique');
 define('_WEBO_TOOLS_IMAGE', 'Outil d\'Optimisation des images');
@@ -738,4 +742,25 @@ define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">Better cache refresh</li><
 define('_WEBO_HELP_FEATURES_ALL', 'All features');
 define('_WEBO_HELP_FEATURES_BLOG', 'Official blog');
 define('_WEBO_HELP_HELP', 'Quick Help');
+
+/* Awards page */
+define('_WEBO_AWARDS_INTRO', 'You have achieved some results during website acceleration and have received an optimization award from WEBO Site SpeedUp. You can achieve greater if you follow website performance optimization advices.');
+define('_WEBO_AWARDS_TOP', 'Combined YSlow + Page Speed + WEBO grade');
+define('_WEBO_AWARDS_MIDDLE', 'Relative decrease in website size');
+define('_WEBO_AWARDS_BOTTOM', 'Relative website speedup');
+define('_WEBO_AWARDS_TAIL', 'Number of objects per page');
+define('_WEBO_AWARDS_CIRCLE', 'WEBO Site SpeedUp options usage');
+define('_WEBO_AWARDS_LEVEL1', 'Novice');
+define('_WEBO_AWARDS_LEVEL2', 'Master');
+define('_WEBO_AWARDS_LEVEL3', 'Guru');
+define('_WEBO_AWARDS_CHOOSE', 'Choose your award');
+define('_WEBO_AWARDS_SIZE', 'Size');
+define('_WEBO_AWARDS_COLOR', 'Colors');
+define('_WEBO_AWARDS_COLOR1', 'Basic');
+define('_WEBO_AWARDS_CODE', 'Website code');
+define('_WEBO_AWARDS_CODE1', 'HTML code');
+define('_WEBO_AWARDS_CODE2', 'BB code');
+define('_WEBO_AWARDS_CODE3', 'Code for blog');
+define('_WEBO_AWARDS_GENERAL', 'Awards <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
+define('_WEBO_AWARDS_BACK', 'Preview background');
 ?>

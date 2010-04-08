@@ -107,6 +107,10 @@ if ($submit) {
 	echo _WEBO_DASHBOARD_ACCOUNT_TITLE
 ?>"><span class="wssM5"></span><span class="wssM4 wssM14"><?php
 	echo _WEBO_DASHBOARD_ACCOUNT;
+?></span></a></li><li class="wssM1"><a class="wssM3" href="#wss_awards" title="<?php
+	echo _WEBO_DASHBOARD_AWARDS;
+?>"><span class="wssM5"></span><span class="wssM4 wssM15"><?php
+	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li><?php
 	if ($premium > 1 && 0) {
 ?><li class="wssM1"><a href="#wss_speed" class="wssM3" title="<?php

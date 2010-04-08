@@ -538,6 +538,10 @@ define('_WEBO_DASHBOARD_SPEED_GAINED', 'Полученное ускорение'
 define('_WEBO_DASHBOARD_SPEED_SAVINGS', 'Экономия');
 define('_WEBO_DASHBOARD_SPEED_NODATA', 'Нет данных');
 
+/* Dashboard awards block */
+define('_WEBO_DASHBOARD_AWARDS_TITLE', 'Достижения');
+define('_WEBO_DASHBOARD_AWARDS', 'Достижения в ускорении сайта');
+
 /* Tools pages */
 define('_WEBO_TOOLS_GZIP', 'Статическое сжатие');
 define('_WEBO_TOOLS_IMAGE', 'Оптимизация изображений');
@@ -721,4 +725,25 @@ define('_WEBO_HELP_FEATURES_LIST', '<li class="wssO8">Улучшенное об�
 define('_WEBO_HELP_FEATURES_ALL', 'Все возможности');
 define('_WEBO_HELP_FEATURES_BLOG', 'официальный блог');
 define('_WEBO_HELP_HELP', 'Подсказка');
+
+/* Awards page */
+define('_WEBO_AWARDS_INTRO', 'В ходе ускорения сайта вы достигли определенных результатов, и вами получена награда оптимизиатора от WEBO Site SpeedUp. Вы можете улучшить ваши достижения, если будете следовать советам по увеличению производительности сайта.');
+define('_WEBO_AWARDS_TOP', 'Комбинированная оценка YSlow + Page Speed + WEBO');
+define('_WEBO_AWARDS_MIDDLE', 'Относительное уменьшение размера сайта');
+define('_WEBO_AWARDS_BOTTOM', 'Относительное ускорение сайта');
+define('_WEBO_AWARDS_TAIL', 'Число объектов на странице');
+define('_WEBO_AWARDS_CIRCLE', 'Использование возможностей WEBO Site SpeedUp');
+define('_WEBO_AWARDS_LEVEL1', 'Новичок');
+define('_WEBO_AWARDS_LEVEL2', 'Мастер');
+define('_WEBO_AWARDS_LEVEL3', 'Гуру');
+define('_WEBO_AWARDS_CHOOSE', 'Выберите свою награду');
+define('_WEBO_AWARDS_SIZE', 'Размер');
+define('_WEBO_AWARDS_COLOR', 'Цветовая гамма');
+define('_WEBO_AWARDS_COLOR1', 'Базовая');
+define('_WEBO_AWARDS_CODE', 'Код для сайта');
+define('_WEBO_AWARDS_CODE1', 'HTML-код');
+define('_WEBO_AWARDS_CODE2', 'BB-код');
+define('_WEBO_AWARDS_CODE3', 'Код для блога');
+define('_WEBO_AWARDS_GENERAL', 'Награды <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
+define('_WEBO_AWARDS_BACK', 'Фон просмотра');
 ?>
