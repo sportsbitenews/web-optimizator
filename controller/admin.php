@@ -284,6 +284,24 @@ class admin {
 			$delta += $value;
 		}
 		$level5 = $delta < 50 ? $delta < 25 ? $delta < 5 ? 3 : 2 : 1 : 0;
+		$awards = $level1 . $level2 . $level3 . $level4 . $level5;
+		if ($this->compress_options['awards'] != $awards ||
+			!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup88.png')) {
+			$sizes = array('88', '125', '161', '250');
+			foreach ($sizes as $size) {
+				$this->view->download("http://webo.in/rocket/?size=$size&top=$level1&middle=$level2&bottom=$level3&tail=$level4&circle=$level5",
+					$this->compress_options['html_cachedir'] . 'webo-site-speedup' . $size . '.png');
+			}
+			$this->save_option("['awards']", $awards);
+		}
+		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c894fbacd544a2076da03a825a6ec2d7&uri='.
+			urlencode('http://' . $this->host .
+				str_replace($this->compress_options['document_root'], "/",
+				$this->compress_options['html_cachedir']) .
+				'webo-site-speedup.html') .
+			'&format=txt', $this->compress_options['html_cachedir'] . 'url');
+		$short_link = @file_get_contents($this->compress_options['html_cachedir'] . 'url');
+		@unlink($this->compress_options['html_cachedir'] . 'url');
 		$page_variables = array(
 			"version" => $this->version,
 			"premium" => $this->premium,
@@ -295,8 +313,10 @@ class admin {
 			"level3" => $level3,
 			"level4" => $level4,
 			"level5" => $level5,
+			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
-				$this->compress_options['html_cachedir'])
+				$this->compress_options['html_cachedir']),
+			"short_link" => $short_link
 		);
 		$this->view->render("install_awards", $page_variables);
 	}
@@ -771,7 +791,7 @@ class admin {
 			$this->premium > 0) {
 				$errors['data_uris_on'] = $value;
 		}
-		if (empty($this->compress_options['performance']['cache_version']) &&
+		if (empty($this->compress_options['performance']['restore_properties']) &&
 			$this->premium > 1) {
 			$errors['performance_restore_properties'] = $value;
 		}
@@ -795,6 +815,10 @@ class admin {
 			$this->premium > 0) {
 				$errors['data_uris_mhtml'] = $value;
 		}
+		if (empty($this->compress_options['css_sprites']['html_sprites']) &&
+			$this->premium > 1) {
+				$errors['css_sprites_html_sprites'] = $value;
+		}
 		if (empty($this->compress_options['minify']['css'])) {
 			$errors['minify_css'] = $value;
 		}
@@ -810,14 +834,6 @@ class admin {
 		}
 /* fifth priority issues */
 		$value = 1;
-		if (empty($this->compress_options['data_uris']['separate']) &&
-			$this->premium > 1) {
-				$errors['data_uris_separate'] = $value;
-		}
-		if (empty($this->compress_options['data_uris']['domloaded']) &&
-			$this->premium > 1) {
-				$errors['data_uris_domloaded'] = $value;
-		}
 		if (empty($this->compress_options['htaccess']['mod_rewrite']) ||
 			!in_array('mod_rewrite', $this->apache_modules)) {
 				$errors['htaccess_mod_rewrite'] = $value;

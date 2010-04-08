@@ -761,6 +761,8 @@ define('_WEBO_AWARDS_CODE', 'Website code');
 define('_WEBO_AWARDS_CODE1', 'HTML code');
 define('_WEBO_AWARDS_CODE2', 'BB code');
 define('_WEBO_AWARDS_CODE3', 'Code for blog');
+define('_WEBO_AWARDS_CODE4', 'Twitter');
 define('_WEBO_AWARDS_GENERAL', 'Awards <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
 define('_WEBO_AWARDS_BACK', 'Preview background');
+define('_WEBO_AWARDS_TWITTER', 'My #website #performance achievements (with @wboptimizer / #WEBO Site SpeedUp)');
 ?>

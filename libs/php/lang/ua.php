@@ -744,6 +744,8 @@ define('_WEBO_AWARDS_CODE', 'Код для сайта');
 define('_WEBO_AWARDS_CODE1', 'HTML-код');
 define('_WEBO_AWARDS_CODE2', 'BB-код');
 define('_WEBO_AWARDS_CODE3', 'Код для блога');
+define('_WEBO_AWARDS_CODE4', 'Twitter');
 define('_WEBO_AWARDS_GENERAL', 'Награды <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
 define('_WEBO_AWARDS_BACK', 'Фон просмотра');
+define('_WEBO_AWARDS_TWITTER', 'Мои достижения в #ускорении #сайта (с помощью @wboptimizer / #WEBO Site SpeedUp)');
 ?>

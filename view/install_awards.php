@@ -36,17 +36,9 @@
 	}
 ?></ul><p class="wssI"><?php
 	echo _WEBO_AWARDS_INTRO;
-?></p><img src="http://webo.in/rocket/?size=161&amp;top=<?php
-	echo $level1;
-?>&amp;middle=<?php
-	echo $level2;
-?>&amp;bottom=<?php
-	echo $level3;
-?>&amp;tail=<?php
-	echo $level4;
-?>&amp;circle=<?php
-	echo $level5;
-?>" id="wss_awrd" alt="<?php
+?></p><img src="<?php
+	echo $cachedir;
+?>webo-site-speedup161.png" id="wss_awrd" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
@@ -110,17 +102,9 @@
 		echo constant(_WEBO_AWARDS_LEVEL . $level5);
 ?></span><?php
 	}
-?></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="http://webo.in/rocket/?size=125&amp;top=<?php
-	echo $level1;
-?>&amp;middle=<?php
-	echo $level2;
-?>&amp;bottom=<?php
-	echo $level3;
-?>&amp;tail=<?php
-	echo $level4;
-?>&amp;circle=<?php
-	echo $level5;
-?>" id="wss_award" alt="<?php
+?></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
+	echo $cachedir;
+?>webo-site-speedup125.png" id="wss_award" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
@@ -142,7 +126,13 @@
 	echo _WEBO_AWARDS_CODE2;
 ?></label><label class="wssO56"><input type="radio" name="code" value="site" class="wssO70"/> <?php
 	echo _WEBO_AWARDS_CODE3;
-?></label></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
+?></label><?php
+	if (!empty($short_link)) {
+?><label class="wssO56"><input type="radio" name="code" value="twitter" class="wssO70"/> <?php
+		echo _WEBO_AWARDS_CODE4;
+?></label><?php
+	}
+?></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
 	echo $cachedir;
 ?>webo-site-speedup.html"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
@@ -155,5 +145,7 @@
 ?>"/><input type="hidden" name="webo_aw" value="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp"/><input type="hidden" name="webo_info" value="<?php
-	echo htmlspecialchars(_WEBO_AWARDS_GENERAL);
+	echo str_replace(array('<', '>', '"'), array('&lt;', '&gt;', '&quot;'), _WEBO_AWARDS_GENERAL);
+?>"/><input type="hidden" name="webo_twitter" value="<?php
+	echo _WEBO_AWARDS_TWITTER . ' ' . $short_link;
 ?>"/></p></form>

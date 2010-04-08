@@ -219,6 +219,8 @@ $compress_options['restricted'] = "";
 $compress_options['punypng'] = "";
 ## List of enabled plugins for server side performance
 $compress_options['plugins'] = "";
+## current website performance achievements
+$compress_options['awards'] = "00000";
 ## Web Optimizer license, empty for free edition
 $compress_options['license'] = "";
 #########################################
