@@ -1496,7 +1496,7 @@ class web_optimizer {
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
 /* Allow for gzipping and headers */
-					if ($options['gzip'] || $options['far_future_expires']) {
+					if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
 						$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
 					}
 /* write data:URI / mhtml content */
