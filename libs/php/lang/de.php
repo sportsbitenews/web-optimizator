@@ -745,7 +745,7 @@ define('_WEBO_HELP_FEATURES_BLOG', 'Official blog');
 define('_WEBO_HELP_HELP', 'Quick Help');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'You have achieved some results during website acceleration and have received an optimization award from WEBO Site SpeedUp. You can achieve greater if you follow website performance optimization advices.');
+define('_WEBO_AWARDS_INTRO', 'You have achieved some results during website acceleration and have received an optimization award from WEBO Site SpeedUp. You can achieve greater if you follow website performance optimization advices. You can always clarify your website acceleration with <a href="http://webo.name/my/" class="wssJ">webo.name</a> service (quick registration is required).');
 define('_WEBO_AWARDS_TOP', 'Combined YSlow + Page Speed + WEBO grade');
 define('_WEBO_AWARDS_MIDDLE', 'Relative decrease in website size');
 define('_WEBO_AWARDS_BOTTOM', 'Relative website speedup');

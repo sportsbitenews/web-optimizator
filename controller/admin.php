@@ -257,7 +257,7 @@ class admin {
 	*
 	**/
 	function install_awards () {
-		$evaluation1 = @file_get_contents($this->basepath . $this->index_after);
+		$evaluation1 = @file_get_contents($this->basepath . $this->index_before);
 		$evaluation2 = @file_get_contents($this->basepath . $this->index_after);
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
 		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
@@ -268,13 +268,13 @@ class admin {
 		$delta = ($size1 - $size2) / ($size1 + 0.01);
 		$level2 = $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
 /* third level - gained acceleration */
-		$time1 = round(preg_replace("!.*<high>([0-9]+)</high>.*!", "$1", $evaluation1) * 100);
-		$time2 = round(preg_replace("!.*<high>([0-9]+)</high>.*!", "$1", $evaluation2) * 100);
-		$delta = $time1 - $time2 / ($time1 + 0.01);
+		$time1 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation1) * 100);
+		$time2 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation2) * 100);
+		$delta = ($time1 - $time2) / ($time1 + 0.01);
 		$level3 = $delta > 0.5 ? $delta > 0.65 ? $delta > 0.8 ? 3 : 2 : 1 : 0;
 /* fourth level - number of files on home page */
-		$grade = round(preg_replace("!.*<files>([0-9]+)</files>.*!", "$1", $evaluation2));
-		$level4 = $grade ? $grade < 30 ? $grade < 20 ? $grade < 10 ? 3 : 2 : 1 : 0 : 0;
+		$grade = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
+		$level4 = $grade ? $grade < 35 ? $grade < 20 ? $grade < 10 ? 3 : 2 : 1 : 0 : 0;
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */
