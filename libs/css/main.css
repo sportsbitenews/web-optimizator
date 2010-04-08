@@ -5,7 +5,7 @@ Short notice about CSS deploymner.
 2. To create CSS package please go to http://sprites.in/
  a) Convert to data:URI - enabled
  b) Add additional space - enabled
- c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png
+ c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png rocket.main.png rocket.parts.png
 3. Download new package and deploy it
 4. Final list of files
  wss.css
@@ -19,6 +19,8 @@ Short notice about CSS deploymner.
  loading.gif
  progress.png
  promo.over.png
+ rocket.main.png
+ rocket.parts.png
  stamps.png
  wss.png
  
@@ -309,6 +311,9 @@ a.wssM3:hover .wssM11{background:url(settings.menu.hover.png) no-repeat}
 .wssM14{background:url(account.png) no-repeat}
 .wssM2 .wssM14{background:url(account.active.png) no-repeat}
 a.wssM3:hover .wssM14{background:url(account.hover.png) no-repeat}
+.wssM16{background:url(awards.png) no-repeat}
+.wssM2 .wssM16{background:url(awards.active.png) no-repeat}
+a.wssM3:hover .wssM16{background:url(awards.hover.png) no-repeat}
 
 .wssN{margin:20px 0 0 -5px}
 .wssN1{border:1px solid #ffd9b2;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin-bottom:15px;width:32%}
@@ -526,8 +531,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wssO30{background:url(rocket.main.png) no-repeat}
 * html .wssO61 .wssO56{display:inline;zoom:1}
 * html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
-* html .wssO61 .wssO63,.wssO63{background-image:url(rocket.back1.png)}
-* html .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)}
 
 *+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 *+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
@@ -552,8 +555,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wssO30{background:url(rocket.main.png) no-repeat}
 *+html .wssO61 .wssO56{display:inline;zoom:1}
 *+html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
-*+html .wssO61 .wssO63,.wssO63{background-image:url(rocket.back1.png)}
-*+html .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
