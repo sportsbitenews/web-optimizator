@@ -131,7 +131,7 @@
 	echo _WEBO_AWARDS_CODE2;
 ?></label><label class="wssO56"><input type="radio" name="code" value="site" class="wssO70"/> <?php
 	echo _WEBO_AWARDS_CODE3;
-?></label></dd></dl><p class="wssI"><textarea cols="80" rows="5" class="wssE">&lt;a href="<?php
+?></label></dd></dl><p class="wssI"><textarea cols="72" rows="5" class="wssE">&lt;a href="<?php
 	echo $cachedir;
 ?>award.html"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

@@ -63,6 +63,7 @@ view/dashboard_speed.php
 view/dashboard_system.php
 view/install_about.php
 view/install_account.php
+view/install_awards.php
 view/install_dashboard.php
 view/install_enter_password.php
 view/install_gzip.php
