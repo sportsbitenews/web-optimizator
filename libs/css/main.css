@@ -474,7 +474,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssY1{opacity:.95}
 
 /* awards */
-.wssO30{background:url(rocket.main.png) no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px}
+.wssO30{background:url(rocket.main.png) no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px;z-index:2}
 .wssO31{display:block;position:absolute;left:483px;top:160px;width:150px}
 .wssO32{display:block;position:absolute;left:12px;text-align:right;top:29px;width:140px}
 .wssO33{display:block;position:absolute;left:413px;top:367px;width:200px}
@@ -498,12 +498,13 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO51{background-position:-468px -234px;left:156px;top:-33px}
 .wssO52{color:#ff4000;display:block}
 .wssO54{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
-.wssO55{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 0 13px;margin:0}
+.wssO55{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 0 13px;margin:0}
 .wssO56{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding-right:14px}
 .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat;border:2px solid transparent;cursor:pointer;cursor:hand;display:inline-block;height:40px;padding:2px;margin-right:10px;width:40px}
 .wssO60{padding:5px;position:absolute;right:0;top:0;width:250px;-webkit-border-top-right-radius:8px;-moz-border-radius-topright:8px;border-top-right-radius:8px}
 .wssO61{background:#f7f4e9;display:block;position:absolute;right:0;top:260px;width:260px}
 #wss_award{display:block;margin:62px auto}
+#wss_awrd{display:block;height:161px;left:50%;margin-left:-79px;position:absolute;top:324px;width:161px}
 .wssO61 .wssO62{border-color:#bf6200}
 .wssO61 .wssO63,.wssO63{background-image:url(rocket.back1.png)!important}
 .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)!important}
@@ -531,7 +532,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wss_n{background-image:url(promo.over.png)}
 * html .wss_l{background:url(stamps.png) no-repeat}
 * html .wss_m{background:url(stamps.png) 0 -124px no-repeat}
-* html .wssO30{background:url(rocket.main.png) no-repeat}
 * html .wssO61 .wssO56{display:inline;zoom:1}
 * html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
 
@@ -555,7 +555,6 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wss_n{background-image:url(promo.over.png)}
 *+html .wss_l{background:url(stamps.png) no-repeat}
 *+html .wss_m{background:url(stamps.png) 0 -124px no-repeat}
-*+html .wssO30{background:url(rocket.main.png) no-repeat}
 *+html .wssO61 .wssO56{display:inline;zoom:1}
 *+html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
 

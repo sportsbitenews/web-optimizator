@@ -36,7 +36,21 @@
 	}
 ?></ul><p class="wssI"><?php
 	echo _WEBO_AWARDS_INTRO;
-?></p><ul class="wssO30"><li class="wssO31"><?php
+?></p><img src="http://webo.in/rocket/?size=161&amp;top=<?php
+	echo $level1;
+?>&amp;middle=<?php
+	echo $level2;
+?>&amp;bottom=<?php
+	echo $level3;
+?>&amp;tail=<?php
+	echo $level4;
+?>&amp;circle=<?php
+	echo $level5;
+?>" id="wss_awrd" alt="<?php
+	echo _WEBO_DASHBOARD_AWARDS_TITLE;
+?> WEBO Site SpeedUp" title="<?php
+	echo _WEBO_DASHBOARD_AWARDS_TITLE;
+?> WEBO Site SpeedUp"/><ul class="wssO30"><li class="wssO31"><?php
 	if ($level1) {
 ?><span class="wssO36 wssO<?php
 		echo 36 + $level1;
@@ -96,8 +110,7 @@
 		echo constant(_WEBO_AWARDS_LEVEL . $level5);
 ?></span><?php
 	}
-?></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60">
-<img src="http://webo.in/rocket/?size=125&amp;top=<?php
+?></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="http://webo.in/rocket/?size=125&amp;top=<?php
 	echo $level1;
 ?>&amp;middle=<?php
 	echo $level2;
@@ -111,11 +124,9 @@
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?> WEBO Site SpeedUp"/>
-<div class="wssO61"><span class="wssO65"><?php
+?> WEBO Site SpeedUp"/><div class="wssO61"><span class="wssO65"><?php
 	echo _WEBO_AWARDS_BACK;
-?>:</span><span class="wssO56 wssO62" title="0"></span><span class="wssO56 wssO63" title="1"></span><span class="wssO56 wssO64" title="2"></span></div>
-</div><h3 class="wssB"><?php
+?>:</span><span class="wssO56 wssO62" title="0"></span><span class="wssO56 wssO63" title="1"></span><span class="wssO56 wssO64" title="2"></span></div></div><h3 class="wssB"><?php
 	echo _WEBO_AWARDS_CHOOSE;
 ?>:</h3><dl class="wssO53"><dt class="wssO54"><label for="size88"><?php
 	echo _WEBO_AWARDS_SIZE;
@@ -131,7 +142,7 @@
 	echo _WEBO_AWARDS_CODE2;
 ?></label><label class="wssO56"><input type="radio" name="code" value="site" class="wssO70"/> <?php
 	echo _WEBO_AWARDS_CODE3;
-?></label></dd></dl><p class="wssI"><textarea cols="72" rows="5" class="wssE">&lt;a href="<?php
+?></label></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
 	echo $cachedir;
 ?>award.html"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

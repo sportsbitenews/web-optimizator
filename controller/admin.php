@@ -265,7 +265,7 @@ class admin {
 /* second level - website home page size savings */
 		$size1 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation1));
 		$size2 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation2));
-		$delta = $size1 - $size2 / ($size1 + 0.01);
+		$delta = ($size1 - $size2) / ($size1 + 0.01);
 		$level2 = $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
 /* third level - gained acceleration */
 		$time1 = round(preg_replace("!.*<high>([0-9]+)</high>.*!", "$1", $evaluation1) * 100);
@@ -773,7 +773,7 @@ class admin {
 		}
 		if (empty($this->compress_options['performance']['cache_version']) &&
 			$this->premium > 1) {
-			$errors['performance_cache_version'] = $value;
+			$errors['performance_restore_properties'] = $value;
 		}
 		if (empty($this->compress_options['unobtrusive']['counters']) &&
 			$this->premium > 1) {
