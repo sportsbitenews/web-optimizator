@@ -1365,7 +1365,7 @@ class web_optimizer {
 			$dir = @getcwd();
 			@chdir($options['cachedir']);
 			foreach (glob('*.' . $options['ext']) as $file) {
-				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js')) &&
+				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.html')) &&
 					$this->time - filemtime($file) >
 					$this->options['days_to_delete'] * 86400) {
 						@unlink($file);
@@ -1378,7 +1378,8 @@ class web_optimizer {
 				}
 			}
 			foreach (glob('*.png') as $file) {
-				if ($this->time - filemtime($file) >
+				if (!in_array($file, array('webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png')) &&
+					$this->time - filemtime($file) >
 					$this->options['days_to_delete'] * 86400) {
 						@unlink($file);
 				}

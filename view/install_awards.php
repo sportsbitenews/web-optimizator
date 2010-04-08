@@ -50,7 +50,7 @@
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?> WEBO Site SpeedUp"/><ul class="wssO30"><li class="wssO31"><?php
+?> WEBO Site SpeedUp"/><ul class="wssO66"><li class="wssO67"><?php
 	if ($level1) {
 ?><span class="wssO36 wssO<?php
 		echo 36 + $level1;
@@ -144,13 +144,13 @@
 	echo _WEBO_AWARDS_CODE3;
 ?></label></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
 	echo $cachedir;
-?>award.html"&gt;<img width="125" height="125" alt="<?php
+?>webo-site-speedup.html"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" src="<?php
 	echo $cachedir;
-?>award.png" border="0"/>&lt;/a&gt;</textarea><input type="hidden" name="webo_cachedir" value="<?php
+?>webo-site-speedup.png" border="0"/>&lt;/a&gt;</textarea><input type="hidden" name="webo_cachedir" value="<?php
 	echo $cachedir;
 ?>"/><input type="hidden" name="webo_aw" value="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
