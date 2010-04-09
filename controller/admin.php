@@ -65,6 +65,10 @@ class admin {
 		}
 /* validate license */
 		if (!empty($compress_options)) {
+/* reset license check */
+			if (!empty($this->input['wss_license'])) {
+				@unlink($this->compress_options['html_cachedir'] . 'wo');
+			}
 			$this->compress_options['license'] =
 				empty($this->input['wss_license']) ?
 					$this->compress_options['license'] :
@@ -374,10 +378,6 @@ class admin {
 					$this->input['wss_confirm'] !=
 						$this->input['wss_new']) && !$this->internal) {
 				$error[3] = 1;
-			}
-/* reset license check */
-			if ($license != $this->compress_options['license']) {
-				@unlink($this->compress_options['html_cachedir'] . 'wo');
 			}
 			$this->premium = $this->view->validate_license($license);
 /* save new options */
