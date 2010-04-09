@@ -1844,18 +1844,20 @@ class admin {
 	**/
 	function write_file ($file, $content, $return = false) {
 		if (function_exists('file_put_contents')) {
+			@chmod($file, octdec("0666"));
 			$return = @file_put_contents($file, $content);
 			@chmod($file, octdec("0644"));
 		} else {
+			@chmod($file, octdec("0666"));
 			$fp = @fopen($file, "w");
 			if ($fp) {
-				fwrite($fp, $content);
-				fclose($fp);
-				@chmod($file, octdec("0644"));
+				@fwrite($fp, $content);
+				@fclose($fp);
 				$return = 1;
 			} elseif ($return) {
 				$return = 0;
 			}
+			@chmod($file, octdec("0644"));
 		}
 		if (!empty($return)) {
 			return $return;
