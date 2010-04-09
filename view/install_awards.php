@@ -51,10 +51,34 @@
 	echo _WEBO_AWARDS_TOP;
 	if ($level1) {
 ?><span class="wssO52"><?php
-		echo constant(_WEBO_AWARDS_LEVEL . $level1);
+		echo constant('_WEBO_AWARDS_LEVEL' . $level1);
 ?></span><?php
 	}
-?></li><li class="wssO32"><?php
+?><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_TOP_INFO;
+?></p><?php
+	if ($level1 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_TOP_' . $level1 . ($level1+1));
+		$i = 0;
+		foreach ($level_options[0][$level1] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[0][$level1]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[0][$level1]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?></p><?php
+	}
+?></div></li><li class="wssO32"><?php
 	if ($level2) {
 ?><span class="wssO36 wssO<?php
 		echo 39 + $level2;
@@ -63,10 +87,34 @@
 	echo _WEBO_AWARDS_MIDDLE;
 	if ($level2) {
 ?><span class="wssO52"><?php
-		echo constant(_WEBO_AWARDS_LEVEL . $level2);
+		echo constant('_WEBO_AWARDS_LEVEL' . $level2);
 ?></span><?php
 	}
-?></li><li class="wssO33"><?php
+?><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_MIDDLE_INFO;
+?></p><?php
+	if ($level2 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_MIDDLE_' . $level2 . ($level2+1));
+		$i = 0;
+		foreach ($level_options[1][$level2] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[1][$level2]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[1][$level2]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?>.</p><?php
+	}
+?></div></li><li class="wssO33"><?php
 	if ($level3) {
 ?><span class="wssO36 wssO<?php
 		echo 42 + $level3;
@@ -75,10 +123,34 @@
 	echo _WEBO_AWARDS_BOTTOM;
 	if ($level3) {
 ?><span class="wssO52"><?php
-		echo constant(_WEBO_AWARDS_LEVEL . $level3);
+		echo constant('_WEBO_AWARDS_LEVEL' . $level3);
 ?></span><?php
 	}
-?></li><li class="wssO34"><?php
+?><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_BOTTOM_INFO;
+?></p><?php
+	if ($level3 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_BOTTOM_' . $level3 . ($level3+1));
+		$i = 0;
+		foreach ($level_options[2][$level3] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[2][$level3]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[2][$level3]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?>.</p><?php
+	}
+?></div></li><li class="wssO34"><?php
 	if ($level4) {
 ?><span class="wssO36 wssO<?php
 		echo 45 + $level4;
@@ -87,10 +159,34 @@
 	echo _WEBO_AWARDS_TAIL;
 	if ($level4) {
 ?><span class="wssO52"><?php
-		echo constant(_WEBO_AWARDS_LEVEL . $level4);
+		echo constant('_WEBO_AWARDS_LEVEL' . $level4);
 ?></span><?php
 	}
-?></li><li class="wssO35"><?php
+?><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_TAIL_INFO;
+?></p><?php
+	if ($level4 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_TAIL_' . $level4 . ($level4+1));
+		$i = 0;
+		foreach ($level_options[3][$level4] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[3][$level4]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[3][$level4]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?>.</p><?php
+	}
+?></div></li><li class="wssO35"><?php
 	if ($level5) {
 ?><span class="wssO36 wssO<?php
 		echo 48 + $level5;
@@ -99,10 +195,34 @@
 	echo _WEBO_AWARDS_CIRCLE;
 	if ($level5) {
 ?><span class="wssO52"><?php
-		echo constant(_WEBO_AWARDS_LEVEL . $level5);
+		echo constant('_WEBO_AWARDS_LEVEL' . $level5);
 ?></span><?php
 	}
-?></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
+?><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_CIRCLE_INFO;
+?></p><?php
+	if ($level5 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_CIRCLE_' . $level5 . ($level5+1));
+		$i = 0;
+		foreach ($level_options[4][$level5] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[4][$level5]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[4][$level5]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?>.</p><?php
+	}
+?></div></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
 	echo $cachedir;
 ?>webo-site-speedup125.png" id="wss_award" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

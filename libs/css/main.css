@@ -475,27 +475,27 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 
 /* awards */
 .wssO66{background:url(rocket.main.png) no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px;z-index:2}
-.wssO67{display:block;position:absolute;left:483px;top:160px;width:150px}
-.wssO32{display:block;position:absolute;left:12px;text-align:right;top:29px;width:140px}
-.wssO33{display:block;position:absolute;left:413px;top:367px;width:200px}
-.wssO34{display:block;position:absolute;left:-71px;text-align:right;top:364px;width:120px}
-.wssO35{display:block;position:absolute;left:-156px;text-align:right;top:160px;width:125px}
-.wssO36{display:block;position:absolute;width:117px;height:117px;background:url(rocket.parts.png) no-repeat}
+.wssO67{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:483px;top:160px;width:200px}
+.wssO32{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-48px;text-align:right;top:29px;width:200px}
+.wssO33{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:413px;top:367px;width:200px}
+.wssO34{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-151px;text-align:right;top:364px;width:200px}
+.wssO35{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-221px;text-align:right;top:160px;width:200px}
+.wssO36{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;width:117px;height:117px;background:url(rocket.parts.png) no-repeat}
 .wssO37{background-position:0 0;left:-134px;top:-33px}
 .wssO38{background-position:0 -117px;left:-134px;top:-33px}
 .wssO39{background-position:0 -234px;left:-134px;top:-33px}
-.wssO40{background-position:-117px 0;left:162px;top:-29px}
-.wssO41{background-position:-117px -117px;left:162px;top:-29px}
-.wssO42{background-position:-117px -234px;left:162px;top:-29px}
+.wssO40{background-position:-117px 0;left:222px;top:-29px}
+.wssO41{background-position:-117px -117px;left:222px;top:-29px}
+.wssO42{background-position:-117px -234px;left:222px;top:-29px}
 .wssO43{background-position:-234px 0;left:-132px;top:-32px}
 .wssO44{background-position:-234px -117px;left:-132px;top:-32px}
 .wssO45{background-position:-234px -234px;left:-132px;top:-32px}
-.wssO46{background-position:-351px 0;left:136px;top:-31px}
-.wssO47{background-position:-351px -117px;left:136px;top:-31px}
-.wssO48{background-position:-351px -234px;left:136px;top:-31px}
-.wssO49{background-position:-468px 0;left:155px;top:-33px}
-.wssO50{background-position:-468px -117px;left:155px;top:-33px}
-.wssO51{background-position:-468px -234px;left:155px;top:-33px}
+.wssO46{background-position:-351px 0;left:216px;top:-31px}
+.wssO47{background-position:-351px -117px;left:216px;top:-31px}
+.wssO48{background-position:-351px -234px;left:216px;top:-31px}
+.wssO49{background-position:-468px 0;left:220px;top:-33px}
+.wssO50{background-position:-468px -117px;left:220px;top:-33px}
+.wssO51{background-position:-468px -234px;left:220px;top:-33px}
 .wssO52{color:#ff4000;display:block}
 .wssO54{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssO55{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 0 13px;margin:0}
@@ -510,6 +510,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)!important}
 .wssO61 .wssO63,.wssO61 .wssO64{background-position:2px 2px!important}
 .wssO65{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;padding-bottom:5px}
+.wssO71{background:#e0e0f0;display:none;margin:-60px 0 0 -20px;opacity:.8;padding:55px 20px 15px;text-align:left;width:200px;z-index:101;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}
+.wssO67:hover .wssO71,.wssO32:hover .wssO71,.wssO33:hover .wssO71,.wssO34:hover .wssO71,.wssO35:hover .wssO71{display:block;position:relative;top:0;left:0}
 
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}

@@ -302,6 +302,28 @@ class admin {
 			'&format=txt', $this->compress_options['html_cachedir'] . 'url');
 		$short_link = @file_get_contents($this->compress_options['html_cachedir'] . 'url');
 		@unlink($this->compress_options['html_cachedir'] . 'url');
+		$level_options = array(
+			array(
+				array('gzip', 'clientside', 'combinecss'),
+				array('minify', 'combine_js', 'data_uri', 'css_sprites'),
+				array('unobtrusive', 'multiple_hosts', 'performance')),
+			array(
+				array('gzip', 'minify', 'htaccess'),
+				array('combinecss', 'combine_js'),
+				array('data_uri', 'css_sprites', 'performance')),
+			array(
+				array('gzip', 'clientside', 'htaccess', 'combinecss'),
+				array('minify', 'combine_js', 'data_uri', 'css_sprites', 'serverside'),
+				array('unobtrusive', 'multiple_hosts', 'performance')),
+			array(
+				array('combinecss', 'combine_js'),
+				array('data_uri', 'css_sprites'),
+				array('multiple_hosts', 'css_sprites')),
+			array(
+				array('htaccess', 'gzip', 'performance', 'unobtrusive'),
+				array('minify', 'clientside', 'combinecss', 'combine_js'),
+				array('css_sprites', 'data_uri', 'multiple_hosts'))
+		);
 		$page_variables = array(
 			"version" => $this->version,
 			"premium" => $this->premium,
@@ -316,7 +338,8 @@ class admin {
 			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
 				$this->compress_options['html_cachedir']),
-			"short_link" => $short_link
+			"short_link" => $short_link,
+			"level_options" => $level_options
 		);
 		$this->view->render("install_awards", $page_variables);
 	}
