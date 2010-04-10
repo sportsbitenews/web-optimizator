@@ -114,7 +114,7 @@ class css_sprites_optimize {
 			if (strpos($css_image, "://")) {
 				$cached = preg_replace("/.*\//", "", $css_image);
 /* check for cached version */
-				if (!is_file($cached)) {
+				if (!@is_file($cached)) {
 					$this->download_file($css_image, $cached);
 					$css_image = is_file($cached) ? $cached : '';
 				} else {
@@ -130,7 +130,7 @@ class css_sprites_optimize {
 		if ($mode > 0) {
 			$filename = preg_replace("!.*/!", "", $css_image);
 /* Thx for htc for ali@ */
-			if (!is_file($css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($css_image, "://")) {
+			if (!@is_file($css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($css_image, "://")) {
 				$css_image = $image_saved;
 				return $css_image;
 			}
@@ -965,7 +965,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			$str = @file_get_contents($tmp_file);
 			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*optimized_url['\"]:\s?['\"]/", "", $str)));
-				if (!is_file($file . '.backup')) {
+				if (!@is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.gracepointafterfive.com/');
@@ -998,9 +998,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			urlencode(str_replace($this->website_root, "", $file)), $tmp_file);
 		if (@is_file($tmp_file)) {
 			$str = @file_get_contents($tmp_file);
-			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
+			if ((!preg_match("/['\"]error['\"]/i", $str) || strpos($str, 'No savings')) && strlen($str)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
-				if (!is_file($file . '.backup')) {
+				if (!@is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.smushit.com/ysmush.it/');

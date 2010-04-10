@@ -13,4 +13,12 @@
 	echo round($size);
 ?>,<?php
 	echo round($compressed);
+	if ($error) {
+/* error codes:
+ 1 - can't write to the file
+ 2 - can't gzip file
+ */
+?>,<?php
+		echo round($error);
+	}
 ?>]

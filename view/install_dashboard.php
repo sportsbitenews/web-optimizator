@@ -515,4 +515,10 @@
 	echo str_replace('"', '\"', _WEBO_OPTIONS_CONFIRM);
 ?>";wss_outof="<?php
 	echo str_replace('"', '\"', _WEBO_GZIP_OUTOF);
+?>";wss_error0="<?php
+	echo _WEBO_GZIP_NOSUCCESS;
+?>";wss_error1="<?php
+	echo _WEBO_SPLASH3_CANTWRITE4;
+?>";wss_error2="<?php
+	echo _WEBO_GZIP_ERROR;
 ?>"</script>

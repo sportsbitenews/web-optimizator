@@ -715,6 +715,8 @@ define('_WEBO_GZIP_PROCESSING', 'Procesando archivos');
 define('_WEBO_GZIP_OUTOF', 'fuera de');
 define('_WEBO_GZIP_OPTIMIZATION', 'Optimización en acción. Por favor espere');
 define('_WEBO_GZIP_NOTHING', 'No se encontró nada');
+define('_WEBO_GZIP_ERROR', 'Can\'t gzip file ');
+define('_WEBO_GZIP_NOSUCCESS', 'Failed');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Usando esta herramienta puede reducir el tamaño de imágenes sin perder calidad en cualquier directorio específico en su Sitio Web. Para cada archivo versión <code>.backup</code> optimizado será creado durante el proceso de optimización. Archivos GIF son reemplazados por PNG si los últimos son más pequeños.');

@@ -173,6 +173,7 @@ class admin {
 		$size = @filesize($file);
 		$backup = $file . '.backup';
 		$compressed_size = $size;
+		$error = 0;
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
 			if (!@is_file($backup) || $mtime != @filemtime($backup)) {
 				require(dirname(__FILE__) . '/../libs/php/css.sprites.optimize.php');
@@ -193,8 +194,11 @@ class admin {
 				$success = $mtime2 > $mtime ? 1 : 0;
 				if ($success) {
 					$compressed_size = @filesize($file);
+					@touch($backup, $mtime2);
+/* can't overwrite targeted file */
+				} else {
+					$error = 1;
 				}
-				@touch($backup, $mtime2);
 			} else {
 				$success = 1;
 			}
@@ -204,6 +208,7 @@ class admin {
 			"size" => $size,
 			"compressed" => $compressed_size,
 			"success" => $success,
+			"error" => $error,
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("compress_gzip", $page_variables);
@@ -219,6 +224,7 @@ class admin {
 		$gzipped = $file . '.gz';
 		$gzipped_size = $size;
 		$success = 0;
+		$error = 0;
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
 			if (!@is_file($gzipped) || !@filesize($gzipped)) {
 				$raw = !function_exists('shell_exec');
@@ -233,8 +239,14 @@ class admin {
 					$content = @gzencode(@file_get_contents($file), 9, FORCE_GZIP);
 					if (strlen($content)) {
 						$success = $this->write_file($gzipped, $content);
+/* can't overwrite targeted file */
+						if (!$success) {
+							$error = 1;
+						}
 					} else {
 						$success = 0;
+/* cam't gzip file */
+						$error = 2;
 					}
 				}
 				if ($success) {
@@ -251,6 +263,7 @@ class admin {
 			"size" => $size,
 			"compressed" => $gzipped_size,
 			"success" => $success,
+			"error" => $error,
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("compress_gzip", $page_variables);

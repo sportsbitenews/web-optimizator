@@ -44,12 +44,13 @@
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?> WEBO Site SpeedUp"/><ul class="wssO66"><li class="wssO67"><span class="wssO72><?php
+?> WEBO Site SpeedUp"/><ul class="wssO66"><li class="wssO67"><?php
 	if ($level1) {
 ?><span class="wssO36 wssO<?php
 		echo 36 + $level1;
 ?>"></span><?php
 	}
+?><span class="wssO72"><?php
 	echo _WEBO_AWARDS_TOP;
 	if ($level1) {
 ?><span class="wssO52"><?php
@@ -80,12 +81,13 @@
 		}
 ?></p><?php
 	}
-?></div></li><li class="wssO32"><span class="wssO72><<?php
+?></div></li><li class="wssO32"><?php
 	if ($level2) {
 ?><span class="wssO36 wssO<?php
 		echo 39 + $level2;
 ?>"></span><?php
 	}
+?><span class="wssO72"><?php
 	echo _WEBO_AWARDS_MIDDLE;
 	if ($level2) {
 ?><span class="wssO52"><?php
@@ -116,12 +118,13 @@
 		}
 ?>.</p><?php
 	}
-?></div></li><li class="wssO33"><span class="wssO72><<?php
+?></div></li><li class="wssO33"><?php
 	if ($level3) {
 ?><span class="wssO36 wssO<?php
 		echo 42 + $level3;
 ?>"></span><?php
 	}
+?><span class="wssO72"><?php
 	echo _WEBO_AWARDS_BOTTOM;
 	if ($level3) {
 ?><span class="wssO52"><?php
@@ -152,12 +155,13 @@
 		}
 ?>.</p><?php
 	}
-?></div></li><li class="wssO34"><span class="wssO72><<?php
+?></div></li><li class="wssO34"><?php
 	if ($level4) {
 ?><span class="wssO36 wssO<?php
 		echo 45 + $level4;
 ?>"></span><?php
 	}
+?><span class="wssO72"><?php
 	echo _WEBO_AWARDS_TAIL;
 	if ($level4) {
 ?><span class="wssO52"><?php
@@ -188,12 +192,13 @@
 		}
 ?>.</p><?php
 	}
-?></div></li><li class="wssO35"><span class="wssO72><<?php
+?></div></li><li class="wssO35"><?php
 	if ($level5) {
 ?><span class="wssO36 wssO<?php
 		echo 48 + $level5;
 ?>"></span><?php
 	}
+?><span class="wssO72"><?php
 	echo _WEBO_AWARDS_CIRCLE;
 	if ($level5) {
 ?><span class="wssO52"><?php
