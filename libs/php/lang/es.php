@@ -143,7 +143,7 @@ define('_WEBO_external_scripts_user_HELP', 'Si su website está protegido via au
 define('_WEBO_external_scripts_pass', 'Clave (para acceder via autorización HTTP Basic)');
 define('_WEBO_external_scripts_pass_HELP', 'Si su website está protegido via autorización HTTP Basic usted debe declarar su nombre de usuario y su contraseña para que WEBO Site SpeedUp pueda procesar los recursos requeridos de su sitio web.');
 define('_WEBO_restricted', 'Exclude URL from optimization');
-define('_WEBO_restricted_HELP', 'Sometimes it\'s required to exclude some parts of website from WEBO Site SpeedUp logic. In this case you need to set meaningful parts (masks) fo such sections / URL, separated by space.');
+define('_WEBO_restricted_HELP', 'Sometimes it\'s required to exclude some parts of website from WEBO Site SpeedUp logic. In this case you need to set meaningful parts (masks) for such sections / URL, separated by space.');
 
 define('_WEBO_combine_css', 'Combinar archivos CSS');
 define('_WEBO_combine_css_HELP', 'Dependiendo de esta opción CSS no será combinado, oo habrá combinación solo en el tag &lt;head&gt; del CSS, o será combinado todo el CSS en la página. Todo el código CSS combinado será minimizado.');
@@ -177,7 +177,7 @@ define('_WEBO_external_scripts_ignore_list_HELP', 'Archivos definidos no ser&aac
 define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scripts fusionados a <code>&lt;/head&gt;</code>');
 define('_WEBO_external_scripts_head_end_HELP', 'Llamado de archivo combinado JavaScript ser&aacute; movido al tag de cierre &lt;/head&gt;.');
 define('_WEBO_external_scripts_include_try', 'Safe combine mode');
-define('_WEBO_external_scripts_include_try_HELP', 'With this option all external files will be enveloped into try-catch construction (with individual files\' inclusion on failed content execution in common scope). This reduces JavaScript performance but quarantee that there will be no broken JavaScript calls due to their combine.');
+define('_WEBO_external_scripts_include_try_HELP', 'With this option all external files will be enveloped into try-catch construction (with individual files\' inclusion on failed content execution in common scope). This reduces JavaScript performance but guarantee that there will be no broken JavaScript calls due to their combine.');
 
 define('_WEBO_minify_css', 'Minimizar archivos CSS');
 define('_WEBO_minify_css_HELP', 'Todos los espacios, tabs, apartes, y comentarios excesivos ser&aacute;n borrados del archivo combinado CSS.');
@@ -267,7 +267,7 @@ define('_WEBO_performance_check_files_HELP', 'No habrá chequeo de la existencia
 define('_WEBO_performance_uniform_cache', 'Uniformize los archivos del cache para todos los navegadores');
 define('_WEBO_performance_uniform_cache_HELP', 'Todos los navegadores recibirán código CSS, JavaScript uniformizado. Esto le permitirá usar técnicas externas de caching aseguradamente pero esto esto desactivará un número de técnicas de optimización tales como data:URI.');
 define('_WEBO_performance_restore_properties', 'Restore CSS properties');
-define('_WEBO_performance_restore_properties_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. ut this may lead to huge CPU overhead in case of large amount of CSS rules.');
+define('_WEBO_performance_restore_properties_HELP', 'Missed CSS properties can be restored during CSS Sprites or data:URI creation to reduce amount of final cache size. but this may lead to huge CPU overhead in case of large amount of CSS rules.');
 define('_WEBO_performance_delete_old', 'Days to store cache files');
 define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defining time to live for all cache files (in days). Zero value means no restriction.');
 
@@ -318,7 +318,7 @@ define('_WEBO_css_sprites_dimensions_limited_HELP', 'Imágenes más altas o anch
 define('_WEBO_css_sprites_ignore_list', 'Excluir archivos de CSS Sprites');
 define('_WEBO_css_sprites_ignore_list_HELP', 'Las siguientes imágenes no serán incluidas al CSS Sprites. Por favor de solo nombres de archivos no caminos absolutos.');
 define('_WEBO_css_sprites_html_sprites', 'Combine HTML images');
-define('_WEBO_css_sprites_html_sprites_HELP', 'A lot of of small HTML images can be merged together to reduce number of HTTP requests as well. In this case there is a transparent image inserted into HTML document instead of initial one (with data:URI if possible). And it has the initial image as a background.');
+define('_WEBO_css_sprites_html_sprites_HELP', 'A lot of small HTML images can be merged together to reduce number of HTTP requests as well. In this case there is a transparent image inserted into HTML document instead of initial one (with data:URI if possible). And it has the initial image as a background.');
 define('_WEBO_css_sprites_html_limit', 'Maximum width and height of HTML images (in px)');
 define('_WEBO_css_sprites_html_limit_HELP', 'HTML images heigher or wider than defined number won\'t be included into CSS Sprites. No value or zero value means no restriction.');
 define('_WEBO_css_sprites_html_page', 'Combine images for the current page only');
