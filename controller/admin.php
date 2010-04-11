@@ -2602,6 +2602,10 @@ class admin {
 			'wss_css_sprites_html_limit') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : round($this->input[$val]);
 		}
+/* disable don't check files in cache */
+		$this->input['wss_performance_cache_version'] =
+			empty($this->input['wss_performance_check_files']) ? 0 :
+			$this->input['wss_performance_cache_version'];
 		foreach (array(
 			'wss_unobtrusive_on',
 			'wss_unobtrusive_body',
@@ -2702,7 +2706,7 @@ class admin {
 			function_exists('imagecreatetruecolor') &&
 			!empty($gd['GIF Read Support']) &&
 			!empty($gd['GIF Create Support']) &&
-			!empty($gd['JPG Support']) &&
+			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 			!empty($gd['PNG Support']) &&
 			!empty($gd['WBMP Support'])) ?
 			$this->input['wss_css_sprites_enabled'] : 0;
