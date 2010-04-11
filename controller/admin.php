@@ -313,7 +313,7 @@ class admin {
 			$this->save_option("['awards']", $awards);
 		}
 		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c894fbacd544a2076da03a825a6ec2d7&uri='.
-			urlencode('http://' . $this->host .
+			urlencode('http://' . $this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], "/",
 				$this->compress_options['html_cachedir']) .
 				'webo-site-speedup.html') .
@@ -356,8 +356,6 @@ class admin {
 		$page_variables = array(
 			"version" => $this->version,
 			"premium" => $this->premium,
-			"submit" => $submit,
-			"error" => $error,
 			"skip_render" => $this->skip_render,
 			"level1" => $info[0],
 			"level2" => $info[1],
