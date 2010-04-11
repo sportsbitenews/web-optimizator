@@ -950,6 +950,7 @@ class web_optimizer {
 		}
 		if (!empty($imgs)) {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
+			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
 			foreach ($imgs as $image) {
 				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], 'src="'))) {
 					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), '"'));
@@ -965,6 +966,7 @@ class web_optimizer {
 					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
+						!in_array($img, $ignore_sprites) &&
 						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2])) {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);
 							if (!empty($this->options['page']['html_tidy']) &&

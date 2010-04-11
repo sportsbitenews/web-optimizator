@@ -322,7 +322,7 @@ class admin {
 		@unlink($this->compress_options['html_cachedir'] . 'url');
 		return array($level1, $level2, $level3, $level4, $level5,
 			100 - $options, $grade, $files, round($size2 / 1024),
-			100*round((1 / (0.9999 - $speedup)) - 1), $short_link);
+			round(100*((1 / (0.9999 - $speedup)) - 1)), $short_link);
 	}
 
 	/*
@@ -3771,8 +3771,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
 RewriteRule yass\.loadbar.js$ " .
-str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
-"wp-content/plugins/web-optimizer/libs/js/yass.loader.js"
+str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/", dirname(__FILE__))) .
+"/../libs/js/yass.loader.js"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
