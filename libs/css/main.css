@@ -5,7 +5,7 @@ Short notice about CSS deploymner.
 2. To create CSS package please go to http://sprites.in/
  a) Convert to data:URI - enabled
  b) Add additional space - enabled
- c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png rocket.main.png rocket.parts.png
+ c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png
 3. Download new package and deploy it
 4. Final list of files
  wss.css
@@ -22,7 +22,6 @@ Short notice about CSS deploymner.
  rocket.main.png
  rocket.back1.png
  rocket.back2.png
- rocket.parts.png
  stamps.png
  wss.png
  
@@ -201,7 +200,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 
 .wssJ{color:#2680ac!important}
 a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
-#wss_buzz .wssJ,#wss_opt .wssI .wssJ,#wss_sp .wssJ{display:block;line-height:17px;padding-left:21px}
+#wss_buzz .wssJ,#wss_opt .wssI .wssJ,#wss_sp .wssJ,#wss_aw .wssJ{display:block;line-height:17px;padding-left:21px}
 #wss_news .wssJ{font-size:13px}
 .wssJ0{-moz-border-radius:8px;-webkit-border-radius:8px;background:#262626;border-radius:8px;margin-bottom:14px;display:block;line-height:15px;padding:13px;width:400px}
 #wss_help .wssO8 .wssJ0{border:0;background:none;display:inline;font-weight:400!important;padding:0}
@@ -314,9 +313,9 @@ a.wssM3:hover .wssM11{background:url(settings.menu.hover.png) no-repeat}
 .wssM14{background:url(account.png) no-repeat}
 .wssM2 .wssM14{background:url(account.active.png) no-repeat}
 a.wssM3:hover .wssM14{background:url(account.hover.png) no-repeat}
-.wssM16{background:url(awards.png) no-repeat}
-.wssM2 .wssM16{background:url(awards.active.png) no-repeat}
-a.wssM3:hover .wssM16{background:url(awards.hover.png) no-repeat}
+.wssM16{background:url(awards.menu.png) no-repeat}
+.wssM2 .wssM16{background:url(awards.menu.active.png) no-repeat}
+a.wssM3:hover .wssM16{background:url(awards.menu.hover.png) no-repeat}
 
 .wssN{margin:20px 0 0 -5px}
 .wssN1{border:1px solid #ffd9b2;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin-bottom:15px;width:32%}
@@ -350,6 +349,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_status .wssN3{background:url(status.png) no-repeat}
 #wss_status a.wssN3:hover{background:url(status.hover.png) no-repeat}
 #wss_tools .wssN3{background:url(tools.png) no-repeat}
+#wss_aw .wssN3{background:url(awards.png) no-repeat}
+#wss_aw a.wssN3:hover{background:url(awards.hover.png) no-repeat}
 .wssN20#wss_tools .wssN3{background:url(tools.disabled.png) no-repeat}
 .wssN12 .wssN3{background:url(all.png) no-repeat}
 .wssN11 .wssN3{background:url(help.png) no-repeat}
@@ -403,9 +404,13 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO30{padding:1px;width:202px}
 .wssO31{background-position:0 -195px;height:120px;width:200px}
 
+#wss_aw .wssP0{border:0;float:left;height:88px;margin:5px 10px 20px;width:88px}
 .wssP{margin:0;padding:0}
+#wss_aw .wssP{margin:6px 0 0 93px}
 .wssP1{color:#808080;font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:20px;margin:0;padding:0 0 3px 17px}
+#wss_aw .wssP1{color:#333;line-height:17px}
 .wssP2{color:#808080;float:right;font:14px/35px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:-35px 5px 0 0;padding:0}
+#wss_aw .wssP2{color:#333;margin:-30px 5px -10px 0;line-height:31px}
 
 .wssS{background:url(success.png) repeat;border:1px solid #c3dce8;margin:13px 0 1px -5px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssS1{border:1px solid #ddebf2;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;padding:8px 0}
@@ -477,29 +482,29 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssY1{opacity:.95}
 
 /* awards */
-.wssO66{background:url(rocket.main.png) no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px;z-index:2}
+.wssO66{background:url(rocket.main.png) -65px -362px no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px;z-index:2}
 .wssO67{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:483px;top:160px;width:200px}
 .wssO32{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-48px;text-align:right;top:29px;width:200px}
 .wssO33{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:413px;top:367px;width:200px}
 .wssO34{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-151px;text-align:right;top:364px;width:200px}
 .wssO35{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:-221px;text-align:right;top:160px;width:200px}
-.wssO36{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;width:117px;height:117px;background:url(rocket.parts.png) no-repeat}
+.wssO36{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;width:117px;height:117px;background:url(rocket.main.png) no-repeat}
 .wssO37{background-position:0 0;left:-133px;top:-33px}
-.wssO38{background-position:0 -117px;left:-133px;top:-33px}
-.wssO39{background-position:0 -234px;left:-133px;top:-33px}
-.wssO40{background-position:-117px 0;left:224px;top:-29px}
-.wssO41{background-position:-117px -117px;left:224px;top:-29px}
-.wssO42{background-position:-117px -234px;left:224px;top:-29px}
-.wssO43{background-position:-234px 0;left:-131px;top:-32px}
-.wssO44{background-position:-234px -117px;left:-131px;top:-32px}
-.wssO45{background-position:-234px -234px;left:-131px;top:-32px}
-.wssO46{background-position:-351px 0;left:216px;top:-31px}
-.wssO47{background-position:-351px -117px;left:216px;top:-31px}
-.wssO48{background-position:-351px -234px;left:216px;top:-31px}
-.wssO49{background-position:-468px 0;left:221px;top:-33px}
-.wssO50{background-position:-468px -117px;left:221px;top:-33px}
-.wssO51{background-position:-468px -234px;left:221px;top:-33px}
-.wssO52{color:#ff4000;display:block}
+.wssO38{background-position:0 -122px;left:-133px;top:-33px}
+.wssO39{background-position:0 -244px;left:-133px;top:-33px}
+.wssO40{background-position:-122px 0;left:224px;top:-29px}
+.wssO41{background-position:-122px -122px;left:224px;top:-29px}
+.wssO42{background-position:-122px -244px;left:224px;top:-29px}
+.wssO43{background-position:-244px 0;left:-131px;top:-32px}
+.wssO44{background-position:-244px -122px;left:-131px;top:-32px}
+.wssO45{background-position:-244px -244px;left:-131px;top:-32px}
+.wssO46{background-position:-366px 0;left:216px;top:-31px}
+.wssO47{background-position:-366px -122px;left:216px;top:-31px}
+.wssO48{background-position:-366px -244px;left:216px;top:-31px}
+.wssO49{background-position:-488px 0;left:221px;top:-33px}
+.wssO50{background-position:-488px -122px;left:221px;top:-33px}
+.wssO51{background-position:-488px -244px;left:221px;top:-33px}
+.wssO52{color:#ff4000;display:block;font-size:14px}
 .wssO54{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssO55{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 0 13px;margin:0}
 .wssO56{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding-right:14px}
@@ -513,9 +518,15 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)!important}
 .wssO61 .wssO63,.wssO61 .wssO64{background-position:2px 2px!important}
 .wssO65{font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;padding-bottom:5px}
-.wssO71{background:#e0e0f0;display:none;margin:-60px 0 0 -20px;opacity:.8;padding:55px 20px 15px;text-align:left;width:200px;z-index:101;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}
+.wssO71{background:#eef;display:none;margin:-60px 0 0 -20px;opacity:.8;padding:55px 20px 15px;text-align:left;width:200px;z-index:101;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}
 .wssO67:hover .wssO71,.wssO32:hover .wssO71,.wssO33:hover .wssO71,.wssO34:hover .wssO71,.wssO35:hover .wssO71{display:block;position:relative;top:0;left:0}
 .wssO72,.wssO52{position:relative;z-index:102}
+.wssO32 .wssO71{z-index:110}
+.wssO32 .wssO72{z-index:111}
+.wssO35 .wssO71{z-index:108}
+.wssO35 .wssO72{z-index:109}
+.wssO67 .wssO71{z-index:106}
+.wssO67 .wssO72{z-index:107}
 
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}

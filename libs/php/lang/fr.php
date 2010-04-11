@@ -557,6 +557,11 @@ define('_WEBO_DASHBOARD_SPEED_NODATA', 'Pas de données');
 /* Dashboard awards block */
 define('_WEBO_DASHBOARD_AWARDS_TITLE', 'Achievements');
 define('_WEBO_DASHBOARD_AWARDS', 'Website speedup achievements');
+define('_WEBO_DASHBOARD_AWARDS_CURRENT', 'Current achievements');
+define('_WEBO_DASHBOARD_AWARDS_GRADE', 'WEBO grade');
+define('_WEBO_DASHBOARD_AWARDS_FILES', 'Files');
+define('_WEBO_DASHBOARD_AWARDS_SIZE', 'Website size');
+define('_WEBO_DASHBOARD_AWARDS_SPEEDUP', 'Speedup');
 
 /* Tools pages */
 define('_WEBO_TOOLS_GZIP', 'Outil Gzip Statique');

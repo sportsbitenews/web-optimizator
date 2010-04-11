@@ -558,6 +558,11 @@ define('_WEBO_DASHBOARD_SPEED_NODATA', 'Нет данных');
 /* Dashboard awards block */
 define('_WEBO_DASHBOARD_AWARDS_TITLE', 'Достижения');
 define('_WEBO_DASHBOARD_AWARDS', 'Достижения в ускорении сайта');
+define('_WEBO_DASHBOARD_AWARDS_CURRENT', 'Текущие достижения');
+define('_WEBO_DASHBOARD_AWARDS_GRADE', 'Оценка WEBO');
+define('_WEBO_DASHBOARD_AWARDS_FILES', 'Файлы');
+define('_WEBO_DASHBOARD_AWARDS_SIZE', 'Размер сайта');
+define('_WEBO_DASHBOARD_AWARDS_SPEEDUP', 'Ускорение');
 
 /* Tools pages */
 define('_WEBO_TOOLS_GZIP', 'Статическое сжатие');
@@ -746,14 +751,14 @@ define('_WEBO_HELP_FEATURES_BLOG', 'официальный блог');
 define('_WEBO_HELP_HELP', 'Подсказка');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'В ходе ускорения сайта вы достигли определенных результатов, и вами получена награда оптимизиатора от WEBO Site SpeedUp. Вы можете улучшить ваши достижения, если будете следовать советам по увеличению производительности сайта. Вы всегда можете уточнить фактическое ускорение вашего сайта при помощи сервиса <a href="http://webo.in/my/" class="wssJ">webo.in</a> (требуется быстрая регистрация).');
+define('_WEBO_AWARDS_INTRO', 'В ходе ускорения сайта вы достигли определенных результатов, и вами получена награда оптимизатора от WEBO Site SpeedUp. Вы можете улучшить ваши достижения, если будете следовать советам по увеличению производительности сайта. Вы всегда можете уточнить фактическое ускорение вашего сайта при помощи сервиса <a href="http://webo.in/my/" class="wssJ">webo.in</a> (требуется быстрая регистрация).');
 define('_WEBO_AWARDS_TOP', 'Комбинированная оценка<br/>YSlow + Page Speed + WEBO');
 define('_WEBO_AWARDS_TOP_INFO', 'Оценки <a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a> и <a href="http://webo.in/about/" class="wssJ">WEBO</a> являются независимыми параметрами скорости загрузки сайта. Более высокая оценка означает более высокую производительность сайта.');
 define('_WEBO_AWARDS_TOP_01', 'Для увеличения оценки попробуйте использовать настройки групп ');
 define('_WEBO_AWARDS_TOP_12', 'Для увеличения оценки попробуйте использовать настройки групп ');
 define('_WEBO_AWARDS_TOP_23', 'Для увеличения оценки попробуйте следовать советам YSlow, Page Speed или WEBO или использовать настройки групп ');
 define('_WEBO_AWARDS_MIDDLE', 'Относительное уменьшение<br/>размера сайта');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'Меньший по размеру сайт загружается быстрее у всех пользователей не зависимо от скорости подключения. Уменьшение размера сайта подсчитывается при помощи сервиса <a href="http://webo.in/">webo.in</a>.');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'Меньший по размеру сайт загружается быстрее у всех пользователей независимо от скорости подключения. Уменьшение размера сайта подсчитывается при помощи сервиса <a href="http://webo.in/">webo.in</a>.');
 define('_WEBO_AWARDS_MIDDLE_01', 'Для уменьшения размера сайта необходимо включить настройки групп ');
 define('_WEBO_AWARDS_MIDDLE_12', 'Для уменьшения размера сайта необходимо включить настройки групп ');
 define('_WEBO_AWARDS_MIDDLE_23', 'Для уменьшения размера сайта необходимо включить настройки групп ');

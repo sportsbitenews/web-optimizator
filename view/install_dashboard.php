@@ -77,24 +77,12 @@
 ?></p><p class="wssI"><a href="mailto:speed@webo.name?subject=WEBO Site SpeedUp Installation" class="wssJ5"><?php
 	echo _WEBO_DASHBOARD_SEND;
 ?><span class="wssJ6"></span></a></p></div></div><div class="wssN5<?php
-	echo strpos($cookie, 'wss_updates') !== false ? ' wssA0' : '';
-?>" id="wss_updates"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#updates" class="wssN3"><?php
-	echo _WEBO_DASHBOARD_UPDATES;
-?></a></h2><?php
-	if ($version_new > $version) {
-?><div id="wss_upd" title="<?php
-		echo _WEBO_LOGIN_VERSION;
-?> <?php
-		echo $version_new;
-?>"><p class="wssI3"><?php 
-		echo _WEBO_DASHBOARD_LOADING;
-?></p></div><?php
-	} else {
-?><p class="wssI"><?php
-		echo _WEBO_SYSTEM_NOUPDATES;
-?></p><?php
-	}
-?><a class="wssJ20" href="javascript:_.hide('wss_updates')" title="<?php
+	echo strpos($cookie, 'wss_aw') !== false ? ' wssA0' : '';
+?>" id="wss_aw"><div class="wssN2"><h2 class="wssB"><a href="#wss_awards" class="wssN3"><?php
+	echo _WEBO_DASHBOARD_AWARDS_CURRENT;
+?></a></h2><div id="wss_awards"><p class="wssI3"><?php 
+	echo _WEBO_DASHBOARD_LOADING;
+?></p></div><a class="wssJ20" href="javascript:_.hide('wss_aw')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
@@ -165,18 +153,24 @@
 ?><a class="wssJ20" href="javascript:_.hide('wss_tools')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN5<?php
-	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
-?>" id="wss_links"><div class="wssN2"><h2 class="wssB"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
-	echo _WEBO_DASHBOARD_LINKS;
-?></a></h2><ul class="wssO wssO3"><li class="wssO4"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
-	echo _WEBO_DASHBOARD_LINKS_WEBSITE;
-?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/w/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
-	echo _WEBO_DASHBOARD_LINKS_UG;
-?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
-	echo _WEBO_DASHBOARD_LINKS_ISSUES;
-?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
-	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
-?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')" title="<?php
+	echo strpos($cookie, 'wss_updates') !== false ? ' wssA0' : '';
+?>" id="wss_updates"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#updates" class="wssN3"><?php
+	echo _WEBO_DASHBOARD_UPDATES;
+?></a></h2><?php
+	if ($version_new > $version) {
+?><div id="wss_upd" title="<?php
+		echo _WEBO_LOGIN_VERSION;
+?> <?php
+		echo $version_new;
+?>"><p class="wssI3"><?php 
+		echo _WEBO_DASHBOARD_LOADING;
+?></p></div><?php
+	} else {
+?><p class="wssI"><?php
+		echo _WEBO_SYSTEM_NOUPDATES;
+?></p><?php
+	}
+?><a class="wssJ20" href="javascript:_.hide('wss_updates')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_status') !== false ? ' wssA0' : '';

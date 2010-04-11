@@ -110,6 +110,7 @@ class admin {
 				'dashboard_system' => 1,
 				'dashboard_options' => 1,
 				'dashboard_speed' => 1,
+				'dashboard_awards' => 1,
 				'compress_gzip' => 1,
 				'compress_image' => 1,
 				'options_configuration' => 1,
@@ -269,11 +270,11 @@ class admin {
 		$this->view->render("compress_gzip", $page_variables);
 	}
 
-/*
-	* Renders awards page
+	/*
+	* Returns all info about current award + retrieves them from server
 	*
 	**/
-	function install_awards () {
+	function calculate_awards () {
 		$evaluation1 = @file_get_contents($this->basepath . $this->index_before);
 		$evaluation2 = @file_get_contents($this->basepath . $this->index_after);
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
@@ -287,20 +288,20 @@ class admin {
 /* third level - gained acceleration */
 		$time1 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation1) * 100);
 		$time2 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation2) * 100);
-		$delta = ($time1 - $time2) / ($time1 + 0.01);
-		$level3 = $delta > 0.5 ? $delta > 0.65 ? $delta > 0.8 ? 3 : 2 : 1 : 0;
+		$speedup = ($time1 - $time2) / ($time1 + 0.01);
+		$level3 = $speedup > 0.5 ? $speedup > 0.65 ? $speedup > 0.8 ? 3 : 2 : 1 : 0;
 /* fourth level - number of files on home page */
-		$grade = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
-		$level4 = $grade ? $grade < 35 ? $grade < 20 ? $grade < 10 ? 3 : 2 : 1 : 0 : 0;
+		$files = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
+		$level4 = $files ? $files < 35 ? $files < 20 ? $files < 10 ? 3 : 2 : 1 : 0 : 0;
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */
 		$deltas = array(58, 48, 0);
-		$delta = $deltas[round($this->premium)];
+		$options = $deltas[round($this->premium)];
 		foreach ($errors as $key => $value) {
-			$delta += $value;
+			$options += $value;
 		}
-		$level5 = $delta < 50 ? $delta < 25 ? $delta < 5 ? 3 : 2 : 1 : 0;
+		$level5 = $options < 50 ? $options < 25 ? $options < 5 ? 3 : 2 : 1 : 0;
 		$awards = $level1 . $level2 . $level3 . $level4 . $level5;
 		if ($this->compress_options['awards'] != $awards ||
 			!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup88.png')) {
@@ -319,6 +320,17 @@ class admin {
 			'&format=txt', $this->compress_options['html_cachedir'] . 'url');
 		$short_link = @file_get_contents($this->compress_options['html_cachedir'] . 'url');
 		@unlink($this->compress_options['html_cachedir'] . 'url');
+		return array($level1, $level2, $level3, $level4, $level5,
+			100 - $options, $grade, $files, round($size2 / 1024),
+			100*round((1 / (0.9999 - $speedup)) - 1), $short_link);
+	}
+
+	/*
+	* Renders awards page
+	*
+	**/
+	function install_awards () {
+		$info = $this->calculate_awards();
 		$level_options = array(
 			array(
 				array('gzip', 'clientside', 'combinecss'),
@@ -347,15 +359,15 @@ class admin {
 			"submit" => $submit,
 			"error" => $error,
 			"skip_render" => $this->skip_render,
-			"level1" => $level1,
-			"level2" => $level2,
-			"level3" => $level3,
-			"level4" => $level4,
-			"level5" => $level5,
+			"level1" => $info[0],
+			"level2" => $info[1],
+			"level3" => $info[2],
+			"level4" => $info[3],
+			"level5" => $info[4],
 			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
 				$this->compress_options['html_cachedir']),
-			"short_link" => $short_link,
+			"short_link" => $info[10],
 			"level_options" => $level_options
 		);
 		$this->view->render("install_awards", $page_variables);
@@ -600,6 +612,34 @@ class admin {
 			$this->compress_options['active'] = 0;
 		}
 		$this->install_dashboard();
+	}
+
+	/*
+	* Return info about current optimization awards
+	*
+	**/
+	function dashboard_awards () {
+		$info = $this->calculate_awards();
+		$page_variables = array(
+			"version" => $this->version,
+			"premium" => $this->premium,
+			"skip_render" => $this->skip_render,
+			"level1" => $info[0],
+			"level2" => $info[1],
+			"level3" => $info[2],
+			"level4" => $info[3],
+			"level5" => $info[4],
+			"options" => $info[5],
+			"grade" => $info[6],
+			"files" => $info[7],
+			"size" => $info[8],
+			"speedup" => $info[9],
+			"short_link" => $info[10],
+			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
+			"cachedir" => str_replace($this->compress_options['document_root'], "/",
+				$this->compress_options['html_cachedir'])
+		);
+		$this->view->render("dashboard_awards", $page_variables);
 	}
 
 	/*
