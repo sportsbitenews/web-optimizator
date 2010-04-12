@@ -85,7 +85,7 @@ if (!$ajax) {
 
 	if (!$ajax) {
 ?></div><p class="wss_y"><?php
-		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
+		if (empty($page) || ($page != 'install_enter_password' && $page != 'install_set_password')) {
 ?><a class="wss_z wss_z1" href="javascript:_('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
 			echo _WEBO_HELP_HELP;
 ?></a><?php
