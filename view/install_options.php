@@ -234,18 +234,22 @@ if ($submit) {
 					}
 					$i = 0;
 					if ($value['type'] == 'radio') {
-?><dt class="wssD5"><label class="wssE" for="wss_<?php
+?><dt class="wssD5<?php
+						echo !empty($value['disabled']) && $value['disabled'] == 100 ? ' wssD20' : '';
+?>"><label class="wssE" for="wss_<?php
 						echo $option;
 ?>1"><?php
 						echo constant('_WEBO_' . $option);
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_' . $option . '_HELP'));
+						echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '//'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
 ?>">?</a></label></dt><?php
 					}
 					while ($i++ != $value['count']) {
 						if (empty($value['hidden'])) {
 ?><dt class="wssD<?php
 							echo strpos($value['type'], 'text') !== false ? 1 : 5;
+							echo !empty($value['disabled']) && ($value['disabled'] == $i || $value['disabled'] == 100) ? ' wssD20' : '';
 ?>"><label for="wss_<?php
 							echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>" class="wssE"><?php
@@ -254,13 +258,16 @@ if ($submit) {
 							if ($value['type'] != 'radio') {
 ?> <a class="wssJ9" href="#" title="<?php
 								echo constant('_WEBO_' . $option . '_HELP');
+								echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '//'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
 ?>">?</a><?php
 							}
 ?></label></dt><?php
 						}
 						switch ($value['type']) {
 							case 'text':
-?><dd class="wssD2"><input <?php
+?><dd class="wssD2<?php
+								echo !empty($value['disabled']) ? ' wssD20' : '';
+?>"><input <?php
 								echo empty($value['hidden']) ? '' : ' type="hidden"';
 ?> value="<?php
 								echo htmlspecialchars($value['value']);
@@ -271,7 +278,9 @@ if ($submit) {
 ?>" class="wssF"/></dd><?php
 								break;
 							case 'smalltext':
-?><dd class="wssD2"><input <?php
+?><dd class="wssD2<?php
+								echo !empty($value['disabled']) ? ' wssD20' : '';
+?>"><input <?php
 								echo empty($value['hidden']) ? '' : ' type="hidden"';
 ?> value="<?php
 								echo htmlspecialchars($value['value']);
@@ -282,7 +291,9 @@ if ($submit) {
 ?>" class="wssF wssF3"/></dd><?php
 								break;
 							case 'radio':
-?><dd class="wssD6"><input value="<?php
+?><dd class="wssD6<?php
+								echo !empty($value['disabled']) && ($value['disabled'] == $i || $value['disabled'] == 100) ? ' wssD20' : '';
+?>"><input value="<?php
 								echo $i;
 ?>" type="<?php
 								echo empty($value['hidden']) ? 'radio' : 'hidden';
@@ -295,7 +306,9 @@ if ($submit) {
 ?>" class="wssF"/></dd><?php
 								break;
 							case 'checkbox':
-?><dd class="wssD6"><input type="<?php
+?><dd class="wssD6<?php
+								echo !empty($value['disabled']) ? ' wssD20' : '';
+?>"><input type="<?php
 								echo empty($value['hidden']) ? 'checkbox' : 'hidden';
 ?>"<?php
 								echo $value['value'] ? ' checked="checked"' : '';
@@ -315,7 +328,9 @@ if ($submit) {
 									echo htmlspecialchars($value['value']);
 ?>"/><?php
 								} else {
-?><dd class="wssD2"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
+?><dd class="wssD2<?php
+									echo !empty($value['disabled']) && $value['disabled'] == $i ? ' wssD20' : '';
+?>"><textarea class="wssF wssF1" cols="30" rows="2" name="wss_<?php
 									echo $option;
 ?>" id="wss_<?php
 									echo $option;

@@ -2072,6 +2072,8 @@ class admin {
 	*
 	**/	
 	function get_options ($config = 'safe') {
+/* calculate current environment restrictions */
+		$this->check_options();
 		$options = array(
 			'title' => empty($this->compress_options['title']) ?
 				'' : $this->compress_options['title'],
@@ -2090,7 +2092,8 @@ class admin {
 				),
 				'external_scripts_css' => array(
 					'value' => $this->compress_options['external_scripts']['css'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_external_scripts_css'])
 				),
 				'minify_css_file' => array(
 					'value' => $this->compress_options['minify']['css_file'],
@@ -2125,7 +2128,8 @@ class admin {
 				),
 				'external_scripts_on' => array(
 					'value' => $this->compress_options['external_scripts']['on'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_external_scripts_on'])
 				),
 				'minify_javascript_file' => array(
 					'value' => $this->compress_options['minify']['javascript_file'],
@@ -2155,7 +2159,10 @@ class admin {
 						($this->compress_options['minify']['with_yui'] ? 2 :
 						($this->compress_options['minify']['with_packer'] ? 3 : 0)),
 					'type' => 'radio',
-					'count' => 4
+					'count' => 4,
+					'disabled' => !empty($this->restrictions['wss_minify_js']) ?
+						$this->restrictions['wss_minify_js'] : 0
+						
 				),
 				'minify_page' => array(
 					'value' => $this->compress_options['minify']['page'],
@@ -2187,7 +2194,8 @@ class admin {
 				),
 				'gzip_page' => array(
 					'value' => $this->compress_options['gzip']['page'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_gzip_page'])
 				),
 				'gzip_cookie' => array(
 					'value' => $this->compress_options['gzip']['cookie'],
@@ -2213,15 +2221,21 @@ class admin {
 				),
 				'far_future_expires_fonts' => array(
 					'value' => $this->compress_options['far_future_expires']['fonts'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_expires']) &&
+						!empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				),
 				'far_future_expires_video' => array(
 					'value' => $this->compress_options['far_future_expires']['video'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_expires']) &&
+						!empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				),
 				'far_future_expires_static' => array(
 					'value' => $this->compress_options['far_future_expires']['static'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_expires']) &&
+						!empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				),
 				'far_future_expires_html' => array(
 					'value' => $this->compress_options['far_future_expires']['html'],
@@ -2242,39 +2256,50 @@ class admin {
 			'htaccess' => array(
 				'htaccess_enabled' => array(
 					'value' => $this->compress_options['htaccess']['enabled'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_enabled'])
 				),
 				'htaccess_local' => array(
 					'value' => $this->compress_options['htaccess']['local'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_enabled'])
 				),
 				'htaccess_mod_deflate' => array(
 					'value' => $this->compress_options['htaccess']['mod_deflate'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_deflate']) ||
+						empty($this->restrictions['wss_htaccess_mod_gzip'])
 				),
 				'htaccess_mod_gzip' => array(
 					'value' => $this->compress_options['htaccess']['mod_gzip'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_gzip']) ||
+						empty($this->restrictions['wss_htaccess_mod_deflate'])
 				),
 				'htaccess_mod_expires' => array(
 					'value' => $this->compress_options['htaccess']['mod_expires'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_expires'])
 				),
 				'htaccess_mod_headers' => array(
 					'value' => $this->compress_options['htaccess']['mod_headers'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_headers'])
 				),
 				'htaccess_mod_setenvif' => array(
 					'value' => $this->compress_options['htaccess']['mod_setenvif'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_setenvif'])
 				),
 				'htaccess_mod_rewrite' => array(
 					'value' => $this->compress_options['htaccess']['mod_rewrite'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				),
 				'htaccess_mod_mime' => array(
 					'value' => $this->compress_options['htaccess']['mod_mime'],
-					'type' => 'checkbox'
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_mime'])
 				)
 			),
 			'backlink' => array(
@@ -2349,7 +2374,8 @@ class admin {
 				'data_uris_mhtml' => array(
 					'value' => $this->compress_options['data_uris']['mhtml'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 1 ? 1 : 0
+					'hidden' => $this->premium < 1 ? 1 : 0,
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
 				),
 				'data_uris_size' => array(
 					'value' => $this->compress_options['data_uris']['size'],
@@ -2359,7 +2385,8 @@ class admin {
 				'data_uris_mhtml_size' => array(
 					'value' => $this->compress_options['data_uris']['mhtml_size'],
 					'type' => 'smalltext',
-					'hidden' => $this->premium < 1 ? 1 : 0
+					'hidden' => $this->premium < 1 ? 1 : 0,
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
 				),
 				'data_uris_ignore_list' => array(
 					'value' => $this->compress_options['data_uris']['ignore_list'],
@@ -2369,17 +2396,20 @@ class admin {
 				'data_uris_additional_list' => array(
 					'value' => $this->compress_options['data_uris']['additional_list'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 1 ? 1 : 0
+					'hidden' => $this->premium < 1 ? 1 : 0,
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
 				),
 				'data_uris_separate' => array(
 					'value' => $this->compress_options['data_uris']['separate'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
 				),
 				'data_uris_domloaded' => array(
 					'value' => $this->compress_options['data_uris']['domloaded'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
 				)
 			),
 			'css_sprites' => array(
@@ -2387,53 +2417,63 @@ class admin {
 				'css_sprites_enabled' => array(
 					'value' => $this->compress_options['css_sprites']['enabled'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_aggressive' => array(
 					'value' => $this->compress_options['css_sprites']['aggressive'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_no_ie6' => array(
 					'value' => $this->compress_options['css_sprites']['no_ie6'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_dimensions_limited' => array(
 					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
 					'type' => 'smalltext',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_html_sprites' => array(
 					'value' => $this->compress_options['css_sprites']['html_sprites'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_html_limit' => array(
 					'value' => $this->compress_options['css_sprites']['html_limit'],
 					'type' => 'smalltext',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_html_page' => array(
 					'value' => $this->compress_options['css_sprites']['html_page'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_ignore_list' => array(
 					'value' => $this->compress_options['css_sprites']['ignore_list'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_extra_space' => array(
 					'value' => $this->compress_options['css_sprites']['extra_space'],
 					'type' => 'checkbox',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_truecolor_in_jpeg' => array(
 					'value' => $this->compress_options['css_sprites']['truecolor_in_jpeg'],
 					'type' => 'radio',
 					'count' => 2,
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) ? 100 : 0
 				),
 			),
 			'serverside' => array(
@@ -2556,7 +2596,99 @@ class admin {
 	}
 
 	/**
-	* Save / check all options
+	* Check for possible restrictions for options
+	*
+	**/
+	function check_options() {
+		if (is_array($this->restrictions)) {
+			return $this->restrictions;
+		}
+		$this->restrictions = array();
+/* normalize all the other options */
+		$this->get_modules();
+/* disable .htaccess if not Apache */
+		if (empty($this->apache_modules)) {
+			$this->restrictions['wss_htaccess_enabled'] = 0;
+			$this->restrictions['wss_htaccess_mod_deflate'] = 0;
+			$this->restrictions['wss_htaccess_mod_gzip'] = 0;
+			$this->restrictions['wss_htaccess_mod_expires'] = 0;
+			$this->restrictions['wss_htaccess_mod_mime'] = 0;
+			$this->restrictions['wss_htaccess_mod_headers'] = 0;
+			$this->restrictions['wss_htaccess_mod_setenvif'] = 0;
+			$this->restrictions['wss_htaccess_mod_rewrite'] = 0;
+		} else {
+			foreach (array(
+				'mod_deflate',
+				'mod_gzip',
+				'mod_expires',
+				'mod_mime',
+				'mod_headers',
+				'mod_setenvif',
+				'mod_rewrite') as $module) {
+					if (!in_array($module, $this->apache_modules)) {
+						$this->restrictions['wss_htaccess_' . $module] = 0;
+					}
+			}
+		}
+		$loaded_modules = @get_loaded_extensions();
+/* fix CSS Sprites options in case of GD lib failure */
+		$gd = function_exists('gd_info') ? gd_info() : array();
+		if (!(in_array('gd', $loaded_modules) &&
+			function_exists('imagecreatetruecolor') &&
+			!empty($gd['GIF Read Support']) &&
+			!empty($gd['GIF Create Support']) &&
+			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
+			!empty($gd['PNG Support']) &&
+			!empty($gd['WBMP Support']))) {
+				$this->restrictions['wss_css_sprites_enabled'] = 1;
+		}
+/* try to set some libs executable */
+		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
+		if (!empty($this->input['wss_minify_js']) &&
+			$this->input['wss_minify_js'] == 3) {
+/* check for YUI availability */
+				$YUI_checked = 0;
+				if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') ||
+					@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
+					if (substr(phpversion(), 0, 1) == 4) {
+						require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
+					} else {
+						require_once($this->basepath . 'libs/php/class.yuicompressor.php');
+					}
+					$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
+					$YUI_checked = $YUI->check();
+				}
+				if (!$YUI_checked) {
+					$this->restrictions['wss_minify_js'] = 2;
+				}
+		}
+/* check for curl existence */
+		if (empty($loaded_modules) ||
+			!in_array('curl', $loaded_modules) ||
+			!function_exists('curl_init')) {
+				$this->restrictions['wss_external_scripts_on'] = 0;
+				$this->restrictions['wss_external_scripts_css'] = 0;
+		}
+/* check for gzip for HTML possibility */
+		if ((!function_exists('gzencode') ||
+			!function_exists('gzcompress') ||
+			!function_exists('gzdeflate')) &&
+			!($this->input['wss_htaccess_enabled'] &&
+			($this->input['wss_htaccess_mod_deflate'] ||
+			$this->input['wss_htaccess_mod_gzip']))) {
+				$this->restrictions['wss_gzip_page'] = 1;
+		}
+/* check for gzip for fonts possibility */
+		if (!($this->input['wss_htaccess_enabled'] &&
+			($this->input['wss_htaccess_mod_deflate'] ||
+			$this->input['wss_htaccess_mod_gzip'] ||
+			$this->input['wss_htaccess_mod_rewrite']))) {
+				$this->restrictions['wss_gzip_fonts'] = 1;
+		}
+	}
+
+	/**
+	* Save / sanitize all options
 	*
 	**/
 	function set_options() {
@@ -2670,82 +2802,12 @@ class admin {
 			'wss_htaccess_local') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : 1;
 		}
-/* normalize all the other options */
-		$this->get_modules();
-/* disable .htaccess if not Apache */
-		if (empty($this->apache_modules)) {
-			$this->input['wss_htaccess_enabled'] = 0;
-			$this->input['wss_htaccess_mod_deflate'] = 0;
-			$this->input['wss_htaccess_mod_gzip'] = 0;
-			$this->input['wss_htaccess_mod_expires'] = 0;
-			$this->input['wss_htaccess_mod_mime'] = 0;
-			$this->input['wss_htaccess_mod_headers'] = 0;
-			$this->input['wss_htaccess_mod_setenvif'] = 0;
-			$this->input['wss_htaccess_mod_rewrite'] = 0;
-		} else {
-			foreach (array(
-				'mod_deflate',
-				'mod_gzip',
-				'mod_expires',
-				'mod_mime',
-				'mod_headers',
-				'mod_setenvif',
-				'mod_rewrite') as $module) {
-					if (!in_array($module, $this->apache_modules)) {
-						$this->input['wss_htaccess_' . $module] = 0;
-					}
-			}
+		$this->check_options();
+		foreach ($this->restrictions as $key => $restriction) {
+			$this->input[$key] = 0;
 		}
 /* make specific fake option for Apache envs. */
 		$this->input['wss_htaccess_mod_symlinks'] = in_array('mod_symlinks', $this->apache_modules);
-		$loaded_modules = @get_loaded_extensions();
-/* fix CSS Sprites options in case of GD lib failure */
-		$gd = function_exists('gd_info') ? gd_info() : array();
-		$this->input['wss_css_sprites_enabled'] =
-			(in_array('gd', $loaded_modules) &&
-			function_exists('imagecreatetruecolor') &&
-			!empty($gd['GIF Read Support']) &&
-			!empty($gd['GIF Create Support']) &&
-			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
-			!empty($gd['PNG Support']) &&
-			!empty($gd['WBMP Support'])) ?
-			$this->input['wss_css_sprites_enabled'] : 0;
-/* try to set some libs executable */
-		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
-		if (!empty($this->input['wss_minify_js']) &&
-			$this->input['wss_minify_js'] == 3) {
-/* check for YUI availability */
-				$YUI_checked = 0;
-				if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') ||
-					@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
-					if (substr(phpversion(), 0, 1) == 4) {
-						require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
-					} else {
-						require_once($this->basepath . 'libs/php/class.yuicompressor.php');
-					}
-					$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
-					$YUI_checked = $YUI->check();
-				}
-				if (!$YUI_checked) {
-					$this->input['wss_minify_js'] = 2;
-				}
-		}
-/* check for curl existence */
-		if (empty($loaded_modules) ||
-			!in_array('curl', $loaded_modules) ||
-			!function_exists('curl_init')) {
-				$this->input['wss_external_scripts_on'] = 0;
-				$this->input['wss_external_scripts_css'] = 0;
-		}
-/* check for zlib existence */
-		if ((!function_exists('gzencode') ||
-			!function_exists('gzcompress') ||
-			!function_exists('gzdeflate')) &&
-			!($this->input['wss_htaccess_enabled'] &&
-			($this->input['wss_htaccess_mod_deflate'] ||
-			$this->input['wss_htaccess_mod_gzip']))) {
-				$this->input['wss_gzip_page'] = 0;
-		}
 /* correct multiple hosts list */
 		if (!empty($this->input['wss_parallel_check'])) {
 			$hosts = explode(" ", $this->input['wss_parallel_allowed_list']);
