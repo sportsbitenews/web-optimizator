@@ -329,7 +329,7 @@ class admin {
 			$content = @ob_get_contents();
 			@ob_end_clean();
 /* add gzip / charset envelope */
-			$content = '<?php header("Content-type: text/html; charset=utf-8");ob_start(\'a\');function a($b){$c=empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])?\'\':$_SERVER[\'HTTP_ACCEPT_ENCODING\'];$d=empty($_SERVER["HTTP_USER_AGENT"])?\'\':$_SERVER["HTTP_USER_AGENT"];if(!empty($b)&&(strpos($c,\'gzip\')!==\'false\'||strpos($c,\'deflate\')!==\'false\')){if(!strstr($d,"Opera")&&preg_match("/compatible; MSIE ([0-9]\.[0-9])/i",$d,$matches)){$e=floatval($matches[1]);if($e<7){$b=str_repeat(" ", 2048)."\r\n".$b;}}$g=@gzencode($b,7,strpos($c,\'gzip\')!==\'false\'?FORCE_GZIP:FORCE_DEFLATE);if(!empty($g)){header(\'Content-Encoding: gzip\');return $g;}}return $b;}?>' . $content;
+			$content = '<?php header("Content-type: text/html; charset=utf-8");ob_start(\'a\');function a($b){$c=empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])?\'\':$_SERVER[\'HTTP_ACCEPT_ENCODING\'];$d=empty($_SERVER["HTTP_USER_AGENT"])?\'\':$_SERVER["HTTP_USER_AGENT"];if(!empty($b)&&(strpos($c,\'gzip\')!==\'false\'||strpos($c,\'deflate\')!==\'false\')){if(!strstr($d,"Opera")&&preg_match("/compatible; MSIE ([0-9]\.[0-9])/i",$d,$matches)){$e=floatval($matches[1]);if($e<7){$b=str_repeat(" ", 2048)."\r\n".$b;}}$g=@gzencode($b,7,strpos($c,\'gzip\')!==\'false\'?FORCE_GZIP:FORCE_DEFLATE);if(!empty($g)){header(\'Content-Encoding: gzip\');header(\'Vary: Accept-Encoding,User-Agent\');return $g;}}return $b;}?>' . $content;
 			$this->write_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.php', $content);
 			$url = 'mhtml:http://' . $host .
 				str_replace($this->compress_options['document_root'], "/",

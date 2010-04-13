@@ -1126,6 +1126,7 @@ class web_optimizer {
 	function set_gzip_header () {
 		if(!empty($this->encoding)) {
 			header("Content-Encoding: " . $this->encoding);
+			header("Vary: Accept-Encoding,User-Agent");
 		}
 	}
 
