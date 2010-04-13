@@ -289,6 +289,7 @@ class admin {
 		$time1 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation1) * 100);
 		$time2 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation2) * 100);
 		$speedup = ($time1 - $time2) / ($time1 + 0.01);
+		$speedup = $speedup < 0 ? 0 : $speedup;
 		$level3 = $speedup > 0.5 ? $speedup > 0.65 ? $speedup > 0.8 ? 3 : 2 : 1 : 0;
 /* fourth level - number of files on home page */
 		$files = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
@@ -303,6 +304,16 @@ class admin {
 		}
 		$level5 = $options < 50 ? $options < 25 ? $options < 5 ? 3 : 2 : 1 : 0;
 		$awards = $level1 . $level2 . $level3 . $level4 . $level5;
+		$host = $this->compress_options['host'];
+/* check for images existence */
+		if (!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.back.jpg')) {
+			@copy($this->basepath . 'libs/css/webo-site-speedup.back.jpg',
+				$this->compress_options['html_cachedir'] . 'webo-site-speedup.back.jpg');
+		}
+		if (!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.rocket.png')) {
+			@copy($this->basepath . 'libs/css/rocket.main.png',
+				$this->compress_options['html_cachedir'] . 'webo-site-speedup.rocket.png');
+		}
 		if ($this->compress_options['awards'] != $awards ||
 			!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup88.png')) {
 			$sizes = array('88', '125', '161', '250');
@@ -311,7 +322,29 @@ class admin {
 					$this->compress_options['html_cachedir'] . 'webo-site-speedup' . $size . '.png');
 			}
 			$this->save_option("['awards']", $awards);
+/* save final page with awards */
+			@ob_start();
+			include($this->basepath . 'view/external_awards.php');
+			$content = @ob_get_contents();
+			@ob_end_clean();
+			$this->write_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.html', $content);
+			$url = 'mhtml:http://' . $host .
+				str_replace($this->compress_options['document_root'], "/",
+				$this->compress_options['html_cachedir']) .
+				'webo-site-speedup.css!';
+			$content = '.wg-teeth{background-image:url(' .
+				$url .
+				'1)}.wg-footer-logo{background-image:url(' .
+				$url .
+				"2);display:inline;zoom:1}/*\nContent-Type:multipart/related;boundary=\"_\"" .
+				"\n\n--_\nContent-Location:1\nContent-Transfer-Encoding:base64\n\n" .
+				'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAYAAAALpr0TAAAATklEQVQYGY3BTRFAUAAGwG8EEEGNF0YVI4wwasjg7LDGifG/m5ygRZs3aDBjRpM7qDDajahyhs5VnyMULK4WlGxQY/JsQh0Mvg3xU/y0AgXf++/+7UXZAAAAAElFTkSuQmCC' .
+				"\n\n--_\nContent-Location:2\nContent-Transfer-Encoding:base64\n\n" .
+				'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' .
+				"\n\n--_--\n*/";
+			$this->write_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.css', $content);
 		}
+/* download shorten link for twitter */
 		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c894fbacd544a2076da03a825a6ec2d7&uri='.
 			urlencode('http://' . $this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], "/",
@@ -1566,7 +1599,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.html', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.html', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {

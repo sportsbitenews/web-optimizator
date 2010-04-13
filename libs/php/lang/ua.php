@@ -808,4 +808,14 @@ define('_WEBO_AWARDS_CODE4', 'Twitter');
 define('_WEBO_AWARDS_GENERAL', 'Награды <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
 define('_WEBO_AWARDS_BACK', 'Фон просмотра');
 define('_WEBO_AWARDS_TWITTER', 'Мои достижения в #ускорении #сайта (с помощью @wboptimizer / #WEBO Site SpeedUp)');
+define('_WEBO_AWARDS_RESULT', 'Результат ускорения сайта');
+define('_WEBO_AWARDS_SENSE', 'Что означает этот результат');
+define('_WEBO_AWARDS_TEXT1', 'Перечисленные выше достижения говорят о том, что на сайте');
+define('_WEBO_AWARDS_TEXT2', 'проведено ускорение загрузки страниц, и теперь он стал более удобным и качественным.');
+define('_WEBO_AWARDS_TEXT3', 'Скорость загрузки страниц сайта имеет важное значение как для посетителей (быстрые сайты кажутся более надежными), так и для поисковых систем (например, этот параметр учитывается Google).');
+define('_WEBO_AWARDS_OWN', 'Постройте свою ракету');
+define('_WEBO_AWARDS_TEXT4', 'Вы можете легко достичь такого же и даже лучшего результата, обеспечив для посетителей вашего сайта молниеносную скорость загрузки страниц.');
+define('_WEBO_AWARDS_TEXT5', 'Все что для этого требуется &mdash; <a href="http://www.webogroup.com/ru/home/download/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">загрузить</a> и настроить на своем сайте решение для увеличения скорости веб-сайтов <a href="http://www.webogroup.com/ru/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Site SpeedUp</a>.');
+define('_WEBO_AWARDS_TEXT6', 'WEBO Site SpeedUp является продуктом компании <a href="http://www.webogroup.com/ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Software</a> &mdash; мирового лидера в ускорении веб-сайтов любой сложности.');
+define('_WEBO_AWARDS_RIGHTS', 'Все права защищены.');
 ?>

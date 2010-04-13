@@ -827,4 +827,14 @@ define('_WEBO_AWARDS_CODE4', 'Twitter');
 define('_WEBO_AWARDS_GENERAL', 'Awards <a href="http://www.webogroup.com/home/site-speedup/">WEBO Site SpeedUp</a>');
 define('_WEBO_AWARDS_BACK', 'Preview background');
 define('_WEBO_AWARDS_TWITTER', 'My #website #performance achievements (with @wboptimizer / #WEBO Site SpeedUp)');
+define('_WEBO_AWARDS_RESULT', 'Website speedup results');
+define('_WEBO_AWARDS_SENSE', 'What does it mean');
+define('_WEBO_AWARDS_TEXT1', 'Achievements mentioned above indicate that website');
+define('_WEBO_AWARDS_TEXT2', 'has been accelerated, and now its pages are faster and more qualitative.');
+define('_WEBO_AWARDS_TEXT3', 'Website load speed is very important both for website visitors (as far as it affects the website confidence) and search engines (for example Google counts this parameter).');
+define('_WEBO_AWARDS_OWN', 'Build your own rocket');
+define('_WEBO_AWARDS_TEXT4', 'You can easily achieve the same or even better result and make your website faster than lightning.');
+define('_WEBO_AWARDS_TEXT5', 'All what you need is to <a href="http://www.webogroup.com/home/download/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">download</a> and tune for your website the acceleration solution &mdash; <a href="http://www.webogroup.com/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Site SpeedUp</a>.');
+define('_WEBO_AWARDS_TEXT6', 'WEBO Site SpeedUp is a <a href="http://www.webogroup.com/ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Software</a> product. WEBO Software is a world-wide leader in acceleration of websites of any complexity.');
+define('_WEBO_AWARDS_RIGHTS', 'All rights reserved.');
 ?>

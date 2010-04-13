@@ -21,6 +21,7 @@ libs/css/rocket.back1.png
 libs/css/rocket.back2.png
 libs/css/rocket.main.png
 libs/css/stamps.png
+libs/css/webo-site-speedup.back.jpg
 libs/css/wss.css
 libs/css/wss.png
 libs/js/wo.cookie.php
@@ -61,6 +62,7 @@ view/dashboard_cache.php
 view/dashboard_options.php
 view/dashboard_speed.php
 view/dashboard_system.php
+vied/external_awards.php
 view/install_about.php
 view/install_account.php
 view/install_awards.php
