@@ -833,6 +833,6 @@ define('_WEBO_AWARDS_TEXT3', 'Website load speed is very important both for webs
 define('_WEBO_AWARDS_OWN', 'Build your own rocket');
 define('_WEBO_AWARDS_TEXT4', 'You can easily achieve the same or even better result and make your website faster than lightning.');
 define('_WEBO_AWARDS_TEXT5', 'All what you need is to <a href="http://www.webogroup.com/home/download/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">download</a> and tune for your website the acceleration solution &mdash; <a href="http://www.webogroup.com/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Site SpeedUp</a>.');
-define('_WEBO_AWARDS_TEXT6', 'WEBO Site SpeedUp is a <a href="http://www.webogroup.com/ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Software</a> product. WEBO Software is a world-wide leader in acceleration of websites of any complexity.');
+define('_WEBO_AWARDS_TEXT6', '<a href="http://www.webogroup.com/ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Software</a> is a world-wide leader in acceleration of websites of any complexity. Its main product &mdash; WEBO Site SpeedUp &mdash; is the most complete solution to ensure high performance of your websites.');
 define('_WEBO_AWARDS_RIGHTS', 'All rights reserved.');
 ?>
