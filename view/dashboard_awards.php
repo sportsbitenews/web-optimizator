@@ -10,7 +10,9 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 
 ?><a href="#wss_awards"><img src="<?php
 	echo $cachedir;
-?>webo-site-speedup88.png" alt="<?php
+?>webo-site-speedup88.png?<?php
+	echo md5($options . $grade . $files . $size . $speedup);
+?>" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS;
 ?>" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS;

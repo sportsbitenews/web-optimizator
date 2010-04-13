@@ -12,8 +12,7 @@
 	echo _WEBO_DASHBOARD_CRITICAL_FAILED;
 ?></h2><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_CRITICAL_DO;
-?>:</p><ol class="wssO7 wssK02" style="display:none">
-<li class="wssO8"><p class="wssI"><?php 
+?>:</p><ol class="wssO7 wssK02" style="display:none"><li class="wssO8"><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_STEP1_1;
 ?></p></li><li class="wssO8"><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_STEP1_2;

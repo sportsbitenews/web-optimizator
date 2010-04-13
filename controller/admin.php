@@ -284,16 +284,16 @@ class admin {
 		$size1 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation1));
 		$size2 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation2));
 		$delta = ($size1 - $size2) / ($size1 + 0.01);
-		$level2 = $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
+		$level2 = $size1 && $size2 && $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
 /* third level - gained acceleration */
 		$time1 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation1) * 100);
 		$time2 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation2) * 100);
 		$speedup = ($time1 - $time2) / ($time1 + 0.01);
-		$speedup = $speedup < 0 ? 0 : $speedup;
+		$speedup = $speedup < 0 || $speedup > 0.9998 ? 0 : $speedup;
 		$level3 = $speedup > 0.5 ? $speedup > 0.65 ? $speedup > 0.8 ? 3 : 2 : 1 : 0;
 /* fourth level - number of files on home page */
 		$files = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
-		$level4 = $files ? $files < 35 ? $files < 20 ? $files < 10 ? 3 : 2 : 1 : 0 : 0;
+		$level4 = $files ? !$files || $files < 35 ? $files < 20 ? $files < 10 ? 3 : 2 : 1 : 0 : 0;
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */

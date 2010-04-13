@@ -81,43 +81,6 @@
 		}
 ?></p><?php
 	}
-?></div></li><li class="wssO32"><?php
-	if ($level2) {
-?><span class="wssO36 wssO<?php
-		echo 39 + $level2;
-?>"></span><?php
-	}
-?><span class="wssO72"><?php
-	echo _WEBO_AWARDS_MIDDLE;
-	if ($level2) {
-?><span class="wssO52"><?php
-		echo constant('_WEBO_AWARDS_LEVEL' . $level2);
-?></span><?php
-	}
-?></span><div class="wssO71"><p class="wssI"><?php
-	echo _WEBO_AWARDS_MIDDLE_INFO;
-?></p><?php
-	if ($level2 < 3) {
-?><p class="wssI"><?php
-		echo constant('_WEBO_AWARDS_MIDDLE_' . $level2 . ($level2+1));
-		$i = 0;
-		foreach ($level_options[1][$level2] as $option) {
-?><a href="#wss_options#<?php
-			echo $option;
-?>">"<?php
-			echo constant('_WEBO_' . $option);
-?>"</a><?php
-			if ($i != count($level_options[1][$level2]) - 1) {
-?>, <?php
-			}
-			if ($i && $i == count($level_options[1][$level2]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
-			}
-			$i++;
-		}
-?>.</p><?php
-	}
 ?></div></li><li class="wssO33"><?php
 	if ($level3) {
 ?><span class="wssO36 wssO<?php
@@ -222,6 +185,43 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[4][$level5]) - 2) {
+				echo _WEBO_DASHBOARD_CRITICAL_OR;
+?> <?php
+			}
+			$i++;
+		}
+?>.</p><?php
+	}
+?></div></li><li class="wssO32"><?php
+	if ($level2) {
+?><span class="wssO36 wssO<?php
+		echo 39 + $level2;
+?>"></span><?php
+	}
+?><span class="wssO72"><?php
+	echo _WEBO_AWARDS_MIDDLE;
+	if ($level2) {
+?><span class="wssO52"><?php
+		echo constant('_WEBO_AWARDS_LEVEL' . $level2);
+?></span><?php
+	}
+?></span><div class="wssO71"><p class="wssI"><?php
+	echo _WEBO_AWARDS_MIDDLE_INFO;
+?></p><?php
+	if ($level2 < 3) {
+?><p class="wssI"><?php
+		echo constant('_WEBO_AWARDS_MIDDLE_' . $level2 . ($level2+1));
+		$i = 0;
+		foreach ($level_options[1][$level2] as $option) {
+?><a href="#wss_options#<?php
+			echo $option;
+?>">"<?php
+			echo constant('_WEBO_' . $option);
+?>"</a><?php
+			if ($i != count($level_options[1][$level2]) - 1) {
+?>, <?php
+			}
+			if ($i && $i == count($level_options[1][$level2]) - 2) {
 				echo _WEBO_DASHBOARD_CRITICAL_OR;
 ?> <?php
 			}

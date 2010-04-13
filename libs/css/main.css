@@ -487,13 +487,13 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO66{background:url(rocket.main.png) -65px -362px no-repeat;display:block;font:700 13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;position:relative;height:452px;margin:20px auto;width:467px;z-index:2}
 .wssO67{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;left:273px;height:100px;padding:33px 0 0 210px;top:127px;width:200px}
 .wssO67:hover{background:url(rocket.main.png) -397px -814px no-repeat}
-.wssO32{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-48px;text-align:right;top:29px;width:340px}
+.wssO32{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-48px;top:29px;width:340px}
 .wssO32:hover{background:url(rocket.main.png) 217px -840px no-repeat}
 .wssO33{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:100px;left:214px;padding:141px 0 0 199px;top:230px;width:10px}
 .wssO33:hover{background:url(rocket.main.png) -124px -811px no-repeat}
 .wssO34{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-151px;padding-top:106px;text-align:right;top:258px;width:450px}
 .wssO34:hover{background:url(rocket.main.png) -229px -1032px no-repeat}
-.wssO35{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-221px;padding-top:20px;text-align:right;top:140px;width:450px}
+.wssO35{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-221px;padding-top:20px;top:140px;width:450px}
 .wssO35:hover{background:url(rocket.main.png) 214px -1055px no-repeat}
 .wssO36{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;width:117px;height:117px;background:url(rocket.main.png) no-repeat}
 .wssO37{background-position:0 0;left:80px;top:0}
@@ -530,9 +530,10 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO52{position:relative;z-index:102}
 .wssO72{display:block;position:relative;width:200px;z-index:102}
 .wssO32 .wssO71{z-index:110}
-.wssO32 .wssO72{z-index:111}
+.wssO32 .wssO72{text-align:right;z-index:111}
+.wssO34 .wssO72{text-align:right}
 .wssO35 .wssO71{z-index:108}
-.wssO35 .wssO72{z-index:109}
+.wssO35 .wssO72{text-align:right;z-index:109}
 .wssO67 .wssO71{z-index:106}
 .wssO67 .wssO72{z-index:107}
 
