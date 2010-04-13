@@ -148,10 +148,13 @@ class css_sprites_optimize {
 				return $css_image;
 /* data:URI */
 			case 1:
+				$encoded = base64_encode(@file_get_contents($css_image));
 /* don't create data:URI greater than 32KB -- for IE8 */
-				if (@filesize($css_image) < $this->data_uris_size && !in_array($filename, $this->data_uris_ignore_list)) {
+				if (@filesize($css_image) < $this->data_uris_size &&
+					!in_array($filename, $this->data_uris_ignore_list) &&
+					!empty($encoded)) {
 /* convert image to base64-string */
-					$css_image = 'data:image/' . $extension . ';base64,' . base64_encode(@file_get_contents($css_image));
+					$css_image = 'data:image/' . $extension . ';base64,' . $encoded;
 				} else {
 /* just return absolute URL for image */
 					$css_image = $image_saved;
@@ -969,7 +972,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.gracepointafterfive.com/');
-				if (!@filesize($file) || strpos(@file_get_contents($file), "DOCTYPE")) {
+				$content = @file_get_contents($file);
+				if (empty($content) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
 				} else {
 					@unlink($file . '.backup');
@@ -1005,7 +1009,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				}
 				$this->download_file($optimized, $file, 'http://www.smushit.com/ysmush.it/');
 				$content = @file_get_contents($file);
-				if (!@filesize($file) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
+				if (empty($content) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
 				} else {
 					@unlink($file . '.backup');
