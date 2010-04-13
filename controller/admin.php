@@ -798,11 +798,11 @@ class admin {
 		$after = @file_get_contents($this->basepath . $this->index_after);
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
-			$s_before = substr($before, strpos($before, '<high>') + 6, strpos($before, '</high>') - strpos($before, '<high>') - 6);
-			$kb_before = round(substr($before, strpos($before, '</number><size>') + 15, strpos($before, '</size><file>') - strpos($before, '</number><size>') - 15));
+			$s_before = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $before);
+			$kb_before = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $before));
 			if (strpos($after, '<high>')) {
-				$s_after = substr($after, strpos($after, '<high>') + 6, strpos($after, '</high>') - strpos($after, '<high>') - 6);
-				$kb_after = round(substr($after, strpos($after, '</number><size>') + 15, strpos($after, '</size><file>') - strpos($after, '</number><size>') - 15));
+				$s_after = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $after);
+				$kb_after = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $after));
 			}
 			if (!empty($kb_before) && !empty($kb_after)) {
 				$saved_s = $s_before - $s_after;
@@ -2636,7 +2636,7 @@ class admin {
 	*
 	**/
 	function check_options() {
-		if (is_array($this->restrictions)) {
+		if (!empty($this->restrictions)) {
 			return $this->restrictions;
 		}
 		$this->restrictions = array();
@@ -2709,16 +2709,16 @@ class admin {
 		if ((!function_exists('gzencode') ||
 			!function_exists('gzcompress') ||
 			!function_exists('gzdeflate')) &&
-			!($this->input['wss_htaccess_enabled'] &&
-			($this->input['wss_htaccess_mod_deflate'] ||
-			$this->input['wss_htaccess_mod_gzip']))) {
+			!(!empty($this->input['wss_htaccess_enabled']) &&
+			(!empty($this->input['wss_htaccess_mod_deflate']) ||
+			!empty($this->input['wss_htaccess_mod_gzip'])))) {
 				$this->restrictions['wss_gzip_page'] = 1;
 		}
 /* check for gzip for fonts possibility */
-		if (!($this->input['wss_htaccess_enabled'] &&
-			($this->input['wss_htaccess_mod_deflate'] ||
-			$this->input['wss_htaccess_mod_gzip'] ||
-			$this->input['wss_htaccess_mod_rewrite']))) {
+		if (!(!empty($this->input['wss_htaccess_enabled']) &&
+			(!empty($this->input['wss_htaccess_mod_deflate']) ||
+			!empty($this->input['wss_htaccess_mod_gzip']) ||
+			!empty($this->input['wss_htaccess_mod_rewrite'])))) {
 				$this->restrictions['wss_gzip_fonts'] = 1;
 		}
 	}
