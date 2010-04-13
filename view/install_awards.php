@@ -37,8 +37,22 @@
 ?></ul><p class="wssI"><?php
 	echo _WEBO_AWARDS_INTRO;
 ?></p><img src="<?php
-	echo $cachedir;
-?>webo-site-speedup161.png?<?php
+	if ($local) {
+		echo $cachedir;
+?>webo-site-speedup161.png<?php
+	} else {
+?>http://webo.in/rocket/?size=161&amp;top=<?php
+		echo $level1;
+?>&amp;middle=<?php
+		echo $level2;
+?>&amp;bottom=<?php
+		echo $level3;
+?>&amp;tail=<?php
+		echo $level4;
+?>&amp;circle=<?php
+		echo $level5;
+	}
+?>?<?php
 	echo md5($level1 . $level2 . $level3 . $level4 . $level5);
 ?>" id="wss_awrd" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
@@ -230,8 +244,22 @@
 ?>.</p><?php
 	}
 ?></div></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
-	echo $cachedir;
-?>webo-site-speedup125.png?<?php
+	if ($local) {
+		echo $cachedir;
+?>webo-site-speedup125.png<?php
+	} else {
+?>http://webo.in/rocket/?size=125&amp;top=<?php
+		echo $level1;
+?>&amp;middle=<?php
+		echo $level2;
+?>&amp;bottom=<?php
+		echo $level3;
+?>&amp;tail=<?php
+		echo $level4;
+?>&amp;circle=<?php
+		echo $level5;
+	}
+?>?<?php
 	echo md5($level1 . $level2 . $level3 . $level4 . $level5);
 ?>" id="wss_award" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
@@ -263,7 +291,7 @@
 	}
 ?></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
 	echo $cachedir;
-?>webo-site-speedup.html"&gt;<img width="125" height="125" alt="<?php
+?>webo-site-speedup.php"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" title="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

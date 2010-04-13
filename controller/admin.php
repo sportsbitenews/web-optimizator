@@ -321,6 +321,7 @@ class admin {
 				$this->view->download("http://webo.in/rocket/?size=$size&top=$level1&middle=$level2&bottom=$level3&tail=$level4&circle=$level5",
 					$this->compress_options['html_cachedir'] . 'webo-site-speedup' . $size . '.png');
 			}
+			$local = @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png');
 			$this->save_option("['awards']", $awards);
 /* save final page with awards */
 			@ob_start();

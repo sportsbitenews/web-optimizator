@@ -243,7 +243,7 @@
 		'wss_che' => '_WEBO_DASHBOARD_CACHE_TITLE',
 		'wss_sp' => '_WEBO_DASHBOARD_RESULTS',
 		'wss_tools' => '_WEBO_DASHBOARD_TOOLS',
-		'wss_links' => '_WEBO_DASHBOARD_LINKS',
+		'wss_awards' => '_WEBO_DASHBOARD_AWARDS_TITLE',
 		'wss_updates' => '_WEBO_DASHBOARD_UPDATES',
 		'wss_buzz' => '_WEBO_DASHBOARD_BUZZ',
 		'wss_news' => '_WEBO_DASHBOARD_NEWS'

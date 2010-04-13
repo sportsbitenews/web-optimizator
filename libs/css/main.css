@@ -491,7 +491,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO32:hover{background:url(rocket.main.png) 217px -840px no-repeat}
 .wssO33{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:100px;left:214px;padding:141px 0 0 199px;top:230px;width:10px}
 .wssO33:hover{background:url(rocket.main.png) -124px -811px no-repeat}
-.wssO34{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-151px;padding-top:106px;text-align:right;top:258px;width:450px}
+.wssO34{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:100px;left:-151px;padding-top:106px;text-align:right;top:258px;width:450px}
 .wssO34:hover{background:url(rocket.main.png) -229px -1032px no-repeat}
 .wssO35{cursor:pointer;cursor:hand;display:block;list-style:none!important;position:absolute;height:200px;left:-221px;padding-top:20px;top:140px;width:450px}
 .wssO35:hover{background:url(rocket.main.png) 214px -1055px no-repeat}
@@ -519,7 +519,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO60{padding:5px;position:absolute;right:0;top:0;width:250px;-webkit-border-top-right-radius:8px;-moz-border-radius-topright:8px;border-top-right-radius:8px}
 .wssO61{background:#f7f4e9;display:block;position:absolute;right:0;top:260px;width:260px}
 #wss_award{display:block;margin:62px auto}
-#wss_awrd{display:block;height:161px;left:50%;margin-left:-96px;position:absolute;top:324px;width:161px}
+#wss_awrd{display:block;height:161px;margin:182px auto -343px;width:161px}
 .wssO61 .wssO62{border-color:#bf6200}
 .wssO61 .wssO63,.wssO63{background-image:url(rocket.back1.png)!important}
 .wssO61 .wssO64,.wssO64{background-image:url(rocket.back2.png)!important}
