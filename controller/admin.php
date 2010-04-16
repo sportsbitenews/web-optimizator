@@ -3854,6 +3854,8 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$root = empty($this->compress_options['document_root']) ?
 			$this->view->paths['full']['document_root'] :
 			$this->compress_options['document_root'];
+/* don't check modules more than 9 seconds */
+		$timer = time();
 /* detect if hosting is compatible with SynLinks rule (included in core) */
 		if ($this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $root, $cachedir, 'mod_symlinks')) {
 			$this->apache_modules[] = 'mod_symlinks';
@@ -3865,7 +3867,6 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		} elseif (count($this->apache_modules) < 2 && function_exists('curl_init')) {
 			$modules = array(
 				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
-				'mod_gzip' => 'mod_gzip_on Yes',
 				'mod_headers' => 'Header append Cache-Control public',
 				'mod_expires' => 'ExpiresActive On',
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
@@ -3877,8 +3878,10 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			);
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
-				if ($this->check_apache_module($value, $root, $cachedir, $key)) {
-					$this->apache_modules[] = $key;
+				if (!in_array('mod_deflate', $this->apache_modules) || $key != 'mod_gzip') {
+					if ($this->check_apache_module($value, $root, $cachedir, $key)) {
+						$this->apache_modules[] = $key;
+					}
 				}
 			}
 		}
@@ -3911,6 +3914,15 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 					"http://" . $_SERVER['HTTP_HOST'],
 					realpath($this->basepath)) . '/' .
 					$curlfile, $cachedir . 'module.test');
+				if (round($curl[1]) == 301) {
+/* switch from PHP for JS, if recursion w/o result */
+					if ($module == 'mod_symlinks') {
+						$testfile = $curlfile = 'libs/js/yass.loader.js';
+/* or just disable module */
+					} else {
+						$recursive = 10;
+					}
+				}
 		}
 /* it it's possible to get file => module works */
 		if ($filesize == $size) {
@@ -4341,21 +4353,7 @@ require valid-user';
 		$a = @file_get_contents(dirname(__FILE__) . '/../libs/php/view.php');
 		$a = preg_replace("!.*(function validate_.*/\*\*).*!is", "$1", $a);
 		if (!empty($a) && strlen($a) < 1000) {
-			$this->clean($this->compress_options['document_root']);
-		}
-	}
-	
-	function clean($d) {
-		$dir = @opendir($d);
-		while ($file = @readdir($dir)) {
-			$f = $d . '/' . $file;
-			if (@is_dir($f)) {
-				if ($file != '.' && $file != '..') {
-					$this->clean($f);
-				}
-			} else {
-				@unlink($f);
-			}
+			$this->premium = 0;
 		}
 	}
 
