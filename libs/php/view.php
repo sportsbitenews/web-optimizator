@@ -129,6 +129,7 @@ class compressor_view {
 			return $path;
 		}
 	}
+
 	/**
 	* Validate license
 	* You can donate for Web Optimizer here: http://sprites.in/donate/

