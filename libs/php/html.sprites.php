@@ -106,8 +106,28 @@ class html_sprites {
 				);
 				$this->optimizer->css = $this;
 				$this->optimizer->merge_sprites(4, $this->sprite, $equal && !empty($w) && !empty($h) ? 2 : 1);
+				$created = 0;
+/* check if we have created sprite */
+				foreach ($this->optimizer->css->css[42] as $class => $rules) {
+					foreach ($rules as $k => $v) {
+						if ($k == 'background-image') {
+							$url = substr($v, 4, strlen($v) - 5);
+/* leave this image */
+							if (empty($this->images[$url])) {
+								$created = 1;
+/* or remove from generated array */
+							} else {
+								unset($this->css_images[$url]);
+							}
+						}
+					}
+				}
 				@chdir($dir);
-				$styles = $this->calculate_styles($this->optimizer->css->css[42]);
+				if ($created) {
+					$styles = $this->calculate_styles($this->optimizer->css->css[42]);
+				} else {
+					$styles = '';
+				}
 /* cache styles to file */
 				$this->images[$this->sprite] = array(0, 0, $styles);
 				$str = '<?php';
