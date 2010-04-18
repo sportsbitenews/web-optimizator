@@ -8,7 +8,7 @@
 /* set correct content charset */
 header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 if (($s_after || $kb_after) && $premium > 1) {
-	if ($s_after) {
+	if ($s_after && $s_before) {
 ?><h5 class="wssB1"><?php
 		echo _WEBO_DASHBOARD_SPEED_GAINED;
 ?>:</h5><dl class="wssP"><dt class="wssP1"><span class="wssI2"><?php
@@ -23,7 +23,7 @@ if (($s_after || $kb_after) && $premium > 1) {
 		echo round(100 * $s_before / ($s_after?$s_after:1) - 100);
 ?></strong>%</dd></dl><?php
 	}
-	if ($kb_after) {
+	if ($kb_after && $kb_before) {
 ?><h5 class="wssB1"><?php
 		echo _WEBO_DASHBOARD_SPEED_SAVINGS;
 ?>:</h5><dl class="wssP"><dt class="wssP1"><span class="wssI2"><?php
@@ -35,7 +35,7 @@ if (($s_after || $kb_after) && $premium > 1) {
 ?></strong> <?php
 		echo _WEBO_LOGIN_EFFICIENCY_KB;
 ?></dt><dd class="wssP2"><strong class="wssI2"><?php
-		echo round(100 * (1 - $kb_after / $kb_before));
+		echo round(100 * (1 - $kb_after / ($kb_before ? $kb_before : $kb_after)));
 ?></strong>%</dd></dl><?php
 	}
 	if ($s_after) {
