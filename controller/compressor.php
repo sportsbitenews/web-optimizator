@@ -1561,8 +1561,10 @@ class web_optimizer {
 				$this->write_file($physical_file, $contents);
 /* create static gzipped versions for static gzip in nginx, Apache */
 				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
-					$this->write_file($physical_file . '.gz',
-						@gzencode($contents, $options['gzip_level'], FORCE_GZIP));
+					$c = @gzencode($contents, $options['gzip_level'], FORCE_GZIP);
+					if (!empty($c)) {
+						$this->write_file($physical_file . '.gz', $c);
+					}
 				}
 /* Create the link to the new file */
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
