@@ -4662,8 +4662,8 @@ require valid-user';
 							'location' => 'echo $html;'
 						)
 					);
-					break;
 				}
+				break;
 /* VaM Shop */
 			case 'VaM':
 				$files = array(
