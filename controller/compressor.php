@@ -71,8 +71,6 @@ class web_optimizer {
 		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */
 		$this->buffered = $this->options['buffered'];
-/* number of external files calls to process */
-		$this->initial_files = array();
 /* Sets User Agent to differ IE from not-IE */
 		$this->ua = $_SERVER['HTTP_USER_AGENT'];
 		$this->set_user_agent();
@@ -212,6 +210,10 @@ class web_optimizer {
 				}
 			}
 		}
+/* number of external files calls to process */
+		$this->initial_files = array();
+/* set internal encoding */
+		$this->charset = empty($wss_encoding) ? 'utf8' : $wss_encoding;
 /* activate application */
 		$this->options['active'] = 1;
 		if ($this->buffered) {
@@ -1534,7 +1536,7 @@ class web_optimizer {
 					$minified_content = $this->packer->pack();
 				} elseif ($options['minify_with'] == 'yui' ) {
 					$this->yuicompressor = new YuiCompressor($options['cachedir'],
-						$options['installdir']);
+						$options['installdir'], $this->charset);
 					$minified_content = $this->yuicompressor->compress($contents);
 				}
 				if ($options['minify_with'] == 'jsmin' ||

@@ -37,10 +37,11 @@
  **/
 class YuiCompressor {
 
-	function __construct($cachedir, $rootdir) {
+	function __construct($cachedir, $rootdir, $charset) {
 		$this->jarfile = $rootdir . 'libs/yuicompressor/yuicompressor.jar';
 		$this->command = '/usr/bin/env java -jar';
 		$this->file = $cachedir . time() . '.js';
+		$this->charset = $charset;
 	}
 
 	public function compress($content, $type="js") {
@@ -52,7 +53,7 @@ class YuiCompressor {
 			@unlink($this->file);
 			return $content;
 		}
-		$content = @shell_exec($this->command . ' ' . $this->jarfile . ' ' . $this->file);
+		$content = @shell_exec($this->command . ' ' . $this->jarfile . ' --charset ' . $this->charset . ' ' . $this->file);
 		@unlink($this->file);
 		return $content; 
 	}
