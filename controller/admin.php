@@ -1645,7 +1645,7 @@ class admin {
 	* Recursive function for files' fetching
 	*
 	**/	
-	function get_directory_files ($directory, $mask, $recursive = true, $backup = 'gz', $return = array()) {
+	function get_directory_files ($directory, $mask, $recursive = true, $backup = 'gz', $return = array(), $limit = 0) {
 		if (@is_dir($directory) && ($dh = @opendir($directory))) {
 			while (($file = @readdir($dh)) !== false) {
 				if ($file !== '.' && $file !== '..') {
@@ -1653,8 +1653,11 @@ class admin {
 						$this->view->ensure_trailing_slash($directory) . $file;
 /* deeper recursion */
 					if (@is_dir($absolute_file) && $recursive) {
-						$return = $this->get_directory_files($absolute_file, $mask,
-							$recursive, $backup, $return);
+/* prevent PHP timeout on folders parsing */
+						if (!$limit || time() > $this->time + $limit) {
+							$return = $this->get_directory_files($absolute_file,
+								$mask, $recursive, $backup, $return, $limit);
+						}
 /* check for mask */
 					} elseif (preg_match("@" . $mask . "@", $absolute_file)) {
 						$return[] = array(
@@ -1684,7 +1687,14 @@ class admin {
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$results = array();
 		if ($submit) {
-			$results = $this->get_directory_files($directory, '\\.(png|gif|jpe?g|bmp)$', $recursive, 'backup');
+/* prevent PHP timeout on folders parsing */
+			$limit = @ini_get("max_execution_time");
+			set_time_limit($limit * 10);
+			$this->time = time();
+			$results = $this->get_directory_files($directory,
+				'\\.(png|gif|jpe?g|bmp)$',
+				$recursive, 'backup', array(),
+				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
 		}
 		$this->page_variables = array(
 			"results" => $results,
@@ -1711,7 +1721,14 @@ class admin {
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$results = array();
 		if ($submit) {
-			$results = $this->get_directory_files($directory, '\\.(txt|xml|css|js|ico|ttf|otf|eot|svg)$', $recursive, 'gz');
+/* prevent PHP timeout on folders parsing */
+			$limit = @ini_get("max_execution_time");
+			set_time_limit($limit * 10);
+			$this->time = time();
+			$results = $this->get_directory_files($directory,
+				'\\.(txt|xml|css|js|ico|ttf|otf|eot|svg)$',
+				$recursive, 'gz', array(),
+				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
 		}
 		$this->page_variables = array(
 			"results" => $results,

@@ -171,6 +171,7 @@ class compressor_view {
 		if (!$host) {
 			$host = $_SERVER['HTTP_HOST'];
 		}
+		$code = 0;
 		$gzip = false;
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
