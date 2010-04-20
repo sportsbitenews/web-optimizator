@@ -37,7 +37,7 @@
  **/
 class YuiCompressor {
 
-	function __construct($cachedir, $rootdir, $charset) {
+	function __construct($cachedir, $rootdir, $charset = 'utf8') {
 		$this->jarfile = $rootdir . 'libs/yuicompressor/yuicompressor.jar';
 		$this->command = '/usr/bin/env java -jar';
 		$this->file = $cachedir . time() . '.js';
