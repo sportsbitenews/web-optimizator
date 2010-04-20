@@ -971,7 +971,8 @@ class web_optimizer {
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
 						!in_array($img, $ignore_sprites) &&
-						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2])) {
+						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2]) &&
+						(empty($this->ua_mod) || $this->ua_mod != '.ie6' || empty($this->options['css']['no_ie6']))) {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);
 							if (!empty($this->options['page']['html_tidy']) &&
 								(strpos($image[0], 'class') || strpos($image[0], 'CLASS'))) {
@@ -1006,7 +1007,7 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/!i", $old_src)) {
+						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/+!i", $old_src)) {
 /* calculating unique sum from image src */
 							$sum = 0;
 							$i = ceil(strlen($old_src)/2);
@@ -1654,7 +1655,7 @@ class web_optimizer {
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host . "@", "", $file));
+		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host . "/+@", "/", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->options['document_root']) . $file;
 		} else {
@@ -1842,7 +1843,7 @@ class web_optimizer {
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file'])) {
-						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/@", "/", $value['file']);
+						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/+@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
 							'wo.static.php?' . $value['file'];
@@ -1898,7 +1899,7 @@ class web_optimizer {
 							}
 						} else {
 							$value['file'] = preg_replace("!https?://(www\.)?".
-								$this->host . "!s", "", $value['file']);
+								$this->host . "/+!s", "/", $value['file']);
 						}
 					}
 					$content_from_file = '';
@@ -2210,7 +2211,7 @@ class web_optimizer {
 		if (!empty($this->options['page']['minify_aggressive'])) {
 			$source = preg_replace("@(src|href)=(['\"])(http" .
 				$this->https . "://)(www\.)?" .
-				$this->host . "/?@", "$1=$2/", $source);
+				$this->host . "/*@", "$1=$2/", $source);
 		}
 		return $source;
 	}
@@ -2742,7 +2743,7 @@ class web_optimizer {
 			}
 		}
 /* remove HTTP host from absolute URL */
-		return preg_replace("!https?://(www\.)?". $this->host ."/!i", "/", $absolute_path);
+		return preg_replace("!https?://(www\.)?". $this->host ."/+!i", "/", $absolute_path);
 	}
 
 	/**
