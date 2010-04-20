@@ -67,15 +67,14 @@ class admin {
 		if (!empty($compress_options)) {
 /* reset license check */
 			if (!empty($this->input['wss_license'])) {
-				@unlink($this->compress_options['html_cachedir'] . 'wo');
+				@unlink($this->basepath . 'cache/wo');
 			}
 			$this->compress_options['license'] =
 				empty($this->input['wss_license']) ?
 					$this->compress_options['license'] :
 						$this->input['wss_license'];
 			$this->premium = $this->view->validate_license($this->compress_options['license'],
-				$this->compress_options['html_cachedir'],
-					$this->compress_options['host']);
+				$this->basepath . 'cache/', $this->compress_options['host']);
 			$this->access = in_array($this->input['wss_page'],
 				array('install_enter_password', 'install_set_password'));
 /* Make sure password valid */
@@ -309,22 +308,22 @@ class admin {
 		$awards = $level1 . $level2 . $level3 . $level4 . $level5;
 		$host = $this->compress_options['host'];
 /* check for images existence */
-		if (!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.back.jpg')) {
+		if (!@is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup.back.jpg')) {
 			@copy($this->basepath . 'libs/css/webo-site-speedup.back.jpg',
-				$this->compress_options['html_cachedir'] . 'webo-site-speedup.back.jpg');
+				$this->compress_options['css_cachedir'] . 'webo-site-speedup.back.jpg');
 		}
-		if (!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.rocket.png')) {
+		if (!@is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup.rocket.png')) {
 			@copy($this->basepath . 'libs/css/rocket.main.png',
-				$this->compress_options['html_cachedir'] . 'webo-site-speedup.rocket.png');
+				$this->compress_options['css_cachedir'] . 'webo-site-speedup.rocket.png');
 		}
 		if ($this->compress_options['awards'] != $awards ||
-			!@is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup88.png')) {
+			!@is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup88.png')) {
 			$sizes = array('88', '125', '161', '250');
 			foreach ($sizes as $size) {
 				$this->view->download("http://webo.in/rocket/?size=$size&top=$level1&middle=$level2&bottom=$level3&tail=$level4&circle=$level5",
-					$this->compress_options['html_cachedir'] . 'webo-site-speedup' . $size . '.png');
+					$this->compress_options['css_cachedir'] . 'webo-site-speedup' . $size . '.png');
 			}
-			$local = @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png');
+			$local = @is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup250.png');
 			$this->save_option("['awards']", $awards);
 /* save final page with awards */
 			@ob_start();
@@ -333,10 +332,10 @@ class admin {
 			@ob_end_clean();
 /* add gzip / charset envelope */
 			$content = '<?php header("Content-type: text/html; charset=utf-8");ob_start(\'a\');function a($b){$c=empty($_SERVER[\'HTTP_ACCEPT_ENCODING\'])?\'\':$_SERVER[\'HTTP_ACCEPT_ENCODING\'];$d=empty($_SERVER["HTTP_USER_AGENT"])?\'\':$_SERVER["HTTP_USER_AGENT"];if(!empty($b)&&(strpos($c,\'gzip\')!==\'false\'||strpos($c,\'deflate\')!==\'false\')){if(!strstr($d,"Opera")&&preg_match("/compatible; MSIE ([0-9]\.[0-9])/i",$d,$matches)){$e=floatval($matches[1]);if($e<7){$b=str_repeat(" ", 2048)."\r\n".$b;}}$g=@gzencode($b,7,strpos($c,\'gzip\')!==\'false\'?FORCE_GZIP:FORCE_DEFLATE);if(!empty($g)){header(\'Content-Encoding: gzip\');header(\'Vary: Accept-Encoding,User-Agent\');return $g;}}return $b;}?>' . $content;
-			$this->write_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.php', $content);
+			$this->write_file($this->compress_options['css_cachedir'] . 'webo-site-speedup.php', $content);
 			$url = 'mhtml:http://' . $host .
 				str_replace($this->compress_options['document_root'], "/",
-				$this->compress_options['html_cachedir']) .
+				$this->compress_options['css_cachedir']) .
 				'webo-site-speedup.css!';
 			$content = '.wg-teeth{background-image:url(' .
 				$url .
@@ -348,17 +347,17 @@ class admin {
 				"\n\n--_\nContent-Location:2\nContent-Transfer-Encoding:base64\n\n" .
 				'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' .
 				"\n\n--_--\n*/";
-			$this->write_file($this->compress_options['html_cachedir'] . 'webo-site-speedup.css', $content);
+			$this->write_file($this->compress_options['css_cachedir'] . 'webo-site-speedup.css', $content);
 		}
 /* download shorten link for twitter */
 		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c894fbacd544a2076da03a825a6ec2d7&uri='.
 			urlencode('http://' . $this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], "/",
-				$this->compress_options['html_cachedir']) .
+				$this->compress_options['css_cachedir']) .
 				'webo-site-speedup.php') .
-			'&format=txt', $this->compress_options['html_cachedir'] . 'url');
-		$short_link = @file_get_contents($this->compress_options['html_cachedir'] . 'url');
-		@unlink($this->compress_options['html_cachedir'] . 'url');
+			'&format=txt', $this->compress_options['css_cachedir'] . 'url');
+		$short_link = @file_get_contents($this->compress_options['css_cachedir'] . 'url');
+		@unlink($this->compress_options['css_cachedir'] . 'url');
 		return array($level1, $level2, $level3, $level4, $level5,
 			100 - $options, $grade, $files, round($size2 / 1024),
 			round(100*((1 / (0.9999 - $speedup)) - 1)), $short_link);
@@ -401,9 +400,9 @@ class admin {
 			"level3" => $info[2],
 			"level4" => $info[3],
 			"level5" => $info[4],
-			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
+			"local" => @is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup250.png'),
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
-				$this->compress_options['html_cachedir']),
+				$this->compress_options['css_cachedir']),
 			"short_link" => $info[10],
 			"level_options" => $level_options
 		);
@@ -456,8 +455,8 @@ class admin {
 		$expires = -1;
 		if (empty($this->premium) && !empty($license)) {
 			$error[4] = 1;
-		} elseif (@is_file($this->compress_options['html_cachedir'] . 'wo')) {
-			$expires = @file_get_contents($this->compress_options['html_cachedir'] . 'wo');
+		} elseif (@is_file($this->basepath . 'cache/wo')) {
+			$expires = @file_get_contents($this->basepath . 'cache/wo');
 		}
 		$page_variables = array(
 			"version" => $this->version,
@@ -672,9 +671,9 @@ class admin {
 			"size" => $info[8],
 			"speedup" => $info[9],
 			"short_link" => $info[10],
-			"local" => @is_file($this->compress_options['html_cachedir'] . 'webo-site-speedup250.png'),
+			"local" => @is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup250.png'),
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
-				$this->compress_options['html_cachedir'])
+				$this->compress_options['css_cachedir'])
 		);
 		$this->view->render("dashboard_awards", $page_variables);
 	}
@@ -1097,10 +1096,10 @@ class admin {
 			$nginx = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx/') !== false;
 		}
 		$errors = array(
-			'javascript_writable' => is_writable($javascript_cachedir),
-			'css_writable' => is_writable($css_cachedir),
-			'html_writable' => is_writable($html_cachedir),
-			'config_writable' => is_writable($this->basepath . $this->options_file),
+			'javascript_writable' => @is_writable($javascript_cachedir),
+			'css_writable' => @is_writable($css_cachedir),
+			'html_writable' => @is_writable($html_cachedir),
+			'config_writable' => @is_writable($this->basepath . $this->options_file),
 			'memory_limit' => round($memory_limit) > 16
 		);
 		$warnings = array(
@@ -1241,13 +1240,13 @@ class admin {
 						$this->compress_options['css_cachedir'] . $image);
 				}
 				@copy($this->basepath . 'libs/js/wo.cookie.php',
-					$this->compress_options['html_cachedir'] . 'wo.cookie.php');
+					$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
 				@copy($this->basepath . 'libs/js/yass.loader.js',
 					$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 				@copy($this->basepath . 'libs/php/wo.static.php',
-					$this->compress_options['html_cachedir'] . 'wo.static.php');
+					$this->compress_options['css_cachedir'] . 'wo.static.php');
 				@copy($this->basepath . 'libs/php/0.gif',
-					$this->compress_options['html_cachedir'] . '0.gif');
+					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
@@ -1460,7 +1459,7 @@ class admin {
 	* 
 	**/		
 	function install_dashboard() {
-		@unlink($this->compress_options['html_cachedir'] . 'progress.html');
+		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 		$page_variables = array(
 			"title" => _WEBO_SPLASH2_CONTROLPANEL,
 			"page" => 'install_dashboard',
@@ -1527,7 +1526,8 @@ class admin {
 					"confirmagreement" => $confirmagreement,
 					"submit" => $submit,
 					"premium" => true,
-					"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['javascript_cachedir']),
+					"javascript_relative_cachedir" => str_replace($this->compress_options['document_root'],
+						"/", $this->compress_options['javascript_cachedir']),
 					"language" => $this->language,
 					"skip_render" => $this->skip_render
 				);
@@ -1601,7 +1601,9 @@ class admin {
 	**/	
 	function install_clean_cache ($redirect = true, $ajax = false) {
 /* if all directories haven't been set yet -- just success */
-		$success = false || (empty($this->compress_options['css_cachedir']) && empty($this->compress_options['javascript_cachedir']) && empty($this->compress_options['html_cachedir']));
+		$success = false || (empty($this->compress_options['css_cachedir']) &&
+			empty($this->compress_options['javascript_cachedir']) &&
+			empty($this->compress_options['html_cachedir']));
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
@@ -1609,7 +1611,8 @@ class admin {
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted) && is_file($this->compress_options['css_cachedir'] . $file)) {
+				if (!in_array($file, $restricted) &&
+					@is_file($this->compress_options['css_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['css_cachedir'] . $file)) {
 						$deleted_css = false;
 					}
@@ -1620,7 +1623,8 @@ class admin {
 /* javascript cache */
 		if ($dir = @opendir($this->compress_options['javascript_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted) && is_file($this->compress_options['javascript_cachedir'] . $file)) {
+				if (!in_array($file, $restricted) &&
+					@is_file($this->compress_options['javascript_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['javascript_cachedir'] . $file)) {
 						$deleted_js = false;
 					}
@@ -1631,7 +1635,8 @@ class admin {
 /* html cache */
 		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
 			while ($file = @readdir($dir)) {
-				if (!in_array($file, $restricted) && is_file($this->compress_options['html_cachedir'] . $file)) {
+				if (!in_array($file, $restricted) &&
+					@is_file($this->compress_options['html_cachedir'] . $file)) {
 					if (!@unlink($this->compress_options['html_cachedir'] . $file)) {
 						$deleted_html = false;
 					}
@@ -1882,6 +1887,10 @@ class admin {
 /* fix for PHP Fusion */
 			if ($this->cms_version == 'PHP Fusion') {
 				$index = $this->view->paths['absolute']['document_root'] . 'themes/templates/footer.php';
+			}
+/* fix for PHP Fusion */
+			if ($this->cms_version == 'X-Cart') {
+				$index = $this->view->paths['absolute']['document_root'] . 'include/func/func.core.php';
 			}
 			$this->cleanup_file($index, $return);
 /* additional change of cache plugins */
@@ -3358,9 +3367,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 # Web Optimizer end";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
-				@is_file($this->compress_options['html_cachedir'] . 'wo.static.php')) {
+				@is_file($this->compress_options['css_cachedir'] . 'wo.static.php')) {
 					$cachedir = str_replace($this->compress_options['document_root'],
-						"/", $this->compress_options['html_cachedir']);
+						"/", $this->compress_options['css_cachedir']);
 					$content2 .= "
 # Web Optimizer options
 <IfModule mod_rewrite.c>";
@@ -3490,13 +3499,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		@copy($this->basepath . 'images/web.optimizer.stamp.png',
 			$this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
 		@copy($this->basepath . 'libs/js/wo.cookie.php',
-			$this->compress_options['html_cachedir'] . 'wo.cookie.php');
+			$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
 		@copy($this->basepath . 'libs/js/yass.loader.js',
 			$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 		@copy($this->basepath . 'libs/php/wo.static.php',
-			$this->compress_options['html_cachedir'] . 'wo.static.php');
+			$this->compress_options['css_cachedir'] . 'wo.static.php');
 		@copy($this->basepath . 'libs/php/0.gif',
-			$this->compress_options['html_cachedir'] . '0.gif');
+			$this->compress_options['css_cachedir'] . '0.gif');
 /* dirty hack for PHP-Nuke */
 		if ($this->cms_version == 'PHP-Nuke') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
@@ -3666,6 +3675,21 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* update footer */
 				$return2 = $this->write_file($footer, $footer_content, 1);
 				if (!empty($return1) && !empty($return2)) {
+					$auto_rewrite = 1;
+				}
+			}
+/* and for X-Cart */
+		} elseif ($this->cms_version == 'X-Cart') {
+			$mainfile = $this->view->paths['absolute']['document_root'] . 'include/func/func.core.php';
+			$mainfile_content = @file_get_contents($mainfile);
+			if (!empty($mainfile_content)) {
+/* create backup */
+				@copy($mainfile, $mainfile . '.backup');
+				$mainfile_content = preg_replace("!(\\\$templater->assign\(\"is_https_zone\",\s\\\$HTTPS\);\r?\n?)!", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $mainfile_content);
+				$mainfile_content = preg_replace("!(\\\$templater->display\(\\\$tpl\);\r?\n?)!s", "$1" . '$web_optimizer->finish();' . "\n", $mainfile_content);
+/* update mainfile */
+				$return = $this->write_file($mainfile, $mainfile_content, 1);
+				if (!empty($return)) {
 					$auto_rewrite = 1;
 				}
 			}
@@ -3879,7 +3903,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
 		$this->view->download(str_replace($root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $cachedir . 'htaccess.test');
-		if (@filesize($cachedir . 'htaccess.test') == @filesize($this->basepath . 'libs/php/css.sprites.php')) {
+		if (@filesize($cachedir . 'htaccess.test') > 0) {
 			$this->apache_modules = array();
 		} elseif (count($this->apache_modules) < 2 && function_exists('curl_init')) {
 			$modules = array(
@@ -4339,6 +4363,9 @@ require valid-user';
 /* Xaraya 1.1.5 */
 		} elseif (@is_file($root . 'var/config.system.php')) {
 			return 'Xaraya';
+/* X-Cart */
+		} elseif (@is_file($root . 'include/func/func.core.php')) {
+			return 'X-Cart';
 /* XOOPS 2.3.3 */
 		} elseif (@is_file($root . 'include/version.php')) {
 			require($root . 'include/version.php');
@@ -4721,6 +4748,21 @@ require valid-user';
 						'file' => 'footer.php',
 						'mode' => 'finish',
 						'location' => '$smarty->display(\'$page.tpl\');'
+					)
+				);
+				break;
+/* X-Cart */
+			case 'Social':
+				$files = array(
+					array(
+						'file' => 'include/func/func.core.php',
+						'mode' => 'start',
+						'location' => '$templater->assign("is_https_zone", $HTTPS);'
+					),
+					array(
+						'file' => 'include/func/func.core.php',
+						'mode' => 'finish',
+						'location' => '$templater->display($tpl);'
 					)
 				);
 				break;

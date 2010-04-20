@@ -424,6 +424,8 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_iframes" => $this->options['unobtrusive']['iframes'] &&
 					($this->premium > 1),
+				"unobtrusive_onload" => $this->options['unobtrusive']['onload'] &&
+					($this->premium > 1),
 				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
@@ -1417,7 +1419,7 @@ class web_optimizer {
 						$contents .= '}catch(e){';
 						if (!empty($info['file'])) {
 							$contents .= 'document.write("' .
-								str_replace(array('<', '"'), array('\x3c', '\"'), $info['source']) .
+								str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
 								'")';
 						}
 						$contents .= '}';
@@ -2316,18 +2318,28 @@ class web_optimizer {
 						$value[0] .
 					'</' .
 						$tag .
-					'><script type="text/javascript">(function(){var a=document.getElementById("' .
-						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/<' .
+					'><script type="text/javascript">';
+				if (empty($this->options['page']['unobtrusive_onload'])) {
+					$return .= '(';
+				} else {
+					$return .= 'wss_onload[wss_onload.length]=';
+				}
+				$return .= 'function(){var a=document.getElementById("' .
+						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/\x3c' .
 						$tag .
 					'[^>]+id="?' .
 						$stuff .
 					'_dst_' .
 						$key .
-					'["\s>].*?<\/' . 
+					'["\s>].*?\x3c\/' . 
 						$tag .
 					'>/i,document.getElementById("' .
 						$stuff . '_src_' . $key . '").innerHTML);a=document.getElementById("' .
-						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}())</script>';
+						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}';
+				if (empty($this->options['page']['unobtrusive_onload'])) {
+					$return .= '())';
+				}
+				$return .= '</script>';
 			}
 		}
 		return $return;
@@ -2340,7 +2352,8 @@ class web_optimizer {
 	*
 	**/
 	function replace_informers ($options) {
-		$before_body = '';
+		$before_body = empty($this->options['page']['unobtrusive_onload']) ?
+			'' : '<script type="text/javascript">wss_onload=[]</script>';
 		$unobtrusive_items = array(
 /* Informers */
 			'unobtrusive_informers' => array(
@@ -2484,6 +2497,8 @@ class web_optimizer {
 				}
 			}
 		}
+		$before_body .= empty($this->options['page']['unobtrusive_onload']) ?
+			'' : '<script type="text/javascript">window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a,b=0;while(a=wss_onload[b++]){a()}},false)</script>';
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
@@ -2518,6 +2533,7 @@ class web_optimizer {
 					'',				'',			'',				'',
 					'',							'',				'</script>'), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
+			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
 /* remove comments from <style> constructions */
 		if (!empty($this->options['css']['inline_scripts'])) {
