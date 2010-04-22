@@ -20,7 +20,13 @@
 				},
 				chars:function(text){
 					if(text){
-						parentNode.appendChild(doc.createTextNode(text));
+						switch(parentNode.nodeName.toLowerCase()) {
+							case 'script':
+								eval(text);
+							`	break;
+							default:
+								parentNode.appendChild(doc.createTextNode(text));
+								break;
 					}
 				},
 				comment:function(text){
