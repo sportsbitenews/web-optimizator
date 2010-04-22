@@ -8,7 +8,7 @@ $compress_options['title'] = "";
 $compress_options['description'] = "";
 ## Active configuration
 $compress_options['config'] = "extreme";
-## Add JS loader for all libraries on DOMloaded event
+## Add JS loader for all widgets on onload event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add merged script right before </body>
 $compress_options['unobtrusive']['body'] = "1";

@@ -294,10 +294,6 @@ class web_optimizer {
 					$this->options['htaccess']['enabled'] &&
 					$this->options['far_future_expires']['javascript'] &&
 					$this->premium,
-				"unobtrusive" => $this->options['unobtrusive']['on'] &&
-					!$this->options['unobtrusive']['body'] &&
-					!$this->options['unobtrusive']['all'] &&
-					($this->premium > 1),
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'] &&
 					($this->premium > 1),
@@ -362,7 +358,6 @@ class web_optimizer {
 					($this->premium > 1),
 				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
 					($this->premium > 1),
-				"unobtrusive" => false,
 				"unobtrusive_body" => false,
 				"parallel" => $this->options['parallel']['enabled'] &&
 					($this->premium > 1),
@@ -424,7 +419,7 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_iframes" => $this->options['unobtrusive']['iframes'] &&
 					($this->premium > 1),
-				"unobtrusive_onload" => $this->options['unobtrusive']['onload'] &&
+				"unobtrusive_onload" => $this->options['unobtrusive']['on'] &&
 					($this->premium > 1),
 				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
@@ -669,7 +664,6 @@ class web_optimizer {
 					'css_sprites_extra_space' => false,
 					'data_uris' => false,
 					'mhtml' => false,
-					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
 					'inline_scripts' => $options['inline_scripts'],
@@ -738,7 +732,6 @@ class web_optimizer {
 					'far_future_expires_php' => $options['far_future_expires_php'],
 					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
 					'header' => $type,
-					'unobtrusive' => $options['unobtrusive'],
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'parallel' => $options['parallel'],
 					'parallel_hosts' => $options['parallel_hosts'],
@@ -1151,31 +1144,12 @@ class web_optimizer {
 		if ($this->web_optimizer_stage) {
 			$this->write_progress($this->web_optimizer_stage++);
 		}
-/* prepare JS w/o src for merging in unobtrusive way */
-		if ($options['unobtrusive'] && !empty($files) && is_array($files)) {
-			$postloader = array();
-			$handler = 'scripts';
-			$key = 0;
-			foreach ($files as $script) {
-				$handler_new = empty($script['file']) ? 'handler' : 'scripts';
-				$postloader[$key][$handler_new][] = $script;
-				$handler = $handler_new;
-				if ($handler_new != $handler) {
-					$key++;
-				}
-			}
-/* go through postloader and include */
-			foreach ($postloader as $script_block) {
-				$source = $this->do_include($options, $source, $cachedir, empty($script_block['scripts']) ? null : $script_block['scripts'], empty($script_block['handler']) ? null : $script_block['handler']);
-			}
-		} else {
-			$source = $this->do_include($options, $source, $cachedir, $files);
-		}
+		$source = $this->do_include($options, $source, $cachedir, $files);
 		return $source;
 	}
 
 	/**
-	* Include a single file or an unobtrusive bundle
+	* Include a single file
 	*
 	**/
 	function include_bundle ($source, $newfile, $handlers, $cachedir, $include, $href = '') {
@@ -1202,32 +1176,6 @@ class web_optimizer {
 					$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
 				}
 				break;
-/* else use unobtrusive loader */
-			case 2:
-				if (strpos($source, "var yass_modules")) {
-					$source = preg_replace('!(<script type="text/javascript">var yass_modules=\[\[.*?)\]\]!is', '$1],["'
-						. preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) . '","' . $handlers . '"]]', $source);
-				} else {
-					$script = '<script type="text/javascript">var yass_modules=[["'.
-								preg_replace('/.*src="(.*?)".*/i', "$1", $newfile) .
-							'","' .
-								$handlers .
-							'"]]</script><script type="text/javascript" src="'.
-								$cachedir . 
-							'yass.loader.js"></script>';
-					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
-						$source = substr_replace($source, $script, $bodypos, 0);
-					} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
-						$source = substr_replace($source, $script, $bodypos, 0);
-					} else {
-						$source = preg_replace('@</body>@is', $script . "$0", $source);
-/* a number of engines doesn't set </body> */
-						if (!strpos($source, "yass.loader")) {
-							$source .= $script;
-						}
-					}
-				}
-				break;
 /* add JavaScript calls before </body> */
 			case 3:
 				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
@@ -1246,9 +1194,9 @@ class web_optimizer {
 			case 4:
 				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=null}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
-					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){_weboptimizer_load()},0)}};';
+					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
-				$include .= 'if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);_weboptimizer_load()}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				$include .= 'if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
 					$headclose = strpos(substr($source, $headpos, 50), '>');
 					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
@@ -1330,7 +1278,7 @@ class web_optimizer {
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.' . $options['ext']))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.' . $options['ext']);
-/* raw include right after the main CSS file, or according to unobtrusive logic */
+/* raw include right after the main CSS file */
 				if (empty($options['data_uris_domloaded'])) {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
@@ -1339,7 +1287,7 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0)));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -1512,7 +1460,7 @@ class web_optimizer {
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
 						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource);
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
-/* raw include right after the main CSS file, or according to unobtrusive logic */
+/* raw include right after the main CSS file */
 						if (empty($options['data_uris_domloaded'])) {
 							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
@@ -1573,7 +1521,7 @@ class web_optimizer {
 				}
 /* Create the link to the new file */
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
-				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['unobtrusive'] ? 2 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0)));
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
 			}
 		}
 		return $source;
@@ -1755,8 +1703,7 @@ class web_optimizer {
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
 						(!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) ||
 						(empty($file['file']) &&
-							($this->options['javascript']['inline_scripts'] || 
-								$this->options['javascript']['unobtrusive']))) {
+							$this->options['javascript']['inline_scripts'])) {
 									$this->initial_files[] = $file;
 					}
 				}
@@ -1825,7 +1772,6 @@ class web_optimizer {
 			foreach ($this->initial_files as $key => $value) {
 /* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
 				if ($value['tag'] == 'script' && ((empty($value['file']) &&
-					!$this->options['javascript']['unobtrusive'] &&
 					!$this->options['javascript']['inline_scripts']) ||
 					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
@@ -2266,9 +2212,11 @@ class web_optimizer {
 	* Returns string to place before </body>
 	*
 	**/
-	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $inline = false) {
+	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $inline = false, $onload_mask = false, $onload_result = false) {
 		$return = '';
 		$initial_height = empty($height) ? 0 : $height;
+		$onload = !empty($this->options['page']['unobtrusive_onload']) &&
+			$onload_mask && $onload_result;
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
@@ -2302,16 +2250,21 @@ class web_optimizer {
 					'_dst_' .
 						$key .
 					'"' .
-						($height && $inline ? ' style="height:' .
+						($height && $inline ? ' style="'.
+						($onload ? 'position:relative' : '') .
+						'height:' .
 							$height .
 						'px;display:inline-block"' : '') .
-						($height && !$inline ? ' style="height:' .
+						($height && !$inline ? ' style="'.
+						($onload ? 'position:relative' : '') .
+						'height:' .
 							$height .
 						'px"' : '') .
 					'></' .
 						$tag .
 					'>', $pos, $len);
-				$return .= '<' .
+				if (!$onload) {
+					$return .= '<' .
 						$tag .
 					' id="'.
 						$stuff .'_src_' . $key . 
@@ -2319,13 +2272,7 @@ class web_optimizer {
 						$value[0] .
 					'</' .
 						$tag .
-					'><script type="text/javascript">';
-				if (empty($this->options['page']['unobtrusive_onload'])) {
-					$return .= '(';
-				} else {
-					$return .= 'wss_onload[wss_onload.length]=';
-				}
-				$return .= 'function(){var a=document.getElementById("' .
+					'><script type="text/javascript">(function(){var a=document.getElementById("' .
 						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/\x3c' .
 						$tag .
 					'[^>]+id="?' .
@@ -2336,11 +2283,17 @@ class web_optimizer {
 						$tag .
 					'>/i,document.getElementById("' .
 						$stuff . '_src_' . $key . '").innerHTML);a=document.getElementById("' .
-						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}';
-				if (empty($this->options['page']['unobtrusive_onload'])) {
-					$return .= '())';
+						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}())</script>';
+				} else {
+					$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
+						$stuff . '_dst_' . $key
+					.'\');' .
+						str_replace(array("\n", "\r", '###WSS###'),
+							array(' ', '', $key),
+							preg_replace("@" . $onload_mask . "@is",
+							$onload_result, $value[0])) .
+						'}</script>';
 				}
-				$return .= '</script>';
 			}
 		}
 		return $return;
@@ -2354,7 +2307,10 @@ class web_optimizer {
 	**/
 	function replace_informers ($options) {
 		$before_body = empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript">wss_onload=[]</script>';
+			'' : '<script type="text/javascript" src="//' .
+			$this->options['javascript']['host'] .
+			$this->options['javascript']['cachedir_relative'] .
+			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
 		$unobtrusive_items = array(
 /* Informers */
 			'unobtrusive_informers' => array(
@@ -2363,6 +2319,12 @@ class web_optimizer {
 					'marker' => 'AddThis',
 					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 					'height' => 16
+/* Google Search */
+				), 'gs' => array(
+					'marker' => 'setOnLoadCallback',
+					'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\"></script><script type=\"text/javascript\">[\r\n\s\t]*google.load\(['\"]search.*?</script>",
+					'onload_before' => '.*?google.load\(\s*[\'"]search[\'"]\s*,\s*[\'"]1[\'"]\s*\);(.*)google.setOnLoadCallback[\r\n\s\t]*\(function\(\)\{(.*?)\},\strue\);(.*?)</script>',
+					'onload_after' => 'document.write(\'\x3cscript src="//www.google.com/jsapi" type="text/javascript">\x3c/script>\');setTimeout(function(){if(typeof google!=="undefined"){google.load("search", "1");setTimeout(function(){if(typeof google.search!=="undefined"&&typeof google.search.CustomSearchControl!=="undefined"){$1$2$3;setTimeout(function(){var a=document.forms,b=0,c;while(c=a[b++]){if(c.className=="gsc-search-box"){wss_onload_ready=1}}if(!wss_onload_ready){setTimeout(arguments.callee,20)}},20)}else{setTimeout(arguments.callee,10)}},10)}else{setTimeout(arguments.callee,10)}},10);'
 /* Odnaknopka */
 				), 'ok' => array(
 					'marker' => 'odnaknopka.ru',
@@ -2465,7 +2427,9 @@ class web_optimizer {
 /* Google AdWords */
 				), 'gw' => array(
 					'marker' => 'pagead2.googlesyndication.com',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*google_ad_client.*?pagead2.googlesyndication.com/pagead/show_ads.js\">[\r\n\s\t]*</script>"
+					'regexp' => "<script type=\"text/javascript\">[\s\t\r\n]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
+					'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
+					'onload_after' => '$1;document.write(\'\x3cscript type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js">\x3c/script>\');setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* OpenX */
 				), 'ox' => array(
 					'marker' => 'ajs.php',
@@ -2493,13 +2457,17 @@ class web_optimizer {
 			if (!empty($options[$group])) {
 				foreach ($items as $key => $item) {
 					if (strpos($this->content, $item['marker'])) {
-						$before_body .= $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is", $key, empty($item['height']) ? 0 : $item['height'], empty($item['inline']) ? false : $item['inline']);
+						$before_body .= $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
+							$key, empty($item['height']) ? 0 : $item['height'],
+							empty($item['inline']) ? false : $item['inline'],
+							empty($item['onload_before']) ? false : $item['onload_before'],
+							empty($item['onload_after']) ? false : $item['onload_after']);
 					}
 				}
 			}
 		}
 		$before_body .= empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript">window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a,b=0;while(a=wss_onload[b++]){a()}},false)</script>';
+			'' : '<script type="text/javascript">wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10)},false)</script>';
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);

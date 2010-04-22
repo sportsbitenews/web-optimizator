@@ -24,7 +24,7 @@ $compress_options['website_root'] = "";
 $compress_options['document_root'] = "";
 ## Host name, to include before static resources
 $compress_options['host'] = "";
-## Add JS loader for all libraries on DOMloaded event
+## Add JS loader for all widgets on onload event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add merged script right before </body>
 $compress_options['unobtrusive']['body'] = "0";

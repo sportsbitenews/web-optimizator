@@ -3459,6 +3459,10 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$this->view->paths['relative']['current_directory'] .
 				")\n# Web Optimizer path end\n$1", $content_saved);
 		}
+/* try to remove current .htaccess with a new one */
+		if (!@is_writable($this->htaccess)) {
+			@unlink($this->htaccess);
+		}
 		$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
 	}
 
@@ -3903,7 +3907,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
 		$this->view->download(str_replace($root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $cachedir . 'htaccess.test');
-		if (@filesize($cachedir . 'htaccess.test') > 30000) {
+		if (!@filesize($cachedir . 'htaccess.test')) {
 			$this->apache_modules = array();
 		} elseif (count($this->apache_modules) < 2 && function_exists('curl_init')) {
 			$modules = array(
