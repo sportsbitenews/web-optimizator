@@ -125,3 +125,5 @@ licenses:
  * YUI Compressor binary - BSD License
  * YASS library - MIT License
  * CSS Tidy library - GNU LGPLv2
+ * XHTML documment.write() Support - GNU GPL
+ * HTML Parser - Mozilla Public License
