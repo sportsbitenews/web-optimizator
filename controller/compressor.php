@@ -2243,6 +2243,7 @@ class web_optimizer {
 				$len = strlen($value[0]);
 				$tag = $inline ? 'span' : 'div';
 				$this->content = substr_replace($this->content,
+					($stuff == 'fc' ? '<?xml:namespace prefix="fb"/>' : '') .
 					'<' .
 						$tag .
 					' id="' .

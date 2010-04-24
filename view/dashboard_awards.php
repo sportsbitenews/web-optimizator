@@ -37,7 +37,7 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 ?></dd><dt class="wssP1"><?php
 	echo _WEBO_DASHBOARD_AWARDS_SPEEDUP;
 ?></dt><dd class="wssP2"><?php
-	echo $speedup;
+	echo $speedup < 0 ? 0 : $speedup;
 ?>%</dd></dl><p class="wssI wssI00"><a href="http://twitter.com/home?status=<?php
 	echo urlencode(_WEBO_AWARDS_TWITTER . ' ' . $short_link);
 ?>" class="wssJ wssJ10"><?php
