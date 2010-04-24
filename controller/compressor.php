@@ -2288,10 +2288,10 @@ class web_optimizer {
 					$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
 						$stuff . '_dst_' . $key
 					.'\');' .
-						str_replace(array("\n", "\r", '###WSS###', '<div', '</div', '<!--'),
-							array(' ', '', $key, '\x3cdiv', '\x3c/div', '\x3c!--'),
-							preg_replace("@" . $onload_mask . "@is",
-							$onload_result, $value[0])) .
+						str_replace(array("\n", "\r", '###WSS###', '<div', '</div'),
+							array(' ', '', $key, '\x3cdiv', '\x3c/div'),
+							preg_replace("@(<!--.*?-->|/\*.*?\*/)@is", "", preg_replace("@" . $onload_mask . "@is",
+							$onload_result, $value[0]))) .
 						'}</script>';
 				}
 			}
@@ -2312,8 +2312,59 @@ class web_optimizer {
 			$this->options['javascript']['cachedir_relative'] .
 			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
 		$unobtrusive_items = array(
+/* Advertisement */
+			'unobtrusive_ads' => array (
+/* Amazon Ads */
+				'aa' => array(
+					'marker' => 'amazon_ad',
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*amazon_ad_tag.*?ads.js\"></script>"
+/* BlogBang */
+				), 'bb' => array(
+					'marker' => 'blogbang.com/d.php',
+					'regexp' => "<script src=\"http://www.blogbang.com/d.php\?id=.*?</script>"
+/* Begun */
+				), 'bu' => array(
+					'marker' => 'autocontext.begun.ru',
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2\.js\"></script>"
+/* eBuzzing */
+				), 'eb' => array(
+					'marker' => 'ebuzzing.com/player',
+					'regexp' => "<script type='text/javascript' src='http://www.ebuzzing.com/player/player.php\?parametre=[0-9]+'></script>"
+/* Google AdWords */
+				), 'gw' => array(
+					'marker' => 'pagead2.googlesyndication.com',
+					'regexp' => "<script type=\"text/javascript\">[\s\t\r\n]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
+					'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
+					'onload_after' => '$1;document.write(\'\x3cscript type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js">\x3c/script>\');setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+/* Novoteka */
+				), 'nn' => array(
+					'marker' => 'novoteka.ru',
+					'regexp' => "<script[^>]+src=['\"]https?://nnn\.novoteka\.ru[^>]+></script>",
+					'onload_before' => '<script[^>]*?src=[\'"]https?://nnn\.novoteka\.ru([^>]+)[\'"]></script>',
+					'onload_after' => 'document.write(\'\x3cscript type="text/javascript" charset="windows-1251" src="//nnn.novoteka.ru$1">\x3c/script>\');wss_onload_ready=1'
+/* OpenX */
+				), 'ox' => array(
+					'marker' => 'ajs.php',
+					'regexp' => "<!--/\*\sOpenX\sJavascript.*?</noscript>"
+/* PredictAd */
+				), 'pa' => array(
+					'marker' => 'PredictAd',
+					'regexp' => "<!-- PredictAd Code.*?End PredictAd Code -->"
+/* Yandex.Direct */
+				), 'yd' => array(
+					'marker' => 'yandex_partner_id',
+					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*yandex_partner_id.*?</script>"
+				)
+			), 'unobtrusive_iframes' => array (
+				'if' => array(
+					'marker' => '<iframe',
+					'regexp' => "<iframe.*?</iframe>"
+				), 'IF' => array(
+					'marker' => '<IFRAME',
+					'regexp' => "<iframe.*?</iframe>"
+				)
 /* Informers */
-			'unobtrusive_informers' => array(
+			), 'unobtrusive_informers' => array(
 /* AddThis */
 				'at' => array(
 					'marker' => 'AddThis',
@@ -2334,15 +2385,9 @@ class web_optimizer {
 /* Google Search */
 				), 'gs' => array(
 					'marker' => 'setOnLoadCallback',
-					'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\"></script><script type=\"text/javascript\">[\r\n\s\t]*google.load\(['\"]search.*?</script>",
+					'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\">[\r\n\s\t]*</script>[\r\n\s\t]*<script type=\"text/javascript\">[\r\n\s\t]*google\.load\(['\"]search.*?</script>",
 					'onload_before' => '.*?google.load\(\s*[\'"]search[\'"]\s*,\s*[\'"]1[\'"]\s*\);(.*)google.setOnLoadCallback[\r\n\s\t]*\(function\(\)\{(.*?)\},\strue\);(.*?)</script>',
 					'onload_after' => 'document.write(\'\x3cscript src="//www.google.com/jsapi" type="text/javascript">\x3c/script>\');setTimeout(function(){if(typeof google!=="undefined"&&typeof google.load!=="undefined"){google.load("search", "1");setTimeout(function(){if(typeof google.search!=="undefined"&&typeof google.search.CustomSearchControl!=="undefined"){$1$2$3;setTimeout(function(){var a=document.forms,b=0,c;while(c=a[b++]){if(c.className=="gsc-search-box"){wss_onload_ready=1}}if(!wss_onload_ready){setTimeout(arguments.callee,20)}},20)}else{setTimeout(arguments.callee,10)}},10)}else{setTimeout(arguments.callee,10)}},10);'
-/* Novoteka */
-				), 'nn' => array(
-					'marker' => 'novoteka.ru',
-					'regexp' => "<script[^>]+src=['\"]https?://nnn\.novoteka\.ru[^>]+></script>",
-					'onload_before' => '<script[^>]*?src=[\'"]https?://nnn\.novoteka\.ru([^>]+)[\'"]></script>',
-					'onload_after' => 'document.write(\'\x3cscript type="text/javascript" charset="windows-1251" src="//nnn.novoteka.ru$1">\x3c/script>\');wss_onload_ready=1'
 /* Odnaknopka */
 				), 'ok' => array(
 					'marker' => 'odnaknopka.ru',
@@ -2423,51 +2468,6 @@ class web_optimizer {
 					'marker' => 'Yandex.Metrika',
 					'regexp' => "<!--\sYandex\.Metrika.*?Yandex\.Metrika\s-->",
 					'inline' => true
-				)
-/* Advertisement */
-			), 'unobtrusive_ads' => array (
-/* Amazon Ads */
-				'aa' => array(
-					'marker' => 'amazon_ad',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*amazon_ad_tag.*?ads.js\"></script>"
-/* BlogBang */
-				), 'bb' => array(
-					'marker' => 'blogbang.com/d.php',
-					'regexp' => "<script src=\"http://www.blogbang.com/d.php\?id=.*?</script>"
-/* Begun */
-				), 'bu' => array(
-					'marker' => 'autocontext.begun.ru',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2\.js\"></script>"
-/* eBuzzing */
-				), 'eb' => array(
-					'marker' => 'ebuzzing.com/player',
-					'regexp' => "<script type='text/javascript' src='http://www.ebuzzing.com/player/player.php\?parametre=[0-9]+'></script>"
-/* Google AdWords */
-				), 'gw' => array(
-					'marker' => 'pagead2.googlesyndication.com',
-					'regexp' => "<script type=\"text/javascript\">[\s\t\r\n]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
-					'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
-					'onload_after' => '$1;document.write(\'\x3cscript type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js">\x3c/script>\');setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
-/* OpenX */
-				), 'ox' => array(
-					'marker' => 'ajs.php',
-					'regexp' => "<!--/\*\sOpenX\sJavascript.*?</noscript>"
-/* PredictAd */
-				), 'pa' => array(
-					'marker' => 'PredictAd',
-					'regexp' => "<!-- PredictAd Code.*?End PredictAd Code -->"
-/* Yandex.Direct */
-				), 'yd' => array(
-					'marker' => 'yandex_partner_id',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*yandex_partner_id.*?</script>"
-				)
-			), 'unobtrusive_iframes' => array (
-				'if' => array(
-					'marker' => '<iframe',
-					'regexp' => "<iframe.*?</iframe>"
-				), 'IF' => array(
-					'marker' => '<IFRAME',
-					'regexp' => "<iframe.*?</iframe>"
 				)
 			)
 		);

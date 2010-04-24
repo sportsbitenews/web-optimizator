@@ -1,8 +1,19 @@
-// source http://github.com/westonruter/xhtml-document-write/raw/master/xhtml-document-write.js
+/* 
+ * XHTML documment.write() Support (v1.5.2) - Parses string argument into DOM nodes
+ *     appends them to the document immediately after the last loaded SCRIPT element,
+ *     or to the BODY if the document has been loaded.
+ *  by Weston Ruter, Shepherd Interactive <http://www.shepherd-interactive.com/>
+ *  <http://weston.ruter.net/projects/xhtml-document-write/>
+ * 
+ * Copyright 2008, Shepherd Interactive. Licensed under GPL <http://creativecommons.org/licenses/GPL/2.0/>
+ * Incorporates HTML Parser By John Resig <http://ejohn.org/files/htmlparser.js>
+ * Original code by Erik Arvidsson, Mozilla Public License
+ *
+ * Source http://github.com/westonruter/xhtml-document-write/raw/master/xhtml-document-write.js
+ * Modified by WEBO Software on 2010 for WEBO Site SpeedUp
+ */
 (function(){
-	var doc = document;
-	
-	var parentNode;
+	var doc = document, parentNode;
 
 	doc.write = function(str){
 		parentNode = wss_parentNode;
@@ -11,7 +22,7 @@
 					var el = doc.createElement(tag);
 					for(var i = 0; i < attrs.length; i++)
 						el.setAttribute(attrs[i].name, attrs[i].value);
-					parentNode.insertBefore(el, wss_parentBefore);
+					parentNode.appendChild(el);
 					if(!unary)
 						parentNode = el;
 				},
@@ -216,4 +227,4 @@
 	}
 	//-- End HTML Parser By John Resig (ejohn.org) ---------------------
 	
-	})();
+})();
