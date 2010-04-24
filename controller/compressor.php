@@ -2169,7 +2169,7 @@ class web_optimizer {
 	function trimwhitespace_find ($block_begin, $block_end, $spot, &$subject, &$return) {
 		$len = strlen($block_end);
 		while ($posbegin = strpos($subject, $block_begin)) {
-			if (($posend = strpos($subject, $block_end)) !== false) {
+			if ((($posend = strpos($subject, $block_end)) !== false) && ($posend > $posbegin)) {
 				$return[] = substr($subject, $posbegin, $posend - $posbegin + $len);
 				$subject = substr_replace($subject, $spot, $posbegin, $posend - $posbegin + $len);
 			} else {
