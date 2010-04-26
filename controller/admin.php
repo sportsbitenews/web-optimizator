@@ -2165,6 +2165,11 @@ class admin {
 					'type' => 'text',
 					'hidden' => $this->premium < 1 ? 1 : 0
 				),
+				'minify_css_host' => array(
+					'value' => $this->compress_options['minify']['css_host'],
+					'type' => 'text',
+					'hidden' => $this->premium < 1 ? 1 : 0
+				),
 				'external_scripts_additional_list' => array(
 					'value' => $this->compress_options['external_scripts']['additional_list'],
 					'type' => 'textarea'
@@ -2198,6 +2203,11 @@ class admin {
 				),
 				'minify_javascript_file' => array(
 					'value' => $this->compress_options['minify']['javascript_file'],
+					'type' => 'text',
+					'hidden' => $this->premium < 1 ? 1 : 0
+				),
+				'minify_javascript_host' => array(
+					'value' => $this->compress_options['minify']['javascript_host'],
 					'type' => 'text',
 					'hidden' => $this->premium < 1 ? 1 : 0
 				),
@@ -2634,15 +2644,25 @@ class admin {
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
+				'parallel_css' => array(
+					'value' => $this->compress_options['parallel']['css'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'parallel_javascript' => array(
+					'value' => $this->compress_options['parallel']['javascript'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
 				'parallel_additional' => array(
 					'value' => $this->compress_options['parallel']['additional'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 3 ? 1 : 0
 				),
 				'parallel_additional_list' => array(
 					'value' => $this->compress_options['parallel']['additional_list'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 3 ? 1 : 0
 				),
 				'parallel_ignore_list' => array(
 					'value' => $this->compress_options['parallel']['ignore_list'],
@@ -2760,7 +2780,9 @@ class admin {
 /* fix multiple lines in textarea */
 		foreach (array(
 			'wss_minify_css_file',
+			'wss_minify_css_host',
 			'wss_minify_javascript_file',
+			'wss_minify_javascript_host',
 			'wss_external_scripts_include_code',
 			'wss_external_scripts_ignore_list',
 			'wss_external_scripts_additional_list',
@@ -2856,6 +2878,8 @@ class admin {
 			'wss_css_sprites_html_page',
 			'wss_parallel_enabled',
 			'wss_parallel_check',
+			'wss_parallel_css',
+			'wss_parallel_javascript',
 			'wss_htaccess_enabled',
 			'wss_htaccess_mod_deflate',
 			'wss_htaccess_mod_gzip',
@@ -3486,6 +3510,12 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$this->compress_options['host'] = empty($this->compress_options['host']) ?
 			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
 				$this->compress_options['host'];
+		$this->compress_options['minify']['css_host'] = empty($this->compress_options['minify']['css_host']) ?
+			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
+				$this->compress_options['minify']['css_host'];
+		$this->compress_options['minify']['javascript_host'] = empty($this->compress_options['minify']['javascript_host']) ?
+			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
+				$this->compress_options['minify']['javascript_host'];
 		foreach (array(
 			'document_root',
 			'website_root',
@@ -3493,7 +3523,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			'javascript_cachedir',
 			'html_cachedir',
 			'host') as $val) {
-				$this->save_option("['" . $val . "']", $this->compress_options[$val]);
+				$this->save_option("['" . $val . "']",
+					$this->compress_options[$val]);
+		}
+		foreach (array(
+			'css_host',
+			'javascript_host') as $val) {
+				$this->save_option("['minify']['" . $val . "']",
+					$this->compress_options['minify'][$val]);
 		}
 /* clean previous changes */
 		$this->install_uninstall(1);

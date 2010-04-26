@@ -111,7 +111,7 @@
 	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
 ?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
-?>"></a></div><div class="wssN4"><div class="wssN5<?php
+?>"></a></div></div></div><div class="wssN4"><div class="wssN5<?php
 	echo strpos($cookie, 'wss_che') !== false ? ' wssA0' : '';
 ?>" id="wss_che"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#cache" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;

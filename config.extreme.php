@@ -76,6 +76,10 @@ $compress_options['minify']['html_one_string'] = "1";
 $compress_options['minify']['css_file'] = "";
 ## JS file name (only if 1 JS set for website is used)
 $compress_options['minify']['javascript_file'] = "";
+## CSS file host (both for CDN and merged file)
+$compress_options['minify']['css_host'] = "";
+## JavaScript file host (both for CDN and merged file)
+$compress_options['minify']['javascript_host'] = "";
 ## Gzip options
 $compress_options['gzip']['javascript'] = "1";
 $compress_options['gzip']['page'] = "1";
@@ -174,6 +178,10 @@ $compress_options['parallel']['enabled'] = "1";
 $compress_options['parallel']['check'] = "1";
 ## List of hosts for parallel downloads, i.e. img i1 i2
 $compress_options['parallel']['allowed_list'] = "";
+## Use CSS host for all CSS files?
+$compress_options['parallel']['css'] = "0";
+## Use JavaScript host for all CSS files?
+$compress_options['parallel']['javascript'] = "0";
 ## List of websites (saellites) to distribute through them,
 ## i.e. satellite.com satellite2.com
 $compress_options['parallel']['additional'] = "";

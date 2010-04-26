@@ -271,7 +271,6 @@ class web_optimizer {
 				"cachedir" => $this->options['javascript_cachedir'],
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['javascript_cachedir']),
 				"installdir" => $webo_cachedir,
-				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['javascript'] &&
 					((!$this->options['htaccess']['mod_gzip'] &&
 						!$this->options['htaccess']['mod_deflate'] &&
@@ -303,13 +302,13 @@ class web_optimizer {
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
-				"file" => $this->premium ? $this->options['minify']['javascript_file'] : ''
+				"file" => $this->premium ? $this->options['minify']['javascript_file'] : '',
+				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['css_cachedir']),
 				"installdir" => $webo_cachedir,
-				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['css'] &&
 					((!$this->options['htaccess']['mod_gzip'] &&
 						!$this->options['htaccess']['mod_deflate'] &&
@@ -368,7 +367,8 @@ class web_optimizer {
 				"include_code" => ($this->premium > 1) ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
-				"file" => $this->premium ? $this->options['minify']['css_file'] : ''
+				"file" => $this->premium ? $this->options['minify']['css_file'] : '',
+				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host']
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -409,6 +409,10 @@ class web_optimizer {
 				"parallel_satellites" => $this->options['parallel']['additional'],
 				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
 				"parallel_ignore" => $this->options['parallel']['ignore_list'],
+				"parallel_css" => $this->options['parallel']['css'] &&
+					($this->premium > 1),
+				"parallel_javascript" => $this->options['parallel']['javascript'] &&
+					($this->premium > 1),
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -1321,7 +1325,7 @@ class web_optimizer {
 			$dir = @getcwd();
 			@chdir($options['cachedir']);
 			foreach (glob('*.' . $options['ext']) as $file) {
-				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.html')) &&
+				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
 					$this->time - filemtime($file) >
 					$this->options['days_to_delete'] * 86400) {
 						@unlink($file);
@@ -1770,26 +1774,42 @@ class web_optimizer {
 				empty($this->options['javascript']['minify']);
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
-/* but keep JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-				if ($value['tag'] == 'script' && ((empty($value['file']) &&
+/* but keep CSS/JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
+				if (($value['tag'] == 'script' && ((empty($value['file']) &&
 					!$this->options['javascript']['inline_scripts']) ||
 					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)))) {
-					unset($this->initial_files[$key]);
-/* but keep CSS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
-				} elseif ($value['tag'] == 'link' && ((empty($value['file']) &&
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)))) ||
+					($value['tag'] == 'link' && ((empty($value['file']) &&
 					!$this->options['css']['inline_scripts']) ||
 					(!empty($excluded_scripts_css[0]) &&
 						!empty($value['file'] ) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)))) {
-					unset($this->initial_files[$key]);
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css))))) {
+/* rewrite skipped file with CDN host */
+						if (($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
+							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) {
+								$host = $value['tag'] == 'link' ?
+									$this->options['css']['host'] : 
+									$this->options['javascript']['host'];
+								$new_src = (empty($host) ? "" : "//" . $host) .
+									preg_replace("@https?://(www\.)?" .
+									$this->host .
+									"/+@", "/", $value['file']);
+								$new_script = str_replace($value['file'],
+									$new_src, $value['file_raw']);
+								$this->content = str_replace($value['file_raw'],
+									$new_script, $this->content);
+/* of just skip them */
+						} else {
+							unset($this->initial_files[$key]);
+						}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				} elseif (!empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file'])) {
-						$value['file'] = preg_replace("@https?://(www\.)?" . $this->host . "/+@", "/", $value['file']);
+						$value['file'] = preg_replace("@https?://(www\.)?" .
+							$this->host . "/+@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
 							'wo.static.php?' . $value['file'];

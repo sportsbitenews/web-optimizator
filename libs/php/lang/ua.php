@@ -126,7 +126,7 @@ define('_WEBO_data_uri', 'Использование data:URI');
 define('_WEBO_css_sprites', 'CSS Sprites');
 define('_WEBO_serverside', 'Серверное кэширование');
 define('_WEBO_unobtrusive', 'Ненавязчивый JavaScript');
-define('_WEBO_multiple_hosts', 'Множественные хосты');
+define('_WEBO_multiple_hosts', 'CDN');
 
 define('_WEBO_javascript_cachedir', 'Путь к директории JavaScript-кэша');
 define('_WEBO_javascript_cachedir_HELP', 'В этой директории располагаются файлы JavaScript-кэша.');
@@ -159,6 +159,8 @@ define('_WEBO_external_scripts_css_inline', 'Включити об\'єднанн
 define('_WEBO_external_scripts_css_inline_HELP', 'Будет объединяться весь CSS-код, подключаемый при помощи тэгов &lt;style&gt; и &lt;link&gt;. В противном случае будут объединяться только файлы, подключаемые при помощи тэгов &lt;link&gt;.');
 define('_WEBO_minify_css_file', 'Имя объединенного CSS-файла');
 define('_WEBO_minify_css_file_HELP', 'Имя файла может содержать буквы латинского алфавита, цифры, знаки дефиса, подчеркивания и точки. Остальные символы будут автоматически удалены. Ко введенному имени файла может быть автоматически добавлено специальное окончание для форсирования сброса клиентского кэша в браузерах.');
+define('_WEBO_minify_css_host', 'Хост CSS-файла(-ов)');
+define('_WEBO_minify_css_host_HELP', 'Хост, с которого загружается объединенный CSS-файл. При включении соответствующей настройки в группе СDN с этого хоста будут загружаться все остальные CSS-файлы.');
 define('_WEBO_external_scripts_additional_list', 'Виключити з об\'єднання CSS-файли');
 define('_WEBO_external_scripts_additional_list_HELP', 'Указанные в этом поле файлы не будут включаться в объединенный файл. Необходимо указывать только имена файлов, а не абсолютные пути к ним.');
 define('_WEBO_external_scripts_include_code', 'Включать в объединенные CSS-файлы дополнительный код');
@@ -176,6 +178,8 @@ define('_WEBO_external_scripts_on_HELP', 'Будут объединяться ф
 define('_WEBO_external_scripts_on_HELP_DISABLED', 'Текущее серверное окружение не поддерживает библиотеку curl, поэтому объединение внешних и динамических файлов невозможно.');
 define('_WEBO_minify_javascript_file', 'Имя объединенного JavaScript-файла');
 define('_WEBO_minify_javascript_file_HELP', 'Имя файла может содержать буквы латинского алфавита, цифры, знаки дефиса, подчеркивания и точки. Остальные символы будут автоматически удалены. Ко введенному имени файла может быть автоматически добавлено специальное окончание для форсирования сброса клиентского кэша в браузерах.');
+define('_WEBO_minify_javascript_host', 'Хост JavaScript-файла(-ов)');
+define('_WEBO_minify_javascript_host_HELP', 'Хост, с которого загружается объединенный JavaScript-файл. При включении соответствующей настройки в группе СDN с этого хоста будут загружаться все остальные JavaScript-файлы.');
 define('_WEBO_external_scripts_ignore_list', 'Виключити з об\'єднання JavaScript-файли');
 define('_WEBO_external_scripts_ignore_list_HELP', 'Указанные в этом поле файлы не будут включаться в объединенный файл. Необходимо указывать только имена файлов, а не абсолютные пути к ним.');
 define('_WEBO_external_scripts_head_end', 'Форсувати розміщення об\'єднаного JavaScript-файлу перед <code>&lt;/head&gt;</code>');
@@ -201,7 +205,7 @@ define('_WEBO_minify_html_comments', 'Видалити HTML-коментарі')
 define('_WEBO_minify_html_comments_HELP', 'Все HTML-комментарии будут удаляться, что может повлечь за собой неработоспособность условных комментариев, а также ряда счетчиков.');
 
 define('_WEBO_unobtrusive_on', 'Включити &laquo;ненав\'язливий&raquo; JavaScript');
-define('_WEBO_unobtrusive_on_HELP', 'Ко всем страницам будет применяться технология ненавязчивого JavaScript в соответствии с остальными опциями данного раздела.');
+define('_WEBO_unobtrusive_on_HELP', 'Все внешние JavaScript-блоки на сайте будут загружаться по событию window.onload в соответствии с остальными опциями данного раздела.');
 define('_WEBO_unobtrusive_body', 'Вставити виклик об\'єднаного JavaScript-файлу перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_body_HELP', 'Вызов объединенного файла будет перенесен к закрывющему тэгу &lt;/body&gt;. Эта опция имеет больший приоритет, чем &laquo;Переносить вызов объединенного JavaScript-файла перед &lt;/head&gt;&laquo;.');
 define('_WEBO_unobtrusive_all', 'Переместить весь JavaScript-код перед <code>&lt;/body&gt;</code>');
@@ -370,6 +374,10 @@ define('_WEBO_parallel_enabled', 'Включити паралельні хост
 define('_WEBO_parallel_enabled_HELP', 'Все файлы изображений, вызываемые на веб-страницах будут автоматически распределяться по нескольким хостам. Так, например, вызовы файлов http://site.ru/i/logo.png и /i/bg.jpg могут быть заменены вызовами http://i1.site.ru/i/logo.png и http://i2.site.ru/i/bg.jpg, при условии, что хосты i1 и i2 доступны и указаны в поле &laquo;Использовать хосты&raquo;.');
 define('_WEBO_parallel_check', 'Автоматично перевіряти доступність хостів');
 define('_WEBO_parallel_check_HELP', 'Доступные хосты будут определяться автоматически (по существованию на них картинок сайта).');
+define('_WEBO_parallel_css', 'Распределять CSS-файлы');
+define('_WEBO_parallel_css_HELP', 'Все CSS-файлы будут выдаваться с хоста, определенного как &quot;Хост CSS-файлов&quot; в группе настроек &quot;Объединение CSS&quot;.');
+define('_WEBO_parallel_javascript', 'Распределять JavaScript-файлы');
+define('_WEBO_parallel_javascript_HELP', 'Все JavaScript-файлы будут выдаваться с хоста, определенного как &quot;Хост JavaScript-файлов&quot; в группе настроек &quot;Объединение JavaScript&quot;.');
 define('_WEBO_parallel_allowed_list', 'Доступні хости');
 define('_WEBO_parallel_allowed_list_HELP', 'Для распределения изображений будут использоваться хосты, указанные в этом поле. Хостов может быть не более четырех.');
 define('_WEBO_parallel_additional', 'Распределять файлы на дополнительных доменах (через пробел)');

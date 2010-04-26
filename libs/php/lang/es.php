@@ -124,7 +124,7 @@ define('_WEBO_data_uri', 'data:URI');
 define('_WEBO_css_sprites', 'CSS Sprites');
 define('_WEBO_serverside', 'Cache del servidor');
 define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
-define('_WEBO_multiple_hosts', 'Hosts múltiples');
+define('_WEBO_multiple_hosts', 'CDN');
 
 define('_WEBO_javascript_cachedir', 'Camino al directorio JavaScript cache');
 define('_WEBO_javascript_cachedir_HELP', 'Este directorio contiene todos los archivos de JavaScript cache.');
@@ -157,6 +157,8 @@ define('_WEBO_external_scripts_css_inline', 'Activa fusionamiento de estilos int
 define('_WEBO_external_scripts_css_inline_HELP', 'Estar&aacute;n incluidos todos los CSS combinados con la ayuda de los tags &lt;style&gt; y &lt;link&gt;. De otra manera WEBO Site SpeedUp combinar&aacute; archivos incluidos con el tag &lt;link&gt;.');
 define('_WEBO_minify_css_file', 'Nombre del archivo CSS combinado');
 define('_WEBO_minify_css_file_HELP', 'El nombre del archivo deber&aacute; incluir solo letras latinas, n&uacute;meros, guiones, subguiones, o puntos. Cualquier otro s&iacute;mbolo ser&aacute; excluido. Este nombre de archivo podr&aacute; ser expandido automaticamente con una extensi&oacute;n especial para manejar el cache en browsers del lado del cliente.');
+define('_WEBO_minify_css_host', 'Host for CSS file(s)');
+define('_WEBO_minify_css_host_HELP', 'Host to load merged CSS file. With enabled options in CDN group it will be used for all CSS files.');
 define('_WEBO_external_scripts_additional_list', 'Excluir archivo(s) CSS de ser unidos (separados por espacio)');
 define('_WEBO_external_scripts_additional_list_HELP', 'Archivos definidos no ser&aacute;n incluidos en el archivo combinado CSS. Tiene que definir solo nombres de archivos, no direcciones absolutas a ellos.');
 define('_WEBO_external_scripts_include_code', 'Incluir c&oacute;digo CSS a todos los archivos');
@@ -174,6 +176,8 @@ define('_WEBO_external_scripts_on_HELP', 'Habr&aacute;n archivos combinados, loc
 define('_WEBO_external_scripts_on_HELP_DISABLED', 'Current server environment doesn\'t have support for curl library, so dynamic and external files merging is impossible.');
 define('_WEBO_minify_javascript_file', 'Nombre el archivo JavaScript combinado');
 define('_WEBO_minify_javascript_file_HELP', 'El nombre del archivo deber&aacute; incluir solo letras latinas, n&uacute;meros, guiones, subguiones, o puntos. Cualquier otro s&iacute;mbolo ser&aacute; excluido. Este nombre de archivo podr&aacute; ser expandido automaticamente con una extensi&oacute;n especial para manejar el cache en browsers del lado del cliente.');
+define('_WEBO_minify_javascript_host', 'Host for JavaScript file(s)');
+define('_WEBO_minify_javascript_host_HELP', 'Host to load merged JavaScript file. With enabled options in CDN group it will be used for all JavaScript files.');
 define('_WEBO_external_scripts_ignore_list', 'Excluye archivos de fusionamiento');
 define('_WEBO_external_scripts_ignore_list_HELP', 'Archivos definidos no ser&aacute;n incluidos en un archivo JavaScript combinado. Debe definir solo nombres de archivos, no direcciones absolutas a ellos.');
 define('_WEBO_external_scripts_head_end', 'Movimiento forzado de todos los scripts fusionados a <code>&lt;/head&gt;</code>');
@@ -354,6 +358,10 @@ define('_WEBO_parallel_enabled', 'Activar hosts m&uacute;ltiples');
 define('_WEBO_parallel_enabled_HELP', 'Todas las imágenes llamadas a la páginas web serán automaticamente distribuidas por medio de hosts múltiples(espejos/mirrors). Por ejemplo URL http://www.site.com/i/logo.png o /i/bg.jpg pueden ser reemplazados con http://i1.site.com/i/logo.png y http://i2.site.com/i/bg.jpg en caso que ambos hosts i1 y i2 estén disponibles y listados en opción &quot;Hosts permitidos&quot;.');
 define('_WEBO_parallel_check', 'Revisar disponibilidad de hosts automaticamente');
 define('_WEBO_parallel_check_HELP', 'Hosts permitidos serán revisados automaticamente por la existencia de imágenes.');
+define('_WEBO_parallel_css', 'Distribute CSS files');
+define('_WEBO_parallel_css_HELP', 'All CSS files will be served via host defined as &quot;Host for CSS files&quot; in &quot;Combine CSS&quot; group of options.');
+define('_WEBO_parallel_javascript', 'Distribute JavaScript files');
+define('_WEBO_parallel_javascript_HELP', 'All JavaScript files will be served via host defined as &quot;Host for JavaScript files&quot; in &quot;Combine JavaScript&quot; group of options.');
 define('_WEBO_parallel_allowed_list', 'Hosts permitidos');
 define('_WEBO_parallel_allowed_list_HELP', 'Hosts enlistados serán utilizados para distribuir imágenes. Por favor defina no más de 4 hosts.');
 define('_WEBO_parallel_additional', 'Sitios web adicionales con hosts múltiples (separados por espacio)');
