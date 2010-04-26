@@ -2691,7 +2691,7 @@ class admin {
 				'mod_setenvif',
 				'mod_rewrite') as $module) {
 					if (!in_array($module, $this->apache_modules)) {
-						$this->restrictions['wss_htaccess_' . $module] = 0;
+						$this->restrictions['wss_htaccess_' . $module] = 1;
 					}
 			}
 		}
@@ -3917,7 +3917,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
 				'mod_mime' => 'AddEncoding gzip .gz',
 				'mod_rewrite' => "RewriteEngine On
-RewriteRule yass\.loadbar.js$ " .
+RewriteRule wo\.cookie\.php$ " .
 str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/", dirname(__FILE__))) .
 "/../libs/js/yass.loader.js"
 			);
@@ -3947,7 +3947,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			$testfile = $curlfile = 'libs/js/yass.loader.js';
 			$size = @filesize($this->basepath . $testfile);
 			if ($module == 'mod_rewrite') {
-				$curlfile = 'libs/js/yass.loadbar.js';
+				$curlfile = 'libs/js/wo.cookie.php';
 			}
 		}
 		$return = false;
