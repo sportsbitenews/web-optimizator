@@ -845,27 +845,22 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								$this->imagecopymerge_alpha($sprite_raw, $im, 0, $this->css_images[$sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
 							}
 						}
-						$php = substr(phpversion(), 0, 1);
 /* output final sprite */
 						if ($this->truecolor_in_jpeg) {
 							$sprite = preg_replace("/png$/", "jpg", $sprite);
-							if ($php == 4) {
-								@imagejpeg($sprite_raw, $sprite, 80);
-							} else {
+							@imagejpeg($sprite_raw, $sprite, 80);
+/* need to add PHP5-branch to make this working
 								try {
 									@imagejpeg($sprite_raw, $sprite, 80);
 								} catch (Exception $e) {
 									$failed = 1;
-								}
-							}
+								} */
 						} else {
-							if ($php == 4) {
-								@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
-							} else {
+							@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+/* need to add PHP5-branch to make this working
 								try {
 									@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
 								} catch (Exception $e) {
-/* try to re-save image on GDLib error */
 									try {
 										@imagepng($sprite_raw, $sprite, 9);
 									} catch (Exception $e) {
@@ -875,12 +870,11 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 											$failed = 1;
 										}
 									}
-								}
-							}
+								} */
 						}
 						@imagedestroy($sprite_raw);
 /* additional optimization via smush.it */
-						if (empty($failed)) {
+						if (@is_file($sprite)) {
 							$this->smushit($this->current_dir . '/' . $sprite);
 						}
 					}
