@@ -289,7 +289,7 @@
 		echo _WEBO_AWARDS_CODE4;
 ?></label><?php
 	}
-?></dd></dl><p class="wssI"><textarea cols="72" rows="7" class="wssE">&lt;a href="<?php
+?></dd></dl><p class="wssI"><textarea cols="72" rows="9" class="wssE">&lt;a href="<?php
 	echo $cachedir;
 ?>webo-site-speedup.php"&gt;<img width="125" height="125" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

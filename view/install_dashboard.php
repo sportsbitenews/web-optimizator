@@ -97,7 +97,21 @@
 	echo _WEBO_DASHBOARD_LOADING;
 ?></p></div><a class="wssJ20" href="javascript:_.hide('wss_news')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
-?>"></a></div></div></div><div class="wssN4"><div class="wssN5<?php
+?>"></a></div></div><div class="wssN5<?php
+	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
+?>" id="wss_links"><div class="wssN2"><h2 class="wssB"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssN3"><?php
+	echo _WEBO_DASHBOARD_LINKS;
+?></a></h2><ul class="wssO wssO3"><li class="wssO4"><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+	echo _WEBO_DASHBOARD_LINKS_WEBSITE;
+?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/w/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+	echo _WEBO_DASHBOARD_LINKS_UG;
+?></a></li><li class="wssO4"><a href="http://code.google.com/p/web-optimizator/issues/list?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+	echo _WEBO_DASHBOARD_LINKS_ISSUES;
+?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
+	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
+?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')" title="<?php
+	echo _WEBO_HELP_MINIMIZE;
+?>"></a></div><div class="wssN4"><div class="wssN5<?php
 	echo strpos($cookie, 'wss_che') !== false ? ' wssA0' : '';
 ?>" id="wss_che"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#cache" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
@@ -243,6 +257,7 @@
 		'wss_che' => '_WEBO_DASHBOARD_CACHE_TITLE',
 		'wss_sp' => '_WEBO_DASHBOARD_RESULTS',
 		'wss_tools' => '_WEBO_DASHBOARD_TOOLS',
+		'wss_links' => '_WEBO_DASHBOARD_LINKS',
 		'wss_awards' => '_WEBO_DASHBOARD_AWARDS_TITLE',
 		'wss_updates' => '_WEBO_DASHBOARD_UPDATES',
 		'wss_buzz' => '_WEBO_DASHBOARD_BUZZ',
