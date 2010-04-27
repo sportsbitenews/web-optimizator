@@ -529,4 +529,6 @@
 	echo _WEBO_SPLASH3_CANTWRITE4;
 ?>";wss_error2="<?php
 	echo _WEBO_GZIP_ERROR;
-?>"</script>
+?>"</script><script type="text/javascript" src="http://i.webo.in/wss/index.<?php
+	echo $language;
+?>.js"></script>
