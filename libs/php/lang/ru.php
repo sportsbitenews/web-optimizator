@@ -369,7 +369,7 @@ define('_WEBO_htaccess_mod_rewrite', 'Использовать <code>mod_rewrite
 define('_WEBO_htaccess_mod_rewrite_HELP', 'Требуется для статического сжатия файлов или форсированного кэширования.');
 define('_WEBO_htaccess_mod_rewrite_HELP_DISABLED', 'Текущее серверное окружение не поддерживает .htaccess и(ли) mod_rewrite.');
 
-define('_WEBO_parallel_enabled', 'Распределять файлы по нескольким хостам');
+define('_WEBO_parallel_enabled', 'Распределять изображения');
 define('_WEBO_parallel_enabled_HELP', 'Все файлы изображений, вызываемые на веб-страницах будут автоматически распределяться по нескольким хостам. Так, например, вызовы файлов http://site.ru/i/logo.png и /i/bg.jpg могут быть заменены вызовами http://i1.site.ru/i/logo.png и http://i2.site.ru/i/bg.jpg, при условии, что хосты i1 и i2 доступны и указаны в поле &laquo;Использовать хосты&raquo;.');
 define('_WEBO_parallel_check', 'Автоматически определять доступные хосты');
 define('_WEBO_parallel_check_HELP', 'Доступные хосты будут определяться автоматически (по существованию на них картинок сайта).');

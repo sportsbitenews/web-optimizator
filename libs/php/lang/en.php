@@ -351,7 +351,7 @@ define('_WEBO_css_sprites_html_page', 'Combine images for the current page only'
 define('_WEBO_css_sprites_html_page_HELP', 'HTML images can be combined for the current page only (this reduces size of the final file, but increases number of such files) or for all website pages. In the last case there will be used the only image for the whole website, but its size can be very large.');
 define('_WEBO_css_sprites_html_page_HELP_DISABLED', 'There is no compelte GD library support on your website, so CSS Sprites creation is impossible.');
 
-define('_WEBO_parallel_enabled', 'Enable multiple hosts');
+define('_WEBO_parallel_enabled', 'Distribute images');
 define('_WEBO_parallel_enabled_HELP', 'All images called on web page will be automatically distributed through multiple hosts (mirrors). For example URL http://www.site.com/i/logo.png or /i/bg.jpg can be replaced with http://i1.site.com/i/logo.png and http://i2.site.com/i/bg.jpg in case if both hosts i1 and i2 are available and listed in option &quot;Allowed hosts&quot;.');
 define('_WEBO_parallel_check', 'Check hosts\' availability automatically');
 define('_WEBO_parallel_check_HELP', 'Available hosts will be checked automatically for images\' existence.');
