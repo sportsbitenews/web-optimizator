@@ -67,7 +67,7 @@
 	echo _WEBO_DASHBOARD_SPEED;
 ?></span></a></li><?php
 	}
-?></ul><div class="wssN"><div class="wssN4"><div class="wssN5 wssN11"><div class="wssN2"><h2 class="wssB"><a href="mailto:speed@webo.name?subject=WEBO Site SpeedUp Installation" class="wssN3"><?php
+?></ul><div class="wssN"><div class="wssN4"><div class="wssN5 wssN11"><div class="wssN2"><h2 class="wssB"><a href="mailto:infod@webo.name?subject=WEBO Site SpeedUp Installation" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_HELP;
 ?></a></h2><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_HELP1;
