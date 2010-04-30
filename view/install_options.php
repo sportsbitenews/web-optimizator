@@ -242,7 +242,7 @@ if ($submit) {
 						echo constant('_WEBO_' . $option);
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_' . $option . '_HELP'));
-						echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '//'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
+						echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '///'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
 ?>">?</a></label></dt><?php
 					}
 					while ($i++ != $value['count']) {
