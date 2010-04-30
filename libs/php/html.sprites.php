@@ -201,7 +201,7 @@ class html_sprites {
 			$str .= "\n?>";
 			$this->main->write_file($this->options['page']['cachedir'] . 'wo.img.cache.php', $str);
 /* or just mark all images as active */
-		} elseif (empty($this->options['page']['css_sprites_html_page'])) {
+		} elseif (empty($this->options['page']['per_page'])) {
 			foreach ($images as $k => $i) {
 				$images[$k][3] = 1;
 			}

@@ -427,7 +427,7 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'of traffic');
 
 /* Dashboard error */
 define('_WEBO_DASHBOARD_CRITICAL', 'There is a critical issue');
-define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'WEBO Site SpeedUp automatic installation was failed');
+define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'WEBO Site SpeedUp automatic installation is failed');
 define('_WEBO_DASHBOARD_CRITICAL_DO', 'Please do the following');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Open your website source files via FTP or SSH.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Find file <code>config.webo.php</code> in WEBO Site SpeedUp installation folder');
