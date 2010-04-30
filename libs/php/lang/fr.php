@@ -203,7 +203,7 @@ define('_WEBO_minify_html_one_string', 'Comprimer le HTML en une seule chaîne')
 define('_WEBO_minify_html_one_string_HELP', 'Le code HTML du page web résultant sera comprimé en une seule chaîne. Ceci peut aider à éliminer les espaces et retours à la ligne superflue. Néanmoins ceci est intensif au niveau UC et devra être utilisé avec précaution.');
 
 define('_WEBO_unobtrusive_on', 'Permettre le JavaScript inobtrus');
-define('_WEBO_unobtrusive_on_HELP', 'Chaque temps de chargement de page web sera acceleré avec l\'utilisation de JavaScript inobtru selon les options dans cette section.');
+define('_WEBO_unobtrusive_on_HELP', 'All supported widgets will be loaded on window.onload event (this increases website load speed by Google).');
 define('_WEBO_unobtrusive_body', 'Inclure le fichier JavaScript combiné avant  <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_body_HELP', 'Les fichiers JavaScript combinés seront déplacés au balises de fin &lt;/body&gt; balise. Cette option à plus de priorité que &quot;Déplacer le script Java au &lt;/head&gt;&quot;.');
 define('_WEBO_unobtrusive_all', 'Déplacer tout le code JavaScript au <code>&lt;/body&gt;</code>');

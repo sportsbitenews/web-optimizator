@@ -202,7 +202,7 @@ define('_WEBO_minify_html_one_string', 'Compress HTML to one string');
 define('_WEBO_minify_html_one_string_HELP', 'HTML code of result web page will be compressed to one string. This can help with removing extra spaces and line breaks. But this is CPU intensive and should be used carefully.');
 
 define('_WEBO_unobtrusive_on', 'Enable unobtrusive JavaScript');
-define('_WEBO_unobtrusive_on_HELP', 'Every web page load will be accelerated with unobtrusive JavaScript according to options in this section.');
+define('_WEBO_unobtrusive_on_HELP', 'All supported widgets will be loaded on window.onload event (this increases website load speed by Google).');
 define('_WEBO_unobtrusive_body', 'Include combined JavaScript file before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_body_HELP', 'Combined JavaScript files will be moved to closing &lt;/body&gt; tag. This option has more priority than &quot;Force moving combined script to &lt;/head&gt;&quot;.');
 define('_WEBO_unobtrusive_all', 'Move all JavaScript code to <code>&lt;/body&gt;</code>');
