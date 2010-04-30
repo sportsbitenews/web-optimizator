@@ -2328,7 +2328,7 @@ class web_optimizer {
 	**/
 	function replace_informers ($options) {
 		$before_body = empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript" src="//' .
+			'' : '<script type="text/javascript" src="/' .
 			$this->options['javascript']['host'] .
 			$this->options['javascript']['cachedir_relative'] .
 			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
