@@ -1448,10 +1448,7 @@ class web_optimizer {
 /* create correct resource file name for data:URI / mhtml inclusion */
 					$resource_file = $external_file;
 					if (!empty($options['data_uris_separate'])) {
-						$resource_file .=
-							($options['far_future_expires_rewrite'] ? '.wo' . $this->time : '') .
-							'.' . $options['ext'] . 
-							(!$options['far_future_expires_rewrite'] ? '?' . $this->time : '');
+						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']));
 					}
 					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					$minified_content = $minified_content_array[0];
@@ -1563,6 +1560,7 @@ class web_optimizer {
 	*
 	**/
 	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
+		$timestamp = $options['far_future_expires_php'] ? $timestamp : false;
 		return (empty($options['host']) ? '' : ('http' . $this->https . '://' . $options['host'])) .
 			$options['cachedir_relative'] . 
 			$cache_file .

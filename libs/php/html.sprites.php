@@ -71,7 +71,7 @@ class html_sprites {
 			$width = $image[0];
 			$height = $image[1];
 			$class = $image[2];
-			$active = $image[3];
+			$active = $width && $height ? $image[3] : 0;
 			$filename = $this->options['document_root'] . $url;
 /* skip big images */
 			if ($width <= $this->options['page']['dimensions_limited'] &&
@@ -180,9 +180,8 @@ class html_sprites {
 							$width && $height ? 'wo' . md5($absolute_src) : '';
 						$images[$absolute_src] = array($width, $height, $class);
 					}
-					if (!empty($this->options['page']['per_page'])) {
-						$images[$absolute_src][3] = 1;
-					}
+					$images[$absolute_src][3] =
+						!empty($this->options['page']['per_page']) ? 1 : 0;
 				}
 /* remember src for calculated images */
 				$imgs[$key] = $absolute_src;
