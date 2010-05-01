@@ -306,6 +306,17 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						} else {
 							$filled_square = min($I, $J);
 						}
+/* shift calculated values to remove empty blocks */
+						$I0 = $I - 1;
+						while ($I0 > -1 && empty($matrix[$I0][($J-$J%16)/16])) {
+							$I0--;
+						}
+						$I = $I0 > 0 ? $I0 : 0;
+						$J0 = $J - 1;
+						while ($J0 > -1 && empty($matrix[$I][($J0-$J0%16)/16])) {
+							$J0--;
+						}
+						$J = $J0 > 0 ? $J0 : 0;
 /* calculate increase of matrix dimensions */
 						$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
 						$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
