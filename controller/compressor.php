@@ -1287,7 +1287,7 @@ class web_optimizer {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
 				} else {
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.' . $options['ext']));
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.' . $options['ext']);
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
