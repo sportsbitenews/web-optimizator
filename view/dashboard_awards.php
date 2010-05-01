@@ -9,8 +9,22 @@
 header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 
 ?><a href="#wss_awards"><img src="<?php
-	echo $cachedir;
-?>webo-site-speedup88.png?<?php
+	if ($local) {
+		echo $cachedir;
+?>webo-site-speedup161.png<?php
+	} else {
+?>http://webo.in/rocket/?size=161&amp;top=<?php
+		echo $level1;
+?>&amp;middle=<?php
+		echo $level2;
+?>&amp;bottom=<?php
+		echo $level3;
+?>&amp;tail=<?php
+		echo $level4;
+?>&amp;circle=<?php
+		echo $level5;
+	}
+?>?<?php
 	echo md5($options . $grade . $files . $size . $speedup);
 ?>" alt="<?php
 	echo _WEBO_DASHBOARD_AWARDS;
