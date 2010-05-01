@@ -258,7 +258,7 @@ if ($submit) {
 							if ($value['type'] != 'radio') {
 ?> <a class="wssJ9" href="#" title="<?php
 								echo constant('_WEBO_' . $option . '_HELP');
-								echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '//'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
+								echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '///'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
 ?>">?</a><?php
 							}
 ?></label></dt><?php
