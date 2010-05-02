@@ -1123,9 +1123,12 @@ class admin {
 					(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 					!empty($gd['PNG Support']) &&
 					!empty($gd['WBMP Support'])),
-			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) || $nginx,
+			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) ||
+				$nginx ||
+				in_array('mod_gzip', $this->apache_modules),
 			'mod_gzip' => in_array('mod_gzip', $this->apache_modules) ||
-				$apache2 || $nginx,
+				$apache2 || $nginx ||
+				in_array('mod_deflate', $this->apache_modules),
 			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx,
 			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx,
 			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx,
@@ -4430,6 +4433,9 @@ require valid-user';
 /* PrestaShop 1.2.5 */
 		} elseif (@is_file($root . '/modules/paypal/prestashop_paypal.png')) {
 			return 'PrestaShop';
+/* Magento */
+		} elseif (@is_file($root . '/app/Mage.php')) {
+			return 'Magento';
 		}
 		return 'CMS 42';
 	}
