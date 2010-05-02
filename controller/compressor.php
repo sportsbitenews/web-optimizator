@@ -286,6 +286,7 @@ class web_optimizer {
 						'yui' : ($this->options['minify']['with_packer'] ?
 							'packer' : '')),
 				"minify_try" => $this->options['external_scripts']['include_try'],
+				"remove_duplicates" => $this->options['external_scripts']['duplicates'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
@@ -455,6 +456,7 @@ class web_optimizer {
 			"days_to_delete" => ($this->premium > 1) ?
 				round($this->options['performance']['delete_old']) : 0
 		);
+		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
 		$this->options = $full_options;
 	}
@@ -656,6 +658,7 @@ class web_optimizer {
 					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
 					'minify_try' => $options['minify_try'],
+					'remove_duplicates' => $options['remove_duplicates'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
 					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
@@ -1576,7 +1579,7 @@ class web_optimizer {
 	**/
 	function get_file_dates ($files, $options) {
 /* option added by janvarev */
-		if (!empty($options['dont_check_file_mtime'])) {
+		if (!empty($options['dont_check_file_mtime']) && strlen($this->lc) == 29) {
 			return;
 		}
 		$dates = false;
@@ -1706,7 +1709,7 @@ class web_optimizer {
 						(!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) ||
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
-									$this->initial_files[] = $file;
+								$this->initial_files[] = $file;
 					}
 				}
 			}
@@ -1818,7 +1821,7 @@ class web_optimizer {
 				}
 			}
 /* skip mining files' content if don't check MTIME */
-			if (!$this->options['javascript']['dont_check_file_mtime']) {
+			if (!$this->options['javascript']['dont_check_file_mtime'] && strlen($this->lc) == 29) {
 				$this->get_script_content();
 			}
 		}
@@ -1834,6 +1837,24 @@ class web_optimizer {
 /* to get inline values on empty non-inline */
 		$last_key_flushed = array();
 		$stored = array();
+/* duplicates spots */
+		$duplicates = array(
+/* jQuery */
+			array(
+				'regexp' => 'jquery([v0-9\.\-\[\]])*(pack|min)?\.(js|php)(\.gz)?',
+				'exists' => 0
+			),
+/* Prototype */
+			array(
+				'regexp' => 'prototype([rev0-9\.\-_])*(packer|min|lite)?\.(js|php)(\.gz)?',
+				'exists' => 0
+			),
+/* MooTools */
+			array(
+				'regexp' => 'mootools(_release)?([xv0-9\.\-_])*(core-yc|core|yui-compressed|comp|min)?\.(js|php)(\.gz)?',
+				'exists' => 0
+			)
+		);
 		if (is_array($this->initial_files)) {
 			foreach($this->initial_files as $key => $value) {
 /* don't touch all files -- just only requested ones */
@@ -1891,6 +1912,19 @@ class web_optimizer {
 							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
 						} else {
 							$content_from_file = @file_get_contents($this->get_file_name($value['file']));
+						}
+/* remove duplicates */
+						if ($value['tag'] == 'script' &&
+							$this->options['javascript']['remove_duplicates']) {
+								foreach ($duplicates as $k => $duplicate) {
+									if (preg_match("@" . $duplicate['regexp'] . "$@is", $value['file'])) {
+										if ($duplicate['exists']) {
+											$content_from_file = '';
+										} else {
+											$duplicates[$k]['exists'] = 1;
+										}
+									}
+								}
 						}
 					}
 /* remove BOM */

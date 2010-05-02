@@ -184,6 +184,8 @@ define('_WEBO_external_scripts_head_end', 'Force moving combined script to <code
 define('_WEBO_external_scripts_head_end_HELP', 'Combined JavaScript file call will be moved to closing tag &lt;/head&gt;.');
 define('_WEBO_external_scripts_include_try', 'Safe combine mode');
 define('_WEBO_external_scripts_include_try_HELP', 'With this option all external files will be enveloped into try-catch construction (with individual files\' inclusion on failed content execution in common scope). This reduces JavaScript performance but guarantee that there will be no broken JavaScript calls due to their combine.');
+define('_WEBO_external_scripts_duplicates', 'Remove duplicates');
+define('_WEBO_external_scripts_duplicates_HELP', 'All noticed duplicates of common libraries (jQuery, Prototype, MooTools) will be removed from merging. This reduces final JavaScript file size and its initialization time, but in a few cases can break integrity of cliet side logic.');
 
 define('_WEBO_minify_css', 'Minify CSS files');
 define('_WEBO_minify_css_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined CSS file.');

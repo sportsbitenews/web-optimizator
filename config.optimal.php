@@ -40,6 +40,8 @@ $compress_options['external_scripts']['additional_list'] = "";
 $compress_options['external_scripts']['include_code'] = "";
 ## Include try-catch construction to merged JS file
 $compress_options['external_scripts']['include_try'] = "1";
+## Remove duplicates of common libraries
+$compress_options['external_scripts']['duplicates'] = "1";
 ## Performance options, don't check files mtime
 $compress_options['performance']['mtime'] = "1";
 ## Don't use RegExp everywhere where it's possible

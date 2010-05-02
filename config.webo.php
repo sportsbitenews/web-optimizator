@@ -56,6 +56,8 @@ $compress_options['external_scripts']['additional_list'] = "";
 $compress_options['external_scripts']['include_code'] = "";
 ## Include try-catch construction to merged JS file
 $compress_options['external_scripts']['include_try'] = "1";
+## Remove duplicates of common libraries
+$compress_options['external_scripts']['duplicates'] = "1";
 ## To get through HTTP Basic Authorization
 $compress_options['external_scripts']['user'] = "";
 $compress_options['external_scripts']['pass'] = "";

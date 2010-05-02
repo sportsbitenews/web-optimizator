@@ -2225,6 +2225,10 @@ class admin {
 				'external_scripts_include_try' => array(
 					'value' => $this->compress_options['external_scripts']['include_try'],
 					'type' => 'checkbox'
+				),
+				'external_scripts_duplicates' => array(
+					'value' => $this->compress_options['external_scripts']['duplicates'],
+					'type' => 'checkbox'
 				)
 			),
 			'minify' => array(
@@ -2842,6 +2846,7 @@ class admin {
 			'wss_external_scripts_css',
 			'wss_external_scripts_css_inline',
 			'wss_external_scripts_include_try',
+			'wss_external_scripts_duplicates',
 			'wss_performance_mtime',
 			'wss_performance_plain_string',
 			'wss_performance_cache_version',
