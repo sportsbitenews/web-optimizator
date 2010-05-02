@@ -1287,7 +1287,7 @@ class web_optimizer {
 					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
 				} else {
-					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.' . $options['ext']);
+					$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $timestamp, '.' . $options['ext']));
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
@@ -1448,7 +1448,7 @@ class web_optimizer {
 /* create correct resource file name for data:URI / mhtml inclusion */
 					$resource_file = $external_file;
 					if (!empty($options['data_uris_separate'])) {
-						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']));
+						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']);
 					}
 					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					$minified_content = $minified_content_array[0];
