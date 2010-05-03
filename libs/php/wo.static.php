@@ -232,8 +232,10 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		$timeout = 360000000;
 /* set Cache-Control header */
 		header('Cache-Control: public, max-age=' . $timeout);
+		if (function_exists('date_default_timezone_set')) {
+			@date_default_timezone_set(@date_default_timezone_get());
+		}
 /* set Expires header */
-		@date_default_timezone_set(@date_default_timezone_get());
 		header('Expires: ' .
 			gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
 /* create gzipped file */
