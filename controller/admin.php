@@ -4451,6 +4451,34 @@ require valid-user';
 		if (!empty($a) && strlen($a) < 1000) {
 			$this->premium = 0;
 		}
+		$image = $this->compress_options['footer']['image'];
+/* check cache integrity */
+		if (!empty($image) &&
+			@filemtime($this->basepath . 'images/' . $image) >
+			@filemtime($this->compress_options['css_cachedir'] . $image)) {
+				@copy($this->basepath . 'images/' . $image,
+				$this->compress_options['css_cachedir'] . $image);
+		}
+		if (@filemtime($this->basepath . 'libs/js/wo.cookie.php') >
+			@filemtime($this->compress_options['javascript_cachedir'] . 'wo.cookie.php')) {
+				@copy($this->basepath . 'libs/js/wo.cookie.php',
+				$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
+		}
+		if (@filemtime($this->basepath . 'libs/js/yass.loader.js') >
+			@filemtime($this->compress_options['javascript_cachedir'] . 'yass.loader.js')) {
+				@copy($this->basepath . 'libs/js/yass.loader.js',
+				$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
+		}
+		if (@filemtime($this->basepath . 'libs/php/wo.static.php') >
+			@filemtime($this->compress_options['css_cachedir'] . 'wo.static.php')) {
+				@copy($this->basepath . 'libs/php/wo.static.php',
+				$this->compress_options['css_cachedir'] . 'wo.static.php');
+		}
+		if (@filemtime($this->basepath . 'libs/php/0.gif') >
+			@filemtime($this->compress_options['css_cachedir'] . '0.gif')) {
+				@copy($this->basepath . 'libs/php/0.gif',
+				$this->compress_options['css_cachedir'] . '0.gif');
+		}
 	}
 
 	/**
