@@ -4017,8 +4017,10 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 /* it it's possible to get file => module works */
 		if ($filesize == $size) {
 			$return = true;
-/* fix for LiteSpeed bug on .htaccess rights + mod_rewrite */
-		} elseif ($curl[1] == 400 &&
+/* fix for LiteSpeed bug on .htaccess rights + mod_rewrite
+   + one more LiteSpeed bug with delay with .htaccess application
+ */
+		} elseif (($curl[1] == 400 || $filesize == 131) &&
 			$module == 'mod_rewrite' &&
 			!empty($_SERVER["SERVER_SOFTWARE"]) &&
 			$_SERVER["SERVER_SOFTWARE"] == 'LiteSpeed') {
