@@ -214,6 +214,8 @@ class web_optimizer {
 		$this->initial_files = array();
 /* set internal encoding */
 		$this->charset = empty($wss_encoding) ? 'utf8' : $wss_encoding;
+/* prepare escaped host */
+		$this->host_escaped = str_replace('.', '\.', $this->host);
 /* activate application */
 		$this->options['active'] = 1;
 		if ($this->buffered) {
@@ -1007,7 +1009,7 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host . "/+!i", $old_src)) {
+						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
 /* calculating unique sum from image src */
 							$sum = 0;
 							$i = ceil(strlen($old_src)/2);
@@ -1024,7 +1026,7 @@ class web_optimizer {
 								"://" .
 								$new_host .
 								$absolute_src .
-								preg_replace("!(www\.)?" . $this->host . "!i",
+								preg_replace("!(www\.)?" . $this->host_escaped . "!i",
 									$new_host, $old_src_param);
 						} elseif ($count_satellites && !empty($satellites_hosts[0]) && empty($replaced[$old_src])) {
 							$img_host = preg_replace("@(https?:)?//(www\.)?([^/]+)/.*@", "$3", $old_src);
@@ -1608,7 +1610,7 @@ class web_optimizer {
 		if(is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host . "/+@", "/", $file));
+		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host_escaped . "/+@", "/", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->options['document_root']) . $file;
 		} else {
@@ -1655,7 +1657,7 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
-					if (strpos($src, "//") && !preg_match('@//(www\.)?' . $this->host . '/@', $src)) {
+					if (strpos($src, "//") && !preg_match('@//(www\.)?' . $this->host_escaped . '/@', $src)) {
 						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
@@ -1706,7 +1708,9 @@ class web_optimizer {
 					}
 /* skip external files if option is disabled */
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
-						(!empty($file['file']) && preg_match("@\.js$@i", $file['file'])) ||
+						(!empty($file['file']) && preg_match("@\.js$@i", $file['file']) &&
+							(!strpos($file['file'], '//') ||
+							preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))) ||
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
@@ -1755,7 +1759,9 @@ class web_optimizer {
 					}
 /* skip external files if option is disabled */
 					if (($this->options['css']['external_scripts'] && $curl) ||
-						(!empty($file['file']) && preg_match("@\.css$@i", $file['file'])) ||
+						(!empty($file['file']) && preg_match("@\.css$@i", $file['file']) &&
+							(!strpos($file['file'], '//') ||
+							preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))) ||
 						(empty($file['file']) && $this->options['css']['inline_scripts'])) {
 							$this->initial_files[] = $file;
 					}
@@ -1789,14 +1795,14 @@ class web_optimizer {
 /* rewrite skipped file with CDN host */
 						if ((($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
 							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) &&
-							(preg_match("@//(www\.)?" . $this->host . "/+@", $value['file']) ||
+							(preg_match("@//(www\.)?" . $this->host_escaped . "/+@", $value['file']) ||
 							(substr($value['file'], 0, 1) == '/' && substr($value['file'], 1, 1) != '/'))) {
 								$host = $value['tag'] == 'link' ?
 									$this->options['css']['host'] : 
 									$this->options['javascript']['host'];
 								$new_src = (empty($host) ? "" : "//" . $host) .
 									preg_replace("@https?://(www\.)?" .
-									$this->host .
+									$this->host_escaped .
 									"/+@", "/", $value['file']);
 								$new_script = str_replace($value['file'],
 									$new_src, $value['file_raw']);
@@ -1812,7 +1818,7 @@ class web_optimizer {
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file'])) {
 						$value['file'] = preg_replace("@https?://(www\.)?" .
-							$this->host . "/+@", "/", $value['file']);
+							$this->host_escaped . "/+@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
 							'wo.static.php?' . $value['file'];
@@ -1823,8 +1829,9 @@ class web_optimizer {
 				}
 			}
 /* skip mining files' content if don't check MTIME */
-			if (!$this->options['javascript']['dont_check_file_mtime'] && strlen($this->lc) == 29) {
-				$this->get_script_content();
+			if (empty($this->options['javascript']['dont_check_file_mtime']) ||
+				strlen($this->lc) != 29) {
+					$this->get_script_content();
 			}
 		}
 	}
@@ -1863,7 +1870,7 @@ class web_optimizer {
 				if (!$tag || $value['tag'] == $tag) {
 					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
-						if(!preg_match("@//(www\.)?". $this->host . "@s", $value['file'])) {
+						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
 								if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
@@ -1886,7 +1893,7 @@ class web_optimizer {
 							}
 						} else {
 							$value['file'] = preg_replace("!https?://(www\.)?".
-								$this->host . "/+!s", "/", $value['file']);
+								$this->host_escaped . "/+!s", "/", $value['file']);
 						}
 					}
 					$content_from_file = '';
@@ -2763,7 +2770,7 @@ class web_optimizer {
 			$endfile = $this->strip_querystring($endfile);
 		}
 /* Don't touch data URIs, or mhtml:, or external files */
-		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("@//(www\.)?". $this->host ."@is", $file)) {
+		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("@//(www\.)?". $this->host_escaped ."@is", $file)) {
 			return false;
 		}
 		$absolute_path = $file;
@@ -2786,7 +2793,7 @@ class web_optimizer {
 			}
 		}
 /* remove HTTP host from absolute URL */
-		return preg_replace("!https?://(www\.)?". $this->host ."/+!i", "/", $absolute_path);
+		return preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path);
 	}
 
 	/**
