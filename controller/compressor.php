@@ -1007,7 +1007,7 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (!strpos($old_src, "://") || preg_match("!://(www\.)?" . $this->host . "/+!i", $old_src)) {
+						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host . "/+!i", $old_src)) {
 /* calculating unique sum from image src */
 							$sum = 0;
 							$i = ceil(strlen($old_src)/2);
@@ -1655,7 +1655,7 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
-					if (strpos($src, "://") && !preg_match('@://(www\.)?' . $this->host . '/@', $src)) {
+					if (strpos($src, "//") && !preg_match('@//(www\.)?' . $this->host . '/@', $src)) {
 						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
@@ -1787,8 +1787,10 @@ class web_optimizer {
 						!empty($value['file'] ) &&
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css))))) {
 /* rewrite skipped file with CDN host */
-						if (($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
-							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) {
+						if ((($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
+							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) &&
+							(preg_match("@//(www\.)?" . $this->host . "/+@", $value['file']) ||
+							(substr($value['file'], 0, 1) == '/' && substr($value['file'], 1, 1) != '/'))) {
 								$host = $value['tag'] == 'link' ?
 									$this->options['css']['host'] : 
 									$this->options['javascript']['host'];
@@ -1861,7 +1863,7 @@ class web_optimizer {
 				if (!$tag || $value['tag'] == $tag) {
 					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
-						if(!preg_match("!https?://(www\.)?". $this->host . "!s", $value['file'])) {
+						if(!preg_match("@//(www\.)?". $this->host . "@s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
 								if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
@@ -2761,7 +2763,7 @@ class web_optimizer {
 			$endfile = $this->strip_querystring($endfile);
 		}
 /* Don't touch data URIs, or mhtml:, or external files */
-		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("!^https?://(www\.)?". $this->host ."!is", $file)) {
+		if (preg_match("!^(https?|data|mhtml):!is", $file) && !preg_match("@//(www\.)?". $this->host ."@is", $file)) {
 			return false;
 		}
 		$absolute_path = $file;

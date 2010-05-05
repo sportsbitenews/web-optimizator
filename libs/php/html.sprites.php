@@ -71,7 +71,7 @@ class html_sprites {
 			$width = $image[0];
 			$height = $image[1];
 			$class = $image[2];
-			$active = $width && $height ? $image[3] : 0;
+			$active = empty($image[3]) ? 0 : $image[3];
 			$filename = $this->options['document_root'] . $url;
 /* skip big images */
 			if ($width <= $this->options['page']['dimensions_limited'] &&
