@@ -243,7 +243,19 @@
 		}
 ?>.</p><?php
 	}
-?></div></li></ul><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
+?></div></li></ul><img src="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonautes.png<?php
+	} else {
+?>http://webo.in/webonautes/?options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>?<?php
+	echo md5($level1 . $level2 . $level3 . $level4 . $level5);
+?>" alt="Webonautes" class="wssO99"/><form action="#wss_awards" class="wssC8" method="get" enctype="multipart/form-data"><div class="wssO60"><img src="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webo-site-speedup125.png<?php
@@ -273,8 +285,84 @@
 	echo _WEBO_AWARDS_SIZE;
 ?>:</label></dt><dd class="wssO55"><label class="wssO56"><input type="radio" name="size" id="size88" value="88" class="wssO70"/> 88x88</label><label class="wssO56"><input type="radio" name="size" value="125" checked="checked" class="wssO70"/> 125x125</label><label class="wssO56"><input type="radio" name="size" value="161" class="wssO70"/> 161x161</label><label class="wssO56"><input type="radio" name="size" value="250" class="wssO70"/> 250x250</label></dd><dt class="wssO54"><label for="color1"><?php
 	echo _WEBO_AWARDS_COLOR;
-?>:</label></dt><dd class="wssO55"><label class="wssO57"><input type="radio" name="color" id="color1" value="color1" checked="checked" class="wssO70"/> <?php
+?>:</label></dt><dd class="wssO55"><label class="wssO57"><input type="radio" name="color" id="color1" value="webo-site-speedup" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webo-site-speedup125.png<?php
+	} else {
+?>http://webo.in/rocket/?size=125&amp;top=<?php
+		echo $level1;
+?>&amp;middle=<?php
+		echo $level2;
+?>&amp;bottom=<?php
+		echo $level3;
+?>&amp;tail=<?php
+		echo $level4;
+?>&amp;circle=<?php
+		echo $level5;
+	}
+?>"/> <?php
 	echo _WEBO_AWARDS_COLOR1;
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut1-" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonaut1-125.png<?php
+	} else {
+?>http://webo.in/webonautes/?size=125&amp;type=1&amp;options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>"/> <?php
+	echo _WEBO_AWARDS_COLOR2;
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut2-" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonaut2-125.png<?php
+	} else {
+?>http://webo.in/webonautes/?size=125&amp;type=2&amp;options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>"/> <?php
+	echo _WEBO_AWARDS_COLOR3;
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut3-" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonaut3-125.png<?php
+	} else {
+?>http://webo.in/webonautes/?size=125&amp;type=3&amp;options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>"/> <?php
+	echo _WEBO_AWARDS_COLOR4;
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut4-" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonaut4-125.png<?php
+	} else {
+?>http://webo.in/webonautes/?size=125&amp;type=4&amp;options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>"/> <?php
+	echo _WEBO_AWARDS_COLOR5;
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut5-" checked="checked" class="wssO70" title="<?php
+	if ($local) {
+		echo $cachedir;
+?>webonaut5-125.png<?php
+	} else {
+?>http://webo.in/webonautes/?size=125&amp;type=5&amp;options=<?php
+		echo $options;
+?>&amp;url=<?php
+		echo $host;
+	}
+?>"/> <?php
+	echo _WEBO_AWARDS_COLOR6;
 ?></label></dd><dt class="wssO54"><label for="codehtml"><?php
 	echo _WEBO_AWARDS_CODE;
 ?>:</label></dt><dd class="wssO55"><label class="wssO56"><input type="radio" name="code" id="codehtml" value="html" checked="checked" class="wssO70"/> <?php
@@ -297,7 +385,7 @@
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?> WEBO Site SpeedUp" src="<?php
 	echo $cachedir;
-?>webo-site-speedup.png" border="0"/>&lt;/a&gt;</textarea><input type="hidden" name="webo_cachedir" value="<?php
+?>webo-site-speedup125.png" border="0"/>&lt;/a&gt;</textarea><input type="hidden" name="webo_cachedir" value="<?php
 	echo $cachedir;
 ?>"/><input type="hidden" name="webo_aw" value="<?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;

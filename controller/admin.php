@@ -322,6 +322,12 @@ class admin {
 			foreach ($sizes as $size) {
 				$this->view->download("http://webo.in/rocket/?size=$size&top=$level1&middle=$level2&bottom=$level3&tail=$level4&circle=$level5",
 					$this->compress_options['css_cachedir'] . 'webo-site-speedup' . $size . '.png');
+				$this->view->download("http://webo.in/webonautes/?url=$host&options=" . (100 - $options),
+						$this->compress_options['css_cachedir'] . 'webonautes.png');
+				for ($i=1; $i<6; $i++) {
+					$this->view->download("http://webo.in/webonautes/?size=$size&type=$i&url=$host&options=" . (100 - $options),
+						$this->compress_options['css_cachedir'] . 'webonaut' . $i . '-' . $size . '.png');
+				}
 			}
 			$local = @is_file($this->compress_options['css_cachedir'] . 'webo-site-speedup250.png');
 			$this->save_option("['awards']", $awards);
@@ -404,7 +410,9 @@ class admin {
 			"cachedir" => str_replace($this->compress_options['document_root'], "/",
 				$this->compress_options['css_cachedir']),
 			"short_link" => $info[10],
-			"level_options" => $level_options
+			"level_options" => $level_options,
+			"host" => $this->compress_options['host'],
+			"options" => $info[5]
 		);
 		$this->view->render("install_awards", $page_variables);
 	}
@@ -1610,7 +1618,7 @@ class admin {
 		$deleted_css = true;
 		$deleted_js = true;
 		$deleted_html = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while ($file = @readdir($dir)) {
