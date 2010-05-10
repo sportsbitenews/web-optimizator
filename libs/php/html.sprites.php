@@ -252,6 +252,8 @@ class html_sprites {
 			} else {
 				$content = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $styles, $content);
 			}
+		} else {
+			unset($this->css_images);
 		}
 		return $content;
 	}
