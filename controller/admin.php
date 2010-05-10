@@ -915,7 +915,7 @@ class admin {
 			$this->premium > 1) {
 			$errors['performance_restore_properties'] = $value;
 		}
-		if (empty($this->compress_options['unobtrusive']['counters']) &&
+		if (empty($this->compress_options['unobtrusive']['informers']) &&
 			$this->premium > 1) {
 				$errors['unobtrusive_informers'] = $value;
 		}
