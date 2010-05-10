@@ -156,7 +156,7 @@ define('_WEBO_external_scripts_css_HELP_DISABLED', 'Current server environment d
 define('_WEBO_external_scripts_css_inline', 'Enable inline styles merging');
 define('_WEBO_external_scripts_css_inline_HELP', 'There will be combined all CSS included with the help of &lt;style&gt; and &lt;link&gt; tags. Otherwise WEBO Site SpeedUp will combine files included with &lt;link&gt; tag.');
 define('_WEBO_minify_css_file', 'Combined CSS file name');
-define('_WEBO_minify_css_file_HELP', 'File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_minify_css_file_HELP', 'Use this option to make sure that every web page has the same combined CSS file. Use it only if sets of CSS files are identical throughout the website. Pages with another sets of CSS files will still load the formely created file. The named combined file is static and when created, it is updated only on manual cache refresh. File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
 define('_WEBO_minify_css_host', 'Host for CSS file(s)');
 define('_WEBO_minify_css_host_HELP', 'Host to load merged CSS file. With enabled options in CDN group it will be used for all CSS files.');
 define('_WEBO_external_scripts_additional_list', 'Exclude CSS file(s) from merging (separated by space)');
@@ -175,7 +175,7 @@ define('_WEBO_external_scripts_on', 'Enable external JavaScript merging');
 define('_WEBO_external_scripts_on_HELP', 'There will be combined files located on all hosts. Otherwise WEBO Site SpeedUp will combine only files located on the same host that initial web page.');
 define('_WEBO_external_scripts_on_HELP_DISABLED', 'Current server environment doesn\'t have support for curl library, so dynamic and external files merging is impossible.');
 define('_WEBO_minify_javascript_file', 'Combined JavaScript file name');
-define('_WEBO_minify_javascript_file_HELP', 'File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
+define('_WEBO_minify_javascript_file_HELP', 'Use this option to make sure that every web page has the same combined JavaScript file. Use it only if sets of JavaScript files are identical throughout the website. Pages with another sets of JavaScript files will still load the formely created file. The named combined file is static and when created, it is updated only on manual cache refresh. File name can include only Latin letters, numbers, hyphens, underlines, or dots. All the other symbols will be excluded. This file name may be automatically expanded with special extension to manage client side cache in browsers.');
 define('_WEBO_minify_javascript_host', 'Host for JavaScript file(s)');
 define('_WEBO_minify_javascript_host_HELP', 'Host to load merged JavaScript file. With enabled options in CDN group it will be used for all JavaScript files.');
 define('_WEBO_external_scripts_ignore_list', 'Exclude file(s) from combining');
@@ -253,7 +253,7 @@ define('_WEBO_far_future_expires_html_HELP', 'All images will have caching heade
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML (in seconds)');
 define('_WEBO_far_future_expires_html_timeout_HELP', 'Time to cache HTML files. Zero value means zero timeout.');
 define('_WEBO_far_future_expires_external', 'Cache external files');
-define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be cached and served from the same host that web page itself.');
+define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be served from the same host that web page itself with Expires headers using /cache/wo.static.php proxy script from the Site SpeedUp apllication directory.');
 
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout set in option &quot;Default HTML cache timeout&quot;. This option allows you to significantly speedup web pages load with long generation time. But this is reasonable only for static pages without dynamic content.');
