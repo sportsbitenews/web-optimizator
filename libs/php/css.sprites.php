@@ -33,6 +33,11 @@ class css_sprites {
 				$this->optimizer->media[$import] = array();
 				foreach ($token as $tags => $rule) {
 					foreach ($rule as $key => $value) {
+/* add exclusion for IE filters (AlphaImageLoader) */
+						if ($key == 'filter' && strpos($value, 'AlphaImageLoader')) {
+							$this->optimizer->ignore_list[] =
+								preg_replace("@.*/@", "", preg_replace("@.*src\s*=\s*['\"](.*?)['\"].*@", "$1", $value));
+						}
 /* standartize all background values from input */
 						if (strpos(" ". $key, "background")) {
 /* rewrite current background with strict none */
