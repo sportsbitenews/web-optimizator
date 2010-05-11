@@ -388,6 +388,12 @@ define('_WEBO_parallel_additional_list', 'Использовать хосты н
 define('_WEBO_parallel_additional_list_HELP', 'Для распределения изображений, расположенных на сайтах, указанных в поле &laquo;Распределять файлы на дополнительных доменах&raquo;, будут использоваться хосты, указанные в этом поле.');
 define('_WEBO_parallel_ignore_list', 'Исключить следующие файлы из распределения (через пробел)');
 define('_WEBO_parallel_ignore_list_HELP', 'Вы можете указать список файлов (например, динамических) для исключения при распределении изображений по нескольким хостам.');
+define('_WEBO_parallel_custom', 'Использование CDN');
+define('_WEBO_parallel_custom_HELP', 'Вы можете самостоятельно настроить использование CDN (при помощи настроек данной группы и хостов для CSS- и JavaScript-файлов) или выбрать один из имеющихся вариантов.');
+define('_WEBO_parallel_custom1', 'Самостоятельная настройка');
+define('_WEBO_parallel_custom2', 'Текущая CDN (cdn.website.ru)');
+define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
+define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');
 
 define('_WEBO_footer_text', 'Додати посилання на Web Optimizer');
 define('_WEBO_footer_text_HELP', 'Ссылка на WEBO Site SpeedUp является обязательным требованием для некомерческой версии и может быть убрана только в платной версии.');

@@ -275,7 +275,13 @@ if ($submit) {
 								echo $option;
 ?>" id="wss_<?php
 								echo $option;
-?>" class="wssF"/></dd><?php
+?>" class="wssF"<?php
+								if (!empty($value['onclick'])) {
+?> onclick="<?php
+									echo  $value['onclick'];
+?>"<?php
+								}
+?>/></dd><?php
 								break;
 							case 'smalltext':
 ?><dd class="wssD2<?php
@@ -288,7 +294,13 @@ if ($submit) {
 								echo $option;
 ?>" id="wss_<?php
 								echo $option;
-?>" class="wssF wssF3"/></dd><?php
+?>" class="wssF wssF3"<?php
+								if (!empty($value['onclick'])) {
+?> onclick="<?php
+									echo  $value['onclick'];
+?>"<?php
+								}
+?>/></dd><?php
 								break;
 							case 'radio':
 ?><dd class="wssD6<?php
@@ -303,7 +315,13 @@ if ($submit) {
 								echo $option;
 ?>" id="wss_<?php
 								echo $option . $i;
-?>" class="wssF"/></dd><?php
+?>" class="wssF"<?php
+								if (!empty($value['onclick'])) {
+?> onclick="<?php
+									echo  $value['onclick'];
+?>"<?php
+								}
+?>/></dd><?php
 								break;
 							case 'checkbox':
 ?><dd class="wssD6<?php
@@ -316,7 +334,13 @@ if ($submit) {
 								echo $option;
 ?>" id="wss_<?php
 								echo $option;
-?>" class="wssF"/></dd><?php
+?>" class="wssF"<?php
+								if (!empty($value['onclick'])) {
+?> onclick="<?php
+									echo  $value['onclick'];
+?>"<?php
+								}
+?>/></dd><?php
 								break;
 							case 'textarea':
 								if (!empty($value['hidden'])) {
@@ -334,7 +358,13 @@ if ($submit) {
 									echo $option;
 ?>" id="wss_<?php
 									echo $option;
-?>"><?php
+?>"<?php
+								if (!empty($value['onclick'])) {
+?> onclick="<?php
+									echo  $value['onclick'];
+?>"<?php
+								}
+?>><?php
 									echo htmlspecialchars($value['value']);
 ?></textarea></dd><?php
 								}

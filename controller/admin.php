@@ -2683,6 +2683,13 @@ class admin {
 					'value' => $this->compress_options['parallel']['ignore_list'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'parallel_custom' => array(
+					'value' => $this->compress_options['parallel']['custom'],
+					'type' => 'radio',
+					'count' => 3,
+					'onclick' => '_.u(this)',
+					'hidden' => $this->premium < 2 ? 1 : 0
 				)
 			)
 		);
@@ -2817,8 +2824,8 @@ class admin {
 			'wss_description',
 			'wss_title',
 			'wss_config') as $val) {
-				$this->input[$val] = str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"),
-					empty($this->input[$val]) ? '' : $this->input[$val]);
+				$this->input[$val] = trim(str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"),
+					empty($this->input[$val]) ? '' : $this->input[$val]));
 		}
 /* make numeric options save */
 		foreach (array(
@@ -2833,8 +2840,16 @@ class admin {
 			'wss_data_uris_size',
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
-			'wss_css_sprites_html_limit') as $val) {
+			'wss_css_sprites_truecolor_in_jpeg',
+			'wss_css_sprites_html_limit',
+			'wss_parallel_custom') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : round($this->input[$val]);
+		}
+/* normalize values for radio buttons */
+		foreach (array(
+			'wss_css_sprites_truecolor_in_jpeg',
+			'wss_parallel_custom') as $val) {
+				$this->input[$val]--;
 		}
 /* disable don't check files in cache */
 		$this->input['wss_performance_cache_version'] =
@@ -2886,7 +2901,6 @@ class admin {
 			'wss_data_uris_domloaded',
 			'wss_data_uris_mhtml',
 			'wss_css_sprites_enabled',
-			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_css_sprites_aggressive',
 			'wss_css_sprites_extra_space',
 			'wss_css_sprites_no_ie6',

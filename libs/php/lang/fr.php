@@ -370,6 +370,12 @@ define('_WEBO_parallel_additional_list', 'Les hôtes sur ces sites web (séparer
 define('_WEBO_parallel_additional_list_HELP', 'Ces hôtes sont utilisé pour distribuer les images qui sont situés sur les sites web définis dans l\'option&quot;Additional websites with multiple hosts&quot;');
 define('_WEBO_parallel_ignore_list', 'Exclude the following files from distribution (séparer par un espace)');
 define('_WEBO_parallel_ignore_list_HELP', 'You can set a list of files (i.e. dynamic ones) to exclude from distibution logic.');
+define('_WEBO_parallel_custom', 'CDN usage');
+define('_WEBO_parallel_custom_HELP', 'You can either setup CDN usage by yourself (with settings of the current group and host for CSS/JavaScript files) or just choose one of the supported options.');
+define('_WEBO_parallel_custom1', 'Self-tuning');
+define('_WEBO_parallel_custom2', 'Current CDN (cdn.website.com)');
+define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
+define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');
 
 define('_WEBO_htaccess_enabled', 'Permettre  <code>.htaccess</code>');
 define('_WEBO_htaccess_enabled_HELP', 'Cette option créera (ou modifiera) le fichier.htaccess file dans le répertoire racine du site web. Cela crée également une version de sauvegarde de ce fichier.  Le contenu du fichier .htaccess file dépends des autres options dans ce groupe.');

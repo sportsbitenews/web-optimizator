@@ -210,6 +210,8 @@ $compress_options['parallel']['additional'] = "";
 $compress_options['parallel']['additional_list'] = "";
 ## Lisf of ignored images, separated by space, i.e. xxc.php
 $compress_options['parallel']['ignore_list'] = "";
+## Custom CDN usage, 0 - defailt, 1 - cdn.host.com, 2 - Coral CDN, 3 - WEBO CDN
+$compress_options['parallel']['custom'] = "0";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "0";
 $compress_options['htaccess']['mod_deflate'] = "1";
