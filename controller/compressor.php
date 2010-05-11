@@ -2335,8 +2335,9 @@ class web_optimizer {
 						$value[0] .
 					'</' .
 						$tag .
-					'><script type="text/javascript">(function(){var a=document.getElementById("' .
-						$stuff . '_dst_' . $key . '").parentNode;a.innerHTML=a.innerHTML.replace(/\x3c' .
+					'><script type="text/javascript">(function(){var a=document,b=a.getElementById("' .
+						$stuff . '_dst_' . $key . '"),c=b.parentNode,d=a.getElementById("' .
+						$stuff . '_src_' . $key . '");if(c===a.body){c.insertBefore(d,b);c.removeChild(b)}else{c.innerHTML=c.innerHTML.replace(/\x3c' .
 						$tag .
 					'[^>]+id="?' .
 						$stuff .
@@ -2344,9 +2345,8 @@ class web_optimizer {
 						$key .
 					'["\s>].*?\x3c\/' . 
 						$tag .
-					'>/i,document.getElementById("' .
-						$stuff . '_src_' . $key . '").innerHTML);a=document.getElementById("' .
-						$stuff . '_src_' . $key . '");a.parentNode.removeChild(a)}())</script>';
+					'>/i,d.innerHTML);b=a.getElementById("' .
+						$stuff . '_src_' . $key . '");b.parentNode.removeChild(b)}}())</script>';
 				} else {
 					$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
 						$stuff . '_dst_' . $key
