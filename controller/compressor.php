@@ -546,7 +546,8 @@ class web_optimizer {
 		if (!$skip) {
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
 			$spot = substr($this->content, 0, 60);
-			if (strpos($spot, '<rss') !== false ||
+			if (strpos($spot, '<methodResponse') !== false ||
+				strpos($spot, '<rss') !== false ||
 				strpos($spot, '<feed') !== false ||
 				strpos($spot, '<urlset') !== false ||
 				strpos($spot, '<smf') !== false) {
