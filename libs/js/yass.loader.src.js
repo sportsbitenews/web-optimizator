@@ -1,5 +1,5 @@
 /* 
- * XHTML documment.write() Support (v1.5.2) - Parses string argument into DOM nodes
+ * XHTML document.write() Support (v1.5.2) - Parses string argument into DOM nodes
  *     appends them to the document immediately after the last loaded SCRIPT element,
  *     or to the BODY if the document has been loaded.
  *  by Weston Ruter, Shepherd Interactive <http://www.shepherd-interactive.com/>
@@ -16,7 +16,7 @@
 	var doc = document, parentNode;
 
 	doc.write = function(str){
-		parentNode = wss_parentNode;
+		parentNode = wss_parentNode || document.body;
 		new HTMLParser(str, {
 				start:function(tag, attrs, unary){
 					var el = doc.createElement(tag);
