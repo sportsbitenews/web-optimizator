@@ -531,4 +531,5 @@
 	echo _WEBO_GZIP_ERROR;
 ?>"</script><script type="text/javascript" src="http://i.webo.in/wss/index.<?php
 	echo $language;
+	echo defined("LANG_CHARSET") && LANG_CHARSET != 'UTF-8' ? '.cp1251' : '';
 ?>.js"></script>
