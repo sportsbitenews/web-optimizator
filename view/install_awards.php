@@ -303,7 +303,7 @@
 	}
 ?>"/> <?php
 	echo _WEBO_AWARDS_COLOR1;
-?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut1-" checked="checked" class="wssO70" title="<?php
+?></label><label class="wssO57"><input type="radio" name="color" id="color2" value="webonaut1-" class="wssO70" title="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webonaut1-125.png<?php
@@ -315,7 +315,7 @@
 	}
 ?>"/> <?php
 	echo _WEBO_AWARDS_COLOR2;
-?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut2-" checked="checked" class="wssO70" title="<?php
+?></label><label class="wssO57"><input type="radio" name="color" id="color3" value="webonaut2-" cclass="wssO70" title="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webonaut2-125.png<?php
@@ -327,7 +327,7 @@
 	}
 ?>"/> <?php
 	echo _WEBO_AWARDS_COLOR3;
-?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut3-" checked="checked" class="wssO70" title="<?php
+?></label><label class="wssO57"><input type="radio" name="color" id="color4" value="webonaut3-" class="wssO70" title="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webonaut3-125.png<?php
@@ -339,7 +339,7 @@
 	}
 ?>"/> <?php
 	echo _WEBO_AWARDS_COLOR4;
-?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut4-" checked="checked" class="wssO70" title="<?php
+?></label><label class="wssO57"><input type="radio" name="color" id="color5" value="webonaut4-" class="wssO70" title="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webonaut4-125.png<?php
