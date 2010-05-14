@@ -2374,6 +2374,8 @@ class web_optimizer {
 			(empty($this->options['javascript']['host']) ?
 				$this->options['page']['host'] :
 				$this->options['javascript']['host']) .
+			(empty($this->options['javascript']['far_future_expires_rewrite']) ?
+				'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
 			$this->options['javascript']['cachedir_relative'] .
 			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
 		$unobtrusive_items = array(
