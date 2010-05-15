@@ -2608,7 +2608,8 @@ class admin {
 				'premium' => $this->premium < 2 ? 1 : 0,
 				'unobtrusive_on' => array(
 					'value' => $this->compress_options['unobtrusive']['on'],
-					'type' => 'checkbox',
+					'type' => 'radio',
+					'count' => 2,
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
 				'unobtrusive_body' => array(
@@ -2854,7 +2855,8 @@ class admin {
 /* normalize values for radio buttons */
 		foreach (array(
 			'wss_css_sprites_truecolor_in_jpeg',
-			'wss_parallel_custom') as $val) {
+			'wss_parallel_custom',
+			'wss_unobtrusive_on') as $val) {
 				$this->input[$val]--;
 		}
 /* disable don't check files in cache */
