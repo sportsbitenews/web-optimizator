@@ -2353,7 +2353,7 @@ class web_optimizer {
 					.'\');' .
 						str_replace(array("\n", "\r", '###WSS###', '<div', '</div'),
 							array(' ', '', $key, '\x3cdiv', '\x3c/div'),
-							preg_replace("@(<!--.*?-->|/\*.*?\*/)@is", "", preg_replace("@" . $onload_mask . "@is",
+							preg_replace("@(<!--.*?-->|/\*.*?\*/|//.*?\n)@is", "", preg_replace("@" . $onload_mask . "@is",
 							$onload_result, $value[0]))) .
 						'}</script>';
 				}
@@ -2369,7 +2369,8 @@ class web_optimizer {
 	*
 	**/
 	function replace_informers ($options) {
-		$before_body = empty($this->options['page']['unobtrusive_onload']) ?
+		$before_body = '';
+		$before_body_onload = empty($this->options['page']['unobtrusive_onload']) ?
 			'' : '<script type="text/javascript" src="//' .
 			(empty($this->options['javascript']['host']) ?
 				$this->options['page']['host'] :
@@ -2542,15 +2543,22 @@ class web_optimizer {
 			if (!empty($options[$group])) {
 				foreach ($items as $key => $item) {
 					if (strpos($this->content, $item['marker'])) {
-						$before_body .= $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
+						$before = $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
 							$key, empty($item['height']) ? 0 : $item['height'],
 							empty($item['inline']) ? false : $item['inline'],
 							empty($item['onload_before']) ? false : $item['onload_before'],
 							empty($item['onload_after']) ? false : $item['onload_after']);
+/* switch between window.onload and onDOMready handlers */
+						if (!empty($item['onload_before']) && !empty($item['onload_after'])) {
+							$before_body_onload .= $before;
+						} else {
+							$before_body .= $before;
+						}
 					}
 				}
 			}
 		}
+		$before_body .= $before_body_onload;
 		$before_body .= empty($this->options['page']['unobtrusive_onload']) ?
 			'' : '<script type="text/javascript">wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10)},false)</script>';
 		if (!empty($before_body)) {
