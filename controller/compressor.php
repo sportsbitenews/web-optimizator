@@ -924,16 +924,18 @@ class web_optimizer {
 		@chmod($file, octdec("0644"));
 		if ($ftp && !empty($this->options['page']['parallel_ftp']) &&
 			@function_exists('curl_init')) {
-				$ch = curl_init();
-				$fp = fopen($file, 'r');
-				curl_setopt($ch, CURLOPT_URL, 'ftp://' .
-					$this->options['page']['parallel_ftp'] .
+				$ch = @curl_init('ftp://' .
+					preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->options['page']['parallel_ftp']) .
 					str_replace($this->options['document_root'], "/", $file));
-				curl_setopt($ch, CURLOPT_UPLOAD, 1);
-				curl_setopt($ch, CURLOPT_INFILE, $fp);
-				curl_setopt($ch, CURLOPT_INFILESIZE, filesize($file));
-				curl_exec ($ch);
-				curl_close ($ch);
+				$fp = @fopen($file, 'r');
+				@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->options['page']['parallel_ftp']));
+				@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
+				@curl_setopt($ch, CURLOPT_UPLOAD, 1);
+				@curl_setopt($ch, CURLOPT_INFILE, $fp);
+				@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($file));
+				@curl_exec($ch);
+				@curl_close($ch);
+				@fclose($fp);
 		}
 	}
 
@@ -1537,7 +1539,7 @@ class web_optimizer {
 				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 					$c = @gzencode($contents, $options['gzip_level'], FORCE_GZIP);
 					if (!empty($c)) {
-						$this->write_file($physical_file . '.gz', $c, 1);
+						$this->write_file($physical_file . '.gz', $c);
 					}
 				}
 /* Create the link to the new file */
