@@ -133,7 +133,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD8 .wssD3{background:url(error-input.png) no-repeat;text-indent:-99em;left:-19px;top:6px}
 .wssD7.wssD8 .wssD3{top:3px}
 .wssD9{border:1px solid #fbddb8;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin:0 0 0 182px;padding:0}
-.wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:450px;margin:0;position:relative;padding:11px 15px}
+.wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:450px;min-height:140px;margin:0;position:relative;padding:11px 15px}
 .wssD11{height:400px}
 .wssC7 .wssD10{height:auto}
 .wssD20 .wssE{color:#ccc}
