@@ -378,7 +378,8 @@ define('_WEBO_parallel_custom1', 'Self-tuning');
 define('_WEBO_parallel_custom2', 'Current CDN (cdn.website.com)');
 define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
 define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');
-
+define('_WEBO_parallel_ftp', 'FTP access to upload files');
+define('_WEBO_parallel_ftp_HELP', 'If you are using paid CDN (i.e. EdgeCast) it may be necessary to setup FTP access to upload all new assets. FTP access string must be given in the format user:password@host (or user:password@host:port).');
 
 define('_WEBO_htaccess_enabled', 'Activar <code>.htaccess</code>');
 define('_WEBO_htaccess_enabled_HELP', 'Esta opción creará (o modificará) el archivo .htaccess en la raíz de directorio del Sitio Web. Además crea versiones backup de la versión del archivo. El contenido del archivo .htaccess depende de las otras opciones en este grupo.');

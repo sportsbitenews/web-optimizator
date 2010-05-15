@@ -193,6 +193,8 @@ $compress_options['parallel']['additional_list'] = "";
 $compress_options['parallel']['ignore_list'] = "";
 ## Custom CDN usage, 0 - defailt, 1 - cdn.host.com, 2 - Coral CDN, 3 - WEBO CDN
 $compress_options['parallel']['custom'] = "0";
+## FTP creadentials to upload new files to CDN
+$compress_options['parallel']['ftp'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";

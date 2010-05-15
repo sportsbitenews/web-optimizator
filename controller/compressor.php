@@ -416,6 +416,7 @@ class web_optimizer {
 					($this->premium > 1),
 				"parallel_javascript" => $this->options['parallel']['javascript'] &&
 					($this->premium > 1),
+				"parallel_ftp" => $this->premium > 1 ? $this->options['parallel']['ftp'] : '',
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -904,7 +905,7 @@ class web_optimizer {
 	* Write content to file
 	* 
 	**/
-	function write_file ($file, $content) {
+	function write_file ($file, $content, $ftp = 0) {
 		if (@function_exists('file_put_contents')) {
 			@file_put_contents($file, $content);
 		} else {
@@ -921,6 +922,19 @@ class web_optimizer {
 		}
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));
+		if ($ftp && !empty($this->options['page']['parallel_ftp']) &&
+			@function_exists('curl_init')) {
+				$ch = curl_init();
+				$fp = fopen($file, 'r');
+				curl_setopt($ch, CURLOPT_URL, 'ftp://' .
+					$this->options['page']['parallel_ftp'] .
+					str_replace($this->options['document_root'], "/", $file);
+				curl_setopt($ch, CURLOPT_UPLOAD, 1);
+				curl_setopt($ch, CURLOPT_INFILE, $fp);
+				curl_setopt($ch, CURLOPT_INFILESIZE, filesize($file));
+				curl_exec ($ch);
+				curl_close ($ch);
+		}
 	}
 
 	/**
@@ -1465,7 +1479,7 @@ class web_optimizer {
 					}
 /* write data:URI / mhtml content */
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
-						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource);
+						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, 1);
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file */
 						if (empty($options['data_uris_domloaded'])) {
@@ -1518,12 +1532,12 @@ class web_optimizer {
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
-				$this->write_file($physical_file, $contents);
+				$this->write_file($physical_file, $contents, 1);
 /* create static gzipped versions for static gzip in nginx, Apache */
 				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 					$c = @gzencode($contents, $options['gzip_level'], FORCE_GZIP);
 					if (!empty($c)) {
-						$this->write_file($physical_file . '.gz', $c);
+						$this->write_file($physical_file . '.gz', $c, 1);
 					}
 				}
 /* Create the link to the new file */

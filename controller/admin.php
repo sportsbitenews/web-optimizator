@@ -2690,7 +2690,12 @@ class admin {
 					'count' => 3,
 					'onclick' => '_.u(this)',
 					'hidden' => $this->premium < 2 ? 1 : 0
-				)
+				),
+				'parallel_ftp' => array(
+					'value' => $this->compress_options['parallel']['ftp'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
 			)
 		);
 		if (empty($options['title'])) {
@@ -2821,6 +2826,7 @@ class admin {
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',
 			'wss_parallel_ignore_list',
+			'wss_parallel_ftp',
 			'wss_description',
 			'wss_title',
 			'wss_config') as $val) {
