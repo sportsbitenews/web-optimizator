@@ -3933,7 +3933,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 	function get_modules () {
 /* check for Apache installation, only if curl is disabled */
 		if (function_exists('apache_get_modules')) {
-				$apache_modules = apache_get_modules();
+			$apache_modules = apache_get_modules();
 		} else {
 /* if PHP installed as CGI module -- we don't need .htaccess */	
 			$apache_modules = array();
