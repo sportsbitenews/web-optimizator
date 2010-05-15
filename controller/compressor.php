@@ -928,7 +928,7 @@ class web_optimizer {
 				$fp = fopen($file, 'r');
 				curl_setopt($ch, CURLOPT_URL, 'ftp://' .
 					$this->options['page']['parallel_ftp'] .
-					str_replace($this->options['document_root'], "/", $file);
+					str_replace($this->options['document_root'], "/", $file));
 				curl_setopt($ch, CURLOPT_UPLOAD, 1);
 				curl_setopt($ch, CURLOPT_INFILE, $fp);
 				curl_setopt($ch, CURLOPT_INFILESIZE, filesize($file));
