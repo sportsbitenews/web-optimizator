@@ -434,10 +434,10 @@ class web_optimizer {
 				"footer_text" => $this->options['footer']['link'],
 				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
-				"htaccess_username" => $this->options['external_scripts']['user'] &&
-					($this->premium > 1),
-				"htaccess_password" => $this->options['external_scripts']['pass'] &&
-					($this->premium > 1),
+				"htaccess_username" => $this->premium > 1 ?
+					$this->options['external_scripts']['user'] : '',
+				"htaccess_password" => $this->premium > 1 ?
+					$this->options['external_scripts']['pass'] : '',
 				"html_tidy" => $this->options['performance']['plain_string'] &&
 					($this->premium > 1),
 				"sprites" => $this->options['css_sprites']['html_sprites'] &&
