@@ -4043,7 +4043,9 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 				$curl = $this->view->download(str_replace(realpath($root),
 					"http://" . $_SERVER['HTTP_HOST'],
 					realpath($this->basepath)) . '/' .
-					$curlfile, $cachedir . 'module.test');
+					$curlfile, $cachedir . 'module.test', 1, 0,
+					$this->compress_options['external_scripts']['user'],
+					$this->compress_options['external_scripts']['pass']);
 				if (round($curl[1]) == 301) {
 /* switch from PHP for JS, if recursion w/o result */
 					if ($module == 'mod_symlinks') {

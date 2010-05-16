@@ -167,7 +167,7 @@ class compressor_view {
 	* Generic download function to get external files
 	*
 	**/
-	function download ($remote_file, $local_file, $timeout = 60, $host = false) {
+	function download ($remote_file, $local_file, $timeout = 60, $host = false, $user = false, $pass = false) {
 		if (!$host) {
 			$host = $_SERVER['HTTP_HOST'];
 		}
@@ -194,6 +194,10 @@ class compressor_view {
 					$_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
+/* set username / password for HTTP Basic Authorization */
+				if ($user && $pass) {
+					@curl_setopt($ch, CURLOPT_USERPWD, $user . ':' . $pass);
+				}
 /* write headers - to get gzip info */
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
