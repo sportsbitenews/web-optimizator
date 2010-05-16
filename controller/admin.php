@@ -46,7 +46,7 @@ class admin {
 				'install_stable'))) {
 			$this->view->download($this->svn . 'version', $version_new_file);
 		}
-		$this->version_new = $this->version;
+		$this->version_new = $this->version . '+';
 		if (@is_file($version_new_file)) {
 			$this->version_new = @file_get_contents($version_new_file);
 			@unlink($version_new_file);
@@ -2657,7 +2657,7 @@ class admin {
 				),
 				'parallel_allowed_list' => array(
 					'value' => $this->compress_options['parallel']['allowed_list'],
-					'type' => 'textarea',
+					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
 				'parallel_css' => array(
@@ -3981,10 +3981,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$this->apache_modules[] = 'mod_symlinks';
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
+/* can't get this code (htaccess detection) on both Denwer with curl, non-curl,
+   CGI with curl and Apache with curl environments. See
+   http://code.google.com/p/web-optimizator/issues/detail?id=369
 		$this->view->download(str_replace($root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $cachedir . 'htaccess.test');
 		if (@is_file($cachedir . 'htaccess.test') && !@filesize($cachedir . 'htaccess.test')) {
-			$this->apache_modules = array();
-		} elseif (count($this->apache_modules) < 2 && function_exists('curl_init')) {
+			$this->apache_modules = array(); */
+		if (count($this->apache_modules) < 2) {
 			$modules = array(
 				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
 				'mod_headers' => 'Header append Cache-Control public',
@@ -3996,12 +3999,19 @@ RewriteRule wo\.cookie\.php$ " .
 str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/", dirname(__FILE__))) .
 "/../libs/js/yass.loader.js"
 			);
+			if (@function_exists('curl_init')) {
 /* detect modules one by one, it can be CGI environment */
-			foreach ($modules as $key => $value) {
-				if (!in_array('mod_deflate', $this->apache_modules) || $key != 'mod_gzip') {
-					if ($this->check_apache_module($value, $root, $cachedir, $key)) {
-						$this->apache_modules[] = $key;
+				foreach ($modules as $key => $value) {
+					if (!in_array('mod_deflate', $this->apache_modules) || $key != 'mod_gzip') {
+						if ($this->check_apache_module($value, $root, $cachedir, $key)) {
+							$this->apache_modules[] = $key;
+						}
 					}
+				}
+/* just fill all Apache modules - we can't check their existence */
+			} else {
+				foreach ($modules as $key => $value) {
+					$this->apache_modules[] = $key;
 				}
 			}
 		}
