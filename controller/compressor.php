@@ -2883,7 +2883,8 @@ class web_optimizer {
 			'multiple_hosts' => empty($options['parallel']) ? array() : explode(" ", $options['parallel_hosts']),
 			'user_agent' => $this->ua_mod,
 			'punypng' => $options['punypng'],
-			'restore_properties' => $options['css_restore_properties']
+			'restore_properties' => $options['css_restore_properties'],
+			'ftp_access' => $this->options['page']['parallel_ftp']
 		));
 		return $css_sprites->process();
 	}
