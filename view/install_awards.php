@@ -351,7 +351,7 @@
 	}
 ?>"/> <?php
 	echo _WEBO_AWARDS_COLOR5;
-?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut5-" checked="checked" class="wssO70" title="<?php
+?></label><label class="wssO57"><input type="radio" name="color" id="color1" value="webonaut5-" class="wssO70" title="<?php
 	if ($local) {
 		echo $cachedir;
 ?>webonaut5-125.png<?php
