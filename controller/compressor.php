@@ -1475,12 +1475,12 @@ class web_optimizer {
 					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
-/* Allow for gzipping and headers */
-					if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
-						$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
-					}
 /* write data:URI / mhtml content */
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
+/* Allow for gzipping and headers */
+						if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
+							$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
+						}
 						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, 1);
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file */
