@@ -1199,7 +1199,11 @@ class web_optimizer {
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
 					$source = substr_replace($source, $newfile, $headpos, 0);
 				} else {
-					$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
+					$source = preg_replace("!</head>!is", $newfile . "$0", $source);
+				}
+/* additional check in case of non-existing </head>, insert before <body> */
+				if (!strpos($source, $newfile)) {
+					$source = preg_replace("!<body>!is", $newfile . "$0", $source);
 				}
 				break;
 /* add JavaScript calls before </body> */
