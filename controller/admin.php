@@ -2254,6 +2254,11 @@ class admin {
 						$this->restrictions['wss_minify_js'] : 0
 						
 				),
+				'external_scripts_minify_exclude' => array(
+					'value' => $this->compress_options['external_scripts']['minify_exclude'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0
+				),
 				'minify_page' => array(
 					'value' => $this->compress_options['minify']['page'],
 					'type' => 'checkbox'
@@ -2814,6 +2819,7 @@ class admin {
 			'wss_external_scripts_include_code',
 			'wss_external_scripts_ignore_list',
 			'wss_external_scripts_additional_list',
+			'wss_external_scripts_minify_exclude',
 			'wss_footer_image',
 			'wss_footer_link',
 			'wss_footer_css_code',

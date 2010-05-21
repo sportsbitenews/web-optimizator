@@ -58,6 +58,8 @@ $compress_options['external_scripts']['include_code'] = "";
 $compress_options['external_scripts']['include_try'] = "1";
 ## Remove duplicates of common libraries
 $compress_options['external_scripts']['duplicates'] = "1";
+## Exclude the following scripts from minify
+$compress_options['external_scripts']['minify_exclude'] = "";
 ## To get through HTTP Basic Authorization
 $compress_options['external_scripts']['user'] = "";
 $compress_options['external_scripts']['pass'] = "";

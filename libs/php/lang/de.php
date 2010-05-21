@@ -198,6 +198,8 @@ define('_WEBO_minify_js1', 'Don\'t minify JavaScript');
 define('_WEBO_minify_js2', 'Mit JSMin minimieren');
 define('_WEBO_minify_js3', 'Mit YUI Compressor mimimieren');
 define('_WEBO_minify_js4', 'Mit Packer minimieren');
+define('_WEBO_external_scripts_minify_exclude', 'Exclude the following file(s) from minify (separated by space)');
+define('_WEBO_external_scripts_minify_exclude_HELP', 'File(s) listed here won\'t be minified with combining of JavaScript code (but will be combined according to other settings from &quot;Combine JavaScript&quot; group of options).');
 define('_WEBO_minify_page', 'HTML minimieren');
 define('_WEBO_minify_page_HELP', 'HTML code will be cleaned from double spaces, double line breaks, empty symbols at the beginning of every string and spaces before tag ends. Tags &lt;pre&gt;, &lt;textarea&gt;, &lt;script&gt; will be excluded from all actions .');
 define('_WEBO_minify_html_comments', 'HTML-Kommentare entfernen');
@@ -375,7 +377,7 @@ define('_WEBO_parallel_ignore_list', 'Exclude the following files from distribut
 define('_WEBO_parallel_ignore_list_HELP', 'You can set a list of files (i.e. dynamic ones) to exclude from distibution logic.');
 define('_WEBO_parallel_custom', 'CDN usage');
 define('_WEBO_parallel_custom_HELP', 'You can either setup CDN usage by yourself (with settings of the current group and host for CSS/JavaScript files) or just choose one of the supported options.');
-define('_WEBO_parallel_custom1', 'Self-tuning');
+define('_WEBO_parallel_custom1', 'Manual setup');
 define('_WEBO_parallel_custom2', 'Current CDN (cdn.website.com)');
 define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
 define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');

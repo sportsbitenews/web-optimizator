@@ -288,6 +288,9 @@ class web_optimizer {
 						'yui' : ($this->options['minify']['with_packer'] ?
 							'packer' : '')),
 				"minify_try" => $this->options['external_scripts']['include_try'],
+				"minify_exclude" => $this->premium > 1 ?
+					$this->options['external_scripts']['minify_exclude'] :
+					'',
 				"remove_duplicates" => $this->options['external_scripts']['duplicates'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
@@ -662,6 +665,7 @@ class web_optimizer {
 					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
 					'minify_try' => $options['minify_try'],
+					'minify_exclude' => $options['minify_exclude'],
 					'remove_duplicates' => $options['remove_duplicates'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
@@ -1203,7 +1207,7 @@ class web_optimizer {
 				}
 /* additional check in case of non-existing </head>, insert before <body> */
 				if (!strpos($source, $newfile)) {
-					$source = preg_replace("!<body>!is", $newfile . "$0", $source);
+					$source = preg_replace("!<body[^>]*>!is", $newfile . "$0", $source);
 				}
 				break;
 /* add JavaScript calls before </body> */
@@ -1387,21 +1391,24 @@ class web_optimizer {
 /* Create file */
 		$contents = "";
 		if (is_array($external_array)) {
-			foreach($external_array as $key => $info) {
+/* can't simply merge&minify if we need to exclude some files */
+			if (empty($options['minify_exclude']) || empty($options['minify'])) {
+				foreach($external_array as $key => $info) {
 /* Get the code */
-				if ($file_contents = $info['content']) {
-					if (!empty($options['minify_try'])) {
-						$contents .= 'try{';
-					}
-					$contents .= $file_contents . "\n";
-					if (!empty($options['minify_try'])) {
-						$contents .= '}catch(e){';
-						if (!empty($info['file'])) {
-							$contents .= 'document.write("' .
-								str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
-								'")';
+					if ($file_contents = $info['content']) {
+						if (!empty($options['minify_try'])) {
+							$contents .= 'try{';
 						}
-						$contents .= '}';
+						$contents .= $file_contents . "\n";
+						if (!empty($options['minify_try'])) {
+							$contents .= '}catch(e){';
+							if (!empty($info['file'])) {
+								$contents .= 'document.write("' .
+									str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
+									'")';
+							}
+							$contents .= '}';
+						}
 					}
 				}
 			}
@@ -1508,27 +1515,42 @@ class web_optimizer {
 		if (!empty($contents)) {
 /* Allow for minification of javascript */
 			if ($options['header'] == "javascript" && $options['minify']) {
-				if ($options['minify_with'] == 'packer') {
-					$this->packer = new JavaScriptPacker($contents,
-						'Normal', false, false);
-					$minified_content = $this->packer->pack();
-				} elseif ($options['minify_with'] == 'yui' ) {
-					$this->yuicompressor = new YuiCompressor($options['cachedir'],
-						$options['installdir'], $this->charset);
-					$minified_content = $this->yuicompressor->compress($contents);
-				}
-				if ($options['minify_with'] == 'jsmin' ||
-					(!empty($options['minify_with']) &&
-						empty($minified_content))) {
-							$this->jsmin = new JSMin($contents);
-							$minified_content = $this->jsmin->minify($contents);
-				}
-				if (!empty($minified_content)) {
-					$contents = $minified_content;
+				$contents = $this->minify_javascript($contents, $options);
+			}
+/* we need to exclude some files from ninify */
+		} elseif(!empty($options['minify_exclude']) && $options['minify']) {
+			$exclude_list = explode(" ", trim($options['minify_exclude']));
+			foreach($external_array as $key => $info) {
+/* Get the code */
+				if ($file_contents = $info['content']) {
+					$content = '';
+					if (!empty($options['minify_try'])) {
+						$content .= 'try{';
+					}
+					$content .= $file_contents . "\n";
+					if (!empty($options['minify_try'])) {
+						$content .= '}catch(e){';
+						if (!empty($info['file'])) {
+							$content .= 'document.write("' .
+								str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
+								'")';
+						}
+						$content .= '}';
+					}
+					if ($options['header'] == "javascript" &&
+						!in_array(preg_replace("@.*/@", "", $info['file']), $exclude_list)) {
+							$content = $this->minify_javascript($content, $options);
+					}
+					$contents .= $content;
 				}
 			}
+		}
+		if (!empty($contents)) {
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['header'] == "css" && !empty($options['minify']) && empty($options['css_sprites']) && empty($options['data_uris'])) {
+			if ($options['header'] == "css" &&
+				!empty($options['minify']) &&
+				empty($options['css_sprites']) &&
+				empty($options['data_uris'])) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
@@ -1552,6 +1574,33 @@ class web_optimizer {
 			}
 		}
 		return $source;
+	}
+	
+	/**
+	* Minifies JavaScript code according to current options
+	*
+	*/
+
+	function minify_javascript ($code, $options) {
+		$minified_code = '';
+		if ($options['minify_with'] == 'packer') {
+			$this->packer = new JavaScriptPacker($code, 'Normal', false, false);
+			$minified_code = $this->packer->pack();
+		} elseif ($options['minify_with'] == 'yui' ) {
+			$this->yuicompressor = new YuiCompressor($options['cachedir'],
+				$options['installdir'], $this->charset);
+			$minified_code = $this->yuicompressor->compress($code);
+		}
+		if ($options['minify_with'] == 'jsmin' ||
+			(!empty($options['minify_with']) &&
+			empty($minified_content))) {
+					$this->jsmin = new JSMin($code);
+					$minified_code = $this->jsmin->minify($code);
+		}
+		if (!empty($minified_code)) {
+			$code = $minified_code;
+		}
+		return $code;
 	}
 
 	/**

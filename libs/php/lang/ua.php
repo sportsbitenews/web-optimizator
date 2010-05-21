@@ -199,6 +199,8 @@ define('_WEBO_minify_js1', 'Не минимизировать JavaScript');
 define('_WEBO_minify_js2', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_js3', 'Мінімізувати за допомогою YUI Compressor');
 define('_WEBO_minify_js4', 'Мінімізувати за допомогою Packer');
+define('_WEBO_external_scripts_minify_exclude', 'Исключить из минимизации следующие файлы (через пробел)');
+define('_WEBO_external_scripts_minify_exclude_HELP', 'При объединении JavaScript-кода указанные в этом поле файлы не будут минимизированы (но будут объединены согласно остальным настройкам группы &laquo;Объединение JavaScript&raquo;).');
 define('_WEBO_minify_page', 'Мінімізувати HTML');
 define('_WEBO_minify_page_HELP', 'Из кода страниц будут удаляться двойные пробелы, двойные переводы строк, пустые символы в начале каждой строки и пробелы перед окончанием тэга. Все операции будут проводиться за исключением содержимого тэгов &lt;pre&gt;, &lt;textarea&gt;, &lt;script&gt;.');
 define('_WEBO_minify_html_one_string', 'Стиснути HTML до 1 рядка');
