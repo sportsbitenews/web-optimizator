@@ -1593,7 +1593,7 @@ class web_optimizer {
 		}
 		if ($options['minify_with'] == 'jsmin' ||
 			(!empty($options['minify_with']) &&
-			empty($minified_content))) {
+			empty($minified_code))) {
 					$this->jsmin = new JSMin($code);
 					$minified_code = $this->jsmin->minify($code);
 		}
