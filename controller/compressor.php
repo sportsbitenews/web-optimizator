@@ -1619,7 +1619,7 @@ class web_optimizer {
 			foreach ($external_array as $key => $value) {
 /* Remove script, replace the first one with the mark to insert merged script */
 				$source = str_replace($value['source'], $replacement, $source);
-				if ($merk) {
+				if ($mark) {
 					$replacement = '';
 				}
 			}
