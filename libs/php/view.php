@@ -157,7 +157,7 @@ class compressor_view {
 						return false;
 					}
 				}
-				return $t1 ? 1 : 2;
+				return $t1 ? 1 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2));
 			}
 		}
 		return false;

@@ -684,6 +684,8 @@ define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caractéristiques et technologies');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Communauté');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
+define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edition');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Aide Premium');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Speedup');

@@ -261,6 +261,13 @@ if ($submit) {
 								echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '///'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';
 ?>">?</a><?php
 							}
+							if (!empty($value['price']) && $premium == 10) {
+?><span class="wssE1" id="wss_<?php
+								echo $option . ($value['type'] == 'radio' ? $i : '');
+?>_webo"><?php
+								echo is_array($value['price']) ? $value['price'][$i-1] : $value['price'];
+?></span><?php
+							}
 ?></label></dt><?php
 						}
 						switch ($value['type']) {

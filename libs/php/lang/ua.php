@@ -667,6 +667,8 @@ define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Аспекты технологии');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная');
+define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Корпоративная');
+define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'версия');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение');

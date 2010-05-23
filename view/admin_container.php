@@ -118,6 +118,22 @@ if (!$ajax) {
 				echo _WEBO_SPLASH2_COMPARISON_FULL;
 ?> <?php
 				echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+?></span><span class="wss_w4<?php
+				if ($premium == 3) {
+?> wss_w0<?php
+				}
+?>"> <?php
+				echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
+?> <?php
+				echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+?></span><span class="wss_w5<?php
+				if ($premium == 10) {
+?> wss_w0<?php
+				}
+?>"> <?php
+				echo _WEBO_SPLASH2_COMPARISON_SAAS;
+?> <?php
+				echo  _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span></a><?php
 		}
 ?></p><?php
