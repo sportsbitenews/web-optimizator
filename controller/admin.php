@@ -2845,6 +2845,7 @@ class admin {
 			'wss_combine_css',
 			'wss_minify_javascript',
 			'wss_minift_js',
+			'wss_unobtrusive_on',
 			'wss_performance_cache_version',
 			'wss_performance_delete_old',
 			'wss_far_future_expires_html_timeout',
@@ -2870,7 +2871,6 @@ class admin {
 			empty($this->input['wss_performance_check_files']) ? 0 :
 			$this->input['wss_performance_cache_version'];
 		foreach (array(
-			'wss_unobtrusive_on',
 			'wss_unobtrusive_body',
 			'wss_unobtrusive_all',
 			'wss_unobtrusive_informers',
