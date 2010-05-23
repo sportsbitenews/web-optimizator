@@ -432,6 +432,8 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_onload" => $this->options['unobtrusive']['on'] &&
 					($this->premium > 1),
+				"unobtrusive_inline" => $this->options['unobtrusive']['on'] == 2 &&
+					($this->premium > 1),
 				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
@@ -2450,14 +2452,16 @@ class web_optimizer {
 	function replace_informers ($options) {
 		$before_body = '';
 		$before_body_onload = empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript" src="//' .
-			(empty($this->options['javascript']['host']) ?
+			'' : (empty($this->options['page']['unobtrusive_inline']) ?
+				'<script type="text/javascript" src="//' .
+				(empty($this->options['javascript']['host']) ?
 				$this->options['page']['host'] :
 				$this->options['javascript']['host']) .
-			(empty($this->options['javascript']['far_future_expires_rewrite']) ?
+				(empty($this->options['javascript']['far_future_expires_rewrite']) ?
 				'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
-			$this->options['javascript']['cachedir_relative'] .
-			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
+				$this->options['javascript']['cachedir_relative'] .
+				'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>' :
+				'<script type="text/javascript">(function(){function j(a){var b={};a=a.split(",");for(var g=0;g<a.length;g++)b[a[g]]=true;return b}var o=document,h;o.write=function(a){h=wss_parentNode||document.body;new x(a,{start:function(b,g,k){b=o.createElement(b);for(var d=0;d<g.length;d++)b.setAttribute(g[d].name,g[d].value);h.appendChild(b);k||(h=b)},end:function(){h=h.parentNode},chars:function(b){switch(h.nodeName.toLowerCase()){case "script":b&&eval(b);break;default:b&&h.appendChild(o.createTextNode(b));break}},comment:function(b){h.appendChild(o.createComment(b))}})};var r=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>/,s=/^<\/(\w+)[^>]*>/,y=/(\w+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:\'((?:\\.|[^\'])*)\')|([^>\s]+)))?/g,z=j("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),A=j("address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),B=j("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),C=j("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),D=j("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),E=j("script,style"),x=function(a,b){function g(m,f,e,i){if(A[f])for(;c.last()&&B[c.last()];)k("",c.last());C[f]&&c.last()==f&&k("",f);(i=z[f]||!!i)||c.push(f);if(b.start){var t=[];e.replace(y,function(p,q,u,v,w){p=u?u:v?v:w?w:D[q]?q:"";t.push({name:q,value:p,escaped:p.replace(/(^|[^\\])"/g,\'$1\\"\')})});b.start&&b.start(f,t,i)}}function k(m,f){if(f)for(e=c.length-1;e>=0;e--){if(c[e]==f)break}else var e=0;if(e>=0){for(var i=c.length-1;i>=e;i--)b.end&&b.end(c[i]);c.length=e}}var d,n,l,c=[];c.last=function(){return this[this.length-1]};this.parse=function(m){for(last=a=m;a;){n=true;if(!c.last()||!E[c.last()]){if(a.indexOf("<!--")==0){d=a.indexOf("--\>");if(d>=0){b.comment&&b.comment(a.substring(4,d));a=a.substring(d+3);n=false}}else if(a.indexOf("</")==0){if(l=a.match(s)){a=a.substring(l[0].length);l[0].replace(s,k);n=false}}else if(a.indexOf("<")==0)if(l=a.match(r)){a=a.substring(l[0].length);l[0].replace(r,g);n=false}if(n){d=a.indexOf("<");m=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d);b.chars&&b.chars(m)}}else{a=a.replace(new RegExp("(.*)</"+c.last()+"[^>]*>"),function(f,e){e=e.replace(/<!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");b.chars&&b.chars(e);return""});k("",c.last())}if(a&&a==last)throw"Parse Error: "+a;last=a}};this.parse(a)}})();</script>');
 		$unobtrusive_items = array(
 /* Advertisement */
 			'unobtrusive_ads' => array (
@@ -2517,6 +2521,12 @@ class web_optimizer {
 					'marker' => 'AddThis',
 					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 					'height' => 16
+/* FetchBack */
+				), 'fb' => array(
+					'marker' => 'pixel.fetchback.com',
+					'regexp' => "<iframe\s*src='https://pixel.fetchback.com/serve/fb/pdc.*?</iframe>",
+					'onload_before' => "<iframe\s*src='(https://pixel.fetchback.com/serve/fb/pdc.*?)'[^>]*></iframe>",
+					'onload_after' => 'var a=document.createElement("iframe");a.src="$1";a.id=a.style.width=a.style.height="1px";a.style.border=a.frameBorder=0;document.body.appendChild(a);wss_onload_ready=1;'
 /* Facebook Connect */
 				), 'fc' => array(
 					'marker' => 'ak.connect.facebook',
@@ -2544,6 +2554,12 @@ class web_optimizer {
 				), 're' => array(
 					'marker' => 'reformal.ru',
 					'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+/* Verisign */
+				), 'vs' => array(
+					'marker' => 'seal.verisign.com',
+					'regexp' => "<script[^>]+src=\"https://seal.verisign.com/getseal.*?</script>",
+					'onload_before' => '<script[^>]+src="(https://seal.verisign.com/getseal.+?)"></script>',
+					'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
 				)
 /* Counters */
 			), 'unobtrusive_counters' => array (
