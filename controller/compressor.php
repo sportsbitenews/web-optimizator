@@ -1328,7 +1328,14 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : $options['header'] == 'javascript' ? 2 : 0));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : ($options['header'] == 'javascript' ? 2 : 0)));
+/* fix for some JS libraries to load resrouces dynamically */
+			if (!empty($this->shadowbox_base) &&
+				$options['header'] == 'javascript' &&
+				!$options['inline_scripts']) {
+					$source = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
+						$this->shadowbox_base . '";Shadowbox.init(', $source);
+			}
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -1554,6 +1561,13 @@ class web_optimizer {
 			}
 		}
 		if (!empty($contents)) {
+/* fix for some JS libraries to load resrouces dynamically */
+			if (!empty($this->shadowbox_base) &&
+				$options['header'] == 'javascript' &&
+				$options['inline_scripts']) {
+					$contents = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
+						$this->shadowbox_base . '";Shadowbox.init(', $contents);
+			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if ($options['header'] == "css" &&
 				!empty($options['minify']) &&
@@ -1578,7 +1592,7 @@ class web_optimizer {
 				}
 /* Create the link to the new file */
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
-				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : $options['header'] == 'javascript' ? 2 : 0));
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : ($options['header'] == 'javascript' ? 2 : 0)));
 			}
 		}
 		return $source;
@@ -1796,6 +1810,9 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
+								if ($pos = strpos($file['file'], 'shadowbox.js')) {
+									$this->shadowbox_base = substr($file['file'], 0, $pos);
+								}
 					}
 				}
 			}
