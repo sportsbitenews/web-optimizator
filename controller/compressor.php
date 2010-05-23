@@ -1210,6 +1210,10 @@ class web_optimizer {
 					$source = preg_replace("!<body[^>]*>!is", $newfile . "$0", $source);
 				}
 				break;
+/* inject merged script to the first <script> occurrence, replace WSSSCRIPT */
+			case 2:
+				$source = str_replace("@@@WSSSCRIPT@@@", $newfile, $source);
+				break;
 /* add JavaScript calls before </body> */
 			case 3:
 				if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
@@ -1308,7 +1312,8 @@ class web_optimizer {
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			$source = $this->_remove_scripts($external_array, $source,
+				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.' . $options['ext']))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.' . $options['ext']);
@@ -1321,7 +1326,7 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : $options['header'] == 'javascript' ? 2 : 0));
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -1510,7 +1515,8 @@ class web_optimizer {
 					$contents = $minified_content;
 				}
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			$source = $this->_remove_scripts($external_array, $source,
+				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
 		}
 		if (!empty($contents)) {
 /* Allow for minification of javascript */
@@ -1570,7 +1576,7 @@ class web_optimizer {
 				}
 /* Create the link to the new file */
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
-				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : $options['header'] == 'javascript' ? 2 : 0));
 			}
 		}
 		return $source;
@@ -1607,11 +1613,15 @@ class web_optimizer {
 	* Replaces scripts calls or css links in the source with a marker
 	*
 	*/
-	function _remove_scripts ($external_array, $source) {
+	function _remove_scripts ($external_array, $source, $mark = false) {
+		$replacement = $mark ? '@@@WSSSCRIPT@@@' : '';
 		if (is_array($external_array)) {
 			foreach ($external_array as $key => $value) {
-/* Remove script */
-				$source = str_replace($value['source'], "", $source);
+/* Remove script, replace the first one with the mark to insert merged script */
+				$source = str_replace($value['source'], $replacement, $source);
+				if ($merk) {
+					$replacement = '';
+				}
 			}
 		}
 		return $source;
