@@ -209,9 +209,10 @@ define('_WEBO_minify_html_comments', 'Видалити HTML-коментарі')
 define('_WEBO_minify_html_comments_HELP', 'Все HTML-комментарии будут удаляться, что может повлечь за собой неработоспособность условных комментариев, а также ряда счетчиков.');
 
 define('_WEBO_unobtrusive_on', '&laquo;Ненав\'язливий&raquo; JavaScript');
-define('_WEBO_unobtrusive_on_HELP', 'В базовом режиме все внешние JavaScript-блоки на сайте будут загружаться по событию onDOMloaded. Если же включен улучшенный режим, то загрузка будет производиться по событию window.onload в соответствии с остальными опциями данного раздела.');
+define('_WEBO_unobtrusive_on_HELP', 'В базовом режиме все внешние JavaScript-блоки на сайте будут загружаться по событию onDOMloaded. Если же включен улучшенный режим, то загрузка будет производиться по событию window.onload в соответствии с остальными опциями данного раздела. В случае встроенного кода содержимое библиотеки yass.loader.js будет вставлено прямо в HTML-документ.');
 define('_WEBO_unobtrusive_on1', 'Базовый режим');
 define('_WEBO_unobtrusive_on2', 'Улучшенный режим');
+define('_WEBO_unobtrusive_on3', 'Улучшенный режим + встроенный код');
 define('_WEBO_unobtrusive_body', 'Вставити виклик об\'єднаного JavaScript-файлу перед <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_body_HELP', 'Вызов объединенного файла будет перенесен к закрывющему тэгу &lt;/body&gt;. Эта опция имеет больший приоритет, чем &laquo;Переносить вызов объединенного JavaScript-файла перед &lt;/head&gt;&laquo;.');
 define('_WEBO_unobtrusive_all', 'Переместить весь JavaScript-код перед <code>&lt;/body&gt;</code>');

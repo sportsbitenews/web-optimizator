@@ -207,9 +207,10 @@ define('_WEBO_minify_html_one_string', 'Comprimer le HTML en une seule chaîne')
 define('_WEBO_minify_html_one_string_HELP', 'Le code HTML du page web résultant sera comprimé en une seule chaîne. Ceci peut aider à éliminer les espaces et retours à la ligne superflue. Néanmoins ceci est intensif au niveau UC et devra être utilisé avec précaution.');
 
 define('_WEBO_unobtrusive_on', 'JavaScript inobtrus');
-define('_WEBO_unobtrusive_on_HELP', 'With basic mode all supported widgets will be loaded on onDOMloaded event. With advanced mode - on window.onload event (this increases website load speed by Google) according to the other options in this section.');
+define('_WEBO_unobtrusive_on_HELP', 'With basic mode all supported widgets will be loaded on onDOMloaded event. With advanced mode - on window.onload event (this increases website load speed by Google) according to the other options in this section. In case of inline code usage all contents of yass.loader.js library will be inserted directly to HTML document.');
 define('_WEBO_unobtrusive_on1', 'Basic mode');
 define('_WEBO_unobtrusive_on2', 'Advanced mode');
+define('_WEBO_unobtrusive_on3', 'Advanced mode + inline code');
 define('_WEBO_unobtrusive_body', 'Inclure le fichier JavaScript combiné avant  <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_body_HELP', 'Les fichiers JavaScript combinés seront déplacés au balises de fin &lt;/body&gt; balise. Cette option à plus de priorité que &quot;Déplacer le script Java au &lt;/head&gt;&quot;.');
 define('_WEBO_unobtrusive_all', 'Déplacer tout le code JavaScript au <code>&lt;/body&gt;</code>');
