@@ -127,6 +127,8 @@ define('_WEBO_css_sprites', 'CSS Sprites');
 define('_WEBO_serverside', 'Серверное кэширование');
 define('_WEBO_unobtrusive', 'Ненавязчивый JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
+define('_WEBO_saas', 'Расход');
+define('_WEBO_saas2', 'в день');
 
 define('_WEBO_javascript_cachedir', 'Путь к директории JavaScript-кэша');
 define('_WEBO_javascript_cachedir_HELP', 'В этой директории располагаются файлы JavaScript-кэша.');

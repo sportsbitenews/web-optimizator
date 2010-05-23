@@ -2722,12 +2722,12 @@ class admin {
 				'parallel_additional' => array(
 					'value' => $this->compress_options['parallel']['additional'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 3 ? 1 : 0
+					'hidden' => $this->premium < 11 ? 1 : 0
 				),
 				'parallel_additional_list' => array(
 					'value' => $this->compress_options['parallel']['additional_list'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 3 ? 1 : 0
+					'hidden' => $this->premium < 11 ? 1 : 0
 				),
 				'parallel_ignore_list' => array(
 					'value' => $this->compress_options['parallel']['ignore_list'],

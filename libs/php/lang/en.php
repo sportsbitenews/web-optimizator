@@ -125,6 +125,8 @@ define('_WEBO_css_sprites', 'CSS Sprites');
 define('_WEBO_serverside', 'Server side cache');
 define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
+define('_WEBO_saas', 'Outgo');
+define('_WEBO_saas2', 'per day');
 
 define('_WEBO_javascript_cachedir', 'Path to JavaScript cache directory');
 define('_WEBO_javascript_cachedir_HELP', 'This directory contains all files of JavaScript cache.');

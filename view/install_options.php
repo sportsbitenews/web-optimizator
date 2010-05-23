@@ -206,23 +206,55 @@ if ($submit) {
 ?>:</label></dt><dd class="wssU4"><textarea rows="2" cols="80" class="wssF wssF1" id="wss_description" name="wss_description"><?php
 	echo htmlspecialchars($options['description']);
 ?></textarea></dd></dl><ul class="wssO3"><?php
-		foreach ($options as $key => $group) {
-			if (empty($group['premium'])) {
-?><li class="wssO4<?php
-				echo $key == 'combinecss' ? ' wssO5' : '';
-?>"><a href="#<?php
-				echo $key;
-?>" class="wssJ"><?php
-				echo constant('_WEBO_' . $key);
-?><span class="wssJ6"></span></a></li><?php
+	$saas = '';
+	$daily = 0;
+	foreach ($options as $key => $group) {
+		if (is_array($group)) {
+			foreach ($group as $option => $value) {
+				if (!empty($value['price']) && !empty($value['value'])) {
+					$price = is_array($value['price']) ? $value['price'][$value['value']] : $value['price'];
+					$daily += $price;
+					$saas .= '<tr class="wssT8"><td class="wssT9">' .
+						constant('_WEBO_' . $option) .
+						'<a class="wssJ9" href="#" title="' .
+						constant('_WEBO_' . $option . '_HELP') .
+						'">?</a><a href="#wss_options#' .
+						$key .
+						'" class="wssD12">' .
+						constant('_WEBO_' . $key).
+						'</a></td><td>' .
+						$price .
+						'</td></tr>';
+				}
 			}
 		}
+	}
+	foreach ($options as $key => $group) {
+		if (empty($group['premium'])) {
+?><li class="wssO4<?php
+			echo $key == 'combinecss' ? ' wssO5' : '';
+?>"><a href="#<?php
+			echo $key;
+?>" class="wssJ"><?php
+			echo constant('_WEBO_' . $key);
+?><span class="wssJ6"></span></a></li><?php
+		}
+	}
+	if ($premium == 10) {
+?><li class="wssO4 wssO14"><a href="#wssas" class="wssJ"><?php
+		echo _WEBO_saas;
+?> <span class="wssO15"><?php
+		echo $daily;
+?></span> <?php
+		echo _WEBO_saas2;
+?><span class="wssJ6"></span></a></li><?php
+	}
 ?></ul><?php
 	foreach ($options as $key => $group) {
 ?><fieldset id="<?php
 		echo $key;
 ?>" class="wssD9<?php
-				echo $key != 'combinecss' ? ' wssA0' : '';
+		echo $key != 'combinecss' ? ' wssA0' : '';
 ?>"><dl class="wssD10<?php
 	echo $premium < 2 ? ' wssD11' : '';
 ?>"><?php
@@ -262,11 +294,14 @@ if ($submit) {
 ?>">?</a><?php
 							}
 							if (!empty($value['price']) && $premium == 10) {
+								$price = is_array($value['price']) ? $value['price'][$i-1] : $value['price'];
+								if ($price) {
 ?><span class="wssE1" id="wss_<?php
-								echo $option . ($value['type'] == 'radio' ? $i : '');
+									echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>_webo"><?php
-								echo is_array($value['price']) ? $value['price'][$i-1] : $value['price'];
+									echo $price;
 ?></span><?php
+								}
 							}
 ?></label></dt><?php
 						}
@@ -383,6 +418,15 @@ if ($submit) {
 			}
 		}
 ?></dl></fieldset><?php
+	}
+	if ($premium == 10) {
+?><fieldset id="wssas" class="wssD9"><?php
+		if (!empty($saas)) {
+?><table class="wssT wssT20"><tbody><?php
+			echo $saas;
+?></tbody></table><?php
+		}
+?></fieldset><?php
 	}
 ?><p class="wssI wssU18"><a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;
