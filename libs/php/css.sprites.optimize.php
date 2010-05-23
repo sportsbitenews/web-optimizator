@@ -888,19 +888,19 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						@imagedestroy($sprite_raw);
 /* additional optimization via smush.it */
 						if (@is_file($sprite)) {
-							$this->smushit($this->current_dir . '/' . $sprite);
+							$this->smushit($this->current_dir . $sprite);
 /* upload file to CDN */
 							if (!empty($this->ftp_access) &&
 								@function_exists('curl_init')) {
 									$ch = @curl_init('ftp://' .
 										preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->ftp_access) .
-										str_replace($this->website_root, "/", $sprite));
+										str_replace($this->website_root, "/", $this->current_dir . $sprite));
 									$fp = @fopen($sprite, 'r');
 									@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->ftp_access));
 									@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
 									@curl_setopt($ch, CURLOPT_UPLOAD, 1);
 									@curl_setopt($ch, CURLOPT_INFILE, $fp);
-									@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($sprite));
+									@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($this->current_dir . $sprite));
 									@curl_exec($ch);
 									@curl_close($ch);
 									@fclose($fp);

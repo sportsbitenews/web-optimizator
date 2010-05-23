@@ -215,6 +215,12 @@ class html_sprites {
 	**/
 	function calculate_styles ($css) {
 		$styles = '';
+		if (!empty($this->options['page']['parallel'])) {
+			$hosts = explode(" ", trim($this->options['page']['parallel_hosts']));
+			if (count($hosts)) {
+				$host = $hosts[0];
+			}
+		}
 		if (!empty($css)) {
 /* form final css chunk */
 			$styles = '<style type="text/css">';
@@ -223,9 +229,11 @@ class html_sprites {
 				foreach ($rules as $k => $v) {
 					if ($k == 'background-image') {
 						$v = 'url(' .
-							(empty($this->options['page']['far_future_expires_rewrite']) ?
+							(empty($host) ?
+								(empty($this->options['page']['far_future_expires_rewrite']) ?
 								'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
-							$this->options['page']['cachedir_relative'] .
+								$this->options['page']['cachedir_relative'] :
+								'//' . $host . $this->options['page']['cachedir_relative']) .
 							substr($v, 4);
 					}
 					$styles .= $k . ':' . $v . ';';
