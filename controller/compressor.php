@@ -2701,7 +2701,7 @@ class web_optimizer {
 			if (empty($this->options['javascript']['minify_body']) ||
 				empty($this->options['css']['minify_body'])) {
 					if (empty($this->options['page']['html_tidy'])) {
-						preg_match("!<head(\s+[^>]+)?>.*?</head>!is",
+						preg_match("!<head(\s+[^>]+)?>.*?<body!is",
 							$this->content, $matches);
 						$head = $matches[0];
 					} else {
