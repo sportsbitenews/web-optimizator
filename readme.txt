@@ -11,15 +11,18 @@ to completely speed up your website. Average acceleration is 2.5 times. WEBO
 Site SpeedUp is based on Web Optimizer which was initially based on PHP Speedy.
 
 WEBO Site SpeedUp native plugin for Wordpress:
-http://wordpress.org/extend/plugins/web-optimizer/
+http://wordpress.org/extend/plugins/webo-site-speedup/
 
 WEBO Site SpeedUp native component+plugin for Joomla! 1.5 and Joomla! 1.0:
-http://extensions.joomla.org/extensions/site-management/cache/10152
+http://extensions.joomla.org/extensions/site-management/site-performance/10152
 
 WEBO Site SpeedUp native module for Drupal 6.x and Drupal 5.x:
 http://www.web-optimizer.us/web-optimizer/download.html
 
 WEBO Site SpeedUp native module for Bitrix:
+http://www.web-optimizer.us/web-optimizer/download.html
+
+WEBO Site SpeedUp native module for CS-Cart:
 http://www.web-optimizer.us/web-optimizer/download.html
 
 Installation
@@ -95,9 +98,9 @@ http://code.google.com/p/web-optimizator/wiki/TroubleshootingAndSupport
 Team and contributors
 -----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (ported core, unit tests, htaccess, CSS Sprites, multiple hosts,
-   unobtrusive logic, performance tuning, promotion, investment raising, other
-   stuff)
+ * sunnybear (core, unit tests, htaccess, CSS Sprites, multiple hosts,
+   unobtrusive logic, performance tuning, promotion, other stuff)
+ * graphite (3rd party modules, server architecture)
  * fade (design, logo, general usability, product interface)
  * gkondratenko (documentation, integration, interface & usability, make up
    fixes, known issues gathering)

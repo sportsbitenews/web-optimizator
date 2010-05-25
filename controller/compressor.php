@@ -128,7 +128,7 @@ class web_optimizer {
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
-			empty($no_cache);
+			empty($this->no_cache);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();

@@ -70,6 +70,7 @@ if ($compress_options['php'] == 4) {
 $web_optimizer = new web_optimizer(array(
 	'view' => $view,
 	'options' => $compress_options,
-	'libraries' => $libraries)
+	'libraries' => $libraries,
+	'no_cache' => empty($no_cache) ? false : $no_cache)
 );
 ?>
