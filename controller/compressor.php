@@ -80,8 +80,6 @@ class web_optimizer {
 		$this->encoding = '';
 /* Define the gzip headers */
 		$this->set_gzip_headers();
-/* HTTPS or not ? */
-		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 		$excluded_html_pages = '';
@@ -209,6 +207,15 @@ class web_optimizer {
 					}
 				}
 			}
+		}
+/* HTTPS or not ? */
+		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* change some hosts if HTTPS is used */
+		if ($this->https && !empty($options['page']['https'])) {
+			$options['javascript']['host'] =
+			$options['css']['host'] =
+			$options['page']['parallel_hosts'] = 
+			$options['page']['https'];
 		}
 /* number of external files calls to process */
 		$this->initial_files = array();
@@ -420,6 +427,7 @@ class web_optimizer {
 				"parallel_javascript" => $this->options['parallel']['javascript'] &&
 					($this->premium > 1),
 				"parallel_ftp" => $this->premium > 1 ? $this->options['parallel']['ftp'] : '',
+				"parallel_https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -1044,9 +1052,7 @@ class web_optimizer {
 							$new_host = $host .
 								((strpos($host, '.') === false) ?
 								'.' . $this->host : '');
-							$new_src = "http" .
-								$this->https .
-								"://" .
+							$new_src = "//" .
 								$new_host .
 								$absolute_src .
 								preg_replace("!(www\.)?" . $this->host_escaped . "!i",

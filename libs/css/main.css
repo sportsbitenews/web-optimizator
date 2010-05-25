@@ -1,4 +1,4 @@
-/*
+webo/*
 Short notice about CSS deploymner.
 1. You can use any order / format inside selectors. But please don't change
    selectors' order (please add new ones to the end of block / the whole file).
@@ -28,6 +28,7 @@ Short notice about CSS deploymner.
  frame-related styles
 */
 html,body{margin:0;padding:0}
+code{display:inline!important}
 .wss_a{background:#fff;margin:10px auto;position:relative;min-width:770px;max-width:1180px}
 #wss_dashboard{background:url(logo.png) no-repeat;display:block;height:51px;margin:0;outline:0;padding:0;width:288px}
 .wss_c{color:#393961;font:700 12px Verdana,Sans-serif;left:287px;letter-spacing:-1px;position:absolute;top:7px}
@@ -134,7 +135,9 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD7.wssD8 .wssD3{top:3px}
 .wssD9{border:1px solid #fbddb8;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin:0 0 0 182px;padding:0}
 .wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:450px;min-height:140px;margin:0;position:relative;padding:11px 15px}
+#wssas .wssD10{overflow:auto}
 .wssD11{height:400px}
+.wssD12{background:url(parent.png) 0 4px no-repeat;display:block;font-size:11px;margin:0 1px;padding-left:12px}
 .wssC7 .wssD10{height:auto}
 .wssD20 .wssE{color:#ccc}
 .wssD20 .wssF{opacity:.3}
@@ -217,6 +220,7 @@ a.wssJ9:hover .wssJ00,.wssD20 .wssD21{display:block}
 .wssC5 .wssJ{font-size:12px;line-height:18px;padding-left:3px}
 .wssC6 .wssO4 .wssJ{border:1px solid #fff;color:#808080!important;display:block;outline:0;padding:6px 16px;position:relative;text-decoration:none!important;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-moz-border-radius-topleft:8px;-moz-border-radius-bottomleft:8px;border-top-left-radius:8px;border-bottom-left-radius:8px}
 .wssC6 .wssO4 a.wssJ:hover,.wssC6 .wssO4 a.wssJ:focus,.wssC6 .wssO4 a.wssJ:active{color:#2b83ae!important}
+.wssC6 .wssO4 .wssO14,.wssC6 .wssO4 a.wssO14:hover,.wssC6 .wssO4 a.wssO14:focus,.wssC6 .wssO4 a.wssO14:active{color:#ff4000!important}
 .wssC6 .wssO5 .wssJ{background:#f7f4e9;border-color:#fbf9f3;color:#000}
 .wssU11 .wssJ{border:1px solid #f7f4e9;color:#808080!important;display:block;height:24px;outline:0;padding-top:93px;position:relative;text-align:center;text-decoration:none!important;width:117px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
@@ -393,6 +397,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO11{color:#ff8200;left:27%}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
+.wssO4 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
+.wssT5 .wssO15{background:url(webos.black.png) no-repeat;padding:6px}
+#wss_bal .wssO15{background:url(webos.gray.png) no-repeat;padding:8px}
 /* welcome screen */
 #wss_help .wssO21{background:url(account.welcome.png) no-repeat!important}
 .wssO22{border:1px solid #ccc;display:block;float:right;margin:0 23px 15px 50px;padding:1px}
@@ -429,22 +436,28 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssT5{background:#cedee6 url(table-head.png) repeat-x;padding:0}
 .wssC4 .wssT5{background:#70abc8}
 .wssT6{height:92px}
-.wssC4 .wssT6{height:29px}
+.wssC4 .wssT6,.wssT20 .wssT6{height:29px}
 .wssT7{color:#ff8200;font:400 17px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:7px 3px;vertical-align:top;text-align:center}
 .wssC4 .wssT7{color:#fff;font-size:14px;line-height:15px;padding:4px 0 4px 16px;text-align:left}
+.wssT20 .wssT7{color:#333;font-size:14px;line-height:15px;padding:6px 0 4px 16px;text-align:left}
+.wssT21 .wssT7{border-top:1px solid #b2b2b2;font-size:15px;font-weight:700}
 .wssT8{font:14px/19px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:37px}
 .wssC4 .wssT8{height:23px}
+.wssT20 .wssT8{border-bottom:1px solid #e5e5e5}
 .wssT9{border:0;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:5px 0 5px 20px;text-align:center}
 .wssC4 .wssT9{color:#505050;font-size:12px;padding:0 0 0 16px;text-align:left}
+.wssT20 .wssT9{color:#808080;font-size:13px;padding:3px 0 3px 16px;text-align:left}
 .wssT1 .wssT9{font-size:14px;font-weight:700}
 .wssT1>.wssT8 .wssT9{padding-top:8px}
 .wssC4 .wssT100 .wssT9{color:#fff}
 .wssT10{padding-bottom:2px}
+.wssT20 .wssT10{color:#ff4000;font-size:15px;font-weight:700;padding-left:16px}
 .wssT11{font-weight:700;text-align:left}
 .wssT12{background:#fff}
 .wssT13{background:url(plus.png) 54% 50% no-repeat;text-indent:-999em}
 .wssT14{background:url(minus.png) 54% 50% no-repeat;text-indent:-999em}
 .wssT15{border:0}
+.wssT20{margin:0;width:100%}
 .wssT100{background:#ff4000}
 
 .wssRB{background:#f7f4e9;height:8px;margin:0 8px;position:relative}

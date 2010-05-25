@@ -211,10 +211,14 @@ if ($submit) {
 	foreach ($options as $key => $group) {
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
-				if (!empty($value['price']) && !empty($value['value'])) {
+				if (!empty($value['price'])) {
 					$price = is_array($value['price']) ? $value['price'][$value['value']] : $value['price'];
-					$daily += $price;
-					$saas .= '<tr class="wssT8"><td class="wssT9">' .
+					$daily += empty($value['value']) ? 0 : $price;
+					$saas .= '<tr class="wssT8' .
+						(empty($value['value']) ? ' wssA0' : '') .
+						'" id="wss_' .
+						$option .
+						'_saas"><td class="wssT9">' .
 						constant('_WEBO_' . $option) .
 						'<a class="wssJ9" href="#" title="' .
 						constant('_WEBO_' . $option . '_HELP') .
@@ -222,7 +226,7 @@ if ($submit) {
 						$key .
 						'" class="wssD12">' .
 						constant('_WEBO_' . $key).
-						'</a></td><td>' .
+						'</a></td><td class="wssT10">' .
 						$price .
 						'</td></tr>';
 				}
@@ -241,7 +245,7 @@ if ($submit) {
 		}
 	}
 	if ($premium == 10) {
-?><li class="wssO4 wssO14"><a href="#wssas" class="wssJ"><?php
+?><li class="wssO4"><a href="#wssas" class="wssJ wssO14"><?php
 		echo _WEBO_saas;
 ?> <span class="wssO15"><?php
 		echo $daily;
@@ -420,13 +424,19 @@ if ($submit) {
 ?></dl></fieldset><?php
 	}
 	if ($premium == 10) {
-?><fieldset id="wssas" class="wssD9"><?php
-		if (!empty($saas)) {
-?><table class="wssT wssT20"><tbody><?php
-			echo $saas;
-?></tbody></table><?php
-		}
-?></fieldset><?php
+?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><table class="wssT wssT20"><col width="70%"/><col width="30%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+		echo _WEBO_SPLASH2_OPTIONS;
+?></th><th class="wssT7"><?php
+		echo _WEBO_saas;
+?> <span class="wssO15"></span> <?php
+		echo _WEBO_saas2;
+?></th></tr></thead><tfoot><tr class="wssT21"><th class="wssT7"><?php
+		echo _WEBO_SYSTEM_TOTAL;
+?></th><th class="wssT7 wssT10"><?php
+		echo $daily;
+?></th></tr></tfoot><tbody><?php
+		echo $saas;
+?></tbody></table></div></fieldset><?php
 	}
 ?><p class="wssI wssU18"><a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;

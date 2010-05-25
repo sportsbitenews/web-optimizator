@@ -402,6 +402,8 @@ define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
 define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');
 define('_WEBO_parallel_ftp', 'FTP-доступ для загрузки файлов');
 define('_WEBO_parallel_ftp_HELP', 'В случае использования платных CDN (например, EdgeCast) необходимо указать строку FTP-доступа для загрузки новых файлов вида user:password@host (или user:password@host:port).');
+define('_WEBO_parallel_https', 'Хост, доступный по HTTPS');
+define('_WEBO_parallel_https_HELP', 'Если ваш сайт доступен по протоколу HTTPS, то для корректного использования CDN необходим хост, имеющий SSL-сертификат. Этот хост будет использоваться для распределения всех типов файлов при защищенных (HTTPS) запросах.');
 
 define('_WEBO_footer_text', 'Добавить ссылку на WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'Ссылка на WEBO Site SpeedUp является обязательным требованием для некоммерческой версии и может быть убрана только в платной версии.');

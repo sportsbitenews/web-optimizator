@@ -197,6 +197,8 @@ $compress_options['parallel']['ignore_list'] = "";
 $compress_options['parallel']['custom'] = "0";
 ## FTP creadentials to upload new files to CDN
 $compress_options['parallel']['ftp'] = "";
+## SSL secure host to use for all CDN assets
+$compress_options['parallel']['https'] = "";
 ## Should be gzip / cache settings written via .htaccess?
 $compress_options['htaccess']['enabled'] = "0";
 $compress_options['htaccess']['mod_deflate'] = "1";

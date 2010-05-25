@@ -2749,6 +2749,12 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				),
+				'parallel_https' => array(
+					'value' => $this->compress_options['parallel']['https'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5
+				),
 			)
 		);
 		if (empty($options['title'])) {
@@ -2881,6 +2887,7 @@ class admin {
 			'wss_parallel_additional_list',
 			'wss_parallel_ignore_list',
 			'wss_parallel_ftp',
+			'wss_parallel_https',
 			'wss_description',
 			'wss_title',
 			'wss_config') as $val) {

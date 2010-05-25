@@ -103,11 +103,11 @@ class compressor_view {
 		}
 		if (@file_exists ($this->paths['full']['view'] . "$file_name.php")) {
 			include ($this->paths['full']['view'] . "$file_name.php");
-		 } elseif (@file_exists (@getcwd() . "/view/" . "$file_name.php")) {
-		 	include (@getcwd() . "/view/" . "$file_name.php");
-		 } else {
+		} elseif (@file_exists (@getcwd() . "/view/" . "$file_name.php")) {
+			include (@getcwd() . "/view/" . "$file_name.php");
+		} else {
 			echo "<body style='font-family:verdana;font-size:11px'><p>Rendering of template $file_name.php failed.<br/>Debug info:<p>Looking for file in: <ul><li>" . $this->paths['full']['view']."$file_name.php" . "</li><li>" . "view/"."$file_name.php" ."</li></ul></p><p>Server info: <ul><li><strong>Document root:</strong> " . $_SERVER['DOCUMENT_ROOT'] . "</li><li><strong>Script name:</strong> " . $_SERVER['SCRIPT_NAME']."</li></ul></p></p></body>";
-		 }
+		}
 	}
 
 	/**
