@@ -211,11 +211,11 @@ class web_optimizer {
 /* HTTPS or not ? */
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* change some hosts if HTTPS is used */
-		if ($this->https && !empty($options['page']['https'])) {
-			$options['javascript']['host'] =
-			$options['css']['host'] =
-			$options['page']['parallel_hosts'] = 
-			$options['page']['https'];
+		if ($this->https && !empty($this->options['page']['parallel_https'])) {
+			$this->options['javascript']['host'] =
+			$this->options['css']['host'] =
+			$this->options['page']['parallel_hosts'] = 
+			$this->options['page']['parallel_https'];
 		}
 /* number of external files calls to process */
 		$this->initial_files = array();
