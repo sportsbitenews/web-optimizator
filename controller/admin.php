@@ -2099,6 +2099,10 @@ class admin {
 				$ext = strpos($key, 'user') === false ? $key : 'user';
 				include($this->basepath . $file);
 				$this->compress_options = $compress_options;
+				$this->compress_options['external_scripts']['user'] = 
+					$saved['external_scripts']['user'];
+				$this->compress_options['external_scripts']['pass'] = 
+					$saved['external_scripts']['pass'];
 				$options[$key] = $this->get_options($ext);
 				$this->compress_options = $saved;
 			}
@@ -2762,6 +2766,19 @@ class admin {
 		}
 		if (empty($options['description'])) {
 			$options['description'] = constant('_WEBO_OPTIONS_DESCRIPTIONS_' . $config);
+		}
+/* calculate current options' fee */
+		foreach ($options as $key => $group) {
+			$fee = 0;
+			if (is_array($group)) {
+				foreach ($group as $option) {
+					if (!empty($option['prive']) && $option['value']) {
+						$fee += is_array($option['price']) ?
+							$option['price'][$option['value']] : $option['price'];
+					}
+				}
+			}
+			$options[$key]['fee'] = $fee;
 		}
 		return $options;
 	}
