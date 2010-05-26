@@ -146,8 +146,8 @@ if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
 			array('-', '-', '-'),
 			$_SERVER['QUERY_STRING']), 0, 250);
 	$mtime = @filemtime($filename);
-	if (!is_file($filename) || (time() - $mtime > 86400)) {
-		if (function_exists('curl_init')) {
+	if (!@is_file($filename) || (time() - $mtime > 86400)) {
+		if (@function_exists('curl_init')) {
 /* start curl */
 			$ch = @curl_init($_SERVER['QUERY_STRING']);
 			$fp = @fopen($filename, "w");
@@ -163,7 +163,7 @@ if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
 				@fclose($fp);
 			}
 /* redirect if can't download */
-			if (!is_file($filename)) {
+			if (!@is_file($filename)) {
 				header("Location: " . $_SERVER['QUERY_STRING']);
 				die();
 			}

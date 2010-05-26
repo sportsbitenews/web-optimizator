@@ -129,11 +129,15 @@ if ($submit) {
 	echo $options['description'];
 ?></dd></dl><dl class="wssU1"><dt class="wssU2"><?php
 	echo _WEBO_OPTIONS_ALLCONFIGS;
-?>:<span class="wssU21"><?php
+?>:<?php
+	if ($premium == 10) {
+?><span class="wssU21"><?php
 		echo _WEBO_saas;
 ?> <span class="wssO15">14</span> <?php
 		echo _WEBO_saas2;
-?></span></dt><dd class="wssU5"><div class="wssH"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssU10"><li class="wssU11<?php
+?></span><?php
+	}
+?></dt><dd class="wssU5"><div class="wssH"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssU10"><li class="wssU11<?php
 	if ($config == 'safe') {
 ?> wssU12 wssU17<?php
 	}
@@ -218,9 +222,9 @@ if ($submit) {
 				if (!empty($value['price'])) {
 					$price = is_array($value['price']) ? $value['price'][$value['value']] : $value['price'];
 					$daily += empty($value['value']) ? 0 : $price;
-					$saas .= '<tr class="wssT8' .
-						(empty($value['value']) ? ' wssA0' : '') .
-						'" id="wss_' .
+					$saas .= '<tr class="wssT8"' .
+						(empty($value['value']) ? ' style="display:none"' : '') .
+						' id="wss_' .
 						$option .
 						'_saas"><td class="wssT9">' .
 						constant('_WEBO_' . $option) .
@@ -230,9 +234,9 @@ if ($submit) {
 						$key .
 						'" class="wssD12">' .
 						constant('_WEBO_' . $key).
-						'</a></td><td class="wssT10">' .
+						'</a></td><td class="wssT10"><span class="wssO15">' .
 						$price .
-						'</td></tr>';
+						'</span></td></tr>';
 				}
 			}
 		}
@@ -304,7 +308,7 @@ if ($submit) {
 							if (!empty($value['price']) && $premium == 10) {
 								$price = is_array($value['price']) ? $value['price'][$i-1] : $value['price'];
 								if ($price) {
-?><span class="wssE1" id="wss_<?php
+?><span class="wss" id="wss_<?php
 									echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>_webo"><?php
 									echo $price;
@@ -326,10 +330,8 @@ if ($submit) {
 ?>" id="wss_<?php
 								echo $option;
 ?>" class="wssF"<?php
-								if (!empty($value['onclick'])) {
-?> onclick="<?php
-									echo  $value['onclick'];
-?>"<?php
+								if (!empty($value['price'])) {
+?> onblur="_.u(this)"<?php
 								}
 ?>/></dd><?php
 								break;
@@ -345,10 +347,8 @@ if ($submit) {
 ?>" id="wss_<?php
 								echo $option;
 ?>" class="wssF wssF3"<?php
-								if (!empty($value['onclick'])) {
-?> onclick="<?php
-									echo  $value['onclick'];
-?>"<?php
+								if (!empty($value['price'])) {
+?> onblur="_.u(this)"<?php
 								}
 ?>/></dd><?php
 								break;
@@ -360,15 +360,20 @@ if ($submit) {
 ?>" type="<?php
 								echo empty($value['hidden']) ? 'radio' : 'hidden';
 ?>"<?php
-								echo $value['value'] == $i-1 ? ' checked="checked"' : '';
-?>" name="wss_<?php
+								if ($value['value'] == $i-1) {
+?> checked="checked"<?php
+								}
+?> name="wss_<?php
 								echo $option;
 ?>" id="wss_<?php
 								echo $option . $i;
 ?>" class="wssF"<?php
-								if (!empty($value['onclick'])) {
-?> onclick="<?php
-									echo  $value['onclick'];
+								if (!empty($value['price'])) {
+?> onclick="_.u(this)"<?php
+								}
+								if ($price) {
+?> title="<?php
+									echo $price;
 ?>"<?php
 								}
 ?>/></dd><?php
@@ -385,10 +390,8 @@ if ($submit) {
 ?>" id="wss_<?php
 								echo $option;
 ?>" class="wssF"<?php
-								if (!empty($value['onclick'])) {
-?> onclick="<?php
-									echo  $value['onclick'];
-?>"<?php
+								if (!empty($value['price'])) {
+?> onclick="_.u(this)"<?php
 								}
 ?>/></dd><?php
 								break;
@@ -409,10 +412,8 @@ if ($submit) {
 ?>" id="wss_<?php
 									echo $option;
 ?>"<?php
-								if (!empty($value['onclick'])) {
-?> onclick="<?php
-									echo  $value['onclick'];
-?>"<?php
+								if (!empty($value['price'])) {
+?> onblur="_.u(this)"<?php
 								}
 ?>><?php
 									echo htmlspecialchars($value['value']);
@@ -428,17 +429,15 @@ if ($submit) {
 ?></dl></fieldset><?php
 	}
 	if ($premium == 10) {
-?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><table class="wssT wssT20"><col width="70%"/><col width="30%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><table class="wssT wssT20"><col width="80%"/><col width="20%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 		echo _WEBO_SPLASH2_OPTIONS;
 ?></th><th class="wssT7"><?php
 		echo _WEBO_saas;
-?> <span class="wssO15"></span> <?php
-		echo _WEBO_saas2;
 ?></th></tr></thead><tfoot><tr class="wssT21"><th class="wssT7"><?php
 		echo _WEBO_SYSTEM_TOTAL;
-?></th><th class="wssT7 wssT10"><?php
+?></th><th class="wssT7 wssT10"><span class="wssO15"><?php
 		echo $daily;
-?></th></tr></tfoot><tbody><?php
+?></span></th></tr></tfoot><tbody><?php
 		echo $saas;
 ?></tbody></table></div></fieldset><?php
 	}

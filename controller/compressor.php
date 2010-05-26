@@ -1277,7 +1277,7 @@ class web_optimizer {
 		}
 		if (empty($options['file'])) {
 /* Glue scripts' content / filenames */
-			$scripts_string = '';
+			$scripts_string = $this->https;
 			foreach ($external_array as $script) {
 				$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
 			}

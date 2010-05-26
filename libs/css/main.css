@@ -137,7 +137,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:510px;min-height:140px;margin:0;position:relative;padding:11px 15px}
 #wssas .wssD10{overflow:auto}
 .wssD11{height:400px}
-.wssD12{background:url(parent.png) 0 4px no-repeat;display:block;font-size:11px;margin:0 1px;padding-left:12px}
+.wssD12{background:url(parent.png) 0 4px no-repeat;color:#808080;display:block;font-size:11px;margin:0 1px;padding-left:12px}
+a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssC7 .wssD10{height:auto}
 .wssD20 .wssE{color:#ccc}
 .wssD20 .wssF{opacity:.3}
@@ -397,8 +398,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO11{color:#ff8200;left:27%}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
-.wssO4 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
-.wssT5 .wssO15{background:url(webos.black.png) no-repeat;padding:6px}
+.wssO4 .wssO15,.wssT20 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
 #wss_bal .wssO15{background:url(webos.gray.png) no-repeat;padding:8px}
 .wssU21 .wssO15{background:url(webos.orange.png) 100% 5px no-repeat;padding:0 14px 6px 0}
 .wssU11 .wssO15{background:url(webos.beige.png) no-repeat;display:block;height:12px;left:6px;position:absolute;top:10px;width:12px}
@@ -449,12 +449,12 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssT20 .wssT8{border-bottom:1px solid #e5e5e5}
 .wssT9{border:0;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:5px 0 5px 20px;text-align:center}
 .wssC4 .wssT9{color:#505050;font-size:12px;padding:0 0 0 16px;text-align:left}
-.wssT20 .wssT9{color:#808080;font-size:13px;padding:3px 0 3px 16px;text-align:left}
+.wssT20 .wssT9{color:#333;font-size:13px;padding:3px 0 3px 16px;text-align:left}
 .wssT1 .wssT9{font-size:14px;font-weight:700}
 .wssT1>.wssT8 .wssT9{padding-top:8px}
 .wssC4 .wssT100 .wssT9{color:#fff}
 .wssT10{padding-bottom:2px}
-.wssT20 .wssT10{color:#ff4000;font-size:15px;font-weight:700;padding-left:16px}
+.wssT20 .wssT10{color:#ff4000;font-size:15px;font-weight:700;padding:0 14px 6px 16px}
 .wssT11{font-weight:700;text-align:left}
 .wssT12{background:#fff}
 .wssT13{background:url(plus.png) 54% 50% no-repeat;text-indent:-999em}
