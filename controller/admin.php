@@ -2767,19 +2767,19 @@ class admin {
 		if (empty($options['description'])) {
 			$options['description'] = constant('_WEBO_OPTIONS_DESCRIPTIONS_' . $config);
 		}
+		$fee = 0;
 /* calculate current options' fee */
 		foreach ($options as $key => $group) {
-			$fee = 0;
 			if (is_array($group)) {
 				foreach ($group as $option) {
-					if (!empty($option['prive']) && $option['value']) {
+					if (!empty($option['price']) && $option['value']) {
 						$fee += is_array($option['price']) ?
 							$option['price'][$option['value']] : $option['price'];
 					}
 				}
 			}
-			$options[$key]['fee'] = $fee;
 		}
+		$options['fee'] = $fee;
 		return $options;
 	}
 

@@ -400,6 +400,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO4 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
 .wssT5 .wssO15{background:url(webos.black.png) no-repeat;padding:6px}
 #wss_bal .wssO15{background:url(webos.gray.png) no-repeat;padding:8px}
+.wssU21 .wssO15{background:url(webos.orange.png) 100% 5px no-repeat;padding:0 14px 6px 0}
+.wssU11 .wssO15{background:url(webos.beige.png) no-repeat;display:block;height:12px;left:6px;position:absolute;top:10px;width:12px}
+.wssU12 .wssO15{background:url(webos.white.png) no-repeat;height:12px;width:12px}
 /* welcome screen */
 #wss_help .wssO21{background:url(account.welcome.png) no-repeat!important}
 .wssO22{border:1px solid #ccc;display:block;float:right;margin:0 23px 15px 50px;padding:1px}
@@ -487,6 +490,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU12 .wssU15{background:url(delete.active.png) no-repeat;height:17px;width:17px}
 .wssU19{background:#ff8200 url(config.user.active.png) no-repeat;height:118px;width:118px}
 .wssU20{background:url(config.new.png) no-repeat;height:118px;width:118px}
+.wssU21{color:#ff8200;display:block;padding-top:15px}
 
 .wssY{opacity:0}
 .wssY7{opacity:.2}

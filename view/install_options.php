@@ -129,31 +129,35 @@ if ($submit) {
 	echo $options['description'];
 ?></dd></dl><dl class="wssU1"><dt class="wssU2"><?php
 	echo _WEBO_OPTIONS_ALLCONFIGS;
-?>:</dt><dd class="wssU5"><div class="wssH"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssU10"><li class="wssU11<?php
+?>:<span class="wssU21"><?php
+		echo _WEBO_saas;
+?> <span class="wssO15">14</span> <?php
+		echo _WEBO_saas2;
+?></span></dt><dd class="wssU5"><div class="wssH"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssU10"><li class="wssU11<?php
 	if ($config == 'safe') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
-?></a></li><li class="wssU11<?php
+?><span class="wssO15"></span></a></li><li class="wssU11<?php
 	if ($config == 'basic') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('basic');void(0)" rel="basic"><?php
 	echo _WEBO_OPTIONS_BASIC;
-?></a></li><li class="wssU11<?php
+?><span class="wssO15"></span></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
-?></a></li><li class="wssU11<?php
+?><span class="wssO15"></span></a></li><li class="wssU11<?php
 	if ($config == 'extreme') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><?php
 	echo _WEBO_OPTIONS_EXTREME;
-?></a></li><?php
+?><span class="wssO15"></span></a></li><?php
 	if (count($configs)) {
 		foreach ($configs as $c) {
 ?><li class="wssU11 wssU16<?php
@@ -168,7 +172,7 @@ if ($submit) {
 			echo $c;
 ?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
-?>"></span><span>&nbsp;</span></a></li><?php
+?>"></span><span class="wssO15"></span><span>&nbsp;</span></a></li><?php
 		}
 	}
 	$i = count($configs);
@@ -234,7 +238,7 @@ if ($submit) {
 		}
 	}
 	foreach ($options as $key => $group) {
-		if (empty($group['premium'])) {
+		if (empty($group['premium']) && $key != 'fee') {
 ?><li class="wssO4<?php
 			echo $key == 'combinecss' ? ' wssO5' : '';
 ?>"><a href="#<?php
