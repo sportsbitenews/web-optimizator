@@ -2721,7 +2721,8 @@ class admin {
 					'value' => $this->compress_options['parallel']['javascript'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'price' => 2
+					'price' => 2,
+					'onclick' => '_.u(this)',
 				),
 				'parallel_additional' => array(
 					'value' => $this->compress_options['parallel']['additional'],
@@ -2742,7 +2743,6 @@ class admin {
 					'value' => $this->compress_options['parallel']['custom'],
 					'type' => 'radio',
 					'count' => 4,
-					'onclick' => '_.u(this)',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => array(0,0,0,30)
 					
@@ -4428,6 +4428,9 @@ require valid-user';
 /* PHP Fusion */
 			} elseif (@is_dir($root . 'infusions')) {
 				return 'PHP Fusion';
+/* Magento */
+			} elseif (@is_file($root . '/app/Mage.php')) {
+				return 'Magento';
 			}
 /* Typo 3 */
 		} elseif (@is_dir($root . 'typo3conf')) {
@@ -4559,9 +4562,6 @@ require valid-user';
 /* PrestaShop 1.2.5 */
 		} elseif (@is_file($root . '/modules/paypal/prestashop_paypal.png')) {
 			return 'PrestaShop';
-/* Magento */
-		} elseif (@is_file($root . '/app/Mage.php')) {
-			return 'Magento';
 		}
 		return 'CMS 42';
 	}
