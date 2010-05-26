@@ -2709,10 +2709,10 @@ class web_optimizer {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					'<!--/*--><![CDATA[//><!--','//-->',		'--></script>'),
+					'<!--/*--><![CDATA[//><!--','//-->'),
 				array('',			'',			'',				'',
 					'',				'',			'',				'',
-					'',							'',				'</script>'), $dest);
+					'',							''), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
@@ -2741,7 +2741,24 @@ class web_optimizer {
 		if (empty($this->head)) {
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
+/* skip removing escaped JavaScript code, thx to smart */
+				$this->content = str_replace(
+					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
+						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
+						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
+						'<script type="text/javascript"><!--'),
+					array('@@@WSSJS1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
+						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
+						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@'), $this->content);
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
+				$this->content = str_replace(
+					array('@@@WSSLEAVE1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
+						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
+						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@'),
+					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
+						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
+						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
+						'<script type="text/javascript"><!--'), $this->content);
 			}
 /* fix script positioning for DLE */
 			if (strpos($this->content, '<div id="loading-layer"')) {
