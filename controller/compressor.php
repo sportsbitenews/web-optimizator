@@ -1040,7 +1040,7 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
+						if (preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
 /* using secure host */
 							if ($this->https && !empty($this->options['page']['parallel_https'])) {
 								$new_host = $this->options['page']['parallel_https'];
