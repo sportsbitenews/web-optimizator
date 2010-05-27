@@ -51,7 +51,8 @@ class html_sprites {
 			'user_agent' => $this->main->ua_mod,
 			'punypng' => $this->options['css']['punypng'],
 			'restore_properties' => 0,
-			'ftp_access' => $this->options['page']['parallel_ftp']
+			'ftp_access' => $this->options['page']['parallel_ftp'],
+			'https_host' => $this->options['page']['parallel_https']
 		));
 /* calculate all dimensions for images */
 		$this->images = $this->get_images_dimensions($imgs);
@@ -99,7 +100,7 @@ class html_sprites {
 			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			$this->sprite = 'webo.' . md5($str) . '.png';
 			if (!empty($this->images[$this->sprite . $https])) {
-				$styles = $this->images[$this->sprite][2];
+				$styles = $this->images[$this->sprite . $https][2];
 			} else {
 				$dir = @getcwd();
 				@chdir($this->options['page']['cachedir']);
