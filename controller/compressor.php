@@ -1041,17 +1041,22 @@ class web_optimizer {
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
 						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
+/* using secure host */
+							if ($this->https && !empty($this->options['page']['parallel_https'])) {
+								$new_host = $this->options['page']['parallel_https'];
+							} else {
 /* calculating unique sum from image src */
-							$sum = 0;
-							$i = ceil(strlen($old_src)/2);
-							while (isset($old_src{$i++})) {
-								$sum += ord($old_src{$i-1});
-							}
-							$host = $hosts[$sum%$count];
+								$sum = 0;
+								$i = ceil(strlen($old_src)/2);
+								while (isset($old_src{$i++})) {
+									$sum += ord($old_src{$i-1});
+								}
+								$host = $hosts[$sum%$count];
 /* if we have dot in the distribution host - it's a domain name */
-							$new_host = $host .
-								((strpos($host, '.') === false) ?
-								'.' . $this->host : '');
+								$new_host = $host .
+									((strpos($host, '.') === false) ?
+									'.' . $this->host : '');
+							}
 							$new_src = "//" .
 								$new_host .
 								$absolute_src .
@@ -3004,7 +3009,8 @@ class web_optimizer {
 			'user_agent' => $this->ua_mod,
 			'punypng' => $options['punypng'],
 			'restore_properties' => $options['css_restore_properties'],
-			'ftp_access' => $this->options['page']['parallel_ftp']
+			'ftp_access' => $this->options['page']['parallel_ftp'],
+			'https_host' => $this->options['page']['parallel_https']
 		));
 		return $css_sprites->process();
 	}

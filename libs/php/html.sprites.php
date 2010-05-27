@@ -96,8 +96,9 @@ class html_sprites {
 		}
 /* skip creating if there is only 1 image */
 		if (count($this->css_images) > 1) {
+			$https = empty($_SERVER['HTTPS']) ? '' : 's';
 			$this->sprite = 'webo.' . md5($str) . '.png';
-			if (!empty($this->images[$this->sprite])) {
+			if (!empty($this->images[$this->sprite . $https])) {
 				$styles = $this->images[$this->sprite][2];
 			} else {
 				$dir = @getcwd();
@@ -130,7 +131,7 @@ class html_sprites {
 					$styles = '';
 				}
 /* cache styles to file */
-				$this->images[$this->sprite] = array(0, 0, $styles);
+				$this->images[$this->sprite . $https] = array(0, 0, $styles);
 				$str = '<?php';
 				foreach ($this->images as $k => $i) {
 					$str .= "\n" . '$images[\'' . $k .
@@ -219,6 +220,9 @@ class html_sprites {
 			$hosts = explode(" ", trim($this->options['page']['parallel_hosts']));
 			if (count($hosts)) {
 				$host = $hosts[0];
+			}
+			if (!empty($_SERVER['HTTPS']) && !empty($this->options['page']['parallel_https'])) {
+				$host = $this->options['page']['parallel_https'];
 			}
 		}
 		if (!empty($css)) {

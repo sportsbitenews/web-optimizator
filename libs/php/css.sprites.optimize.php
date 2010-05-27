@@ -88,6 +88,8 @@ class css_sprites_optimize {
 			$this->ftp_access = $options['ftp_access'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* special host for HTTPS */
+			$this->https_host = $options['https_host'];
 /* CSS rule to avoid overlapping of properties */
 			$this->none = 'none!important';
 		}

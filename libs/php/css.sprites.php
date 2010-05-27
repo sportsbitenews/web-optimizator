@@ -636,10 +636,14 @@ __________________
 					}
 					$host = $this->optimizer->multiple_hosts[strlen($image)%$this->optimizer->multiple_hosts_count];
 /* if we have dot in the distribution host - it's a domain name */
-					$new_host = $host .
-						((strpos($host, '.') === false) ?
-						'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
-					return "http" . $this->optimizer->https . "://" . $new_host . $image;
+					if ($this->optimizer->https && !empty($this->optimizer->https_host)) {
+						$new_host = $this->optimizer->https_host;
+					} else {
+						$new_host = $host .
+							((strpos($host, '.') === false) ?
+							'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
+					}
+					return "//" . $new_host . $image;
 		} elseif (!empty($this->optimizer->proxy_rewrite)) {
 /* add absolute path for sprited images */
 			if (0 === strpos($image, 'webo')) {
