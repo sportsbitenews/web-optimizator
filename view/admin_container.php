@@ -78,11 +78,11 @@ if (!$ajax) {
 	echo _WEBO_GENERAL_PREMIUM;
 ?></span><span class="wss_p"><?php
 	echo _WEBO_GENERAL_EDITION
-?></span><span class="wss_n"></span></a><a id="wss_bal" class="wssN2<?php
+?></span><span class="wss_n"></span></a><a id="wss_bal" class="wssN5<?php
 	if ($premium != 10) {
 ?> wssA0<?php
 	}
-?>" href="#wss_balance"><span class="wssN5"><span class="wssJ"><?php
+?>" href="#wss_balance"><span class="wssN2"><span class="wssJ"><?php
 	echo _WEBO_SAAS_BALANCE;
 ?>:</span><span id="wss_balance"><?php
 	echo '???';

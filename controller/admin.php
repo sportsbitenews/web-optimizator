@@ -2655,7 +2655,7 @@ class admin {
 					'type' => 'radio',
 					'count' => 3,
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'price' => array(0,5,6)
+					'price' => array(0,5,5)
 				),
 				'unobtrusive_body' => array(
 					'value' => $this->compress_options['unobtrusive']['body'],
@@ -2738,7 +2738,8 @@ class admin {
 				'parallel_ignore_list' => array(
 					'value' => $this->compress_options['parallel']['ignore_list'],
 					'type' => 'textarea',
-					'hidden' => $this->premium < 2 ? 1 : 0
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 1
 				),
 				'parallel_custom' => array(
 					'value' => $this->compress_options['parallel']['custom'],
