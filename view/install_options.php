@@ -308,7 +308,7 @@ if ($submit) {
 							if (!empty($value['price']) && $premium == 10) {
 								$price = is_array($value['price']) ? $value['price'][$i-1] : $value['price'];
 								if ($price) {
-?><span class="wss" id="wss_<?php
+?><span class="wssO15" id="wss_<?php
 									echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>_webo"><?php
 									echo $price;
@@ -429,7 +429,9 @@ if ($submit) {
 ?></dl></fieldset><?php
 	}
 	if ($premium == 10) {
-?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><table class="wssT wssT20"><col width="80%"/><col width="20%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><h3 class="wssB2"><?php
+		echo _WEBO_SAAS_DAILY;
+?></h3><table class="wssT wssT20"><col width="80%"/><col width="20%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 		echo _WEBO_SPLASH2_OPTIONS;
 ?></th><th class="wssT7"><?php
 		echo _WEBO_saas;

@@ -275,7 +275,9 @@
 	}
 ?></div></div></div><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
-?></span></div><script type="text/javascript">wss_pass='<?php
+?></span></div><script type="text/javascript">wss_license='<?php
+	echo $license;
+?>';wss_pass='<?php
 	echo $password;
 ?>';wss_c='<?php
 	echo $cache_folder;
@@ -529,7 +531,7 @@
 	echo _WEBO_SPLASH3_CANTWRITE4;
 ?>";wss_error2="<?php
 	echo _WEBO_GZIP_ERROR;
-?>"</script><script type="text/javascript" src="http://i.webo.in/wss/index.<?php
+?>"</script><script type="text/javascript">(function(){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://i.webo.in/wss/index.<?php
 	echo $language;
 	echo defined("LANG_CHARSET") && LANG_CHARSET != 'UTF-8' ? '.cp1251' : '';
-?>.js"></script>
+?>.js';a.documentElement.firstChild.appendChild(b)})()</script>

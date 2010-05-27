@@ -869,4 +869,8 @@ define('_WEBO_AWARDS_TEXT4', 'Вы можете легко достичь так
 define('_WEBO_AWARDS_TEXT5', 'Все что для этого требуется &mdash; <a href="http://www.webogroup.com/ru/home/download/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">загрузить</a> и настроить на своем сайте решение для увеличения скорости веб-сайтов <a href="http://www.webogroup.com/ru/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Site SpeedUp</a>.');
 define('_WEBO_AWARDS_TEXT6', 'WEBO Site SpeedUp является продуктом компании <a href="http://www.webogroup.com/ru/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=webo.awards">WEBO Software</a> &mdash; мирового лидера в ускорении веб-сайтов любой сложности.');
 define('_WEBO_AWARDS_RIGHTS', 'Все права защищены.');
+
+/* SaaS variables */
+define('_WEBO_SAAS_DAILY', 'Ежедневные расходы');
+define('_WEBO_SAAS_BALANCE', 'Баланс');
 ?>

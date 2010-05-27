@@ -1,4 +1,4 @@
-webo/*
+/*
 Short notice about CSS deploymner.
 1. You can use any order / format inside selectors. But please don't change
    selectors' order (please add new ones to the end of block / the whole file).
@@ -101,8 +101,9 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssN .wssB1{color:#4c4c4c;font-size:14px;line-height:17px;margin:2px 0 2px 17px;padding:4px 0 0;text-decoration:none!important}
 .wssK0 .wssB1{color:#f00;font-size:16px;margin-bottom:11px}
 #wss_help .wssB1{background:none;color:#ff8200;font-size:20px;margin:12px 0 12px 23px}
-.wssB2{color:#191919;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
+.wssB2{color:#333;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
 #wss_help .wssB2{font-size:16px;font-weight:700;padding:2px 0 6px}
+.wssD10 .wssB2{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:2px 0 13px 3px}
 
 .wssC{height:120px;margin:0;padding:0}
 .wssC1{height:780px}
@@ -274,7 +275,7 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
 .wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat;height:28px;padding-left:30px;width:52px}
 .wssT1 .wssJ8{margin-right:7%}
-.wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 7px;position:relative;text-decoration:none!important}
+.wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 4px 0 7px;position:relative;text-decoration:none!important}
 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 .wssJ10{background:url(icon.twitter.png) no-repeat;display:block}
 .wssJ11{background:url(icon.facebook.png) no-repeat}
@@ -398,8 +399,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO11{color:#ff8200;left:27%}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
+.wssE .wssO15{color:#ff8200;font-size:15px;height:12px;padding:0 15px 6px 7px;background:url(webos.red.png) 100% 5px no-repeat}
 .wssO4 .wssO15,.wssT20 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
-#wss_bal .wssO15{background:url(webos.gray.png) no-repeat;padding:8px}
 .wssU21 .wssO15{background:url(webos.orange.png) 100% 5px no-repeat;padding:0 14px 6px 0}
 .wssU11 .wssO15{background:url(webos.beige.png) no-repeat;display:block;height:12px;left:6px;position:absolute;top:10px;width:12px}
 .wssU12 .wssO15{background:url(webos.white.png) no-repeat;height:12px;width:12px}
@@ -556,6 +557,12 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO67 .wssO72{z-index:107}
 .wssO99{margin:10px 5% 20px}
 
+#wss_bal{display:inline-block;position:absolute;right:5px;top:14px;text-decoration:none}
+#wss_bal .wssN2{background:#f7f4e9 url(add.png) 100% 6px no-repeat;color:#808080;display:inline-block;font:16px/18px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:4px 30px 5px 12px}
+a#wss_bal:hover .wssN2{background:#f7f4e9 url(add.hover.png) 100% 6px no-repeat}
+#wss_bal .wssJ{color:#808080!important;text-decoration:underline}
+#wss_balance{background:url(webos.gray.png) 100% 4px no-repeat;font-size:18px;padding:0 18px 0 3px}
+
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_cache{padding-top:4px}
 
@@ -579,6 +586,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 * html .wss_m{background:url(stamps.png) 0 -124px no-repeat}
 * html .wssO61 .wssO56{display:inline;zoom:1}
 * html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
+* html #wss_bal,* html #wss_bal .wssN2{display:inline;zoom:1}
 
 *+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 *+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
@@ -602,6 +610,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 *+html .wss_m{background:url(stamps.png) 0 -124px no-repeat}
 *+html .wssO61 .wssO56{display:inline;zoom:1}
 *+html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
+*+html #wss_bal,*+html #wss_bal .wssN2{display:inline;zoom:1}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}

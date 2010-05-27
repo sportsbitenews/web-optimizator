@@ -1485,7 +1485,8 @@ class admin {
 				"/", $this->compress_options['javascript_cachedir']),
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
 			"welcome" => empty($_COOKIE['wss_welcome']) ? '' : $_COOKIE['wss_welcome'],
-			"skip_render" => $this->skip_render
+			"skip_render" => $this->skip_render,
+			"license" => $this->compress_options['license']
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
