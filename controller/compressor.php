@@ -316,7 +316,8 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['javascript_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host']
+				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host'],
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -381,7 +382,8 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['css_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host']
+				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host'],
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -695,7 +697,8 @@ class web_optimizer {
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
-					'file' => $options['file']
+					'file' => $options['file'],
+					'https' => $options['https']
 				),
 				$this->content,
 				$script_files
@@ -765,7 +768,8 @@ class web_optimizer {
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'include_code' => $options['include_code'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
-					'file' => $options['file']
+					'file' => $options['file'],
+					'https' => $options['https']
 				),
 				$this->content,
 				$link_files
@@ -1305,7 +1309,13 @@ class web_optimizer {
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
-		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->options['document_root'], "/", $physical_file);
+		$external_file = 'http' . $this->https . '://' .
+			(empty($options['host']) ?
+				$_SERVER['HTTP_HOST'] :
+				(empty($options['https']) ?
+				$options['host'] :
+				$options['https'])) .
+			str_replace($this->options['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
 			if (@is_file($physical_file)) {
 				$timestamp = @filemtime($physical_file);
