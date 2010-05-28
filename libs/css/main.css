@@ -103,7 +103,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 #wss_help .wssB1{background:none;color:#ff8200;font-size:20px;margin:12px 0 12px 23px}
 .wssB2{color:#333;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
 #wss_help .wssB2{font-size:16px;font-weight:700;padding:2px 0 6px}
-.wssD10 .wssB2{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:2px 0 13px 3px}
+.wssB3{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:2px 0 13px 3px}
 
 .wssC{height:120px;margin:0;padding:0}
 .wssC1{height:780px}
@@ -455,7 +455,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssT1>.wssT8 .wssT9{padding-top:8px}
 .wssC4 .wssT100 .wssT9{color:#fff}
 .wssT10{padding-bottom:2px}
-.wssT20 .wssT10{color:#ff4000;font-size:15px;font-weight:700;padding:0 14px 6px 16px}
+.wssT20 .wssT10{color:#ff4000;font-size:15px;font-weight:700;padding:6px 14px 6px 16px}
 .wssT11{font-weight:700;text-align:left}
 .wssT12{background:#fff}
 .wssT13{background:url(plus.png) 54% 50% no-repeat;text-indent:-999em}

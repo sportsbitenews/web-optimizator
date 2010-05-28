@@ -872,5 +872,18 @@ define('_WEBO_AWARDS_RIGHTS', 'All rights reserved.');
 
 /* SaaS variables */
 define('_WEBO_SAAS_DAILY', 'Daily payments');
+define('_WEBO_SAAS_NODAILY', 'No payments');
 define('_WEBO_SAAS_BALANCE', 'Balance');
+define('_WEBO_SAAS_TITLE', 'Balance overview');
+define('_WEBO_SAAS_CURRENT', 'Current balance');
+define('_WEBO_SAAS_VALID', 'Funds sufficient');
+define('_WEBO_SAAS_EXPIRED', 'Funds not sufficient');
+define('_WEBO_SAAS_FOR', 'For');
+define('_WEBO_SAAS_DAY', 'day');
+define('_WEBO_SAAS_DAYS', 'days');
+define('_WEBO_SAAS_DAYS2', 'days');
+define('_WEBO_SAAS_TILL', 'till');
+define('_WEBO_SAAS_CODE', 'Enter code to increase funds');
+define('_WEBO_SAAS_ADD', 'Add funds');
+define('_WEBO_SAAS_EFFECT', 'Casted effect');
 ?>

@@ -855,5 +855,18 @@ define('_WEBO_AWARDS_RIGHTS', 'Все права защищены.');
 
 /* SaaS variables */
 define('_WEBO_SAAS_DAILY', 'Ежедневные расходы');
+define('_WEBO_SAAS_NODAILY', 'Нет расходов');
 define('_WEBO_SAAS_BALANCE', 'Баланс');
+define('_WEBO_SAAS_TITLE', 'Состояние баланса');
+define('_WEBO_SAAS_CURRENT', 'Текущий баланс');
+define('_WEBO_SAAS_VALID', 'Средств достаточно');
+define('_WEBO_SAAS_EXPIRED', 'Средств недостаточно');
+define('_WEBO_SAAS_FOR', 'На');
+define('_WEBO_SAAS_DAY', 'день');
+define('_WEBO_SAAS_DAYS', 'дня');
+define('_WEBO_SAAS_DAYS2', 'дней');
+define('_WEBO_SAAS_TILL', 'до');
+define('_WEBO_SAAS_CODE', 'Ввести код для пополнения счета');
+define('_WEBO_SAAS_ADD', 'Пополнить');
+define('_WEBO_SAAS_EFFECT', 'Эффект применения');
 ?>

@@ -260,7 +260,7 @@ define('_WEBO_far_future_expires_html_HELP', 'All images will have caching heade
 define('_WEBO_far_future_expires_html_timeout', 'Default timeout to cache HTML (in seconds)');
 define('_WEBO_far_future_expires_html_timeout_HELP', 'Time to cache HTML files. Zero value means zero timeout.');
 define('_WEBO_far_future_expires_external', 'Cache external files');
-define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be served from the same host that web page itself with Expires headers using /cache/wo.static.php proxy script from the Site SpeedUp apllication directory.');
+define('_WEBO_far_future_expires_external_HELP', 'External files called on web page will be served from the same host that web page itself with Expires headers using /cache/wo.static.php proxy script from the WEBO Site SpeedUp apllication directory.');
 
 define('_WEBO_html_cache_enabled', 'Cache generated HTML files');
 define('_WEBO_html_cache_enabled_HELP', 'HTML pages will be cached for timeout set in option &quot;Default HTML cache timeout&quot;. This option allows you to significantly speedup web pages load with long generation time. But this is reasonable only for static pages without dynamic content.');
@@ -870,5 +870,18 @@ define('_WEBO_AWARDS_RIGHTS', 'All rights reserved.');
 
 /* SaaS variables */
 define('_WEBO_SAAS_DAILY', 'Daily payments');
+define('_WEBO_SAAS_NODAILY', 'No payments');
 define('_WEBO_SAAS_BALANCE', 'Balance');
+define('_WEBO_SAAS_TITLE', 'Balance overview');
+define('_WEBO_SAAS_CURRENT', 'Current balance');
+define('_WEBO_SAAS_VALID', 'Funds sufficient');
+define('_WEBO_SAAS_EXPIRED', 'Funds not sufficient');
+define('_WEBO_SAAS_FOR', 'For');
+define('_WEBO_SAAS_DAY', 'day');
+define('_WEBO_SAAS_DAYS', 'days');
+define('_WEBO_SAAS_DAYS2', 'days');
+define('_WEBO_SAAS_TILL', 'till');
+define('_WEBO_SAAS_CODE', 'Enter code to increase funds');
+define('_WEBO_SAAS_ADD', 'Add funds');
+define('_WEBO_SAAS_EFFECT', 'Casted effect');
 ?>

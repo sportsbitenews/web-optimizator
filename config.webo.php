@@ -239,6 +239,8 @@ $compress_options['punypng'] = "";
 $compress_options['plugins'] = "";
 ## current website performance achievements
 $compress_options['awards'] = "00000";
+## SaaS license daily payments, used only in UI
+$compress_options['fee'] = "14";
 ## Web Optimizer license, empty for free edition
 $compress_options['license'] = "";
 #########################################

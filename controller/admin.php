@@ -1487,7 +1487,8 @@ class admin {
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
 			"welcome" => empty($_COOKIE['wss_welcome']) ? '' : $_COOKIE['wss_welcome'],
 			"skip_render" => $this->skip_render,
-			"license" => $this->compress_options['license']
+			"license" => $this->compress_options['license'],
+			"fee" => $this->compress_options['fee']
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
@@ -2944,7 +2945,8 @@ class admin {
 			'wss_css_sprites_dimensions_limited',
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_css_sprites_html_limit',
-			'wss_parallel_custom') as $val) {
+			'wss_parallel_custom',
+			'wss_fee') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : round($this->input[$val]);
 		}
 /* normalize values for radio buttons */

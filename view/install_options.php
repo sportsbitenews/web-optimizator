@@ -429,7 +429,9 @@ if ($submit) {
 ?></dl></fieldset><?php
 	}
 	if ($premium == 10) {
-?><fieldset id="wssas" class="wssA0 wssD9"><div class="wssD10"><h3 class="wssB2"><?php
+?><fieldset id="wssas" class="wssA0 wssD9"><input type="hidden" value="<?php
+		echo $options['fee'];
+?>" name="wss_fee" id="wss_fee"/><div class="wssD10"><h3 class="wssB3"><?php
 		echo _WEBO_SAAS_DAILY;
 ?></h3><table class="wssT wssT20"><col width="80%"/><col width="20%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 		echo _WEBO_SPLASH2_OPTIONS;
