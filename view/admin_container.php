@@ -64,29 +64,33 @@ if (!$ajax) {
 			$i++;
 		}
 	}
-?></ul><a id="wss_promo" href="#wss_promo" title="<?php
-	echo _WEBO_GENERAL_BUY;
+?></ul><?php
+	if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
+?><a id="wss_promo" href="#wss_promo" title="<?php
+		echo _WEBO_GENERAL_BUY;
 ?> WEBO Site SpeedUp <?php
-	echo _WEBO_GENERAL_PREMIUM;
+		echo _WEBO_GENERAL_PREMIUM;
 ?> <?php
-	echo _WEBO_GENERAL_EDITION
+		echo _WEBO_GENERAL_EDITION
 ?>"<?php
-	echo $premium ? ' style="display:none"' : '';
+		echo $premium ? ' style="display:none"' : '';
 ?>><?php
-	echo _WEBO_GENERAL_BUY;
+		echo _WEBO_GENERAL_BUY;
 ?><span class="wss_o"><?php
-	echo _WEBO_GENERAL_PREMIUM;
+		echo _WEBO_GENERAL_PREMIUM;
 ?></span><span class="wss_p"><?php
-	echo _WEBO_GENERAL_EDITION
+		echo _WEBO_GENERAL_EDITION
 ?></span><span class="wss_n"></span></a><a id="wss_bal" class="wssN5<?php
-	if ($premium != 10) {
+		if ($premium != 10) {
 ?> wssA0<?php
-	}
+		}
 ?>" href="#wss_balance"><span class="wssN2"><span class="wssJ"><?php
-	echo _WEBO_SAAS_BALANCE;
+		echo _WEBO_SAAS_BALANCE;
 ?>:</span><span id="wss_balance"><?php
-	echo '???';
-?></span></span></a><div id="wss_content"><?php
+		echo '???';
+?></span></span></a><?php
+	}
+?><div id="wss_content"><?php
 }
 	
 require($page.".php");

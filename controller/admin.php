@@ -105,6 +105,7 @@ class admin {
 				'install_stable' => 1,
 				'install_beta' => 1,
 				'install_awards' => 1,
+				'install_balance' => 1,
 				'dashboard_cache' => 1,
 				'dashboard_system' => 1,
 				'dashboard_options' => 1,
@@ -2058,6 +2059,20 @@ class admin {
 			}
 		}
 		return trim($allowed_hosts);
+	}
+
+	/**
+	* Get current balance / paid options
+	*
+	**/
+	function install_balance () {
+		$this->page_variables = array(
+			"options" => $this->get_options(),
+			"premium" => $this->premium,
+			"basepath" => $this->basepath,
+			"skip_render" => $this->skip_render
+		);
+		$this->view->render("install_balance", $this->page_variables);
 	}
 
 	/**

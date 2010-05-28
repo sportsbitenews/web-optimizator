@@ -80,15 +80,12 @@ class web_optimizer {
 		$this->encoding = '';
 /* Define the gzip headers */
 		$this->set_gzip_headers();
-/* HTTPS or not ? */
-		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Deal with flushed content or not? */
 		$this->flushed = false;
 		$excluded_html_pages = '';
 		$included_user_agents = '';
 		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
-		$this->start_cache_engine();
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore']) ||
 				!empty($this->options['restricted'])) {
@@ -134,12 +131,17 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 /* skip gzip/deflate if plugins are enabled - they can have onCache */
-			$cache_key = $this->uri . $this->ua_mod . '.html' .
+			$file = $this->options['page']['cachedir'] . $this->uri .
+				$this->ua_mod . '.html' .
 				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
 					'' : $this->encoding_ext);
-			$timestamp = $this->cache_engine->get_mtime($cache_key);
+			if (@file_exists($file)) {
+				$timestamp = @filemtime($file);
+			} else {
+				$timestamp = 0;
+			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
-				$content = $this->cache_engine->get_entry($cache_key);
+				$content = @file_get_contents($file);
 				$hash = crc32($content) .
 					(empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
@@ -205,6 +207,15 @@ class web_optimizer {
 					}
 				}
 			}
+		}
+/* HTTPS or not ? */
+		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* change some hosts if HTTPS is used */
+		if ($this->https && !empty($this->options['page']['parallel_https'])) {
+			$this->options['javascript']['host'] =
+			$this->options['css']['host'] =
+			$this->options['page']['parallel_hosts'] = 
+			$this->options['page']['parallel_https'];
 		}
 /* number of external files calls to process */
 		$this->initial_files = array();
@@ -284,6 +295,9 @@ class web_optimizer {
 						'yui' : ($this->options['minify']['with_packer'] ?
 							'packer' : '')),
 				"minify_try" => $this->options['external_scripts']['include_try'],
+				"minify_exclude" => $this->premium > 1 ?
+					$this->options['external_scripts']['minify_exclude'] :
+					'',
 				"remove_duplicates" => $this->options['external_scripts']['duplicates'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
@@ -302,7 +316,8 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['javascript_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host']
+				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host'],
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -367,13 +382,12 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['css_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host']
+				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host'],
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
-				"cache_engine" => $this->options['cache_engine'],
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['html_cachedir']),
-				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] &&
 					((!$this->options['htaccess']['mod_gzip'] &&
@@ -415,6 +429,7 @@ class web_optimizer {
 				"parallel_javascript" => $this->options['parallel']['javascript'] &&
 					($this->premium > 1),
 				"parallel_ftp" => $this->premium > 1 ? $this->options['parallel']['ftp'] : '',
+				"parallel_https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -426,6 +441,8 @@ class web_optimizer {
 				"unobtrusive_iframes" => $this->options['unobtrusive']['iframes'] &&
 					($this->premium > 1),
 				"unobtrusive_onload" => $this->options['unobtrusive']['on'] &&
+					($this->premium > 1),
+				"unobtrusive_inline" => $this->options['unobtrusive']['on'] == 2 &&
 					($this->premium > 1),
 				"footer" => $this->premium ? $this->options['footer']['text'] : 1,
 				"footer_image" => $this->options['footer']['image'],
@@ -660,6 +677,7 @@ class web_optimizer {
 					'minify_body' => $options['minify_body'],
 					'minify_with' => $options['minify_with'],
 					'minify_try' => $options['minify_try'],
+					'minify_exclude' => $options['minify_exclude'],
 					'remove_duplicates' => $options['remove_duplicates'],
 					'far_future_expires' => $options['far_future_expires'],
 					'far_future_expires_php' => $options['far_future_expires_php'],
@@ -679,7 +697,8 @@ class web_optimizer {
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
-					'file' => $options['file']
+					'file' => $options['file'],
+					'https' => $options['https']
 				),
 				$this->content,
 				$script_files
@@ -749,7 +768,8 @@ class web_optimizer {
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'include_code' => $options['include_code'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
-					'file' => $options['file']
+					'file' => $options['file'],
+					'https' => $options['https']
 				),
 				$this->content,
 				$link_files
@@ -832,9 +852,14 @@ class web_optimizer {
 						substr($this->content, 0, $options['flush_size']);
 				}
 			}
-			$cache_key = $this->uri . $this->ua_mod . '.html' .
+			$file = $options['cachedir'] .
+				$this->uri . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) ? '' : $this->encoding_ext);
-			$timestamp = $this->cache_engine->get_mtime($cache_key);
+			if (@file_exists($file)) {
+				$timestamp = @filemtime($file);
+			} else {
+				$timestamp = 0;
+			}
 /* set ETag, thx to merzmarkus */
 			if (empty($options['flush'])) {
 				header("ETag: \"" .
@@ -853,12 +878,13 @@ class web_optimizer {
 				}
 /* don't create empty files */
 				if (!empty($content_to_write)) {
-					$this->cache_engine->put_entry($cache_key, $content_to_write, $this->time);
+					$this->write_file($file, $content_to_write);
 				}
 /* create uncompressed file for plugins */
 				if (is_array($this->options['plugins']) &&
 					!empty($this->encoding_ext)) {
-						$this->cache_engine->put_entry($this->uri . '.html', $this->content, $this->time);
+						$this->write_file($options['cachedir'] . $this->uri,
+							$this->content);
 				}
 			}
 		}
@@ -1018,21 +1044,24 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (!strpos($old_src, "//") || preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
+						if (preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src)) {
+/* using secure host */
+							if ($this->https && !empty($this->options['page']['parallel_https'])) {
+								$new_host = $this->options['page']['parallel_https'];
+							} else {
 /* calculating unique sum from image src */
-							$sum = 0;
-							$i = ceil(strlen($old_src)/2);
-							while (isset($old_src{$i++})) {
-								$sum += ord($old_src{$i-1});
-							}
-							$host = $hosts[$sum%$count];
+								$sum = 0;
+								$i = ceil(strlen($old_src)/2);
+								while (isset($old_src{$i++})) {
+									$sum += ord($old_src{$i-1});
+								}
+								$host = $hosts[$sum%$count];
 /* if we have dot in the distribution host - it's a domain name */
-							$new_host = $host .
-								((strpos($host, '.') === false) ?
-								'.' . $this->host : '');
-							$new_src = "http" .
-								$this->https .
-								"://" .
+								$new_host = $host .
+									((strpos($host, '.') === false) ?
+									'.' . $this->host : '');
+							}
+							$new_src = "//" .
 								$new_host .
 								$absolute_src .
 								preg_replace("!(www\.)?" . $this->host_escaped . "!i",
@@ -1191,8 +1220,16 @@ class web_optimizer {
 				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
 					$source = substr_replace($source, $newfile, $headpos, 0);
 				} else {
-					$source = preg_replace("!<\/head>!is", $newfile . "$0", $source);
+					$source = preg_replace("!</head>!is", $newfile . "$0", $source);
 				}
+/* additional check in case of non-existing </head>, insert before <body> */
+				if (!strpos($source, $newfile)) {
+					$source = preg_replace("!<body[^>]*>!is", $newfile . "$0", $source);
+				}
+				break;
+/* inject merged script to the first <script> occurrence, replace WSSSCRIPT */
+			case 2:
+				$source = str_replace("@@@WSSSCRIPT@@@", $newfile, $source);
 				break;
 /* add JavaScript calls before </body> */
 			case 3:
@@ -1249,7 +1286,7 @@ class web_optimizer {
 		}
 		if (empty($options['file'])) {
 /* Glue scripts' content / filenames */
-			$scripts_string = '';
+			$scripts_string = $this->https;
 			foreach ($external_array as $script) {
 				$scripts_string .= (empty($script['source']) ? '' : $script['source']) . (empty($script['content']) ? '' : $script['content']);
 			}
@@ -1272,7 +1309,13 @@ class web_optimizer {
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
-		$external_file = 'http' . $this->https . '://' . $_SERVER['HTTP_HOST'] . str_replace($this->options['document_root'], "/", $physical_file);
+		$external_file = 'http' . $this->https . '://' .
+			(empty($options['host']) ?
+				$_SERVER['HTTP_HOST'] :
+				(empty($options['https']) ?
+				$options['host'] :
+				$options['https'])) .
+			str_replace($this->options['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
 			if (@is_file($physical_file)) {
 				$timestamp = @filemtime($physical_file);
@@ -1292,7 +1335,8 @@ class web_optimizer {
 			if (!is_array($external_array)) {
 				$external_array = array($external_array);
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			$source = $this->_remove_scripts($external_array, $source,
+				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.' . $options['ext']))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.' . $options['ext']);
@@ -1305,7 +1349,14 @@ class web_optimizer {
 				}
 			}
 			$newfile = $this->get_new_file($options, $cache_file, $timestamp);
-			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
+			$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : ($options['header'] == 'javascript' ? 2 : 0)));
+/* fix for some JS libraries to load resrouces dynamically */
+			if (!empty($this->shadowbox_base) &&
+				$options['header'] == 'javascript' &&
+				!$options['inline_scripts']) {
+					$source = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
+						$this->shadowbox_base . '";Shadowbox.init(', $source);
+			}
 			return $source;
 		}
 /* Include all libraries. Save ~1M if no compression */
@@ -1375,21 +1426,24 @@ class web_optimizer {
 /* Create file */
 		$contents = "";
 		if (is_array($external_array)) {
-			foreach($external_array as $key => $info) {
+/* can't simply merge&minify if we need to exclude some files */
+			if (empty($options['minify_exclude']) || empty($options['minify'])) {
+				foreach($external_array as $key => $info) {
 /* Get the code */
-				if ($file_contents = $info['content']) {
-					if (!empty($options['minify_try'])) {
-						$contents .= 'try{';
-					}
-					$contents .= $file_contents . "\n";
-					if (!empty($options['minify_try'])) {
-						$contents .= '}catch(e){';
-						if (!empty($info['file'])) {
-							$contents .= 'document.write("' .
-								str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
-								'")';
+					if ($file_contents = $info['content']) {
+						if (!empty($options['minify_try'])) {
+							$contents .= 'try{';
 						}
-						$contents .= '}';
+						$contents .= $file_contents . "\n";
+						if (!empty($options['minify_try'])) {
+							$contents .= '}catch(e){';
+							if (!empty($info['file'])) {
+								$contents .= 'document.write("' .
+									str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
+									'")';
+							}
+							$contents .= '}';
+						}
 					}
 				}
 			}
@@ -1467,12 +1521,12 @@ class web_optimizer {
 					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
-/* Allow for gzipping and headers */
-					if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
-						$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
-					}
 /* write data:URI / mhtml content */
 					if (!empty($minified_resource) && !empty($options['data_uris_separate'])) {
+/* Allow for gzipping and headers */
+						if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
+							$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
+						}
 						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, 1);
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file */
@@ -1491,32 +1545,55 @@ class web_optimizer {
 					$contents = $minified_content;
 				}
 			}
-			$source = $this->_remove_scripts($external_array, $source);
+			$source = $this->_remove_scripts($external_array, $source,
+				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
 		}
 		if (!empty($contents)) {
 /* Allow for minification of javascript */
 			if ($options['header'] == "javascript" && $options['minify']) {
-				if ($options['minify_with'] == 'packer') {
-					$this->packer = new JavaScriptPacker($contents,
-						'Normal', false, false);
-					$minified_content = $this->packer->pack();
-				} elseif ($options['minify_with'] == 'yui' ) {
-					$this->yuicompressor = new YuiCompressor($options['cachedir'],
-						$options['installdir'], $this->charset);
-					$minified_content = $this->yuicompressor->compress($contents);
-				}
-				if ($options['minify_with'] == 'jsmin' ||
-					(!empty($options['minify_with']) &&
-						empty($minified_content))) {
-							$this->jsmin = new JSMin($contents);
-							$minified_content = $this->jsmin->minify($contents);
-				}
-				if (!empty($minified_content)) {
-					$contents = $minified_content;
+				$contents = $this->minify_javascript($contents, $options);
+			}
+/* we need to exclude some files from ninify */
+		} elseif(!empty($options['minify_exclude']) && $options['minify']) {
+			$exclude_list = explode(" ", trim($options['minify_exclude']));
+			foreach($external_array as $key => $info) {
+/* Get the code */
+				if ($file_contents = $info['content']) {
+					$content = '';
+					if (!empty($options['minify_try'])) {
+						$content .= 'try{';
+					}
+					$content .= $file_contents . "\n";
+					if (!empty($options['minify_try'])) {
+						$content .= '}catch(e){';
+						if (!empty($info['file'])) {
+							$content .= 'document.write("' .
+								str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
+								'")';
+						}
+						$content .= '}';
+					}
+					if ($options['header'] == "javascript" &&
+						!in_array(preg_replace("@.*/@", "", $info['file']), $exclude_list)) {
+							$content = $this->minify_javascript($content, $options);
+					}
+					$contents .= $content;
 				}
 			}
+		}
+		if (!empty($contents)) {
+/* fix for some JS libraries to load resrouces dynamically */
+			if (!empty($this->shadowbox_base) &&
+				$options['header'] == 'javascript' &&
+				$options['inline_scripts']) {
+					$contents = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
+						$this->shadowbox_base . '";Shadowbox.init(', $contents);
+			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['header'] == "css" && !empty($options['minify']) && empty($options['css_sprites']) && empty($options['data_uris'])) {
+			if ($options['header'] == "css" &&
+				!empty($options['minify']) &&
+				empty($options['css_sprites']) &&
+				empty($options['data_uris'])) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
@@ -1536,21 +1613,52 @@ class web_optimizer {
 				}
 /* Create the link to the new file */
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
-				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : 0));
+				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : ($options['header'] == 'javascript' ? 2 : 0)));
 			}
 		}
 		return $source;
+	}
+	
+	/**
+	* Minifies JavaScript code according to current options
+	*
+	*/
+
+	function minify_javascript ($code, $options) {
+		$minified_code = '';
+		if ($options['minify_with'] == 'packer') {
+			$this->packer = new JavaScriptPacker($code, 'Normal', false, false);
+			$minified_code = $this->packer->pack();
+		} elseif ($options['minify_with'] == 'yui' ) {
+			$this->yuicompressor = new YuiCompressor($options['cachedir'],
+				$options['installdir'], $this->charset);
+			$minified_code = $this->yuicompressor->compress($code);
+		}
+		if ($options['minify_with'] == 'jsmin' ||
+			(!empty($options['minify_with']) &&
+			empty($minified_code))) {
+					$this->jsmin = new JSMin($code);
+					$minified_code = $this->jsmin->minify($code);
+		}
+		if (!empty($minified_code)) {
+			$code = $minified_code;
+		}
+		return $code;
 	}
 
 	/**
 	* Replaces scripts calls or css links in the source with a marker
 	*
 	*/
-	function _remove_scripts ($external_array, $source) {
+	function _remove_scripts ($external_array, $source, $mark = false) {
+		$replacement = $mark ? '@@@WSSSCRIPT@@@' : '';
 		if (is_array($external_array)) {
 			foreach ($external_array as $key => $value) {
-/* Remove script */
-				$source = str_replace($value['source'], "", $source);
+/* Remove script, replace the first one with the mark to insert merged script */
+				$source = str_replace($value['source'], $replacement, $source);
+				if ($mark) {
+					$replacement = '';
+				}
 			}
 		}
 		return $source;
@@ -1723,6 +1831,9 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
+								if ($pos = strpos($file['file'], 'shadowbox.js')) {
+									$this->shadowbox_base = substr($file['file'], 0, $pos);
+								}
 					}
 				}
 			}
@@ -2379,14 +2490,17 @@ class web_optimizer {
 	function replace_informers ($options) {
 		$before_body = '';
 		$before_body_onload = empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript" src="//' .
-			(empty($this->options['javascript']['host']) ?
+			'' : (empty($this->options['page']['unobtrusive_inline']) ?
+				'<script type="text/javascript" src="//' .
+				(empty($this->options['javascript']['host']) ?
 				$this->options['page']['host'] :
 				$this->options['javascript']['host']) .
-			(empty($this->options['javascript']['far_future_expires_rewrite']) ?
+				(empty($this->options['javascript']['far_future_expires_rewrite']) ?
 				'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
-			$this->options['javascript']['cachedir_relative'] .
-			'yass.loader.js"></script><script type="text/javascript">wss_onload=[]</script>';
+				$this->options['javascript']['cachedir_relative'] .
+				'yass.loader.js"></script>' :
+				'<script type="text/javascript">(function(){function j(a){var b={};a=a.split(",");for(var g=0;g<a.length;g++)b[a[g]]=true;return b}var o=document,h;o.write=function(a){h=wss_parentNode||document.body;new x(a,{start:function(b,g,k){b=o.createElement(b);for(var d=0;d<g.length;d++)b.setAttribute(g[d].name,g[d].value);h.appendChild(b);k||(h=b)},end:function(){h=h.parentNode},chars:function(b){switch(h.nodeName.toLowerCase()){case "script":b&&eval(b);break;default:b&&h.appendChild(o.createTextNode(b));break}},comment:function(b){h.appendChild(o.createComment(b))}})};var r=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>/,s=/^<\/(\w+)[^>]*>/,y=/(\w+)(?:\s*=\s*(?:(?:"((?:\\\\.|[^"])*)")|(?:\'((?:\\\\.|[^\'])*)\')|([^>\s]+)))?/g,z=j("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),A=j("address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),B=j("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),C=j("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),D=j("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),E=j("script,style"),x=function(a,b){function g(m,f,e,i){if(A[f])for(;c.last()&&B[c.last()];)k("",c.last());C[f]&&c.last()==f&&k("",f);(i=z[f]||!!i)||c.push(f);if(b.start){var t=[];e.replace(y,function(p,q,u,v,w){p=u?u:v?v:w?w:D[q]?q:"";t.push({name:q,value:p,escaped:p.replace(/(^|[^\\\\])"/g,\'$1\\\\"\')})});b.start&&b.start(f,t,i)}}function k(m,f){if(f)for(e=c.length-1;e>=0;e--){if(c[e]==f)break}else var e=0;if(e>=0){for(var i=c.length-1;i>=e;i--)b.end&&b.end(c[i]);c.length=e}}var d,n,l,c=[];c.last=function(){return this[this.length-1]};this.parse=function(m){for(last=a=m;a;){n=true;if(!c.last()||!E[c.last()]){if(a.indexOf("<!--")==0){d=a.indexOf("--\>");if(d>=0){b.comment&&b.comment(a.substring(4,d));a=a.substring(d+3);n=false}}else if(a.indexOf("</")==0){if(l=a.match(s)){a=a.substring(l[0].length);l[0].replace(s,k);n=false}}else if(a.indexOf("<")==0)if(l=a.match(r)){a=a.substring(l[0].length);l[0].replace(r,g);n=false}if(n){d=a.indexOf("<");m=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d);b.chars&&b.chars(m)}}else{a=a.replace(new RegExp("(.*)</"+c.last()+"[^>]*>"),function(f,e){e=e.replace(/<!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");b.chars&&b.chars(e);return""});k("",c.last())}if(a&&a==last)throw"Parse Error: "+a;last=a}};this.parse(a)}})();</script>') .
+				'<script type="text/javascript">wss_onload=[]</script>';
 		$unobtrusive_items = array(
 /* Advertisement */
 			'unobtrusive_ads' => array (
@@ -2446,6 +2560,12 @@ class web_optimizer {
 					'marker' => 'AddThis',
 					'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 					'height' => 16
+/* FetchBack */
+				), 'fb' => array(
+					'marker' => 'pixel.fetchback.com',
+					'regexp' => "<iframe\s*src='https://pixel.fetchback.com/serve/fb/pdc.*?</iframe>",
+					'onload_before' => "<iframe\s*src='(https://pixel.fetchback.com/serve/fb/pdc.*?)'[^>]*></iframe>",
+					'onload_after' => 'var a=document.createElement("iframe");a.src="$1";a.id=a.style.width=a.style.height="1px";a.style.border=a.frameBorder=0;document.body.appendChild(a);wss_onload_ready=1;'
 /* Facebook Connect */
 				), 'fc' => array(
 					'marker' => 'ak.connect.facebook',
@@ -2473,6 +2593,12 @@ class web_optimizer {
 				), 're' => array(
 					'marker' => 'reformal.ru',
 					'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+/* Verisign */
+				), 'vs' => array(
+					'marker' => 'seal.verisign.com',
+					'regexp' => "<script[^>]+src=\"https://seal.verisign.com/getseal.*?</script>",
+					'onload_before' => '<script[^>]+src="(https://seal.verisign.com/getseal.+?)"></script>',
+					'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
 				)
 /* Counters */
 			), 'unobtrusive_counters' => array (
@@ -2598,10 +2724,10 @@ class web_optimizer {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					'<!--/*--><![CDATA[//><!--','//-->',		'--></script>'),
+					'<!--/*--><![CDATA[//><!--','//-->'),
 				array('',			'',			'',				'',
 					'',				'',			'',				'',
-					'',							'',				'</script>'), $dest);
+					'',							''), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
@@ -2630,7 +2756,24 @@ class web_optimizer {
 		if (empty($this->head)) {
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
+/* skip removing escaped JavaScript code, thx to smart */
+				$this->content = str_replace(
+					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
+						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
+						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
+						'<script type="text/javascript"><!--'),
+					array('@@@WSSJS1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
+						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
+						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@'), $this->content);
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
+				$this->content = str_replace(
+					array('@@@WSSLEAVE1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
+						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
+						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@'),
+					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
+						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
+						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
+						'<script type="text/javascript"><!--'), $this->content);
 			}
 /* fix script positioning for DLE */
 			if (strpos($this->content, '<div id="loading-layer"')) {
@@ -2640,7 +2783,7 @@ class web_optimizer {
 			if (empty($this->options['javascript']['minify_body']) ||
 				empty($this->options['css']['minify_body'])) {
 					if (empty($this->options['page']['html_tidy'])) {
-						preg_match("!<head(\s+[^>]+)?>.*?</head>!is",
+						preg_match("!<head(\s+[^>]+)?>.*?<body!is",
 							$this->content, $matches);
 						$head = $matches[0];
 					} else {
@@ -2876,7 +3019,8 @@ class web_optimizer {
 			'user_agent' => $this->ua_mod,
 			'punypng' => $options['punypng'],
 			'restore_properties' => $options['css_restore_properties'],
-			'ftp_access' => $this->options['page']['parallel_ftp']
+			'ftp_access' => $this->options['page']['parallel_ftp'],
+			'https_host' => $this->options['page']['parallel_https']
 		));
 		return $css_sprites->process();
 	}
@@ -3002,37 +3146,6 @@ class web_optimizer {
 					$this->ua_mod = '.ie' . $version;
 				}
 			}
-		}
-	}
-	
-	/**
-	* Determines cache engine and create instance of it
-	* 
-	**/
-	function start_cache_engine () {
-		$cache_engines = array('0' => 'files',
-			'1' => 'memcached'
-			);
-		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
-		{
-			$engine_name = 'webo_cache_' . $cache_engines[$this->options['page']['cache_engine']];
-		}
-		else
-		{
-			$engine_name = 'webo_cache_' . $cache_engines[0];
-		}
-		include_once($this->options['page']['installdir'] . 'libs/php/cache_engine.php');
-		$this->cache_engine = & new $engine_name (array('cache_dir' => $this->options['page']['cachedir']));
-	}
-
-	/**
-	* Deletes cached HTML files determined by patterns. Just an interface for cache_engine delete_entries method.
-	* 
-	**/	
-	function clear_html_cache ($patterns) {
-		if (!empty($patterns))
-		{
-			$this->cache_engine->delete_entries($patterns);
 		}
 	}
 
