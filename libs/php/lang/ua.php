@@ -861,7 +861,7 @@ define('_WEBO_SAAS_TITLE', 'Состояние баланса');
 define('_WEBO_SAAS_CURRENT', 'Текущий баланс');
 define('_WEBO_SAAS_VALID', 'Средств достаточно');
 define('_WEBO_SAAS_EXPIRED', 'Средств недостаточно');
-define('_WEBO_SAAS_FOR', 'На');
+define('_WEBO_SAAS_FOR', 'на');
 define('_WEBO_SAAS_DAY', 'день');
 define('_WEBO_SAAS_DAYS', 'дня');
 define('_WEBO_SAAS_DAYS2', 'дней');

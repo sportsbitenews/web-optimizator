@@ -876,7 +876,7 @@ define('_WEBO_SAAS_TITLE', 'Balance overview');
 define('_WEBO_SAAS_CURRENT', 'Current balance');
 define('_WEBO_SAAS_VALID', 'Funds sufficient');
 define('_WEBO_SAAS_EXPIRED', 'Funds not sufficient');
-define('_WEBO_SAAS_FOR', 'For');
+define('_WEBO_SAAS_FOR', 'for');
 define('_WEBO_SAAS_DAY', 'day');
 define('_WEBO_SAAS_DAYS', 'days');
 define('_WEBO_SAAS_DAYS2', 'days');

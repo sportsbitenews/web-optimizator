@@ -138,7 +138,7 @@ if (!$ajax) {
 		echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
 ?> <?php
 		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
-?></span><span class="wss_w5<?php
+?></span></a><a class="wss_w" href="#wss_balance" title="WEBO Site SpeedUp"><span class="wss_w5<?php
 		if ($premium == 10) {
 ?> wss_w0<?php
 		}

@@ -38,7 +38,7 @@
 	echo _WEBO_SAAS_TITLE;
 ?></h1><div class="wssH wssH17"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssH10"><li class="wssH11"><?php
 	echo _WEBO_SAAS_CURRENT;
-?><div class="wssO15"></div></li><li class="wssH12"><?php
+?><br/><span class="wssO15"></span></li><li class="wssH12"><?php
 	if ($premium) {
 		echo _WEBO_SAAS_VALID;
 ?><div class="wssH13"><?php
@@ -59,9 +59,9 @@
 	}
 ?></li><li class="wssH15"><?php
 	echo _WEBO_SAAS_CODE;
-?><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="20" class="wssE"/><a class="wssJ" href="javascript:alert('www.webogroup.com')"><?php
+?><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="20" class="wssE"/><a class="wssJ7" href="javascript:alert('www.webogroup.com')"><span class="wssH18"><?php
 	echo _WEBO_SAAS_ADD;
-?></a></p></form></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div><h3 class="wssB3"><?php
+?></span><span class="wssJ6"></span></a></p></form></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div><h3 class="wssB3 wssB4"><?php
 	echo _WEBO_SAAS_DAILY;
 	$saas = '';
 	$daily = 0;
@@ -85,7 +85,7 @@
 						constant('_WEBO_' . $key).
 						'</a></td><td class="wssT10"><span class="wssO15">' .
 						$price .
-						'</span></td><td>Effect</td></tr>';
+						'</span></td><td class="wssT9">Effect</td></tr>';
 				}
 			}
 		}
