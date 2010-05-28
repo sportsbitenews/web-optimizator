@@ -35,6 +35,7 @@ libs/php/lang/ru.php
 libs/php/lang/ua.php
 libs/php/.htaccess
 libs/php/0.gif
+libs/php/cache_engine.php
 libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
