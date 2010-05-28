@@ -86,6 +86,7 @@ class web_optimizer {
 		$included_user_agents = '';
 		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
+		$this->start_cache_engine();
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore']) ||
 				!empty($this->options['restricted'])) {
@@ -131,17 +132,12 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 /* skip gzip/deflate if plugins are enabled - they can have onCache */
-			$file = $this->options['page']['cachedir'] . $this->uri .
-				$this->ua_mod . '.html' .
+			$cache_key = $this->uri . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
 					'' : $this->encoding_ext);
-			if (@file_exists($file)) {
-				$timestamp = @filemtime($file);
-			} else {
-				$timestamp = 0;
-			}
+			$timestamp = $this->cache_engine->get_mtime($cache_key);
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
-				$content = @file_get_contents($file);
+				$content = $this->cache_engine->get_entry($cache_key);
 				$hash = crc32($content) .
 					(empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
@@ -387,7 +383,9 @@ class web_optimizer {
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
+				"cache_engine" => @$this->options['cache_engine'],
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['html_cachedir']),
+				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
 				"gzip" => $this->options['gzip']['page'] &&
 					((!$this->options['htaccess']['mod_gzip'] &&
@@ -852,14 +850,9 @@ class web_optimizer {
 						substr($this->content, 0, $options['flush_size']);
 				}
 			}
-			$file = $options['cachedir'] .
-				$this->uri . $this->ua_mod . '.html' .
+			$cache_key = $this->uri . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) ? '' : $this->encoding_ext);
-			if (@file_exists($file)) {
-				$timestamp = @filemtime($file);
-			} else {
-				$timestamp = 0;
-			}
+			$timestamp = $this->cache_engine->get_mtime($cache_key);
 /* set ETag, thx to merzmarkus */
 			if (empty($options['flush'])) {
 				header("ETag: \"" .
@@ -878,13 +871,12 @@ class web_optimizer {
 				}
 /* don't create empty files */
 				if (!empty($content_to_write)) {
-					$this->write_file($file, $content_to_write);
+					$this->cache_engine->put_entry($cache_key, $content_to_write, $this->time);
 				}
 /* create uncompressed file for plugins */
 				if (is_array($this->options['plugins']) &&
 					!empty($this->encoding_ext)) {
-						$this->write_file($options['cachedir'] . $this->uri,
-							$this->content);
+						$this->cache_engine->put_entry($this->uri . '.html', $this->content, $this->time);
 				}
 			}
 		}
@@ -3146,6 +3138,37 @@ class web_optimizer {
 					$this->ua_mod = '.ie' . $version;
 				}
 			}
+		}
+	}
+	
+	/**
+	* Determines cache engine and create instance of it
+	* 
+	**/
+	function start_cache_engine () {
+		$cache_engines = array('0' => 'files',
+			'1' => 'memcached'
+			);
+		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
+		{
+			$engine_name = 'webo_cache_' . $cache_engines[$this->options['page']['cache_engine']];
+		}
+		else
+		{
+			$engine_name = 'webo_cache_' . $cache_engines[0];
+		}
+		include_once($this->options['page']['installdir'] . 'libs/php/cache_engine.php');
+		$this->cache_engine = & new $engine_name (array('cache_dir' => $this->options['page']['cachedir']));
+	}
+
+	/**
+	* Deletes cached HTML files determined by patterns. Just an interface for cache_engine delete_entries method.
+	* 
+	**/	
+	function clear_html_cache ($patterns) {
+		if (!empty($patterns))
+		{
+			$this->cache_engine->delete_entries($patterns);
 		}
 	}
 
