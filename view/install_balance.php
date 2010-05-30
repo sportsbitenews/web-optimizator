@@ -68,31 +68,29 @@
 	foreach ($options as $key => $group) {
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
-				if (!empty($value['price'])) {
+				if (!empty($value['price']) && !empty($value['value'])) {
 					$price = is_array($value['price']) ? $value['price'][$value['value']] : $value['price'];
 					$daily += empty($value['value']) ? 0 : $price;
-					$saas .= '<tr class="wssT8"' .
-						(empty($value['value']) ? ' style="display:none"' : '') .
-						' id="wss_' .
-						$option .
-						'_saas"><td class="wssT9">' .
+					$saas .= '<tr class="wssT8"><td class="wssT9">' .
 						constant('_WEBO_' . $option) .
 						'<a class="wssJ9" href="#" title="' .
 						constant('_WEBO_' . $option . '_HELP') .
 						'">?</a><a href="#wss_options#' .
 						$key .
 						'" class="wssD12">' .
-						constant('_WEBO_' . $key).
+						constant('_WEBO_' . $key) .
 						'</a></td><td class="wssT10"><span class="wssO15">' .
 						$price .
-						'</span></td><td class="wssT9">Effect</td></tr>';
+						'</span></td><td class="wssT9">' .
+						constant('_WEBO_' . $option . '_EFFECT') .
+						'</td></tr>';
 				}
 			}
 		}
 	}
 ?></h3><?php
 	if ($saas) {
-?><table class="wssT wssT20"><col width="60%"/><col width="15%"/><col width="25%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+?><table class="wssT wssT20"><col width="50%"/><col width="15%"/><col width="35%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 		echo _WEBO_SPLASH2_OPTIONS;
 ?></th><th class="wssT7"><?php
 		echo _WEBO_saas;
