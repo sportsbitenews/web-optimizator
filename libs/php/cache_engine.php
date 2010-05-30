@@ -69,16 +69,6 @@
 		}
  	}
 
- 	/* Internal method that returns all keys that match given pattern. Expects pattern. */
- 	
- 	function __get_keys_by_pattern($pattern)
- 	{
-		if(strtolower(__CLASS__)=='baseclass'){
-			trigger_error('This class is abstract!',E_USER_ERROR);
-			exit();
-		}
- 	}
-
 }
 
 /* Here starts the section with different implementations of cache_engine abstract class. Every class name should start with 'cache_' and use some specific name for particular engine. For example, cache_files (stores cache items on filesystem) or cache_memcached (uses memcached to store cache items).
@@ -107,10 +97,15 @@ class webo_cache_files extends webo_cache_engine
  	
  	function put_entry($key, $value, $time)
  	{
+ 		$path = $this->__get_path($key);
+ 		if (!@is_dir(dirname($path)))
+ 		{
+ 			$this->__make_path($path);
+ 		}
 		if (@function_exists('file_put_contents')) {
-			@file_put_contents($this->cache_dir . $key, $value);
+			@file_put_contents($path, $value);
 		} else {
-			$fp = @fopen($this->cache_dir . $key, "a");
+			$fp = @fopen($path, "a");
 			if ($fp) {
 /* block file from writing */
 				@flock($fp, LOCK_EX);
@@ -121,15 +116,15 @@ class webo_cache_files extends webo_cache_engine
 				@fclose($fp);
 			}
 		}
-		@touch($this->cache_dir . $key, $time);
-		@chmod($this->cache_dir . $key, octdec("0644"));
+		@touch($path);
+		@chmod($path, octdec("0644"));
  	}
 
 	function get_entry($key)
 	{
-		if (@is_file($this->cache_dir . $key))
+		if (@is_file($this->__get_path($key)))
 		{
-			return @file_get_contents($this->cache_dir . $key);
+			return @file_get_contents($this->__get_path($key));
 		}
 		else
 		{
@@ -147,7 +142,7 @@ class webo_cache_files extends webo_cache_engine
  			{
  				foreach($patterns as $pattern)
  				{
-	 				$files = $this->__get_keys_by_pattern($this->cache_dir . $pattern);
+	 				$files = $this->__get_keys_by_pattern($this->__get_path($pattern));
 	 				foreach($files as $file)
 	 				{
 	 					@unlink($file);
@@ -156,7 +151,7 @@ class webo_cache_files extends webo_cache_engine
  			}
  			else
  			{
- 				$files = $this->__get_keys_by_pattern($this->cache_dir . $patterns);
+ 				$files = $this->__get_keys_by_pattern($this->__get_path($patterns));
  				foreach($files as $file)
  				{
  					@unlink($file);
@@ -176,9 +171,9 @@ class webo_cache_files extends webo_cache_engine
  	
  	function get_mtime($key)
  	{
- 		if (@file_exists($this->cache_dir . $key))
+ 		if (@file_exists($this->__get_path($key)))
  		{
-	 		return @filemtime($this->cache_dir . $key);
+	 		return @filemtime($this->__get_path($key));
  		}
  		else
  		{
@@ -190,7 +185,40 @@ class webo_cache_files extends webo_cache_engine
  	
  	function set_mtime($key, $time)
  	{
- 		@touch($this->cache_dir . $key, $time);
+ 		@touch($this->__get_path($key), $time);
+ 	}
+ 	
+ 	/* Gets path to file from cache entry key */
+ 	
+ 	function __get_path($key)
+ 	{
+ 		return $this->cache_dir . str_replace('+', '/', $key);
+ 	}
+ 	
+ 	/* Creates directory structure to store the file */
+ 	
+ 	function __make_path($path)
+ 	{
+ 		if (substr(phpversion(), 0, 1) == 4)
+ 		{
+ 			$dirs = explode('/', dirname($path));
+ 			$cur_dir = '/';
+ 			foreach($dirs as $dir)
+ 			{
+ 				if(!empty($dir))
+ 				{
+	 				$cur_dir .= $dir . '/';
+	 				if(!@is_dir($cur_dir))
+	 				{
+	 					mkdir($cur_dir, 0755);
+	 				}
+ 				}
+ 			}
+ 		}
+ 		else
+ 		{
+ 			mkdir(dirname($path), 0755, true);
+ 		}
  	}
 
 }
