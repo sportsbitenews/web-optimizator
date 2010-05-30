@@ -76,6 +76,8 @@ class web_optimizer {
 		$this->set_user_agent();
 /* Set options */
 		$this->set_options();
+/* Include base plugin class */
+		include_once($this->options['css']['installdir'] . 'libs/php/class.plugin.php');
 /* Remember current page encoding */
 		$this->encoding = '';
 /* Define the gzip headers */
@@ -161,7 +163,8 @@ class web_optimizer {
 								$this->options['css']['installdir'] .
 									'plugins/' . $plugin . '.php';
 							if (@is_file($plugin_file)) {
-								include($plugin_file);
+								include_once($plugin_file);
+								$web_optimizer_plugin = new $plugin;
 								$content =
 									$web_optimizer_plugin->onAfterOptimization($content);
 							}
@@ -518,7 +521,8 @@ class web_optimizer {
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
 				if (@is_file($plugin_file)) {
-					include($plugin_file);
+					include_once($plugin_file);
+					$web_optimizer_plugin = new $plugin;
 					$this->content =
 						$web_optimizer_plugin->onBeforeOptimization($this->content);
 				}
@@ -824,7 +828,8 @@ class web_optimizer {
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
 				if (@is_file($plugin_file)) {
-					include($plugin_file);
+					include_once($plugin_file);
+					$web_optimizer_plugin = new $plugin;
 					$this->content =
 						$web_optimizer_plugin->onAfterOptimization($this->content);
 				}
@@ -887,7 +892,8 @@ class web_optimizer {
 					$this->options['css']['installdir'] .
 						'plugins/' . $plugin . '.php';
 				if (@is_file($plugin_file)) {
-					include($plugin_file);
+					include_once($plugin_file);
+					$web_optimizer_plugin = new $plugin;
 					$this->content =
 						$web_optimizer_plugin->onCache($this->content);
 				}
