@@ -81,6 +81,40 @@ class webo_cache_files extends webo_cache_engine
 
 	function webo_cache_files($options)
 	{
+ 	
+		/**#@+
+		 * Extra GLOB constant for safe_glob()
+		 */
+		if (!defined('GLOB_NODIR'))
+		{
+			define('GLOB_NODIR',256);
+		}
+		if (!defined('GLOB_PATH'))
+		{
+			define('GLOB_PATH',512);
+		}
+		if (!defined('GLOB_NODOTS'))
+		{
+			define('GLOB_NODOTS',1024);
+		}
+		if (!defined('GLOB_RECURSE'))
+		{
+			define('GLOB_RECURSE',2048);
+		}
+		/**#@-*/
+
+		/**
+		 * A better "fnmatch" alternative for windows that converts a fnmatch
+		 * pattern into a preg one. It should work on PHP >= 4.0.0.
+		 * @author soywiz at php dot net
+		 * @since 17-Jul-2006 10:12
+		 */
+		if (!function_exists('fnmatch')) {
+		    function fnmatch($pattern, $string) {
+			return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
+		    }
+		}
+
 		if(!empty($options['cache_dir']) && @is_writable($options['cache_dir']))
 		{
 			$this->cache_dir = $options['cache_dir'];
@@ -91,8 +125,6 @@ class webo_cache_files extends webo_cache_engine
 		}
 	}
 	
-	/* Get cache entry by key. Expects key string. */
-
  	/* Adds or updates entry. Expects key string and value to cache. */
  	
  	function put_entry($key, $value, $time)
@@ -120,6 +152,8 @@ class webo_cache_files extends webo_cache_engine
 		@chmod($path, octdec("0644"));
  	}
 
+	/* Get cache entry by key. Expects key string. */
+
 	function get_entry($key)
 	{
 		if (@is_file($this->__get_path($key)))
@@ -142,29 +176,36 @@ class webo_cache_files extends webo_cache_engine
  			{
  				foreach($patterns as $pattern)
  				{
-	 				$files = $this->__get_keys_by_pattern($this->__get_path($pattern));
+	 				$files = $this->__safe_glob($this->__get_path($pattern), GLOB_RECURSE | GLOB_NOSORT | GLOB_NODOTS | GLOB_PATH);
 	 				foreach($files as $file)
 	 				{
-	 					@unlink($file);
+	 					if (@is_file($file))
+	 					{
+	 						@unlink($file);
+ 						}
+						elseif (@is_dir($file))
+						{
+							@rmdir($file);
+						}
 	 				}
  				}
  			}
  			else
  			{
- 				$files = $this->__get_keys_by_pattern($this->__get_path($patterns));
+ 				$files = $this->__safe_glob($this->__get_path($patterns), GLOB_RECURSE | GLOB_NOSORT | GLOB_NODOTS | GLOB_PATH);
  				foreach($files as $file)
  				{
- 					@unlink($file);
+ 					if (@is_file($file))
+ 					{
+ 						@unlink($file);
+					}
+					elseif (@is_dir($file))
+					{
+						@rmdir($file);
+					}
  				}
  			}
  		}
- 	}
-
- 	/* Internal method that returns all keys that match given pattern. Expects pattern. */
- 	
- 	function __get_keys_by_pattern($pattern)
- 	{
- 		return glob($pattern);
  	}
 
  	/* Gets creation time of cache entry. Expects key string. */
@@ -220,6 +261,52 @@ class webo_cache_files extends webo_cache_engine
  			mkdir(dirname($path), 0755, true);
  		}
  	}
+
+	/**
+	 * A safe empowered glob().
+	 *
+	 * Function glob() is prohibited on some server (probably in safe mode)
+	 * (Message "Warning: glob() has been disabled for security reasons in
+	 * (script) on line (line)") for security reasons as stated on:
+	 * http://seclists.org/fulldisclosure/2005/Sep/0001.html
+	 *
+	 * safe_glob() intends to replace glob() using readdir() & fnmatch() instead.
+	 * Supported flags: GLOB_MARK, GLOB_NOSORT, GLOB_ONLYDIR
+	 * Additional flags: GLOB_NODIR, GLOB_PATH, GLOB_NODOTS, GLOB_RECURSE
+	 * (not original glob() flags)
+	 * @author BigueNique AT yahoo DOT ca
+	 * @updates
+	 * - 080324 Added support for additional flags: GLOB_NODIR, GLOB_PATH,
+	 *   GLOB_NODOTS, GLOB_RECURSE
+	 */
+	 
+ 	/* Internal method that returns all keys that match given pattern. Expects pattern. */
+
+	function __safe_glob($pattern, $flags=0) {
+	    $split=explode('/',str_replace('\\','/',$pattern));
+	    $mask=array_pop($split);
+	    $path=implode('/',$split);
+	    if (($dir=opendir($path))!==false) {
+		$glob=array();
+		while(($file=readdir($dir))!==false) {
+		    // Recurse subdirectories (GLOB_RECURSE)
+		    if( ($flags&GLOB_RECURSE) && is_dir($path.'/'.$file) && (!in_array($file,array('.','..'))) )
+		        $glob = array_merge($glob,$this->__safe_glob(($flags&GLOB_PATH?$path.'/':'').$file.'/'.$mask, $flags));
+		    // Match file mask
+		    if (fnmatch($mask,$file)) {
+		        if ( ( (!($flags&GLOB_ONLYDIR)) || is_dir("$path/$file") )
+		          && ( (!($flags&GLOB_NODIR)) || (!is_dir($path.'/'.$file)) )
+		          && ( (!($flags&GLOB_NODOTS)) || (!in_array($file,array('.','..'))) ) )
+		            $glob[] = ($flags&GLOB_PATH?$path.'/':'') . $file . ($flags&GLOB_MARK?'/':'');
+		    }
+		}
+		closedir($dir);
+		if (!($flags&GLOB_NOSORT)) sort($glob);
+		return $glob;
+	    } else {
+		return false;
+	    }   
+	}
 
 }
  

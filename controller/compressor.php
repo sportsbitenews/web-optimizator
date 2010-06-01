@@ -15,6 +15,11 @@ class web_optimizer {
 	**/
 	function web_optimizer ($options = false) {
 /* initialize chained optimization */
+		if(!empty($_GET['weboptimizer_disabled']))
+		{
+			$this->options['active'] = 0;
+			return;
+		}
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
 /* get chained optimization params */
 		if (!empty($this->web_optimizer_stage)) {
@@ -77,9 +82,7 @@ class web_optimizer {
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
-		if (is_array($this->options['plugins'])) {
-			include_once($this->options['css']['installdir'] . 'libs/php/class.plugin.php');
-		}
+		include_once($this->options['css']['installdir'] . 'libs/php/class.plugin.php');
 /* Remember current page encoding */
 		$this->encoding = '';
 /* Define the gzip headers */

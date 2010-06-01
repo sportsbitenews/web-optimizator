@@ -8,7 +8,7 @@
 // ==============================================================================================
 // no direct access
 
-/* Abstract WEBO olugin class */
+/* Abstract WEBO plugin class */
 
 class webo_plugin
 {
