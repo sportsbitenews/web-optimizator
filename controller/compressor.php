@@ -77,7 +77,7 @@ class web_optimizer {
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
-		if (is_array($this->options['plugins']) {
+		if (is_array($this->options['plugins'])) {
 			include_once($this->options['css']['installdir'] . 'libs/php/class.plugin.php');
 		}
 /* Remember current page encoding */
