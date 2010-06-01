@@ -544,7 +544,7 @@ define('_WEBO_DASHBOARD_STATUS15','Создаем CSS Sprites: 1 стадия');
 define('_WEBO_DASHBOARD_STATUS16','Создаем CSS Sprites: 2 стадия');
 define('_WEBO_DASHBOARD_STATUS17','Создаем CSS Sprites: 3 стадия');
 define('_WEBO_DASHBOARD_STATUS18','Готовимся к data:URI + mhtml');
-define('_WEBO_DASHBOARD_STATUS19','Создаеи data:URI + mhtml');
+define('_WEBO_DASHBOARD_STATUS19','Создаем data:URI + mhtml');
 define('_WEBO_DASHBOARD_STATUS20','Создаем CSS-кэш: проверка файлов');
 define('_WEBO_DASHBOARD_STATUS21','Создаем CSS-кэш: объединение файлов');
 define('_WEBO_DASHBOARD_STATUS22','Создаем CSS-кэш: сжатие файлов');
