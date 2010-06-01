@@ -8,7 +8,7 @@
 // ==============================================================================================
 // no direct access
 
-/* This class checks cached page if there's a captcha image and if it's changes captcha image url to correct one */
+/* Abstract WEBO olugin class */
 
 class webo_plugin
 {
