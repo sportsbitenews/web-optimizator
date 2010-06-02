@@ -5022,7 +5022,7 @@ require valid-user';
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached'
 			);
-		if (!empty($cache_engines[$this->compress_options['cache_engine']]))
+		if (!empty($cache_engines[@$this->compress_options['cache_engine']]))
 		{
 			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['cache_engine']];
 		}

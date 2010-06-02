@@ -233,7 +233,7 @@ class webo_cache_files extends webo_cache_engine
  	
  	function __get_path($key)
  	{
- 		return $this->cache_dir . str_replace('+', '/', $key);
+ 		return $this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','./','$'), array('/','','','','','','','',''), $key);
  	}
  	
  	/* Creates directory structure to store the file */
@@ -286,9 +286,9 @@ class webo_cache_files extends webo_cache_engine
 	    $split=explode('/',str_replace('\\','/',$pattern));
 	    $mask=array_pop($split);
 	    $path=implode('/',$split);
-	    if (($dir=opendir($path))!==false) {
+	    if (($dir=@opendir($path))!==false) {
 		$glob=array();
-		while(($file=readdir($dir))!==false) {
+		while(($file=@readdir($dir))!==false) {
 		    // Recurse subdirectories (GLOB_RECURSE)
 		    if( ($flags&GLOB_RECURSE) && is_dir($path.'/'.$file) && (!in_array($file,array('.','..'))) )
 		        $glob = array_merge($glob,$this->__safe_glob(($flags&GLOB_PATH?$path.'/':'').$file.'/'.$mask, $flags));
@@ -304,7 +304,7 @@ class webo_cache_files extends webo_cache_engine
 		if (!($flags&GLOB_NOSORT)) sort($glob);
 		return $glob;
 	    } else {
-		return false;
+		return array();
 	    }   
 	}
 
