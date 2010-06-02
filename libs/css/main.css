@@ -422,10 +422,10 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssU12 .wssO15{background:url(webos.white.png) no-repeat;height:12px;width:12px}
 .wssH11 .wssO15{background:url(webos.balance.png) 100% 12px no-repeat;color:#ff8200;display:inline-block;font-size:29px;line-height:29px;padding:8px 23px 0 0}
 /* welcome screen */
-#wss_help .wssO21{background:url(account.welcome.png) no-repeat!important}
+#wss_help .wssO21{background:url(account.welcome.png) no-repeat!important;overflow:hidden}
 .wssO22{border:1px solid #ccc;display:block;float:right;margin:0 23px 15px 50px;padding:1px}
-#wss_help .wssO24{background:url(options.welcome.png) no-repeat!important}
-#wss_help .wssO26{background:url(dashboard.welcome.png) no-repeat!important}
+#wss_help .wssO24{background:url(options.welcome.png) no-repeat!important;overflow:hidden}
+#wss_help .wssO26{background:url(dashboard.welcome.png) no-repeat!important;overflow:hidden}
 .wssO29{border:1px solid #ccc;display:block}
 .wssO29en{border:1px solid #ccc;display:block;background:url(../../images/welcome.screens.en.jpg) no-repeat}
 .wssO29ru{border:1px solid #ccc;display:block;background:url(../../images/welcome.screens.ru.jpg) no-repeat}
