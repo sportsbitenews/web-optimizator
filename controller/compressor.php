@@ -2343,9 +2343,21 @@ class web_optimizer {
 		}
 /* remove website host */
 		if (!empty($this->options['page']['minify_aggressive'])) {
+/* fix for base tag */
+			preg_match("@<base[^>]+>@is", $source, $matches);
+			$basetag = false;
+			if (is_array($matches) && is_array($matches[0])) {
+				$basetag = $matches[0][0];
+			}
+			if ($basetag) {
+				$source = str_replace($basetag, '@@@WSSBASE@@@', $source);
+			}
 			$source = preg_replace("@(src|href)=(['\"])(http" .
 				$this->https . "://)(www\.)?" .
 				$this->host . "/*@", "$1=$2/", $source);
+			if ($basetag) {
+				$source = str_replace('@@@WSSBASE@@@', $basetag, $source);
+			}
 		}
 		return $source;
 	}
