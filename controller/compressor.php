@@ -1249,6 +1249,8 @@ class web_optimizer {
 						$source .= $newfile;
 					}
 				}
+/* remove JS file marker from content */
+				$source = str_replace('@@@WSSSCRIPT@@@', '', $source);
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
@@ -1836,7 +1838,7 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
-								if ($pos = strpos($file['file'], 'shadowbox.js')) {
+								if (!empty($file['file']) && ($pos = strpos($file['file'], 'shadowbox.js'))) {
 									$this->shadowbox_base = substr($file['file'], 0, $pos);
 								}
 					}
