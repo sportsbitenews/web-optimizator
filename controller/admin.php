@@ -1954,12 +1954,8 @@ class admin {
 /* clean up all WEBO Site SpeedUp rules from .htaccess */
 		$this->htaccess = $this->detect_htaccess();
 		if (empty($this->error)) {
-			if (!@is_file($this->htaccess . '.backup')) {
-				$content_saved = $this->clean_htaccess();
-				$this->write_file($this->htaccess, $content_saved, $return);
-			} else {
-				@copy($this->htaccess . '.backup', $this->htaccess);
-			}
+			$content_saved = $this->clean_htaccess();
+			$this->write_file($this->htaccess, $content_saved, $return);
 		}
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
@@ -3234,10 +3230,6 @@ class admin {
 /* delete previous Web Optimizer rules */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
-		if (!@is_writable($this->htaccess) && @is_file($this->htaccess)) {
-			$this->error = $this->error ? $this->error : array();
-			$this->error[10] = 1;
-		}
 /* create backup */
 		if (!@is_file($this->htaccess . '.backup')) {
 			@copy($this->htaccess, $this->htaccess . '.backup');
@@ -3630,7 +3622,11 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if (!@is_writable($this->htaccess)) {
 			@unlink($this->htaccess);
 		}
-		$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
+		$success = $this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
+		if (!$success) {
+			$this->error = $this->error ? $this->error : array();
+			$this->error[10] = 1;
+		}
 	}
 
 	/**
