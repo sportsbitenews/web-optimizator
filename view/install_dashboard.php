@@ -276,7 +276,7 @@
 ?></div></div></div><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div><script type="text/javascript">wss_fee=<?php
-	echo $fee;
+	echo round($fee);
 ?>;wss_license='<?php
 	echo $license;
 ?>';wss_pass='<?php

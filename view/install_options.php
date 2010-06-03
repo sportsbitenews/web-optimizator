@@ -143,25 +143,37 @@ if ($submit) {
 	}
 ?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
-?><span class="wssO15"></span></a></li><li class="wssU11<?php
+	if ($premium == 10) {
+?><span class="wssO15"></span><?php
+	}
+?></a></li><li class="wssU11<?php
 	if ($config == 'basic') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('basic');void(0)" rel="basic"><?php
 	echo _WEBO_OPTIONS_BASIC;
-?><span class="wssO15"></span></a></li><li class="wssU11<?php
+	if ($premium == 10) {
+?><span class="wssO15"></span><?php
+	}
+?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
-?><span class="wssO15"></span></a></li><li class="wssU11<?php
+	if ($premium == 10) {
+?><span class="wssO15"></span><?php
+	}
+?></a></li><li class="wssU11<?php
 	if ($config == 'extreme') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><?php
 	echo _WEBO_OPTIONS_EXTREME;
-?><span class="wssO15"></span></a></li><?php
+	if ($premium == 10) {
+?><span class="wssO15"></span><?php
+	}
+?></a></li><?php
 	if (count($configs)) {
 		foreach ($configs as $c) {
 ?><li class="wssU11 wssU16<?php
@@ -176,7 +188,11 @@ if ($submit) {
 			echo $c;
 ?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
-?>"></span><span class="wssO15"></span><span>&nbsp;</span></a></li><?php
+?>"></span><?php
+			if ($premium == 10) {
+?><span class="wssO15"></span><?php
+			}
+?><span>&nbsp;</span></a></li><?php
 		}
 	}
 	$i = count($configs);

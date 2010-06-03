@@ -225,14 +225,15 @@ if (!$ajax) {
 		echo _WEBO_HELP_CLOSE;
 ?></a></p></div></div></div></div><?php
 	}
-?></div><?php
+?></div><script type="text/javascript"><?php
 	if ($premium == 10) {
-?><script type="text/javascript">setTimeout(function(){if(typeof _!=='undefined'){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://webo.name/license/?key=<?php
-	echo $license;
-?>&status=1';a.documentElement.firstChild.appendChild(b)}else{setTimeout(arguments.callee,10)}},10);wss_premium=<?php
+?>setTimeout(function(){if(typeof _!=='undefined'){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://webo.name/license/?key=<?php
+		echo $license;
+?>&status=1';a.documentElement.firstChild.appendChild(b)}else{setTimeout(arguments.callee,10)}},10);<?php
+	}
+?>wss_premium=<?php
 	echo (empty($page) || (!empty($page) && $page != 'install_enter_password' && $page != 'install_set_password')) ? round($premium) : 10;
 ?></script><?php
-	}
 	if (!$skip_render) {
 ?><script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAcDjjgL6gyYUwSrkesv6c7RRPj_C4VnSBVCqcbcH6fyxpcL8EhxSiDicBRQUIZJ32TB5Qr_cb3UjZXg"></script><script type="text/javascript" src="libs/js/yass.loadbar.js?<?php
 		if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
