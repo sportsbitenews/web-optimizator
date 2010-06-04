@@ -220,7 +220,7 @@ class webo_cache_files extends webo_cache_engine
  	
  	function __get_path($key)
  	{
- 		return $this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','./','$'), array('/','','','','','','','',''), $key);
+ 		return preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
  	}
  	
  	/* Creates directory structure to store the file */
