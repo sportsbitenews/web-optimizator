@@ -591,8 +591,8 @@ define('_WEBO_SYSTEM_css_writable', 'Недоступна для записи д
 define('_WEBO_SYSTEM_css_writable_HELP', 'Пожалуйста, сделайте директорию для кэша CSS доступной для записи (например, выполнив chmod 775 или chmod 777) либо выберите другую директорию на странице "Состояние системы", на вкладке "Параметры');
 define('_WEBO_SYSTEM_html_writable', 'Недоступна для записи директория для кэша HTML');
 define('_WEBO_SYSTEM_html_writable_HELP', 'Пожалуйста, сделайте директорию для кэша HTML доступной для записи (например, выполнив chmod 775 или chmod 777) либо выберите другую директорию на странице "Состояние системы", на вкладке "Параметры".');
-define('_WEBO_SYSTEM_config_writable', 'Недоступен для записи файл config.webo.php');
-define('_WEBO_SYSTEM_config_writable_HELP', 'Пожалуйста, сделайте файл config.webo.php доступным для записи (например, выполнив chmod 664 или chmod 666). Этот файл расположен в директории, где установлен WEBO Site SpeedUp.');
+define('_WEBO_SYSTEM_config_writable', 'Недоступен для записи файл <code>config.webo.php</code>');
+define('_WEBO_SYSTEM_config_writable_HELP', 'Пожалуйста, сделайте файл <code>config.webo.php</code> доступным для записи (например, выполнив chmod 664 или chmod 666). Этот файл расположен в директории, где установлен WEBO Site SpeedUp.');
 define('_WEBO_SYSTEM_htaccess_writable', 'Недоступен для записи файл <code>.htaccess</code>');
 define('_WEBO_SYSTEM_htaccess_writable_HELP', 'Пожалуйста, сделайте файл .htaccess, расположенный в корневой директории сайта, доступным для записи (например, выполнив chmod 664 или chmod 666). Если в корневой директории сайта нет этого файла, пожалуйста, разрешите запись в корневую директорию (выполнив chmod 775 или chmod 777) или вручную создайте в ней файл .htaccess, доступный для записи.');
 define('_WEBO_SYSTEM_index_writable', 'Недоступен для записи файл <code>index.php</code>');
