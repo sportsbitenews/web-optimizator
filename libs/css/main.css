@@ -106,7 +106,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 #wss_help .wssB1{background:none;color:#ff8200;font-size:20px;margin:12px 0 12px 23px}
 .wssB2{color:#333;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:7px 0 3px 3px}
 #wss_help .wssB2{font-size:16px;font-weight:700;padding:2px 0 6px}
-.wssB3{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:2px 0 13px 3px}
+.wssB3{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:2px 0 13px 3px}
 
 .wssC{height:120px;margin:0;padding:0}
 .wssC1{height:780px}
@@ -188,7 +188,8 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssH13{font-size:16px;font-weight:700;padding:19px 0 4px}
 .wssH14{font-size:13px}
 .wssH15{height:71px;padding:0;margin:0 0 0 40%;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
-.wssH18{background:url(add.orange.png) 0 1px no-repeat;padding-left:21px}
+.wssH18{background:url(add.orange.png) 0 1px no-repeat;padding:0 10px 0 21px}
+a.wssJ7:hover .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat}
 .wssB4{color:#ff4000;padding-bottom:0;margin:10px 0 10px 11px}
 
 .wssI{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
@@ -293,6 +294,7 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssT1 .wssJ8{margin-right:7%}
 .wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 4px 0 7px;position:relative;text-decoration:none!important}
 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
+.wssT20 .wssJ9{background:url(hlp.white.png) no-repeat}
 .wssJ10{background:url(icon.twitter.png) no-repeat;display:block}
 .wssJ11{background:url(icon.facebook.png) no-repeat}
 .wssJ12{background:url(icon.blogger.png) no-repeat}

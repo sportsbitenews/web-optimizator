@@ -38,10 +38,14 @@
 	echo _WEBO_SAAS_TITLE;
 ?></h1><div class="wssH wssH17"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssH10"><li class="wssH11"><?php
 	echo _WEBO_SAAS_CURRENT;
-?><br/><span class="wssO15"></span></li><li class="wssH12"><?php
+?><a class="wssJ9" href="#" title="<?php
+	echo _WEBO_SAAS_CURRENT_HELP;
+?>">?</a><br/><span class="wssO15"></span></li><li class="wssH12"><?php
 	if ($premium) {
 		echo _WEBO_SAAS_VALID;
-?><div class="wssH13"><?php
+?><a class="wssJ9" href="#" title="<?php
+		echo _WEBO_SAAS_VALID_HELP;
+?>">?</a><div class="wssH13"><?php
 		echo _WEBO_SAAS_FOR;
 ?> <span id="wss_balance_days">0</span> <span id="wss_balance_days1"><?php
 		echo _WEBO_SAAS_DAY;
@@ -56,10 +60,15 @@
 ?></span></div><?php
 	} else {
 		echo _WEBO_SAAS_EXPIRED;
+?><a class="wssJ9" href="#" title="<?php
+		echo _WEBO_SAAS_EXPIRED_HELP;
+?>">?</a><?php
 	}
 ?></li><li class="wssH15"><?php
 	echo _WEBO_SAAS_CODE;
-?><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ7" href="javascript:_.n()"><span class="wssH18"><?php
+?><a class="wssJ9" href="#" title="<?php
+	echo _WEBO_SAAS_CODE_HELP;
+?>">?</a><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ7" href="javascript:_.n()"><span class="wssH18"><?php
 	echo _WEBO_SAAS_ADD;
 ?></span><span class="wssJ6"></span></a></p></form></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div><h3 class="wssB3 wssB4"><?php
 	echo _WEBO_SAAS_DAILY;
