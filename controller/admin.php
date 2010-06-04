@@ -1041,7 +1041,7 @@ class admin {
 	function dashboard_options () {
 		$errors = $this->options_count();
 /* count delta */
-		$deltas = array(58, 48, 0);
+		$deltas = array(58, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		$delta = $deltas[round($this->premium)];
 		foreach ($errors as $key => $value) {
 			$delta += $value;
