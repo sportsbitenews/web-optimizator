@@ -30,6 +30,10 @@ class admin {
 		$this->options_file = "config.webo.php";
 		require($this->basepath . $this->options_file);
 		$this->compress_options = empty($compress_options) ? '' : $compress_options;
+		if (!empty($this->compress_options['html_cache']['enabled']))
+		{
+			$this->start_cache_engine();
+		}
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
 		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
@@ -759,7 +763,7 @@ class admin {
 		if (!empty($this->compress_options['html_cachedir'])) {
 			@chdir($this->compress_options['html_cachedir']);
 			foreach ($this->cache_types['html'] as $mask) {
-				$html += $this->dashboard_cache_size($mask);
+				$html += $this->cache_engine->get_cache_size($mask);
 			}
 			if ($this->compress_options['html_cachedir'] !=
 				$this->compress_options['javascript_cachedir'] &&
@@ -1320,7 +1324,7 @@ class admin {
 		if (!empty($this->compress_options['html_cachedir'])) {
 			@chdir($this->compress_options['html_cachedir']);
 			foreach ($this->cache_types['html'] as $mask) {
-				$files['HTML'][$mask] = $this->dashboard_cache_size($mask, 1);
+				$files['HTML'][$mask] = $this->cache_engine->get_cache_size($mask, 1);
 			}
 			foreach ($this->cache_types['sprites'] as $mask) {
 				if (is_array($files['SPRITES'][$mask])) {
@@ -1648,7 +1652,6 @@ class admin {
 		}
 /* html cache */
 		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
-			$this->start_cache_engine();
 			while (($file = @readdir($dir)) !== false) {
 				if (!in_array($file, $restricted))
 				{
@@ -1954,8 +1957,12 @@ class admin {
 /* clean up all WEBO Site SpeedUp rules from .htaccess */
 		$this->htaccess = $this->detect_htaccess();
 		if (empty($this->error)) {
-			$content_saved = $this->clean_htaccess();
-			$this->write_file($this->htaccess, $content_saved, $return);
+			if (!@is_file($this->htaccess . '.backup')) {
+				$content_saved = $this->clean_htaccess();
+				$this->write_file($this->htaccess, $content_saved, $return);
+			} else {
+				@copy($this->htaccess . '.backup', $this->htaccess);
+			}
 		}
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$message = empty($this->input['wss_message']) ? '' : $this->input['wss_message'];
@@ -3230,6 +3237,10 @@ class admin {
 /* delete previous Web Optimizer rules */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
+		if (!@is_writable($this->htaccess) && @is_file($this->htaccess)) {
+			$this->error = $this->error ? $this->error : array();
+			$this->error[10] = 1;
+		}
 /* create backup */
 		if (!@is_file($this->htaccess . '.backup')) {
 			@copy($this->htaccess, $this->htaccess . '.backup');
@@ -3622,11 +3633,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if (!@is_writable($this->htaccess)) {
 			@unlink($this->htaccess);
 		}
-		$success = $this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
-		if (!$success) {
-			$this->error = $this->error ? $this->error : array();
-			$this->error[10] = 1;
-		}
+		$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
 	}
 
 	/**

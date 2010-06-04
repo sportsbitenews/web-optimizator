@@ -68,6 +68,14 @@
 			exit();
 		}
  	}
+ 
+ 	function get_cache_size($mask)
+ 	{
+		if(strtolower(__CLASS__)=='baseclass'){
+			trigger_error('This class is abstract!',E_USER_ERROR);
+			exit();
+		}
+ 	}
 
 }
 
@@ -82,27 +90,6 @@ class webo_cache_files extends webo_cache_engine
 	function webo_cache_files($options)
 	{
  	
-		/**#@+
-		 * Extra GLOB constant for safe_glob()
-		 */
-		if (!defined('GLOB_NODIR'))
-		{
-			define('GLOB_NODIR',256);
-		}
-		if (!defined('GLOB_PATH'))
-		{
-			define('GLOB_PATH',512);
-		}
-		if (!defined('GLOB_NODOTS'))
-		{
-			define('GLOB_NODOTS',1024);
-		}
-		if (!defined('GLOB_RECURSE'))
-		{
-			define('GLOB_RECURSE',2048);
-		}
-		/**#@-*/
-
 		/**
 		 * A better "fnmatch" alternative for windows that converts a fnmatch
 		 * pattern into a preg one. It should work on PHP >= 4.0.0.
@@ -176,7 +163,7 @@ class webo_cache_files extends webo_cache_engine
  			{
  				foreach($patterns as $pattern)
  				{
-	 				$files = $this->__safe_glob($this->__get_path($pattern), GLOB_RECURSE | GLOB_NOSORT | GLOB_NODOTS | GLOB_PATH);
+	 				$files = $this->__recurse_glob($this->__get_path($pattern));
 	 				foreach($files as $file)
 	 				{
 	 					if (@is_file($file))
@@ -192,7 +179,7 @@ class webo_cache_files extends webo_cache_engine
  			}
  			else
  			{
- 				$files = $this->__safe_glob($this->__get_path($patterns), GLOB_RECURSE | GLOB_NOSORT | GLOB_NODOTS | GLOB_PATH);
+ 				$files = $this->__recurse_glob($this->__get_path($patterns));
  				foreach($files as $file)
  				{
  					if (@is_file($file))
@@ -262,50 +249,102 @@ class webo_cache_files extends webo_cache_engine
  		}
  	}
 
-	/**
-	 * A safe empowered glob().
-	 *
-	 * Function glob() is prohibited on some server (probably in safe mode)
-	 * (Message "Warning: glob() has been disabled for security reasons in
-	 * (script) on line (line)") for security reasons as stated on:
-	 * http://seclists.org/fulldisclosure/2005/Sep/0001.html
-	 *
-	 * safe_glob() intends to replace glob() using readdir() & fnmatch() instead.
-	 * Supported flags: GLOB_MARK, GLOB_NOSORT, GLOB_ONLYDIR
-	 * Additional flags: GLOB_NODIR, GLOB_PATH, GLOB_NODOTS, GLOB_RECURSE
-	 * (not original glob() flags)
-	 * @author BigueNique AT yahoo DOT ca
-	 * @updates
-	 * - 080324 Added support for additional flags: GLOB_NODIR, GLOB_PATH,
-	 *   GLOB_NODOTS, GLOB_RECURSE
-	 */
-	 
  	/* Internal method that returns all keys that match given pattern. Expects pattern. */
 
-	function __safe_glob($pattern, $flags=0) {
+	function __recurse_glob($pattern, $size = false, $number = false) {
 	    $split=explode('/',str_replace('\\','/',$pattern));
 	    $mask=array_pop($split);
 	    $path=implode('/',$split);
 	    if (($dir=@opendir($path))!==false) {
-		$glob=array();
+	    	if ($size === false)
+	    	{
+			$glob=array();
+		}
+        	else
+        	{
+        		if ($number === false)
+        		{
+        			$glob = $size;
+        		}
+        		else
+        		{
+        			$glob = array($size, $number);
+        		}
+        	}
 		while(($file=@readdir($dir))!==false) {
-		    // Recurse subdirectories (GLOB_RECURSE)
-		    if( ($flags&GLOB_RECURSE) && is_dir($path.'/'.$file) && (!in_array($file,array('.','..'))) )
-		        $glob = array_merge($glob,$this->__safe_glob(($flags&GLOB_PATH?$path.'/':'').$file.'/'.$mask, $flags));
-		    // Match file mask
+		    if(is_dir($path.'/'.$file) && (!in_array($file,array('.','..'))) )
+		    {
+		    	if ($size === false)
+		    	{
+		        	$glob = array_merge($glob,$this->__recurse_glob($path.'/'.$file.'/'.$mask));
+	        	}
+	        	else
+	        	{
+	        		if ($number === false)
+	        		{
+	        			$glob = $this->__recurse_glob($path.'/'.$file.'/'.$mask, $glob);
+        			}
+        			else
+        			{
+        				$glob = $this->__recurse_glob($path.'/'.$file.'/'.$mask, $glob[0], $glob[1]);
+        			}
+	        	}
+	       	    }
 		    if (fnmatch($mask,$file)) {
-		        if ( ( (!($flags&GLOB_ONLYDIR)) || is_dir("$path/$file") )
-		          && ( (!($flags&GLOB_NODIR)) || (!is_dir($path.'/'.$file)) )
-		          && ( (!($flags&GLOB_NODOTS)) || (!in_array($file,array('.','..'))) ) )
-		            $glob[] = ($flags&GLOB_PATH?$path.'/':'') . $file . ($flags&GLOB_MARK?'/':'');
+		        if (!in_array($file,array('.','..')))
+		        {
+		    		if ($size === false)
+			    	{
+					$glob[] = $path . '/'. $file;
+				}
+				else
+				{
+					if ($number === false)
+					{
+						$glob += @filesize($path . '/'. $file);
+					}
+					else
+					{
+						$glob[0] += @filesize($path . '/'. $file);
+						$glob[1]++;
+					}
+				}
+	        	}
 		    }
 		}
 		closedir($dir);
-		if (!($flags&GLOB_NOSORT)) sort($glob);
 		return $glob;
 	    } else {
-		return array();
-	    }   
+	    	if ($size === false)
+	    	{
+			return array();
+		}
+        	else
+        	{
+        		if ($number === false)
+        		{
+        			return $size;
+        		}
+        		else
+        		{
+        			return array($size, $number);
+        		}
+        	}
+		
+	    }
+	}
+	
+	/* Gets total size and number of cache files defined by mask */
+	function get_cache_size($mask, $number = false)
+	{
+		if ($number === false)
+		{
+			return $this->__recurse_glob($this->__get_path($mask), 0);
+		}
+		else
+		{
+			return $this->__recurse_glob($this->__get_path($mask), 0, 0);
+		}
 	}
 
 }

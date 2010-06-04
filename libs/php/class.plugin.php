@@ -8,11 +8,10 @@
 // ==============================================================================================
 // no direct access
 
-/* Abstract WEBO plugin class */
+/* Default plugin implementation */
 
 class webo_plugin
 {
-	/* Two methods required for every plugin but don't needed in our case so just return recieved content */
 	function onCache ($content)
 	{
 		return $content;
@@ -26,6 +25,16 @@ class webo_plugin
 	function onAfterOptimization ($content)
 	{
 		return $content;
+	}
+
+	function onInstall ($root)
+	{
+		return;
+	}
+
+	function onUninstall ($root)
+	{
+		return;
 	}
 }
 
