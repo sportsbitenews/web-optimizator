@@ -925,7 +925,7 @@ define('_WEBO_SAAS_NODAILY', 'No payments');
 define('_WEBO_SAAS_BALANCE', 'Balance');
 define('_WEBO_SAAS_TITLE', 'Balance overview');
 define('_WEBO_SAAS_CURRENT', 'Current balance');
-define('_WEBO_SAAS_CURRENT_HELP', 'You current balance for WEBO Site SpeedUp. It will be decreased automatically according to your current set of options.');
+define('_WEBO_SAAS_CURRENT_HELP', 'You current balance for WEBO Site SpeedUp. It decreases every day according to your current set of options.');
 define('_WEBO_SAAS_VALID', 'Funds sufficient');
 define('_WEBO_SAAS_VALID_HELP', 'Here you can see how long can the current set of options can be used with your balance.');
 define('_WEBO_SAAS_EXPIRED', 'Funds not sufficient');

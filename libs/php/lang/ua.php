@@ -907,7 +907,7 @@ define('_WEBO_SAAS_NODAILY', 'Нет расходов');
 define('_WEBO_SAAS_BALANCE', 'Баланс');
 define('_WEBO_SAAS_TITLE', 'Состояние баланса');
 define('_WEBO_SAAS_CURRENT', 'Текущий баланс');
-define('_WEBO_SAAS_CURRENT_HELP', 'Ваш текущий баланс для WEBO Site SpeedUp. Он автоматически уменьшается согласно выбранному набору настроек.');
+define('_WEBO_SAAS_CURRENT_HELP', 'Ваш текущий баланс для WEBO Site SpeedUp. Ежедневно он уменьшается согласно выбранному набору настроек.');
 define('_WEBO_SAAS_VALID', 'Средств достаточно');
 define('_WEBO_SAAS_VALID_HELP', 'Указано, на сколько дней при текущей конфигурации приложении хватит средств на балансе.');
 define('_WEBO_SAAS_EXPIRED', 'Средств недостаточно');

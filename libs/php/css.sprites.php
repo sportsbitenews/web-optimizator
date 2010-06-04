@@ -514,7 +514,7 @@ __________________
 					$this->css_to_data_uri();
 			}
 /* after 0.6.2 return array of separated files */
-			return array(html_entity_decode($this->optimizer->css->print->formatted(), ENT_QUOTES), $this->optimizer->compressed_mhtml . ($this->optimizer->ie ? "\n\n--_--\n*/" : ""));
+			return array($this->optimizer->css->print->plain(), $this->optimizer->compressed_mhtml . ($this->optimizer->ie ? "\n\n--_--\n*/" : ""));
 		}
 	}
 /* convert all CSS images to base64 */

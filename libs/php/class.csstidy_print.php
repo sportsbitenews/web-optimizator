@@ -240,6 +240,9 @@ class csstidy_print
 						if (substr($token[1], 0, 6) == 'CURSOR') {
 							$token[1] = 'CURSOR';
 						}
+						if (substr($token[1], 0, 3) == 'SRC') {
+							$token[1] = 'SRC';
+						}
 					}
 					elseif($this->parser->get_cfg('case_properties') === 1)
 					{
@@ -248,10 +251,13 @@ class csstidy_print
 						if (substr($token[1], 0, 6) == 'cursor') {
 							$token[1] = 'cursor';
 						}
+						if (substr($token[1], 0, 3) == 'src') {
+							$token[1] = 'src';
+						}
 					} else {
 						// remove fake counter cursor property
-						if (preg_match("/cursor/i", substr($token[1], 0, 6))) {
-							$token[1] = preg_replace("/(cursor)_[0-9]+/i", "$1", $token[1]);
+						if (preg_match("/cursor|src/i", substr($token[1], 0, 6))) {
+							$token[1] = preg_replace("/(cursor|src)_[0-9]+/i", "$1", $token[1]);
 						}
 					}
                     $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
