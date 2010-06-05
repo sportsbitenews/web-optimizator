@@ -23,8 +23,7 @@ Short notice about CSS deploymner.
  rocket.back1.png
  rocket.back2.png
  stamps.png
- webos.balance.png
- webos.gray.png
+ webos.png
  wss.png
  
  frame-related styles
@@ -152,7 +151,7 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssE{color:#000;display:block;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 3px}
 .wssC6 .wssE{line-height:23px}
 .wssC8 .wssE{margin-top:-23px;padding:2px 4px}
-.wssH16 .wssE{float:left;width:200px}
+.wssH16 .wssE{float:left;width:100px}
 
 .wssF{border:1px solid #ccc;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:19px;line-height:19px;margin:0 0 1px;padding:2px 5px;width:215px}
 .wssC4 .wssF{width:130%}
@@ -188,7 +187,7 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssH13{font-size:16px;font-weight:700;padding:19px 0 4px}
 .wssH14{font-size:13px}
 .wssH15{height:71px;padding:0;margin:0 0 0 40%;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
-.wssH18{background:url(add.orange.png) 0 1px no-repeat;padding:0 10px 0 21px}
+.wssH18{background:url(add.orange.png) 0 1px no-repeat;padding:0 20px 0 21px}
 a.wssJ7:hover .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat}
 .wssB4{color:#ff4000;padding-bottom:0;margin:10px 0 10px 11px}
 
@@ -287,7 +286,11 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssC7 .wssC4 a.wssJ7:hover{background:#ff7e53 0 -112px no-repeat}
 .wssC7 .wssC4 a.wssJ7:hover .wssJ6{background-position:-186px -112px}
 #wss_help a.wssJ5:hover .wssJ6,#wss_help a.wssJ5:active .wssJ6,#wss_help a.wssJ5:focus .wssJ6{background-position:-186px -348px}
-.wssH16 .wssJ7{margin:-2px 0 0 10px}
+.wssH16 .wssJ7{margin:-2px 30px 0 10px;padding-right:0;float:left}
+.wssH16 .wssJ5{background-position:0 -388px;padding:0 30px;margin-top:-2px}
+.wssH16 a.wssJ5:hover{background-position:0 -426px}
+.wssH16 .wssJ5 .wssJ6{background-position:-176px -388px;width:24px}
+.wssH16 a.wssJ5:hover .wssJ6{background-position:-176px -426px}
 .wssJ8{float:right;margin-right:10%}
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
 .wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat;height:28px;padding-left:30px;width:52px}
@@ -418,11 +421,11 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
 .wssE .wssO15{color:#ff8200;font-size:15px;font-weight:700;height:12px;padding:0 15px 6px 7px;background:url(webos.red.png) 100% 5px no-repeat}
-.wssO4 .wssO15,.wssT20 .wssO15{background:url(webos.red.png) 100% 5px no-repeat;font-size:15px;padding:0 14px 6px 0}
-.wssU21 .wssO15{background:url(webos.orange.png) 100% 5px no-repeat;padding:0 14px 6px 0}
+.wssO4 .wssO15,.wssT20 .wssO15{background-position:100% -67px;font-size:15px;padding:0 14px 6px 0}
+.wssU21 .wssO15{background-position:100% -155px;padding:0 14px 6px 0}
 .wssU11 .wssO15{background:url(webos.beige.png) no-repeat;display:block;height:12px;left:6px;position:absolute;top:10px;width:12px}
 .wssU12 .wssO15{background:url(webos.white.png) no-repeat;height:12px;width:12px}
-.wssH11 .wssO15{background:url(webos.balance.png) 100% 12px no-repeat;color:#ff8200;display:inline-block;font-size:29px;line-height:29px;padding:8px 23px 0 0}
+.wssH11 .wssO15{background-position:100% -25px;color:#ff8200;display:inline-block;font-size:29px;line-height:29px;padding:8px 23px 0 0}
 /* welcome screen */
 #wss_help .wssO21{background:url(account.welcome.png) no-repeat!important;overflow:hidden}
 .wssO22{border:1px solid #ccc;display:block;float:right;margin:0 23px 15px 50px;padding:1px}
@@ -577,12 +580,13 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO99{margin:10px 5% 20px}
 
 #wss_bal{display:inline-block;position:absolute;right:5px;top:14px;text-decoration:none}
-#wss_bal .wssN2{background:#f7f4e9 url(add.png) 100% 6px no-repeat;color:#808080;display:inline-block;font:16px/18px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:4px 30px 5px 12px}
-a#wss_bal:hover .wssN2{background:#f7f4e9 url(add.hover.png) 100% 6px no-repeat}
+#wss_bal .wssN2{background:#f7f4e9 100% -94px;color:#808080;display:inline-block;font:16px/18px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:4px 30px 5px 12px}
+a#wss_bal:hover .wssN2{background:#f7f4e9 100% -124px}
 #wss_bal .wssJ{color:#808080!important;text-decoration:underline}
-#wss_balance{background:url(webos.gray.png) 100% 4px no-repeat;font-size:18px;padding:0 18px 0 3px}
+#wss_balance{background-position:100% 4px;font-size:18px;padding:0 18px 0 3px;cursor:hand}
 
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
+#wss_balance,.wssH11 .wssO15,.wssU21 .wssO15,.wssO4 .wssO15,.wssT20 .wssO15{background-image:url(webos.png);background-repeat:no-repeat}
 #wss_cache{padding-top:4px}
 
 * html .wssJ5,* html .wssJ6,* html .wssJ7{background-image:url(buttons.png)!important}
@@ -606,8 +610,7 @@ a#wss_bal:hover .wssN2{background:#f7f4e9 url(add.hover.png) 100% 6px no-repeat}
 * html .wssO61 .wssO56{display:inline;zoom:1}
 * html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
 * html #wss_bal,* html #wss_bal .wssN2{display:inline;zoom:1}
-* html #wss_balance{background:url(webos.gray.png) 100% 4px no-repeat}
-* html .wssH11 .wssO15{background:url(webos.balance.png) 100% 12px no-repeat}
+* html #wss_balance,* html .wssH11 .wssO15,* html .wssU21 .wssO15,* html .wssO4 .wssO15,* html .wssT20 .wssO15,* html #wss_bal .wssN2{background-image:url(webos.png)}
 
 *+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 *+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
@@ -632,8 +635,7 @@ a#wss_bal:hover .wssN2{background:#f7f4e9 url(add.hover.png) 100% 6px no-repeat}
 *+html .wssO61 .wssO56{display:inline;zoom:1}
 *+html .wssO61 .wssO56{background:url(rocket.back0.png) 2px 2px no-repeat}
 *+html #wss_bal,*+html #wss_bal .wssN2{display:inline;zoom:1}
-* html #wss_balance{background:url(webos.gray.png) 100% 4px no-repeat}
-*+html .wssH11 .wssO15{background:url(webos.balance.png) 100% 12px no-repeat}
+*+html #wss_balance,*+html .wssH11 .wssO15,*+html .wssU21 .wssO15,*+html .wssO4 .wssO15,*+html .wssT20 .wssO15,*+html #wss_bal .wssN2{background-image:url(webos.png)}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
