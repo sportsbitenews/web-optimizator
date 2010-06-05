@@ -25,7 +25,10 @@
 				echo $group;
 ?>","<?php
 				echo $value;
-?>"],<?php
+?>"]<?php
+				if ($group != 'fee') {
+?>,<?php
+				}
 			}
 		}
 ?>];<?php
