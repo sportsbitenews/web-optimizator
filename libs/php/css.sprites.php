@@ -281,11 +281,13 @@ class css_sprites {
 									} else {
 										$repeat_key = 'no-repeati';
 									}
-								} elseif (($img_has['pos_x_comp'] || $img_has['pos_y_comp']) && !$img_has['pos_float']) {
-									$repeat_key = 'no-repeati';
+								} else {
+									if (($img_has['pos_x_comp'] || $img_has['pos_y_comp']) && !$img_has['pos_float']) {
+										$repeat_key = 'no-repeati';
+									} else {
 /* if can't re-calculate background-position for absolute dimensions */
-								} elseif (!$img_has['pos_x_comp'] && !$img_has['pos_y_comp']) {
-									$repeat_key = 'repeat';
+										$repeat_key = 'repeat';
+									}
 								}
 							}
 							if ($image['background-repeat'] == 'repeat-x') {
