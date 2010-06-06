@@ -298,8 +298,8 @@ class web_optimizer {
 				"minify_body" => $this->options['minify']['javascript_body'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ?
 					'jsmin' : ($this->options['minify']['with_yui'] ?
-						'yui' : ($this->options['minify']['with_packer'] ?
-							'packer' : '')),
+					'yui' : ($this->options['minify']['with_packer'] ?
+					'packer' : '')),
 				"minify_try" => $this->options['external_scripts']['include_try'],
 				"minify_exclude" => $this->premium > 1 ?
 					$this->options['external_scripts']['minify_exclude'] :
@@ -315,8 +315,10 @@ class web_optimizer {
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'] &&
 					($this->premium > 1),
-				"external_scripts" => $this->options['external_scripts']['on'],
-				"inline_scripts" => $this->options['external_scripts']['inline'],
+				"external_scripts" => $this->options['external_scripts']['on'] &&
+					$this->options['minify']['javascript'],
+				"inline_scripts" => $this->options['external_scripts']['inline'] &&
+					$this->options['minify']['javascript'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
@@ -381,8 +383,10 @@ class web_optimizer {
 				"parallel" => $this->options['parallel']['enabled'] &&
 					($this->premium > 1),
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
-				"external_scripts" => $this->options['external_scripts']['css'],
-				"inline_scripts" => $this->options['external_scripts']['css_inline'],
+				"external_scripts" => $this->options['external_scripts']['css'] &&
+					$this->options['minify']['css'],
+				"inline_scripts" => $this->options['external_scripts']['css_inline'] &&
+					$this->options['minify']['css'],
 				"external_scripts_exclude" => $this->options['external_scripts']['additional_list'],
 				"include_code" => ($this->premium > 1) ? $this->options['external_scripts']['include_code'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
@@ -2745,10 +2749,10 @@ class web_optimizer {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
 					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					'<!--/*--><![CDATA[//><!--','//-->'),
+					'<!--/*--><![CDATA[//><!--','//-->',		'//<!--'),
 				array('',			'',			'',				'',
 					'',				'',			'',				'',
-					'',							''), $dest);
+					'',							'',				''), $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
