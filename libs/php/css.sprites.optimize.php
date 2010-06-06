@@ -819,7 +819,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 										trim(((!empty($this->media) &&
 										!empty($this->media[$import][$key]['background-color']) &&
 										$this->media[$import][$key]['background-color'] != 'transparent') ?
-											$this->media[$import][$key]['background-color'] . ' ' : '') .
+											$this->media[$import][$key]['background-color'] : '') .
+										' ' .
 										(empty($css_left) || $css_left == 'left' ?
 											'0' : ($css_left . (is_numeric($css_left) ? 'px' : ''))) .
 										' ' .
@@ -830,7 +831,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 										' ' .
 										(!empty($this->media) &&
 											!empty($this->media[$import][$key]['background-attachement']) ?
-											$this->media[$import][$key]['background-attachement'] . ' ' : ''));
+											$this->media[$import][$key]['background-attachement'] : ''));
 							}
 
 						} else {
