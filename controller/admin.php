@@ -30,10 +30,8 @@ class admin {
 		$this->options_file = "config.webo.php";
 		require($this->basepath . $this->options_file);
 		$this->compress_options = empty($compress_options) ? '' : $compress_options;
-		if (!empty($this->compress_options['html_cache']['enabled']))
-		{
-			$this->start_cache_engine();
-		}
+		$this->start_cache_engine();
+
 /* to check and download new Web Optimizer version */
 		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
 		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
