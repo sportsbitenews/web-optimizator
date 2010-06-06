@@ -842,7 +842,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 							$background = (!empty($this->media) &&
 								!empty($this->media[$import][$key]['background-color']) &&
 								$this->media[$import][$key]['background-color'] != 'transparent' ?
-									$this->media[$import][$key]['background-color'] : '') . $background;
+									trim($this->media[$import][$key]['background-color']) . ' ' : '') . $background;
 							$this->css->css[$import][$key]['background'] = $background;
 						}
 /* update array with chosen selectors -- to mark this image as used */
