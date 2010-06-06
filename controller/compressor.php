@@ -1838,8 +1838,10 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
-								if (!empty($file['file']) && ($pos = strpos($file['file'], 'shadowbox.js'))) {
-									$this->shadowbox_base = substr($file['file'], 0, $pos);
+								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
+									$this->shadowbox_base = preg_replace("@https?://" .
+										$this->host_escaped . "/(.*/)[^/]+@",
+										"//" . $this->options['javascript']['host'] . "/$1", $file['file']);
 								}
 					}
 				}
@@ -2346,7 +2348,7 @@ class web_optimizer {
 /* fix for base tag */
 			preg_match("@<base[^>]+>@is", $source, $matches);
 			$basetag = false;
-			if (is_array($matches) && is_array($matches[0])) {
+			if (count($matches) && count($matches[0])) {
 				$basetag = $matches[0][0];
 			}
 			if ($basetag) {

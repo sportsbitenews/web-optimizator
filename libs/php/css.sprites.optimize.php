@@ -233,8 +233,8 @@ class css_sprites_optimize {
 						$shift_x = $image[3];
 						$shift_y = $image[4];
 /* all images have equal dimensions => loop with increased step */
-						$stepx = $mode == 2 ? $width : ($mode == 1 ? ceil($width/8) : 2);
-						$stepy = $mode == 2 ? $height : ($mode == 1 ? ceil($height/8) : 2);
+						$stepx = $mode == 2 ? $width : ($mode == 1 ? ceil($width/2) : 2);
+						$stepy = $mode == 2 ? $height : ($mode == 1 ? ceil($height/2) : 2);
 /* to remember the most 'full' place for new image */
 						$minimal_square = $matrix_x * $matrix_y;
 /* flag if we have enough space */
@@ -250,11 +250,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 									$j1 = ($j + $height - ($j + $height)%16)/16;
 									$j2 = ($j + $height)%16;
 									$i1 = $i + $width;
-									if ($mode < 1) {
-										$j3 = ($j + ($height - $height%2)/2 - ($j + ($height - $height%2)/2)%16)/16;
-										$j4 = ($j + ($height - $height%2)/2)%16;
-										$i3 = $i + ($width - $width%2)/2;
-									}
+									$j3 = ($j + ($height - $height%2)/2 - ($j + ($height - $height%2)/2)%16)/16;
+									$j4 = ($j + ($height - $height%2)/2)%16;
+									$i3 = $i + ($width - $width%2)/2;
 								}
 /* left top corner is empty and three other corners are empty -- we have a placeholder */
 								if ((empty($matrix[$i][$j0]) || !($matrix[$i][$j0] & (2<<($j%16)))) &&
@@ -265,11 +263,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 										(empty($matrix[$i1][$j0]) ||
 											!($matrix[$i1][$j0] & (2<<($j%16)))) &&
 										(empty($matrix[$i1][$j1]) ||
-											!($matrix[$i1][$j1] & (2<<$j2)))) &&
-/* one more performance improvement - skip some checks if we have HTML sprites */
-									($mode > 0 ||
+											!($matrix[$i1][$j1] & (2<<$j2))) &&
 /* additionally check 4 points in the middle of edges + 1 center point */
-										((empty($matrix[$i3][$j0]) ||
+										(empty($matrix[$i3][$j0]) ||
 											!($matrix[$i3][$j0] & (2<<($j%16)))) &&
 										(empty($matrix[$i][$j3]) ||
 											!($matrix[$i][$j3] & (2<<$j4))) &&
@@ -278,7 +274,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 										(empty($matrix[$i3][$j1]) ||
 											!($matrix[$i3][$j1] & (2<<$j4))) &&
 										(empty($matrix[$i3][$j3]) ||
-											!($matrix[$i3][$j3] & (2<<$j4)))))) {
+											!($matrix[$i3][$j3] & (2<<$j4))))) {
 /* and Sprite is big enough */
 									if ($i + $width < $matrix_x && $j + ($height - $height%2)/2 < $matrix_y) {
 										$I = $i;
@@ -310,17 +306,30 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						} else {
 							$filled_square = min($I, $J);
 						}
-/* shift calculated values to remove empty blocks */
-/*						$I0 = $I - 1;
-						while ($I0 > -1 && empty($matrix[$I0][($J-$J%16)/16])) {
+/* shift calculated values to remove empty blocks, this leaks a bit */
+						$I0 = $I;
+						$J1 = ($J-$J%16)/16;
+						$J2 = ($J+$height-($J+$height)%16)/16;
+						$J3 = ($J+round($height/2)-($J+round($height/2))%16)/16;
+						do {
 							$I0--;
-						}
-						$I = $I0 > 0 ? $I0 : 0;
-						$J0 = $J - 1;
-						while ($J0 > -1 && empty($matrix[$I][($J0-$J0%16)/16])) {
+						} while ($I0 > -1 && empty($matrix[$I0][$J1]) &&
+							empty($matrix[$I0][$J2]) &&
+							empty($matrix[$I0][$J3]));
+						$I = $I0 > 0 ? $I0 + 1 : 0;
+						$J0 = $J;
+						$I1 = $I + $width;
+						$I2 = $I + ($width - $width%2)/2;
+						do {
 							$J0--;
-						}
-						$J = $J0 > 0 ? $J0 : 0;*/
+							$J1 = ($J0-$J0%16)/16;
+						} while ($J0 > -1 && (empty($matrix[$I][$J1])
+								|| !($matrix[$I][$J1] & (2<<($J0%16)))) &&
+							(empty($matrix[$I1][$J1])
+								|| !($matrix[$I1][$J1] & (2<<$J0%16))) &&
+							(empty($matrix[$I2][$J1])
+								|| !($matrix[$I2][$J1] & (2<<$J0%16))));
+						$J = $J0 > 0 ? $J0 + 1 : 0;
 /* calculate increase of matrix dimensions */
 						$minimal_x = $I + $width > $matrix_x ? $width + $I - $matrix_x : 0;
 						$minimal_y = $J + $height > $matrix_y ? $height + $J - $matrix_y : 0;
