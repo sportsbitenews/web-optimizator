@@ -2831,14 +2831,14 @@ class admin {
 		$this->get_modules();
 /* disable .htaccess if not Apache */
 		if (empty($this->apache_modules)) {
-			$this->restrictions['wss_htaccess_enabled'] = 0;
-			$this->restrictions['wss_htaccess_mod_deflate'] = 0;
-			$this->restrictions['wss_htaccess_mod_gzip'] = 0;
-			$this->restrictions['wss_htaccess_mod_expires'] = 0;
-			$this->restrictions['wss_htaccess_mod_mime'] = 0;
-			$this->restrictions['wss_htaccess_mod_headers'] = 0;
-			$this->restrictions['wss_htaccess_mod_setenvif'] = 0;
-			$this->restrictions['wss_htaccess_mod_rewrite'] = 0;
+			$this->restrictions['wss_htaccess_enabled'] = 1;
+			$this->restrictions['wss_htaccess_mod_deflate'] = 1;
+			$this->restrictions['wss_htaccess_mod_gzip'] = 1;
+			$this->restrictions['wss_htaccess_mod_expires'] = 1;
+			$this->restrictions['wss_htaccess_mod_mime'] = 1;
+			$this->restrictions['wss_htaccess_mod_headers'] = 1;
+			$this->restrictions['wss_htaccess_mod_setenvif'] = 1;
+			$this->restrictions['wss_htaccess_mod_rewrite'] = 1;
 		} else {
 			foreach (array(
 				'mod_deflate',
@@ -2889,8 +2889,8 @@ class admin {
 		if (empty($loaded_modules) ||
 			!in_array('curl', $loaded_modules) ||
 			!function_exists('curl_init')) {
-				$this->restrictions['wss_external_scripts_on'] = 0;
-				$this->restrictions['wss_external_scripts_css'] = 0;
+				$this->restrictions['wss_external_scripts_on'] = 1;
+				$this->restrictions['wss_external_scripts_css'] = 1;
 		}
 /* check for gzip for HTML possibility */
 		if ((!function_exists('gzencode') ||
