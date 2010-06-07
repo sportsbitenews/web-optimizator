@@ -302,7 +302,7 @@ class admin {
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */
-		$deltas = array(58, 48, 0);
+		$deltas = array(58, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		$options = $deltas[round($this->premium)];
 		foreach ($errors as $key => $value) {
 			$options += $value;
