@@ -102,13 +102,14 @@ class webo_cache_files extends webo_cache_engine
 		    }
 		}
 
-		if(!empty($options['cache_dir']) && @is_writable($options['cache_dir']))
+		if(!empty($options['cache_dir']))
 		{
+			$this->enabled = true;
 			$this->cache_dir = $options['cache_dir'];
 		}
 		else
 		{
-			return false;
+			$this->enabled = false;
 		}
 	}
 	
@@ -116,6 +117,10 @@ class webo_cache_files extends webo_cache_engine
  	
  	function put_entry($key, $value, $time)
  	{
+ 		if (!$this->enabled)
+ 		{
+ 			return;
+ 		}
  		$path = $this->__get_path($key);
  		if (!@is_dir(dirname($path)))
  		{
@@ -143,6 +148,10 @@ class webo_cache_files extends webo_cache_engine
 
 	function get_entry($key)
 	{
+ 		if (!$this->enabled)
+ 		{
+ 			return false;
+ 		}
 		if (@is_file($this->__get_path($key)))
 		{
 			return @file_get_contents($this->__get_path($key));
@@ -157,6 +166,10 @@ class webo_cache_files extends webo_cache_engine
  	
  	function delete_entries($patterns)
  	{
+ 		if (!$this->enabled)
+ 		{
+ 			return false;
+ 		}
  		if (!empty($patterns))
  		{
  			if (is_array($patterns))
@@ -199,6 +212,10 @@ class webo_cache_files extends webo_cache_engine
  	
  	function get_mtime($key)
  	{
+ 		if (!$this->enabled)
+ 		{
+ 			return 0;
+ 		}
  		if (@file_exists($this->__get_path($key)))
  		{
 	 		return @filemtime($this->__get_path($key));
@@ -213,6 +230,10 @@ class webo_cache_files extends webo_cache_engine
  	
  	function set_mtime($key, $time)
  	{
+ 		if (!$this->enabled)
+ 		{
+ 			return false;
+ 		}
  		@touch($this->__get_path($key), $time);
  	}
  	
@@ -337,6 +358,17 @@ class webo_cache_files extends webo_cache_engine
 	/* Gets total size and number of cache files defined by mask */
 	function get_cache_size($mask, $number = false)
 	{
+ 		if (!$this->enabled)
+ 		{
+ 			if ($number === false)
+ 			{
+ 				return 0;
+			}
+			else
+			{
+				return array(0,0);
+			}
+ 		}
 		if ($number === false)
 		{
 			return $this->__recurse_glob($this->__get_path($mask), 0);
