@@ -56,6 +56,8 @@ $compress_options['performance']['uniform_cache'] = "0";
 $compress_options['performance']['restore_properties'] = "0";
 ## Days to delete old files from cache, 0 disables logic
 $compress_options['performance']['delete_old'] = "0";
+## Caching engine, 0 - files, 1 - memcache, 2 - eAccelerator, 3 - APC, 4 - XCache, 5 - Zend Cache
+$compress_options['performance']['cache_engine'] = "0";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "0";
 ## Minify JS inside <body> tag. Please be carefull

@@ -2507,7 +2507,14 @@ class admin {
 					'type' => 'smalltext',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
-				)
+				),
+				'performance_cache_engine' => array(
+					'value' => $this->compress_options['performance']['cache_engine'],
+					'type' => 'radio',
+					'count' => 1,
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => array(0, 5, 5, 5, 5, 5)
+				),				
 			),
 			'data_uri' => array(
 				'premium' => $this->premium < 1 ? 1 : 0,
@@ -2947,6 +2954,7 @@ class admin {
 			'wss_unobtrusive_on',
 			'wss_performance_cache_version',
 			'wss_performance_delete_old',
+			'wss_performance_cache_engine',
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
 			'wss_html_cache_flush_size',
@@ -2961,6 +2969,7 @@ class admin {
 		}
 /* normalize values for radio buttons */
 		foreach (array(
+			'wss_performance_cache_engine',
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on') as $val) {
@@ -3046,7 +3055,7 @@ class admin {
 			$hosts = explode(" ", $this->input['wss_parallel_allowed_list']);
 			$this->input['wss_parallel_allowed_list'] = $this->check_hosts($hosts);
 		}
-/* map CSS merge options to real */
+/* map CSS merge options to real one */
 		switch ($this->input['wss_combine_css']) {
 			case 3:
 				$this->input['wss_minify_css'] = 1;
@@ -3061,7 +3070,7 @@ class admin {
 				$this->input['wss_minify_css_body'] = 0;
 				break;
 		}
-/* map JavaScript merge options to real */
+/* map JavaScript merge options to real one */
 		switch ($this->input['wss_minify_javascript']) {
 			case 3:
 				$this->input['wss_minify_javascript'] = 1;
@@ -3076,7 +3085,7 @@ class admin {
 				$this->input['wss_minify_javascript_body'] = 0;
 				break;
 		}
-/* map JavaScript minify options to real */
+/* map JavaScript minify options to real one */
 		switch ($this->input['wss_minify_js']) {
 			case 4:
 				$this->input['wss_minify_with_jsmin'] = 0;
@@ -3099,7 +3108,7 @@ class admin {
 				$this->input['wss_minify_with_packer'] = 0;
 				break;
 		}
-/* map CSS Sprites format top real */
+/* map CSS Sprites format to real one */
 		switch ($this->input['wss_css_sprites_truecolor_in_jpeg']) {
 			case 2:
 				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 1;
@@ -3142,7 +3151,7 @@ class admin {
 									$this->input['wss_' .
 									strtolower($key) . '_' .
 									strtolower($option_name)]);
-						}	
+							}
 						}
 					} else {
 						if (isset($this->input['wss_' . strtolower($key)])) {
@@ -4083,8 +4092,9 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 /* don't check modules more than 9 seconds */
 		$timer = time();
 /* detect if hosting is compatible with SynLinks rule (included in core) */
-		if ($this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $root, $cachedir, 'mod_symlinks')) {
-			$this->apache_modules[] = 'mod_symlinks';
+		if (@function_exists('curl_init') &&
+			$this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $root, $cachedir, 'mod_symlinks')) {
+				$this->apache_modules[] = 'mod_symlinks';
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
 /* can't get this code (htaccess detection) on both Denwer with curl, non-curl,
@@ -5023,9 +5033,9 @@ require valid-user';
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached'
 			);
-		if (!empty($cache_engines[@$this->compress_options['cache_engine']]))
+		if (!empty($cache_engines[@$this->compress_options['performance']['cache_engine']]))
 		{
-			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['cache_engine']];
+			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['performance']['cache_engine']];
 		}
 		else
 		{
