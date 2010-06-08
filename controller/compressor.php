@@ -266,7 +266,9 @@ class web_optimizer {
 /* IE 7.0 */
 				'.ie7',
 /* IE 8.0 */
-				'.ie8'
+				'.ie8',
+/* Mobile Agents */
+				'.ma'
 			);
 			$this->ua_mod = $mods[$this->cache_stage];
 		}
@@ -1166,7 +1168,6 @@ class web_optimizer {
 		}
 /* skip all browser-dependent features */
 		if ($this->options['uniform_cache']) {
-			$this->ua_mod = '';
 			$this->options['css']['data_uris'] = 0;
 			$this->options['css']['mhtml'] = 0;
 			$this->options['css']['data_uris_separate'] = 0;
@@ -3165,14 +3166,44 @@ class web_optimizer {
 	 **/
 	function set_user_agent () {
 		$this->ua_mod = '';
+		if ($this->premium < 2 || !$this->options['performance']['uniform_cache']) {
 /* min. supported IE version */
-		$this->min_ie_version = 5;
+			$this->min_ie_version = 5;
 /* max. supported IE version */
-		$this->max_ie_version = 10;
-		if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
-			for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
-				if (strpos($this->ua, 'MSIE ' . $version)) {
-					$this->ua_mod = '.ie' . $version;
+			$this->max_ie_version = 10;
+			if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
+				for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+					if (strpos($this->ua, 'MSIE ' . $version)) {
+						$this->ua_mod = '.ie' . $version;
+					}
+				}
+			}
+/* check for mobile agents */
+			if (empty($this->ua_mod)) {
+				$mobiles = array(
+					'Android',
+					'BlackBerry',
+					'HTC',
+					'LG',
+					'MOT',
+					'Mobile',
+					'NetFront',
+					'Nokia',
+					'Opera Mini',
+					'Palm',
+					'PPC',
+					'SAMSUNG',
+					'Smartphone',
+					'SonyEricsson',
+					'Symbian',
+					'UP.Browser',
+					'webOS');
+				$j = 0;
+/* strpos here is 2.5x faster than stristr and 6x faster than regexp */
+				while (strpos($this->ua, $mobiles[$j++]) === false &&
+					!empty($mobiles[$j])) {}
+				if ($j != count($mobiles)) {
+					$this->ua_mod = '.ma';
 				}
 			}
 		}
