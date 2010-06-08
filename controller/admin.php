@@ -847,7 +847,7 @@ class admin {
 	*
 	**/
 	function options_count () {
-/* get av¦ailable Apache modules */
+/* get avï¿½ailable Apache modules */
 		$this->get_modules();
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
@@ -2679,6 +2679,13 @@ class admin {
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 3
+				),
+				'html_cache_enhanced' => array(
+					'value' => $this->compress_options['html_cache']['enhanced'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 3,
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				)
 			),
 			'unobtrusive' => array(

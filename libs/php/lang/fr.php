@@ -300,6 +300,10 @@ define('_WEBO_html_cache_allowed_list_HELP', 'Cette option vous permet de fixer 
 define('_WEBO_html_cache_additional_list', 'List of COOKIE to exclude from server side caching (separated by space)');
 define('_WEBO_html_cache_additional_list_HELP', 'You can also skip server side caching for user who have one of the COOKIE from this list. This can be useful for authorized users or during the work with shopping cart.');
 define('_WEBO_html_cache_additional_list_EFFECT', 'Server side caching compatibility with user activity');
+define('_WEBO_html_cache_enhanced', 'Extreme mode');
+define('_WEBO_html_cache_enhanced_HELP', 'With extreme mode all HTML document will be served bypassing normal CMS processing. This allows you to clear cache only manually but significantly increases website performance (especially in traffic peaks).');
+define('_WEBO_html_cache_enhanced_EFFECT', 'CPU savings 4-40%');
+define('_WEBO_html_cache_enhanced_DISABLED', 'To enable extreme mode for server side caching you need to have mod_rewrite for your server environment isntalled.');
 
 define('_WEBO_performance_mtime', 'Ignorez l\'empreinte temps du fichier modifié. (mtime)');
 define('_WEBO_performance_mtime_HELP', 'Il y aura une accélération supplémentaire (coté serveur). Pour raffraichir des fichiers combinés vous devez changer les requêtes des fichiers initiaux en code HTML ou raffraichir le cache de WEBO Site SpeedUp.');

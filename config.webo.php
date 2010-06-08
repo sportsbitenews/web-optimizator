@@ -149,6 +149,8 @@ $compress_options['html_cache']['ignore_list'] = "";
 $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 ## Cookies to skip HTML caching
 $compress_options['html_cache']['additional_list'] = "";
+## Enhanced mode for HTML caching
+$compress_options['html_cache']['enhanced'] = "0";
 ## On or off 
 $compress_options['active'] = "0";
 ## Display a link back to Web Optimizer
