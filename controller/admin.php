@@ -2276,7 +2276,7 @@ class admin {
 				)
 			),
 			'minify' => array(
-				'minify_css' => array(
+				'minify_css_min' => array(
 					'value' => $this->compress_options['minify']['css_min'],
 					'type' => 'checkbox'
 				),
