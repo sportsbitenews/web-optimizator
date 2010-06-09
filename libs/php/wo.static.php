@@ -158,6 +158,8 @@ if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
 				@curl_setopt($ch, CURLOPT_ENCODING, "");
 				@curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 				@curl_exec($ch);
 				@curl_close($ch);
 				@fclose($fp);
