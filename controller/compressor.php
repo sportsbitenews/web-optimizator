@@ -3184,6 +3184,8 @@ class web_optimizer {
 					'Android',
 					'BlackBerry',
 					'HTC',
+					'iPhone',
+					'iPod',
 					'LG',
 					'MOT',
 					'Mobile',
