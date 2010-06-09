@@ -78,7 +78,6 @@ class web_optimizer {
 		$this->buffered = $this->options['buffered'];
 /* Sets User Agent to differ IE from not-IE */
 		$this->ua = $_SERVER['HTTP_USER_AGENT'];
-		$this->set_user_agent();
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
@@ -273,6 +272,7 @@ class web_optimizer {
 			$this->ua_mod = $mods[$this->cache_stage];
 		}
 		$this->premium = $this->view->validate_license($this->options['license'], $this->options['html_cachedir'], $this->options['host']);
+		$this->set_user_agent();
 		$webo_cachedir = $this->view->unify_dir_separator(realpath(dirname(__FILE__) . '/../') . '/');
 /* ensure trailing slashes */
 		$this->options['html_cachedir'] = $this->view->ensure_trailing_slash($this->options['html_cachedir']);
@@ -343,7 +343,7 @@ class web_optimizer {
 				"gzip_level" => $this->premium ? round($this->options['gzip']['css_level']) : 1,
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
-				"minify_with" => $this->options['minify']['with_yui'] ? 'yui' : 'tidy',
+				"minify_with" => $this->options['minify']['css_min'] ? 'basic' : '',
 				"far_future_expires" => $this->options['far_future_expires']['css'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
@@ -1602,7 +1602,7 @@ class web_optimizer {
 						$this->shadowbox_base . '";Shadowbox.init(', $contents);
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['header'] == "css" &&
+			if ($options['minify_with'] == 'basic' &&
 				!empty($options['minify']) &&
 				empty($options['css_sprites']) &&
 				empty($options['data_uris'])) {

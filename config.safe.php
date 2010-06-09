@@ -68,8 +68,10 @@ $compress_options['minify']['with_jsmin'] = "0";
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
 $compress_options['minify']['with_yui'] = "0";
-## Minify CSS
+## Merge CSS
 $compress_options['minify']['css'] = "0";
+## Minify CSS, 0 - no, 1 - basic
+$compress_options['minify']['css_min'] = "0";
 ## Minify CSS inside <body> tag
 $compress_options['minify']['css_body'] = "0";
 ## Remove whitespaces

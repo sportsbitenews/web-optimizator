@@ -2277,7 +2277,7 @@ class admin {
 			),
 			'minify' => array(
 				'minify_css' => array(
-					'value' => $this->compress_options['minify']['css'],
+					'value' => $this->compress_options['minify']['css_min'],
 					'type' => 'checkbox'
 				),
 				'minify_js' => array(
@@ -3005,6 +3005,7 @@ class admin {
 			'wss_performance_cache_version',
 			'wss_performance_uniform_cache',
 			'wss_performance_restore_properties',
+			'wss_minify_css_min',
 			'wss_minify_page',
 			'wss_minify_html_comments',
 			'wss_minify_html_one_string',
