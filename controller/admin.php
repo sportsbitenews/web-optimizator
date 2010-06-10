@@ -654,9 +654,9 @@ class admin {
 				'wss_far_future_expires_css' => $this->compress_options['far_future_expires']['css'],
 				'wss_far_future_expires_javascript' => $this->compress_options['far_future_expires']['javascript']
 			);
+			$this->compress_options['active'] = 0;
 			$this->write_htaccess();
 			$this->save_option("['active']", 0);
-			$this->compress_options['active'] = 0;
 		}
 		$this->install_dashboard();
 	}
@@ -3262,7 +3262,7 @@ class admin {
 		}
 		$content = '# Web Optimizer options';
 		$content2 = '';
-		if (!empty($this->input['wss_htaccess_enabled'])) {
+		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
 			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
 				$content .= "
 <IfModule mod_gzip.c>
@@ -3617,7 +3617,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 </IfModule>";
 			}
-		} elseif (!empty($this->input['wss_htaccess_mod_rewrite'])) {
+		} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) && !empty($this->input['wss_htaccess_enabled'])) {
 			$content .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
