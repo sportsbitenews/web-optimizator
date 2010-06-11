@@ -256,16 +256,8 @@ class html_sprites {
 	**/
 	function add_styles ($content, $styles) {
 		if (!empty($styles)) {
-/* insert css chunk to <head> */
-			if ($this->options['page']['html_tidy'] && ($h = strpos($content, '<head'))) {
-				$hc = strpos(substr($content, $h, 50), '>');
-				$content = substr_replace($content, $styles, $hc + $h + 1, 0);
-			} elseif ($this->options['page']['html_tidy'] && ($h = strpos($content, '<HEAD'))) {
-				$hc = strpos(substr($content, $h, 50), '>');
-				$content = substr_replace($content, $styles, $hc + $h + 1, 0);
-			} else {
-				$content = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $styles, $content);
-			}
+/* insert css chunk to spot */
+			$content = str_replace("@@@WSSSTYLES@@@", $styles, $content);
 		} else {
 			unset($this->css_images);
 		}

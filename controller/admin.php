@@ -2286,8 +2286,13 @@ class admin {
 						($this->compress_options['minify']['with_packer'] ? 3 : 0)),
 					'type' => 'radio',
 					'count' => 4,
-					'disabled' => !empty($this->restrictions['wss_minify_js']) ?
-						$this->restrictions['wss_minify_js'] : 0
+					'disabled' => array(
+						0,
+						!empty($this->restrictions['wss_minify_js1']),
+						!empty($this->restrictions['wss_minify_js2']),
+						!empty($this->restrictions['wss_minify_js3']),
+						!empty($this->restrictions['wss_minify_js4'])
+					)
 						
 				),
 				'external_scripts_minify_exclude' => array(
@@ -2511,9 +2516,17 @@ class admin {
 				'performance_cache_engine' => array(
 					'value' => $this->compress_options['performance']['cache_engine'],
 					'type' => 'radio',
-					'count' => 1,
+					'count' => 2,
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'price' => array(0, 5, 5, 5, 5, 5)
+					'price' => array(0, 5, 5, 5, 5, 5),
+					'disabled' => array(
+						0,
+						!empty($this->restrictions['wss_performance_cache_engine1']),
+						!empty($this->restrictions['wss_performance_cache_engine2']),
+						!empty($this->restrictions['wss_performance_cache_engine3'])
+						!empty($this->restrictions['wss_performance_cache_engine4'])
+						!empty($this->restrictions['wss_performance_cache_engine5'])
+					)
 				),				
 			),
 			'data_uri' => array(
@@ -2874,23 +2887,20 @@ class admin {
 		}
 /* try to set some libs executable */
 		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
-		if (!empty($this->input['wss_minify_js']) &&
-			$this->input['wss_minify_js'] == 3) {
 /* check for YUI availability */
-				$YUI_checked = 0;
-				if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') ||
-					@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
-					if (substr(phpversion(), 0, 1) == 4) {
-						require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
-					} else {
-						require_once($this->basepath . 'libs/php/class.yuicompressor.php');
-					}
-					$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
-					$YUI_checked = $YUI->check();
-				}
-				if (!$YUI_checked) {
-					$this->restrictions['wss_minify_js'] = 2;
-				}
+		$YUI_checked = 0;
+		if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') ||
+			@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
+			if (substr(phpversion(), 0, 1) == 4) {
+				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
+			} else {
+				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
+			}
+			$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
+			$YUI_checked = $YUI->check();
+		}
+		if (!$YUI_checked) {
+			$this->restrictions['wss_minify_js2'] = 1;
 		}
 /* check for curl existence */
 		if (empty($loaded_modules) ||
@@ -2914,6 +2924,25 @@ class admin {
 			!empty($this->input['wss_htaccess_mod_gzip']) ||
 			!empty($this->input['wss_htaccess_mod_rewrite'])))) {
 				$this->restrictions['wss_gzip_fonts'] = 1;
+		}
+/* check for caching extensions */
+		if (!@class_exists('Memcache')) {
+			$this->restrictions['wss_performance_cache_engine1'] = 1;
+		}
+		if (!function_exists('eaccelerator_get')) {
+			$this->restrictions['wss_performance_cache_engine2'] = 1;
+		}
+		if (!function_exists('apc_add')) {
+			$this->restrictions['wss_performance_cache_engine3'] = 1;
+		}
+		if (!function_exists('xcache_set')) {
+			$this->restrictions['wss_performance_cache_engine4'] = 1;
+		}
+		if (!function_exists('zend_shm_cache_store')) {
+			$this->restrictions['wss_performance_cache_engine5'] = 1;
+		}
+		if (!function_exists('sem_get')) {
+			$this->restrictions['wss_performance_cache_engine6'] = 1;
 		}
 	}
 

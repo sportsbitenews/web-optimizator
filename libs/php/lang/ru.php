@@ -328,6 +328,7 @@ define('_WEBO_performance_delete_old_HELP', 'Вы можете ограничи�
 define('_WEBO_performance_delete_old_EFFECT', 'Уменьшение размера кэша WEBO Site SpeedUp на 20-80%');
 define('_WEBO_performance_cache_engine', 'Кэширующий движок');
 define('_WEBO_performance_cache_engine_HELP', 'Вы можете выбрать один из доступных на данном сервере движков для кэширования HTML-файлов. Все движки кроме файловой системы хранят данные в оперативной памяти, что уменьшает время доступа к ним.');
+define('_WEBO_performance_cache_engine_HELP_DISABLED', 'Некоторые движки могут не поддерживаться вашим текущим серверным окружением.');
 define('_WEBO_performance_cache_engine_EFFECT', 'Уменьшения издержек при HTML-кэшировании на 50%');
 define('_WEBO_performance_cache_engine1', 'Файловая система');
 define('_WEBO_performance_cache_engine2', 'Memcached');
@@ -335,6 +336,7 @@ define('_WEBO_performance_cache_engine3', 'eAccelerator');
 define('_WEBO_performance_cache_engine4', 'APC');
 define('_WEBO_performance_cache_engine5', 'XCache');
 define('_WEBO_performance_cache_engine6', 'Zend Platform');
+define('_WEBO_performance_cache_engine7', 'Семафоры');
 
 define('_WEBO_data_uris_on', 'Использовать <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Фоновые изображения будут преобразовываться в формат base64 и подставляться в CSS-файлы для всех браузеров, поддерживающих технологию data:URI.');

@@ -328,13 +328,15 @@ define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defi
 define('_WEBO_performance_delete_old_EFFECT', 'WEBO Site SpeedUp cache reduction by 20-80%');
 define('_WEBO_performance_cache_engine', 'Cache engine');
 define('_WEBO_performance_cache_engine_HELP', 'You can choose one of the caching engines supported by your server environment to speed the HTML caching up. All engines except file system cache records in RAM by default, this decreases access time.');
+define('_WEBO_performance_cache_engine_HELP_DISABLED', 'Some engines may be not supported by your server environment.');
 define('_WEBO_performance_cache_engine_EFFECT', 'CPU savings with HTML caching by 50%');
 define('_WEBO_performance_cache_engine1', 'File system');
 define('_WEBO_performance_cache_engine2', 'Memcached');
 define('_WEBO_performance_cache_engine3', 'eAccelerator');
 define('_WEBO_performance_cache_engine4', 'APC');
 define('_WEBO_performance_cache_engine5', 'XCache');
-define('_WEBO_performance_cache_engine6', 'Zend Cache');
+define('_WEBO_performance_cache_engine6', 'Zend Platform');
+define('_WEBO_performance_cache_engine7', 'Semaphores');
 
 define('_WEBO_footer_text', 'Link auf WEBO Site SpeedUp hinzuf&uuml;gen');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');

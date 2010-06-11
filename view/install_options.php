@@ -370,7 +370,7 @@ if ($submit) {
 								break;
 							case 'radio':
 ?><dd class="wssD6<?php
-								echo !empty($value['disabled']) && ($value['disabled'] == $i || $value['disabled'] == 100) ? ' wssD20' : '';
+								echo !empty($value['disabled']) && (!empty($value['disabled'][$i]) || $value['disabled'] == 100) ? ' wssD20' : '';
 ?>"><input value="<?php
 								echo $i;
 ?>" type="<?php

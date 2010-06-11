@@ -817,8 +817,8 @@ class web_optimizer {
 			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
-/* remove BOM */
-		$this->content = str_replace("﻿", "", $this->content);
+/* remove marker for styles and BOM */
+		$this->content = str_replace(array("@@@WSSSTYLES@@@", "﻿"), "", $this->content);
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
@@ -1211,16 +1211,15 @@ class web_optimizer {
 	**/
 	function include_bundle ($source, $newfile, $handlers, $cachedir, $include, $href = '') {
 		switch ($include) {
-/* if no unobtrusive logic and no external JS, move to top */
+/* move CSS file to the first occurent of CSS or before any scripts */
 			default:
-				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
-					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $newfile, $headclose + $headpos + 1, 0);
-				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
-					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $newfile, $headclose + $headpos + 1, 0);
+				$styles = strpos($source, "@@@WSSSTYLES@@@");
+				if ($this->options['page']['html_tidy'] && ($scriptpos = strpos($source, '<script')) < $styles) {
+					$source = substr_replace($source, $newfile, $scriptpos, 0);
+				} elseif ($this->options['page']['html_tidy'] && ($scriptpos = strpos($source, '<SCRIPT')) < $styles) {
+					$source = substr_replace($source, $newfile, $scriptpos, 0);
 				} else {
-					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $newfile, $source);
+					$source = substr_replace($source, $newfile, $styles, 0);
 				}
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
@@ -1264,15 +1263,7 @@ class web_optimizer {
 					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
 				$include .= 'if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
-				if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<head'))) {
-					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
-				} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '<HEAD'))) {
-					$headclose = strpos(substr($source, $headpos, 50), '>');
-					$source = substr_replace($source, $include, $headclose + $headpos + 1, 0);
-				} else {
-					$source = preg_replace("!<head(\s+[^>]+)?>!is", "$0" . $include, $source);
-				}
+				$source = str_replace("@@@WSSSTYLES@@@", $include . "@@@WSSSTYLES@@@", $source);
 				break;
 		}
 		return $source;
@@ -1348,7 +1339,7 @@ class web_optimizer {
 				$external_array = array($external_array);
 			}
 			$source = $this->_remove_scripts($external_array, $source,
-				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
+				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
 /* Create the link to the new file with data:URI / mhtml */
 			if (!empty($options['data_uris_separate']) && (!empty($this->options['cache_version']) || @is_file($physical_file . '.' . $options['ext']))) {
 				$newfile = $this->get_new_file($options, $cache_file, $timestamp, '.' . $options['ext']);
@@ -1462,6 +1453,8 @@ class web_optimizer {
 			if ($options['tag'] === 'link' && !empty($options['include_code'])) {
 				$contents .= str_replace("<br/>", "", $options['include_code']);
 			}
+			$source = $this->_remove_scripts($external_array, $source,
+				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
 			if ($options['css_sprites'] || ($options['data_uris'] && empty($this->ua_mod)) || ($options['mhtml'] && !empty($this->ua_mod))) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
@@ -1557,8 +1550,6 @@ class web_optimizer {
 					$contents = $minified_content;
 				}
 			}
-			$source = $this->_remove_scripts($external_array, $source,
-				$options['header'] == 'javascript' && !$options['external_scripts_head_end']);
 		}
 		if (!empty($contents)) {
 /* Allow for minification of javascript */
@@ -1663,7 +1654,7 @@ class web_optimizer {
 	*
 	*/
 	function _remove_scripts ($external_array, $source, $mark = false) {
-		$replacement = $mark ? '@@@WSSSCRIPT@@@' : '';
+		$replacement = $mark ? $mark > 1 ? '@@@WSSSTYLES@@@' : '@@@WSSSCRIPT@@@' : '';
 		if (is_array($external_array)) {
 			foreach ($external_array as $key => $value) {
 /* Remove script, replace the first one with the mark to insert merged script */
@@ -2789,7 +2780,7 @@ class web_optimizer {
 						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
 						'<script type="text/javascript"><!--',
 						'<script language="javascript"  type="text/javascript" ><!--'),
-					array('@@@WSSJS1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
+					array('@@@WSSLEAVE1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
 						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
 						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@',
 						'@@@WSSLEAVE13@@@'), $this->content);
