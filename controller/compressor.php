@@ -644,6 +644,8 @@ class web_optimizer {
 					die();
 				}
 		}
+/* remove marker for styles */
+		$this->content = str_replace('@@@WSSSTYLES@@@', '', $this->content);
 /* Return content to requestor */
 		if ($content) {
 			return $this->content;
