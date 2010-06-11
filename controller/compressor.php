@@ -1214,11 +1214,19 @@ class web_optimizer {
 /* move CSS file to the first occurent of CSS or before any scripts */
 			default:
 				$styles = strpos($source, "@@@WSSSTYLES@@@");
-				if ($this->options['page']['html_tidy'] && ($scriptpos = strpos($source, '<script')) < $styles) {
-					$source = substr_replace($source, $newfile, $scriptpos, 0);
-				} elseif ($this->options['page']['html_tidy'] && ($scriptpos = strpos($source, '<SCRIPT')) < $styles) {
-					$source = substr_replace($source, $newfile, $scriptpos, 0);
-				} else {
+				$updated = 0;
+				if ($this->options['page']['html_tidy']) {
+					$script1 = strpos($source, "<script");
+					$script2 = strpos($source, "<SCRIPT");
+					if ($script1 !== false && $script1 < $styles) {
+						$source = substr_replace($source, $newfile, $script1, 0);
+						$updated = 1;
+					} elseif ($script2 !== false && $script2 < $styles) {
+						$source = substr_replace($source, $newfile, $script2, 0);
+						$updated = 1;
+					}
+				}
+				if (!$updated) {
 					$source = substr_replace($source, $newfile, $styles, 0);
 				}
 				break;
@@ -1912,33 +1920,33 @@ class web_optimizer {
 					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)) ||
-						$this->options['page']['parallel_javascript'])) ||
+						(!$this->options['javascript']['minify'] && $this->options['page']['parallel_javascript']))) ||
 					($value['tag'] == 'link' && ((empty($value['file']) &&
 					!$this->options['css']['inline_scripts']) ||
 					(!empty($excluded_scripts_css[0]) &&
 						!empty($value['file'] ) &&
 						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)) ||
-						$this->options['page']['parallel_css']))) {
+						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
+/* just skip them */
+					unset($this->initial_files[$key]);
 /* rewrite skipped file with CDN host */
-						if ((($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
-							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) &&
-							(preg_match("@//(www\.)?" . $this->host_escaped . "/+@", $value['file']) ||
-							(substr($value['file'], 0, 1) == '/' && substr($value['file'], 1, 1) != '/'))) {
-								$host = $value['tag'] == 'link' ?
-									$this->options['css']['host'] : 
-									$this->options['javascript']['host'];
-								$new_src = (empty($host) ? "" : "//" . $host) .
-									preg_replace("@https?://(www\.)?" .
-									$this->host_escaped .
-									"/+@", "/", $value['file']);
-								$new_script = str_replace($value['file'],
-									$new_src, $value['file_raw']);
-								$this->content = str_replace($value['file_raw'],
-									$new_script, $this->content);
-/* of just skip them */
-						} else {
-							unset($this->initial_files[$key]);
-						}
+					if (!empty($value['file']) &&
+						(($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
+						($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) &&
+						(preg_match("@//(www\.)?" . $this->host_escaped . "/+@", $value['file']) ||
+						(substr($value['file'], 0, 1) == '/' && substr($value['file'], 1, 1) != '/'))) {
+							$host = $value['tag'] == 'link' ?
+								$this->options['css']['host'] : 
+								$this->options['javascript']['host'];
+							$new_src = (empty($host) ? "" : "//" . $host) .
+								preg_replace("@https?://(www\.)?" .
+								$this->host_escaped .
+								"/+@", "/", $value['file']);
+							$new_script = str_replace($value['file'],
+								$new_src, $value['file_raw']);
+							$this->content = str_replace($value['file_raw'],
+								$new_script, $this->content);
+					}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				} elseif (!empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
