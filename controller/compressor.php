@@ -2344,7 +2344,7 @@ class web_optimizer {
 /* remove website host */
 		if (!empty($this->options['page']['minify_aggressive'])) {
 /* fix for base tag */
-			preg_match("@<base[^>]+>@is", $source, $matches);
+			preg_match_all("@<base[^>]+>@is", $source, $matches);
 			$basetag = false;
 			if (count($matches) && count($matches[0])) {
 				$basetag = $matches[0][0];
