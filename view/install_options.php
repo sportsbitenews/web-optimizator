@@ -292,10 +292,18 @@ if ($submit) {
 					if ($value['type'] != 'radio' || !empty($value['hidden'])) {
 						$value['count'] = 1;
 					}
+					$i = $disabled = 0;
+					if ($value['type'] == 'radio') { 
+						while ($i++ != $value['count']) {
+							if (!empty($value['disabled']) && !empty($value['disabled'][$i-1])) {
+								$disabled = 1;
+							}
+						}
+					}
 					$i = 0;
 					if ($value['type'] == 'radio') {
 ?><dt class="wssD5<?php
-						echo !empty($value['disabled']) && $value['disabled'] == 100 ? ' wssD20' : '';
+						echo !empty($value['disabled']) && ($disabled || $value['disabled'] == 100) ? ' wssD22' : '';
 ?>"><label class="wssE" for="wss_<?php
 						echo $option;
 ?>1"><?php
@@ -309,7 +317,7 @@ if ($submit) {
 						if (empty($value['hidden'])) {
 ?><dt class="wssD<?php
 							echo strpos($value['type'], 'text') !== false ? 1 : 5;
-							echo !empty($value['disabled']) && ($value['disabled'] == $i || $value['disabled'] == 100) ? ' wssD20' : '';
+							echo !empty($value['disabled']) && (!empty($value['disabled'][$i-1]) || $value['disabled'] == 100) ? ' wssD20' : '';
 ?>"><label for="wss_<?php
 							echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>" class="wssE"><?php
@@ -370,7 +378,7 @@ if ($submit) {
 								break;
 							case 'radio':
 ?><dd class="wssD6<?php
-								echo !empty($value['disabled']) && (!empty($value['disabled'][$i]) || $value['disabled'] == 100) ? ' wssD20' : '';
+								echo !empty($value['disabled']) && (!empty($value['disabled'][$i-1]) || $value['disabled'] == 100) ? ' wssD20' : '';
 ?>"><input value="<?php
 								echo $i;
 ?>" type="<?php
