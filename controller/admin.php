@@ -2518,14 +2518,15 @@ class admin {
 					'type' => 'radio',
 					'count' => 2,
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'price' => array(0, 5, 5, 5, 5, 5),
+					'price' => array(0, 5, 5, 5, 5, 5, 5),
 					'disabled' => array(
 						0,
 						!empty($this->restrictions['wss_performance_cache_engine1']),
 						!empty($this->restrictions['wss_performance_cache_engine2']),
-						!empty($this->restrictions['wss_performance_cache_engine3'])
-						!empty($this->restrictions['wss_performance_cache_engine4'])
-						!empty($this->restrictions['wss_performance_cache_engine5'])
+						!empty($this->restrictions['wss_performance_cache_engine3']),
+						!empty($this->restrictions['wss_performance_cache_engine4']),
+						!empty($this->restrictions['wss_performance_cache_engine5']),
+						!empty($this->restrictions['wss_performance_cache_engine6'])
 					)
 				),				
 			),
