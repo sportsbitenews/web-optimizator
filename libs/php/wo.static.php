@@ -7,6 +7,48 @@
  * Helps when there is no mod_expires and(or) no mod_deflate on the server.
  *
  **/
+/* replace all urls with absolute paths */
+function replace_urls ($cached, $filename, $document_root) {
+	$content = @file_get_contents($filename);
+	$path = str_replace($document_root, "", $filename);
+	$path = substr($path, 0, strrpos($path, '/') + 1);
+	preg_match_all("@url\s*\(\s*[^\)]+\)@", $content, $urls, PREG_SET_ORDER);
+	$replaced = array();
+	foreach ($urls as $url) {
+		$u = $i = $url[0];
+		if (empty($replaced[$i])) {
+			switch ($u{0}) {
+				case '/':
+					break;
+				case 'h':
+					if (substr($u, 0, 5) == 'http:' || substr($u, 0, 6) == 'https:') {
+						break;
+					}
+				case 'd':
+					if (substr($u, 0, 5) == 'data:') {
+						break;
+					}
+				case 'm':
+					if (substr($u, 0, 6) == 'mhtml:') {
+						break;
+					}
+				default:
+					$bracket = strpos($u, '(');
+					$u = substr_replace($u, $path, $bracket + 1, 0);
+					break;
+			}
+			$content = str_replace($i, $u, $content);
+			$replaced[$i] = 1;
+		}
+	}
+	$fp = @fopen($cached, "wb");
+	if ($fp) {
+		@fwrite($fp, $content);
+		@fclose($fp);
+	}
+	return $content;
+}
+
 /* return heximal number for a decimal one, by jbleau at gmail dot com */
 function dec_to_hex ($dec) {
 	$hex = Array(	0 => 0, 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5,
@@ -237,6 +279,8 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		if (function_exists('date_default_timezone_set')) {
 			@date_default_timezone_set(@date_default_timezone_get());
 		}
+/* define cached filename */
+		$cached = $extension == 'text/css' ? dirname(__FILE__) . '/wss' . md5($filename) . '.css' : $filename;
 /* set Expires header */
 		header('Expires: ' .
 			gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
@@ -244,12 +288,12 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		if ($gzip) {
 /* try to get gzipped content from file */
 			$extension = strpos($encoding, "gzip") !== false ? 'gz' : 'df';
-			$compressed = $filename . '.' . $extension;
+			$compressed = $cached . '.' . $extension;
 /* check file's existence and its mtime */
 			if (@is_file($compressed) && @filemtime($compressed) === $mtime) {
 				$contents = @file_get_contents($compressed);
 			} else {
-				$content = @file_get_contents($filename);
+				$content = @file_get_contents($cached);
 				if (!empty($content)) {
 /* Make compressed contents */
 					if ($extension === 'gz') {
@@ -268,6 +312,9 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 					} else {
 						$contents = $content;
 					}
+/* create CSS file in cache with rewritten urls */
+				} elseif ($cached != $filename) {
+					$contents = replace_urls($cached, $filename, $document_root);
 				} else {
 					$contents = $content;
 				}
@@ -275,7 +322,10 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 			header('Content-Encoding: ' . $encoding);
 			header('Content-Length: ' . strlen($contents));
 		} else {
-			$contents = @file_get_contents($filename);
+			$contents = @file_get_contents($cached);
+			if (empty($contents) && $cached != $filename) {
+				$contents = replace_urls($cached, $filename, $document_root);
+			}
 		}
 /* finally output content */
 		echo $contents;
