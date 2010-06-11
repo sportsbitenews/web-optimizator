@@ -5083,5 +5083,16 @@ require valid-user';
 		$this->cache_engine = & new $engine_name (array('cache_dir' => $this->compress_options['html_cachedir']));
 	}
 
+	/**
+	* Deletes cached HTML files determined by patterns. Just an interface for cache_engine delete_entries method.
+	* 
+	**/	
+	function clear_html_cache ($patterns) {
+		if (!empty($patterns))
+		{
+			$this->cache_engine->delete_entries($patterns);
+		}
+	}
+
 }
 ?>

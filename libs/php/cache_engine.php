@@ -257,7 +257,7 @@ class webo_cache_files extends webo_cache_engine
  				$cur_dir .= $dir . '/';
  				if(!@is_dir($cur_dir))
  				{
- 					mkdir($cur_dir, 0755);
+ 					@mkdir($cur_dir, 0755);
  				}
 			}
 		}
@@ -326,7 +326,7 @@ class webo_cache_files extends webo_cache_engine
 	        	}
 		    }
 		}
-		closedir($dir);
+		@closedir($dir);
 		return $glob;
 	    } else {
 	    	if ($size === false)
