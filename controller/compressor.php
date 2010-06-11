@@ -1907,13 +1907,13 @@ class web_optimizer {
 		if (is_array($this->initial_files)) {
 /* enable caching / gzipping proxy? */
 			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
-				$this->options['css']['gzip']) &&
-				empty($this->options['css']['minify']);
+				$this->options['css']['gzip']);
 			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
-				$this->options['javascript']['gzip']) &&
-				empty($this->options['javascript']['minify']);
+				$this->options['javascript']['gzip']);
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
+				$use_proxy = (!$this->options['javascript']['minify'] && $value['tag'] == 'script') ||
+					(!$this->options['css']['minify'] && $value['tag'] == 'link');
 /* but keep CSS/JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
 				if (($value['tag'] == 'script' && ((empty($value['file']) &&
 					!$this->options['javascript']['inline_scripts']) ||
@@ -1929,6 +1929,7 @@ class web_optimizer {
 						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
 /* just skip them */
 					unset($this->initial_files[$key]);
+					$use_proxy = 1;
 /* rewrite skipped file with CDN host */
 					if (!empty($value['file']) &&
 						(($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
@@ -1946,9 +1947,11 @@ class web_optimizer {
 								$new_src, $value['file_raw']);
 							$this->content = str_replace($value['file_raw'],
 								$new_script, $this->content);
+							$use_proxy = 0;
 					}
 /* rewrite skipped file with caching proxy, skip dynamic files */
-				} elseif (!empty($value['file']) &&
+				}
+				if ($use_proxy && !empty($value['file']) &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file'])) {
