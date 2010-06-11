@@ -1283,19 +1283,12 @@ class web_optimizer {
 	* Include compressed JS or CSS into source and return it
 	*
 	**/
-	function do_include ($options, $source, $cachedir, $external_array, $handler_array = null) {
+	function do_include ($options, $source, $cachedir, $external_array) {
 		$cachedir_relative = $options['cachedir_relative'];
 		$handlers = '';
 /* If only one script found */
 		if (!is_array($external_array)) {
 			$external_array = array($external_array);
-		}
-/* Merge all handlers. But the correct way is to set them one by one... */
-		if (is_array($handler_array)) {
-			foreach ($handler_array as $h) {
-				$handlers .= preg_replace("@\r?\n\s*\t*@", ";", $h['content']);
-				$source = str_replace($h['source'], '', $source);
-			}
 		}
 		if (empty($options['file'])) {
 /* Glue scripts' content / filenames */
