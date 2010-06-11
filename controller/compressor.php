@@ -1802,7 +1802,7 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		$curl = function_exists('curl_init');
-		if (!empty($this->options['javascript']['minify']) || !empty($this->options['javascript']['gzip'])) {
+		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript']) {
 			if (empty($this->options['javascript']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -1843,7 +1843,7 @@ class web_optimizer {
 				}
 			}
 		}
-		if (!empty($this->options['css']['minify']) || !empty($this->options['css']['gzip'])) {
+		if ($this->options['css']['minify'] || $this->options['css']['gzip'] || $this->options['page']['parallel_css']) {
 			if (empty($this->options['css']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -1911,12 +1911,14 @@ class web_optimizer {
 					!$this->options['javascript']['inline_scripts']) ||
 					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)))) ||
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)) ||
+						$this->options['page']['parallel_javascript'])) ||
 					($value['tag'] == 'link' && ((empty($value['file']) &&
 					!$this->options['css']['inline_scripts']) ||
 					(!empty($excluded_scripts_css[0]) &&
 						!empty($value['file'] ) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css))))) {
+						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)) ||
+						$this->options['page']['parallel_css']))) {
 /* rewrite skipped file with CDN host */
 						if ((($value['tag'] == 'link' && $this->options['page']['parallel_css']) ||
 							($value['tag'] == 'script' && $this->options['page']['parallel_javascript'])) &&
