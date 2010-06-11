@@ -248,26 +248,19 @@ class webo_cache_files extends webo_cache_engine
  	
  	function __make_path($path)
  	{
- 		if (substr(phpversion(), 0, 1) == 4)
- 		{
- 			$dirs = explode('/', dirname($path));
- 			$cur_dir = '/';
- 			foreach($dirs as $dir)
- 			{
- 				if(!empty($dir))
+		$dirs = explode('/', dirname($path));
+		$cur_dir = '/';
+		foreach($dirs as $dir)
+		{
+			if(!empty($dir))
+			{
+ 				$cur_dir .= $dir . '/';
+ 				if(!@is_dir($cur_dir))
  				{
-	 				$cur_dir .= $dir . '/';
-	 				if(!@is_dir($cur_dir))
-	 				{
-	 					mkdir($cur_dir, 0755);
-	 				}
+ 					mkdir($cur_dir, 0755);
  				}
- 			}
- 		}
- 		else
- 		{
- 			mkdir(dirname($path), 0755, true);
- 		}
+			}
+		}
  	}
 
  	/* Internal method that returns all keys that match given pattern. Expects pattern. */
