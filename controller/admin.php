@@ -2798,7 +2798,7 @@ class admin {
 				'parallel_custom' => array(
 					'value' => $this->compress_options['parallel']['custom'],
 					'type' => 'radio',
-					'count' => 4,
+					'count' => $this->premium == 10 ? 4 : 3,
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => array(0,0,0,30)
 					
