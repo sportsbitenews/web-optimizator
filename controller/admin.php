@@ -1113,6 +1113,22 @@ class admin {
 			'config_writable' => @is_writable($this->basepath . $this->options_file),
 			'memory_limit' => round($memory_limit) > 16
 		);
+		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
+		{
+			$content = @file_get_contents($this->basepath . '../../../wp-config.php');
+			if(preg_match('/define\s*\(\s*"WP_CACHE"\s*,\s*true\s*\)\s*;/', $content))
+			{
+				$wp_cache_enabled = true;
+			}
+			else
+			{
+				$wp_cache_enabled = false;
+			}
+		}
+		else
+		{
+			$wp_cache_enabled = true;
+		}
 		$warnings = array(
 			'htaccess_writable' => !$htaccess_available ||
 				@is_writable($website_root) ||
@@ -1152,7 +1168,8 @@ class admin {
 				$this->compress_options['htaccess']['access']) ||
 				$this->internal ? 1 : 0,
 			'cms' => $this->system_info($website_root),
-			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15
+			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
+			'wordpress_cache_enabled' => $wp_cache_enabled
 		);
 		$e = $w = 0;
 /* count acturl troubles / warnings */
