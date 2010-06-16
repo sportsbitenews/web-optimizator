@@ -3072,6 +3072,7 @@ class admin {
 			'wss_far_future_expires_external',
 			'wss_html_cache_enabled',
 			'wss_html_cache_flush_only',
+			'wss_html_cache_enhanced',
 			'wss_footer_text',
 			'wss_footer_spot',
 			'wss_data_uris_on',
@@ -3310,6 +3311,70 @@ class admin {
 		$content = '# Web Optimizer options';
 		$content2 = '';
 		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
+/* create rules for enhanced HTML caching mode */
+			$content_enhanced = '';
+			if (!empty($this->input['wss_html_cache_enhanced'])) {
+				$cookie = array();
+/* WordPress-related cookie to skip server side caching */
+				if (strstr($this->basepath, 'wp-content')) {
+					$cookie[] = 'comment_author_';
+					$cookie[] = 'wordpress';
+					$cookie[] = 'wp-postpass_';
+				}
+/* generic cookies to skip server side caching */
+				if (!empty($this->input['wss_html_cache_additional_list'])) {
+					$cookies = explode($this->input['wss_html_cache_additional_list'], ' ');
+					foreach ($cookies as $c) {
+						$cookie[] = $c;
+					}
+				}
+				if (count($cookie)) {
+					$cookie = '!^.*(' . implode($cookie, '|') . ').*$';
+				}
+				if (!empty($this->input['wss_htaccess_mod_setenvif'])) {
+					if ($cookie) {
+						$content_enhanced .= "
+	RewriteCond %{HTTP:Cookie} " . $cookie;
+					}
+					$content_enhanced .= "
+	RewriteCond %{REQUEST_METHOD} !=POST
+	RewriteCond " . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}index%{ENV:WSSBR}.html%{ENV:WSSENC} -f
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
+				} else {
+					$browsers = empty($this->input['wss_performance_uniform_cache']) ?
+						array(
+							'MSIE 6' => '.ie6',
+							'MSIE 7' => '.ie7',
+							'MSIE 8' => '.ie8',
+							'Android|BlackBerry|HTC|iPhone|iPod|LG|MOT|Mobile|NetFront|Nokia|Opera Mini|Palm|PPC|SAMSUNG|Smartphone|SonyEricsson|Symbian|UP.Browser|webOS' => '.ma') : array();
+					$browsers[] = '';
+					$encodings = empty($this->input['wss_gzip_page']) && !empty($this->input['wss_htaccess_mod_mime']) ?
+						array() : array('gzip' => '.gz', 'deflate' => '.df');
+					$encodings[] = '';
+					foreach ($encodings as $enc => $encoding) {
+						foreach ($browsers as $br => $browser) {
+							$content_enhanced .= "
+	RewriteCond %{REQUEST_METHOD} !=POST";
+							if ($br) {
+								$content_enhanced .= "
+	RewriteCond %{HTTP_USER_AGENT} \"" . $br . "\"";
+							}
+							if ($enc) {
+								$content_enhanced .= "
+	RewriteCond %{HTTP:Accept-Encoding} ". $enc;
+							}
+							if ($cookie) {
+								$content_enhanced .= "
+	RewriteCond %{HTTP:Cookie} " . $cookie;
+							}
+							$content_enhanced .= "
+	RewriteCond " . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}index". $browser .".html". $encoding ." -f
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index". $browser .".html". $encoding ." [L]";
+						}
+					}
+				}
+			}
+/* rules for gzip via mod_gzip */
 			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
 				$content .= "
 <IfModule mod_gzip.c>
@@ -3371,7 +3436,20 @@ class admin {
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
 	BrowserMatch SV1; !no_gzip
-	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
+				if (!empty($this->input['wss_html_cache_enhanced']) && !empty($this->input['wss_gzip_page'])) {
+					$content .= "
+	SetEnvIfNoCase accept-encoding deflate WSSENC=.df
+	SetEnvIfNoCase accept-encoding gzip WSSENC=.gz";
+					if (empty($this->input['wss_performance_uniform_cache'])) {
+						$content .="
+	BrowserMatch \"MSIE 6\" WSSBR=.ie6
+	BrowserMatch \"MSIE 7\" WSSBR=.ie7
+	BrowserMatch \"MSIE 8\" WSSBR=.ie8
+	BrowserMatch \"Android|BlackBerry|HTC|iPhone|iPod|LG|MOT|Mobile|NetFront|Nokia|Opera Mini|Palm|PPC|SAMSUNG|Smartphone|SonyEricsson|Symbian|UP.Browser|webOS\" WSSBR=.ma";
+					}
+				}
+				$content .= "
 </IfModule>";
 			}
 			if (!empty($this->input['wss_htaccess_mod_deflate'])) {
@@ -3492,6 +3570,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		ForceType application/vnd.ms-fontobject
 	</FilesMatch>";
 					}
+					$content .= $content_enhanced;
 					$content .= "
 </IfModule>";
 				}
@@ -3508,6 +3587,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
 				}
+				if (!empty($this->input['wss_far_future_expires_images'])) {
+					$content .= "
+	RewriteRule ^(.*)\.wo[0-9]+\.(jpg|png)$ $1.$2";
+				}
+				$content .= $content_enhanced;
+				$content .= "
+</IfModule>";
 			}
 			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
 				$content2 .= "
