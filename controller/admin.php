@@ -2817,7 +2817,7 @@ class admin {
 					'type' => 'radio',
 					'count' => $this->premium == 10 ? 4 : 3,
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'price' => array(0,0,0,30)
+					'price' => array(0,0,0,35)
 					
 				),
 				'parallel_ftp' => array(
@@ -3420,11 +3420,15 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
-				}
+					}
 					if (!empty($this->input['wss_far_future_expires_javascript'])) {
 						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
-				}
+					}
+					if (!empty($this->input['wss_far_future_expires_images'])) {
+						$content .= "
+	RewriteRule ^(.*)\.wo[0-9]+\.(jpg|png)$ $1.$2";
+					}
 					if (!empty($this->input['wss_gzip_page'])) {
 						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip

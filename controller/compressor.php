@@ -368,9 +368,9 @@ class web_optimizer {
 				"data_uris_exclude_mhtml" => $this->options['data_uris']['additional_list'],
 				"css_sprites" => $this->options['css_sprites']['enabled'] &&
 					($this->premium > 1),
-				"css_sprites_expires_rewrite" => !($this->options['htaccess']['mod_rewrite'] ||
-						$this->options['htaccess']['mod_expires']) ||
-					!$this->options['htaccess']['enabled'],
+				"css_sprites_expires_rewrite" => (!$this->options['htaccess']['mod_rewrite'] ||
+					!$this->options['htaccess']['enabled']) &&
+					$this->options['far_future_expires']['images'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],

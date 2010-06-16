@@ -71,8 +71,8 @@ class css_sprites_optimize {
 			if (empty($this->multiple_hosts[0]) && empty($this->multiple_hosts[1])) {
 				$this->multiple_hosts_count = 0;
 			}
-/* use rewrite (just add dot to the end of images) */
-			$this->proxy_rewrite = $options['expires_rewrite'];
+/* use rewrite */
+			$this->no_rewrite = $options['expires_rewrite'];
 /* current USER AGENT spot */
 			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
 /* is USER AGENT old IE? */
@@ -923,7 +923,12 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					if (@is_file($sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
-							$this->css->css[$import][$keys]['background-image'] = 'url('. preg_replace("/webo[rb]/", "webo", $sprite) .')';
+							$this->css->css[$import][$keys]['background-image'] = 'url('.
+								preg_replace("/webo[rb]/", "webo",
+								substr($sprite, 0, strlen($sprite) - 3) . 
+								($this->no_rewrite ? '' : 'wo' . time() . '.') .
+								substr($sprite, strlen($sprite) - 3) .
+								($this->no_rewrite ? '?' . time() : '')) .')';
 						}
 					}
 /* finish deal with CSS */
