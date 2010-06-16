@@ -1115,8 +1115,8 @@ class admin {
 		);
 		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
 		{
-			$content = @file_get_contents($this->basepath . '../../../wp-config.php');
-			if(preg_match('/define\s*\(\s*"WP_CACHE"\s*,\s*true\s*\)\s*;/', $content))
+			$content = @file_get_contents($this->compress_options['website_root'] . 'wp-config.php');
+			if(preg_match('/define\s*\(\s*[\'"]WP_CACHE[\'"]\s*,\s*true\s*\)\s*;/', $content))
 			{
 				$wp_cache_enabled = true;
 			}
