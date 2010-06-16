@@ -140,7 +140,7 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
 /* skip gzip/deflate if plugins are enabled - they can have onCache */
-			$cache_key = $this->uri . '.index' . $this->ua_mod . '.html' .
+			$cache_key = $this->uri . 'index' . $this->ua_mod . '.html' .
 				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
 					'' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
@@ -870,7 +870,7 @@ class web_optimizer {
 						substr($this->content, 0, $options['flush_size']);
 				}
 			}
-			$ordinary_cache_key = $this->uri . '.index' . $this->ua_mod . '.html';
+			$ordinary_cache_key = $this->uri . 'index' . $this->ua_mod . '.html';
 			$cache_key = $ordinary_cache_key . (empty($this->encoding_ext) ? '' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
 /* set ETag, thx to merzmarkus */
