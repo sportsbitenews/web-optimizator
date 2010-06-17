@@ -2606,7 +2606,7 @@ class web_optimizer {
 /* Google Search */
 				), 'gs' => array(
 					'marker' => 'setOnLoadCallback',
-					'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\">[\r\n\s\t]*</script>[\r\n\s\t]*<script type=\"text/javascript\">[\r\n\s\t]*google\.load\(['\"]search.*?</script>",
+					'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\">[\r\n\s\t]*</script>[\r\n\s\t]*<script type=\"text/javascript\">(//\s*<!\[CDATA\[)?[\r\n\s\t]*google\.load\(['\"]search.*?</script>",
 					'onload_before' => '.*?google.load\(\s*[\'"]search[\'"]\s*,\s*[\'"]1[\'"]\s*\);(.*)google.setOnLoadCallback[\r\n\s\t]*\(function\(\)\{(.*?)\},\strue\);(.*?)</script>',
 					'onload_after' => 'document.write(\'\x3cscript src="//www.google.com/jsapi" type="text/javascript">\x3c/script>\');setTimeout(function(){if(typeof google!=="undefined"&&typeof google.load!=="undefined"){google.load("search", "1");setTimeout(function(){if(typeof google.search!=="undefined"&&typeof google.search.CustomSearchControl!=="undefined"){$1$2$3;setTimeout(function(){var a=document.forms,b=0,c;while(c=a[b++]){if(c.className=="gsc-search-box"){wss_onload_ready=1}}if(!wss_onload_ready){setTimeout(arguments.callee,20)}},20)}else{setTimeout(arguments.callee,10)}},10)}else{setTimeout(arguments.callee,10)}},10);'
 /* Odnaknopka */
