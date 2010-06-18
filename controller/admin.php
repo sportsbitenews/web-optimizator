@@ -77,12 +77,14 @@ class admin {
 						$this->input['wss_license'];
 			$this->premium = $this->view->validate_license($this->compress_options['license'],
 				$this->basepath . 'cache/', $this->compress_options['host']);
-			$this->access = in_array($this->input['wss_page'],
+			$this->need_access = in_array($this->input['wss_page'],
 				array('install_enter_password', 'install_set_password'));
 /* Make sure password valid */
 			$this->check_password();
 			if (!$this->access) {
 				$this->input['wss_page'] = 'install_set_password';
+			} elseif ($this->need_access) {
+				$this->input['wss_page'] = 'install_dashboard';
 			}
 /* default multiple hosts */
 			$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
@@ -5137,7 +5139,7 @@ require valid-user';
 				);
 				break;
 /* X-Cart */
-			case 'Social':
+			case 'X-Cart':
 				$files = array(
 					array(
 						'file' => 'include/func/func.core.php',
