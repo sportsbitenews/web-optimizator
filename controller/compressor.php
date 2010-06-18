@@ -76,8 +76,8 @@ class web_optimizer {
 		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */
 		$this->buffered = $this->options['buffered'];
-/* Sets User Agent to differ IE from not-IE */
-		$this->ua = $_SERVER['HTTP_USER_AGENT'];
+/* Sets User Agent to differ IE from non-IE */
+		$this->ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
