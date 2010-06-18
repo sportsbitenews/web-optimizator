@@ -1,7 +1,8 @@
 <?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
- * Parses arra yof images to dmensions/pathnames. Stores array of CSS rules
+ * Parses array of images to dmensions/pathnames. Stores array of CSS rules
+ * License agreement: http://www.webogroup.com/about/EULA.txt
  *
  **/
 class html_sprites {

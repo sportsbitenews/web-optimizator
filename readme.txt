@@ -98,27 +98,25 @@ http://code.google.com/p/web-optimizator/wiki/TroubleshootingAndSupport
 Team and contributors
 -----------------------
 A lot of different persons contributed to this project. Some of them:
- * sunnybear (core, unit tests, htaccess, CSS Sprites, multiple hosts,
-   unobtrusive logic, performance tuning, promotion, other stuff)
- * graphite (3rd party modules, server architecture)
+ * sunnybear (core, unit tests, htaccess, CSS Sprites, CDN, unobtrusive logic,
+   performance tuning, promotion, other stuff)
+ * graphite (3rd party modules, server architecture, server caching)
  * fade (design, logo, general usability, product interface)
  * gkondratenko (documentation, integration, interface & usability, make up
    fixes, known issues gathering)
- * markusmerz (a lot of minor bugs found and overall beta testing perfromed,
-   DE localization of 1.0+ versions)
- * ShimON (Java branch, CSS Sprites unit-tests)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
  * janvarev (files MTIME check)
+ * markusmerz (overall beta testing)
+ * olmer2002 (overall beta testing)
  * crazyyy (UA localization)
  * Ajexandro (ES localization)
- * jos (DE localization of 0.6+ versions)
+ * jos (DE localization of 0.6 version)
  * veroniquemckay (FR localization of 1.0+ versions)
- * vadims (LT localization of 1.0+ versions)
  
 License
 -----------------------
-WEBO Site SpeedUp is licensed under WEBO Software license (LICENSE.txt). It's
+WEBO Site SpeedUp is licensed under Eclipse Public License (LICENSE.txt). It's
 located in this package. For Russian users there is LICENSE.ru.txt or
 LICENSE.ru.utf8.txt
 Some parts of WEBO Site SpeedUp are open source and licensed under different
@@ -128,5 +126,9 @@ licenses:
  * YUI Compressor binary - BSD License
  * YASS library - MIT License
  * CSS Tidy library - GNU LGPLv2
- * XHTML documment.write() Support - GNU GPL
+ * XHTML document.write() Support - GNU GPL
  * HTML Parser - Mozilla Public License
+ * WEBO CSS Sprites - WEBO License
+ * WEBO HTML Sprites - WEBO License
+ * WEBO PHP Static library - WEBO License
+ * WEBO HTML Cache library - WEBO License

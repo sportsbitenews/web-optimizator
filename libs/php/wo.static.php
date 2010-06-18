@@ -5,6 +5,7 @@
  * Also adds GZip for known types of files (that can be gzipped).
  * Resticted filename to document root only.
  * Helps when there is no mod_expires and(or) no mod_deflate on the server.
+ * License agreement: http://www.webogroup.com/about/EULA.txt
  *
  **/
 /* replace all urls with absolute paths */

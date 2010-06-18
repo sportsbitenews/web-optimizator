@@ -3,6 +3,7 @@
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Parses content, gets all CSS images, converts them to CSS Sprites.
  * Outputs minified (no sorting selectors) content
+ * License agreement: http://www.webogroup.com/about/EULA.txt
  *
  **/
 class css_sprites {

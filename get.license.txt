@@ -1,0 +1,2 @@
+							$admin->view->download('http://webo.name/license/gotd/?name=' . $compress_options['name'] . '&email=' . $compress_options['email'], $install_directory . 'license', 20);
+							$admin->save_option("['license']", @file_get_contents($install_directory . 'license'));

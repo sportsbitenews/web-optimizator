@@ -3,6 +3,7 @@
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Converts given array of images to CSS Sprites.
  * Outputs array of selectors
+ * License agreement: http://www.webogroup.com/about/EULA.txt
  *
  **/
 class css_sprites_optimize {

@@ -2,6 +2,7 @@
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Classes for storing html cache
+ * License agreement: http://www.webogroup.com/about/EULA.txt
  *
  **/
  
