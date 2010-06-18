@@ -61,7 +61,7 @@ define('_WEBO_LOGIN_LICENSEAGREEMENT', 'I have read the ');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'license agreement');
 define('_WEBO_LOGIN_LICENSEAGREEMENT3', 'and I accept it');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Confirm that you have read and agreed with the license agreement');
-define('_WEBO_LOGIN_TRIAL', 'Get trial license key');
+define('_WEBO_LOGIN_TRIAL', 'Get SaaS license key');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Update');
@@ -858,7 +858,7 @@ define('_WEBO_HELP_WELCOME', 'Welcome to WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Minimize');
 define('_WEBO_HELP_CLOSE', 'Close');
 define('_WEBO_HELP_FIRSTTIME', 'Are you first time here?');
-define('_WEBO_HELP_LICENSEKEY', 'Register your license key or get a trial key on');
+define('_WEBO_HELP_LICENSEKEY', 'Register your license key or get a SaaS key on');
 define('_WEBO_HELP_LICENSEKEY2', 'page. This allows you to use WEBO Site SpeedUp at full throttle. You can skip this step if you are going to use WEBO Site SpeedUp Community Edition.');
 define('_WEBO_HELP_TUNING', 'Choose the right configuration (from Safe, Basic, Optimal, or Extreme) or create your own one on');
 define('_WEBO_HELP_TUNING2', 'page. Don\'t forget to refresh cache if you change configuration. Hints near every option will help you to understand what it is about.');

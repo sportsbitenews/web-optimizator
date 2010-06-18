@@ -60,7 +60,7 @@ define('_WEBO_LOGIN_LICENSEAGREEMENT', 'Я прочитал');
 define('_WEBO_LOGIN_LICENSEAGREEMENT2', 'лицензионное соглашение');
 define('_WEBO_LOGIN_LICENSEAGREEMENT3', 'и согласен с ним');
 define('_WEBO_LOGIN_CONFIRMLICENSEAGREEMENT', 'Подтвердите, что вы прочитали и согласны с лицензионным соглашением');
-define('_WEBO_LOGIN_TRIAL', 'Получить тестовый ключ');
+define('_WEBO_LOGIN_TRIAL', 'Получить SaaS-ключ');
 
 /* Upgrade */
 define('_WEBO_LOGIN_UPGRADE', 'Обновить');
@@ -858,7 +858,7 @@ define('_WEBO_HELP_MINIMIZE', 'Свернуть');
 define('_WEBO_HELP_CLOSE', 'Закрыть');
 define('_WEBO_HELP_FIRSTTIME', 'Используете приложение впервые?');
 define('_WEBO_HELP_LICENSEKEY', 'На странице');
-define('_WEBO_HELP_LICENSEKEY2', 'зарегистрируйте ваш лицензионный ключ или получите временный тестовый ключ, открывающий все возможности Полной версии WEBO Site SpeedUp. Вы можете пропустить этот шаг, если хотите использовать некоммерческую версию WEBO Site SpeedUp.');
+define('_WEBO_HELP_LICENSEKEY2', 'зарегистрируйте ваш лицензионный ключ или получите SaaS-ключ, открывающий все возможности Полной версии WEBO Site SpeedUp. Вы можете пропустить этот шаг, если хотите использовать некоммерческую версию WEBO Site SpeedUp.');
 define('_WEBO_HELP_TUNING', 'Подберите наиболее эффективную конфигурацию для вашего сайта или создайте собственную конфигурацию на странице');
 define('_WEBO_HELP_TUNING2', '. Не забудьте обновить кэш, чтобы изменения конфигурации вступили в силу. Всплывающие подсказки около каждой настройки помогут лучше понять функционал продукта.');
 define('_WEBO_HELP_CONTROLPANEL', 'Откройте страницу');
