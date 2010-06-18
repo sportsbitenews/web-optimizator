@@ -34,7 +34,11 @@
 	echo _WEBO_DASHBOARD_SPEED;
 ?></span></a></li><?php
 	}
-?></ul><h1 class="wssA wssA8"><?php
+?></ul><div class="wssK wssA0"><div class="wssK1"><h2 class="wssB"><?php
+	echo _WEBO_SAAS_ERROR;
+?></h2></div></div><div class="wssS wssA0"><div class="wssS1"><h2 class="wssB"><?php
+	echo _WEBO_SAAS_SUCCESS;
+?></h2></div></div><h1 class="wssA wssA8"><?php
 	echo _WEBO_SAAS_TITLE;
 ?></h1><div class="wssH wssH17"><div class="wssRB"><span class="wssRB1"><span class="wssRB2">&bull;</span></span><span class="wssRB3"><span class="wssRB4">&bull;</span></span></div><div class="wssH1"><ul class="wssH10"><li class="wssH11"><?php
 	echo _WEBO_SAAS_CURRENT;

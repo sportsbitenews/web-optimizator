@@ -938,4 +938,6 @@ define('_WEBO_SAAS_CODE', 'Ввести код для пополнения');
 define('_WEBO_SAAS_CODE_HELP', 'После покупки модуля для WEBO Site SpeedUp введите его код в поле ниже. Ваш баланс будет увеличен на указанную в модуле сумму.');
 define('_WEBO_SAAS_ADD', 'Пополнить');
 define('_WEBO_SAAS_EFFECT', 'Эффект применения');
+define('_WEBO_SAAS_ERROR', 'Неверный код');
+define('_WEBO_SAAS_SUCCESS', 'Код активирован');
 ?>
