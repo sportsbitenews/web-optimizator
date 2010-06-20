@@ -143,36 +143,24 @@ if ($submit) {
 	}
 ?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
-	if ($premium == 10) {
-?><span class="wssO15"></span><?php
-	}
 ?></a></li><li class="wssU11<?php
 	if ($config == 'basic') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('basic');void(0)" rel="basic"><?php
 	echo _WEBO_OPTIONS_BASIC;
-	if ($premium == 10) {
-?><span class="wssO15"></span><?php
-	}
 ?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
-	if ($premium == 10) {
-?><span class="wssO15"></span><?php
-	}
 ?></a></li><li class="wssU11<?php
 	if ($config == 'extreme') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><?php
 	echo _WEBO_OPTIONS_EXTREME;
-	if ($premium == 10) {
-?><span class="wssO15"></span><?php
-	}
 ?></a></li><?php
 	if (count($configs)) {
 		foreach ($configs as $c) {
@@ -188,11 +176,7 @@ if ($submit) {
 			echo $c;
 ?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
-?>"></span><?php
-			if ($premium == 10) {
-?><span class="wssO15"></span><?php
-			}
-?><span>&nbsp;</span></a></li><?php
+?>"></span><span>&nbsp;</span></a></li><?php
 		}
 	}
 	$i = count($configs);
@@ -246,7 +230,7 @@ if ($submit) {
 						constant('_WEBO_' . $option) .
 						'<a class="wssJ9" href="#" title="' .
 						constant('_WEBO_' . $option . '_HELP') .
-						'">?</a><a href="#wss_options#' .
+						'">?</a><br/><a href="#wss_options#' .
 						$key .
 						'" class="wssD12">' .
 						constant('_WEBO_' . $key).

@@ -140,7 +140,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:515px;min-height:140px;margin:0;position:relative;padding:11px 15px}
 #wssas .wssD10{overflow:auto}
 .wssD11{height:400px}
-.wssD12{background:url(parent.png) 0 4px no-repeat;color:#808080;display:block;font-size:11px;margin:0 1px;padding-left:12px}
+.wssD12{background:url(parent.png) 0 4px no-repeat;color:#808080;font-size:11px;margin:0 1px;padding-left:12px}
 a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssC7 .wssD10{height:auto}
 .wssD20 .wssE{color:#ccc}
@@ -295,8 +295,8 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 .wssC6 .wssJ8{background:#7498ff url(button.back.png) no-repeat;color:#fff;float:left;height:28px;line-height:28px;margin:2px 10px 0 0;padding-left:30px;text-decoration:none!important;text-shadow:#808080 -1px 0 1px;width:52px}
 .wssC6 a.wssJ8:hover{background:#717daf url(button.back.hover.png) no-repeat;height:28px;padding-left:30px;width:52px}
 .wssT1 .wssJ8{margin-right:7%}
-.wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 4px 0 7px;position:relative;text-decoration:none!important}
-a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
+.wssJ9,.wssC6 .wssT20 .wssJ9{background:url(hlp.png) no-repeat;color:transparent!important;font-size:14px;line-height:14px;outline:0;padding:0 4px 0 7px;position:relative;text-decoration:none!important}
+a.wssJ9:hover,.wssC6 .wssT20 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 .wssT20 .wssJ9{background:url(hlp.white.png) no-repeat}
 .wssJ10{background:url(icon.twitter.png) no-repeat;display:block}
 .wssJ11{background:url(icon.facebook.png) no-repeat}
@@ -421,11 +421,9 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 #wss_opt .wssO12{color:#ff4000;left:58%}
 #wss_opt .wssO13{border-left:0;border-right:1px solid #ccc;color:#f00;left:83%;width:8%}
 .wssE .wssO15{color:#ff8200;font-size:15px;font-weight:700;height:12px;padding:0 15px 6px 7px;background:url(webos.red.png) 100% 5px no-repeat}
-.wssO4 .wssO15{background-position:100% -67px;font-size:15px;padding:0 14px 6px 0}
-.wssT20 .wssO15{background-position:100% -206px;font-size:15px;padding:0 14px 6px 0}
+.wssO4 .wssO15{background-position:100% -205px;font-size:15px;padding:0 14px 6px 0}
+.wssT20 .wssO15,.wssO5 .wssO15{background-position:100% -67px;font-size:15px;padding:0 14px 6px 0}
 .wssU21 .wssO15{background-position:100% -175px;padding:0 14px 6px 0}
-.wssU11 .wssO15{background:url(webos.beige.png) no-repeat;display:block;height:12px;left:6px;position:absolute;top:10px;width:12px}
-.wssU12 .wssO15{background:url(webos.white.png) no-repeat;height:12px;width:12px}
 .wssH11 .wssO15{background-position:100% -25px;color:#ff8200;display:inline-block;font-size:29px;line-height:29px;padding:8px 23px 0 0}
 /* welcome screen */
 #wss_help .wssO21{background:url(account.welcome.png) no-repeat!important;overflow:hidden}

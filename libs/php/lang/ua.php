@@ -461,7 +461,7 @@ define('_WEBO_parallel_custom_EFFECT', 'Увеличение скорости з
 define('_WEBO_parallel_custom1', 'Самостоятельная настройка');
 define('_WEBO_parallel_custom2', 'Текущая CDN (cdn.website.ru)');
 define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
-define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru)');
+define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru) by NGENIX');
 define('_WEBO_parallel_ftp', 'FTP-доступ для загрузки файлов');
 define('_WEBO_parallel_ftp_HELP', 'В случае использования платных CDN (например, EdgeCast) необходимо указать строку FTP-доступа для загрузки новых файлов вида user:password@host (или user:password@host:port).');
 define('_WEBO_parallel_ftp_EFFECT', 'Совместимость кэша WEBO Site SpeedUp с текущей CDN');
