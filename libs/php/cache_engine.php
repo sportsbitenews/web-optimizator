@@ -382,6 +382,7 @@ class webo_cache_files extends webo_cache_engine
  	function webo_cache_memcached($options)
  	{
 		$this->enabled = false;
+		$this->cached = array();
 		$this->prefix = 'webo_cache_';  //maybe memcached stores data from other applications
 		if(!empty($options['server']))
 		{
@@ -443,9 +444,14 @@ class webo_cache_files extends webo_cache_engine
 		{
 			return false;
 		}
+		if (!empty($this->cached[$key]['value']))
+		{
+			return $this->cached[$key]['value'];
+		}
 		$item = $this->connection->get($this->prefix . $key);
 		if(empty($item['value']))
 		{
+			$this->cached[$key] = $item;
 			return false;
 		}
 		else
@@ -509,6 +515,10 @@ class webo_cache_files extends webo_cache_engine
 		{
 			return 0;
 		}
+		if(!empty($this->cached[$key]['time']))
+		{
+			return $this->cached[$key]['time'];
+		}
 		$item = $this->connection->get($this->prefix . $key);
 		if (empty($item['time']))
 		{
@@ -516,6 +526,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 		else
 		{
+			$this->cached[$key] = $item;
 			return $item['time'];
 		}
  	}
