@@ -2536,7 +2536,7 @@ class admin {
 					'value' => $this->compress_options['performance']['cache_engine'],
 					'type' => 'radio',
 					'count' => 2,
-					'hidden' => $this->premium < 2 && 0 ? 1 : 0,
+					'hidden' => $this->premium < 2 || 1 ? 1 : 0,
 					'price' => array(0, 5, 5, 5, 5, 5, 5),
 					'disabled' => array(
 						0,
