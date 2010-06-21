@@ -72,11 +72,11 @@
 	echo _WEBO_SAAS_CODE;
 ?><a class="wssJ9" href="#" title="<?php
 	echo _WEBO_SAAS_CODE_HELP;
-?>">?</a><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ5" href="http://www.webogroup.com/store/saas/"><?php
-	echo _WEBO_GENERAL_BUY;
-?><span class="wssJ6"></span></a><a class="wssJ7" href="javascript:_.n()"><span class="wssH18"><?php
+?>">?</a><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ7" href="javascript:_.n()"><span class="wssH18"><?php
 	echo _WEBO_SAAS_ADD;
-?></span><span class="wssJ6"></span></a></p></form></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div><h3 class="wssB3 wssB4"><?php
+?></span><span class="wssJ6"></span></a><a class="wssJ5" href="http://www.webogroup.com/store/saas/"><?php
+	echo _WEBO_GENERAL_BUY;
+?><span class="wssJ6"></span></a></p></form></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div><h3 class="wssB3 wssB4"><?php
 	echo _WEBO_SAAS_DAILY;
 	$saas = '';
 	$daily = 0;
@@ -90,7 +90,7 @@
 						constant('_WEBO_' . $option) .
 						'<a class="wssJ9" href="#" title="' .
 						constant('_WEBO_' . $option . '_HELP') .
-						'">?</a><a href="#wss_options#' .
+						'">?</a><br/><a href="#wss_options#' .
 						$key .
 						'" class="wssD12">' .
 						constant('_WEBO_' . $key) .
