@@ -15,7 +15,7 @@ class web_optimizer {
 	**/
 	function web_optimizer ($options = false) {
 /* initialize chained optimization */
-		if(!empty($_GET['weboptimizer_disabled']))
+		if(!empty($_GET['web_optimizer_disabled']))
 		{
 			$this->options['active'] = 0;
 			return;

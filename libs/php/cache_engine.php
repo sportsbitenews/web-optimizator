@@ -388,7 +388,14 @@ class webo_cache_files extends webo_cache_engine
 			$server = explode(':', $options['server']);   //get server and port
 			if(!empty($server[1]))
 			{
-				$this->connection = new Memcached();
+				if (@class_exists('Memcached'))
+				{
+					$this->connection = new Memcached();
+				}
+				elseif (@class_exists('Memcache'))
+				{
+					$this->connection = new Memcache();
+				}
 				if($this->connection)
 				{
 					if ($this->connection->addServer($server[0], $server[1]))  //add server to store files

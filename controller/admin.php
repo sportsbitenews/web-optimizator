@@ -2951,7 +2951,7 @@ class admin {
 				$this->restrictions['wss_gzip_fonts'] = 1;
 		}
 /* check for caching extensions */
-		if (!@class_exists('Memcached')) {
+		if (!@class_exists('Memcached') && !@class_exists('Memcache')) {
 			$this->restrictions['wss_performance_cache_engine1'] = 1;
 		}
 		if (!function_exists('eaccelerator_get')) {
