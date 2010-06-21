@@ -2532,11 +2532,11 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				),
-				'performance_cache_engine' => array(
+/*				'performance_cache_engine' => array(
 					'value' => $this->compress_options['performance']['cache_engine'],
 					'type' => 'radio',
 					'count' => 2,
-					'hidden' => $this->premium < 2 || 1 ? 1 : 0,
+					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => array(0, 5, 5, 5, 5, 5, 5),
 					'disabled' => array(
 						0,
@@ -2546,7 +2546,7 @@ class admin {
 						!empty($this->restrictions['wss_performance_cache_engine4']),
 						!empty($this->restrictions['wss_performance_cache_engine5']),
 						!empty($this->restrictions['wss_performance_cache_engine6'])
-					)
+					)*/
 				),				
 			),
 			'data_uri' => array(
