@@ -2546,8 +2546,8 @@ class admin {
 						!empty($this->restrictions['wss_performance_cache_engine4']),
 						!empty($this->restrictions['wss_performance_cache_engine5']),
 						!empty($this->restrictions['wss_performance_cache_engine6'])
-					)*/
-				),				
+					)
+				),*/			
 			),
 			'data_uri' => array(
 				'premium' => $this->premium < 1 ? 1 : 0,
