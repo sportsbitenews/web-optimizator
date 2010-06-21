@@ -3227,7 +3227,7 @@ class web_optimizer {
 			$engine_name = 'webo_cache_' . $cache_engines[0];
 		}
 		include_once($this->options['page']['installdir'] . 'libs/php/cache_engine.php');
-		$this->cache_engine = & new $engine_name (array('cache_dir' => $this->options['page']['cachedir']));
+		$this->cache_engine = new $engine_name (array('cache_dir' => $this->options['page']['cachedir']));
 	}
 
 	/**

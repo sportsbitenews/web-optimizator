@@ -5189,7 +5189,7 @@ require valid-user';
 			$engine_name = 'webo_cache_' . $cache_engines[0];
 		}
 		include_once($this->basepath . 'libs/php/cache_engine.php');
-		$this->cache_engine = & new $engine_name (array('cache_dir' => $this->compress_options['html_cachedir']));
+		$this->cache_engine = new $engine_name (array('cache_dir' => $this->compress_options['html_cachedir']));
 	}
 
 	/**

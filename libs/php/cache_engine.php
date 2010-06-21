@@ -22,7 +22,7 @@
 
  	/* Adds or updates entry. Expects key string and value to cache. */
  	
- 	function put_entry($key, $value)
+ 	function put_entry($key, $value, $time)
  	{
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
@@ -70,7 +70,7 @@
 		}
  	}
  
- 	function get_cache_size($mask)
+ 	function get_cache_size($mask, $number = false)
  	{
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
