@@ -390,12 +390,10 @@ class webo_cache_files extends webo_cache_engine
 			{
 				if (@class_exists('Memcached'))
 				{
-					$this->old_extension = false;
 					$this->connection = new Memcached();
 				}
 				elseif (@class_exists('Memcache'))
 				{
-					$this->old_extension = true;
 					$this->connection = new Memcache();
 				}
 				if($this->connection)
@@ -403,10 +401,6 @@ class webo_cache_files extends webo_cache_engine
 					if ($this->connection->addServer($server[0], $server[1]))  //add server to store files
 					{
 						$all_items = $this->connection->get('webo_files_list');
-						if ($this->old_extension)
-						{
-							$all_items = unserialize($all_items);
-						}
 						/* store empty filelist if none exists */
 						if (is_array($all_items))
 						{
@@ -414,14 +408,7 @@ class webo_cache_files extends webo_cache_engine
 						}
 						elseif ($this->connection->flush())
 						{
-							if ($this->old_extension)
-							{
-								$this->connection->set('webo_files_list', serialize(array()));
-							}
-							else
-							{
-								$this->connection->set('webo_files_list', array());
-							}
+							$this->connection->set('webo_files_list', array());
 						}
 					}
 				}
@@ -437,14 +424,7 @@ class webo_cache_files extends webo_cache_engine
 		{
 			return;
 		}
-		if($this->old_extension)
-		{
-			$this->connection->set($this->prefix . $key, serialize(array('value' => $value, 'time' => $time)));
-		}
-		else
-		{
-			$this->connection->set($this->prefix . $key, array('value' => $value, 'time' => $time));
-		}
+		$this->connection->set($this->prefix . $key, array('value' => $value, 'time' => $time));
 		$entries = $this->connection->get('webo_files_list');
 		if(($entries === false) || !is_array($entries))		//filelist is broken or removed from server so we need to clear cache
 		{
@@ -452,10 +432,6 @@ class webo_cache_files extends webo_cache_engine
 			$entries = array();
 		}
 		$entries[$key] = 1;
-		if($this->old_extension)
-		{
-			$entries = serialize($entries);
-		}
 		$this->connection->set('webo_files_list', $entries);
  	}
 
@@ -468,10 +444,6 @@ class webo_cache_files extends webo_cache_engine
 			return false;
 		}
 		$item = $this->connection->get($this->prefix . $key);
-		if($this->old_extension)
-		{
-			$item = unserialize($item);
-		}
 		if(empty($item['value']))
 		{
 			return false;
@@ -493,10 +465,6 @@ class webo_cache_files extends webo_cache_engine
 		if (!empty($patterns))
 		{
 			$all_files = $this->connection->get('webo_files_list');
-			if($this->old_extension)
-			{
-				$all_files = unserialize($all_files);
-			}
 			if(($all_files === false) || !is_array($all_files))
 			{
 				$this->connection->flush();
@@ -516,10 +484,6 @@ class webo_cache_files extends webo_cache_engine
 						}
 					}
 				}
-				if($this->old_extension)
-				{
-					$all_files = serialize($all_files);
-				}
 				$this->connection->set('webo_files_list', $all_files);
 			}
 			else
@@ -531,10 +495,6 @@ class webo_cache_files extends webo_cache_engine
 						$this->connection->delete($this->prefix . $key);
 						unset($all_files[$key]);
 					}
-				}
-				if($this->old_extension)
-				{
-					$all_files = serialize($all_files);
 				}
 				$this->connection->set('webo_files_list', $all_files);
 			}
@@ -550,10 +510,6 @@ class webo_cache_files extends webo_cache_engine
 			return 0;
 		}
 		$item = $this->connection->get($this->prefix . $key);
-		if($this->old_extension)
-		{
-			$item = unserialize($item);
-		}
 		if (empty($item['time']))
 		{
 			return 0;
@@ -580,10 +536,6 @@ class webo_cache_files extends webo_cache_engine
 		else
 		{
 			$item['time'] = $time;
-			if($this->old_extension)
-			{
-				$item = serialize($item);
-			}
 			$this->connection->set($this->prefix . $key, $item);
 		}
  	}
@@ -619,14 +571,7 @@ class webo_cache_files extends webo_cache_engine
 					if ($item !== false)
 					{
 						$count++;
-						if($this->old_extension)
-						{
-							$size += strlen($item);
-						}
-						else
-						{
-							$size += strlen(serialize($item));
-						}
+						$size += strlen(serialize($item));
 					}
 				}
 			}

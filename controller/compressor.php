@@ -3219,7 +3219,7 @@ class web_optimizer {
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached'
 			);
-		$cache_engines_options = array('0' => array('cache_dir' => $this->options['page']['html_cachedir']),
+		$cache_engines_options = array('0' => array('cache_dir' => $this->options['page']['cachedir']),
 			'1' => array('server' => @$this->options['page']['cache_engine_options'])
 			);
 		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
