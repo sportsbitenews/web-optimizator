@@ -849,7 +849,7 @@ class admin {
 	*
 	**/
 	function options_count () {
-/* get av�ailable Apache modules */
+/* get available Apache modules */
 		$this->get_modules();
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
@@ -1668,7 +1668,8 @@ class admin {
 			$success = true;
 		}
 /* html cache */
-		if ($dir = @opendir($this->compress_options['html_cachedir'])) {
+/* if cache stored on filesystem we need to preserve several files */
+		if (($dir = @opendir($this->compress_options['html_cachedir'])) && (@$this->compress_options['performance']['cache_engine'] == 0)) {
 			while (($file = @readdir($dir)) !== false) {
 				if (!in_array($file, $restricted))
 				{
@@ -1686,6 +1687,10 @@ class admin {
 				}
 			}
 			$success = true;
+		}
+		else
+		{
+			$this->cache_engine->delete_entries('*');
 		}
 	}
 
@@ -2946,7 +2951,7 @@ class admin {
 				$this->restrictions['wss_gzip_fonts'] = 1;
 		}
 /* check for caching extensions */
-		if (!@class_exists('Memcache')) {
+		if (!@class_exists('Memcached')) {
 			$this->restrictions['wss_performance_cache_engine1'] = 1;
 		}
 		if (!function_exists('eaccelerator_get')) {
@@ -5180,16 +5185,21 @@ require valid-user';
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached'
 			);
+		$cache_engines_options = array('0' => array('cache_dir' => $this->compress_options['html_cachedir']),
+			'1' => array('server' => @$this->compress_options['performance']['cache_engine_options'])
+			);
 		if (!empty($cache_engines[@$this->compress_options['performance']['cache_engine']]))
 		{
+			$engine_num = $this->compress_options['performance']['cache_engine'];
 			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['performance']['cache_engine']];
 		}
 		else
 		{
+			$engine_num = 0;
 			$engine_name = 'webo_cache_' . $cache_engines[0];
 		}
 		include_once($this->basepath . 'libs/php/cache_engine.php');
-		$this->cache_engine = new $engine_name (array('cache_dir' => $this->compress_options['html_cachedir']));
+		$this->cache_engine = new $engine_name ($cache_engines_options[$engine_num]);
 	}
 
 	/**

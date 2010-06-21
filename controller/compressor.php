@@ -400,6 +400,7 @@ class web_optimizer {
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
 				"cache_engine" => $this->options['performance']['cache_engine'],
+				"cache_engine_options" => $this->options['performance']['cache_engine_options'],
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['html_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
@@ -3218,16 +3219,21 @@ class web_optimizer {
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached'
 			);
+		$cache_engines_options = array('0' => array('cache_dir' => $this->options['page']['html_cachedir']),
+			'1' => array('server' => @$this->options['page']['cache_engine_options'])
+			);
 		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
 		{
 			$engine_name = 'webo_cache_' . $cache_engines[$this->options['page']['cache_engine']];
+			$engine_num = $this->options['page']['cache_engine'];
 		}
 		else
 		{
 			$engine_name = 'webo_cache_' . $cache_engines[0];
+			$engine_num = 0;
 		}
 		include_once($this->options['page']['installdir'] . 'libs/php/cache_engine.php');
-		$this->cache_engine = new $engine_name (array('cache_dir' => $this->options['page']['cachedir']));
+		$this->cache_engine = new $engine_name ($cache_engines_options[$engine_num]);
 	}
 
 	/**

@@ -375,4 +375,205 @@ class webo_cache_files extends webo_cache_engine
 
 }
  
+ class webo_cache_memcached {
+ 
+ 	/* Class constructor. Expects options array. */
+ 	
+ 	function webo_cache_memcached($options)
+ 	{
+		$this->enabled = false;
+		$this->prefix = 'webo_cache_';  //maybe memcached stores data from other applications
+		if(!empty($options['server']))
+		{
+			$server = explode(':', $options['server']);   //get server and port
+			if(!empty($server[1]))
+			{
+				$this->connection = new Memcached();
+				if($this->connection)
+				{
+					if ($this->connection->addServer($server[0], $server[1]))  //add server to store files
+					{
+						$all_items = $this->connection->get('webo_files_list');
+						/* store empty filelist if none exists */
+						if (is_array($all_items))
+						{
+							$this->enabled = true;
+						}
+						elseif ($this->connection->flush())
+						{
+							$this->connection->set('webo_files_list', array());
+						}
+					}
+				}
+			}
+		}
+ 	}
+
+ 	/* Adds or updates entry. Expects key string and value to cache. */
+ 	
+ 	function put_entry($key, $value, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return;
+		}
+		$this->connection->set($this->prefix . $key, array('value' => $value, 'time' => $time));
+		$entries = $this->connection->get('webo_files_list');
+		if(($entries === false) || !is_array($entries))		//filelist is broken or removed from server so we need to clear cache
+		{
+			$this->connection->flush();		//this removes all other applications data but is only way to do it
+			$entries = array();
+		}
+		$entries[$key] = 1;
+		$this->connection->set('webo_files_list', $entries);
+ 	}
+
+ 	/* Get cache entry by key. Expects key string. */
+ 	
+ 	function get_entry($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		$item = $this->connection->get($this->prefix . $key);
+		if(empty($item['value']))
+		{
+			return false;
+		}
+		else
+		{
+			return $item['value'];
+		}
+ 	}
+ 	
+ 	/* Clear cache entries by pattern(s). Expects pattern or array of patterns. */
+ 	
+ 	function delete_entries($patterns)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		if (!empty($patterns))
+		{
+			$all_files = $this->connection->get('webo_files_list');
+			if(($all_files === false) || !is_array($all_files))
+			{
+				$this->connection->flush();
+				$this->connection->set('webo_files_list', array());
+				return;
+			}
+			if (is_array($patterns))
+			{
+				foreach($patterns as $pattern)
+				{
+					foreach($all_files as $key => $value)
+					{
+						if(@preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+						{
+							$this->connection->delete($this->prefix . $key);
+						}
+					}
+				}
+			}
+			else
+			{
+				foreach($all_files as $key => $value)
+				{
+					if(@preg_match('/^' . strtr(addcslashes($patterns, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+					{
+						$this->connection->delete($this->prefix . $key);
+					}
+				}
+			}
+		}
+ 	}
+
+ 	/* Gets creation time of cache entry. Expects key string. */
+ 	
+ 	function get_mtime($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return 0;
+		}
+		$item = $this->connection->get($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return 0;
+		}
+		else
+		{
+			return $item['time'];
+		}
+ 	}
+
+ 	/* Sets creation time of cache entry. Expects key string and time to set. */
+ 	
+ 	function set_mtime($key, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		$item = $this->connection->get($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return false;
+		}
+		else
+		{
+			$item['time'] = $time;
+			$this->connection->set($this->prefix . $key, $item);
+		}
+ 	}
+ 
+	function get_cache_size($mask, $number = false)
+	{
+		if (!$this->enabled)
+		{
+			if ($number === false)
+			{
+				return 0;
+			}
+			else
+			{
+				return array(0,0);
+			}
+		}
+		$size = 0;
+		$count = 0;
+		$all_files = $this->connection->get('webo_files_list');
+		if(($all_files === false) || !is_array($all_files))
+		{
+			$this->connection->flush();
+			$this->connection->set('webo_files_list', array());
+		}
+		else
+		{
+			foreach($all_files as $key => $value)
+			{
+				if(@preg_match('/^' . strtr(addcslashes($mask, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+				{
+					$item = $this->connection->get($this->prefix . $key);
+					if ($item !== false)
+					{
+						$count++;
+						$size += strlen(serialize($item));
+					}
+				}
+			}
+		}
+		if ($number === false)
+		{
+			return $size;
+		}
+		else
+		{
+			return array($size, $count);
+		}
+	}
+}
+
 ?>
