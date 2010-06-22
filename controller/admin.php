@@ -99,6 +99,7 @@ class admin {
 				'install_about' => 1,
 				'install_gzip' => 1,
 				'install_image' => 1,
+				'install_cdn' => 1,
 				'install_status' => 1,
 				'install_account' => 1,
 				'install_refresh' => 1,
@@ -116,7 +117,6 @@ class admin {
 				'dashboard_speed' => 1,
 				'dashboard_awards' => 1,
 				'compress_gzip' => 1,
-				'compress_image' => 1,
 				'options_configuration' => 1,
 				'options_delete' => 1
 			);
@@ -1714,10 +1714,40 @@ class admin {
 						}
 /* check for mask */
 					} elseif (preg_match("@" . $mask . "@", $absolute_file)) {
+/* get info about synced file from FTP */
+						if ($backup == 'FTP' &&
+							!empty($this->compress_options['parallel']['ftp']) &&
+							@function_exists('curl_init')) {
+								$dir = preg_replace("@[^/]+$@", "", $absolute_file);
+/* check if we already have mtime for files inside this directory */
+								if (!isset($this->synced_files[$dir . '.'])) {
+									$file = $this->compress_options['html_cachedir'] . 'ftp.tmp';
+									$ch = @curl_init('ftp://' .
+										preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->compress_options['parallel']['ftp']) .
+										str_replace($this->compress_options['document_root'], "/", $dir));
+									$fp = @fopen($file, 'w');
+									@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->compress_options['parallel']['ftp']));
+									@curl_setopt($ch, CURLOPT_FILE, $fp);
+									@curl_exec($ch);
+									@curl_close($ch);
+									@fclose($fp);
+									$fp = @fopen($file, 'r');
+									while ($f = @fgets($fp)) {
+										$f = preg_replace("@\s+@", " ", $f);
+										$metas = explode(" ", $f);
+										$this->synced_files[$dir . $metas[8]] = strtotime($metas[5] . " " . $metas[6] . " " . $metas[7]);
+									}
+									@unlink($file);
+								}
+								$synced = empty($this->synced_files[$absolute_file]) ? 0 : $this->synced_files[$absolute_file];
+/* or directly from file system */
+						} else {
+							$synced = @filemtime($absolute_file . '.' . $backup);
+						}
 						$return[] = array(
 							$absolute_file,
 							@filemtime($absolute_file),
-							@filemtime($absolute_file . '.' . $backup),
+							$synced,
 							@filesize($absolute_file)
 						);
 					}
@@ -1725,6 +1755,42 @@ class admin {
 			}
 		}
 		return $return;
+	}
+
+
+	/**
+	* CDN sync page
+	*
+	**/	 
+	function install_cdn() {
+		$directory = empty($this->input['wss_directory']) ?
+			(empty($this->compress_options['website_root']) ?
+				$this->view->paths['absolute']['document_root'] :
+					$this->compress_options['website_root']) :
+			$this->input['wss_directory'];
+		$recursive = empty($this->input['wss_recursive']) ? 0 : 1;
+		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
+		$results = array();
+		if ($submit) {
+/* prevent PHP timeout on folders parsing */
+			$limit = @ini_get("max_execution_time");
+			set_time_limit($limit * 10);
+			$this->time = time();
+			$results = $this->get_directory_files($directory,
+				'\\.(jpe?g|png|gif|tiff|bmp|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|txt|xml|css|js|ico|ttf|otf|eot|svg)$',
+				$recursive, 'FTP', array(),
+				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
+		}
+		$this->page_variables = array(
+			"cdn_disabled" => empty($this->compress_options['parallel']['ftp']),
+			"results" => $results,
+			"directory" => $directory,
+			"premium" => $this->premium,
+			"recursive" => $recursive,
+			"submit" => $submit,
+			"skip_render" => $this->skip_render
+		);
+		$this->view->render("install_cdn", $this->page_variables);
 	}
 
 	/**
@@ -2538,10 +2604,10 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				),
-/*				'performance_cache_engine' => array(
+				'performance_cache_engine' => array(
 					'value' => $this->compress_options['performance']['cache_engine'],
 					'type' => 'radio',
-					'count' => 2,
+					'count' => 4,
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => array(0, 5, 5, 5, 5, 5, 5),
 					'disabled' => array(
@@ -2553,7 +2619,12 @@ class admin {
 						!empty($this->restrictions['wss_performance_cache_engine5']),
 						!empty($this->restrictions['wss_performance_cache_engine6'])
 					)
-				),*/			
+				),
+				'performance_cache_engine_options' => array(
+					'value' => $this->compress_options['performance']['cache_engine_options'],
+					'type' => 'text',
+					'hidden' => 1
+				),
 			),
 			'data_uri' => array(
 				'premium' => $this->premium < 1 ? 1 : 0,
@@ -2987,6 +3058,7 @@ class admin {
 			'wss_external_scripts_ignore_list',
 			'wss_external_scripts_additional_list',
 			'wss_external_scripts_minify_exclude',
+			'wss_performance_cache_engine_options',
 			'wss_footer_image',
 			'wss_footer_link',
 			'wss_footer_css_code',
@@ -3449,13 +3521,13 @@ class admin {
 					$content .= "
 	SetEnvIfNoCase accept-encoding deflate WSSENC=.df
 	SetEnvIfNoCase accept-encoding gzip WSSENC=.gz";
-					if (empty($this->input['wss_performance_uniform_cache'])) {
-						$content .="
+				}
+				if (empty($this->input['wss_performance_uniform_cache'])) {
+					$content .="
 	BrowserMatch \"MSIE 6\" WSSBR=.ie6
 	BrowserMatch \"MSIE 7\" WSSBR=.ie7
 	BrowserMatch \"MSIE 8\" WSSBR=.ie8
 	BrowserMatch \"Android|BlackBerry|HTC|iPhone|iPod|LG|MOT|Mobile|NetFront|Nokia|Opera Mini|Palm|PPC|SAMSUNG|Smartphone|SonyEricsson|Symbian|UP.Browser|webOS\" WSSBR=.ma";
-					}
 				}
 				$content .= "
 </IfModule>";
