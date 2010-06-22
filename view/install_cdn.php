@@ -93,13 +93,15 @@
 ?>/></td></tr><?php
 				$i++;
 			}
-?></tbody></table><table class="wssT wssT0 wssA0"><col width="70%"/><col width="30%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
+?></tbody></table><table class="wssT wssT0 wssA0"><col width="70%"/><col width="20%"/><col width="10%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 			echo _WEBO_GZIP_RELATIVE;
 ?></th><th class="wssT7"><?php
 			echo _WEBO_GZIP_INITIAL;
+?></th><th class="wssT7"><?php
+			echo _WEBO_CDN_STATUS;
 ?></th></tr></thead><tfoot class="wssT1"><tr class="wssT8"><th class="wssT9"><?php
 			echo _WEBO_GZIP_INITIAL_TOTAL;
-?>:</th><th class="wssT9" id="wss_total1"></th></tr></tfoot><tbody></tbody></table><?php
+?>:</th><th class="wssT9" id="wss_total1" colspan="2"></th></tr></tfoot><tbody></tbody></table><?php
 		}
 ?><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"><?php
 		echo _WEBO_GZIP_PROCESSING;

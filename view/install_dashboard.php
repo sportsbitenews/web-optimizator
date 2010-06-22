@@ -157,6 +157,12 @@
 	echo _WEBO_TOOLS_IMAGE;
 ?></<?php
 	echo $premium<2 ? 'span' : 'a';
+?>></li><li class="wssO4"><<?php
+	echo $premium<2 ? 'span' : 'a href="#wss_cdn"';
+?> class="wssJ"><?php
+	echo _WEBO_TOOLS_CDN;
+?></<?php
+	echo $premium<2 ? 'span' : 'a';
 ?>></li></ul><?php
 	if ($premium < 2) {
 ?><p class="wssI wssI1"><?php
@@ -533,6 +539,8 @@
 	echo _WEBO_SPLASH3_CANTWRITE4;
 ?>";wss_error2="<?php
 	echo _WEBO_GZIP_ERROR;
+?>";wss_error6=wss_error67="<?php
+	echo _WEBO_CDN_NOACCESS;
 ?>"</script><script type="text/javascript">setTimeout(function(){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://i.webo.in/wss/index.<?php
 	echo $language;
 	echo defined("LANG_CHARSET") && LANG_CHARSET != 'UTF-8' ? '.cp1251' : '';

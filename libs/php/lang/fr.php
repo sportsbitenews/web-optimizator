@@ -854,6 +854,14 @@ define('_WEBO_GZIP_NOSUCCESS', 'Failed');
 define('_WEBO_IMAGE_INSTALLED', 'En utilisant cet outil, vous pouvez diminuer la taille des images sans perte de qualité dans un répertoire spécifié sur votre web. Pour chaque fichier optimisé <code>.backup</code> la version sera crée durant le processus d\'optimisation. Les fichiers GIF sont remplacés par des PNG si ceux ci sont plus petits.');
 define('_WEBO_IMAGE_INSTALLED2', 'Une des services suivants peut-être utilisés for l\'optimisation des images: One of the following services  <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">terms of service</a>) ou <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">terms of service</a>).');
 
+/* CDN Sync */
+define('_WEBO_TOOLS_CDN', 'CDN synchronization');
+define('_WEBO_CDN_INFO' , 'Here you can sync all the website static files with their copies on your CDN. To perform this first you need to get list of files to be synchronized, and then select required files. <strong>Attention</strong>: there is FTP synchronization tool, so large network delays can occur to get all actual information about files. It is recommended to renew once only directories with a few subdirectories inside. You can set FTP credentials on <a href="#wss_options#multiple_hosts">CDN settings</a> tab on Options page.');
+define('_WEBO_CDN_DISABLED' , 'To use this tool you need to set <a href="#wss_options#multiple_hosts">FTP access credentials</a> from your CDN provider.');
+define('_WEBO_CDN_SYNC', 'Sync');
+define('_WEBO_CDN_STATUS', 'Result');
+define('_WEBO_CDN_NOACCESS', 'Incorrect FTP credentials, can\'t upload file ');
+
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Welcome to WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Minimize');

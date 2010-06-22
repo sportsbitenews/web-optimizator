@@ -838,6 +838,14 @@ define('_WEBO_GZIP_NOSUCCESS', 'Не удалось');
 define('_WEBO_IMAGE_INSTALLED', 'Вы можете уменьшить размеры графических файлов на вашем сайте (без изменения качества изображения). Для этого введите исходную директорию. Она будет рекурсивно просмотрена на наличие необходимых файлов, текущие <code>.backup</code>-версии файлов будут обновлены при необходимости.');
 define('_WEBO_IMAGE_INSTALLED2', 'При оптимизации создаются резервные копии всех изображений (<code>.backup</code>). В дальнейшем вы можете отменить все изменения, используя эти резервные копии. Для оптимизации используется сервис <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">правила использования</a>) или <a href="http://punypng.com/" rel="nofollow" class="wssJ">punypng.com</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">правила использования</a>). GIF-файлы заменяются на PNG, если при этом происходит уменьшение в размере.');
 
+/* CDN Sync */
+define('_WEBO_TOOLS_CDN', 'Синхронизация CDN');
+define('_WEBO_CDN_INFO' , 'Здесь вы можете синхронизовать все статические файлы сайта с их копиями на вашем CDN. Для этого необходимо сначала получить список файлов для синхронизации в исходной директории, затем выбрать требуемые файлы. <strong>Внимание</strong>: поскольку идет работа с удаленным FTP-сервером, процесс обновления информации о файлах для синронихации может занимать длительное время. Рекомендуется не обновлять большое количество вложенных директории за один раз. Вы можете задать реквизиты доступа к FTP-серверу на <a href="#wss_options#multiple_hosts">странице настройки CDN</a>.');
+define('_WEBO_CDN_DISABLED' , 'Для использования данного инструмента необходимо задать <a href="#wss_options#multiple_hosts">настройки FTP-доступа</a>.');
+define('_WEBO_CDN_SYNC', 'Синхронизовать');
+define('_WEBO_CDN_STATUS', 'Результат');
+define('_WEBO_CDN_NOACCESS', 'Неверные реквизиты FTP-доступа, не удается загрузить файл ');
+
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Добро пожаловать в WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Свернуть');
