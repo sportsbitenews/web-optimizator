@@ -482,7 +482,8 @@ class admin {
 			"license" => $license,
 			"error" => $error,
 			"skip_render" => $this->skip_render,
-			"internal" => $this->internal
+			"internal" => $this->internal,
+			"language" => $this->language
 		);
 		$this->view->render("install_account", $page_variables);
 	}
