@@ -1214,7 +1214,27 @@ class admin {
 				$this->internal ? 1 : 0,
 			'cms' => $this->system_info($website_root),
 			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
-			'wordpress_cache_enabled' => $wp_cache_enabled
+			'wordpress_cache_enabled' => $wp_cache_enabled,
+			'heavy_optimization' => $this->compress_options['active'] &&
+				(!$this->compress_options['performance']['mtime'] ||
+				$this->compress_options['minify']['javascript_body'] ||
+				$this->compress_options['minify']['css_body'] ||
+				$this->compress_options['minify']['with_yui'] ||
+				$this->compress_options['minify']['html_one_string']),
+			'heavy_optimization2' => $this->compress_options['active'] &&
+				!(!$this->compress_options['performance']['mtime'] ||
+				$this->compress_options['minify']['javascript_body'] ||
+				$this->compress_options['minify']['css_body'] ||
+				$this->compress_options['minify']['with_yui'] ||
+				$this->compress_options['minify']['html_one_string']) &&
+				(!$this->compress_options['performance']['plain_string'] ||
+				$this->compress_options['unobtrusive']['all'] ||
+				$this->compress_options['unobtrusive']['informers'] ||
+				$this->compress_options['unobtrusive']['ads'] ||
+				$this->compress_options['unobtrusive']['counters'] ||
+				$this->compress_options['unobtrusive']['iframes'] ||
+				$this->compress_options['css_sprites']['enabled'] ||
+				$this->compress_options['css_sprites']['html_sprites'])
 		);
 		$e = $w = 0;
 /* count acturl troubles / warnings */

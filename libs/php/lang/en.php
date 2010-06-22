@@ -645,6 +645,10 @@ define('_WEBO_SYSTEM_cms', 'No CMS support');
 define('_WEBO_SYSTEM_cms_HELP', 'WEBO Site SpeedUp does not support current CMS. You should add required calls to source files manually. Please refer to "System Status" page ("Install/Uninstall" tab) for details.');
 define('_WEBO_SYSTEM_memory_limit', 'Low memory limit');
 define('_WEBO_SYSTEM_memory_limit_HELP', 'There is very limited memory usage for your website. This can lead to failures on CSS Sprites or data:URI options usage. To increase this limit please contact your hosting provider or system administrator. [http://www.wallpaperama.com/forums/how-to-change-memory-limit-php-apache-server-t53.html More info about memory limit for PHP]');
+define('_WEBO_SYSTEM_heavy_optimization', 'Extreme resources usage');
+define('_WEBO_SYSTEM_heavy_optimization_HELP', 'Current configuration enables some heavy optimization methods which takes much system resources. If you are experiencing CPU or memory shortage, consider disabling those options. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Learn more about system resources optimization]');
+define('_WEBO_SYSTEM_heavy_optimization2', 'Significant resources usage');
+define('_WEBO_SYSTEM_heavy_optimization2_HELP', 'Current configuration enables some complicated optimization methods which takes a lot of system resources. If you are experiencing CPU or memory shortage, consider disabling those options. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Learn more about system resources optimization]');
 
 /* System status */
 define('_WEBO_SYSTEM_STATUS', 'Status');
