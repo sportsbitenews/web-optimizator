@@ -375,7 +375,7 @@ class webo_cache_files extends webo_cache_engine
 
 }
  
- class webo_cache_memcached {
+ class webo_cache_memcached extends webo_cache_engine {
  
  	/* Class constructor. Expects options array. */
  	
@@ -401,16 +401,7 @@ class webo_cache_files extends webo_cache_engine
 				{
 					if ($this->connection->addServer($server[0], $server[1]))  //add server to store files
 					{
-						$all_items = $this->connection->get('webo_files_list');
-						/* store empty filelist if none exists */
-						if (is_array($all_items))
-						{
-							$this->enabled = true;
-						}
-						elseif ($this->connection->flush())
-						{
-							$this->connection->set('webo_files_list', array());
-						}
+						$this->enabled = true;
 					}
 				}
 			}
@@ -425,13 +416,13 @@ class webo_cache_files extends webo_cache_engine
 		{
 			return;
 		}
-		$this->connection->set($this->prefix . $key, array('value' => $value, 'time' => $time));
 		$entries = $this->connection->get('webo_files_list');
 		if(($entries === false) || !is_array($entries))		//filelist is broken or removed from server so we need to clear cache
 		{
 			$this->connection->flush();		//this removes all other applications data but is only way to do it
 			$entries = array();
 		}
+		$this->connection->set($this->prefix . $key, array('value' => $value, 'time' => $time));
 		$entries[$key] = 1;
 		$this->connection->set('webo_files_list', $entries);
  	}
@@ -451,11 +442,11 @@ class webo_cache_files extends webo_cache_engine
 		$item = $this->connection->get($this->prefix . $key);
 		if(empty($item['value']))
 		{
-			$this->cached[$key] = $item;
 			return false;
 		}
 		else
 		{
+			$this->cached[$key] = $item;
 			return $item['value'];
 		}
  	}
@@ -579,6 +570,205 @@ class webo_cache_files extends webo_cache_engine
 				if(@preg_match('/^' . strtr(addcslashes($mask, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
 				{
 					$item = $this->connection->get($this->prefix . $key);
+					if ($item !== false)
+					{
+						$count++;
+						$size += strlen(serialize($item));
+					}
+				}
+			}
+		}
+		if ($number === false)
+		{
+			return $size;
+		}
+		else
+		{
+			return array($size, $count);
+		}
+	}
+}
+
+ class webo_cache_apc extends webo_cache_engine {
+ 
+ 	/* Class constructor. Expects options array. */
+ 	
+ 	function webo_cache_apc($options)
+ 	{
+ 		if(function_exists('apc_add'))
+ 		{
+			$this->enabled = true;
+		}
+		else
+		{
+			$this->enabled = false;
+		}
+		$this->cached = array();
+		$this->prefix = 'webo_cache_';
+ 	}
+
+ 	/* Adds or updates entry. Expects key string and value to cache. */
+ 	
+ 	function put_entry($key, $value, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return;
+		}
+		$entries = apc_fetch('webo_files_list');
+		if(($entries === false) || !is_array($entries))		//filelist is broken or removed from server so we need to clear cache
+		{
+			apc_clear_cache('user');
+			$entries = array();
+		}
+		apc_store($this->prefix . $key, array('value' => $value, 'time' => $time));
+		$entries[$key] = 1;
+		apc_store('webo_files_list', $entries);
+ 	}
+
+ 	/* Get cache entry by key. Expects key string. */
+ 	
+ 	function get_entry($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		if (!empty($this->cached[$key]['value']))
+		{
+			return $this->cached[$key]['value'];
+		}
+		$item = apc_fetch($this->prefix . $key);
+		if(empty($item['value']))
+		{
+			return false;
+		}
+		else
+		{
+			$this->cached[$key] = $item;
+			return $item['value'];
+		}
+ 	}
+ 	
+ 	/* Clear cache entries by pattern(s). Expects pattern or array of patterns. */
+ 	
+ 	function delete_entries($patterns)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		if (!empty($patterns))
+		{
+			$all_files = apc_fetch('webo_files_list');
+			if(($all_files === false) || !is_array($all_files))
+			{
+				apc_clear_cache('user');
+				apc_store('webo_files_list', array());
+				return;
+			}
+			if (is_array($patterns))
+			{
+				foreach($patterns as $pattern)
+				{
+					foreach($all_files as $key => $value)
+					{
+						if(@preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+						{
+							apc_delete($this->prefix . $key);
+							unset($all_files[$key]);
+						}
+					}
+				}
+				apc_store('webo_files_list', $all_files);
+			}
+			else
+			{
+				foreach($all_files as $key => $value)
+				{
+					if(@preg_match('/^' . strtr(addcslashes($patterns, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+					{
+						apc_delete($this->prefix . $key);
+						unset($all_files[$key]);
+					}
+				}
+				apc_store('webo_files_list', $all_files);
+			}
+		}
+ 	}
+
+ 	/* Gets creation time of cache entry. Expects key string. */
+ 	
+ 	function get_mtime($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return 0;
+		}
+		if(!empty($this->cached[$key]['time']))
+		{
+			return $this->cached[$key]['time'];
+		}
+		$item = apc_fetch($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return 0;
+		}
+		else
+		{
+			$this->cached[$key] = $item;
+			return $item['time'];
+		}
+ 	}
+
+ 	/* Sets creation time of cache entry. Expects key string and time to set. */
+ 	
+ 	function set_mtime($key, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		$item = apc_fetch($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return false;
+		}
+		else
+		{
+			$item['time'] = $time;
+			apc_store($key, $item);
+		}
+ 	}
+ 
+	function get_cache_size($mask, $number = false)
+	{
+		if (!$this->enabled)
+		{
+			if ($number === false)
+			{
+				return 0;
+			}
+			else
+			{
+				return array(0,0);
+			}
+		}
+		$size = 0;
+		$count = 0;
+		$all_files = apc_fetch('webo_files_list');
+		if(($all_files === false) || !is_array($all_files))
+		{
+			apc_clear_cache();
+			apc_store('webo_files_list', array());
+		}
+		else
+		{
+			foreach($all_files as $key => $value)
+			{
+				if(@preg_match('/^' . strtr(addcslashes($mask, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+				{
+					$item = apc_fetch($this->prefix . $key);
 					if ($item !== false)
 					{
 						$count++;

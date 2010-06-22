@@ -3217,10 +3217,12 @@ class web_optimizer {
 	**/
 	function start_cache_engine () {
 		$cache_engines = array('0' => 'files',
-			'1' => 'memcached'
+			'1' => 'memcached',
+			'3' => 'apc'
 			);
 		$cache_engines_options = array('0' => array('cache_dir' => $this->options['page']['cachedir']),
-			'1' => array('server' => @$this->options['page']['cache_engine_options'])
+			'1' => array('server' => @$this->options['page']['cache_engine_options']),
+			'3' => ''
 			);
 		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
 		{

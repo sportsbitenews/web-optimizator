@@ -2958,7 +2958,7 @@ class admin {
 		if (!function_exists('eaccelerator_get')) {
 			$this->restrictions['wss_performance_cache_engine2'] = 1;
 		}
-		if (!function_exists('apc_add')) {
+		if (!function_exists('apc_store')) {
 			$this->restrictions['wss_performance_cache_engine3'] = 1;
 		}
 		if (!function_exists('xcache_set')) {
@@ -4357,7 +4357,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			$this->write_progress(8);
 			$test_file = $this->compress_options['html_cachedir'] . 'optimizing.php';
 /* load home page */
-			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index . '?weboptimizer_disabled=1', $test_file);
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index . '?web_optimizer_disabled=1', $test_file);
 			$contents = @file_get_contents($test_file);
 			$this->write_file($test_file, "<?php require('" .
 				$this->basepath . "web.optimizer.php'); ?>" .
@@ -4378,7 +4378,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			$test_file = $this->basepath . 'cache/optimizing.php';
 			$this->write_progress(8);
 /* try to download main file */
-			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/?weboptimizer_disabled=1', $test_file);
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/?web_optimizer_disabled=1', $test_file);
 			$this->write_progress(9);
 			$contents = @file_get_contents($test_file);
 			if (!empty($contents)) {
@@ -5184,10 +5184,12 @@ require valid-user';
 	**/
 	function start_cache_engine () {
 		$cache_engines = array('0' => 'files',
-			'1' => 'memcached'
+			'1' => 'memcached',
+			'3' => 'apc'
 			);
 		$cache_engines_options = array('0' => array('cache_dir' => $this->compress_options['html_cachedir']),
-			'1' => array('server' => @$this->compress_options['performance']['cache_engine_options'])
+			'1' => array('server' => @$this->compress_options['performance']['cache_engine_options']),
+			'3' => ''
 			);
 		if (!empty($cache_engines[@$this->compress_options['performance']['cache_engine']]))
 		{
