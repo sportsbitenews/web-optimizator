@@ -16,7 +16,8 @@
 	if ($error) {
 /* error codes:
  1 - can't write to the file
- 2 - can't gzip file
+ 2 - can't gzip file,
+ 3 - FTP error
  */
 ?>,<?php
 		echo round($error);

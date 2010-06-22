@@ -117,6 +117,8 @@ class admin {
 				'dashboard_speed' => 1,
 				'dashboard_awards' => 1,
 				'compress_gzip' => 1,
+				'compress_image' => 1,
+				'compress_cdn' => 1,
 				'options_configuration' => 1,
 				'options_delete' => 1
 			);
@@ -169,6 +171,46 @@ class admin {
 				$func = $this->input['wss_page'];
 				$this->$func();
 		}
+	}
+
+	/*
+	* Return status of synced file
+	*
+	**/
+	function compress_cdn () {
+		$file = realpath($this->input['wss_file']);
+		$size = @filesize($file);
+		$error = 0;
+		$success = 1;
+		if (strpos($file, $this->view->paths['full']['document_root']) !== false &&
+			!empty($this->compress_options['parallel']['ftp']) &&
+			@function_exists('curl_init')) {
+				$ch = @curl_init('ftp://' .
+					preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->compress_options['parallel']['ftp']) .
+					str_replace($this->compress_options['document_root'], "/", $file));
+				$fp = @fopen($file, 'r');
+				@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->compress_options['parallel']['ftp']));
+				@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
+				@curl_setopt($ch, CURLOPT_UPLOAD, 1);
+				@curl_setopt($ch, CURLOPT_INFILE, $fp);
+				@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($file));
+				@curl_exec($ch);
+				$error = curl_errno($ch);
+				@curl_close($ch);
+				@fclose($fp);
+				if ($error) {
+					$success = 0;
+				}
+		}
+		$page_variables = array(
+			"file" => $file,
+			"size" => $size,
+			"compressed" => $size,
+			"success" => $success,
+			"error" => $error,
+			"skip_render" => $this->skip_render
+		);
+		$this->view->render("compress_gzip", $page_variables);
 	}
 
 	/*
