@@ -2779,6 +2779,10 @@ class web_optimizer {
 	*
 	**/
 	function get_head () {
+/* change all links on the page according to DEBUG mode */
+		if (!empty($_GET['web_optimizer_debug'])) {
+			$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
+		}
 		if (empty($this->head)) {
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
