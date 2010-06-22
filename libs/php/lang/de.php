@@ -337,6 +337,8 @@ define('_WEBO_performance_cache_engine4', 'APC');
 define('_WEBO_performance_cache_engine5', 'XCache');
 define('_WEBO_performance_cache_engine6', 'Zend Platform');
 define('_WEBO_performance_cache_engine7', 'Semaphores');
+define('_WEBO_performance_cache_engine_options', 'Additional options');
+define('_WEBO_performance_cache_engine_options_HELP', 'Please set server and port for Memcached in format server:port');
 
 define('_WEBO_footer_text', 'Link auf WEBO Site SpeedUp hinzuf&uuml;gen');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Community Edition and can be removed in any paid edition.');

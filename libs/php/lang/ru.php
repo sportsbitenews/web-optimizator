@@ -329,7 +329,7 @@ define('_WEBO_performance_delete_old_EFFECT', 'Уменьшение размер
 define('_WEBO_performance_cache_engine', 'Кэширующий движок');
 define('_WEBO_performance_cache_engine_HELP', 'Вы можете выбрать один из доступных на данном сервере движков для кэширования HTML-файлов. Все движки кроме файловой системы хранят данные в оперативной памяти, что уменьшает время доступа к ним.');
 define('_WEBO_performance_cache_engine_HELP_DISABLED', 'Некоторые движки могут не поддерживаться вашим текущим серверным окружением.');
-define('_WEBO_performance_cache_engine_EFFECT', 'Уменьшения издержек при HTML-кэшировании на 50%');
+define('_WEBO_performance_cache_engine_EFFECT', 'Уменьшение издержек при HTML-кэшировании на 50%');
 define('_WEBO_performance_cache_engine1', 'Файловая система');
 define('_WEBO_performance_cache_engine2', 'Memcached');
 define('_WEBO_performance_cache_engine3', 'eAccelerator');
@@ -337,6 +337,8 @@ define('_WEBO_performance_cache_engine4', 'APC');
 define('_WEBO_performance_cache_engine5', 'XCache');
 define('_WEBO_performance_cache_engine6', 'Zend Platform');
 define('_WEBO_performance_cache_engine7', 'Семафоры');
+define('_WEBO_performance_cache_engine_options', 'Дополнительные настройки');
+define('_WEBO_performance_cache_engine_options_HELP', 'Укажите сервер и порт для Memcached в формате сервер:порт');
 
 define('_WEBO_data_uris_on', 'Использовать <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Фоновые изображения будут преобразовываться в формат base64 и подставляться в CSS-файлы для всех браузеров, поддерживающих технологию data:URI.');
@@ -851,6 +853,12 @@ define('_WEBO_GZIP_NOSUCCESS', 'Не удалось');
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Вы можете уменьшить размеры графических файлов на вашем сайте (без изменения качества изображения). Для этого введите исходную директорию. Она будет рекурсивно просмотрена на наличие необходимых файлов, текущие <code>.backup</code>-версии файлов будут обновлены при необходимости.');
 define('_WEBO_IMAGE_INSTALLED2', 'При оптимизации создаются резервные копии всех изображений (<code>.backup</code>). В дальнейшем вы можете отменить все изменения, используя эти резервные копии. Для оптимизации используется сервис <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">правила использования</a>) или <a href="http://punypng.com/" rel="nofollow" class="wssJ">punypng.com</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">правила использования</a>). GIF-файлы заменяются на PNG, если при этом происходит уменьшение в размере.');
+
+/* CDN Sync */
+define('_WEBO_TOOLS_CDN', 'Синхронизация CDN');
+define('_WEBO_CDN_INFO' , 'Здесь вы можете синхронизовать все статические файлы сайта с их копиями на вашем CDN. Для этого необходимо сначала получить список файлов для синхронизации в исходной директории, затем выбрать требуемые файлы. <strong>Внимание</strong>: поскольку идет работа с удаленным FTP-сервером, процесс обновления информации о файлах для синронихации может занимать длительное время. Рекомендуется не обновлять большое количество вложенных директории за один раз.');
+define('_WEBO_CDN_DISABLED' , 'Для использования данного инструмента необходимо задать <a href="#wss_options#multiple_hosts">настройки FTP-доступа</a>');
+define('_WEBO_CDN_SYNC', 'Синхронизовать');
 
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Добро пожаловать в WEBO Site SpeedUp');
