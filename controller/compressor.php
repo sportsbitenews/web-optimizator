@@ -3039,6 +3039,7 @@ class web_optimizer {
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
 			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
+			'cache_images' => $this->options['page']['far_future_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
 			'data_uris_separate' => $options['data_uris_separate'],
 			'data_uris_size' => $options['data_uris_size'],

@@ -37,6 +37,7 @@ class html_sprites {
 			'partly' => 0,
 			'extra_space' => $this->options['css']['css_sprites_extra_space'],
 			'expires_rewrite' => $this->options['css']['css_sprites_expires_rewrite'],
+			'cache_images' => $this->options['page']['far_future_expires_rewrite'],
 			'data_uris' => 0,
 			'data_uris_separate' => 0,
 			'data_uris_size' => 0,
