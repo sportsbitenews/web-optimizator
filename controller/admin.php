@@ -2700,7 +2700,6 @@ class admin {
 						!empty($this->restrictions['wss_performance_cache_engine3']),
 						!empty($this->restrictions['wss_performance_cache_engine4']),
 						!empty($this->restrictions['wss_performance_cache_engine5']),
-						!empty($this->restrictions['wss_performance_cache_engine6'])
 					)
 				),
 				'performance_cache_engine_options' => array(
@@ -3109,20 +3108,17 @@ class admin {
 		if (!@class_exists('Memcached') && !@class_exists('Memcache')) {
 			$this->restrictions['wss_performance_cache_engine1'] = 1;
 		}
-		if (!function_exists('eaccelerator_get')) {
+		if (!function_exists('apc_store')) {
 			$this->restrictions['wss_performance_cache_engine2'] = 1;
 		}
-		if (!function_exists('apc_store')) {
+		if (!function_exists('xcache_set')) {
 			$this->restrictions['wss_performance_cache_engine3'] = 1;
 		}
-		if (!function_exists('xcache_set')) {
+		if (!function_exists('zend_shm_cache_store')) {
 			$this->restrictions['wss_performance_cache_engine4'] = 1;
 		}
-		if (!function_exists('zend_shm_cache_store')) {
-			$this->restrictions['wss_performance_cache_engine5'] = 1;
-		}
 		if (!function_exists('sem_get')) {
-			$this->restrictions['wss_performance_cache_engine6'] = 1;
+			$this->restrictions['wss_performance_cache_engine5'] = 1;
 		}
 	}
 
@@ -5340,11 +5336,11 @@ require valid-user';
 	function start_cache_engine () {
 		$cache_engines = array('0' => 'files',
 			'1' => 'memcached',
-			'3' => 'apc'
+			'2' => 'apc'
 			);
 		$cache_engines_options = array('0' => array('cache_dir' => $this->compress_options['html_cachedir']),
 			'1' => array('server' => @$this->compress_options['performance']['cache_engine_options']),
-			'3' => ''
+			'2' => ''
 			);
 		if (!empty($cache_engines[@$this->compress_options['performance']['cache_engine']]))
 		{

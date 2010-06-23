@@ -75,7 +75,7 @@ $compress_options['performance']['uniform_cache'] = "0";
 $compress_options['performance']['restore_properties'] = "0";
 ## Days to delete old files from cache, 0 disables logic
 $compress_options['performance']['delete_old'] = "0";
-## Caching engine, 0 - files, 1 - memcache, 2 - eAccelerator, 3 - APC, 4 - XCache, 5 - Zend Cache, 6 - semaphores
+## Caching engine, 0 - files, 1 - memcache, 2 - APC, 3 - XCache, 4 - Zend Cache, 5 - semaphores
 $compress_options['performance']['cache_engine'] = "0";
 ## Options to connect to cache engine, i.e. server and port
 $compress_options['performance']['cache_engine_options'] = "127.0.0.1:11211";

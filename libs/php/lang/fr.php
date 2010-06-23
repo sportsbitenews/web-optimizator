@@ -331,11 +331,10 @@ define('_WEBO_performance_cache_engine_HELP_DISABLED', 'Some engines may be not 
 define('_WEBO_performance_cache_engine_EFFECT', 'CPU savings with HTML caching by 50%');
 define('_WEBO_performance_cache_engine1', 'File system');
 define('_WEBO_performance_cache_engine2', 'Memcached');
-define('_WEBO_performance_cache_engine3', 'eAccelerator');
-define('_WEBO_performance_cache_engine4', 'APC');
-define('_WEBO_performance_cache_engine5', 'XCache');
-define('_WEBO_performance_cache_engine6', 'Zend Platform');
-define('_WEBO_performance_cache_engine7', 'Semaphores');
+define('_WEBO_performance_cache_engine3', 'APC');
+define('_WEBO_performance_cache_engine4', 'XCache');
+define('_WEBO_performance_cache_engine5', 'Zend Platform');
+define('_WEBO_performance_cache_engine6', 'Semaphores');
 define('_WEBO_performance_cache_engine_options', 'Additional options');
 define('_WEBO_performance_cache_engine_options_HELP', 'Please set server and port for Memcached in format server:port');
 

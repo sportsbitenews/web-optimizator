@@ -332,11 +332,10 @@ define('_WEBO_performance_cache_engine_HELP_DISABLED', 'Некоторые дв�
 define('_WEBO_performance_cache_engine_EFFECT', 'Уменьшение издержек при HTML-кэшировании на 50%');
 define('_WEBO_performance_cache_engine1', 'Файловая система');
 define('_WEBO_performance_cache_engine2', 'Memcached');
-define('_WEBO_performance_cache_engine3', 'eAccelerator');
-define('_WEBO_performance_cache_engine4', 'APC');
-define('_WEBO_performance_cache_engine5', 'XCache');
-define('_WEBO_performance_cache_engine6', 'Zend Platform');
-define('_WEBO_performance_cache_engine7', 'Семафоры');
+define('_WEBO_performance_cache_engine3', 'APC');
+define('_WEBO_performance_cache_engine4', 'XCache');
+define('_WEBO_performance_cache_engine5', 'Zend Platform');
+define('_WEBO_performance_cache_engine6', 'Семафоры');
 define('_WEBO_performance_cache_engine_options', 'Дополнительные настройки');
 define('_WEBO_performance_cache_engine_options_HELP', 'Укажите сервер и порт для Memcached в формате сервер:порт');
 
