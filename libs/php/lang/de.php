@@ -611,6 +611,8 @@ define('_WEBO_SYSTEM_htaccess_writable', '<code>.htaccess</code> isn\'t writable
 define('_WEBO_SYSTEM_htaccess_writable_HELP', 'Please check rights for the .htaccess file located in your website root. You need to perform CHMOD 664, or CHMOD 666 for it. If there is no such file please make your website root directory writable (CHMOD 775, or CHMOD 777) or create a writable .htaccess file there.');
 define('_WEBO_SYSTEM_index_writable', '<code>index.php</code> isn\'t writable');
 define('_WEBO_SYSTEM_index_writable_HELP', 'Please check rights for the index.php file located in your website root. It should be writable to inject WEBO Site SpeedUp calls into it. You can leave it unwritable but you will have to include WEBO Site SpeedUp calls manually. More info is located on "System Status" page ("Install / Uninstall" tab). To make index.php writable please perform CHMOD 664, or CHMOD 666 for it.');
+define('_WEBO_SYSTEM_not_active', 'WEBO Site SpeedUp doesn\'t work');
+define('_WEBO_SYSTEM_not_active_HELP', 'WEBO Site SpeedUp doesn\'t participate in website optimization process.  [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Check WEBO Site SpeedUp correct installation]');
 define('_WEBO_SYSTEM_curl_possibility', '<code>curl</code> isn\'t available');
 define('_WEBO_SYSTEM_curl_possibility_HELP', 'There is no curl PHP extension on your web server. It is used to get external and dynamic files (to perform their merging / caching). To install curl please contact your hosting provider or system administrator. Usually it is enough to just re-install PHP with this extension enabled. [http://php.net/curl Info about curl on php.net] and [http://curl.haxx.se/libcurl/php/iis.html hints about curl installation on IIS].');
 define('_WEBO_SYSTEM_gzip_possibility', '<code>zlib</code> isn\'t available');
@@ -651,6 +653,10 @@ define('_WEBO_SYSTEM_heavy_optimization', 'Extreme resources usage');
 define('_WEBO_SYSTEM_heavy_optimization_HELP', 'Current configuration enables some heavy optimization methods which takes much system resources. If you are experiencing CPU or memory shortage, consider disabling those options. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Learn more about system resources optimization]');
 define('_WEBO_SYSTEM_heavy_optimization2', 'Significant resources usage');
 define('_WEBO_SYSTEM_heavy_optimization2_HELP', 'Current configuration enables some complicated optimization methods which takes a lot of system resources. If you are experiencing CPU or memory shortage, consider disabling those options. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Learn more about system resources optimization]');
+define('_WEBO_SYSTEM_large_delay', 'Huge pages\' creation time');
+define('_WEBO_SYSTEM_large_delay_HELP', 'HTML pages are being created on your website too long (more than 1 second). Consider any type of HTML caching or server side optimization inclusion to reduce this value.');
+define('_WEBO_SYSTEM_large_wss_delay', 'Huge pages\' optimization time');
+define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Page loading time with enabled WEBO Site SpeedUp takes 2x longer than without it. Most likely this is website specific by environment specific issue. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Learn more about system resources optimization]');
 
 /* System status */
 define('_WEBO_SYSTEM_STATUS', 'Status');

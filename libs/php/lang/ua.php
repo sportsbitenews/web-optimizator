@@ -616,6 +616,8 @@ define('_WEBO_SYSTEM_htaccess_writable', 'Недоступен для запис
 define('_WEBO_SYSTEM_htaccess_writable_HELP', 'Пожалуйста, сделайте файл .htaccess, расположенный в корневой директории сайта, доступным для записи (например, выполнив chmod 664 или chmod 666). Если в корневой директории сайта нет этого файла, пожалуйста, разрешите запись в корневую директорию (выполнив chmod 775 или chmod 777) или вручную создайте в ней файл .htaccess, доступный для записи.');
 define('_WEBO_SYSTEM_index_writable', 'Недоступен для записи файл <code>index.php</code>');
 define('_WEBO_SYSTEM_index_writable_HELP', 'Пожалуйста, сделайте файл index.php, расположенный в корневой директории сайта, доступным для записи (например, выполнив chmod 664 или chmod 666). Это необходимо для автоматической установки WEBO Site SpeedUp. Вы можете оставить этот файл недоступным для записи, но в этом случае устанавливать и удалять вызовы WEBO Site SpeedUp придется вручную. Более подробно этот вопрос освещен на странице "Состояние системы" (вкладка "Установка / Удаление").');
+define('_WEBO_SYSTEM_not_active', 'WEBO Site SpeedUp не подключен');
+define('_WEBO_SYSTEM_not_active_HELP', 'WEBO Site SpeedUp не участвует в процессе оптимизации страниц сайта. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Проверьте корректность установки продукта]');
 define('_WEBO_SYSTEM_curl_possibility', 'Недоступно расширение <code>curl</code> для PHP');
 define('_WEBO_SYSTEM_curl_possibility_HELP', 'На сервере отсутствует расширение curl для PHP. Это расширение необходимо для получения внешних и динамических файлов для дальнейшего их объединения или кэширования. Для установки этого расширения, пожалуйста, обратитесь к вашему хостинг-провайдеру или системному администратору. Обычно достаточно переустановить PHP, включив это расширение. [http://www.php.net/curl Информация о curl на php.net], [http://curl.haxx.se/libcurl/php/ советы по установке curl], [http://www.php.net/manual/en/install.windows.extensions.php информация по установке расширений в Windows] [http://www.php.net/manual/en/install.php и в Unix].');
 define('_WEBO_SYSTEM_gzip_possibility', 'Недоступно расширение <code>zlib</code> для PHP');
@@ -656,6 +658,10 @@ define('_WEBO_SYSTEM_heavy_optimization', 'Экстремальное испол
 define('_WEBO_SYSTEM_heavy_optimization_HELP', 'Текущая конфигурация использует некоторые тяжелые методы оптимизации, которые потребляют большое количество серверных ресурсов. Если вы наблюдаете нехватку ресурсов CPU или памяти, стоит рассмотреть возможность их отключения. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Подробнее о проблемах производительности]');
 define('_WEBO_SYSTEM_heavy_optimization2', 'Существенное использование ресурсов');
 define('_WEBO_SYSTEM_heavy_optimization2_HELP', 'Текущая конфигурация использует некоторые методы оптимизации, которые потребляют большое количество серверных ресурсов. Если вы наблюдаете нехватку ресурсов CPU или памяти, стоит рассмотреть возможность их отключения. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Подробнее о проблемах производительности]');
+define('_WEBO_SYSTEM_large_delay', 'Долгое создание страниц');
+define('_WEBO_SYSTEM_large_delay_HELP', 'HTML-страницы на сервере создаются дольше 1 секунды. Стоит рассмотреть возможность применения серверного кэширования или серверной оптимизации для снижения этого показателя.');
+define('_WEBO_SYSTEM_large_wss_delay', 'Долгая оптимизация страниц');
+define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Время обработки HTML-страниц при помощи WEBO Site SpeedUp очень большое (превышает обычное время создания страниц в два раза). Необходимо изменить настройки WEBO Site SpeedUp, чтобы снизить этого показатель. [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues Подробнее об оптимизации серверной производительности продукта]');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Отключен');

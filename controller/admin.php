@@ -1151,13 +1151,7 @@ class admin {
 		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
 			$nginx = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx/') !== false;
 		}
-		$errors = array(
-			'javascript_writable' => @is_writable($javascript_cachedir),
-			'css_writable' => @is_writable($css_cachedir),
-			'html_writable' => @is_writable($html_cachedir),
-			'config_writable' => @is_writable($this->basepath . $this->options_file),
-			'memory_limit' => round($memory_limit) > 16
-		);
+/* define caching for WordPress */
 		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
 		{
 			$content = @file_get_contents($this->compress_options['website_root'] . 'wp-config.php');
@@ -1174,6 +1168,31 @@ class admin {
 		{
 			$wp_cache_enabled = true;
 		}
+/* check CPU usage for the website */
+		$tmp_file = $this->compress_options['html_cachedir'] . 'index.tmp';
+		$time = time() + microtime();
+		$this->view->download("http://" .
+			$this->compress_options['host'] .
+			str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
+			'?web_optimizer_disabled=1', $tmp_file);
+		$standard_delay = time() + microtime() - $time;
+		$time = time() + microtime();
+		$this->view->download("http://" .
+			$this->compress_options['host'] .
+			str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
+			'?web_optimizer_debug=1', $tmp_file);
+		$wss_delay = time() + microtime() - $time;
+/* check activity for the website */
+		$spot = strpos('<!--WSS-->', @file_get_contents($tmp_file));
+		@unlink($tmp_file);
+		$errors = array(
+			'javascript_writable' => @is_writable($javascript_cachedir),
+			'css_writable' => @is_writable($css_cachedir),
+			'html_writable' => @is_writable($html_cachedir),
+			'config_writable' => @is_writable($this->basepath . $this->options_file),
+			'memory_limit' => round($memory_limit) > 16,
+			'not_active' => $spot || !$this->compress_options['footer']['spot']
+		);
 		$warnings = array(
 			'htaccess_writable' => !$htaccess_available ||
 				@is_writable($website_root) ||
@@ -1207,34 +1226,36 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx,
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx,
 			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx,
-			'yui_possibility' => empty($YUI_checked) ? 0 : 1,
+			'yui_possibility' => !empty($YUI_checked),
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
 				$this->compress_options['htaccess']['access']) ||
-				$this->internal ? 1 : 0,
+				$this->internal,
 			'cms' => $this->system_info($website_root),
 			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
 			'wordpress_cache_enabled' => $wp_cache_enabled,
-			'heavy_optimization' => $this->compress_options['active'] &&
-				(!$this->compress_options['performance']['mtime'] ||
+			'heavy_optimization' => !$this->compress_options['active'] ||
+				($this->compress_options['performance']['mtime'] &&
+				!$this->compress_options['minify']['javascript_body'] &&
+				!$this->compress_options['minify']['css_body'] &&
+				!$this->compress_options['minify']['with_yui'] &&
+				!$this->compress_options['minify']['html_one_string']),
+			'heavy_optimization2' => !$this->compress_options['active'] ||
+				!$this->compress_options['performance']['mtime'] ||
 				$this->compress_options['minify']['javascript_body'] ||
 				$this->compress_options['minify']['css_body'] ||
 				$this->compress_options['minify']['with_yui'] ||
-				$this->compress_options['minify']['html_one_string']),
-			'heavy_optimization2' => $this->compress_options['active'] &&
-				!(!$this->compress_options['performance']['mtime'] ||
-				$this->compress_options['minify']['javascript_body'] ||
-				$this->compress_options['minify']['css_body'] ||
-				$this->compress_options['minify']['with_yui'] ||
-				$this->compress_options['minify']['html_one_string']) &&
-				(!$this->compress_options['performance']['plain_string'] ||
-				$this->compress_options['unobtrusive']['all'] ||
-				$this->compress_options['unobtrusive']['informers'] ||
-				$this->compress_options['unobtrusive']['ads'] ||
-				$this->compress_options['unobtrusive']['counters'] ||
-				$this->compress_options['unobtrusive']['iframes'] ||
-				$this->compress_options['css_sprites']['enabled'] ||
-				$this->compress_options['css_sprites']['html_sprites'])
+				$this->compress_options['minify']['html_one_string'] ||
+				($this->compress_options['performance']['plain_string'] &&
+				!$this->compress_options['unobtrusive']['all'] &&
+				!$this->compress_options['unobtrusive']['informers'] &&
+				!$this->compress_options['unobtrusive']['ads'] &&
+				!$this->compress_options['unobtrusive']['counters'] &&
+				!$this->compress_options['unobtrusive']['iframes'] &&
+				!$this->compress_options['css_sprites']['enabled'] &&
+				!$this->compress_options['css_sprites']['html_sprites']),
+			'large_delay' => $standard_delay < 1,
+			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 300,
 		);
 		$e = $w = 0;
 /* count acturl troubles / warnings */
