@@ -341,7 +341,9 @@ if ($submit) {
 								if (!empty($value['price'])) {
 ?> onblur="_.u(this)"<?php
 								}
-?>/></dd><?php
+?> title="<?php
+								echo constant('_WEBO_' . $option . '_HELP');
+?>"/></dd><?php
 								break;
 							case 'smalltext':
 ?><dd class="wssD2<?php
@@ -358,7 +360,9 @@ if ($submit) {
 								if (!empty($value['price'])) {
 ?> onblur="_.u(this)"<?php
 								}
-?>/></dd><?php
+?> title="<?php
+								echo constant('_WEBO_' . $option . '_HELP');
+?>"/></dd><?php
 								break;
 							case 'radio':
 ?><dd class="wssD6<?php
@@ -401,7 +405,9 @@ if ($submit) {
 								if (!empty($value['price'])) {
 ?> onclick="_.u(this)"<?php
 								}
-?>/></dd><?php
+?> title="<?php
+								echo constant('_WEBO_' . $option . '_HELP');
+?>"/></dd><?php
 								break;
 							case 'textarea':
 								if (!empty($value['hidden'])) {
@@ -411,6 +417,8 @@ if ($submit) {
 									echo $option;
 ?>" value="<?php
 									echo htmlspecialchars($value['value']);
+?>" title="<?php
+									echo constant('_WEBO_' . $option . '_HELP');
 ?>"/><?php
 								} else {
 ?><dd class="wssD2<?php
@@ -423,7 +431,9 @@ if ($submit) {
 								if (!empty($value['price'])) {
 ?> onblur="_.u(this)"<?php
 								}
-?>><?php
+?> title="<?php
+									echo constant('_WEBO_' . $option . '_HELP');
+?>"><?php
 									echo htmlspecialchars($value['value']);
 ?></textarea></dd><?php
 								}
