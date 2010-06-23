@@ -1183,7 +1183,7 @@ class admin {
 			'?web_optimizer_debug=1', $tmp_file);
 		$wss_delay = time() + microtime() - $time;
 /* check activity for the website */
-		$spot = strpos('<!--WSS-->', @file_get_contents($tmp_file));
+		$spot = strpos(@file_get_contents($tmp_file), '<!--WSS-->') || !@filesize($tmp_file);
 		@unlink($tmp_file);
 		$errors = array(
 			'javascript_writable' => @is_writable($javascript_cachedir),
