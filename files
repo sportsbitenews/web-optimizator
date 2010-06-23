@@ -70,6 +70,7 @@ view/install_about.php
 view/install_account.php
 view/install_awards.php
 view/install_balance.php
+view/install_cdn.php
 view/install_dashboard.php
 view/install_enter_password.php
 view/install_gzip.php
