@@ -1121,7 +1121,8 @@ class admin {
 		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
 /* check for YUI */
 		$YUI_available = 0;
-		if (is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
+		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS')) &&
+			(is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php'))) {
 			if (substr(phpversion(), 0, 1) == 4) {
 				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
 			} else {
@@ -1144,12 +1145,13 @@ class admin {
 			@ini_set('memory_limit', '64M');
 			$memory_limit = @ini_get('memory_limit');
 		}
-		$apache2 = $nginx = 0;
+		$apache2 = $nginx = $iss = 0;
 		if (function_exists('apache_get_version')) {
 			$apache2 = strpos(apache_get_version(), "/1") ? 0 : 1;
 		}
 		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
 			$nginx = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx/') !== false;
+			$iis = strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
 		}
 /* define caching for WordPress */
 		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
@@ -1215,17 +1217,17 @@ class admin {
 					!empty($gd['PNG Support']) &&
 					!empty($gd['WBMP Support'])),
 			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) ||
-				$nginx ||
+				$nginx || $iis ||
 				in_array('mod_gzip', $this->apache_modules),
 			'mod_gzip' => in_array('mod_gzip', $this->apache_modules) ||
-				$apache2 || $nginx ||
+				$apache2 || $nginx || $iss ||
 				in_array('mod_deflate', $this->apache_modules),
-			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx,
-			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx,
-			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx,
-			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx,
-			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx,
-			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx,
+			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx || $iis,
+			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx || $iis,
+			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx || $iis,
+			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx || $iis,
+			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx || $iis,
+			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx || $iis,
 			'yui_possibility' => !empty($YUI_checked),
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
@@ -3068,8 +3070,8 @@ class admin {
 		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
 /* check for YUI availability */
 		$YUI_checked = 0;
-		if (@is_file($this->basepath . 'libs/php/class.yuicompressor4.php') ||
-			@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
+		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS')) &&
+			(is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php'))) {
 			if (substr(phpversion(), 0, 1) == 4) {
 				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
 			} else {
