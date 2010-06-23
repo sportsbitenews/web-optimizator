@@ -866,7 +866,8 @@ define('_WEBO_IMAGE_INSTALLED2', 'One of the following services can be used for 
 
 /* CDN Sync */
 define('_WEBO_TOOLS_CDN', 'CDN synchronization');
-define('_WEBO_CDN_INFO' , 'Here you can sync all the website static files with their copies on your CDN. To perform this first you need to get list of files to be synchronized, and then select required files. <strong>Attention</strong>: there is FTP synchronization tool, so large network delays can occur to get all actual information about files. It is recommended to renew once only directories with a few subdirectories inside. You can set FTP credentials on <a href="#wss_options#multiple_hosts">CDN settings</a> tab on Options page.');
+define('_WEBO_CDN_INFO' , 'This tool can sync static files on your website with their copies on your CDN. Enter directory to sync, get its files, select required files and start synchronization. You can set FTP credentials on <a href="#wss_options#multiple_hosts">CDN settings</a> tab on Options page.');
+define('_WEBO_CDN_INFO2' , '<strong>Attention</strong>: getting information on files available for syncronization and syncronization itself can take a long time as remote FTP server is involved. It is not recommended to syncronize large number of subdirectories at one time.');
 define('_WEBO_CDN_DISABLED' , 'To use this tool you need to set <a href="#wss_options#multiple_hosts">FTP access credentials</a> from your CDN provider.');
 define('_WEBO_CDN_SYNC', 'Sync');
 define('_WEBO_CDN_STATUS', 'Result');

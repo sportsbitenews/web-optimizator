@@ -44,6 +44,8 @@
 	} else {
 ?><p class="wssI"><?php
 		echo _WEBO_CDN_INFO;
+?></p><p class="wssI"><?php
+		echo _WEBO_CDN_INFO2;
 ?></p><form action="#wss_cdn" class="wssC wssC4" method="post" enctype="multipart/form-data"><?php
 		if ($submit) {
 ?><p class="wssI"><a href="#wss_cdn" class="wssJ7" onclick="_.g(2)"><?php
