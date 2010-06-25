@@ -3975,14 +3975,16 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$this->compress_options['minify']['javascript_host'] = empty($this->compress_options['minify']['javascript_host']) ?
 			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
 				$this->compress_options['minify']['javascript_host'];
+		if (empty($this->compress_options['license'])) {
 /* get SaaS license */
-		$license_file = $this->compress_options['html_cachedir'] . 'license';
-		$this->view->download("http://webo.name/license/trial/?name=".
-			$this->compress_options['name'] .
-			"&email=" .
-			$this->compress_options['email'],
-			$license_file);
-		$this->compress_options['license'] = preg_replace("@.*value='(.*)'$@", "$1", @file_get_contents($license_file));
+			$license_file = $this->compress_options['html_cachedir'] . 'license';
+			$this->view->download("http://webo.name/license/trial/?name=".
+				$this->compress_options['name'] .
+				"&email=" .
+				$this->compress_options['email'],
+				$license_file);
+			$this->compress_options['license'] = preg_replace("@.*value='(.*)'$@", "$1", @file_get_contents($license_file));
+		}
 		foreach (array(
 			'document_root',
 			'website_root',

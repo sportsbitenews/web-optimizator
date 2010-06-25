@@ -2810,8 +2810,27 @@ class web_optimizer {
 						'<script language="javascript"  type="text/javascript" ><!--'), $this->content);
 			}
 /* fix script positioning for DLE */
-			if (strpos($this->content, '<div id="loading-layer"')) {
+			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
 				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer.*=10\); \"></div>)[\r\n\t\s]*(<script.*?)<(body|div|table)@is", "$3$5$1$2$4<$6", $this->content);
+			}
+/* fix Shadowbox inclusions */
+			if (($this->options['javascript']['minify'] || $this->options['css']['minify']) && strpos($this->content, 'Shadowbox.load')) {
+				$this->content = preg_replace("@Shadowbox.loadSkin\(['\"](.+?)['\"]\s*,\s*['\"](.+?)['\"]\);@is", "</script><link rel=\"stylesheet\" type=\"text/css\" href=\"$2/$1/skin.css\"><script type=\"text/javascript\" src=\"$2/$1/skin.js\"></script><script type=\"text/javascript\">", $this->content);
+				$this->content = preg_replace("@Shadowbox.loadLanguage\(['\"](.+?)['\"]\s*,\s*['\"](.+?)['\"]\);@is", "</script><script type=\"text/javascript\" src=\"$2/shadowbox-$1.js\"></script><script type=\"text/javascript\">", $this->content);
+				preg_match_all("@Shadowbox.loadPlayer\(\[([^\]]+?)\]\s*,\s*['\"](.*?)['\"]\);@", $this->content, $matches, PREG_SET_ORDER);
+				foreach ($matches as $match) {
+					$inclusion = '</script>';
+					$players = explode(",", $match[1]);
+					foreach ($players as $player) {
+						$player = str_replace(array('\'', '"', ' '), '', $player);
+						$inclusion .= "<script type=\"text/javascript\" src=\"" .
+							$match[2] .
+							"/shadowbox-" .
+							$player .
+							".js\"></script>";
+					}
+					$this->content = str_replace($match[0], $inclusion . "<script type=\"text/javascript\">", $this->content);
+				}
 			}
 /* skip parsing head if we include both CSS and JavaScript from head+body */
 			if (empty($this->options['javascript']['minify_body']) ||
