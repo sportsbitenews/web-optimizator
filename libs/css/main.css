@@ -87,6 +87,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssA6{background:url(gzip.png) no-repeat}
 .wssA7{background:url(purchase.png) no-repeat;padding-bottom:8px}
 .wssA8{background:url(balance.png) 0 4px no-repeat;margin-top:19px}
+.wssA9{background:url(cdn.png) 0 3px no-repeat}
 
 .wssB{background:none;color:#000;font:400 18px Tahoma,Arial,Tahoma,Sans-serif;margin:0;padding:20px 0 0 13px}
 .wssH .wssB{color:#bf6200;font-size:17px;margin-top:-7px;padding:0;position:relative;z-index:12}
