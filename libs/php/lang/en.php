@@ -236,7 +236,7 @@ define('_WEBO_unobtrusive_counters_EFFECT', 'Website speedup by 10-15%');
 define('_WEBO_unobtrusive_ads', 'Move advertisement calls before <code>&lt;/body&gt;</code>');
 define('_WEBO_unobtrusive_ads_HELP', 'The whole JavaScript code from ads (context and banners) calls will be moved to &lt;/body&gt;.');
 define('_WEBO_unobtrusive_ads_EFFECT', 'Website speedup by 25-40%');
-define('_WEBO_unobtrusive_iframes', 'Make iframes\' load delayed');
+define('_WEBO_unobtrusive_iframes', 'Defer iframes loading');
 define('_WEBO_unobtrusive_iframes_HELP', 'The whole HTML code from iframes calls will be moved to &lt;/body&gt;.');
 define('_WEBO_unobtrusive_iframes_EFFECT', 'Website speedup by 20-35%');
 
