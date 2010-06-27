@@ -3946,7 +3946,14 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		if (!@is_writable($this->htaccess)) {
 			@unlink($this->htaccess);
 		}
-		$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
+/* check if .htaccess isn't required */
+		$not_apache = 0;
+		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
+			$not_apache = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') + strpos($_SERVER['SERVER_SOFTWARE'], 'IIS');
+		}
+		if (!$not_apache) {
+			$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
+		}
 	}
 
 	/**
