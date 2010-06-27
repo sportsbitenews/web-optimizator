@@ -139,13 +139,46 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-/* skip gzip/deflate if plugins are enabled - they can have onCache */
-			$cache_key = $this->uri . 'index' . $this->ua_mod . '.html' .
-				(empty($this->encoding_ext) || is_array($this->options['plugins']) ?
-					'' : $this->encoding_ext);
+/* gzip cached content before output? (plugins have onCache) */
+			$gzip_me = is_array($this->options['plugins']);
+			$cache_plain_key = $this->uri . 'index' . $this->ua_mod . '.html';
+			$cache_key = $cache_plain_key .
+				($this->options['page']['flush'] ||
+				empty($this->encoding_ext) ||
+				$gzip_me ? '' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
+/* try to get from cache non-gzipped page if gzipped one doesn't exist */
+			if (!$timestamp && !$this->options['page']['flush'] && !empty($this->encoding_ext) && !$gzip_me) {
+				$timestamp = $this->cache_engine->get_mtime($cache_plain_key);
+				$gzip_me = 1;
+			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
-				$content = $this->cache_engine->get_entry($cache_key);
+				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
+/* execute plugin-specific logic */
+				if (is_array($this->options['plugins'])) {
+					foreach ($this->options['plugins'] as $plugin) {
+						$plugin_file =
+							$this->options['css']['installdir'] .
+								'plugins/' . $plugin . '.php';
+						if (@is_file($plugin_file)) {
+							include_once($plugin_file);
+							$web_optimizer_plugin = new $plugin;
+							$content =
+								$web_optimizer_plugin->onAfterOptimization($content);
+						}
+					}
+				}
+				if ($gzip_me) {
+					$cnt = $this->create_gz_compress($content,
+						in_array($this->encoding, array('gzip', 'x-gzip')));
+					if (!empty($cnt)) {
+						$content = $cnt;
+/* skip gzip if we can't compress content */
+					} else {
+						$this->options['page']['gzip'] = 0;
+						$this->encoding = '';
+					}
+				}
 				$hash = crc32($content) .
 					(empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
@@ -161,55 +194,29 @@ class web_optimizer {
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
-				if (empty($this->options['page']['flush'])) {
-/* execute plugin-specific logic */
-					if (is_array($this->options['plugins'])) {
-						foreach ($this->options['plugins'] as $plugin) {
-							$plugin_file =
-								$this->options['css']['installdir'] .
-									'plugins/' . $plugin . '.php';
-							if (@is_file($plugin_file)) {
-								include_once($plugin_file);
-								$web_optimizer_plugin = new $plugin;
-								$content =
-									$web_optimizer_plugin->onAfterOptimization($content);
-							}
-						}
-						$cnt = $this->create_gz_compress($content,
-							in_array($this->encoding, array('gzip', 'x-gzip')));
-						if (!empty($cnt)) {
-							$content = $cnt;
-/* skip gzip if we can't compress content */
-						} else {
-							$this->options['page']['gzip'] = 0;
-						}
-					}
-/* check if cached content is gzipped */
-					if (!empty($this->options['page']['gzip'])) {
-						$this->set_gzip_header();
-					}
-					while (@ob_end_clean());
-					echo $content;
-					die();
-/* content is a head part, flush it after */
-				} else {
-/* can't gzip twice via php, so flush only if gzip via php disabled */
-					if (empty($this->options['page']['gzip'])) {
-						if (!empty($content)) {
-							if (empty($this->web_optimizer_stage) &&
-								$this->options['page']['clientside_cache']) {
+				if (empty($this->web_optimizer_stage) &&
+					$this->options['page']['clientside_cache']) {
 /* not really GMT but is valid locally */
-								$ExpStr = date("D, d M Y H:i:s",
-									$this->time + $this->options['page']['clientside_timeout']) . " GMT";
-								header("Cache-Control: private, max-age=" .
-									$this->options['page']['clientside_timeout']);
-								header("Expires: " . $ExpStr);
-							}
-							echo $content;
-							flush();
-							$this->flushed = true;
-						}
-					}
+					$ExpStr = date("D, d M Y H:i:s",
+						$this->time + $this->options['page']['clientside_timeout']) . " GMT";
+					header("Cache-Control: " .
+						($this->options['page']['gzip'] ? 'private' : 'public') .
+						", max-age=" .
+						$this->options['page']['clientside_timeout']);
+					header("Expires: " . $ExpStr);
+				}
+/* check if cached content must be gzipped, can't gzip twice via php for flush */
+				if ($this->options['page']['gzip'] && !$this->options['page']['flush']) {
+					$this->set_gzip_header();
+				}
+				while (@ob_end_clean());
+				echo $content;
+/* content is a head part, flush it after */
+				if ($this->options['page']['flush']) {
+					flush();
+					$this->flushed = true;
+				} else {
+					die();
 				}
 			}
 		}
