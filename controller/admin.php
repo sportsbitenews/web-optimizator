@@ -3530,7 +3530,8 @@ class admin {
 							}
 							$content_enhanced .= "
 	RewriteCond " . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}%{QUERY_STRING}index". $browser .".html". $encoding ." -f
-	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index". $browser .".html". $encoding ." [L]";
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index". $browser .".html". $encoding ." [L]
+	AddDefaultCharset utf-8";
 						}
 					}
 				}
