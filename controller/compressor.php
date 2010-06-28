@@ -1544,6 +1544,13 @@ class web_optimizer {
 							$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
 						}
 						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, 1);
+/* create static gzipped versions for static gzip in nginx, Apache */
+						if ($options['ext'] == 'css') {
+							$c = @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP);
+							if (!empty($c)) {
+								$this->write_file($physical_file . '.' . $options['ext']. '.gz', $c);
+							}
+						}
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file */
 						if (empty($options['data_uris_domloaded'])) {

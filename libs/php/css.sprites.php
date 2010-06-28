@@ -522,6 +522,8 @@ __________________
 	}
 /* convert all CSS images to base64 */
 	function css_to_data_uri () {
+/* add CSS rules or just mhtml? */
+		$add_rules = $this->optimizer->separated && !$this->optimizer->ie;
 /* location for mhtml */
 		$location = 0;
 		$general_access = !empty($this->optimizer->mhtml) ||
@@ -529,7 +531,7 @@ __________________
 			!empty($this->multiple_hosts);
 		foreach ($this->optimizer->css->css as $import => $token) {
 /* open @media definition*/
-			if (!empty($this->optimizer->separated) && !$this->optimizer->ie && !round($import)) {
+			if ($add_rules && !round($import)) {
 				$this->optimizer->compressed_mhtml .= '@media ' . $import . '{';
 			}
 			foreach ($token as $tags => $rule) {
@@ -547,6 +549,12 @@ __________________
 								} else {
 /* skip default properties */
 									$background[$key] = $value;
+								}
+/* double background rules for separated CSS file */
+								if ($add_rules && $key != 'background-image') {
+									$this->optimizer->compressed_mhtml .=
+										$tags . '{' . $key . ':' .
+										preg_replace("@url\([^\)]+\)@", "", $value) . '}';
 								}
 								if (!empty($background['background-image'])) {
 									$image = trim(str_replace("!important", "", $background['background-image']));
@@ -591,22 +599,22 @@ __________________
 /* separate background-image rules from the others? */
 										if (empty($this->optimizer->separated)) {
 											$this->optimizer->css->css[$import][$tags][$key] =
-												preg_replace("/url\([^\)]+\)(\s*)?/", "url(" .
+												preg_replace("@url\([^\)]+\)(\s*)?@", "url(" .
 												$this->optimizer->css_image .
 												")$1", $value);
 										} else {
 /* add for IE add call to mhtml resource file */
 											if ($this->optimizer->ie) {
 												$this->optimizer->css->css[$import][$tags][$key] =
-													preg_replace("/url\([^\)]+\)(\s*)/", "url(" .
+													preg_replace("@url\([^\)]+\)(\s*)@", "url(" .
 													$this->optimizer->css_image . ")$1", $value);	
 /* for others just remove background-image call */
 											} else {
 												$this->optimizer->css->css[$import][$tags][$key] =
-													preg_replace("/url\([^\)]+\)/", "", $value);
+													preg_replace("@url\([^\)]+\)@", "", $value);
 												$this->optimizer->compressed_mhtml .=
 													$tags . '{background-image:url(' .
-													$this->optimizer->css_image . ')!important}';
+													$this->optimizer->css_image . ')}';
 											}
 /* skip empty background-image */
 											if (empty($this->optimizer->css->css[$import][$tags][$key])) {
@@ -623,7 +631,7 @@ __________________
 				}
 			}
 /* close @media definition*/
-			if (!empty($this->optimizer->separated) && !$this->optimizer->ie && !round($import)) {
+			if ($add_rules && !round($import)) {
 				$this->optimizer->compressed_mhtml .= '}';
 			}
 		}
