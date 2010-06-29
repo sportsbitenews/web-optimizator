@@ -155,7 +155,7 @@ class admin {
 			'scripts' => array('*.php', '*.php.gz', '*.php.df')
 		);
 /* define if we can skip some info */
-		$this->internal = preg_match("@wp-content|components|modules|administrator|addons@", $this->basepath);
+		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app@", $this->basepath);
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr')) ? $this->language : 'en';
