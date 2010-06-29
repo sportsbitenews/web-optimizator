@@ -134,7 +134,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC6 .wssD5{margin:2px 0 2px 20px}
 .wssD6{float:left;margin:-43px 0 0 -5px;padding:0}
 .wssC6 .wssD6{line-height:15px;height:15px;margin:-25px 0 0 1px;width:20px}
-.wssD7{margin-top:-28px;position:relative}
+.wssD7{top:-28px;position:relative}
 .wssD8 .wssD3{background:url(error-input.png) no-repeat;text-indent:-99em;left:-19px;top:6px}
 .wssD7.wssD8 .wssD3{top:3px}
 .wssD9{border:1px solid #fbddb8;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin:0 0 0 182px;padding:0}
@@ -176,10 +176,10 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssU .wssH{float:none;margin:-5px 0 0 176px}
 .wssH1{background:#f7f4e9;padding:10px 20px}
 .wssC5 .wssH1{padding:0 10px 10px 11px}
-.wssH2{margin-top:-802px}
-.wssH3{margin:-263px 0 0 2%;width:65%}
-.wssH4{margin-top:-463px}
-.wssH5{margin-top:-250px}
+.wssH2{position:relative;top:-802px}
+.wssH3{position:relative;top:-263px;margin:0 0 0 2%;width:65%}
+.wssH4{position:relative;top:-463px}
+.wssH5{position:relative;top:-250px}
 .wssH17{margin:15px 0 0;float:none}
 .wssH17 .wssH1{padding:2px 0}
 .wssH10{margin:0;list-style-type:none!important;padding:2px 14px}
