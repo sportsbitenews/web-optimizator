@@ -2751,14 +2751,12 @@ class admin {
 					'value' => $this->compress_options['data_uris']['separate'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'disabled' => !empty($this->compress_options['performance']['uniform_cache']),
 					'price' => 2
 				),
 				'data_uris_domloaded' => array(
 					'value' => $this->compress_options['data_uris']['domloaded'],
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'disabled' => !empty($this->compress_options['performance']['uniform_cache']),
 					'price' => 2
 				)
 			),

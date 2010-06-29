@@ -93,6 +93,8 @@ class css_sprites_optimize {
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* special host for HTTPS */
 			$this->https_host = $options['https_host'];
+/* create only data:URI chunks? */
+			$this->uniform_cache = $options['uniform_cache'];
 /* CSS rule to avoid overlapping of properties */
 			$this->none = 'none!important';
 		}

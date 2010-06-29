@@ -624,6 +624,13 @@ __________________
 												unset($this->optimizer->css->css[$import][$tags]);
 											}
 										}
+/* add rules for IE6/7 for data:URI background images */
+										if ($this->optimizer->uniform_cache && !empty($image)) {
+											$tags_array = explode(',', $tags);
+											$this->optimizer->css->css[$import]['* html ' . implode('* html ', $tags_array)]['background-image'] =
+											$this->optimizer->css->css[$import]['*+html ' . implode('*+html ', $tags_array)]['background-image'] =
+												$image;
+										}
 									}
 								}
 							}

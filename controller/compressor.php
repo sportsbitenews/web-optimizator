@@ -1054,8 +1054,9 @@ class web_optimizer {
 									$class . '"' . substr($image[0], 4);
 							}
 /* add transparent GIF or data:URI chunk */
-							$new_src = empty($this->ua_mod) ||
-								substr($this->ua_mod, 3, 1) > 7 ?
+							$new_src = (empty($this->ua_mod) ||
+								substr($this->ua_mod, 3, 1) > 7) &&
+								!$this->options['uniform_cache'] ?
 								'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' :
 								((empty($this->options['page']['far_future_expires_rewrite']) ?
 									'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
@@ -1175,12 +1176,6 @@ class web_optimizer {
 				$this->encoding = "deflate";
 				$this->encoding_ext = '.df';
 			}
-		}
-/* skip all browser-dependent features */
-		if ($this->options['uniform_cache']) {
-			$this->options['css']['data_uris'] = 0;
-			$this->options['css']['mhtml'] = 0;
-			$this->options['css']['data_uris_separate'] = 0;
 		}
 	}
 	
@@ -3088,7 +3083,8 @@ class web_optimizer {
 			'punypng' => $options['punypng'],
 			'restore_properties' => $options['css_restore_properties'],
 			'ftp_access' => $this->options['page']['parallel_ftp'],
-			'https_host' => $this->options['page']['parallel_https']
+			'https_host' => $this->options['page']['parallel_https'],
+			'uniform_cache' => $this->options['uniform_cache']
 		));
 		return $css_sprites->process();
 	}

@@ -54,7 +54,8 @@ class html_sprites {
 			'punypng' => $this->options['css']['punypng'],
 			'restore_properties' => 0,
 			'ftp_access' => $this->options['page']['parallel_ftp'],
-			'https_host' => $this->options['page']['parallel_https']
+			'https_host' => $this->options['page']['parallel_https'],
+			'uniform_cache' => $this->options['uniform_cache']
 		));
 /* calculate all dimensions for images */
 		$this->images = $this->get_images_dimensions($imgs);
