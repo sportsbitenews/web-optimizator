@@ -345,9 +345,12 @@ if ($submit) {
 								if (!empty($value['price'])) {
 ?> onblur="_.u(this)"<?php
 								}
+								if (empty($value['hidden'])) {
 ?> title="<?php
-								echo constant('_WEBO_' . $option . '_HELP');
-?>"/></dd><?php
+									echo constant('_WEBO_' . $option . '_HELP');
+?>"<?php
+								}
+?>/></dd><?php
 								break;
 							case 'smalltext':
 ?><dd class="wssD2<?php
