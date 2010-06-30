@@ -268,7 +268,7 @@ if ($submit) {
 ?>" class="wssD9<?php
 		echo $key != 'combinecss' ? ' wssA0' : '';
 ?>"><dl class="wssD10<?php
-	echo $premium < 2 ? ' wssD11' : '';
+		echo $premium < 2 ? ' wssD11' : '';
 ?>"><?php
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
@@ -302,6 +302,10 @@ if ($submit) {
 ?><dt class="wssD<?php
 							echo strpos($value['type'], 'text') !== false ? 1 : 5;
 							echo !empty($value['disabled']) && (!empty($value['disabled'][$i-1]) || $value['disabled'] == 100) ? ' wssD20' : '';
+							echo !empty($value['price']) &&
+								!empty($value['value']) &&
+								($value['value'] == $i-1 || $value['type'] != 'radio') &&
+								(!is_array($value['price']) || $value['price'][$i-1]) ? ' wssD22' : '';
 ?>"><label for="wss_<?php
 							echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>" class="wssE"><?php
