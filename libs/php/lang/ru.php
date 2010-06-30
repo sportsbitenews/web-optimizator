@@ -358,7 +358,7 @@ define('_WEBO_data_uris_ignore_list_HELP_DISABLED', 'Создание кросс
 define('_WEBO_data_uris_additional_list', 'Исключить из <code>mhtml</code> файлы');
 define('_WEBO_data_uris_additional_list_HELP', 'Изображения, указанные в этом поле, не будут преобразованы в формат mhtml. Пожалуйста, указывайте только имена файлов, а не полные пути к ним.');
 define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка "Производительность - Использовать файлы в кэше для всех браузеров".');
-define('_WEBO_data_uris_separate', 'Отделить картинки от CSS-кода');
+define('_WEBO_data_uris_separate', 'Отделить изображения от CSS-кода');
 define('_WEBO_data_uris_separate_HELP', 'Преобразованный код CSS и изображения в форматах base64 и mhtml будут храниться в отдельных файлах. Это должно улучшить их кэширующее поведение.');
 define('_WEBO_data_uris_separate_EFFECT', 'Увеличение скорости загрузки сайта на 3-5%');
 define('_WEBO_data_uris_separate_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка "Производительность - Использовать файлы в кэше для всех браузеров".');
