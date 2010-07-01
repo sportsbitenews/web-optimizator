@@ -971,7 +971,7 @@ define('_WEBO_SAAS_DAYS', 'days');
 define('_WEBO_SAAS_DAYS2', 'days');
 define('_WEBO_SAAS_TILL', 'till');
 define('_WEBO_SAAS_CODE', 'Enter code to increase balance');
-define('_WEBO_SAAS_CODE_HELP', 'After purchasing WEBO Site SpeedUp module please enter its code below. Your baalnce will be increased by the module value.');
+define('_WEBO_SAAS_CODE_HELP', 'After purchasing WEBO Site SpeedUp SaaS module please enter its code below. Your balance will be increased by the module value.');
 define('_WEBO_SAAS_ADD', 'Add funds');
 define('_WEBO_SAAS_EFFECT', 'Casted effect');
 define('_WEBO_SAAS_ERROR', 'Code is incorrect');
