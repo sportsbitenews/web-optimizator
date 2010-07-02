@@ -828,7 +828,7 @@ class web_optimizer {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 /* remove marker for styles and BOM */
-		$this->content = str_replace(array("@@@WSSSTYLES@@@", "﻿"), "", $this->content);
+		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "﻿"), "", $this->content);
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
