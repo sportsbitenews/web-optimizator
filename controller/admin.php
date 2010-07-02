@@ -325,7 +325,9 @@ class admin {
 	**/
 	function calculate_awards () {
 		$evaluation1 = @file_get_contents($this->basepath . $this->index_before);
+		$evaluation1 = strpos($evaluation1, '<b>Warning') ? '' : $evaluation1;
 		$evaluation2 = @file_get_contents($this->basepath . $this->index_after);
+		$evaluation2 = strpos($evaluation2, '<b>Warning') ? '' : $evaluation2;
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
 		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
 		$level1 = $grade > 50 ? $grade > 70 ? $grade > 90 ? 3 : 2 : 1 : 0;
@@ -853,7 +855,9 @@ class admin {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = @file_get_contents($this->basepath . $this->index_before);
+		$before = strpos($before, '<b>Warning') ? '' : $before;
 		$after = @file_get_contents($this->basepath . $this->index_after);
+		$after = strpos($after, '<b>Warning') ? '' : $after;
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
 			$s_before = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $before);
@@ -1526,11 +1530,11 @@ class admin {
 					$this->view->download($this->webo_grade . '&refresh=on',
 						$this->basepath . $this->index_after, 1);
 			} elseif (!empty($this->compress_options['active']) &&
-				$before && (empty($after) || $after < 200)) {
+				$before && (empty($after) || $after < 250)) {
 /* Request to re-check should be done on options save */
 					$this->view->download($this->webo_grade,
 						$this->basepath . $this->index_after, 1);
-			} elseif (empty($before) || $before < 200) {
+			} elseif (empty($before) || $before < 250) {
 				$this->view->download($this->webo_grade . '&first=1&email=' .
 					$this->compress_options['email'],
 						$this->basepath . $this->index_before, 1);
