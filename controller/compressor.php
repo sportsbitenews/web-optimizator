@@ -1768,7 +1768,7 @@ class web_optimizer {
 				if (!strpos($dynamic_file, "://")) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
 				}
-				$file = $this->options['css']['cachedir'] . $this->get_remote_file(preg_replace("/&amp;/", "&", $dynamic_file), 'link');
+				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
 			}
 			if (@is_file($file)) {
 				$content = @file_get_contents($file);
@@ -1777,7 +1777,7 @@ class web_optimizer {
 			$content = $src;
 		}
 /* remove BOM */
-		$content = str_replace(array('&amp;', '﻿'), array('&', ''), $content);
+		$content = $this->resolve_amps($content);
 		if (@is_file($file) || $inline) {
 /* remove commented @import. First of all glue CSS files, optimiza only secondly */
 			$content = preg_replace("!/\*\s*@import.*?\*/!is", "", $content);
@@ -1841,7 +1841,7 @@ class web_optimizer {
 					}
 /* skip external files if option is disabled */
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
-						(!empty($file['file']) && preg_match("@\.js$@i", $file['file']) &&
+						(!empty($file['file']) && preg_match("@(index\.php/|\.js$)@i", $file['file']) &&
 							(!strpos($file['file'], '//') ||
 							preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))) ||
 						(empty($file['file']) &&
@@ -1897,7 +1897,7 @@ class web_optimizer {
 					}
 /* skip external files if option is disabled */
 					if (($this->options['css']['external_scripts'] && $curl) ||
-						(!empty($file['file']) && preg_match("@\.css$@i", $file['file']) &&
+						(!empty($file['file']) && preg_match("@(index\.php/|\.css$)@i", $file['file']) &&
 							(!strpos($file['file'], '//') ||
 							preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))) ||
 						(empty($file['file']) && $this->options['css']['inline_scripts'])) {
@@ -2019,7 +2019,7 @@ class web_optimizer {
 /* get an external file */
 								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
-									$file = $this->get_remote_file(str_replace("&amp;", "&", $value['file_raw']), $value['tag']);
+									$file = $this->get_remote_file($this->resolve_amps($value['file_raw']), $value['tag']);
 /* static file */
 								} else {
 									$file = $this->get_remote_file($value['file'], $value['tag']);
@@ -2042,13 +2042,13 @@ class web_optimizer {
 					$content_from_file = '';
 					if (!empty($value['file'])) {
 /* convert dynamic files to static ones */
-						if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+						if (!preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php/')) {
 							$dynamic_file = $value['file_raw'];
 /* touch only non-external scripts */
 							if (!strpos($dynamic_file, "://")) {
 								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
 							}
-							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file(str_replace("&amp;", "&", $dynamic_file), $value['tag']);
+							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file($this->resolve_amps($dynamic_file), $value['tag']);
 							if (@is_file($static_file)) {
 								$value['file'] = str_replace($this->options['document_root'], "/", $static_file);
 							} else {
@@ -3243,6 +3243,14 @@ class web_optimizer {
 				}
 			}
 		}
+	}
+	
+	/**
+	* Replaces html entities with amps
+	*
+	*/
+	function resolve_amps ($str) {
+		return str_replace(array('&amp;', '&#38;', '﻿'), array('&', '&', ''), $str);
 	}
 	
 	/**
