@@ -3472,7 +3472,7 @@ class admin {
 		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
 /* create rules for enhanced HTML caching mode */
 			$content_enhanced = '';
-			if (!empty($this->input['wss_html_cache_enhanced'])) {
+			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
 				if (strstr($this->basepath, 'wp-content')) {
@@ -3597,7 +3597,7 @@ class admin {
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
 	BrowserMatch SV1; !no_gzip
 	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
-				if (!empty($this->input['wss_html_cache_enhanced']) && !empty($this->input['wss_gzip_page'])) {
+				if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced']) && !empty($this->input['wss_gzip_page'])) {
 					$content .= "
 	SetEnvIfNoCase accept-encoding deflate WSSENC=.df
 	SetEnvIfNoCase accept-encoding gzip WSSENC=.gz";
