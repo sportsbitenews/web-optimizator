@@ -1888,7 +1888,7 @@ class web_optimizer {
 									break;
 								default:
 /* skip media="all|screen" to prevent Safari bug with @media all{} and @media screen{} */
-									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("/all|screen|''|\"\"/i", $variant_type[2]))) {
+									if ($variant_type[1] != 'media' || ($variant_type[1] == 'media' && !preg_match("@^(all|screen|''|\"\")$@i", $variant_type[2]))) {
 										$file[$variant_type[1]] = $variant_type[2];
 									}
 									break;
