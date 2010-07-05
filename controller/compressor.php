@@ -1876,7 +1876,7 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<link[^>]+>|<style[^>]*>|<\/style>)@is", "", $match[0]),
 					);
-					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([^\s/>]+))@is", $match[0], $variants, PREG_SET_ORDER);
+					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([^\s>]+))@is", $match[0], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach($variants as $variant_type) {
 							$variant_type[1] = strtolower($variant_type[1]);
