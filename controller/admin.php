@@ -992,7 +992,7 @@ class admin {
 				$errors['css_sprites_html_sprites'] = $value;
 		}
 		if (empty($this->compress_options['minify']['css'])) {
-			$errors['minify_css'] = $value;
+			$errors['combine_css'] = $value;
 		}
 		if (empty($this->compress_options['htaccess']['mod_expires']) ||
 			!in_array('mod_expires', $this->apache_modules)) {
