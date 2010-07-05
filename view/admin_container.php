@@ -55,7 +55,7 @@ if (!$ajax) {
 	foreach (array('de', 'ru', 'es', 'ua', 'fr', 'ur') as $lang) {
 		if ($lang != $language && ($language != 'en' || $lang != 'ru')) {
 ?><li class="wss_e<?php
-			echo $i == 3 ? ' wss_e2' : '';
+			echo $i == 4 ? ' wss_e2' : '';
 ?>"><a class="wss_g" href="javascript:_.t('<?php
 			echo $lang;
 ?>')"><?php
