@@ -10,8 +10,8 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Купить</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979&amp;compid=1" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Купить</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Купить</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
