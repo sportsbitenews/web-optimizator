@@ -1876,11 +1876,11 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<link[^>]+>|<style[^>]*>|<\/style>)@is", "", $match[0]),
 					);
-					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([^\s>]+))@is", $match[0], $variants, PREG_SET_ORDER);
+					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]*))@is", $match[0], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach($variants as $variant_type) {
 							$variant_type[1] = strtolower($variant_type[1]);
-							$variant_type[2] = ($variant_type[2] == '') ? (($variant_type[3] == '') ? $variant_type[4] : $variant_type[3]) : $variant_type[2];
+							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? (empty($variant_type[4]) ? '' : $variant_type[4]) : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "href":
 									$file['file'] = trim($this->strip_querystring($variant_type[2]));
