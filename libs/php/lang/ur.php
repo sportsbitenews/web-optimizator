@@ -656,7 +656,7 @@ define('_WEBO_DASHBOARD_AWARDS_FILES', 'فائلیں');
 define('_WEBO_DASHBOARD_AWARDS_SIZE', 'ویب سائٹ کا سائز');
 define('_WEBO_DASHBOARD_AWARDS_SPEEDUP', 'اسپیڈ اپ');
 
-* ٹولز صفحات */
+/* ٹولز صفحات */
 define('_WEBO_TOOLS_GZIP', 'ساکن gzip آلہ');
 define('_WEBO_TOOLS_IMAGE', 'تصویری اصلاح کا آلہ');
 
