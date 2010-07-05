@@ -26,6 +26,7 @@ define('_WEBO_GENERAL_es', 'Español');
 define('_WEBO_GENERAL_ua', 'Українська');
 define('_WEBO_GENERAL_en', 'English');
 define('_WEBO_GENERAL_fr', 'Français');
+define('_WEBO_GENERAL_ur', 'اردو');
 
 /* error layout */
 define('_WEBO_ERROR_TITLE', 'Хмм... у нас виникла проблема');

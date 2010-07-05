@@ -52,7 +52,7 @@ if (!$ajax) {
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;
-	foreach (array('de', 'ru', 'es', 'ua', 'fr') as $lang) {
+	foreach (array('de', 'ru', 'es', 'ua', 'fr', 'ur') as $lang) {
 		if ($lang != $language && ($language != 'en' || $lang != 'ru')) {
 ?><li class="wss_e<?php
 			echo $i == 3 ? ' wss_e2' : '';
