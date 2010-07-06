@@ -151,7 +151,7 @@
 ?><dt class="wssD5">
 			<label for="wss_allow" class="wssE1"><?php 
 	echo _WEBO_LOGIN_ALLOW;
-?>:</label></dt><dd class="wssD6"><input type="checkbox" id="wss_allow" name="wss_allow" title="<?php
+?></label></dt><dd class="wssD6"><input type="checkbox" id="wss_allow" name="wss_allow" title="<?php
 	echo _WEBO_LOGIN_ALLOW;
 ?>"<?php
 	if (!empty($allow)) {
