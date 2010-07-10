@@ -3475,7 +3475,8 @@ class admin {
 		$content2 = '';
 		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
 /* create rules for enhanced HTML caching mode */
-			$content_enhanced = '';
+			$content_enhanced = "
+	AddDefaultCharset utf-8";
 			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
@@ -3501,7 +3502,7 @@ class admin {
 					}
 					$content_enhanced .= "
 	RewriteCond %{REQUEST_METHOD} !=POST
-	RewriteCond " . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}%{QUERY_STRING}index%{ENV:WSSBR}.html%{ENV:WSSENC} -f
+	RewriteCond \"" . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}%{QUERY_STRING}index%{ENV:WSSBR}.html%{ENV:WSSENC}\" -f
 	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
 				} else {
 					$browsers = empty($this->input['wss_performance_uniform_cache']) ?
@@ -3531,9 +3532,8 @@ class admin {
 	RewriteCond %{HTTP:Cookie} " . $cookie;
 							}
 							$content_enhanced .= "
-	RewriteCond " . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}%{QUERY_STRING}index". $browser .".html". $encoding ." -f
-	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index". $browser .".html". $encoding ." [L]
-	AddDefaultCharset utf-8";
+	RewriteCond \"" . $this->compress_options['html_cachedir'] . "%{REQUEST_URI}%{QUERY_STRING}index". $browser .".html". $encoding ."\" -f
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index". $browser .".html". $encoding ." [L]";
 						}
 					}
 				}
@@ -3652,7 +3652,13 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 				$content .= "
 <IfModule mod_mime.c>
 	AddEncoding gzip .gz
-	AddEncoding deflate .df
+	AddEncoding deflate .df";
+				if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
+					$content .= "
+	AddType text/html .gz
+	AddType text/html .df";
+				}
+				$content .= "
 </IfModule>";
 				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 					$content .= "
