@@ -1218,21 +1218,20 @@ class web_optimizer {
 		switch ($include) {
 /* move CSS file to the first occurent of CSS or before any scripts */
 			default:
-				$styles = strpos($source, "@@@WSSSTYLES@@@");
-				$updated = 0;
 				if ($this->options['page']['html_tidy']) {
+					$styles = strpos($source, "@@@WSSSTYLES@@@");
+					$updated = 0;
 					$script1 = strpos($source, "<script");
 					$script2 = strpos($source, "<SCRIPT");
 					if ($script1 !== false && $script1 < $styles) {
 						$source = substr_replace($source, $newfile, $script1, 0);
-						$updated = 1;
 					} elseif ($script2 !== false && $script2 < $styles) {
 						$source = substr_replace($source, $newfile, $script2, 0);
-						$updated = 1;
+					} else {
+						$source = substr_replace($source, $newfile, $styles, 0);
 					}
-				}
-				if (!$updated) {
-					$source = substr_replace($source, $newfile, $styles, 0);
+				} else {
+					$source = str_replace('@@@WSSSTYLES@@@', $newfile, $source);
 				}
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
