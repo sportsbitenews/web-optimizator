@@ -380,7 +380,7 @@ define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'It impossible to create
 define('_WEBO_css_sprites_enabled', 'Apply CSS Sprites');
 define('_WEBO_css_sprites_enabled_HELP', 'Background images will be combined with the help of CSS Sprites technique. Related CSS code will be safely modified.');
 define('_WEBO_css_sprites_enabled_EFFECT', 'Number of objects reduction by 10-50%');
-define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'There is no compelte GD library support on your website, so CSS Sprites creation is impossible.');
+define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'There is no complete GD library support on your website, so CSS Sprites creation is impossible.');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Images\' format');
 define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'If you choose automated format detection possibility of any side effects in CSS Sprites images will be minimal. If you choose JPEG format rate quality/size for true color images will the best but there will be no transparency.');
 define('_WEBO_css_sprites_truecolor_in_jpeg_EFFECT', 'Website size reduction by 5-20%');
