@@ -311,7 +311,7 @@ define('_WEBO_performance_uniform_cache', 'تمام براؤزرز کیلئے ا
 define('_WEBO_performance_uniform_cache_HELP', 'تمام براؤزرز ایک جیسی سی ایس ایس، جاوا اسکرپٹ اور ایچ ٹی ایم ایل کوڈ حاصل کریں گے۔ اس کی مدد سے بیرونی کیشے کی تکنیک کو محفوظ طریقے سے استعمال کیا جا سکتا ہے لیکن دیگر بہت ساری اپٹمائزیشن کی تکنیک جیسے کہ data:URI کو استعمال نہیں کیا جا سکتا۔');
 define('_WEBO_performance_uniform_cache_EFFECT', 'ویبو سائٹ اسپیڈ اپ کو بیرونی کیشے انجن کے ساتھ مطابقت');
 define('_WEBO_performance_restore_properties', 'بحال سی ایس ایس کی خصوصیات');
-define('_WEBO_performance_restore_properties_HELP', 'غیر موجود سی ایس ایس خصوصیات کو سی ایس ایس سپرائٹس یا data:URI بناتے وقت بحال کیا جا سکتا ہے تاکہ آخری کیشے سائز کم رہے۔ لیکن اس کی وجہ سے سی پی یو پر بہت زیادہ لوڈ ہو سکتا ہے اگر سی ایس ایس رولز بہت زیادہ ہوں۔');
+define('_WEBO_performance_restore_properties_HELP', 'All missing CSS properties which can improve CSS Sprites and data:URI creation will be searched across the CSS code. This will result in smaller cache size but may lead to huge CPU overhead in case of large amount of CSS rules to analyze.');
 define('_WEBO_performance_restore_properties_EFFECT', 'آبجیکٹس کی تعداد میں 5-10% کمی');
 define('_WEBO_performance_delete_old', 'کتنے دن تک کیشے فائلز کو محفوظ رکھنا ہے');
 define('_WEBO_performance_delete_old_HELP', 'آپ کیشے سائز کو پابند کر سکتے ہیں ، تمام کیشے فائلز کو محفوظ رکھنے کے وقت کا (دنوں میں ) تعین کر کے۔ زیرو قیمت کا مطلب ہے کوئی پابندی نہیں۔');
