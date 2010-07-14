@@ -111,6 +111,7 @@ class admin {
 				'install_beta' => 1,
 				'install_awards' => 1,
 				'install_balance' => 1,
+				'install_wizard' => 1,
 				'dashboard_cache' => 1,
 				'dashboard_system' => 1,
 				'dashboard_options' => 1,
@@ -416,6 +417,252 @@ class admin {
 		return array($level1, $level2, $level3, $level4, $level5,
 			100 - $options, $grade, $files, round($size2 / 1024),
 			round(100*((1 / (0.9999 - $speedup)) - 1)), $short_link);
+	}
+	
+	/*
+	* Calculate the best options for website.
+	* Shows wizard page
+	*
+	**/	
+	function install_wizard () {
+		$wizard = round(isset($_GET['web_optimizer_wizard']) ? $_GET['web_optimizer_wizard'] : 0);
+/* calculate options */
+		if ($wizard) {
+			$wizard_options = isset($_GET['web_optimizer_wizard_options']) ? $_GET['web_optimizer_wizard_options'] : '';
+/*	1 - disable application, calculate .htaccess
+	2 - enable combine CSS
+	3 - disable combine inline CSS
+	4 - disable combine external CSS
+	5 - enable minify CSS
+	6 - disable minify CSS
+	7 - disable combine CSS
+	8 - enable gzip CSS
+	9 - disable gzip CSS
+	10 - enable combine JS
+	11 - disable combine inline JS
+	12 - move JS to head
+	13 - move JS to /head, disable combine external JS
+	14 - exclude JS from combine
+	15 - enable minify JS with JSMin
+	16 - enable minify JS with YUI Compressor
+	17 - enable minify JS with Packer
+	18 - disable minify JS
+	19 - move JS to /body
+	20 - move JS to /head
+	21 - disable combine JS
+	22 - enable gzip JS
+	23 - disable gzip JS
+	24 - enable minify HTML
+	25 - disable minify HTML
+	26 - enable plain string + no mtime
+	27 - disable plain string
+	28 - enable gzip HTML
+	29 - disable gzip HTML
+	30 - enable data:URI + mhtml + separation
+	31 - disable separation data:URI
+	32 - disable data:URI + mhtml
+	33 - enable plain string
+	34 - disable plaing string
+	35 - check server side delay
+	36 - enable server side caching
+	37 - disable server side caching
+	38 - enable client side caching
+	39 - enable CDN
+	40 - enable unobtrusive JavaScript
+	41 - disable unobtrusive JavaScript
+	42 - enable CSS Sprites
+	43 - exclude images from CSS Sprites
+	44 - disable CSS Sprites
+	45 - enable HTML Sprites
+	46 - enable HTML Sprites restriction
+	47 - disable HTML Sprites
+	100 - final check
+	*/
+			switch ($wizard) {
+/* check htaccess, disable all options */
+				case 1:
+					$this->get_modules();
+/* disable application for future tests */
+					$this->save_option("['active']", 0);
+					$ht = count($this->apache_modules) ? 1 : 0;
+					$this->save_option("['htaccess']['enabled']", $ht);
+					$this->save_option("['htaccess']['local']", $ht);
+					$modules = array(
+						'mod_deflate',
+						'mod_gzip',
+						'mod_expires',
+						'mod_mime',
+						'mod_headers',
+						'mod_setenvif',
+						'mod_rewrite');
+					foreach ($modules as $module) {
+							$this->save_option("['htaccess']['" . $module . "']", $ht && in_array($module, $this->apache_modules));
+							$this->input['wss_htaccess_' . $module] = 1;
+					}
+					if ($ht) {
+						$this->compress_options['active'] = 1;
+						$this->input['wss_htaccess_enabled'] = 1;
+						$this->input['wss_htaccess_local'] = 1;
+						$this->input['wss_gzip_fonts'] = 1;
+						$this->input['wss_far_future_expires_images'] = 1;
+/* write complete test set of rules */
+						$this->write_htaccess();
+						$test_file = $this->compress_options['html_cachedir'] . 'index.test';
+						$this->view->download("http://" . $_SERVER['HTTP_HOST'] .
+							str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']),
+							$test_file);
+/* some errors with .htaccess, disable all options */
+						if (!@file_get_contents($test_file)) {
+							foreach ($modules as $module) {
+								$this->save_option("['htaccess']['" . $module . "']", 0);
+							}
+						}
+						@unlink($test_file);
+/* disable .htaccess usage for future changes */
+						$this->save_option("['htaccess']['enabled']", 0);
+						foreach ($modules as $module) {
+							$this->input['wss_htaccess_' . $module] = 0;
+						}
+						$this->write_htaccess();
+					}
+/* disable all the other options */
+					foreach ($this->compress_options as $group => $options) {
+						if (is_array($options)) {
+							foreach ($options as $key => $option) {
+								if ($option === '1') {
+									$this->save_option("['". $group ."']['" . $key . "']", 0);
+								}
+							}
+						}
+					}
+					break;
+/* enable combine CSS */
+				case 2:
+					$this->save_option("['minify']['css']", 1);
+					$this->save_option("['external_scripts']['css']", 1);
+					$this->save_option("['external_scripts']['css_inline']", 1);
+					break;
+/* disable inline CSS */
+				case 3:
+					$this->save_option("['external_scripts']['css_inline']", 0);
+					break;
+/* disable external CSS */
+				case 4:
+					$this->save_option("['external_scripts']['css']", 0);
+					break;
+/* enable minify CSS */
+				case 5:
+					$this->save_option("['minify']['css_min']", 1);
+					break;
+/* disable minify CSS */
+				case 6:
+					$this->save_option("['minify']['css_min']", 0);
+					break;
+/* disable combine CSS */
+				case 7:
+					$this->save_option("['minify']['css']", 0);
+					break;
+/* enable gzip CSS */
+				case 8:
+					$this->save_option("['gzip']['css']", 1);
+					$this->save_option("['htaccess']['enabled']", 1);
+					$this->compress_options['active'] = 1;
+					$this->input['wss_htaccess_enabled'] = 1;
+					$this->input['wss_gzip_css'] = 1;
+					$this->write_htaccess();
+					break;
+/* disable gzip CSS */
+				case 9:
+					$this->save_option("['gzip']['css']", 0);
+					$this->save_option("['htaccess']['enabled']", 0);
+					$this->input['wss_htaccess_enabled'] = 0;
+					$this->write_htaccess();
+					break;
+/* enable combine JS */
+				case 10:
+					$this->save_option("['minify']['javascript']", 1);
+					$this->save_option("['external_scripts']['javascript']", 1);
+					$this->save_option("['external_scripts']['javascript_inline']", 1);
+					break;
+/* disable combine inline JS */
+				case 11:
+					$this->save_option("['external_scripts']['javascript_inline']", 0);
+					break;
+/* move JS to head */
+				case 12:
+					$this->save_option("['external_scripts']['head_end']", 0);
+					break;
+/* move JS to /head, disable combine external JS */
+				case 13:
+					$this->save_option("['external_scripts']['head_end']", 1);
+					$this->save_option("['external_scripts']['javascript']", 0);
+					break;
+/* exclude JS from combine */
+				case 14:
+					$this->save_option("['external_scripts']['ignore_list']", urldecode($wizard_options));
+					break;
+/* enable minify JS with JSMin */
+				case 15:
+					$this->save_option("['minify']['with_jsmin']", 1);
+					break;
+/* enable minify JS with YUI Compressor */
+				case 16:
+					$this->save_option("['minify']['with_jsmin']", 0);
+					$this->save_option("['minify']['with_yui']", 1);
+					break;
+/* enable minify JS with Packer */
+				case 17:
+					$this->save_option("['minify']['with_jsmin']", 0);
+					$this->save_option("['minify']['with_yui']", 0);
+					$this->save_option("['minify']['with_packer']", 1);
+					break;
+/* disable minify JS */
+				case 18:
+					$this->save_option("['minify']['with_jsmin']", 0);
+					$this->save_option("['minify']['with_yui']", 0);
+					$this->save_option("['minify']['with_packer']", 0);
+					break;
+/* move JS to /body */
+				case 19:
+					$this->save_option("['unobtrusive']['body']", 1);
+					break;
+/* move JS to /head */
+				case 20:
+					$this->save_option("['unobtrusive']['body']", 0);
+					$this->save_option("['external_scripts']['head_end']", 1);
+					break;
+/* disable combine JS */
+				case 21:
+					$this->save_option("['minify']['javascript']", 0);
+					break;
+/* enable gzip JS */
+				case 22:
+					$this->save_option("['gzip']['javascript']", 1);
+					$this->save_option("['htaccess']['enabled']", 1);
+					$this->compress_options['active'] = 1;
+					$this->input['wss_htaccess_enabled'] = 1;
+					$this->input['wss_gzip_javascript'] = 1;
+					$this->write_htaccess();
+					break;
+/* disable gzip JS */
+				case 23:
+					$this->save_option("['gzip']['javascript']", 0);
+					$this->save_option("['htaccess']['enabled']", 0);
+					$this->input['wss_htaccess_enabled'] = 0;
+					$this->write_htaccess();
+					break;
+			}
+		} else {
+/* show generic page */
+		}
+		$page_variables = array(
+			"version" => $this->version,
+			"premium" => $this->premium,
+			"skip_render" => $this->skip_render,
+			"wizard_mode" => $wizard,
+			"website_root" => str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root'])
+		);
+		$this->view->render("install_wizard", $page_variables);
 	}
 
 	/*

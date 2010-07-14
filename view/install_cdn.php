@@ -26,15 +26,7 @@
 	echo _WEBO_DASHBOARD_AWARDS;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM16"><?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?></span></a></li><?php
-	if ($premium > 1 && 0) {
-?><li class="wssM1"><a href="#wss_speed" class="wssM3" title="<?php
-	echo _WEBO_DASHBOARD_RESULTS;
-?>"><span class="wssM5"></span><span class="wssM4 wssM15"><?php
-	echo _WEBO_DASHBOARD_SPEED;
-?></span></a></li><?php
-	}
-?></ul><h1 class="wssA wssA9"><?php
+?></span></a></li></ul><h1 class="wssA wssA9"><?php
 	echo _WEBO_TOOLS_CDN;
 ?></h1><?php
 	if ($cdn_disabled) {

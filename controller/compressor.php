@@ -35,6 +35,7 @@ class web_optimizer {
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
 				$_GET['cache_version']);
 /* get major stage number, all stages:
+ -1		- system, envelope all <script> to try-catch-document.write
  0-9	- inilialization, starts in administrative interface
  10-13	- JS file generation, 1st major stage (common browsers)
  14-19	- CSS Sprites / data:URI generation, 1st major stage
@@ -1836,6 +1837,19 @@ class web_optimizer {
 							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? str_replace('>', '', $variant_type[3]) : $variant_type[2]) : $variant_type[1];
 							$file['file'] = trim($this->strip_querystring($variant_type[1]));
 							$file['file_raw'] = $variant_type[1];
+/* envelope all script calls to try-catch */
+							if (isset($_GET['web_optimizer_debug'])) {
+								$catch = '}catch(e){__WSSERR=(__WSSERR||0)+1}';
+								if (trim($file['content'])) {
+									$new_raw = preg_replace("@(<script[^>]*>)@", "$1try{", $file['file_raw']);
+									$new_raw = preg_replace("@(</script>)@", "$1" . $catch, $file['file_raw']);
+								} else {
+									$new_raw = '<script type="text/javascript">try{document.write("' .
+										str_replace('"', '\\"', $file['file_raw']) . '")' . $catch . '</script>';
+								}
+								$this->content = str_replace($file['file_raw'], $new_raw, $this->content);
+								$file['file_raw'] = $new_raw;
+							}
 						}
 					}
 /* skip external files if option is disabled */
@@ -2251,10 +2265,10 @@ class web_optimizer {
 	*
 	**/
 	function minify_text ($txt) {
-/* Remove line breaks, compress whitespaces */
-		$txt = preg_replace('![\s\t\r\n]+!', ' ', $txt);
 /* Remove simple comments */
 		$txt = preg_replace('!(/\*.*?\*/|^ | $)!', '', $txt);
+/* Remove line breaks, compress whitespaces */
+		$txt = preg_replace('![\s\t\r\n]+!', ' ', $txt);
 /* Remove spaces for }, {, ;, ,: */
 		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
 /* Remove excessive symbols */
@@ -2790,6 +2804,8 @@ class web_optimizer {
 /* change all links on the page according to DEBUG mode */
 		if (!empty($_GET['web_optimizer_debug'])) {
 			$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
+/* add info about client side load speed */
+			$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS}, false)</script>", $this->content);
 		}
 		if (empty($this->head)) {
 /* Remove comments ?*/
