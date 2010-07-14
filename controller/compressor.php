@@ -1837,20 +1837,20 @@ class web_optimizer {
 							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? str_replace('>', '', $variant_type[3]) : $variant_type[2]) : $variant_type[1];
 							$file['file'] = trim($this->strip_querystring($variant_type[1]));
 							$file['file_raw'] = $variant_type[1];
-/* envelope all script calls to try-catch */
-							if (isset($_GET['web_optimizer_debug'])) {
-								$catch = '}catch(e){__WSSERR=(__WSSERR||0)+1}';
-								if (trim($file['content'])) {
-									$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $file['source']);
-									$new_source = preg_replace("@(</script>)@", "$1" . $catch, $new_source);
-								} else {
-									$new_raw = '<script type="text/javascript">try{document.write("' .
-										str_replace('"', '\\"', $file['source']) . '")' . $catch . '</script>';
-								}
-								$this->content = str_replace($file['source'], $new_source, $this->content);
-								$file['source'] = $new_source;
-							}
 						}
+					}
+/* envelope all script calls to try-catch */
+					if (isset($_GET['web_optimizer_debug'])) {
+						$catch = "}catch(e){__WSSERR=(typeof __WSSERR!=='undefined'?__WSSERR:0)+1}";
+						if (trim($file['content'])) {
+							$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $file['source']);
+							$new_source = preg_replace("@(</script>)@", $catch . "$1", $new_source);
+						} else {
+							$new_source = '<script type="text/javascript">try{document.write("' .
+								str_replace(array('"', '<'), array('\\"', '\x3c'), $file['source']) . '")' . $catch . '</script>';
+						}
+						$this->content = str_replace($file['source'], $new_source, $this->content);
+						$file['source'] = $new_source;
 					}
 /* skip external files if option is disabled */
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
@@ -2801,13 +2801,11 @@ class web_optimizer {
 	*
 	**/
 	function get_head () {
-/* change all links on the page according to DEBUG mode */
-		if (!empty($_GET['web_optimizer_debug'])) {
-			$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
-/* add info about client side load speed */
-			$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS}, false)</script>", $this->content);
-		}
 		if (empty($this->head)) {
+/* change all links on the page according to DEBUG mode */
+			if (!empty($_GET['web_optimizer_debug'])) {
+				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
+			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 /* skip removing escaped JavaScript code, thx to smart */
@@ -2889,6 +2887,10 @@ class web_optimizer {
 /* add WEBO Site SpeedUp spot */
 			if (!empty($this->options['page']['spot'])) {
 				$this->content .= '<!--WSS-->';
+			}
+/* add info about client side load speed */
+			if (!empty($_GET['web_optimizer_debug'])) {
+				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS}, false)</script>", $this->content);
 			}
 /* add WEBO Site SpeedUp stamp */
 			if (!empty($this->options['page']['footer'])) {

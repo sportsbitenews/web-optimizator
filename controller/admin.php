@@ -461,21 +461,19 @@ class admin {
 	30 - enable data:URI + mhtml + separation
 	31 - disable separation data:URI
 	32 - disable data:URI + mhtml
-	33 - enable plain string
-	34 - disable plaing string
-	35 - check server side delay
-	36 - enable server side caching
-	37 - disable server side caching
-	38 - enable client side caching
-	39 - enable CDN
-	40 - enable unobtrusive JavaScript
-	41 - disable unobtrusive JavaScript
-	42 - enable CSS Sprites
-	43 - exclude images from CSS Sprites
-	44 - disable CSS Sprites
-	45 - enable HTML Sprites
-	46 - enable HTML Sprites restriction
-	47 - disable HTML Sprites
+	33 - check server side delay
+	34 - enable server side caching
+	35 - disable server side caching
+	36 - enable client side caching
+	37 - enable CDN
+	38 - enable unobtrusive JavaScript
+	39 - disable unobtrusive JavaScript
+	40 - enable CSS Sprites
+	41 - exclude images from CSS Sprites
+	42 - disable CSS Sprites
+	43 - enable HTML Sprites
+	44 - enable HTML Sprites restriction
+	45 - disable HTML Sprites
 	100 - final check
 	*/
 			switch ($wizard) {
@@ -581,12 +579,13 @@ class admin {
 /* enable combine JS */
 				case 10:
 					$this->save_option("['minify']['javascript']", 1);
-					$this->save_option("['external_scripts']['javascript']", 1);
-					$this->save_option("['external_scripts']['javascript_inline']", 1);
+					$this->save_option("['external_scripts']['on']", 1);
+					$this->save_option("['external_scripts']['inline']", 1);
+					$this->save_option("['external_scripts']['head_end']", 1);
 					break;
 /* disable combine inline JS */
 				case 11:
-					$this->save_option("['external_scripts']['javascript_inline']", 0);
+					$this->save_option("['external_scripts']['inline']", 0);
 					break;
 /* move JS to head */
 				case 12:
@@ -595,7 +594,7 @@ class admin {
 /* move JS to /head, disable combine external JS */
 				case 13:
 					$this->save_option("['external_scripts']['head_end']", 1);
-					$this->save_option("['external_scripts']['javascript']", 0);
+					$this->save_option("['external_scripts']['on']", 0);
 					break;
 /* exclude JS from combine */
 				case 14:
