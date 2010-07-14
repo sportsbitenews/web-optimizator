@@ -1841,14 +1841,14 @@ class web_optimizer {
 							if (isset($_GET['web_optimizer_debug'])) {
 								$catch = '}catch(e){__WSSERR=(__WSSERR||0)+1}';
 								if (trim($file['content'])) {
-									$new_raw = preg_replace("@(<script[^>]*>)@", "$1try{", $file['file_raw']);
-									$new_raw = preg_replace("@(</script>)@", "$1" . $catch, $file['file_raw']);
+									$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $file['source']);
+									$new_source = preg_replace("@(</script>)@", "$1" . $catch, $new_source);
 								} else {
 									$new_raw = '<script type="text/javascript">try{document.write("' .
-										str_replace('"', '\\"', $file['file_raw']) . '")' . $catch . '</script>';
+										str_replace('"', '\\"', $file['source']) . '")' . $catch . '</script>';
 								}
-								$this->content = str_replace($file['file_raw'], $new_raw, $this->content);
-								$file['file_raw'] = $new_raw;
+								$this->content = str_replace($file['source'], $new_source, $this->content);
+								$file['source'] = $new_source;
 							}
 						}
 					}
