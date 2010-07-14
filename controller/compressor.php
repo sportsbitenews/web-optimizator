@@ -334,7 +334,7 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['javascript_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['javascript_host'] : $this->options['host'],
+				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"css" => array(
@@ -402,7 +402,7 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
 					$this->premium,
 				"file" => $this->premium ? $this->options['minify']['css_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['css_host'] : $this->options['host'],
+				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"page" => array(
