@@ -34,7 +34,7 @@ if ($wizard_mode) {
 	echo _WEBO_SAAS_TITLE;
 ?></h1><iframe src="<?php
 	echo $website_root;
-?>?web_optimizer_debug=1" id="wss_website"></iframe><iframe src="<?php
+?>?web_optimizer_debug=1" id="wss_website" frameborder="0"></iframe><iframe src="<?php
 	echo $website_root;
 ?>?web_optimizer_disabled=1" id="wss_website_initial"></iframe><iframe src="#" id="wss_website_tech"></iframe><?php
 }

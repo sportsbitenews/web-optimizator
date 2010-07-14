@@ -2266,7 +2266,7 @@ class web_optimizer {
 	**/
 	function minify_text ($txt) {
 /* Remove simple comments */
-		$txt = preg_replace('!(/\*.*?\*/|^ | $)!', '', $txt);
+		$txt = preg_replace('!(/\*.*?\*/|^ | $)!is', '', $txt);
 /* Remove line breaks, compress whitespaces */
 		$txt = preg_replace('![\s\t\r\n]+!', ' ', $txt);
 /* Remove spaces for }, {, ;, ,: */
