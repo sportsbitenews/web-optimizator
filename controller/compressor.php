@@ -864,6 +864,15 @@ class web_optimizer {
 		}
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
+/* add client side replacement for WordPress comment fields */
+			if (isset($_COOKIE['wordpress_test_cookie'])) {
+				foreach ($_COOKIE as $key => $value) {
+					if (strpos($key, 'comment_author') === 0) {
+						$this->content = str_replace('value="'. urldecode($value) .'"', 'value=""', $this->content);
+					}
+				}
+				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(!b.indexOf("comment_author")){d=b.split("=");e=document.getElementById(d[0].replace(/([a-f0-9]{32,}|comment_author_)/g,'')||"author");if(e){e.value=unescape(d[1])}}}}())</script>$1', $this->content;
+			}
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
 				if (empty($options['flush_size'])) {
