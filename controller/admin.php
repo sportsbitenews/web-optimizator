@@ -3817,7 +3817,6 @@ class admin {
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
 				if (strstr($this->basepath, 'wp-content')) {
-					$cookie[] = 'comment_author_';
 					$cookie[] = 'wordpress';
 					$cookie[] = 'wp-postpass_';
 				}
