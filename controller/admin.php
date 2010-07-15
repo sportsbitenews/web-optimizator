@@ -4342,6 +4342,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 			$this->compress_options['license'] = preg_replace("@.*value='(.*)'$@", "$1", @file_get_contents($license_file));
 /* skip errors */
 			$this->compress_options['license'] = preg_match("@^[A-Z0-9-]+$@", $this->compress_options['license']) ? $this->compress_options['license'] : '';
+			@unlink($license_file);
 		}
 		foreach (array(
 			'document_root',

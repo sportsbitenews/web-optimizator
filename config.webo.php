@@ -19,7 +19,7 @@ $compress_options['css_cachedir'] = "";
 ## Cache directory for HTML files
 $compress_options['html_cachedir'] = "";
 ## Cache directory for SQL queries
-$compress_options['sql_cachedir'] = "/var/www/localhost4/cache/wo/";
+$compress_options['sql_cachedir'] = "";
 ## Website installation directory
 $compress_options['website_root'] = "";
 ## Document Root directory of the website
@@ -159,10 +159,10 @@ $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo
 $compress_options['html_cache']['additional_list'] = "";
 ## Enhanced mode for HTML caching
 $compress_options['html_cache']['enhanced'] = "0";
-## Minimum execution time to cache query result, in miliseconds
-$compress_options['sql_cache']['time'] = "0";
+## Minimum execution time to cache query result, in milliseconds
+$compress_options['sql_cache']['time'] = "1";
 ## List of tables to exclude from SQL cache
-$compress_options['sql_cache']['tables_exclude'] = "/var/www/localhost4/cache/wo/";
+$compress_options['sql_cache']['tables_exclude'] = "";
 ## Cache timeout for queries, in seconds
 $compress_options['sql_cache']['timeout'] = "600";
 ## On or off 
