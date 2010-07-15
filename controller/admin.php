@@ -463,19 +463,18 @@ class admin {
 	32 - enable data:URI + mhtml + separation
 	33 - disable separation data:URI
 	34 - disable data:URI + mhtml
-	35 - check server side delay
-	36 - enable server side caching
-	37 - disable server side caching
+	35 - set JS host
+	36 - set CSS host
+	37 - set IMG host
 	38 - enable CDN
 	39 - disable CDN
-	40 - enable unobtrusive JavaScript
-	41 - disable unobtrusive JavaScript
-	42 - enable CSS Sprites
-	43 - exclude images from CSS Sprites
-	44 - disable CSS Sprites
-	45 - enable HTML Sprites
-	46 - enable HTML Sprites restriction
-	47 - disable HTML Sprites
+	40 - enable HTML Sprites
+	41 - enable HTML Sprites restriction
+	42 - disable HTML Sprites
+	43 - enable unobtrusive JavaScript
+	44 - disable unobtrusive JavaScript
+	45 - enable server side caching
+	46 - disable server side caching
 	100 - final check
 	*/
 			switch ($wizard) {
@@ -519,21 +518,27 @@ class admin {
 						$this->input['wss_far_future_expires_images'] = 1;
 /* write complete test set of rules */
 						$this->write_htaccess();
-						$test_file = $this->compress_options['html_cachedir'] . 'index.test';
-						$this->view->download("http://" . $_SERVER['HTTP_HOST'] .
-							str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']),
-							$test_file, 20);
-/* some errors with .htaccess, disable all options */
-						if (!@file_get_contents($test_file)) {
-							foreach ($modules as $module) {
-								$this->save_option("['htaccess']['" . $module . "']", 0);
-								$this->input['wss_htaccess_' . $module] = 0;
-							}
-							$this->save_option("['htaccess']['enabled']", 0);
-							$this->write_htaccess();
-						}
-						@unlink($test_file);
 					}
+					$test_file = $this->compress_options['html_cachedir'] . 'index.test';
+					$t = time() + microtime();
+					$this->view->download("http://" . $_SERVER['HTTP_HOST'] .
+						str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']),
+						$test_file, 20);
+/* enable HTML caching if server side expenses are more than 500ms + we have known engine */
+					if (time() + microtime() - $t > 0.5 && $this->internal) {
+						$this->save_option("['html_cache']['enabled']", 1);
+					}
+/* some errors with .htaccess, disable all options */
+					if ($ht && !@file_get_contents($test_file)) {
+						foreach ($modules as $module) {
+							$this->save_option("['htaccess']['" . $module . "']", 0);
+							$this->input['wss_htaccess_' . $module] = 0;
+						}
+						$this->save_option("['htaccess']['enabled']", 0);
+						$this->write_htaccess();
+					}
+					@unlink($test_file);
+					$this->save_option("['footer']['spot']", 1);
 /* enable client side caching */
 					$this->save_option("['far_future_expires']['css']", 1);
 					$this->save_option("['far_future_expires']['javascript']", 1);
@@ -613,7 +618,7 @@ class admin {
 					break;
 /* exclude JS from combine */
 				case 14:
-					$this->save_option("['external_scripts']['ignore_list']", urldecode($wizard_options));
+					$this->save_option("['external_scripts']['ignore_list']", htmlspecialchars($wizard_options));
 					break;
 /* enable minify JS with JSMin */
 				case 15:
@@ -700,6 +705,9 @@ class admin {
 /* enable gzip HTML */
 				case 30:
 					$this->save_option("['gzip']['html']", 1);
+					$this->save_option("['gzip']['fonts']", 1);
+					$this->save_option("['gzip']['cookie']", 1);
+					$this->save_option("['gzip']['noie']", 1);
 					$this->save_option("['htaccess']['enabled']", 1);
 					$this->compress_options['active'] = 1;
 					$this->compress_options['htaccess']['enabled'] = 1;
@@ -716,6 +724,9 @@ class admin {
 /* disable gzip HTML */
 				case 31:
 					$this->save_option("['gzip']['page']", 0);
+					$this->save_option("['gzip']['fonts']", 0);
+					$this->save_option("['gzip']['cookie']", 0);
+					$this->save_option("['gzip']['noie']", 0);
 					$this->save_option("['htaccess']['enabled']", 0);
 					$this->input['wss_htaccess_enabled'] = 0;
 					$this->write_htaccess();
@@ -736,9 +747,48 @@ class admin {
 					$this->save_option("['data_uris']['separate']", 0);
 					$this->save_option("['data_uris']['mhtml']", 0);
 					break;
-/* check server side delay */
+/* set JS host */
 				case 35:
-
+					$this->save_option("['minify']['javascript_host']", htmlspecialchars($wizard_options));
+					break;
+/* set CSS host */
+				case 36:
+					$this->save_option("['minify']['css_host']", htmlspecialchars($wizard_options));
+					break;
+/* set IMG host */
+				case 37:
+					$this->save_option("['parallel']['allowed_list']", htmlspecialchars($wizard_options));
+					break;
+/* enable CDN */
+				case 38:
+					$this->save_option("['parallel']['custom']", 0);
+					$this->save_option("['parallel']['css']", $this->compress_options['minify']['css_host'] ? 1 : 0);
+					$this->save_option("['parallel']['javascript']", $this->compress_options['minify']['javascript_host'] ? 1 : 0);
+					$this->save_option("['parallel']['enabled']", $this->compress_options['parallel']['allowed_list'] ? 1 : 0);
+					break;
+/* disable CDN */
+				case 39:
+					$this->save_option("['parallel']['custom']", 0);
+					$this->save_option("['parallel']['css']", 0);
+					$this->save_option("['parallel']['javascript']", 0);
+					$this->save_option("['parallel']['enabled']", 0);
+					$this->save_option("['minify']['css_host']", '');
+					$this->save_option("['minify']['javascript_host']", '');
+					$this->save_option("['parallel']['allowed_list']", '');
+					break;
+/* enable HTML Sprites */
+				case 40:
+					$this->save_option("['css_sprites']['html_sprites']", 1);
+					$this->save_option("['css_sprites']['html_limit']", 16);
+					break;
+/* enable HTML Sprites restriction */
+				case 41:
+					$this->save_option("['css_sprites']['html_sprites']", 1);
+					$this->save_option("['css_sprites']['html_limit']", round($wizard_options));
+					break;
+/* disable HTML Sprites */
+				case 42:
+					$this->save_option("['css_sprites']['html_sprites']", 0);
 					break;
 			}
 		} else {
