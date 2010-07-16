@@ -6,7 +6,7 @@
  *
  **/
  
- /* Abstract class that defines basic methods */
+ /* Abstract class that defines basic methods and contains several methods for SQL caching*/
  
  class webo_cache_engine {
  
@@ -77,7 +77,420 @@
 			exit();
 		}
  	}
+ 	
+ 	/* Returns array with information about given query. */
+ 	function get_query_info($sql)
+ 	{
+		$sql = ltrim($sql);
+		$quote = 0;
+		$slash = 0;
+		$table_stage = false;
+		$table_now = false;
+		$word = false;
+		$table = array();
+		$change = false;
+		$select = false;
+		$alias_now = false;
+		$cur_word = '';
+		$words = explode(' ', $sql, 2);
+		$first_word = strtolower($words[0]);
+		if ($first_word == 'select')
+		{
+			$sql = $words[1];
+			$select = true;
+		}
+		elseif ($first_word == 'delete')
+		{
+			$sql = $words[1];
+			$sql = ltrim($sql);
+			$words = explode(' ', $sql, 2);
+			$second_word = strtolower($words[0]);
+			if ($second_word == 'from')
+			{
+				$sql = $words[1];
+				$change = true;
+				$table_stage = true;
+			}
+			else
+			{
+				return array('select' => $select, 'table' => $table, 'change' => $change);
+			}
+		}
+		elseif ($first_word == 'insert')
+		{
+			$sql = $words[1];
+			$sql = ltrim($sql);
+			$words = explode(' ', $sql, 2);
+			$second_word = strtolower($words[0]);
+			if ($second_word == 'into')
+			{
+				$sql = $words[1];
+				$change = true;
+				$table_stage = true;
+			}
+			else
+			{
+				return array('select' => $select, 'table' => $table, 'change' => $change);
+			}
+		}
+		elseif ($first_word == 'update')
+		{
+			$sql = $words[1];
+			$change = true;
+			$table_stage = true;
+		}
+		else
+		{
+			return array('select' => $select, 'table' => $table, 'change' => $change);
+		}
+		$table_now = $change;
+		for ($i = 0; $i < strlen($sql); $i++)
+		{
+			if ($table_stage == true)
+			{
+				if ($quote == 0)
+				{
+					if ($sql[$i] == '`')
+					{
+						$word = true;
+						$quote = 1;
+					}
+					elseif ($sql[$i] == '\'')
+					{
+						$word = true;
+						$quote = 2;
+					}
+					elseif ($sql[$i] == '"')
+					{
+						$word = true;
+						$quote = 3;
+					}
+					elseif (($sql[$i] != ' ') && ($sql[$i] != ',') && ($sql[$i] != "\n") && ($word === false))
+					{
+						$word = true;
+						$cur_word = $sql[$i];
+					}
+					elseif ((($sql[$i] == ' ') || ($sql[$i] == ',') || ($sql[$i] == "\n")) && ($word === true))
+					{
+						$cur_word = strtolower($cur_word);
+						if (($cur_word == 'from') || ($cur_word == 'join'))
+						{
+							$table_now = true;
+						}
+						elseif (in_array($cur_word, array('where', 'group', 'having', 'order', 'limit', 'procedure', 'into')))
+						{
+							$i = strlen($sql);
+						}
+						elseif ($table_now == true)
+						{
+							$cur_word = str_replace($this->sql_prefix, '', $cur_word);
+							$table[$cur_word] = true;
+							if ($change == true)
+							{
+								$i = strlen($sql);
+							}
+							elseif ($sql[$i] == ',')
+							{
+								$table_now = true;
+							}
+							else
+							{
+								$alias_now = true;
+								$table_now = false;
+							}
+						}
+						elseif (($alias_now == true) && ($cur_word != 'as'))
+						{
+							$alias_now = false;
+							if ($sql[$i] == ',')
+							{
+								$table_now = true;
+							}
+						}
+						$word = false;
+						$cur_word = '';
+					}
+					elseif ($word == true)
+					{
+						$cur_word .= $sql[$i];
+					}
+				}
+				elseif ((($quote == 1) && ($sql[$i] == '`')) || (($quote == 2) && ($sql[$i] == '\'')) || (($quote == 3) && ($sql[$i] == '"')))
+				{
+					if ($slash == 0)
+					{
+						$quote = 0;
+					}
+					else
+					{
+						$cur_word .= $sql[$i];
+						$slash = 0;
+					}
+				}
+				elseif ($sql[$i] == '\\')
+				{
+					$slash = 1 - $slash;
+				}
+				else
+				{
+					$cur_word .= $sql[$i];
+				}
+			}
+			else
+			{
+				if ($quote == 0)
+				{
+					if ($sql[$i] == '`')
+					{
+						$quote = 1;
+					}
+					elseif ($sql[$i] == '\'')
+					{
+						$quote = 2;
+					}
+					elseif ($sql[$i] == '"')
+					{
+						$quote = 3;
+					}
+					elseif (($sql[$i] != ' ') && ($sql[$i] != ',') && ($sql[$i] != "\n") && ($word === false))
+					{
+						$word = true;
+						$cur_word = $sql[$i];
+					}
+					elseif ((($sql[$i] == ' ') || ($sql[$i] == ',') || ($sql[$i] == "\n")) && ($word === true))
+					{
+						if (strtolower($cur_word) == 'from')
+						{
+							$table_stage = true;
+							$table_now = true;
+						}
+						$word = false;
+						$cur_word = '';
+					}
+					elseif ($word == true)
+					{
+						$cur_word .= $sql[$i];
+					}
+				}
+				elseif ((($quote == 1) && ($sql[$i] == '`')) || (($quote == 2) && ($sql[$i] == '\'')) || (($quote == 3) && ($sql[$i] == '"')))
+				{
+					if ($slash == 0)
+					{
+						$quote = 0;
+					}
+					else
+					{
+						$slash = 1;
+					}
+				}
+				elseif ($sql[$i] == '\\')
+				{
+					$slash = 1 - $slash;
+				}
+			}
+		}
+		return array('select' => $select, 'table' => $table, 'change' => $change);
+ 	}
+ 	
+ 	function start_sql_cache ($compress_options, $prefix = '')
+ 	{
+		$queries = $this->get_entry('cached_queries.sql');
+		if ($queries)
+		{
+			$this->sql_cached_queries = unserialize($queries);
+		}
+		else
+		{
+			$this->sql_cached_queries = array();
+		}
+		$info = $this->get_entry('info.sql');
+		if ($info)
+		{
+			$info = unserialize($info);
+			$this->sql_tables = $info['tables'];
+			$this->sql_table_queries = $info['table_queries'];
+			$this->sql_last_ids = $info['last_ids'];
+		}
+		else
+		{
+			$this->sql_tables = array();
+			$this->sql_table_queries = array();
+			$this->sql_last_ids = array('table' => 0, 'query' => 0);
+		}
+		$this->sql_cache_time = $compress_options['sql_cache']['time'];
+		$this->sql_exclude_tables = explode(' ', $compress_options['sql_cache']['tables_exclude']);
+		$this->sql_cache_timeout = $compress_options['sql_cache']['timeout'];
+		$this->sql_cache_enabled = true;
+		$this->current_time = time();
+		$this->sql_cached_result = false;
+		$this->sql_cached_rows = 0;
+		$this->sql_cache_changed = false;
+		$this->sql_prefix = $prefix;
+		$this->clear_expired_sql();
+ 	}
+ 	
+ 	function save_sql_cache()
+ 	{
+ 		if (!empty($this->sql_cache_enabled) && ($this->sql_cache_changed))
+ 		{
+			$this->put_entry('info.sql', serialize(array('tables' => $this->sql_tables, 'table_queries' => $this->sql_table_queries, 'last_ids' => $this->sql_last_ids)), $this->current_time);
+			$this->put_entry('cached_queries.sql', serialize($this->sql_cached_queries), $this->current_time);
+		}
+ 	}
+ 	
+ 	function get_query_options($sql)
+ 	{
+ 		$change = false;
+ 		$cache_me = false;
+ 		$cache_hit = false;
+ 		$start = 0;
+ 		$tables = array();
+ 		$key = $sql;
+ 		if ($this->sql_cache_timeout >= 3600)
+ 		{
+ 			$key = preg_replace('(/(\d\d\d\d-\d\d-\d\d \d\d:)\d\d:\d\d/', '${1}00:00', $key);
+ 		}
+ 		elseif ($this->sql_cache_timeout >= 600)
+ 		{
+ 			$key = preg_replace('/(\d\d\d\d-\d\d-\d\d \d\d:\d)\d:\d\d/', '${1}0:00', $key);
+ 		}
+ 		elseif ($this->sql_cache_timeout >= 60)
+ 		{
+ 			$key = preg_replace('/(\d\d\d\d-\d\d-\d\d \d\d:\d\d:)\d\d/', '${1}00', $key);
+ 		}
+ 		elseif ($this->sql_cache_timeout >= 10)
+ 		{
+ 			$key = preg_replace('/(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d)\d/', '${1}0', $key);
+ 		}
+		if (!empty($this->sql_cache_enabled))
+		{
+			$query_info = $this->get_query_info($sql);
+			$tables = $query_info['table'];
+			foreach ($tables as $table => $value)
+			{
+				if (in_array($table, $this->sql_exclude_tables))
+				{
+					$query_info['select'] = false;
+					$query_info['change'] = false;
+				}
+			}
+			$change = $query_info['change'];
+		}
+		if (!empty($this->sql_cache_enabled) && ($query_info['select']))
+		{
+			if (!empty($this->sql_cached_queries[$key]))
+			{
+				$query = $this->sql_cached_queries[$key];
+				if (($this->current_time - $query['time'] < $this->sql_cache_timeout))
+				{
+					$this->sql_cached_result = $query['result'];
+					$this->sql_cached_rows = $query['num_rows'];
+					$cache_hit = true;
+				}
+			}
+			$start = microtime();
+			$cache_me = true;
+		}
+		return(array($cache_me, $change, $cache_hit, $tables, $start, $key));
+ 	}
+ 	
+ 	function add_to_sql_cache($mysql_result, $start, $query_tables, $sql)
+ 	{
+		$end = microtime();
+		if (((($end - $start) * 1000) > $this->sql_cache_time))
+		{
+			$this->sql_cache_changed = true;
+			$query_id = $this->sql_last_ids['query'];
+			$this->sql_last_ids['query']++;
+			foreach ($this->sql_tables as $table => $id)
+			{
+				if (!empty($query_tables[$table]))
+				{
+					unset($query_tables[$table]);
+					$this->sql_table_queries[$id][$query_id] = true;
+				}
+			}
+			foreach ($query_tables as $table => $value)
+			{
+				$id = $this->sql_last_ids['table'];
+				$this->sql_tables[$table] = $id;
+				$this->sql_table_queries[$id][$query_id] = true;
+				$this->sql_last_ids['table']++;
+			}
+			$this->sql_cached_queries[$sql] = array('time' => $this->current_time, 'id' => $query_id);
+			$result_array = array();
+			$num_rows = 0;
+			while ($row = mysql_fetch_assoc($mysql_result))
+			{
+				$num_rows++;
+				$result_array[] = $row;
+			}
+			$this->sql_cached_result = $result_array;
+			$this->sql_cached_rows = $num_rows;
+			$this->sql_cached_queries[$sql]['result'] = $result_array;
+			$this->sql_cached_queries[$sql]['num_rows'] = $num_rows;
+		}
+ 	}
 
+	function clear_expired_sql()
+	{
+		foreach ($this->sql_cached_queries as $query => $info)
+		{
+			if ($this->current_time - $info['time'] > $this->sql_cache_timeout)
+			{
+				$this->sql_cache_changed = true;
+				unset($this->sql_cached_queries[$query]);
+				foreach ($this->sql_table_queries as $id => $queries)
+				{
+					unset($this->sql_table_queries[$id][$info['id']]);
+				}
+			}
+		}
+	}
+
+ 	function update_sql_cache($tables)
+ 	{
+		foreach ($tables as $table => $value)
+		{
+			break;
+		}
+		if (isset($this->sql_tables[$table]))
+		{
+			$this->sql_cache_changed = true;
+			$table_id = $this->sql_tables[$table];
+			$drop_queries = $this->sql_table_queries[$table_id];
+			$this->sql_table_queries[$table_id] = array();
+			foreach ($this->sql_table_queries as $table_id => $queries)
+			{
+				if (count($this->sql_table_queries[$table_id]) != 0)
+				{
+					foreach ($drop_queries as $query_id => $value)
+					{
+						if (!empty($queries[$query_id]))
+						{
+							unset($this->sql_table_queries[$table_id][$query_id]);
+						}
+					}
+				}
+			}
+			$max_id = 0;
+			foreach ($this->sql_cached_queries as $query => $info)
+			{
+				foreach ($drop_queries as $query_id => $value)
+				{
+					if ($info['id'] == $query_id)
+					{
+						unset($this->sql_cached_queries[$query]);
+					}
+					elseif ($info['id'] > $max_id)
+					{
+						$max_id = $info['id'];
+					}
+				}
+			}
+			$this->sql_last_ids['query'] = $max_id + 1;
+		}
+ 	}
 }
 
 /* Here starts the section with different implementations of cache_engine abstract class. Every class name should start with 'cache_' and use some specific name for particular engine. For example, cache_files (stores cache items on filesystem) or cache_memcached (uses memcached to store cache items).

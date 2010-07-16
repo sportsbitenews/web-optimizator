@@ -18,8 +18,6 @@ $compress_options['javascript_cachedir'] = "";
 $compress_options['css_cachedir'] = "";
 ## Cache directory for HTML files
 $compress_options['html_cachedir'] = "";
-## Cache directory for SQL queries
-$compress_options['sql_cachedir'] = "";
 ## Website installation directory
 $compress_options['website_root'] = "";
 ## Document Root directory of the website
@@ -162,7 +160,7 @@ $compress_options['html_cache']['enhanced'] = "0";
 ## Minimum execution time to cache query result, in milliseconds
 $compress_options['sql_cache']['time'] = "1";
 ## List of tables to exclude from SQL cache
-$compress_options['sql_cache']['tables_exclude'] = "";
+$compress_options['sql_cache']['tables_exclude'] = "session";
 ## Cache timeout for queries, in seconds
 $compress_options['sql_cache']['timeout'] = "600";
 ## On or off 
