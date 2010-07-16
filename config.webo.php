@@ -142,7 +142,7 @@ $compress_options['far_future_expires']['external'] = "0";
 ## Cache generated HTML files
 $compress_options['html_cache']['enabled'] = "0";
 ## Cache SQL queries results
-$compress_options['html_cache']['sql'] = "1";
+$compress_options['html_cache']['sql'] = "0";
 ## Cache timeout for generated HTML files, in seconds
 $compress_options['html_cache']['timeout'] = "600";
 ## Flush head section with first N bytes of body?
