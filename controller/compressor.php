@@ -124,6 +124,7 @@ class web_optimizer {
   - headers have not been sent,
   - page is requested by GET,
   - no chained optimization,
+  - no debug mode,
   - external cache restriction.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
@@ -136,6 +137,7 @@ class web_optimizer {
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
+			empty($_GET['web_optimizer_debug']) &&
 			empty($this->no_cache);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
@@ -1241,7 +1243,7 @@ class web_optimizer {
 						$source = substr_replace($source, $newfile, $styles, 0);
 					}
 				} else {
-					$source = str_replace('@@@WSSSTYLES@@@', $newfile, $source);
+					$source = str_replace('@@@WSSSTYLES@@@', $newfile . '@@@WSSSTYLES@@@', $source);
 				}
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */

@@ -507,15 +507,22 @@ class admin {
 						'mod_setenvif',
 						'mod_rewrite');
 					foreach ($modules as $module) {
-							$this->save_option("['htaccess']['" . $module . "']", $ht && in_array($module, $this->apache_modules));
+						if ($ht && in_array($module, $this->apache_modules)) {
+							$this->save_option("['htaccess']['" . $module . "']", 1);
 							$this->input['wss_htaccess_' . $module] = 1;
+						}
 					}
 					if ($ht) {
 						$this->compress_options['active'] = 1;
 						$this->input['wss_htaccess_enabled'] = 1;
 						$this->input['wss_htaccess_local'] = 1;
 						$this->input['wss_gzip_fonts'] = 1;
+						$this->input['wss_far_future_expires_css'] = 1;
 						$this->input['wss_far_future_expires_images'] = 1;
+						$this->input['wss_far_future_expires_javascript'] = 1;
+						$this->input['wss_far_future_expires_fonts'] = 1;
+						$this->input['wss_far_future_expires_video'] = 1;
+						$this->input['wss_far_future_expires_static'] = 1;
 /* write complete test set of rules */
 						$this->write_htaccess();
 					}
@@ -704,7 +711,7 @@ class admin {
 					break;
 /* enable gzip HTML */
 				case 30:
-					$this->save_option("['gzip']['html']", 1);
+					$this->save_option("['gzip']['page']", 1);
 					$this->save_option("['gzip']['fonts']", 1);
 					$this->save_option("['gzip']['cookie']", 1);
 					$this->save_option("['gzip']['noie']", 1);
@@ -728,6 +735,13 @@ class admin {
 					$this->save_option("['gzip']['cookie']", 0);
 					$this->save_option("['gzip']['noie']", 0);
 					$this->save_option("['htaccess']['enabled']", 0);
+					foreach ($this->compress_options as $group => $options) {
+						if (is_array($options)) {
+							foreach ($options as $key => $option) {
+								$this->input['wss_'. $group . '_' . $key] = $option;
+							}
+						}
+					}
 					$this->input['wss_htaccess_enabled'] = 0;
 					$this->write_htaccess();
 					break;
@@ -780,11 +794,13 @@ class admin {
 				case 40:
 					$this->save_option("['css_sprites']['html_sprites']", 1);
 					$this->save_option("['css_sprites']['html_limit']", 16);
+					$this->save_option("['css_sprites']['html_page']", 1);
 					break;
 /* enable HTML Sprites restriction */
 				case 41:
 					$this->save_option("['css_sprites']['html_sprites']", 1);
 					$this->save_option("['css_sprites']['html_limit']", round($wizard_options));
+					$this->save_option("['css_sprites']['html_page']", 1);
 					break;
 /* disable HTML Sprites */
 				case 42:
@@ -4034,7 +4050,7 @@ http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-t
 http://code.google.com/p/web-optimizator/issues/detail?id=156 */
 			if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
 				$content .= "
-Options +FollowSymLinks +SymLinksIfOwnerMatch";
+Options +FollowSymLinks";
 			}
 /* try to add static gzip */
 			if (!empty($this->input['wss_htaccess_mod_mime'])) {
@@ -4818,7 +4834,7 @@ Options +FollowSymLinks +SymLinksIfOwnerMatch";
 		$timer = time();
 /* detect if hosting is compatible with SynLinks rule (included in core) */
 		if (@function_exists('curl_init') &&
-			$this->check_apache_module('Options +FollowSymLinks +SymLinksIfOwnerMatch', $root, $cachedir, 'mod_symlinks')) {
+			$this->check_apache_module('Options +FollowSymLinks', $root, $cachedir, 'mod_symlinks')) {
 				$this->apache_modules[] = 'mod_symlinks';
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
