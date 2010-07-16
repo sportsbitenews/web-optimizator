@@ -141,8 +141,6 @@ $compress_options['far_future_expires']['html_timeout'] = "60";
 $compress_options['far_future_expires']['external'] = "0";
 ## Cache generated HTML files
 $compress_options['html_cache']['enabled'] = "0";
-## Cache SQL queries results
-$compress_options['html_cache']['sql'] = "0";
 ## Cache timeout for generated HTML files, in seconds
 $compress_options['html_cache']['timeout'] = "600";
 ## Flush head section with first N bytes of body?
@@ -157,6 +155,8 @@ $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo
 $compress_options['html_cache']['additional_list'] = "";
 ## Enhanced mode for HTML caching
 $compress_options['html_cache']['enhanced'] = "0";
+## Cache SQL queries results
+$compress_options['sql_cache']['enabled'] = "0";
 ## Minimum execution time to cache query result, in milliseconds
 $compress_options['sql_cache']['time'] = "1";
 ## List of tables to exclude from SQL cache

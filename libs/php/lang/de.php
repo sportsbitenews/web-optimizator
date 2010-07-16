@@ -126,6 +126,7 @@ define('_WEBO_performance', 'Performance');
 define('_WEBO_data_uri', 'data:URI');
 define('_WEBO_css_sprites', 'CSS Sprites');
 define('_WEBO_serverside', 'Server side cache');
+define('_WEBO_sqlcache', 'DB cache');
 define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'Daily fee');
@@ -306,6 +307,20 @@ define('_WEBO_html_cache_enhanced', 'Extreme mode');
 define('_WEBO_html_cache_enhanced_HELP', 'With extreme mode all HTML document will be served bypassing normal CMS processing. This allows you to clear cache only manually but significantly increases website performance (especially in traffic peaks).');
 define('_WEBO_html_cache_enhanced_EFFECT', 'CPU savings 4-40%');
 define('_WEBO_html_cache_enhanced_DISABLED', 'To enable extreme mode for server side caching you need to have mod_rewrite for your server environment isntalled.');
+
+define('_WEBO_sql_cache_enabled', 'Cache DB queries');
+define('_WEBO_sql_cache_enabled_HELP', 'All DB queries will be cached if their execution take more than time set below. This will increase load speed of all website pages.');
+define('_WEBO_sql_cache_enabled_EFFECT', 'CPU savings 30-50%');
+define('_WEBO_sql_cache_enabled_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_time', 'Queries execution time (ms)');
+define('_WEBO_sql_cache_time_HELP', 'All queries which execution time (in ms) is greater will be cached.');
+define('_WEBO_sql_cache_time_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_timeout', 'DB cache timeout (s)');
+define('_WEBO_sql_cache_timeout_HELP', 'After this time all SQL queries will be re-requested from the current DB.');
+define('_WEBO_sql_cache_timeout_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_tables_exclude', 'Exclude table(s) (separated by space)');
+define('_WEBO_sql_cache_tables_exclude_HELP', 'You can exclude some tables from DB caching logic by setting their names (without prefix). All queries from such tables won\'t be cached.');
+define('_WEBO_sql_cache_tables_exclude_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
 
 define('_WEBO_performance_mtime', 'mtime-Datei (und Inhalt) nicht pr&uuml;fen');
 define('_WEBO_performance_mtime_HELP', 'There will be gained additional speedup (on server side). But to refresh combined files you will need to change calls of initial files in HTML code or to refresh WEBO Site SpeedUp cache.');

@@ -136,6 +136,14 @@ $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo
 $compress_options['html_cache']['additional_list'] = "";
 ## Enhanced mode for HTML caching
 $compress_options['html_cache']['enhanced'] = "1";
+## Cache SQL queries results
+$compress_options['sql_cache']['enabled'] = "1";
+## Minimum execution time to cache query result, in milliseconds
+$compress_options['sql_cache']['time'] = "1";
+## List of tables to exclude from SQL cache
+$compress_options['sql_cache']['tables_exclude'] = "session";
+## Cache timeout for queries, in seconds
+$compress_options['sql_cache']['timeout'] = "600";
 ## On or off 
 $compress_options['active'] = "0";
 ## Display a link back to Web Optimizer

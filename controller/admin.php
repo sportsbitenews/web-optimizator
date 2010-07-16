@@ -3286,6 +3286,34 @@ class admin {
 					'disabled' => !empty($this->restrictions['wss_htaccess_mod_rewrite'])
 				)
 			),
+			'sqlcache' => array(
+				'premium' => $this->premium < 2 ? 1 : 0,
+				'sql_cache_enabled' => array(
+					'value' => $this->compress_options['sql_cache']['enabled'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 12,
+					'disabled' => empty($this->internal)
+				),
+				'sql_cache_time' => array(
+					'value' => $this->compress_options['sql_cache']['time'],
+					'type' => 'smalltext',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => empty($this->internal)
+				),
+				'sql_cache_timeout' => array(
+					'value' => $this->compress_options['sql_cache']['timeout'],
+					'type' => 'smalltext',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => empty($this->internal)
+				),
+				'sql_cache_tables_exclude' => array(
+					'value' => $this->compress_options['sql_cache']['tables_exclude'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'disabled' => empty($this->internal)
+				)
+			),
 			'unobtrusive' => array(
 				'premium' => $this->premium < 2 ? 1 : 0,
 				'unobtrusive_on' => array(
@@ -3553,6 +3581,7 @@ class admin {
 			'wss_html_cache_ignore_list',
 			'wss_html_cache_allowed_list',
 			'wss_html_cache_additional_list',
+			'wss_sql_cache_tables_exclude',
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',
@@ -3577,6 +3606,8 @@ class admin {
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
 			'wss_html_cache_flush_size',
+			'wss_sql_cache_time',
+			'wss_sql_cache_timeout',
 			'wss_data_uris_size',
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
@@ -3638,6 +3669,7 @@ class admin {
 			'wss_html_cache_enabled',
 			'wss_html_cache_flush_only',
 			'wss_html_cache_enhanced',
+			'wss_sql_cache_enabled',
 			'wss_footer_text',
 			'wss_footer_spot',
 			'wss_data_uris_on',
