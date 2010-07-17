@@ -813,6 +813,21 @@ class admin {
 				case 44:
 					$this->save_option("['css_sprites']['html_sprites']", 0);
 					break;
+/* enable unobtrusive JavaScript  */
+				case 45:
+					$wizard_options = round($wizard_options);
+					$this->save_option("['unobtrusive']['informers']", ($wizard_options & 1) ? 1 : 0);
+					$this->save_option("['unobtrusive']['counters']", ($wizard_options & 2) ? 1 : 0);
+					$this->save_option("['unobtrusive']['ads']", ($wizard_options & 4) ? 1 : 0);
+					$this->save_option("['unobtrusive']['iframes']", ($wizard_options & 8) ? 1 : 0);
+					break;
+/* disable unobtrusive JavaScript  */
+				case 46:
+					$this->save_option("['unobtrusive']['informers']", 0);
+					$this->save_option("['unobtrusive']['counters']", 0);
+					$this->save_option("['unobtrusive']['ads']", 0);
+					$this->save_option("['unobtrusive']['iframes']", 0);
+					break;
 			}
 		} else {
 /* show generic page */
