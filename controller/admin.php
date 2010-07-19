@@ -756,11 +756,13 @@ class admin {
 				case 34:
 					$this->save_option("['data_uris']['on']", 1);
 					$this->save_option("['data_uris']['separate']", 1);
+					$this->save_option("['data_uris']['domloaded']", 1);
 					$this->save_option("['data_uris']['mhtml']", 1);
 					break;
 /* disable separation data:URI */
 				case 35:
 					$this->save_option("['data_uris']['separate']", 0);
+					$this->save_option("['data_uris']['domloaded']", 0);
 					break;
 /* disable data:URI + mhtml */
 				case 36:

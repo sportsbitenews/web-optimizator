@@ -88,6 +88,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssA7{background:url(purchase.png) no-repeat;padding-bottom:8px}
 .wssA8{background:url(balance.png) 0 4px no-repeat;margin-top:19px}
 .wssA9{background:url(cdn.png) 0 3px no-repeat}
+.wssA10{background:url(wizard.png) 0 4px no-repeat;margin-top:18px}
 
 .wssB{background:none;color:#000;font:400 18px Tahoma,Arial,Tahoma,Sans-serif;margin:0;padding:20px 0 0 13px}
 .wssH .wssB{color:#bf6200;font-size:17px;margin-top:-7px;padding:0;position:relative;z-index:12}
@@ -117,6 +118,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC6{height:681px;margin:0;padding:0}
 .wssC7{height:auto;margin-top:15px}
 .wssC8{background:#f7f4e9;display:block;padding:11px 20px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+.wssC9{float:left;height:300px;width:260px}
+.wssC11{background:#f7f4e9;height:300px;margin:0 0 20px 260px;padding:16px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 
 .wssD{margin:0;padding:9px 0 0 13px;width:280px}
 .wssC2 .wssD{padding-top:7px}
@@ -200,6 +203,7 @@ a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:ur
 .wssC6 .wssI{margin-left:186px;padding-top:19px}
 .wssC7 .wssI{margin:0;padding:1px 0 4px}
 .wssC7 .wssC4 .wssI{float:none;padding:12px 0 0}
+.wssC10 .wssI{color:#666;float:left;width:260px}
 .wssH16 .wssI{padding-top:14px}
 .wssK0 .wssI{font-size:16px;padding:0}
 .wssK0 .wssO8 .wssI{font-size:14px;color:#000}
@@ -241,6 +245,7 @@ a.wssJ9:hover .wssJ00,.wssD20 .wssD21,.wssD22 .wssD21{display:block}
 .wssC6 .wssO4 a.wssJ:hover,.wssC6 .wssO4 a.wssJ:focus,.wssC6 .wssO4 a.wssJ:active{color:#2b83ae!important}
 .wssC6 .wssO4 .wssO14,.wssC6 .wssO4 a.wssO14:hover,.wssC6 .wssO4 a.wssO14:focus,.wssC6 .wssO4 a.wssO14:active{color:#ff4000!important}
 .wssC6 .wssO5 .wssJ{background:#f7f4e9;border-color:#fbf9f3;color:#000}
+.wssC9 .wssJ,.wssC9 a.wssJ:hover,.wssC9 a.wssJ:focus,.wssC9 a.wssJ:link{color:#999!important;font-size:16px;line-height:22px;text-decoration:none}
 .wssU11 .wssJ{border:1px solid #f7f4e9;color:#808080!important;display:block;height:24px;outline:0;padding-top:93px;position:relative;text-align:center;text-decoration:none!important;width:117px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
 .wssU12 .wssJ,.wssU12 a.wssJ:hover,.wssU12 a.wssJ:focus,.wssU12 a.wssJ:active{color:#fff!important;border-color:#ff8200}
@@ -311,6 +316,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -40px 2px no-repeat}
 .wssN20 a.wssJ20:hover{background-position:0 1px}
 #wss_help .wssJ20{background:url(corner.welcome.png) no-repeat;height:35px;right:-1px;top:-1px;width:35px}
 #wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
+.wssJ30{border:4px solid #ccc;display:inline-block;-moz-border-radius:14px;-webkit-border-radius:14px;border-radius:14px;margin-right:5px;padding-left:6px;width:15px}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK0{border-color:#f00;display:none;left:2%;position:absolute;top:82px;width:96%;z-index:999}
@@ -405,6 +411,8 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO4{margin:0;padding:0 5px 5px 0; list-style: none;}
 .wssN20 .wssO4{color:#b2b2b2}
 .wssO3 .wssO4,.wssO7 .wssO8{color:#808080;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;list-style-type:disc;margin:0 0 0 24px;padding-left:2px}
+.wssC9 .wssO7{height:200px;padding:0;width:260px}
+.wssC9 .wssO8{list-style:none!important;margin:0;padding:11px 0 16px 0}
 #wss_content .wssO3 .wssO4,#wss_content .wssO7 .wssO8{background:none}
 .wssC5 .wssO4{list-style:none;margin:0;padding:0}
 .wssC6 .wssO4{border:1px solid #fff;font-size:13px;list-style:none;margin:0;padding:0;width:187px;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-moz-border-radius-topleft:8px;-moz-border-radius-bottomleft:8px;border-top-left-radius:8px;border-bottom-left-radius:8px}
@@ -643,5 +651,5 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}
-#wss_website{min-width:770px;max-width:1180px}
-#wss_website_initial{min-width:770px;max-width:1180px}
+#wss_website{border:1px solid #000;height:400px;width:100%;overflow:auto}
+#wss_website_initial{border:1px solid #fff;height:400px;width:100%;overflow:auto;margin-top:-402px;visibility:hidden}

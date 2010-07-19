@@ -992,4 +992,34 @@ define('_WEBO_SAAS_ADD', 'Пополнить');
 define('_WEBO_SAAS_EFFECT', 'Эффект применения');
 define('_WEBO_SAAS_ERROR', 'Неверный код');
 define('_WEBO_SAAS_SUCCESS', 'Код активирован');
+
+/* Wizard variables */
+define('_WEBO_WIZARD_TITLE', 'Мастер настройки');
+define('_WEBO_WIZARD_STEP1', 'Автоматическая настройка');
+define('_WEBO_WIZARD_STEP2', 'Ручная настройка');
+define('_WEBO_WIZARD_STEP3', 'Завершение настройки');
+define('_WEBO_WIZARD_NOTE', 'Пожалуйста, проверьте внешний вид ускоренного сайта. Сайт выглядит нормально?');
+define('_WEBO_WIZARD_PREVIEW', 'Предпросмотр сайта');
+define('_WEBO_WIZARD_STEP11', 'Оптимизация CSS');
+define('_WEBO_WIZARD_STEP11_INFO', 'Сейчас все файлы стилей сайта автоматически объединяются и минимизируются, чтобы максимально ускорить отображение сайта в браузере.');
+define('_WEBO_WIZARD_STEP12', 'Оптимизация JavaScript');
+define('_WEBO_WIZARD_STEP12_INFO', 'Сейчас все файлы скриптов сайта автоматически объединяются и минимизируются, чтобы уменьшить время загрузки.');
+define('_WEBO_WIZARD_STEP21', 'Настройка серверного кэширования');
+define('_WEBO_WIZARD_STEP211', 'Сайт нельзя полностью кэшировать');
+define('_WEBO_WIZARD_STEP211_HELP', 'Сайт не содержит динамических элементов на страницах и может быть показываться всем пользователям без изменений.');
+define('_WEBO_WIZARD_STEP212', 'Сайт можно полностью кэшировать');
+define('_WEBO_WIZARD_STEP212_HELP', 'На сайте есть изменяющееся содержание, которое нельзя показывать одинаково для всех посетителей.');
+define('_WEBO_WIZARD_STEP210', 'Не настраивать кэширование прямо сейчас');
+define('_WEBO_WIZARD_STEP210_HELP', 'Вы всегда можете вернуться к настройке серверного кэширования на странице &laquo;Настройка&raquo; в активной конфигурации.');
+define('_WEBO_WIZARD_STEP22', 'Настройка CDN');
+define('_WEBO_WIZARD_STEP221', 'Продолжить использовать текущую CDN');
+define('_WEBO_WIZARD_STEP221_HELP', 'В результате автоматической настройки было определено, что сайт использует CDN. Вы можете продолжить ее использование.');
+define('_WEBO_WIZARD_STEP222', 'Использовать WEBO CDN');
+define('_WEBO_WIZARD_STEP222_HELP', 'WEBO CDN позволяет значительно ускорить доставку сайта до целевых пользователей за счет распределнной сети региональных серверов.');
+define('_WEBO_WIZARD_STEP220', 'Не настраивать CDN прямо сейчас');
+define('_WEBO_WIZARD_STEP220_HELP', 'Вы всегда можете вернуться к настройке CDN на странице &laquo;Настройка&raquo; в активной конфигурации.');
+define('_WEBO_WIZARD_STEP3', 'Сайт полностью ускорен');
+define('_WEBO_WIZARD_STEP3_INFO', 'В результате оптимизации сайт был полностью ускорен. Пожалуйста, включите WEBO Site SpeedUp, если с сайтом все в порядке.');
+define('_WEBO_WIZARD_NEXT', 'Дальше');
+define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
 ?>
