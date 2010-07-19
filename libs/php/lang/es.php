@@ -302,7 +302,7 @@ define('_WEBO_html_cache_additional_list', 'List of COOKIE to exclude from serve
 define('_WEBO_html_cache_additional_list_HELP', 'You can also skip server side caching for user who have one of the COOKIE from this list. This can be useful for authorized users or during the work with shopping cart.');
 define('_WEBO_html_cache_additional_list_EFFECT', 'Server side caching compatibility with user activity');
 define('_WEBO_html_cache_enhanced', 'Extreme mode');
-define('_WEBO_html_cache_enhanced_HELP', 'With extreme mode all HTML document will be served bypassing normal CMS processing. This allows you to clear cache only manually but significantly increases website performance (especially in traffic peaks).');
+define('_WEBO_html_cache_enhanced_HELP', 'In extreme mode all HTML documents will be served from cache directly, bypassing normal CMS processing. This will significantly increase website performance (especially useful on traffic peaks), but cache can be refreshed only manually. By default extreme mode for server side caching is available only on systems which uses web-servers with .htaccess support (Apache, LiteSpeed). Other web-servers configurations should be manually changed, according to [http://code.google.com/p/web-optimizator/wiki/IntegrationWithWebsite Integration with website] section of documentation.');
 define('_WEBO_html_cache_enhanced_EFFECT', 'CPU savings 4-40%');
 define('_WEBO_html_cache_enhanced_DISABLED', 'To enable extreme mode for server side caching you need to have mod_rewrite for your server environment isntalled.');
 
