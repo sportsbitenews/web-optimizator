@@ -491,6 +491,22 @@
 			$this->sql_last_ids['query'] = $max_id + 1;
 		}
  	}
+ 	
+ 	
+ 	function clear_sql_cache()
+ 	{
+ 		if (!$this->enabled)
+ 		{
+ 			$this->enabled = true;
+ 			$result = $this->delete_entries(array('cached_queries.sql', 'info.sql'));
+ 			$this->enabled = false;
+		}
+		else
+		{
+			$result = $this->delete_entries(array('cached_queries.sql', 'info.sql'));
+		}
+		return $result;
+ 	}
 }
 
 /* Here starts the section with different implementations of cache_engine abstract class. Every class name should start with 'cache_' and use some specific name for particular engine. For example, cache_files (stores cache items on filesystem) or cache_memcached (uses memcached to store cache items).

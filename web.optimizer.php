@@ -30,7 +30,7 @@ if ($compress_options['php'] == 4) {
 }
 
 /* We need to know the config */
-require_once($basepath . "config.webo.php");
+require($basepath . "config.webo.php");
 
 /* buffer input stream or not */
 $compress_options['buffered'] = empty($not_buffered) ? 1 : 0;
