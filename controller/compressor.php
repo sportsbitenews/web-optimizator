@@ -1834,6 +1834,18 @@ class web_optimizer {
 			}
 /* find all scripts from head */
 			$regex = "!(<script[^>]*>)(.*?</script>)!is";
+/* envelope all script calls to try-catch */
+			if (isset($_GET['web_optimizer_debug'])) {
+				preg_match_all($regex, $this->content, $matches, PREG_SET_ORDER);
+				foreach ($matches as $match) {
+					if (trim(preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0]))) {
+						$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $match[0]);
+						$new_source = preg_replace("@(</script>)@", "}catch(e){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1}$1", $new_source);
+						$this->content = str_replace($match[0], $new_source, $this->content);
+						$toparse = str_replace($match[0], $new_source, $toparse);
+					}
+				}
+			}
 			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
 			if (!empty($matches)) {
 				foreach($matches as $match) {
@@ -1849,19 +1861,6 @@ class web_optimizer {
 							$file['file'] = trim($this->strip_querystring($variant_type[1]));
 							$file['file_raw'] = $variant_type[1];
 						}
-					}
-/* envelope all script calls to try-catch */
-					if (isset($_GET['web_optimizer_debug'])) {
-						$catch = "}catch(e){__WSSERR=(typeof __WSSERR!=='undefined'?__WSSERR:0)+1}";
-						if (trim($file['content'])) {
-							$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $file['source']);
-							$new_source = preg_replace("@(</script>)@", $catch . "$1", $new_source);
-						} else {
-							$new_source = '<script type="text/javascript">try{document.write("' .
-								str_replace(array('"', '<'), array('\\"', '\x3c'), $file['source']) . '")' . $catch . '</script>';
-						}
-						$this->content = str_replace($file['source'], $new_source, $this->content);
-						$file['source'] = $new_source;
 					}
 /* skip external files if option is disabled */
 					if (($this->options['javascript']['external_scripts'] && $curl) ||
@@ -2901,7 +2900,7 @@ class web_optimizer {
 			}
 /* add info about client side load speed */
 			if (!empty($_GET['web_optimizer_debug'])) {
-				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS}, false)</script>", $this->content);
+				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'error',function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1},false)</script>", $this->content);
 			}
 /* add WEBO Site SpeedUp stamp */
 			if (!empty($this->options['page']['footer'])) {
