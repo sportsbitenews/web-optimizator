@@ -105,9 +105,9 @@ if ($wizard_mode) {
 ?>" value="0" checked="checked"/></dd></dl><a href="#wss_wizard" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
-	echo _WEBO_WIZARD_STEP3;
+	echo _WEBO_WIZARD_STEP31;
 ?></h3><p class="wssI"><?php
-	echo _WEBO_WIZARD_STEP3_INFO;
+	echo _WEBO_WIZARD_STEP31_INFO;
 ?></p><a href="#wss_wizard" class="wssJ5"><?php
 	echo _WEBO_WIZARD_SAVE;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><h3 class="wssB3"><?php

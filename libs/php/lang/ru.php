@@ -1030,8 +1030,8 @@ define('_WEBO_WIZARD_STEP222', 'Использовать WEBO CDN');
 define('_WEBO_WIZARD_STEP222_HELP', 'WEBO CDN позволяет значительно ускорить доставку сайта до целевых пользователей за счет распределнной сети региональных серверов.');
 define('_WEBO_WIZARD_STEP220', 'Не настраивать CDN прямо сейчас');
 define('_WEBO_WIZARD_STEP220_HELP', 'Вы всегда можете вернуться к настройке CDN на странице &laquo;Настройка&raquo; в активной конфигурации.');
-define('_WEBO_WIZARD_STEP3', 'Сайт полностью ускорен');
-define('_WEBO_WIZARD_STEP3_INFO', 'В результате оптимизации сайт был полностью ускорен. Пожалуйста, включите WEBO Site SpeedUp, если с сайтом все в порядке.');
+define('_WEBO_WIZARD_STEP31', 'Сайт полностью ускорен');
+define('_WEBO_WIZARD_STEP31_INFO', 'В результате оптимизации сайт был полностью ускорен. Пожалуйста, включите WEBO Site SpeedUp, если с сайтом все в порядке.');
 define('_WEBO_WIZARD_NEXT', 'Дальше');
 define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
 ?>
