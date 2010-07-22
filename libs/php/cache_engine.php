@@ -388,7 +388,8 @@
 					$cache_hit = true;
 				}
 			}
-			$start = microtime();
+			$start = explode(' ', microtime());
+			$start = $start[1] + $start[0];
 			$cache_me = true;
 		}
 		return(array($cache_me, $change, $cache_hit, $tables, $start, $key));
@@ -396,7 +397,8 @@
  	
  	function add_to_sql_cache($mysql_result, $start, $query_tables, $sql)
  	{
-		$end = microtime();
+		$end = explode(' ', microtime());
+		$end = $end[1] + $end[0];
 		if (((($end - $start) * 1000) > $this->sql_cache_time))
 		{
 			$this->sql_cache_changed = true;
@@ -429,6 +431,11 @@
 			$this->sql_cached_rows = $num_rows;
 			$this->sql_cached_queries[$sql]['result'] = $result_array;
 			$this->sql_cached_queries[$sql]['num_rows'] = $num_rows;
+			return true;
+		}
+		else
+		{
+			return false;
 		}
  	}
 
@@ -1199,6 +1206,205 @@ class webo_cache_files extends webo_cache_engine
 				{
 					$item = apc_fetch($this->prefix . $key);
 					if ($item !== false)
+					{
+						$count++;
+						$size += strlen(serialize($item));
+					}
+				}
+			}
+		}
+		if ($number === false)
+		{
+			return $size;
+		}
+		else
+		{
+			return array($size, $count);
+		}
+	}
+}
+
+ class webo_cache_xcache extends webo_cache_engine {
+ 
+ 	/* Class constructor. Expects options array. */
+ 	
+ 	function webo_cache_xcache($options)
+ 	{
+ 		if(function_exists('xcache_set'))
+ 		{
+			$this->enabled = true;
+		}
+		else
+		{
+			$this->enabled = false;
+		}
+		$this->cached = array();
+		$this->prefix = 'webo_cache_';
+ 	}
+
+ 	/* Adds or updates entry. Expects key string and value to cache. */
+ 	
+ 	function put_entry($key, $value, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return;
+		}
+		$entries = xcache_get('webo_files_list');
+		if(($entries === NULL) || !is_array($entries))		//filelist is broken or removed from server so we need to clear cache
+		{
+			xcache_unset('user');
+			$entries = array();
+		}
+		xcache_set($this->prefix . $key, array('value' => $value, 'time' => $time));
+		$entries[$key] = 1;
+		xcache_set('webo_files_list', $entries);
+ 	}
+
+ 	/* Get cache entry by key. Expects key string. */
+ 	
+ 	function get_entry($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		if (!empty($this->cached[$key]['value']))
+		{
+			return $this->cached[$key]['value'];
+		}
+		$item = xcache_get($this->prefix . $key);
+		if(empty($item['value']))
+		{
+			return false;
+		}
+		else
+		{
+			$this->cached[$key] = $item;
+			return $item['value'];
+		}
+ 	}
+ 	
+ 	/* Clear cache entries by pattern(s). Expects pattern or array of patterns. */
+ 	
+ 	function delete_entries($patterns)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		if (!empty($patterns))
+		{
+			$all_files = xcache_get('webo_files_list');
+			if(($all_files === NULL) || !is_array($all_files))
+			{
+				xcache_unset('user');
+				xcache_set('webo_files_list', array());
+				return;
+			}
+			if (is_array($patterns))
+			{
+				foreach($patterns as $pattern)
+				{
+					foreach($all_files as $key => $value)
+					{
+						if(@preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+						{
+							xcache_unset($this->prefix . $key);
+							unset($all_files[$key]);
+						}
+					}
+				}
+				xcache_set('webo_files_list', $all_files);
+			}
+			else
+			{
+				foreach($all_files as $key => $value)
+				{
+					if(@preg_match('/^' . strtr(addcslashes($patterns, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+					{
+						xcache_unset($this->prefix . $key);
+						unset($all_files[$key]);
+					}
+				}
+				xcache_set('webo_files_list', $all_files);
+			}
+		}
+ 	}
+
+ 	/* Gets creation time of cache entry. Expects key string. */
+ 	
+ 	function get_mtime($key)
+ 	{
+		if (!$this->enabled)
+		{
+			return 0;
+		}
+		if(!empty($this->cached[$key]['time']))
+		{
+			return $this->cached[$key]['time'];
+		}
+		$item = xcache_get($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return 0;
+		}
+		else
+		{
+			$this->cached[$key] = $item;
+			return $item['time'];
+		}
+ 	}
+
+ 	/* Sets creation time of cache entry. Expects key string and time to set. */
+ 	
+ 	function set_mtime($key, $time)
+ 	{
+		if (!$this->enabled)
+		{
+			return false;
+		}
+		$item = xcache_get($this->prefix . $key);
+		if (empty($item['time']))
+		{
+			return false;
+		}
+		else
+		{
+			$item['time'] = $time;
+			xcache_set($key, $item);
+		}
+ 	}
+ 
+	function get_cache_size($mask, $number = false)
+	{
+		if (!$this->enabled)
+		{
+			if ($number === false)
+			{
+				return 0;
+			}
+			else
+			{
+				return array(0,0);
+			}
+		}
+		$size = 0;
+		$count = 0;
+		$all_files = xcache_get('webo_files_list');
+		if(($all_files === NULL) || !is_array($all_files))
+		{
+			xcache_clear_cache();
+			xcache_set('webo_files_list', array());
+		}
+		else
+		{
+			foreach($all_files as $key => $value)
+			{
+				if(@preg_match('/^' . strtr(addcslashes($mask, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key))
+				{
+					$item = xcache_get($this->prefix . $key);
+					if ($item !== NULL)
 					{
 						$count++;
 						$size += strlen(serialize($item));
