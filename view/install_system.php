@@ -173,7 +173,7 @@
 ?><span class="wssJ6"></span></a></p><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_ISSUES;
 ?></h2><?php
-	if ($e + $w) {
+	if ($e + $w + $i) {
 ?><ul class="wssO"><?php
 		foreach ($errors as $key => $value) {
 			if (empty($value)) {
@@ -187,6 +187,15 @@
 		foreach ($warnings as $key => $value) {
 			if (empty($value)) {
 ?><li class="wssO1 wssO2"><?php
+				echo constant('_WEBO_SYSTEM_' . $key);
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
+			}
+		}
+		foreach ($infos as $key => $value) {
+			if (empty($value)) {
+?><li class="wssO1 wssO32"><?php
 				echo constant('_WEBO_SYSTEM_' . $key);
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));

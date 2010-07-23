@@ -1626,9 +1626,6 @@ class admin {
 			'not_active' => $spot || !$this->compress_options['footer']['spot']
 		);
 		$warnings = array(
-			'htaccess_writable' => !$htaccess_available ||
-				@is_writable($website_root) ||
-				@is_writable($website_root . '.htaccess'),
 			'index_writable' => @is_writable($website_root . 'index.php') ||
 				$this->internal,
 			'curl_possibility' => in_array('curl', $extensions) &&
@@ -1646,6 +1643,13 @@ class admin {
 					(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 					!empty($gd['PNG Support']) &&
 					!empty($gd['WBMP Support'])),
+			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
+			'wordpress_cache_enabled' => $wp_cache_enabled
+		);
+		$infos = array(
+			'htaccess_writable' => !$htaccess_available ||
+				@is_writable($website_root) ||
+				@is_writable($website_root . '.htaccess'),
 			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) ||
 				$nginx || $iis ||
 				in_array('mod_gzip', $this->apache_modules),
@@ -1664,8 +1668,6 @@ class admin {
 				$this->compress_options['htaccess']['access']) ||
 				$this->internal,
 			'cms' => $this->system_info($website_root),
-			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
-			'wordpress_cache_enabled' => $wp_cache_enabled,
 			'heavy_optimization' => !$this->compress_options['active'] ||
 				($this->compress_options['performance']['mtime'] &&
 				!$this->compress_options['minify']['javascript_body'] &&
@@ -1689,7 +1691,7 @@ class admin {
 			'large_delay' => $standard_delay < 1,
 			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 300,
 		);
-		$e = $w = 0;
+		$e = $w = $i = 0;
 /* count acturl troubles / warnings */
 		foreach ($errors as $key => $value) {
 			if (empty($value)) {
@@ -1701,12 +1703,19 @@ class admin {
 				$w++;
 			}
 		}
+		foreach ($infos as $key => $value) {
+			if (empty($value)) {
+				$i++;
+			}
+		}
 /* set variables */
 		$page_variables = array(
 			'errors' => $errors,
 			'warnings' => $warnings,
+			'infos' => $infos,
 			'e' => $e,
 			'w' => $w,
+			'i' => $i,
 			"skip_render" => $this->skip_render
 		);
 		if (!$return) {

@@ -5,7 +5,7 @@ Short notice about CSS deploymner.
 2. To create CSS package please go to http://sprites.in/
  a) Convert to data:URI - enabled
  b) Add additional space - enabled
- c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png
+ c) Exclude files - welcome.screens.ru.jpg welcome.screens.en.jpg lang.selected.png schemas.png
 3. Download new package and deploy it
 4. Final list of files
  wss.css
@@ -50,9 +50,10 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important;opacity:1}
 .wss_e2 a.wss_g:hover{background:#ff8200 url(lang.bottom.hover.png) no-repeat}
 .wss_h{background:#fff;left:0;opacity:0;position:absolute;visibility:hidden;top:100px;width:100%;height:90%}
 .wssC4 .wss_h{display:none;height:250px;opacity:100;position:static;visibility:visible}
-.wss_l{background:url(stamps.png) no-repeat;color:#808080;float:left;font:54px/119px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:119px;margin:200px 38% 30px;padding-left:136px;position:relative;width:280px}
+.wss_l,.wss_m{background-image:url(stamps.png)}
+.wss_l{background-repeat:no-repeat;color:#808080;float:left;font:54px/119px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:119px;margin:200px 38% 30px;padding-left:136px;position:relative;width:280px}
 .wssC4 .wss_l{color:#808080;margin:20px 38%}
-.wss_m{background:url(stamps.png) 0 -124px no-repeat;bottom:0;display:block;height:119px;left:0;position:absolute;width:119px}
+.wss_m{background-repeat:no-repeat;background-position:0 -124px;bottom:0;display:block;height:119px;left:0;position:absolute;width:119px}
 .wssC4 .wss_m{height:0}
 #wss_mess{color:#808080;font:18px/20px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0 auto;width:420px;text-align:center}
 .wssC4 #wss_mess{color:#808080}
@@ -120,7 +121,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC7{height:auto;margin-top:15px}
 .wssC8{background:#f7f4e9;display:block;padding:11px 20px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssC9{float:left;height:300px;width:260px}
-.wssC11{background:#f7f4e9 url(../../images/schemas.png) 1000px 1000px no-repeat;height:268px;margin:0 0 20px 260px;max-width:500px;padding:16px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+.wssC11{background:#f7f4e9 url(../../images/schemas.png) no-repeat;height:268px;margin:0 0 20px 260px;max-width:500px;padding:16px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssC21{background-position:20px 120px}
 .wssC22{background-position:20px 121px}
 .wssC23{background-position:20px 121px}
@@ -155,7 +156,7 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssD7.wssD8 .wssD3{top:3px}
 .wssD9{border:1px solid #fbddb8;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;margin:0 0 0 182px;padding:0}
 .wssD10{background:#f7f4e9;border:1px solid #fbf9f3;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;height:515px;min-height:140px;margin:0;position:relative;padding:11px 15px}
-.wssC13 .wssD10{height:200px}
+.wssC13 .wssD10{border:0;height:200px}
 #wssas .wssD10{overflow:auto}
 .wssD11{height:400px}
 .wssD12{background:url(parent.png) 0 4px no-repeat;color:#808080;font-size:11px;margin:0 1px;padding-left:12px}
@@ -206,7 +207,7 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssH14{font-size:13px}
 .wssH15{height:71px;padding:0;margin:0 0 0 40%;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssH18{background:url(add.orange.png) 0 1px no-repeat;padding:0 20px 0 21px}
-a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat}
+a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat;padding:0 20px 0 21px}
 .wssB4{color:#ff4000;padding-bottom:0;margin:10px 0 10px 11px}
 
 .wssI{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
@@ -250,7 +251,7 @@ a.wssJ9:hover .wssJ00,.wssD20 .wssD21,.wssD22 .wssD21{display:block}
 .wssN20 .wssO4 .wssJ{color:#b2b2b2!important}
 .wssN .wssI1 .wssJ{color:red}
 .wssT7 .wssJ{background:no-repeat;color:#fff!important;font:400 14px/28px "Trebuchet MS",Arial,Tahoma,Sans-serif;display:block;height:28px;margin:8px auto 0;outline:0;text-decoration:none!important;text-indent:20px;text-shadow:#808080 -1px 0 1px;width:100px}
-.wssT7 .wssJ,.wss_q{background-image:url(buttons.red.png)}
+.wssT7 .wssJ,.wss_q,..wssO9 .wssJ32{background-image:url(buttons.red.png)}
 .wssT7 a.wssJ:hover,.wssT7 a.wssJ:focus,.wssT7 a.wssJ:active{background-position:0 -35px;color:#fff!important}
 .wssH .wssJ{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssC5 .wssJ{font-size:12px;line-height:18px;padding-left:3px}
@@ -258,8 +259,8 @@ a.wssJ9:hover .wssJ00,.wssD20 .wssD21,.wssD22 .wssD21{display:block}
 .wssC6 .wssO4 a.wssJ:hover,.wssC6 .wssO4 a.wssJ:focus,.wssC6 .wssO4 a.wssJ:active{color:#2b83ae!important}
 .wssC6 .wssO4 .wssO14,.wssC6 .wssO4 a.wssO14:hover,.wssC6 .wssO4 a.wssO14:focus,.wssC6 .wssO4 a.wssO14:active{color:#ff4000!important}
 .wssC6 .wssO5 .wssJ{background:#f7f4e9;border-color:#fbf9f3;color:#000}
-.wssC9 .wssJ{color:#999!important;font-size:16px;line-height:22px;text-decoration:none}
-.wssC9 .wssO9 .wssJ,.wssC9 .wssO10 .wssJ{color:#ff8200!important}
+.wssC9 .wssJ,.wssC9 a.wssJ:active,.wssC9 a.wssJ:focus,.wssC9 a.wssJ:hover{color:#999!important;font-size:16px;line-height:22px;text-decoration:none}
+.wssC9 .wssO9 .wssJ,.wssC9 .wssO9 a.wssJ:active,.wssC9 .wssO9 a.wssJ:focus,.wssC9 .wssO9 a.wssJ:hover,.wssC9 .wssO10 .wssJ,.wssC9 .wssO10 a.wssJ:active,.wssC9 .wssO10 .wssO9 a.wssJ:focus,.wssC9 .wssO10 .wssO9 a.wssJ:hover{color:#ff8200!important}
 .wssU11 .wssJ{border:1px solid #f7f4e9;color:#808080!important;display:block;height:24px;outline:0;padding-top:93px;position:relative;text-align:center;text-decoration:none!important;width:117px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssU11 a.wssJ:hover,.wssU11 a.wssJ:focus,.wssU11 a.wssJ:active{color:#808080!important;border-color:#ffd9b2}
 .wssU12 .wssJ,.wssU12 a.wssJ:hover,.wssU12 a.wssJ:focus,.wssU12 a.wssJ:active{color:#fff!important;border-color:#ff8200}
@@ -336,7 +337,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -40px 2px no-repeat}
 .wssJ31{background:url(wizard1.png) no-repeat;display:block;height:170px;position:absolute;right:-47px;top:173px;width:174px}
 .wssC13 .wssJ31{background:url(wizard2.png) no-repeat;height:170px;width:174px}
 .wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:170px;width:174px}
-.wssO9 .wssJ32{background:url(buttons.red.png) -190px -68px no-repeat;display:block;height:11px;width:208px;margin-left:32px}
+.wssO9 .wssJ32{background-position:-190px -68px;background-repeat:no-repeat;display:block;height:11px;width:208px;margin-left:32px}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
 .wssK0{border-color:#f00;display:none;left:2%;position:absolute;top:82px;width:96%;z-index:999}
@@ -469,6 +470,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 .wssO27{background-position:0 -130px;height:60px;width:200px}
 .wssO30{padding:1px;width:202px}
 .wssO31{background-position:0 -195px;height:120px;width:200px}
+.wssO32{background:url(error-info.png) no-repeat;color:#808080}
 
 #wss_aw .wssP0{border:0;float:left;height:88px;margin:5px 10px 20px;width:88px}
 .wssP{margin:0;padding:0}
@@ -628,8 +630,9 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 * html .wssM5{position:absolute;right:0}
 * html .wssM2 .wssM5{background-image:url(menu.png)}
 * html a.wss_g:hover{background-image:url(lang.hover.png)}
-* html .wssT7 .wssJ,* html .wss_q{background-image:url(buttons.red.png)}
+* html .wssT7 .wssJ,* html .wss_q,* html .wssO9 .wssJ32{background-image:url(buttons.red.png)}
 * html a.wssJ20:hover{background-image:url(corners.gif)}
+* html #wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
 * html .wssI3{background:url(load.gif) 50% 5px no-repeat}
 * html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
 * html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
@@ -655,8 +658,9 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 *+html .wssN4{margin-left:1.8%}
 *+html .wssU1 .wssF1{margin-left: -183px}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
-*+html .wssT7 .wssJ,*+html .wss_q{background-image:url(buttons.red.png)}
+*+html .wssT7 .wssJ,*+html .wss_q,*+html .wssO9 .wssJ32{background-image:url(buttons.red.png)}
 *+html a.wssJ20:hover{background-image:url(corners.gif)}
+*+html #wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
 *+html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
 *+html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 *+html #wss_opt .wssI{background-image:url(progress.png)}

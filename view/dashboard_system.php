@@ -8,25 +8,37 @@
 /* set correct content charset */
 header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 
-	if ($e + $w) {
+	if ($e + $w + $i) {
 ?><ul class="wssO"><?php
-		$i = 0;
+		$k = 0;
 		foreach ($errors as $key => $value) {
-			if (empty($value) && $i < 3) {
+			if (empty($value) && $k < 3) {
 ?><li class="wssO1"><?php
 				echo constant('_WEBO_SYSTEM_' . $key);
-				$i++;
+				$k++;
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
 ?>">?</a></li><?php
 			}
 		}
-		if ($i < 3) {
+		if ($k < 3) {
 			foreach ($warnings as $key => $value) {
-				if (empty($value) && $i < 3) {
+				if (empty($value) && $k < 3) {
 ?><li class="wssO1 wssO2"><?php
 					echo constant('_WEBO_SYSTEM_' . $key);
-					$i++;
+					$k++;
+?> <a class="wssJ9" href="#" title="<?php
+						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
+?>">?</a></li><?php
+				}
+			}
+		}
+		if ($k < 3) {
+			foreach ($infos as $key => $value) {
+				if (empty($value) && $k < 3) {
+?><li class="wssO1 wssO32"><?php
+					echo constant('_WEBO_SYSTEM_' . $key);
+					$k++;
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
 ?>">?</a></li><?php
@@ -48,6 +60,14 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 			echo $w;
 ?> <?php
 			echo $w%10 == 1 ? _WEBO_SYSTEM_WARNING : ($w%10 < 5 ? _WEBO_SYSTEM_WARNINGS : _WEBO_SYSTEM_WARNINGS2);
+		}
+		if (($e || $w) && $i) {
+?>, <?php
+		}
+		if ($i) {
+			echo $i;
+?> <?php
+			echo $i%10 == 1 ? _WEBO_SYSTEM_INFO : ($i%10 < 5 ? _WEBO_SYSTEM_INFOS : _WEBO_SYSTEM_INFOS2);
 		}
 ?></p><?php
 	} else {
