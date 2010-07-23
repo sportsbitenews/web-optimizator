@@ -159,7 +159,7 @@ class admin {
 		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app@", $this->basepath);
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
-		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur')) ? $this->language : 'en';
+		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it')) ? $this->language : 'en';
 		if ($this->compress_options['active']) {
 			$this->validate();
 		}
