@@ -46,7 +46,7 @@ class html_sprites {
 			'mhtml_size' => 0,
 			'mhtml_ignore_list' => '',
 			'css_url' => '',
-			'dimensions_limited' => $this->options['page']['dimensions_limited'],
+			'dimensions_limited' => $this->options['page']['dimensions_limited'] ? $this->options['page']['dimensions_limited'] : 10000,
 			'no_css_sprites' => 0,
 			'multiple_hosts' => empty($this->options['page']['parallel']) ?
 				array() : explode(" ", $this->options['page']['parallel_hosts']),
