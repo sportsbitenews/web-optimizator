@@ -32,7 +32,7 @@ if ($wizard_mode) {
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li></ul><h1 class="wssA wssA10"><?php
 	echo _WEBO_WIZARD_TITLE;
-?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9"><a href="javascript:_.wiz(0)" class="wssJ"><span class="wssJ30">1</span> <?php
+?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9"><a href="javascript:_.wiz(0);_.wz=_.wiz0=0;_.wizard()" class="wssJ"><span class="wssJ30">1</span> <?php
 	echo _WEBO_WIZARD_STEP1;
 ?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:_.wz=47;_.wizard()" class="wssJ"><span class="wssJ30">2</span> <?php
 	echo _WEBO_WIZARD_STEP2;
