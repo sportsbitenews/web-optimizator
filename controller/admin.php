@@ -475,6 +475,8 @@ class admin {
 	44 - disable HTML Sprites
 	45 - enable unobtrusive JavaScript
 	46 - disable unobtrusive JavaScript
+	49 - enable or disable server side caching
+	51 - save settings
 	100 - final check
 	*/
 			switch ($wizard) {
@@ -534,6 +536,9 @@ class admin {
 /* enable HTML caching if server side expenses are more than 500ms + we have known engine */
 					if (time() + microtime() - $t > 0.5 && $this->internal) {
 						$this->save_option("['html_cache']['enabled']", 1);
+						$this->save_option("['html_cache']['timeout']", 3600);
+						$this->save_option("['sql_cache']['enabled']", 1);
+						$this->save_option("['sql_cache']['timeout']", 600);
 					}
 /* some errors with .htaccess, disable all options */
 					if ($ht && !@file_get_contents($test_file)) {
@@ -556,6 +561,9 @@ class admin {
 					break;
 /* enable combine CSS */
 				case 2:
+					if ($wizard_options) {
+						$this->save_option("['minify']['css_body']", 1);
+					}
 					$this->save_option("['minify']['css']", 1);
 					$this->save_option("['external_scripts']['css']", 1);
 					$this->save_option("['external_scripts']['css_inline']", 1);
@@ -579,6 +587,7 @@ class admin {
 /* disable combine CSS */
 				case 7:
 					$this->save_option("['minify']['css']", 0);
+					$this->save_option("['minify']['css_body']", 0);
 					break;
 /* enable gzip CSS */
 				case 8:
@@ -823,12 +832,69 @@ class admin {
 					$this->save_option("['unobtrusive']['ads']", ($wizard_options & 4) ? 1 : 0);
 					$this->save_option("['unobtrusive']['iframes']", ($wizard_options & 8) ? 1 : 0);
 					break;
-/* disable unobtrusive JavaScript  */
+/* disable unobtrusive JavaScript */
 				case 46:
 					$this->save_option("['unobtrusive']['informers']", 0);
 					$this->save_option("['unobtrusive']['counters']", 0);
 					$this->save_option("['unobtrusive']['ads']", 0);
 					$this->save_option("['unobtrusive']['iframes']", 0);
+					break;
+				case 49:
+/* enable or disable server side caching */
+					$wizard_options = round($wizard_options);
+					switch ($wizard_options) {
+						case 1:
+							$this->save_option("['html_cache']['enabled']", 0);
+							$this->save_option("['sql_cache']['enabled']", 0);
+							break;
+						case 2:
+							$this->save_option("['html_cache']['enabled']", 1);
+							$this->save_option("['sql_cache']['enabled']", 1);
+							break;
+					}
+					break;
+/* save config */
+				case 51:
+					$this->save_option("['active']", 1);
+					$this->compress_options['active'] = 1;
+/* detect .htaccess */
+					$this->get_modules();
+					if (count($this->apache_modules)) {
+						$this->save_option("['htaccess']['enabled']", 1);
+						$this->input['wss_htaccess_enabled'] = 1;
+						$this->compress_options['htaccess']['enabled'] = 1;
+						foreach ($this->compress_options as $group => $options) {
+							if (is_array($options)) {
+								foreach ($options as $key => $option) {
+									$this->input['wss_'. $group . '_' . $key] = $option;
+								}
+							}
+						}
+						$this->write_htaccess();
+					}
+/* define configuration file */
+					if (@is_file($this->basepath . 'config.auto.php')) {
+						$i = 1;
+						while (@is_file($this->basepath . 'config.auto'. ($i++) .'.php')) {}
+						$this->input['wss_config'] = 'auto' . ($i - 1);
+					} else {
+						$this->input['wss_config'] = 'auto';
+					}
+					$this->save_option("['title']", $this->input['wss_title'] = 'Auto Config');
+					$this->save_option("['description']", $this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d"));
+					$this->save_option("['config']", $this->input['wss_config']);
+					$this->options_file = 'config.auto'. ($i++) .'.php';
+					@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
+					@chmod($this->basepath . $this->options_file, octdec("0644"));
+					$this->input['wss_page'] = 'install_options';
+/* map some options */
+					$this->input['wss_combine_css'] = $this->input['wss_minify_css']*2 + $this->input['wss_minify_css_body'];
+					$this->input['wss_minify_javascript'] = $this->input['wss_minify_javascript']*2 + $this->input['wss_minify_javascript_body'];
+					$this->input['wss_minify_js'] = $this->input['wss_minify_with_jsmin'] ? 2 :
+						($this->input['wss_minify_with_yui'] ? 3 :
+						($this->input['wss_minify_with_packer'] ? 4 : 1));
+					$this->set_options();
+					die();
 					break;
 			}
 		} else {
@@ -3661,7 +3727,9 @@ class admin {
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on') as $val) {
-				$this->input[$val]--;
+				if ($this->input[$val]) {
+					$this->input[$val]--;
+				}
 		}
 /* disable don't check files in cache */
 		$this->input['wss_performance_cache_version'] =
@@ -3799,15 +3867,6 @@ class admin {
 				$this->input['wss_minify_with_packer'] = 0;
 				break;
 		}
-/* map CSS Sprites format to real one */
-		switch ($this->input['wss_css_sprites_truecolor_in_jpeg']) {
-			case 2:
-				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 1;
-				break;
-			default:
-				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 0;
-				break;
-		}
 		$image = $this->input['wss_footer_image'];
 		if (!empty($image)) {
 			@copy($this->basepath . 'images/' . $image,
@@ -3860,7 +3919,8 @@ class admin {
 			}
 /* Save the options to backup config */
 			if (!empty($this->input['wss_config']) &&
-				strpos($this->input['wss_config'], 'user') !== false) {
+				(strpos($this->input['wss_config'], 'user') !== false ||
+				strpos($this->input['wss_config'], 'auto') !== false)) {
 					$this->options_file = 'config.' .
 						preg_replace("/[^a-zA-Z0-9]*/", "",
 						$this->input['wss_config']) . '.php';

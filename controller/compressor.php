@@ -1026,9 +1026,9 @@ class web_optimizer {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
 			foreach ($imgs as $image) {
-				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], 'src="'))) {
+				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], ' src="'))) {
 					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), '"'));
-				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], "src='"))) {
+				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], " src='"))) {
 					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), "'"));
 				} else {
 					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
@@ -1834,18 +1834,6 @@ class web_optimizer {
 			}
 /* find all scripts from head */
 			$regex = "!(<script[^>]*>)(.*?</script>)!is";
-/* envelope all script calls to try-catch */
-			if (isset($_GET['web_optimizer_debug'])) {
-				preg_match_all($regex, $this->content, $matches, PREG_SET_ORDER);
-				foreach ($matches as $match) {
-					if (trim(preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0]))) {
-						$new_source = preg_replace("@(<script[^>]*>)@", "$1try{", $match[0]);
-						$new_source = preg_replace("@(</script>)@", "}catch(e){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1}$1", $new_source);
-						$this->content = str_replace($match[0], $new_source, $this->content);
-						$toparse = str_replace($match[0], $new_source, $toparse);
-					}
-				}
-			}
 			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
 			if (!empty($matches)) {
 				foreach($matches as $match) {
