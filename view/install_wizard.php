@@ -86,23 +86,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP210;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_serverside" id="wss_serverside0" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP210_HELP;
-?>" value="0" checked="checked"/></dd></dl><a href="#wss_wizard" class="wssJ5"><?php
-	echo _WEBO_WIZARD_NEXT;
-?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><div class="wssC11 wssC13 wssA0 wssC6 wssC30"><h3 class="wssB3"><?php
-	echo _WEBO_WIZARD_STEP22;
-?></h3><dl class="wssD10"><dt class="wssD5"><label for="wss_cdn" class="wssE"><?php
-	echo _WEBO_WIZARD_STEP221;
-?></label></dt><dd class="wssD6"><input type="radio" name="wss_cdn" id="wss_cdn1" class="wssF" title="<?php
-	echo _WEBO_WIZARD_STEP221_HELP;
-?>" value="1"/></dd><dt class="wssD5"><label for="wss_serverside" class="wssE"><?php
-	echo _WEBO_WIZARD_STEP222;
-?></label></dt><dd class="wssD6"><input type="radio" name="wss_cdn" id="wss_cdn2" class="wssF" title="<?php
-	echo _WEBO_WIZARD_STEP222_HELP;
-?>" value="2"/></dd><dt class="wssD5"><label for="wss_serverside" class="wssE"><?php
-	echo _WEBO_WIZARD_STEP220;
-?></label></dt><dd class="wssD6"><input type="radio" name="wss_cdn" id="wss_cdn0" class="wssF" title="<?php
-	echo _WEBO_WIZARD_STEP220_HELP;
-?>" value="0" checked="checked"/></dd></dl><a href="#wss_wizard" class="wssJ5"><?php
+?>" value="0" checked="checked"/></dd></dl><a href="javascript:_.wz=50;_.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP31;

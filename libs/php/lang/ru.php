@@ -1037,5 +1037,5 @@ define('_WEBO_WIZARD_STEP220_HELP', 'Вы всегда можете вернут
 define('_WEBO_WIZARD_STEP31', 'Сайт полностью ускорен');
 define('_WEBO_WIZARD_STEP31_INFO', 'В результате оптимизации сайт был полностью ускорен. Пожалуйста, включите WEBO Site SpeedUp, если с сайтом все в порядке.');
 define('_WEBO_WIZARD_NEXT', 'Дальше');
-define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
+define('_WEBO_WIZARD_SAVE', 'Включить ускорение');
 ?>

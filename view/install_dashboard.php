@@ -533,7 +533,7 @@
 	echo _WEBO_GZIP_ERROR;
 ?>";wss_error6=wss_error67="<?php
 	echo _WEBO_CDN_NOACCESS;
-?>"</script><script type="text/javascript">setTimeout(function(){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://i.webo.in/wss/index.<?php
+?>";setTimeout(function(){if(typeof _==='undefined'){setTimeout(arguments.callee,10)}else{var a=_.doc,b=a.createElement('script');b.type='text/javascript';b.src='http://i.webo.in/wss/index.<?php
 	echo $language;
 	echo defined("LANG_CHARSET") && LANG_CHARSET != 'UTF-8' ? '.cp1251' : '';
-?>.js';a.documentElement.firstChild.appendChild(b)},50)</script>
+?>.js';a.documentElement.firstChild.appendChild(b)}},50)</script>
