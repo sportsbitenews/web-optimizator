@@ -29,8 +29,9 @@ class admin {
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
 /* try to restore options backup */
-		if (@is_file($this->basepath . '.config.webo.php') && !@filesize($this->basepath . $this->options_file)) {
+		if (@is_file($this->basepath . '.config.webo.php') && @filesize($this->basepath . $this->options_file) + 1000 < @filesize($this->basepath . 'config.safe.php')) {
 			@copy($this->basepath . '.config.webo.php', $this->basepath . $this->options_file);
+			$this->error = array(-1 => 1);
 		}
 		require($this->basepath . $this->options_file);
 		$this->compress_options = empty($compress_options) ? '' : $compress_options;
@@ -451,32 +452,32 @@ class admin {
 	16 - enable minify JS with YUI Compressor
 	17 - enable minify JS with Packer
 	18 - disable minify JS
-	19 - enable dupliactes removal
+	19 - enable duplicates removal
 	20 - disable duplicates removal
-	21 - move JS to /body
-	22 - move JS to /head
-	23 - disable combine JS
-	24 - enable gzip JS
-	25 - disable gzip JS
-	26 - enable minify HTML
-	27 - disable minify HTML
-	28 - enable remove HTML comments
-	29 - disable remove HTML comments
-	30 - enable gzip HTML
-	31 - disable gzip HTML
-	32 - enable plain string + no mtime
-	33 - disable plain string
-	34 - enable data:URI + mhtml + separation
-	35 - disable separation data:URI
-	36 - disable data:URI + mhtml
-	37 - set JS host
-	38 - set CSS host
-	39 - set IMG host
-	40 - enable CDN
-	41 - disable CDN
-	42 - enable HTML Sprites
-	43 - enable HTML Sprites restriction
-	44 - disable HTML Sprites
+	21 - disable combine JS
+	22 - enable gzip JS
+	23 - disable gzip JS
+	24 - enable minify HTML
+	25 - disable minify HTML
+	26 - enable remove HTML comments
+	27 - disable remove HTML comments
+	28 - enable gzip HTML
+	29 - disable gzip HTML
+	30 - enable plain string + no mtime
+	31 - disable plain string
+	32 - enable data:URI + mhtml + separation
+	33 - disable separation data:URI
+	34 - disable data:URI + mhtml
+	35 - set JS host
+	36 - set CSS host
+	37 - set IMG host
+	38 - enable CDN
+	39 - disable CDN
+	40 - enable HTML Sprites
+	41 - enable HTML Sprites restriction
+	42 - disable HTML Sprites
+	43 - move JS to /body
+	44 - move JS to /head
 	45 - enable unobtrusive JavaScript
 	46 - disable unobtrusive JavaScript
 	49 - enable or disable server side caching
@@ -669,20 +670,12 @@ class admin {
 				case 20:
 					$this->save_option("['external_scripts']['duplicates']", 0);
 					break;
-/* move JS to /body */
-				case 21:
-					$this->save_option("['unobtrusive']['body']", 1);
-					break;
-/* move JS to /head */
-				case 22:
-					$this->save_option("['unobtrusive']['body']", 0);
-					break;
 /* disable combine JS */
-				case 23:
+				case 21:
 					$this->save_option("['minify']['javascript']", 0);
 					break;
 /* enable gzip JS */
-				case 24:
+				case 22:
 					$this->save_option("['gzip']['javascript']", 1);
 					$this->save_option("['htaccess']['enabled']", 1);
 					$this->compress_options['active'] = 1;
@@ -698,39 +691,39 @@ class admin {
 					$this->write_htaccess();
 					break;
 /* disable gzip JS */
-				case 25:
+				case 23:
 					$this->save_option("['gzip']['javascript']", 0);
 					$this->save_option("['htaccess']['enabled']", 0);
 					$this->input['wss_htaccess_enabled'] = 0;
 					$this->write_htaccess();
 					break;
 /* enable minify HTML */
-				case 26:
+				case 24:
 					$this->save_option("['minify']['page']", 1);
 					break;
 /* disable minify HTML */
-				case 27:
+				case 25:
 					$this->save_option("['minify']['page']", 0);
 					break;
 /* enable remove HTML comments */
-				case 28:
+				case 26:
 					$this->save_option("['minify']['html_comments']", 1);
 					break;
 /* disable remove HTML comments */
-				case 29:
+				case 27:
 					$this->save_option("['minify']['html_comments']", 0);
 					break;
 /* enable plain string + no mtime */
-				case 30:
+				case 28:
 					$this->save_option("['performance']['mtime']", 1);
 					$this->save_option("['performance']['plain_string']", 1);
 					break;
 /* disable plain string */
-				case 31:
+				case 29:
 					$this->save_option("['performance']['plain_string']", 0);
 					break;
 /* enable gzip HTML */
-				case 32:
+				case 30:
 					$this->save_option("['gzip']['page']", 1);
 					$this->save_option("['gzip']['fonts']", 1);
 					$this->save_option("['gzip']['cookie']", 1);
@@ -749,7 +742,7 @@ class admin {
 					$this->write_htaccess();
 					break;
 /* disable gzip HTML */
-				case 33:
+				case 31:
 					$this->save_option("['gzip']['page']", 0);
 					$this->save_option("['gzip']['fonts']", 0);
 					$this->save_option("['gzip']['cookie']", 0);
@@ -766,45 +759,45 @@ class admin {
 					$this->write_htaccess();
 					break;
 /* enable data:URI + mhtml + separation */
-				case 34:
+				case 32:
 					$this->save_option("['data_uris']['on']", 1);
 					$this->save_option("['data_uris']['separate']", 1);
 					$this->save_option("['data_uris']['domloaded']", 1);
 					$this->save_option("['data_uris']['mhtml']", 1);
 					break;
 /* disable separation data:URI */
-				case 35:
+				case 33:
 					$this->save_option("['data_uris']['separate']", 0);
 					$this->save_option("['data_uris']['domloaded']", 0);
 					break;
 /* disable data:URI + mhtml */
-				case 36:
+				case 34:
 					$this->save_option("['data_uris']['on']", 0);
 					$this->save_option("['data_uris']['separate']", 0);
 					$this->save_option("['data_uris']['domloaded']", 0);
 					$this->save_option("['data_uris']['mhtml']", 0);
 					break;
 /* set JS host */
-				case 37:
+				case 35:
 					$this->save_option("['minify']['javascript_host']", htmlspecialchars($wizard_options));
 					break;
 /* set CSS host */
-				case 38:
+				case 36:
 					$this->save_option("['minify']['css_host']", htmlspecialchars($wizard_options));
 					break;
 /* set IMG host */
-				case 39:
+				case 37:
 					$this->save_option("['parallel']['allowed_list']", htmlspecialchars($wizard_options));
 					break;
 /* enable CDN */
-				case 40:
+				case 38:
 					$this->save_option("['parallel']['custom']", 0);
 					$this->save_option("['parallel']['css']", $this->compress_options['minify']['css_host'] ? 1 : 0);
 					$this->save_option("['parallel']['javascript']", $this->compress_options['minify']['javascript_host'] ? 1 : 0);
 					$this->save_option("['parallel']['enabled']", $this->compress_options['parallel']['allowed_list'] ? 1 : 0);
 					break;
 /* disable CDN */
-				case 41:
+				case 39:
 					$this->save_option("['parallel']['custom']", 0);
 					$this->save_option("['parallel']['css']", 0);
 					$this->save_option("['parallel']['javascript']", 0);
@@ -814,20 +807,28 @@ class admin {
 					$this->save_option("['parallel']['allowed_list']", '');
 					break;
 /* enable HTML Sprites */
-				case 42:
+				case 40:
 					$this->save_option("['css_sprites']['html_sprites']", 1);
 					$this->save_option("['css_sprites']['html_limit']", 16);
 					$this->save_option("['css_sprites']['html_page']", 1);
 					break;
 /* enable HTML Sprites restriction */
-				case 43:
+				case 41:
 					$this->save_option("['css_sprites']['html_sprites']", 1);
 					$this->save_option("['css_sprites']['html_limit']", round($wizard_options));
 					$this->save_option("['css_sprites']['html_page']", 1);
 					break;
 /* disable HTML Sprites */
-				case 44:
+				case 42:
 					$this->save_option("['css_sprites']['html_sprites']", 0);
+					break;
+/* move JS to /body */
+				case 43:
+					$this->save_option("['unobtrusive']['body']", 1);
+					break;
+/* move JS to /head */
+				case 44:
+					$this->save_option("['unobtrusive']['body']", 0);
 					break;
 /* enable unobtrusive JavaScript  */
 				case 45:

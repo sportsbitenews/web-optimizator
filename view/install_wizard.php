@@ -112,6 +112,8 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP142;
 ?></li><li class="wssO8 wssA0"><?php
 	echo _WEBO_WIZARD_STEP15;
+?></li><li class="wssO8 wssA0"><?php
+	echo _WEBO_WIZARD_STEP18;
 ?></li></ul><p class="wssI"><?php
 	echo _WEBO_WIZARD_STEP31_LIST2;
 ?> <a href="#wss_options"><?php
