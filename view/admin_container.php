@@ -229,7 +229,7 @@ if (!$ajax) {
 	if ($premium == 10) {
 ?>setTimeout(function(){if(typeof _!=='undefined'){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://webo.name/license/?key=<?php
 		echo $license;
-?>&status=1';a.documentElement.firstChild.appendChild(b)}else{setTimeout(arguments.callee,10)}},10);<?php
+?>&status=1';a.body.appendChild(b)}else{setTimeout(arguments.callee,10)}},10);<?php
 	}
 ?>wss_premium=<?php
 	echo (empty($page) || (!empty($page) && $page != 'install_enter_password' && $page != 'install_set_password')) ? round($premium) : 10;

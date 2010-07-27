@@ -716,8 +716,17 @@ class admin {
 				case 29:
 					$this->save_option("['minify']['html_comments']", 0);
 					break;
-/* enable gzip HTML */
+/* enable plain string + no mtime */
 				case 30:
+					$this->save_option("['performance']['mtime']", 1);
+					$this->save_option("['performance']['plain_string']", 1);
+					break;
+/* disable plain string */
+				case 31:
+					$this->save_option("['performance']['plain_string']", 0);
+					break;
+/* enable gzip HTML */
+				case 32:
 					$this->save_option("['gzip']['page']", 1);
 					$this->save_option("['gzip']['fonts']", 1);
 					$this->save_option("['gzip']['cookie']", 1);
@@ -736,7 +745,7 @@ class admin {
 					$this->write_htaccess();
 					break;
 /* disable gzip HTML */
-				case 31:
+				case 33:
 					$this->save_option("['gzip']['page']", 0);
 					$this->save_option("['gzip']['fonts']", 0);
 					$this->save_option("['gzip']['cookie']", 0);
@@ -751,15 +760,6 @@ class admin {
 					}
 					$this->input['wss_htaccess_enabled'] = 0;
 					$this->write_htaccess();
-					break;
-/* enable plain string + no mtime */
-				case 32:
-					$this->save_option("['performance']['mtime']", 1);
-					$this->save_option("['performance']['plain_string']", 1);
-					break;
-/* disable plain string */
-				case 33:
-					$this->save_option("['performance']['plain_string']", 0);
 					break;
 /* enable data:URI + mhtml + separation */
 				case 34:
@@ -880,21 +880,11 @@ class admin {
 					} else {
 						$this->input['wss_config'] = 'auto';
 					}
-					$this->save_option("['title']", $this->input['wss_title'] = 'Auto Config');
-					$this->save_option("['description']", $this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d"));
 					$this->save_option("['config']", $this->input['wss_config']);
 					$this->options_file = 'config.auto'. ($i++) .'.php';
-					@copy($this->basepath . 'config.safe.php', $this->basepath . $this->options_file);
-					@chmod($this->basepath . $this->options_file, octdec("0644"));
-					$this->input['wss_page'] = 'install_options';
-/* map some options */
-					$this->input['wss_combine_css'] = $this->input['wss_minify_css']*2 + $this->input['wss_minify_css_body'];
-					$this->input['wss_minify_javascript'] = $this->input['wss_minify_javascript']*2 + $this->input['wss_minify_javascript_body'];
-					$this->input['wss_minify_js'] = $this->input['wss_minify_with_jsmin'] ? 2 :
-						($this->input['wss_minify_with_yui'] ? 3 :
-						($this->input['wss_minify_with_packer'] ? 4 : 1));
+					$this->input['wss_title'] = 'Auto Config';
+					$this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d");
 					$this->set_options();
-					die();
 					break;
 			}
 		} else {
@@ -3727,9 +3717,7 @@ class admin {
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on') as $val) {
-				if ($this->input[$val]) {
-					$this->input[$val]--;
-				}
+				$this->input[$val]--;
 		}
 /* disable don't check files in cache */
 		$this->input['wss_performance_cache_version'] =
@@ -3865,6 +3853,15 @@ class admin {
 				$this->input['wss_minify_with_jsmin'] = 0;
 				$this->input['wss_minify_with_yui'] = 0;
 				$this->input['wss_minify_with_packer'] = 0;
+				break;
+		}
+/* map CSS Sprites format to real one */
+		switch ($this->input['wss_css_sprites_truecolor_in_jpeg']) {
+			case 2:
+				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 1;
+				break;
+			default:
+				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 0;
 				break;
 		}
 		$image = $this->input['wss_footer_image'];
@@ -4526,27 +4523,13 @@ Options +FollowSymLinks";
 		$this->compress_options['minify']['javascript_host'] = empty($this->compress_options['minify']['javascript_host']) ?
 			(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST']) :
 				$this->compress_options['minify']['javascript_host'];
-		if (empty($this->compress_options['license'])) {
-/* get SaaS license */
-			$license_file = $this->compress_options['html_cachedir'] . 'license';
-			$this->view->download("http://webo.name/license/trial/?name=".
-				$this->compress_options['name'] .
-				"&email=" .
-				$this->compress_options['email'],
-				$license_file);
-			$this->compress_options['license'] = preg_replace("@.*value='(.*)'$@", "$1", @file_get_contents($license_file));
-/* skip errors */
-			$this->compress_options['license'] = preg_match("@^[A-Z0-9-]+$@", $this->compress_options['license']) ? $this->compress_options['license'] : '';
-			@unlink($license_file);
-		}
 		foreach (array(
 			'document_root',
 			'website_root',
 			'css_cachedir',
 			'javascript_cachedir',
 			'html_cachedir',
-			'host',
-			'license') as $val) {
+			'host') as $val) {
 				$this->save_option("['" . $val . "']",
 					$this->compress_options[$val]);
 		}
