@@ -36,7 +36,7 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 		if ($k < 3) {
 			foreach ($infos as $key => $value) {
 				if (empty($value) && $k < 3) {
-?><li class="wssO1 wssO32"><?php
+?><li class="wssO1 wssO98"><?php
 					echo constant('_WEBO_SYSTEM_' . $key);
 					$k++;
 ?> <a class="wssJ9" href="#" title="<?php

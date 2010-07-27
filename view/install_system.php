@@ -195,7 +195,7 @@
 		}
 		foreach ($infos as $key => $value) {
 			if (empty($value)) {
-?><li class="wssO1 wssO32"><?php
+?><li class="wssO1 wssO98"><?php
 				echo constant('_WEBO_SYSTEM_' . $key);
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_SYSTEM_' . $key . '_HELP'));
