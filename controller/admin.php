@@ -781,6 +781,7 @@ class admin {
 				case 36:
 					$this->save_option("['data_uris']['on']", 0);
 					$this->save_option("['data_uris']['separate']", 0);
+					$this->save_option("['data_uris']['domloaded']", 0);
 					$this->save_option("['data_uris']['mhtml']", 0);
 					break;
 /* set JS host */

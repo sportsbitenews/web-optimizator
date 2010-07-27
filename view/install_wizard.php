@@ -86,7 +86,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP210;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_serverside" id="wss_serverside0" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP210_HELP;
-?>" value="0" checked="checked"/></dd></dl><a href="javascript:_.wz=48;_.wizard()" class="wssJ5"><?php
+?>" value="0" checked="checked"/></dd></dl><a href="javascript:_.wz=47;_.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP31;
