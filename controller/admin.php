@@ -28,6 +28,10 @@ class admin {
 		}
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
+/* try to restore options backup */
+		if (@is_file($this->basepath . '.config.webo.php') && !@filesize($this->basepath . $this->options_file)) {
+			@copy($this->basepath . '.config.webo.php', $this->basepath . $this->options_file);
+		}
 		require($this->basepath . $this->options_file);
 		$this->compress_options = empty($compress_options) ? '' : $compress_options;
 		$this->start_cache_engine();
@@ -4539,6 +4543,10 @@ Options +FollowSymLinks";
 				$this->save_option("['minify']['" . $val . "']",
 					$this->compress_options['minify'][$val]);
 		}
+/* create backup for options file */
+		if (!@is_file($this->basepath . '.config.webo.php')) {
+			@copy($this->basepath . $this->options_file, $this->basepath . '.config.webo.php');
+		}
 /* clean previous changes */
 		$this->install_uninstall(1);
 /* define CMS */
@@ -5129,8 +5137,12 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			@chmod($option_file, octdec("0644"));
 		}
 		$content = @file_get_contents($option_file);
-		$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-		if (!$this->write_file($option_file, $content, 1)) {
+		if ($content) {
+			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
+			if (!$this->write_file($option_file, $content, 1)) {
+				$this->error[0] = 1;
+			}
+		} else {
 			$this->error[0] = 1;
 		}
 	}
