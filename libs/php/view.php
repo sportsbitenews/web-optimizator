@@ -150,11 +150,18 @@ class compressor_view {
 			$t3 = !(pow($c3, 3) - floor(pow($c3, 3)/941)*941 - $c1) && !(pow($c1, 3) - floor(pow($c1, 3)/941)*941 - $c2);
 			if ($t1 || $t2 || $t3) {
 				if ($cachedir) {
-					if (time() - @filemtime($cachedir . 'wo') > 86400) {
-						$this->download("http://webo.name/license/?key=" . $license, $cachedir . 'wo', 5, $host);
+					$wo = @file_get_contents($cachedir . 'wo');
+					$wof = $cachedir . 'wo';
+					if (!@isfile($wof) || $wo) {
+						if (isset($wo) && time() - @filemtime($wof) > 86400) {
+							$this->download("http://webo.name/license/?key=" . $license, $wof, 5, $host);
+						}
+						if ($wo && $wo < 0) {
+							return false;
+						}
 					}
-					if (($wo = @file_get_contents($cachedir . 'wo')) && $wo < 0) {
-						return false;
+					if (!@isfile($wof)) {
+						@touch($wof);
 					}
 				}
 				return $t1 ? 1 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2));
