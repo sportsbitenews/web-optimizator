@@ -29,7 +29,7 @@ class admin {
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
 /* try to restore options backup */
-		if (@is_file($this->basepath . '.config.webo.php') && @filesize($this->basepath . $this->options_file) + 1000 < @filesize($this->basepath . 'config.safe.php')) {
+		if (@is_file($this->basepath . '.config.webo.php') && !strpos(@file_get_contents($this->basepath . $this->options_file), '$compress_options[\'license\']')) {
 			@copy($this->basepath . '.config.webo.php', $this->basepath . $this->options_file);
 			$this->error = array(-1 => 1);
 		}
