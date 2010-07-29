@@ -528,13 +528,16 @@ class web_optimizer {
 		if (function_exists('get_headers')) {
 			$headers = headers_list();
 /* define if Content-Type is text/html and allow it */
-			foreach ($headers as $header) {
-				$header = strtolower($header);
+			foreach ($headers as $head) {
+				$header = strtolower($head);
 				if (strpos($header, 'content-type') !== false) {
 					$skip++;
 				}
 				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {
 					$skip--;
+				}
+				if (strpos($header, 'content-base') !== false) {
+					$this->basehref = substr($head, 14);
 				}
 			}
 		}
@@ -1005,6 +1008,7 @@ class web_optimizer {
 				} else {
 					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				}
+				$old_src = $this->convert_basehref($old_src);
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 /* image file name to check through ignore list */
 				$img = preg_replace("@.*/@", "", $old_src);
@@ -1723,10 +1727,10 @@ class web_optimizer {
 	*
 	**/
 	function get_file_name ($file) {
-		if(is_array($file) && count($file)>0) {
+		if (is_array($file) && count($file)>0) {
 			$file = $file[0];
 		}
-		$file = $this->strip_querystring(preg_replace("@https?://(www\.)?" . $this->host_escaped . "/+@", "/", $file));
+		$file = $this->strip_querystring(preg_replace("@^https?://(www\.)?" . $this->host_escaped . "/+@", "/", $file));
 		if (substr($file, 0, 1) == "/") {
 			return $this->view->prevent_trailing_slash($this->options['document_root']) . $file;
 		} else {
@@ -1748,7 +1752,7 @@ class web_optimizer {
 			if (!preg_match("!\.css$!is", $file)) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
-				if (!strpos($dynamic_file, "://")) {
+				if (!strpos($dynamic_file, "://") || strpos($dynamic_file, '//') === 0) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
 				}
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
@@ -1818,7 +1822,7 @@ class web_optimizer {
 					if (is_array($variants)) {
 						foreach ($variants as $variant_type) {
 							$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? str_replace('>', '', $variant_type[3]) : $variant_type[2]) : $variant_type[1];
-							$file['file'] = trim($this->strip_querystring($variant_type[1]));
+							$file['file'] = $this->convert_basehref(trim($this->strip_querystring($variant_type[1])));
 							$file['file_raw'] = $variant_type[1];
 						}
 					}
@@ -1866,7 +1870,7 @@ class web_optimizer {
 							$variant_type[2] = empty($variant_type[2]) ? (empty($variant_type[3]) ? (empty($variant_type[4]) ? '' : $variant_type[4]) : $variant_type[3]) : $variant_type[2];
 							switch ($variant_type[1]) {
 								case "href":
-									$file['file'] = trim($this->strip_querystring($variant_type[2]));
+									$file['file'] = $this->convert_basehref(trim($this->strip_querystring($variant_type[2])));
 									$file['file_raw'] = $variant_type[2];
 									break;
 								default:
@@ -2771,7 +2775,23 @@ class web_optimizer {
 	*
 	**/
 	function get_head () {
-		if (empty($this->head)) {
+		if (empty($this->head) && empty($this->body)) {
+/* try to define base URI for the document */
+			if ($this->options['page']['html_tidy']) {
+				if (($basepos = strpos($this->content, '<base')) || ($basepos = strpos($this->content, '<BASE'))) {
+					$basepos = strpos($this->content, 'href=', $basepos);
+					if (!$basepos) {
+						$basepos = strpos($this->content, 'HREF=', $basepos);
+					}
+					$baseend = strpos($this->content, '>', $basepos);
+					if ($this->content{$baseend-1} === '/') {
+						$baseend--;
+					}
+					$this->basehref = str_replace(array('"', ""), array(), substr($this->content, $basepos, $baseend - $basepos));
+				}
+			} elseif (preg_match("@<base\s+href@is", $this->content)) {
+				$this->basehref = preg_replace("@<base\s*href\s*=\s*['\"](.*?)['\"]@", "$1", $this->content);
+			}
 /* change all links on the page according to DEBUG mode */
 			if (!empty($_GET['web_optimizer_debug'])) {
 				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
@@ -3277,6 +3297,29 @@ class web_optimizer {
 		if (!empty($patterns))
 		{
 			$this->cache_engine->delete_entries($patterns);
+		}
+	}
+	
+	/**
+	* Convert given URL to another with base URI (<base> tag / header)
+	*
+	**/
+	function convert_basehref ($uri) {
+/* check if BASE URI is given */
+		if (!empty($this->basehref) &&
+/* convert only non-external URI */
+			strpos($uri, '//') !== 0 && !strpos($uri, '://') &&
+/* convert absolute URI only if another host is given */			
+			(!preg_match("@^https?://(www\.)?" . $this->host_escaped . "/+@", $this->basehref) || ($slash = substr($uri, 0, 1) != '/'))) {
+/* convert absolute URL, change host */
+				if ($slash) {
+					return preg_replace("@^https?://[^/]+/@", '', $this->basehref) . $uri;
+/* convert relative URL, change host + folder */
+				} else {
+					return preg_replace("@[^/]*$@", '', $this->basehref) . $uri;
+				}
+		} else {
+			return $uri;
 		}
 	}
 
