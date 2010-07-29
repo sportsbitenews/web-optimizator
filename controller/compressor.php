@@ -305,7 +305,7 @@ class web_optimizer {
 							!$this->options['htaccess']['mod_mime'] ||
 							!$this->options['htaccess']['mod_expires'])) ||
 					!$this->options['htaccess']['enabled']),
-				"gzip_level" => $this->premium ? round($this->options['gzip']['javascript_level']) : 1,
+				"gzip_level" => round($this->options['gzip']['javascript_level']),
 				"minify" => $this->options['minify']['javascript'],
 				"minify_body" => $this->options['minify']['javascript_body'],
 				"minify_with" => $this->options['minify']['with_jsmin'] ?
@@ -313,30 +313,25 @@ class web_optimizer {
 					'yui' : ($this->options['minify']['with_packer'] ?
 					'packer' : '')),
 				"minify_try" => $this->options['external_scripts']['include_try'],
-				"minify_exclude" => $this->premium > 1 ?
-					$this->options['external_scripts']['minify_exclude'] :
-					'',
+				"minify_exclude" => $this->options['external_scripts']['minify_exclude'],
 				"remove_duplicates" => $this->options['external_scripts']['duplicates'],
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
 					$this->options['htaccess']['enabled'] &&
-					$this->options['far_future_expires']['javascript'] &&
-					$this->premium,
+					$this->options['far_future_expires']['javascript'],
 				"unobtrusive_body" => $this->options['unobtrusive']['body'] &&
-					!$this->options['unobtrusive']['all'] &&
-					($this->premium > 1),
+					!$this->options['unobtrusive']['all'],
 				"external_scripts" => $this->options['external_scripts']['on'] &&
 					$this->options['minify']['javascript'],
 				"inline_scripts" => $this->options['external_scripts']['inline'] &&
 					$this->options['minify']['javascript'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
-					$this->premium,
-				"file" => $this->premium ? $this->options['minify']['javascript_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
+				"dont_check_file_mtime" => $this->options['performance']['mtime'],
+				"file" => $this->options['minify']['javascript_file'],
+				"host" => $this->options['minify']['javascript_host'],
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"css" => array(
@@ -350,7 +345,7 @@ class web_optimizer {
 							!$this->options['htaccess']['mod_mime'] ||
 							!$this->options['htaccess']['mod_expires'])) ||
 					!$this->options['htaccess']['enabled']),
-				"gzip_level" => $this->premium ? round($this->options['gzip']['css_level']) : 1,
+				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
 				"minify_with" => $this->options['minify']['css_min'] ? 'basic' : '',
@@ -359,25 +354,20 @@ class web_optimizer {
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
 					$this->options['htaccess']['enabled'] &&
-					$this->options['far_future_expires']['css'] &&
-					$this->premium,
-				"data_uris" => $this->options['data_uris']['on'] &&
-					$this->premium,
-				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] &&
-					$this->premium,
+					$this->options['far_future_expires']['css'],
+				"data_uris" => $this->options['data_uris']['on'],
+				"data_uris_mhtml" => $this->options['data_uris']['mhtml'],
 				"data_uris_separate" => $this->options['data_uris']['separate'] &&
 					((!empty($this->ua_mod) &&
 							$this->options['data_uris']['mhtml']) ||
 						(empty($this->ua_mod) &&
-							$this->options['data_uris']['on'])) &&
-					($this->premium > 1),
+							$this->options['data_uris']['on'])),
 				"data_uris_domloaded" => $this->options['data_uris']['domloaded'],
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => $this->options['data_uris']['ignore_list'],
 				"data_uris_exclude_mhtml" => $this->options['data_uris']['additional_list'],
-				"css_sprites" => $this->options['css_sprites']['enabled'] &&
-					($this->premium > 1),
+				"css_sprites" => $this->options['css_sprites']['enabled'],
 				"css_sprites_expires_rewrite" => (!$this->options['htaccess']['mod_rewrite'] ||
 					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['images'],
@@ -392,19 +382,15 @@ class web_optimizer {
 				"css_restore_properties" => $this->options['performance']['restore_properties'] &&
 					($this->premium > 1),
 				"unobtrusive_body" => false,
-				"parallel" => $this->options['parallel']['enabled'] &&
-					($this->premium > 1),
+				"parallel" => $this->options['parallel']['enabled'],
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
-				"external_scripts" => $this->options['external_scripts']['css'] &&
-					$this->options['minify']['css'],
-				"inline_scripts" => $this->options['external_scripts']['css_inline'] &&
-					$this->options['minify']['css'],
+				"external_scripts" => $this->options['external_scripts']['css'],
+				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['additional_list'],
-				"include_code" => ($this->premium > 1) ? $this->options['external_scripts']['include_code'] : '',
-				"dont_check_file_mtime" => $this->options['performance']['mtime'] &&
-					$this->premium,
-				"file" => $this->premium ? $this->options['minify']['css_file'] : '',
-				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
+				"include_code" => $this->options['external_scripts']['include_code'],
+				"dont_check_file_mtime" => $this->options['performance']['mtime'],
+				"file" => $this->options['minify']['css_file'],
+				"host" => $this->options['minify']['css_host'],
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
 			),
 			"page" => array(
@@ -418,43 +404,36 @@ class web_optimizer {
 					((!$this->options['htaccess']['mod_gzip'] &&
 							!$this->options['htaccess']['mod_deflate']) ||
 						!$this->options['htaccess']['enabled']),
-				"gzip_noie" => $this->premium ? $this->options['gzip']['noie'] : 0,
-				"gzip_level" => $this->premium ? round($this->options['gzip']['page_level']) : 1,
-				"gzip_cookie" => $this->options['gzip']['cookie'] && $this->premium,
+				"gzip_noie" => $this->options['gzip']['noie'],
+				"gzip_level" => round($this->options['gzip']['page_level']),
+				"gzip_cookie" => $this->options['gzip']['cookie'],
 				"minify" => $this->options['minify']['page'],
-				"minify_aggressive" => $this->options['minify']['html_one_string'] &&
-					($this->premium > 1),
-				"remove_comments" => $this->options['minify']['html_comments'] &&
-					$this->premium,
-				"dont_check_file_mtime" => $this->premium ? $this->options['performance']['mtime'] : 1,
+				"minify_aggressive" => $this->options['minify']['html_one_string'],
+				"remove_comments" => $this->options['minify']['html_comments'],
+				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"far_future_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['images'],
-				"far_future_expires_external" => $this->options['far_future_expires']['external'] &&
-					($this->premium > 1),
-				"clientside_cache" => $this->premium ? $this->options['far_future_expires']['html'] : 0,
-				"clientside_timeout" => $this->premium ? $this->options['far_future_expires']['html_timeout'] : 0,
-				"cache" => $this->options['html_cache']['enabled'] &&
-					($this->premium > 1),
+				"far_future_expires_external" => $this->options['far_future_expires']['external'],
+				"clientside_cache" => $this->options['far_future_expires']['html'],
+				"clientside_timeout" => $this->options['far_future_expires']['html_timeout'],
+				"cache" => $this->options['html_cache']['enabled'],
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'],
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"exclude_cookies" => $this->options['html_cache']['additional_list'],
-				"parallel" => $this->options['parallel']['enabled'] &&
-					($this->premium > 1),
+				"parallel" => $this->options['parallel']['enabled'],
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"parallel_satellites" => $this->options['parallel']['additional'],
 				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
 				"parallel_ignore" => $this->options['parallel']['ignore_list'],
-				"parallel_css" => $this->options['parallel']['css'] &&
-					($this->premium > 1),
-				"parallel_javascript" => $this->options['parallel']['javascript'] &&
-					($this->premium > 1),
-				"parallel_ftp" => $this->premium > 1 ? $this->options['parallel']['ftp'] : '',
-				"parallel_https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
+				"parallel_css" => $this->options['parallel']['css'],
+				"parallel_javascript" => $this->options['parallel']['javascript'],
+				"parallel_ftp" => $this->options['parallel']['ftp'],
+				"parallel_https" => $this->options['parallel']['https'],
 				"unobtrusive_informers" => $this->options['unobtrusive']['informers'] &&
 					($this->premium > 1),
 				"unobtrusive_counters" => $this->options['unobtrusive']['counters'] &&
@@ -474,30 +453,23 @@ class web_optimizer {
 				"footer_text" => $this->options['footer']['link'],
 				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
-				"htaccess_username" => $this->premium > 1 ?
-					$this->options['external_scripts']['user'] : '',
-				"htaccess_password" => $this->premium > 1 ?
-					$this->options['external_scripts']['pass'] : '',
-				"html_tidy" => $this->options['performance']['plain_string'] &&
-					($this->premium > 1),
-				"sprites" => $this->options['css_sprites']['html_sprites'] &&
-					($this->premium > 1),
+				"htaccess_username" => $this->options['external_scripts']['user'],
+				"htaccess_password" => $this->options['external_scripts']['pass'],
+				"html_tidy" => $this->options['performance']['plain_string'],
+				"sprites" => $this->options['css_sprites']['html_sprites'],
 				"dimensions_limited" => round($this->options['css_sprites']['html_limit']),
 				"per_page" => $this->options['css_sprites']['html_page']
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
 			"website_root" => $this->options['website_root'],
-			"cache_version" => ($this->premium > 1) ?
-				round($this->options['performance']['cache_version']) : 0,
-			"uniform_cache" => ($this->premium > 1) &&
-				$this->options['performance']['uniform_cache'],
+			"cache_version" => round($this->options['performance']['cache_version']),
+			"uniform_cache" => $this->options['performance']['uniform_cache'],
 			"plugins" => ($this->premium > 1) &&
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 			"restricted" => ($this->premium > 1) &&
 				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
-			"days_to_delete" => ($this->premium > 1) ?
-				round($this->options['performance']['delete_old']) : 0
+			"days_to_delete" => round($this->options['performance']['delete_old'])
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
@@ -687,7 +659,7 @@ class web_optimizer {
 				$script_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($script_files) || empty($this->premium))) {
+		if (!empty($options['minify']) && !empty($script_files)) {
 			$this->content = $this->do_compress(
 				array(
 					'cachedir' => $options['cachedir'],
@@ -746,7 +718,7 @@ class web_optimizer {
 				$link_files[] = $file;
 			}
 		}
-		if (!empty($options['minify']) && (!empty($link_files) || empty($this->premium))) {
+		if (!empty($options['minify']) && !empty($link_files)) {
 /* Compress separately for each media type*/
 			$this->content = $this->do_compress(
 				array(
@@ -3215,7 +3187,7 @@ class web_optimizer {
 	 **/
 	function set_user_agent () {
 		$this->ua_mod = '';
-		if ($this->premium < 2 || !$this->options['performance']['uniform_cache']) {
+		if (!$this->options['performance']['uniform_cache']) {
 /* min. supported IE version */
 			$this->min_ie_version = 5;
 /* max. supported IE version */
