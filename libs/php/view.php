@@ -152,7 +152,7 @@ class compressor_view {
 				if ($cachedir) {
 					$wof = $cachedir . 'wo';
 					$wo = @file_get_contents($wof);
-					if (!@isfile($wof) || $wo) {
+					if (!@is_file($wof) || $wo) {
 						if (time() - @filemtime($wof) > 86400) {
 							$this->download("http://webo.name/license/?key=" . $license, $wof, 5, $host);
 						}
@@ -161,7 +161,7 @@ class compressor_view {
 							return false;
 						}
 					}
-					if (!@isfile($wof)) {
+					if (!@is_file($wof)) {
 						@touch($wof);
 					}
 				}

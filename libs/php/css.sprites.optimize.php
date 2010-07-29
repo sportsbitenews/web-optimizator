@@ -211,7 +211,7 @@ class css_sprites_optimize {
 			$added_images = array();
 /* add images to this matrix one-by-one */
 			foreach ($css_images['images'] as $image) {
-				$square = $image[1] * $image[1] + $image[2] * $image[2];
+				$square = $image[1] * $image[1] + $image[2] * $image[2] - $image[1] * $image[2];
 				while (!empty($ordered_images[$square])) {
 /* increase square while we don't have unique key */
 					$square++;

@@ -16,6 +16,7 @@ Short notice about CSS deploymner.
  lang.hover.png
  lang.selected.png
  load.gif
+ load.wizard.gif
  loading.gif
  progress.png
  promo.over.png
@@ -631,6 +632,7 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 * html .wssM3{position:relative;top:-7px}
 * html .wssM5{position:absolute;right:0}
 * html .wssM2 .wssM5{background-image:url(menu.png)}
+* html .wssO0 .wssJ30{background:url(load.wizard.gif) no-repeat}
 * html a.wss_g:hover{background-image:url(lang.hover.png)}
 * html .wssT7 .wssJ,* html .wss_q,* html .wssO9 .wssJ32{background-image:url(buttons.red.png)}
 * html a.wssJ20:hover{background-image:url(corners.gif)}
@@ -658,6 +660,7 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 *+html .wssM5{position:absolute;right:0}
 *+html .wssM2 .wssM5{background-image:url(menu.png)}
 *+html .wssN4{margin-left:1.8%}
+*+html .wssO0 .wssJ30{background:url(load.wizard.gif) no-repeat}
 *+html .wssU1 .wssF1{margin-left: -183px}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
 *+html .wssT7 .wssJ,*+html .wss_q,*+html .wssO9 .wssJ32{background-image:url(buttons.red.png)}
