@@ -335,6 +335,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -40px 2px no-repeat}
 .wssJ30{border:4px solid #ccc;display:inline-block;-moz-border-radius:14px;-webkit-border-radius:14px;border-radius:14px;margin-right:5px;padding-left:6px;width:15px}
 .wssO9 .wssJ30{border-color:#ff8200}
 .wssO10 .wssJ30{border-color:#ff8200;background:#ff8200;color:#fff}
+.wssO0 .wssJ30{background:url(load.wizard.gif) no-repeat;border:0;padding:4px 4px 4px 10px}
 .wssJ31{background:url(wizard1.png) no-repeat;display:block;height:170px;position:absolute;right:-47px;top:173px;width:174px}
 .wssC13 .wssJ31{background:url(wizard2.png) no-repeat;height:170px;width:174px}
 .wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:225px;right:-41px;top:118px;width:232px}
