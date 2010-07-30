@@ -13,10 +13,10 @@ function replace_urls ($cached, $filename, $document_root) {
 	$content = @file_get_contents($filename);
 	$path = str_replace($document_root, "", $filename);
 	$path = substr($path, 0, strrpos($path, '/') + 1);
-	preg_match_all("@url\s*\(\s*[^\)]+\)@", $content, $urls, PREG_SET_ORDER);
+	preg_match_all("@url\s*\(\s*([^\)]+)\)@", $content, $urls, PREG_SET_ORDER);
 	$replaced = array();
 	foreach ($urls as $url) {
-		$u = $i = $url[0];
+		$u = $i = $url[1];
 		if (empty($replaced[$i])) {
 			switch ($u{0}) {
 				case '/':
@@ -33,10 +33,6 @@ function replace_urls ($cached, $filename, $document_root) {
 					if (substr($u, 0, 6) == 'mhtml:') {
 						break;
 					}
-				default:
-					$bracket = strpos($u, '(');
-					$u = substr_replace($u, $path, $bracket + 1, 0);
-					break;
 			}
 			$content = str_replace($i, $u, $content);
 			$replaced[$i] = 1;
@@ -312,15 +308,19 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 						}
 					} else {
 						$contents = $content;
+						$gzip = 0;
 					}
 /* create CSS file in cache with rewritten urls */
 				} elseif ($cached != $filename) {
 					$contents = replace_urls($cached, $filename, $document_root);
+					$gzip = 0;
 				} else {
 					$contents = $content;
 				}
 			}
-			header('Content-Encoding: ' . $encoding);
+			if ($gzip) {
+				header('Content-Encoding: ' . $encoding);
+			}
 			header('Content-Length: ' . strlen($contents));
 		} else {
 			$contents = @file_get_contents($cached);
