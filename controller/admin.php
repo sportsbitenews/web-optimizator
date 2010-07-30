@@ -2731,17 +2731,20 @@ class admin {
 		$allowed_hosts = "";
 /* exclude local host case */
 		if (strpos($main_host, ".")) {
-			$etalon = @filesize("libs/css/a.png");
-			$etalon2 = @filesize("libs/css/c.png");
+			$etalon = @filesize("libs/css/progress.png");
+			$etalon2 = @filesize("libs/css/stamps.png");
 			if (is_array($hosts)) {
 				foreach ($hosts as $host) {
-					$webo_image = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/a.png";
+					if (!strpos($host, ".")) {
+						$host = $host . "." . $main_host;
+					}
+					$webo_image = "http://" . $host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/a.png";
 					$tmp_image = "image.tmp.png";
 /* try to get webo image from this host */
 					$this->view->download($webo_image, $tmp_image);
 					if (@filesize($tmp_image) == $etalon) {
 /* prevent 404 page with the same size */
-						$webo_image2 = "http://" . $host . "." . $main_host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/c.png";
+						$webo_image2 = "http://" . $host . preg_replace("/[^\/]+$/", "", $_SERVER['SCRIPT_NAME']) . "libs/css/c.png";
 						$tmp_image2 = "image.tmp2.png";
 						$this->view->download($webo_image2, $tmp_image2);
 						if (@filesize($tmp_image2) == $etalon2) {
