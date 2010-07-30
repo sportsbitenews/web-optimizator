@@ -3376,7 +3376,7 @@ class admin {
 				'unobtrusive_on' => array(
 					'value' => $this->compress_options['unobtrusive']['on'],
 					'type' => 'radio',
-					'count' => $this->premium < 2 ? 1 : 3,
+					'count' => $this->premium < 2 ? 0 : 3,
 					'price' => array(0,5,5)
 				),
 				'unobtrusive_body' => array(

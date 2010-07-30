@@ -74,8 +74,10 @@ class css_sprites_optimize {
 			}
 /* use rewrite (add spot to images?) */
 			$this->no_rewrite = $options['expires_rewrite'];
+/* cache images */
+			$this->cache_images = $options['cache_images'];
 /* cache images (wo.static.php will be used?) */
-			$this->no_cache = $options['cache_images'];
+			$this->cache_images_htaccess = !$options['cache_images_rewrite'];
 /* current USER AGENT spot */
 			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
 /* is USER AGENT old IE? */
@@ -931,9 +933,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 							$this->css->css[$import][$keys]['background-image'] = 'url('.
 								preg_replace("/webo[rb]/", "webo",
 								substr($sprite, 0, strlen($sprite) - 3) . 
-								($this->no_rewrite || $this->no_cache ? '' : 'wo' . time() . '.') .
+								(!$this->no_rewrite && $this->cache_images ? 'wo' . time() . '.' : '') .
 								substr($sprite, strlen($sprite) - 3) .
-								($this->no_rewrite && !$this->no_cache ? '?' . time() : '')) .')';
+								($this->no_rewrite && $this->cache_images && $this->cache_images_htaccess ? '?' . time() : '')) .')';
 						}
 					}
 /* finish deal with CSS */

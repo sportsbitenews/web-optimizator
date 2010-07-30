@@ -411,6 +411,7 @@ class web_optimizer {
 				"minify_aggressive" => $this->options['minify']['html_one_string'],
 				"remove_comments" => $this->options['minify']['html_comments'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
+				"cache_images" => $this->options['far_future_expires']['images'],
 				"far_future_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled']) &&
@@ -3074,7 +3075,8 @@ class web_optimizer {
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
 			'expires_rewrite' => $options['css_sprites_expires_rewrite'],
-			'cache_images' => $this->options['page']['far_future_expires_rewrite'],
+			'cache_images' => $this->options['page']['cache_images'],
+			'cache_images_rewrite' => $this->options['page']['far_future_expires_rewrite'],
 			'data_uris' => $options['data_uris'],
 			'data_uris_separate' => $options['data_uris_separate'],
 			'data_uris_size' => $options['data_uris_size'],
