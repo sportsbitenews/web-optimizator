@@ -50,9 +50,9 @@
 	echo _WEBO_GENERAL_BUYNOW;
 ?></td></tr></tfoot><tbody><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU;
-?></th><td class="wssT9">20-100 <?php
+?></th><td class="wssT9">2-10 <?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
-?></td><td class="wssT9">10-50 <?php
+?></td><td class="wssT9">2-10 <?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
 ?></td><td class="wssT9">1-5 <?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU_MS;
@@ -60,72 +60,56 @@
 	echo _WEBO_SPLASH2_COMPARISON_SPEEDUP;
 ?></th><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 100%</td><td class="wssT9"><?php
+?> 300%</td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 200%</td><td class="wssT9"><?php
+?> 300%</td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 500% <?php
 	echo _WEBO_SPLASH2_COMPARISON_ANDMORE;
-?></td></tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
+?></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+	echo _WEBO_combinecss;
+?>, <?php
+	echo _WEBO_combine_js;
+?>, <?php
+	echo _WEBO_minify;
+?>, <?php
 	echo _WEBO_gzip;
-?></th><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 65% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 65% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 88% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+?>, <?php
 	echo _WEBO_clientside;
-?></th><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 40% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 60% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 85% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_TRAFFIC;
-?></span></td></tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
+?>, <?php
+	echo _WEBO_htaccess;
+?>, <?php
 	echo _WEBO_serverside;
-?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 90% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_LOAD;
-?></span></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+?>, <?php
 	echo _WEBO_css_sprites;
-?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 25% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
-?></span></td></tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
+?>, <?php
 	echo _WEBO_data_uri;
-?></th><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 60% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
-?></span></td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO;
-?> 60% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_REQUESTS;
-?></span></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_multiple_hosts;
-?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
-	echo _WEBO_SPLASH2_COMPARISON_UPTO2;
-?> 50% <span class="wssI"><?php
-	echo _WEBO_SPLASH2_COMPARISON_ACCELERATION;
-?></span></td></tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
+?></th><td class="wssT9">HTTP</td><td class="wssT9">HTTP</td><td class="wssT9">HTTP, HTTPS</tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
 	echo _WEBO_unobtrusive;
 ?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_UPTO2;
-?> 20% <span class="wssI"><?php
+?> 100% <span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_ACCELERATION;
-?></span></td></tr></tbody></table>
+?></span></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+	echo _WEBO_backlink;
+?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td></tr><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
+	echo _WEBO_SPLASH2_COMPARISON_UPDATE;
+?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+	echo _WEBO_plugins;
+?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+	echo _WEBO_DASHBOARD_TOOLS;
+?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php 
+	echo _WEBO_TOOLS_GZIP;
+?>, <?php
+	echo _WEBO_TOOLS_IMAGE;
+?>, <?php
+	echo _WEBO_TOOLS_CDN
+?></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
+?></th><td class="wssT9 wssT14">-</td><td class="wssT9">2 <?php
+	echo _WEBO_SPLASH2_COMPARISON_WEEKS;
+?></td><td class="wssT9">6 <?php
+	echo _WEBO_SPLASH2_COMPARISON_MONTHS;
+?></td></tr></tbody></table>

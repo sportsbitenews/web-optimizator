@@ -1,4 +1,4 @@
-<?php
+	<?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Outputs account page (with personal data)
@@ -75,19 +75,41 @@
 ?>" maxlength="29" size="29"/><span class="wssD3">*</span><input type="hidden" name="wss_premium" id="wss_premium" value="<?php
 		echo round($premium);
 ?>"/><span class="wssD4"><?php
-		if (!empty($expires) && $expires > -1) {
+		if (!empty($expires) && $expires > -1 && $premium > 9) {
 			echo _WEBO_ACCOUNT_EXPIRES;
 ?> <?php
 			echo date("Y-m-d", time() + $expires*86400);
-		} else {
+?>, <?php
+		} elseif (empty($expires) || $expires < 0) {
 ?><a class="wssJ" href="javascript:(function(){var s=_.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+_('#wss_name')[0].value+'&amp;email='+_('#wss_email')[0].value;_('head')[0].appendChild(s)}())"><?php
 			echo _WEBO_LOGIN_TRIAL;
 ?></a><?php
 		}
-?>, <a href="LICENSE<?php
-			echo in_array($language, array('ru', 'ua')) ? '.utf8.ru' : '';
+		switch (round($premium)) {
+			case 10:
+				echo _WEBO_SPLASH2_COMPARISON_SAAS;
+				break;
+			case 3:
+				echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
+				break;
+			case 2:
+				echo _WEBO_SPLASH2_COMPARISON_FULL;
+				break;
+			case 1:
+				echo _WEBO_SPLASH2_COMPARISON_LITE;
+				break;
+			default:
+				echo _WEBO_SPLASH2_COMPARISON_DEMO;
+				break;
+		}
+?> <?php
+		echo _WEBO_SPLASH2_COMPARISON_VERSION;
+?>, <a href="<?php
+		echo $root;
+?>LICENSE<?php
+		echo in_array($language, array('ru', 'ua')) ? '.utf8.ru' : '';
 ?>.txt" target="_blank"><?php
-			echo _WEBO_LOGIN_LICENSEAGREEMENT2;
+		echo _WEBO_LOGIN_LICENSEAGREEMENT2;
 ?></a></span></dd><dt class="wssD1"><label for="wss_name" class="wssE"><?php 
 	echo _WEBO_LOGIN_USERNAME;
 ?>:</label></dt><dd class="wssD2"><input id="wss_name" name="wss_name" title="<?php

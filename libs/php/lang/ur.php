@@ -130,6 +130,7 @@ define('_WEBO_unobtrusive', 'Unobtrusive جاوا سکرپٹ');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'روزانہ کی فیس');
 define('_WEBO_saas2', '');
+define('_WEBO_plugins', 'Plugins API');
 define('_WEBO_javascript_cachedir', 'جاوا سکرپٹ کے کیشے کی ڈائرکٹری کا راستہ');
 define('_WEBO_javascript_cachedir_HELP', 'یہ ڈائریکٹری جاوا سکرپٹ کیشے کی تمام فائلوں پر مشتمل ہے۔');
 define('_WEBO_css_cachedir', 'سی ایس ایس کیشے کی ڈائرکٹری کا راستہ');
@@ -785,9 +786,11 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'شامل نہیں');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'تمام فوائد');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'قیمت');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'مفت');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '24،99 $');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '99 $');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '89،99 $');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '349 $');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'تازہ ترین');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
 
 /* متعلق */
 define('_WEBO_ABOUT_TITLE', 'ویبو سائٹ اسپیڈ اپ کے بارے میں');

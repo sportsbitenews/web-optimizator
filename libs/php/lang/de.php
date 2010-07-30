@@ -132,6 +132,7 @@ define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'Daily fee');
 define('_WEBO_saas2', '');
+define('_WEBO_plugins', 'Plugins API');
 
 define('_WEBO_javascript_cachedir', 'Path to JavaScript cache directory');
 define('_WEBO_javascript_cachedir_HELP', 'This directory contains all files of JavaScript cache.');
@@ -731,9 +732,9 @@ define('_WEBO_DASHBOARD_SEND', 'Send request');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valid till');
-define('_WEBO_ACCOUNT_LICENSEINFO', 'WEBO Site SpeedUp is licensed for an annual subscription fee. Community Edition can be used only on non-commercial websites (see <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer
+define('_WEBO_ACCOUNT_LICENSEINFO', 'Community Edition can be used only on non-commercial websites (see <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer
 " class="wssJ">frequently asked questions</a> page). For commercial websites you can use one of two WEBO Site SpeedUp editions &mdash; Lite or Premium (see <a href="#wss_promo" class="wssJ">version comparison</a> page).');
-define('_WEBO_ACCOUNT_LICENSEINFO2', 'License key registration is performed automatically. You just need to enter the valid key into the corresponding field and press the "Save" button. Once the license key is registred you will get information about its expiration date. If the license key is expired you can purchase WEBO Site SpeedUp license renewal.');
+define('_WEBO_ACCOUNT_LICENSEINFO2', 'License key registration is performed automatically. You just need to enter the valid key into the corresponding field and press the "Save" button. Once the license key is registred you will get information about its expiration date.');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'You can ask all questions regarding WEBO Site SpeedUp license policy using <a href="http://www.webogroup.com/about/contacts/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">our contacts</a> listed on the official website.');
 define('_WEBO_ACCOUNT_INVALID', 'Enter the valid license key or leave the field blank');
 define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Sorry, but registration server is unavailable at the moment. Try again later');
@@ -803,9 +804,11 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'nicht verf&uuml;gbar');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Alle Leistungen');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pries');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'kostenlos');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '17,99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '72,99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61,99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Updates');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'About WEBO Site SpeedUp');

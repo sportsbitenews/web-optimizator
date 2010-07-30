@@ -131,6 +131,7 @@ define('_WEBO_unobtrusive', 'Ненавязчивый JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'Расход');
 define('_WEBO_saas2', 'в день');
+define('_WEBO_plugins', 'API для расширений');
 
 define('_WEBO_javascript_cachedir', 'Путь к директории JavaScript-кэша');
 define('_WEBO_javascript_cachedir_HELP', 'В этой директории располагаются файлы JavaScript-кэша.');
@@ -731,8 +732,8 @@ define('_WEBO_DASHBOARD_SEND', 'Отправить заявку');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Срок действия истекает');
-define('_WEBO_ACCOUNT_LICENSEINFO', 'WEBO Site SpeedUp распространяется по годовой подписке. Использование некоммерческой версии возможно только для некоммерческих сайтов (<a href="http://www.webogroup.com/ru/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">ознакомьтесь с ответами на часто задаваемые вопросы</a>). Для коммерческих сайтов (т.е. сайтов, деятельность которых связана с извлечением прибыли) WEBO Site SpeedUp доступен в двух редакциях: облегченной и полной (<a href="#wss_promo" class="wssJ">сравнение версий</a>).');
-define('_WEBO_ACCOUNT_LICENSEINFO2', 'Регистрация лицензионного ключа осуществляется автоматически: его нужно просто ввести в поле слева. После регистрации будет выводиться информация о сроке истечения его действия. По его окончанию вы можете приобрести продление лицензии WEBO Site SpeedUp.');
+define('_WEBO_ACCOUNT_LICENSEINFO', 'Использование некоммерческой версии возможно только для некоммерческих сайтов (<a href="http://www.webogroup.com/ru/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">ознакомьтесь с ответами на часто задаваемые вопросы</a>). Для коммерческих сайтов (т.е. сайтов, деятельность которых связана с извлечением прибыли) WEBO Site SpeedUp доступен в двух редакциях: облегченной и полной (<a href="#wss_promo" class="wssJ">сравнение версий</a>).');
+define('_WEBO_ACCOUNT_LICENSEINFO2', 'Регистрация лицензионного ключа осуществляется автоматически: его нужно просто ввести в поле слева. После регистрации будет выводиться информация о текущей версии продукта (и о его сроке действия в случае SaaS-лицензии).');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'Все вопросы касательно политики лицензирования программы можно задать, <a href="http://www.webogroup.com/ru/about/contacts/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">используя контакты, приведенные на официальном сайте</a>.');
 define('_WEBO_ACCOUNT_INVALID', 'Введите правильный лицензионный ключ или оставьте поле пустым');
 define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Извините, но регистрационный сервер сейчас недоступен. Попробуйте зарегистрироваться позже');
@@ -803,8 +804,10 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества'
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '499 руб.');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '1999 руб.');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1799 руб.');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '6999 руб.');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'месяцев');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'О WEBO Site SpeedUp');
@@ -1020,7 +1023,7 @@ define('_WEBO_WIZARD_STEP15_INFO', 'Идет проверка поддержки
 define('_WEBO_WIZARD_STEP16', 'Использование CDN');
 define('_WEBO_WIZARD_STEP16_INFO', 'Идет вычисление текущих настроек распределение статических файлов по поддоменам сайта и настраивается CDN.');
 define('_WEBO_WIZARD_STEP17', 'CSS Sprites');
-define('_WEBO_WIZARD_STEP17_INFO', 'Идет проверка поддержки технологий CSS Sprites для уменьшения числа фоновых изображений.');
+define('_WEBO_WIZARD_STEP17_INFO', 'Идет проверка поддержки технологий CSS Sprites для уменьшения числа изображений.');
 define('_WEBO_WIZARD_STEP18', 'Отложенная загрузка');
 define('_WEBO_WIZARD_STEP18_INFO', 'Идет проверка возможности использования технологий отложенной загрузки для ускорения сайта.');
 define('_WEBO_WIZARD_STEP21', 'Настройка серверного кэширования');

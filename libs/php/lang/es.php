@@ -130,6 +130,7 @@ define('_WEBO_unobtrusive', 'Unobtrusive JavaScript');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'Daily fee');
 define('_WEBO_saas2', '');
+define('_WEBO_plugins', 'Plugins API');
 
 define('_WEBO_javascript_cachedir', 'Camino al directorio JavaScript cache');
 define('_WEBO_javascript_cachedir_HELP', 'Este directorio contiene todos los archivos de JavaScript cache.');
@@ -732,8 +733,8 @@ define('_WEBO_DASHBOARD_SEND', 'Enviar pedido');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valido hasta');
-define('_WEBO_ACCOUNT_LICENSEINFO', 'La licencia de WEBO Site SpeedUp es obtenida por una subscripción anual. La versión Community Edition puede ser utilizada solo en Sitios Web no comerciales (lea la página de <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">preguntas más comunes</a>). Para Sitios Web comerciales usted puede usar una de dos ediciones de WEBO Site SpeedUp &mdash; Lite o Premium (lea la página <a href="#wss_promo" class="wssJ">comparación de versiones</a>).');
-define('_WEBO_ACCOUNT_LICENSEINFO2', 'El registro de el número de serie se realiza automaticamente. Solo tiene que poner el número de serie correcto en los espacios correspondientes y seleccionar "guardar". Una vez que la licencia esté registrada usted verá información sobre su fecha de expiración. Si la licencia caducó, podrá comprar una renovación de la licencia de WEBO Site SpeedUp.');
+define('_WEBO_ACCOUNT_LICENSEINFO', 'La versión Community Edition puede ser utilizada solo en Sitios Web no comerciales (lea la página de <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">preguntas más comunes</a>). Para Sitios Web comerciales usted puede usar una de dos ediciones de WEBO Site SpeedUp &mdash; Lite o Premium (lea la página <a href="#wss_promo" class="wssJ">comparación de versiones</a>).');
+define('_WEBO_ACCOUNT_LICENSEINFO2', 'El registro de el número de serie se realiza automaticamente. Solo tiene que poner el número de serie correcto en los espacios correspondientes y seleccionar "guardar". Una vez que la licencia esté registrada usted verá información sobre su fecha de expiración.');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'Puede realizar cualquier pregunta sobre la poliza de licencias de WEBO Site SpeedUp usando<a href="http://www.webogroup.com/about/contacts/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">nuestros contactos</a> listados en el Sitio Web oficial.');
 define('_WEBO_ACCOUNT_INVALID', 'Ingrese un número de serie válido o deje este espacio en blanco.');
 define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Disculpe, pero el servidor de registro está temporalmente ocupado. Intente más tarde.');
@@ -803,9 +804,11 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'no incluido');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Todos los beneficios');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Precio');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'gratis');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '17.95&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '72.99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Actualizaciones');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'Acerca de WEBO Site SpeedUp');

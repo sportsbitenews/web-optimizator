@@ -858,6 +858,7 @@ class admin {
 							$this->save_option("['sql_cache']['enabled']", 1);
 							break;
 					}
+					$this->install_clean_cache(0, 1);
 					break;
 /* save config */
 				case 51:
@@ -887,7 +888,7 @@ class admin {
 						$this->input['wss_config'] = 'auto';
 					}
 					$this->save_option("['config']", $this->input['wss_config']);
-					$this->options_file = 'config.auto'. ($i++) .'.php';
+					$this->options_file = 'config.'. $this->input['wss_config'] .'.php';
 					$this->input['wss_title'] = 'Auto Config';
 					$this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d");
 					$this->set_options();
@@ -1015,7 +1016,8 @@ class admin {
 			"error" => $error,
 			"skip_render" => $this->skip_render,
 			"internal" => $this->internal,
-			"language" => $this->language
+			"language" => $this->language,
+			"root" => str_replace($this->compress_options['document_root'], '/', $this->basepath)
 		);
 		$this->view->render("install_account", $page_variables);
 	}

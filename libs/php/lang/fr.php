@@ -131,6 +131,7 @@ define('_WEBO_unobtrusive', ' JavaScript non-obtrusive');
 define('_WEBO_multiple_hosts', 'CDN');
 define('_WEBO_saas', 'Daily fee');
 define('_WEBO_saas2', '');
+define('_WEBO_plugins', 'Plugins API');
 
 define('_WEBO_javascript_cachedir', 'Chemin du répertoire du cache JavaScript');
 define('_WEBO_javascript_cachedir_HELP', 'Ce répertoire contient tous les fichier de cache JavaScript.');
@@ -730,8 +731,8 @@ define('_WEBO_DASHBOARD_SEND', 'Envoyer une demande');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valide jusqu\'a');
-define('_WEBO_ACCOUNT_LICENSEINFO', 'WEBO Site SpeedUp donne droit à une licence pour une année contre paiement de l\'inscription annuelle. L\'Edition Communautaire peut-être utilisé uniquement sur les sites non commerciaux (voir <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">frequently asked questions</a> page). Pour les sites commerciaux vous pouvez utiliser une des deux versions de WEBO Site SpeedUp éditions &mdash; Lite ou Premium (see <a href="#wss_promo" class="wssJ">version comparaison</a> page).');
-define('_WEBO_ACCOUNT_LICENSEINFO2', 'L\'inscription de la Clé de Licence est faite automatiquement. Vous devez juste entrer le code clé dans le champ requis et cliquer sur "Sauvegarder". Une fois la clé enregistrée, vous recevrez des informations sur sa date de péremption. Si la clé est périmée, vous pouvez racheter la renouvellement de votre licence WEBO Site SpeedUp. ');
+define('_WEBO_ACCOUNT_LICENSEINFO', 'L\'Edition Communautaire peut-être utilisé uniquement sur les sites non commerciaux (voir <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">frequently asked questions</a> page). Pour les sites commerciaux vous pouvez utiliser une des deux versions de WEBO Site SpeedUp éditions &mdash; Lite ou Premium (see <a href="#wss_promo" class="wssJ">version comparaison</a> page).');
+define('_WEBO_ACCOUNT_LICENSEINFO2', 'L\'inscription de la Clé de Licence est faite automatiquement. Vous devez juste entrer le code clé dans le champ requis et cliquer sur "Sauvegarder". Une fois la clé enregistrée, vous recevrez des informations sur sa date de péremption.');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'Vous pouvez poser vos questions sur la politique des licences WEBO Site SpeedUp en utilisant <a href="http://www.webogroup.com/about/contacts/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">our contacts</a> tel que listé sur le site officiel.');
 define('_WEBO_ACCOUNT_INVALID', 'Entrer le code clé valide ou laissez le champ vide.');
 define('_WEBO_ACCOUNT_SERVER_UNAVAILABLE', 'Désolée mais le serveur d\'enregistrement n\'est pas disponible actuellement. Veuillez essayer plus tard.');
@@ -802,9 +803,11 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'non inclus');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Tous les bénéfices');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Prix');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'gratuit');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '17.99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '72,99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Mise à jour');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'A propos de WEBO Site SpeedUp');

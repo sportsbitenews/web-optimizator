@@ -32,7 +32,7 @@ if ($wizard_mode) {
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li></ul><h1 class="wssA wssA10"><?php
 	echo _WEBO_WIZARD_TITLE;
-?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9 wssO0"><a href="javascript:_.wiz(0);_.wz=_.wiz0=0;_.wizard()" class="wssJ"><span class="wssJ30">1</span> <?php
+?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9 wssO0"><a href="javascript:_.a({href:'#wss_wizard'})" class="wssJ"><span class="wssJ30">1</span> <?php
 	echo _WEBO_WIZARD_STEP1;
 ?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:_.wz=47;_.wizard()" class="wssJ"><span class="wssJ30">2</span> <?php
 	echo _WEBO_WIZARD_STEP2;
@@ -86,7 +86,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP210;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_serverside" id="wss_serverside0" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP210_HELP;
-?>" value="0" checked="checked"/></dd></dl><a href="javascript:_.wz=47;_.wizard()" class="wssJ5"><?php
+?>" value="0" checked="checked"/></dd></dl><a href="javascript:_.wz=48;_.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP31;
