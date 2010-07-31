@@ -13,7 +13,7 @@ function replace_urls ($cached, $filename, $document_root) {
 	$content = @file_get_contents($filename);
 	$path = str_replace($document_root, "", $filename);
 	$path = substr($path, 0, strrpos($path, '/') + 1);
-	preg_match_all("@url\s*\(\s*([^\)]+)\)@", $content, $urls, PREG_SET_ORDER);
+	preg_match_all("@url\s*\(['\"\s]*([^\"'\)]+)['\"\s]*\)@", $content, $urls, PREG_SET_ORDER);
 	$replaced = array();
 	foreach ($urls as $url) {
 		$u = $i = $url[1];

@@ -123,7 +123,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 .wssC8{background:#f7f4e9;display:block;padding:11px 20px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 .wssC9{float:left;height:300px;width:260px}
 .wssC11{background:#f7f4e9 url(../../images/schemas.png) 0 300px no-repeat;height:268px;margin:0 0 20px 260px;max-width:500px;padding:16px;position:relative;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
-.wssC14{background-image:none}
+.wssC13{background-image:none}
+.wssC14{background:#f7f4e9 url(wizard.splash.png) no-repeat}
 .wssC21{background-position:0 0}
 .wssC22{background-position:0 -300px}
 .wssC23{background-position:0 -600px}
@@ -336,7 +337,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -40px 2px no-repeat}
 .wssO0 .wssJ30{background:url(load.wizard.gif) no-repeat;border:0;padding:4px 4px 4px 10px}
 .wssJ31{background:url(wizard1.png) no-repeat;display:block;height:170px;position:absolute;right:-47px;top:173px;width:174px}
 .wssC13 .wssJ31{background:url(wizard2.png) no-repeat;height:170px;width:174px}
-.wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:225px;right:-41px;top:118px;width:232px}
+.wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:225px;right:-121px;top:39px;width:232px}
 .wssO9 .wssJ32{background-position:-190px -68px;background-repeat:no-repeat;display:block;height:11px;width:208px;margin:0 0 -11px 32px}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}
