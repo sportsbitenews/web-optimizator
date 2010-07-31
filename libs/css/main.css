@@ -111,6 +111,8 @@ a.wss_w:hover,a.wss_w:focus,a.wss_w:active{color:#0002bf!important}
 #wss_help .wssB2{font-size:16px;font-weight:700;padding:2px 0 6px}
 .wssB3{color:#ff8200;font:700 15px/17px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:2px 0 13px 3px}
 .wssC11 .wssB3{padding-left:0;padding-bottom:5px}
+.wssC14 .wssB3{color:#666;font-size:30px;font-weight:400}
+.wssB4{color:#ff4000;padding-bottom:0;margin:10px 0 10px 11px}
 
 .wssC{height:120px;margin:0;padding:0}
 .wssC1{height:780px}
@@ -208,7 +210,6 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssH15{height:71px;padding:0;margin:0 0 0 40%;font:14px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif}
 .wssH18{background:url(add.orange.png) 0 1px no-repeat;padding:0 20px 0 21px}
 a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat;padding:0 20px 0 21px}
-.wssB4{color:#ff4000;padding-bottom:0;margin:10px 0 10px 11px}
 
 .wssI{font:13px/16px "Trebuchet MS",Arial,Tahoma,Sans-serif;margin:0;padding:13px 0 0}
 .wssC4 .wssI{float:right;padding:28px 8px 0 0}
@@ -218,6 +219,7 @@ a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:ur
 .wssC7 .wssI{margin:0;padding:1px 0 4px}
 .wssC7 .wssC4 .wssI{float:none;padding:12px 0 0}
 .wssC9 .wssI{color:#666;float:left;padding-top:52px;width:260px}
+.wssC14 .wssI{padding-bottom:20px;width:320px}
 .wssH16 .wssI{padding-top:14px}
 .wssK0 .wssI{font-size:16px;padding:0}
 .wssK0 .wssO8 .wssI{font-size:14px;color:#000}
@@ -239,6 +241,9 @@ a.wssJ7:hover .wssH18,a.wssJ7:active .wssH18,a.wssJ7:focus .wssH18{background:ur
 .wssP1 .wssI2{color:#000;font-size:17px}
 .wssP2 .wssI2{font-size:32px;letter-spacing:-1px}
 .wssI3{background:url(load.gif) 50% 5px no-repeat;color:#d6d6d6;font:14px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:15px;padding-top:45px;text-align:center}
+.wssC14 .wssI4{color:#333;font-size:17px;width:400px;line-height:20px;height:60px;padding-bottom:0}
+.wssI5{color:#bf6200;font-size:18px;float:left;display:block;width:170px;line-height:25px}
+#wss_acceleration{font-size:40px;font-weight:700;text-indent:33px;display:block;line-height:40px}
 
 .wssJ{color:#2680ac!important}
 a.wssJ:hover,a.wssJ:focus,a.wssJ:active{color:#0002bf!important}
@@ -305,8 +310,12 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-186p
 #wss_help .wssJ6{background-position:-186px -309px}
 .wssC7 .wssC4 .wssJ7{background-position:0 -76px}
 .wssC7 .wssC4 .wssJ7 .wssJ6{background-position:-186px -76px}
-.wssC7 .wssC4 a.wssJ7:hover{background:#ff7e53 0 -112px no-repeat}
-.wssC7 .wssC4 a.wssJ7:hover .wssJ6{background-position:-186px -112px}
+.wssC7 .wssC4 a.wssJ7:hover,.wssC7 .wssC4 a.wssJ7:active,.wssC7 .wssC4 a.wssJ7:focus{background:#ff7e53 0 -112px no-repeat}
+.wssC7 .wssC4 a.wssJ7:hover .wssJ6,.wssC7 .wssC4 a.wssJ7:active .wssJ6,.wssC7 .wssC4 a.wssJ7:focus .wssJ6{background-position:-186px -112px}
+.wssC14 .wssJ7{background-position:0 -465px}
+.wssC14 .wssJ7 .wssJ6{background-position:-186px -465px}
+.wssC14 a.wssJ7:hover,.wssC14 a.wssJ7:active,.wssC14 a.wssJ7:focus{background-position:0 -504px}
+.wssC14 a.wssJ7:hover .wssJ6,.wssC14 a.wssJ7:active .wssJ6,.wssC14 a.wssJ7:focus .wssJ6{background-position:-186px -504px}
 #wss_help a.wssJ5:hover .wssJ6,#wss_help a.wssJ5:active .wssJ6,#wss_help a.wssJ5:focus .wssJ6{background-position:-186px -348px}
 .wssH16 .wssJ7{left:0;margin:-2px 30px 0 10px;padding-right:0}
 .wssH16 .wssJ5{background-position:0 -388px;padding:0 30px;margin-top:-2px}
@@ -337,7 +346,7 @@ a.wssJ20:hover{background:#fff url(corners.gif) -40px 2px no-repeat}
 .wssO0 .wssJ30{background:url(load.wizard.gif) no-repeat;border:0;padding:4px 4px 4px 10px}
 .wssJ31{background:url(wizard1.png) no-repeat;display:block;height:170px;position:absolute;right:-47px;top:173px;width:174px}
 .wssC13 .wssJ31{background:url(wizard2.png) no-repeat;height:170px;width:174px}
-.wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:225px;right:-121px;top:39px;width:232px}
+.wssC14 .wssJ31{background:url(wizard3.png) no-repeat;height:303px;right:-21px;top:39px;width:158px}
 .wssO9 .wssJ32{background-position:-190px -68px;background-repeat:no-repeat;display:block;height:11px;width:208px;margin:0 0 -11px 32px}
 
 .wssK{background:url(error.png) repeat;border:1px solid #edd1d1;margin:13px 0 1px;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px}

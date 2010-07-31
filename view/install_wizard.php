@@ -90,41 +90,29 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP31;
-?></h3><p class="wssI"><?php
+?></h3><p class="wssI wssI4"><span class="wssI5"><span id="wss_acceleration"></span><?php
+	echo _WEBO_WIZARD_FROM;
+?> <strong><span id="wss_before"></span><?php
+	echo _WEBO_LOGIN_EFFICIENCY_S;
+?></strong> <?php
+	echo _WEBO_WIZARD_TO;
+?> <strong><span id="wss_after"></span><?php
+	echo _WEBO_LOGIN_EFFICIENCY_S;
+?></span></strong><?php
 	echo _WEBO_WIZARD_STEP31_INFO;
-?></p><a href="javascript:_.wiz(51)" class="wssJ5"><?php
-	echo _WEBO_WIZARD_SAVE;
-?><span class="wssJ6"></span></a><p class="wssI"><?php
+?></p><p class="wssI"><?php
 	echo _WEBO_WIZARD_STEP31_INFO2;
-?></p><div class="wssC50 wssA0"><p class="wssI"><?php
-	echo _WEBO_WIZARD_STEP31_LIST;
-?></p><ul class="wssO7"><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP12;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP122;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP13;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP132;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP14;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP142;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP15;
-?></li><li class="wssO8 wssA0"><?php
-	echo _WEBO_WIZARD_STEP18;
-?></li></ul><p class="wssI"><?php
-	echo _WEBO_WIZARD_STEP31_LIST2;
 ?> <a href="#wss_options"><?php
-	echo _WEBO_WIZARD_STEP31_LIST3;
+	echo _WEBO_SPLASH2_OPTIONS;
 ?></a> <?php
 	echo _WEBO_DASHBOARD_CRITICAL_OR;
 ?> <a href="mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration"><?php
-	echo _WEBO_WIZARD_STEP31_LIST4;
-?></a> <?php
-	echo _WEBO_WIZARD_STEP31_LIST5;
-?></p></div><span class="wssJ31"></span></div><h3 class="wssB3"><?php
+	echo _WEBO_WIZARD_STEP31_INFO3;
+?></a>. <?php
+	echo _WEBO_WIZARD_STEP31_INFO4;
+?></p><a href="javascript:_.wiz(51)" class="wssJ7"><?php
+	echo _WEBO_WIZARD_SAVE;
+?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_PREVIEW;
 ?></h3><iframe src="<?php
 	echo $website_root;

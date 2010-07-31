@@ -31,7 +31,7 @@ case 51:
 _.a({href:'#wss_dashboard'});
 break;
 case 50:
-var x=_('.wssC9 .wssO8'),w=_('.wssC12'),y=_('.wssC13'),z=_('.wssC14'),b,c=0,d=_('.wssC14 .wssO8'),e=0;if(x[0]){x[2].className='wssO8 wssO9';x[0].className=x[1].className='wssO8 wssO10';while(b=w[c++]){b.style.display='none'}c=0;while(b=y[c++]){b.style.display='none'}c=0;while(b=z[c++]){b.style.display='none'}c=0;while(b=d[c++]){if(_.wzz[c-1]){b.style.display='list-item';e++}}if(e){_('.wssC14 .wssC50')[0].style.display='block'}z[0].style.display='block'}
+var x=_('.wssC9 .wssO8'),w=_('.wssC12'),y=_('.wssC13'),z=_('.wssC14'),b,c=0,d=_('.wssC14 .wssO8'),e=0,f=Math.round(_.wiz5('website').__WSS/10)/100,g=_('#wss_before')[0].innerHTML;_('#wss_acceleration')[0].innerHTML=Math.round(100*g/f)/100+'x';_('#wss_after')[0].innerHTML=f;if(x[0]){x[2].className='wssO8 wssO9';x[0].className=x[1].className='wssO8 wssO10';while(b=w[c++]){b.style.display='none'}c=0;while(b=y[c++]){b.style.display='none'}c=0;while(b=z[c++]){b.style.display='none'}z[0].style.display='block'}
 break;
 case 49:
 _.wiz(50);
@@ -142,7 +142,7 @@ case 2:
 _.timer=(new Date()).getTime();var c=_('.wssC12');c[0].style.display='none';c[1].style.display='block';_('#wss_website')[0].src+=a;_.wiz6('website',function(){_.wiz(_.wiz1()?3:5)});
 break;
 case 1:
-var x=_('.wssC9 .wssO8'),w=_('.wssC12'),y=_('.wssC13'),z=_('.wssC14'),b,c=0,d=_('link,style',_.wiz3('website_initial').body).length;if(x[0]){x[2].className=x[1].className='wssO8';x[0].className='wssO8 wssO9 wssO0';while(b=w[c++]){b.style.display='none'}c=0;while(b=y[c++]){b.style.display='none'}c=0;while(b=z[c++]){b.style.display='none'}w[0].style.display='block';_.wiz(2+(d?'&web_optimizer_wizard_options=1':''))}
+_('#wss_before')[0]=Math.round(_.wiz5('website').__WSS/10)/100;var x=_('.wssC9 .wssO8'),w=_('.wssC12'),y=_('.wssC13'),z=_('.wssC14'),b,c=0,d=_('link,style',_.wiz3('website_initial').body).length;if(x[0]){x[2].className=x[1].className='wssO8';x[0].className='wssO8 wssO9 wssO0';while(b=w[c++]){b.style.display='none'}c=0;while(b=y[c++]){b.style.display='none'}c=0;while(b=z[c++]){b.style.display='none'}w[0].style.display='block';_.wiz(2+(d?'&web_optimizer_wizard_options=1':''))}
 break;
 case 40:a++;
 case 33:case 6:a++;
