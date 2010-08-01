@@ -157,7 +157,13 @@ if (!$ajax) {
 		echo _WEBO_HELP_WELCOME;
 ?>!</h1><h2 class="wssB1"><?php
 		echo _WEBO_HELP_FIRSTTIME;
-?></h2><ol class="wssO7"><li class="wssO8 wssO21"><a class="wssO22" href="#wss_account"><span class="wssO29<?php
+?></h2><ol class="wssO7"><li class="wssO8 wssO24"><a class="wssO22" href="#wss_wizard"><span class="wssO29<?php
+		echo $screens_lang;
+?> wssO25" title="<?php
+		echo _WEBO_WIZARD_TITLE;
+?>"></span></a><?php
+		echo _WEBO_HELP_TUNING;
+?></li><li class="wssO8 wssO21"><a class="wssO22" href="#wss_account"><span class="wssO29<?php
 		echo $screens_lang;
 ?> wssO23" title="<?php
 		echo _WEBO_DASHBOARD_ACCOUNT;
@@ -167,37 +173,13 @@ if (!$ajax) {
 		echo _WEBO_DASHBOARD_ACCOUNT;
 ?></a> <?php
 		echo _WEBO_HELP_LICENSEKEY2;
-?></li><li class="wssO8 wssO24"><a class="wssO22" href="#wss_options"><span class="wssO29<?php
-		echo $screens_lang;
-?> wssO25" title="<?php
-		echo _WEBO_SPLASH2_OPTIONS;
-?>"></span></a><?php
-		echo _WEBO_HELP_TUNING;
-?> <a href="#wss_options" class="wssJ"><?php
-		echo _WEBO_SPLASH2_OPTIONS;
-?></a> <?php
-		echo _WEBO_HELP_TUNING2;
 ?></li><li class="wssO8 wssO26"><a class="wssO22" href="#wss_dashboard"><span class="wssO29<?php
 		echo $screens_lang;
 ?> wssO27" title="<?php
 		echo _WEBO_SPLASH2_CONTROLPANEL;
 ?>"></span></a><?php
 		echo _WEBO_HELP_CONTROLPANEL;
-?> <a href="#wss_dashboard" class="wssJ"><?php
-		echo _WEBO_SPLASH2_CONTROLPANEL;
-?></a> <?php
-		echo _WEBO_HELP_CONTROLPANEL2;
-?> <a href="#wss_options" class="wssJ"><?php
-		echo _WEBO_SPLASH2_OPTIONS;
-?></a> <?php
-		echo _WEBO_HELP_CONTROLPANEL3;
-?> <a href="http://code.google.com/p/web-optimizator/w/list" class="wssJ wssJ0"><?php
-		echo _WEBO_DASHBOARD_CRITICAL_DOCS;
-?></a> <?php
-		echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <a href="http://www.webogroup.com/home/support/" class="wssJ wssJ0"><?php
-		echo _WEBO_DASHBOARD_CRITICAL_ISSUES;
-?></a>.</li></ol><div class="wss_r1"><div class="wssN wssN4"><h3 class="wssB2"><?php
+?></li></ol><div class="wss_r1"><div class="wssN wssN4"><h3 class="wssB2"><?php
 		echo _WEBO_ABOUT_SUPPORT;
 ?></h3><ul class="wssO7"><li class="wssO8"><a href="http://www.webogroup.com/" class="wssJ wssJ0"><?php
 		echo _WEBO_HELP_LINK1;
