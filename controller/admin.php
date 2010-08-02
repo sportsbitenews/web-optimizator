@@ -867,19 +867,19 @@ class admin {
 				case 51:
 					$this->save_option("['active']", 1);
 					$this->compress_options['active'] = 1;
+					foreach ($this->compress_options as $group => $options) {
+						if (is_array($options)) {
+							foreach ($options as $key => $option) {
+								$this->input['wss_'. $group . '_' . $key] = $option;
+							}
+						}
+					}
 /* detect .htaccess */
 					$this->get_modules();
 					if (count($this->apache_modules)) {
 						$this->save_option("['htaccess']['enabled']", 1);
 						$this->input['wss_htaccess_enabled'] = 1;
 						$this->compress_options['htaccess']['enabled'] = 1;
-						foreach ($this->compress_options as $group => $options) {
-							if (is_array($options)) {
-								foreach ($options as $key => $option) {
-									$this->input['wss_'. $group . '_' . $key] = $option;
-								}
-							}
-						}
 						$this->write_htaccess();
 					}
 /* define configuration file */
@@ -891,9 +891,9 @@ class admin {
 						$this->input['wss_config'] = 'auto';
 					}
 					$this->save_option("['config']", $this->input['wss_config']);
-					$this->options_file = 'config.'. $this->input['wss_config'] .'.php';
 					$this->input['wss_title'] = 'Auto Config';
 					$this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d");
+					$this->input['wss_page'] = 'install_options';
 					$this->set_options();
 					break;
 			}
