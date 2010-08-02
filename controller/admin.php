@@ -480,7 +480,10 @@ class admin {
 	44 - move JS to /head
 	45 - enable unobtrusive JavaScript
 	46 - disable unobtrusive JavaScript
+	47 - show selection screen (step2/step3)
+	48 - show server side screen
 	49 - enable or disable server side caching
+	50 - show step3 screen
 	51 - save settings
 	100 - final check
 	*/
