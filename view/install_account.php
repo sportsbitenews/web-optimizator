@@ -85,26 +85,26 @@
 			echo _WEBO_LOGIN_TRIAL;
 ?></a><?php
 		}
-		switch (round($premium)) {
-			case 10:
-				echo _WEBO_SPLASH2_COMPARISON_SAAS;
-				break;
-			case 3:
-				echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
-				break;
-			case 2:
-				echo _WEBO_SPLASH2_COMPARISON_FULL;
-				break;
-			case 1:
-				echo _WEBO_SPLASH2_COMPARISON_LITE;
-				break;
-			default:
-				echo _WEBO_SPLASH2_COMPARISON_DEMO;
-				break;
-		}
+		if ($premium) {
+			switch (round($premium)) {
+				case 10:
+					echo _WEBO_SPLASH2_COMPARISON_SAAS;
+					break;
+				case 3:
+					echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
+					break;
+				case 2:
+					echo _WEBO_SPLASH2_COMPARISON_FULL;
+					break;
+				case 1:
+					echo _WEBO_SPLASH2_COMPARISON_LITE;
+					break;
+			}
 ?> <?php
-		echo _WEBO_SPLASH2_COMPARISON_VERSION;
-?>, <a href="<?php
+			echo _WEBO_SPLASH2_COMPARISON_VERSION;
+?>, <?php
+		}
+?><a href="<?php
 		echo $root;
 ?>LICENSE<?php
 		echo in_array($language, array('ru', 'ua')) ? '.utf8.ru' : '';

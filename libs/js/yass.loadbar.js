@@ -109,7 +109,7 @@ case 15:
 var d=_('script',_.wiz3('website')),e,f=0,g=0,h=0,i=0;while(e=d[f++]){if(e.src){if(/jquery([v0-9\.\-\[\]])*(pack|min)?\.(js|php)(\.gz)?/.test(e.src)){g++}if(/prototype([rev0-9\.\-_])*(packer|min|lite)?\.(js|php)(\.gz)?/.test(e.src)){h++}if(/mootools(_release)?([xv0-9\.\-_])*(core-yc|core|yui-compressed|comp|min)?\.(js|php)(\.gz)?/.test(e.src)){i++}}}_.wiz0=g>1||h>1||i>1?1:0;_('#wss_website')[0].src+=a;_.wiz6('website',function(){_.wiz4(16,_.wiz0?19:22)});
 break;
 case 14:
-_.wiz0++;var e=_('head script',_.wiz3('website_initial')),b,c=1,d=a[0];if(e.length<_.wiz0){_.wiz(21)}else{while((b=e[c++])&&c<_.wiz0){if(b.src){d+=' '+b.src.replace(/.*\//,"").replace(/\?.*/,"")}}_('#wss_website')[0].src+=a;_.wiz('website',function(){_.wiz4(14+'&web_optimizer_wizard_options='+escape(d),15)})}
+_.wiz0++;var e=_('head script',_.wiz3('website_initial')),b,c=1,d=a[0];if(e.length<_.wiz0){_.wiz(21)}else{while((b=e[c++])&&c<_.wiz0){if(b.src){d+=' '+b.src.replace(/.*\//,"").replace(/\?.*/,"")}}_.wiz10=b;_('#wss_website')[0].src+=a;_.wiz6('website',function(){_.wiz4(14+'&web_optimizer_wizard_options='+escape(_.wiz10),15)})}
 break;
 case 13:
 _.wiz0=0;_('#wss_website')[0].src+=a;_.wiz6('website',function(){_.wiz4(14,15)});

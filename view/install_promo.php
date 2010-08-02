@@ -90,7 +90,7 @@
 	echo _WEBO_unobtrusive;
 ?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_UPTO2;
-?> 100% <span class="wssI"><?php
+?> 200% <span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_ACCELERATION;
 ?></span></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_backlink;
