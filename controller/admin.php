@@ -882,6 +882,12 @@ class admin {
 						$this->compress_options['htaccess']['enabled'] = 1;
 						$this->write_htaccess();
 					}
+/* create fake options */
+					$this->input['wss_combine_css'] = $this->input['wss_minify_css'] * 2 + $this->input['wss_minify_css_body'];
+					$this->input['wss_minify_javascript'] = $this->input['wss_minify_javascript'] * 2 + $this->input['wss_minify_javascript_body'];
+					$this->input['wss_minify_js'] = $this->input['wss_minify_with_packer'] ? 4 :
+						($this->input['wss_minify_with_yui'] ? 3 :
+						($this->input['wss_minify_with_jsmin'] ? 2 : 1));
 /* define configuration file */
 					if (@is_file($this->basepath . 'config.auto.php')) {
 						$i = 1;
@@ -3670,7 +3676,9 @@ class admin {
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on') as $val) {
-				$this->input[$val]--;
+				if ($this->input[$val]) {
+					$this->input[$val]--;
+				}
 		}
 /* disable don't check files in cache */
 		$this->input['wss_performance_cache_version'] =
@@ -3806,15 +3814,6 @@ class admin {
 				$this->input['wss_minify_with_jsmin'] = 0;
 				$this->input['wss_minify_with_yui'] = 0;
 				$this->input['wss_minify_with_packer'] = 0;
-				break;
-		}
-/* map CSS Sprites format to real one */
-		switch ($this->input['wss_css_sprites_truecolor_in_jpeg']) {
-			case 2:
-				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 1;
-				break;
-			default:
-				$this->input['wss_css_sprites_truecolor_in_jpeg'] = 0;
 				break;
 		}
 		$image = $this->input['wss_footer_image'];
