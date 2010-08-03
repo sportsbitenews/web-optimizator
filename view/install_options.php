@@ -267,9 +267,7 @@ if ($submit) {
 		echo $key;
 ?>" class="wssD9<?php
 		echo $key != 'combinecss' ? ' wssA0' : '';
-?>"><dl class="wssD10<?php
-		echo $premium < 2 ? ' wssD11' : '';
-?>"><?php
+?>"><dl class="wssD10"><?php
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
 				if (is_array($value)) {

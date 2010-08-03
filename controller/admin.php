@@ -3155,7 +3155,7 @@ class admin {
 				)
 			),
 			'performance' => array(
-				'premium' => $this->premium < 1 ? 1 : 0,
+				'premium' => 0,
 				'performance_mtime' => array(
 					'value' => $this->compress_options['performance']['mtime'],
 					'type' => 'checkbox',
@@ -3213,7 +3213,7 @@ class admin {
 				),
 			),
 			'data_uri' => array(
-				'premium' => $this->premium < 1 ? 1 : 0,
+				'premium' => 0,
 				'data_uris_on' => array(
 					'value' => $this->compress_options['data_uris']['on'],
 					'type' => 'checkbox',
@@ -3255,7 +3255,7 @@ class admin {
 				)
 			),
 			'css_sprites' => array(
-				'premium' => $this->premium < 2 ? 1 : 0,
+				'premium' => 0,
 				'css_sprites_enabled' => array(
 					'value' => $this->compress_options['css_sprites']['enabled'],
 					'type' => 'checkbox',
@@ -3316,7 +3316,7 @@ class admin {
 				),
 			),
 			'serverside' => array(
-				'premium' => $this->premium < 2 ? 1 : 0,
+				'premium' => 0,
 				'html_cache_enabled' => array(
 					'value' => $this->compress_options['html_cache']['enabled'],
 					'type' => 'checkbox',
@@ -3357,7 +3357,7 @@ class admin {
 				)
 			),
 			'sqlcache' => array(
-				'premium' => $this->premium < 2 ? 1 : 0,
+				'premium' => 0,
 				'sql_cache_enabled' => array(
 					'value' => $this->compress_options['sql_cache']['enabled'],
 					'type' => 'checkbox',
@@ -3381,7 +3381,7 @@ class admin {
 				)
 			),
 			'unobtrusive' => array(
-				'premium' => $this->premium < 2 ? 1 : 0,
+				'premium' => 0,
 				'unobtrusive_on' => array(
 					'value' => $this->compress_options['unobtrusive']['on'],
 					'type' => 'radio',
@@ -3424,7 +3424,7 @@ class admin {
 				)
 			),
 			'multiple_hosts' => array(
-				'premium' => $this->premium < 2 ? 1 : 0,
+				'premium' => 0,
 				'parallel_enabled' => array(
 					'value' => $this->compress_options['parallel']['enabled'],
 					'type' => 'checkbox',
