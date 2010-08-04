@@ -3452,11 +3452,13 @@ class admin {
 				),
 				'parallel_additional' => array(
 					'value' => $this->compress_options['parallel']['additional'],
-					'type' => 'textarea'
+					'type' => 'textarea',
+					'hidden' => 1
 				),
 				'parallel_additional_list' => array(
 					'value' => $this->compress_options['parallel']['additional_list'],
-					'type' => 'textarea'
+					'type' => 'textarea',
+					'hidden' => 1
 				),
 				'parallel_ignore_list' => array(
 					'value' => $this->compress_options['parallel']['ignore_list'],
