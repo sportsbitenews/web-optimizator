@@ -5306,7 +5306,7 @@ require valid-user';
 				return $full_appname;
 			}
 /* LiveStreet */
-		} elseif (@is_file($root . 'classes/engine/Router.class.php')) {
+		} elseif (@is_file($root . 'classes/engine/Router.class.php') || @is_file($root . 'classes/actions/ActionPage.class.php')) {
 			return 'LiveStreet';
 /* Santafox */
 		} elseif (@is_file($root . 'ini.php')) {
