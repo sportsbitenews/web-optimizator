@@ -2560,6 +2560,7 @@ class admin {
 	* 
 	**/	
 	function install_uninstall ($skip = false) {
+		$return = !$skip;
 		$this->cms_version = $this->system_info($this->view->paths['absolute']['document_root']);
 /* PHP-Nuke, Bitrix, Open Slaed deletion */
 		if (in_array($this->cms_version, array('PHP-Nuke', 'Bitrix', '4images', 'VaM Shop', 'osCommerce')) ||

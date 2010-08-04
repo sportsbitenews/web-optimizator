@@ -148,7 +148,7 @@ case 40:a++;
 case 33:case 6:a++;
 default:_.wiz(++a);
 break;
-}if(a<50){var x=a<47?a/47:(a-47)/3;_('.wssO9 .wssJ32')[0].style.backgroundPosition='-'+(13*Math.round(15*(1-x))-5)+'px -68px'}}}};
+}if(a<50){var x=a<47?a/47:(a-47)/2;_('.wssO9 .wssJ32')[0].style.backgroundPosition='-'+(13*Math.round(15*(1-x))-5)+'px -68px'}}}};
 _.wiz=function(a){_.x('install_wizard&web_optimizer_wizard='+a,'GET',null,function(){if(this.readyState==4&&this.status==200){_.wz=parseInt(this.responseText);_.wizard()}})}
 _.wiz1=function(){var a=_.wiz3('website'),b=_.wiz3('website_initial'),c=[],d=[],e,i=0,f,g,k,l=0,m=['html','p','li','ul','img','h1','span','h2','h3','form','strong','b','em','i'],n;while(e=m[i++]){if(n=_(e,a)[0]){c.push(n);d.push(_(e,b)[0])}if(n=_(e,a)[1]){c.push(n);d.push(_(e,b)[1])}}{}i=0;while(e=c[i++]){f=_.wiz2(e,a);g=_.wiz2(d[i-1],b);for(k in f){if(typeof f[k]==='string'&&f[k]!==g[k]&&k.indexOf('background')==-1){l++}}}return l};
 _.wiz2=function(a,b){return typeof a.currentStyle!=='undefined'?a.currentStyle:b.defaultView.getComputedStyle(a,null)}
