@@ -780,16 +780,16 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользовательские на
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Сравнение версий WEBO Site SpeedUp');
-define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Аспекты технологии');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная');
+define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Характеристики');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая версия');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная версия');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная версия');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Корпоративная');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'версия');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Процессорные затраты');
+define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение сайта');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Серверные издержки');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'мс');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'и больше');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'до');
@@ -802,12 +802,14 @@ define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'быстрее загрузка
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'отсутствует');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
-define('_WEBO_SPLASH2_COMPARISON_FREE', 'бесплатно');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'Бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1799 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '6999 руб.');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'месяцев');
+define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Срок действия лицензии');
+define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Не ограничен');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'О WEBO Site SpeedUp');

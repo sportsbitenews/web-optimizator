@@ -781,16 +781,16 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which prov
 
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Version comparison');
-define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Merkmale und Technologien');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Gemeinschaft');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Merkmale');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community Edition');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite Edition');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium Edition');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edition');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium-Support');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Speedup');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU-Unkosten');
+define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'and more');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'bis zu');
@@ -803,12 +803,14 @@ define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'extra Website Beschleunigung');
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'nicht verf&uuml;gbar');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Alle Leistungen');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pries');
-define('_WEBO_SPLASH2_COMPARISON_FREE', 'kostenlos');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'Kostenlos');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61,99&euro;');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
-define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Updates');
-define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
-define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
+define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Free updates');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
+define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Licensing period');
+define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Unlimited');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'About WEBO Site SpeedUp');

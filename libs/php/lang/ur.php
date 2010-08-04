@@ -771,8 +771,8 @@ define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'کارپوریٹ');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'ایڈیشن');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'پریمیم سپورٹ');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'اسپیڈ اپ');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'CPU overhead');
+define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'اور زیادہ');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'تک');
@@ -789,8 +789,10 @@ define('_WEBO_SPLASH2_COMPARISON_FREE', 'مفت');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '89،99 $');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '349 $');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'تازہ ترین');
-define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
-define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
+define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Licensing period');
+define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Unlimited');
 
 /* متعلق */
 define('_WEBO_ABOUT_TITLE', 'ویبو سائٹ اسپیڈ اپ کے بارے میں');

@@ -15,8 +15,8 @@ define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/bas
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Acquista ora');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
-define('_WEBO_GENERAL_Edizione', 'Edizione');
-define('_WEBO_GENERAL_Caricamento', 'Caricamento');
+define('_WEBO_GENERAL_EDITION', 'Edizione');
+define('_WEBO_GENERAL_LOADING', 'Caricamento');
 
 /* lang menu */
 define('_WEBO_GENERAL_LANGUAGE', 'Scegli la lingua');
@@ -281,7 +281,6 @@ define('_WEBO_far_future_expires_html', 'Cache HTML');
 define('_WEBO_far_future_expires_html_HELP', 'Tutte le immagini avranno cache Headers. Il Cache timeout sarà impostato in accordo con le opzioni &quot;Timeout di Default to cache HTML&quot;.');
 define('_WEBO_far_future_expires_html_EFFECT', 'Risparmio nel traffico del 5-10%');
 define('_WEBO_far_future_expires_html_timeout', 'Timeout di Default to cache HTML (in seconds)');
-define('_WEBO_far_future_expires_html_timeout', 'Timeout di Default to cache HTML (in seconds)');
 define('_WEBO_far_future_expires_html_timeout_HELP', 'Tempo per la cache dei files HTML. Il valore Zero significa Zero timeout.');
 define('_WEBO_far_future_expires_external', 'i file di cache esterni');
 define('_WEBO_far_future_expires_external_HELP', 'I file esterni richiamati dalla pagina web saranno serviti dallo stesso Host della pagina con Expires headers usando  /cache/wo.static.php proxy script da WEBO Site SpeedUp apllication directory.');
@@ -407,9 +406,9 @@ define('_WEBO_css_sprites_truecolor_in_jpeg_HELP_DISABLED', 'Non c\'è libreria 
 define('_WEBO_css_sprites_truecolor_in_jpeg1', 'Determina formato adatto automaticamente');
 define('_WEBO_css_sprites_truecolor_in_jpeg2', 'Preferisci il formato JPEG');
 define('_WEBO_css_sprites_aggressive', '&quot;Aggressiva&quot; combinazione per CSS Sprites');
-define('_WEBO_css_sprites_Aggressiva_HELP', 'Il numero di immagini CSS Sprites e la dimensione saranno minori ma questo potrebbe condurre ad artefatti grafici nelle pagine web.');
-define('_WEBO_css_sprites_Aggressiva_EFFECT', 'Riduzione dimendione del sito web del 2-3%');
-define('_WEBO_css_sprites_Aggressiva_HELP_DISABLED', 'Non ci sono librerie GD complete supportate sul tuo sito, quindi la creazione di CSS Sprites non è possibile.');
+define('_WEBO_css_sprites_aggressive_HELP', 'Il numero di immagini CSS Sprites e la dimensione saranno minori ma questo potrebbe condurre ad artefatti grafici nelle pagine web.');
+define('_WEBO_css_sprites_aggressive_EFFECT', 'Riduzione dimendione del sito web del 2-3%');
+define('_WEBO_css_sprites_aggressive_HELP_DISABLED', 'Non ci sono librerie GD complete supportate sul tuo sito, quindi la creazione di CSS Sprites non è possibile.');
 define('_WEBO_css_sprites_extra_space', 'Aggiungi spazi per CSS Sprites');
 define('_WEBO_css_sprites_extra_space_HELP', 'Le immagini in CSS Sprites saranno arrotondate con spazi per prevenire effetti indesiderati nel ridimensionamento delle pagine web nei browsers. con CSS Sprites la dimensione dei file sarà un poco maggiore.');
 define('_WEBO_css_sprites_extra_space_EFFECT', 'CSS Sprites compatibilità con il ridimensionamento dei browsers');
@@ -615,7 +614,7 @@ define('_WEBO_SYSTEM_TROUBLES', 'problemi');
 define('_WEBO_SYSTEM_TROUBLES2', 'problemi');
 define('_WEBO_SYSTEM_WARNING', 'Attenzione');
 define('_WEBO_SYSTEM_WARNINGS', 'Attenzioni');
-define('_WEBO_SYSTEM_WARNING2', 'Attenzioni');
+define('_WEBO_SYSTEM_WARNINGS2', 'Attenzioni');
 define('_WEBO_SYSTEM_INFO', 'message');
 define('_WEBO_SYSTEM_INFOS', 'messages');
 define('_WEBO_SYSTEM_INFOS2', 'messages');
@@ -678,7 +677,7 @@ define('_WEBO_SYSTEM_large_delay_HELP', 'Il tempo della creazione delle pagine �
 define('_WEBO_SYSTEM_large_wss_delay', 'Bassa velocità di creazione delle pagine');
 define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Velocità caricamento pagine con WEBO Site SpeedUp abilitato sarà del 2x maggiore che senza di esso. Più probabilmente questo è un problema specifico del sito o del sistema. Impara di più a riguardo [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues ottimizzazione risorse di sistema]');
 
-/* Stato sistema */
+/* System status */
 define('_WEBO_SYSTEM_STATUS', 'Stato');
 define('_WEBO_SYSTEM_SETTINGS', 'Impostazioni');
 define('_WEBO_SYSTEM_UPDATES', 'Aggiornamenti');
@@ -778,18 +777,18 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Descrizione della configurazione uten
 define('_WEBO_OPTIONS_TITLES_basic', 'Configurazione di base');
 define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Complesso di base delle impostazioni che forniscono velocizzazione bilanciata per il tuo website. In rari casi possono essere incompatibili con le combinazioni del tuo server.');
 
-/* versione comparison */
+/* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Comparazione versione');
-define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caratteristiche e tecnologie');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caratteristiche');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community Edition');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite Edition');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium Edition');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edizione');
-define('_WEBO_SPLASH2_COMPARISON_supportato', 'Premium supportato');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Speedup');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Sovraccarico CPU');
+define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium supportato');
+define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'E altro');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'fino a');
@@ -802,17 +801,19 @@ define('_WEBO_SPLASH2_COMPARISON_ACCELERATION', 'extra velocizzazione website');
 define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'non incluso');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Tutti i benefici');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Prezzo');
-define('_WEBO_SPLASH2_COMPARISON_FREE', 'gratis');
+define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratis');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Aggiornamenti');
-define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'weeks');
-define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'months');
+define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
+define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
+define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Licensing period');
+define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Unlimited');
 
-/* a riguardo */
+/* About */
 define('_WEBO_ABOUT_TITLE', 'About WEBO Site SpeedUp');
 define('_WEBO_ABOUT_ABOUT', 'About Prodotti');
-define('_WEBO_ABOUT_supportato', 'Informazioni Utili');
+define('_WEBO_ABOUT_SUPPORT', 'Informazioni Utili');
 define('_WEBO_ABOUT_SUPPORT_INSTALLING', 'Problemi d\'installazione');
 define('_WEBO_ABOUT_SUPPORT_CLIENT', 'Problemi lato Client');
 define('_WEBO_ABOUT_SUPPORT_SERVER', 'Problemi lato Server');
@@ -855,7 +856,7 @@ define('_WEBO_SPLASH3_CONFIGERROR', 'Impossibile modificare il file di configura
 define('_WEBO_SPLASH3_CONFIGERROR2', 'Puoi solitamente fare questo dal tuo FTP client. Naviga semplicemente a <strong>');
 define('_WEBO_SPLASH3_CONFIGERROR3', '</strong> , tasto destro sul file , e cerca le Proprietà o l\'opzione CHMOD. Impostare a 775, 777, o "write"');
 
-/* create .gz versions di css/js file */
+/* create .gz versions of css/js file */
 define('_WEBO_GZIP_INSTALLED', 'Usando questo tool Puoi creare in una specifica directory la versione <code>.gz</code> di CSS e JS (e alcuni altri) files per gzip statico.');
 define('_WEBO_GZIP_INSTALLED2', 'La data della modificazione (mtime attribute) dei files compressi è impostata alla data della modificazione dei primi files (sorgente) durante gzipping. I file <code>.gz</code> esistenti sono aggiornati quando la data di modificazione iniziale e finale dei file è differente.');
 define('_WEBO_GZIP_RESULTS', 'Gzipi risultati:');
@@ -871,10 +872,10 @@ define('_WEBO_GZIP_SIZE', 'Dimensione');
 define('_WEBO_GZIP_MTIME', 'Data modificazione');
 define('_WEBO_GZIP_NOTCHANGED', 'non cambiata');
 define('_WEBO_GZIP_INITIAL_TOTAL', 'Dimensione files iniziali');
-define('_WEBO_GZIP_Fnel_TOTAL', 'Dimensione files compressi');
+define('_WEBO_GZIP_FINAL_TOTAL', 'Dimensione files compressi');
 define('_WEBO_GZIP_SAVINGS', 'Risparmio totale');
 define('_WEBO_GZIP_INITIAL', 'Dimensione iniziale');
-define('_WEBO_GZIP_Fnel', 'Risparmio');
+define('_WEBO_GZIP_FINAL', 'Risparmio');
 define('_WEBO_GZIP_PROCESSING', 'Sto processando i files');
 define('_WEBO_GZIP_OUTOF', 'fuori di');
 define('_WEBO_GZIP_OPTIMIZATION', 'Ottimizzazione in atto. Per favore aspetta');
@@ -882,7 +883,7 @@ define('_WEBO_GZIP_NOTHING', 'Non ho trovato nulla');
 define('_WEBO_GZIP_ERROR', 'Non posso gzip il file ');
 define('_WEBO_GZIP_NOSUCCESS', 'Fallito');
 
-/* immagini optimization */
+/* image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Usando Questo tool puoi diminuire la dimensione delle immagini senza predita di qualità in ogni cartella specifica sul tuo sito. Per ogni file ottimizzato una versione di <code>.backup</code> sarà creata durante processo di ottimizzazione. I files GIF files saranno rimpiazzati con PNG se sono più piccoli.');
 define('_WEBO_IMAGE_INSTALLED2', 'Uno dei seguenti servizi può essere usato per l\'ottimizzazione delle immagini: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">termini di servizio</a>) o <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">termini di servizio</a>).');
 
