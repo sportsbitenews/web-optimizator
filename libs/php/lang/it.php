@@ -312,16 +312,16 @@ define('_WEBO_html_cache_enhanced_DISABLED', 'Per abilitare extreme mode per la 
 define('_WEBO_sql_cache_enabled', 'Cache DB queries');
 define('_WEBO_sql_cache_enabled_HELP', 'Tutte le query DB saranno inserite in cache se la loro esecuzione occupa più del tempo impostato. Questo incrementerà la velocità di caricamento di tutto il sito.');
 define('_WEBO_sql_cache_enabled_EFFECT', 'Risparmio CPU 30-50%');
-define('_WEBO_sql_cache_enabled_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
+define('_WEBO_sql_cache_enabled_HELP_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
 define('_WEBO_sql_cache_time', 'Tempo di esecuzione delle query (ms)');
 define('_WEBO_sql_cache_time_HELP', 'Tutte le query la cui esecuzione (in ms) è maggiore di quella impostata saranno inserite in cache.');
-define('_WEBO_sql_cache_time_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
+define('_WEBO_sql_cache_time_HELP_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
 define('_WEBO_sql_cache_timeout', 'DB cache timeout (s)');
 define('_WEBO_sql_cache_timeout_HELP', 'Dopo questo tempo tutte le query SQL saranno ri-richieste dall\'attuale DB.');
-define('_WEBO_sql_cache_timeout_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
+define('_WEBO_sql_cache_timeout_HELP_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
 define('_WEBO_sql_cache_tables_exclude', 'Escludi tabelle (separate da spazi)');
 define('_WEBO_sql_cache_tables_exclude_HELP', 'Puoi escludere alcune tabelle del DB dalla cache inserendo i loro nomi (senza prefisso). Tutte le query da queste tabelle non saranno inserite nella cache.');
-define('_WEBO_sql_cache_tables_exclude_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
+define('_WEBO_sql_cache_tables_exclude_HELP_DISABLED', 'Per far funzionare correttamente la cache del DB devi installare WEBO Site SpeedUp come estensione di sistema (non come applicazione singola).');
 
 define('_WEBO_performance_mtime', 'Ignora le modificazioni dei file (time stamp) (mtime)');
 define('_WEBO_performance_mtime_HELP', 'Guadagnerai altra velocità (lato Server). Ma per aggiornare i file combinati dovrai cambiare le chiamate dei file iniziali nel codice HTML o aggiornare la cache.');

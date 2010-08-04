@@ -303,16 +303,16 @@ define('_WEBO_html_cache_enhanced_DISABLED', 'انتہائی موڈ کو سرو�
 define('_WEBO_sql_cache_enabled', 'Cache DB queries');
 define('_WEBO_sql_cache_enabled_HELP', 'All DB queries will be cached if their execution take more than time set below. This will increase load speed of all website pages.');
 define('_WEBO_sql_cache_enabled_EFFECT', 'CPU savings 30-50%');
-define('_WEBO_sql_cache_enabled_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_enabled_HELP_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
 define('_WEBO_sql_cache_time', 'Queries execution time (ms)');
 define('_WEBO_sql_cache_time_HELP', 'All queries which execution time (in ms) is greater will be cached.');
-define('_WEBO_sql_cache_time_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_time_HELP_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
 define('_WEBO_sql_cache_timeout', 'DB cache timeout (s)');
 define('_WEBO_sql_cache_timeout_HELP', 'After this time all SQL queries will be re-requested from the current DB.');
-define('_WEBO_sql_cache_timeout_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_timeout_HELP_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
 define('_WEBO_sql_cache_tables_exclude', 'Exclude table(s) (separated by space)');
 define('_WEBO_sql_cache_tables_exclude_HELP', 'You can exclude some tables from DB caching logic by setting their names (without prefix). All queries from such tables won\'t be cached.');
-define('_WEBO_sql_cache_tables_exclude_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
+define('_WEBO_sql_cache_tables_exclude_HELP_DISABLED', 'To make DB cache working correctly you need to install WEBO Site SpeedUp as system extension (not as standalone application).');
 
 define('_WEBO_performance_mtime', 'فائل ترمیم وقت (mtime) مہر کو نظر انداز کریں۔');
 define('_WEBO_performance_mtime_HELP', 'سرور سائیڈ پر مزید اسپیڈ حاصل ہوگی۔ لیکن مرکب فائلوں کو ریفریش کرنے کیلئے آپ کو HTML کوڈ میں ابتدائی فائلوں کی کالز کو بدلنا پڑے گا یا ویبو سائٹ اسپیڈ اپ کیشے کو ریفریش کرنا ہوگا۔');
