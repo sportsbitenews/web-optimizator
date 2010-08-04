@@ -84,7 +84,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP212;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_manual" id="wss_manual2" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP212_HELP;
-?>" value="2"/></dd></dl><a href="javascript:_.wz=_('#wss_manual1')[0].checked?50:48;_.wizard()" class="wssJ5"><?php
+?>" value="2"/></dd></dl><a href="javascript:_.wz=_.doc.getElementById('wss_manual1').checked?50:48;_.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><form class="wssC11 wssC13 wssA0 wssC6"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP22;
@@ -98,7 +98,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP222;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_serverside" id="wss_serverside2" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP222_HELP;
-?>" value="2"/></dd></dl><a href="javascript:_.wiz('49&web_optimizer_wizard_options='+(_('#wss_serverside2')[0].checked?2:1))" class="wssJ5"><?php
+?>" value="2"/></dd></dl><a href="javascript:_.wiz('49&web_optimizer_wizard_options='+(_.doc.getElementById('wss_serverside2').checked?2:1))" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><div class="wssC11 wssC13 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP23;
