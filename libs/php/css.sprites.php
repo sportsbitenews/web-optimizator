@@ -40,7 +40,7 @@ class css_sprites {
 								preg_replace("@.*/@", "", preg_replace("@.*src\s*=\s*['\"](.*?)['\"].*@", "$1", $value));
 						}
 /* standartize all background values from input */
-						if (strpos(" ". $key, "background")) {
+						if (strpos(" ". $key, "background") && !strpos($tags, 'nosprites')) {
 /* rewrite current background with strict none */
 							if ($key == 'background' && ($value == 'none !important' || $value == 'none')) {
 								$this->optimizer->css->css[$import][$tags]['background'] = $this->optimizer->none;
