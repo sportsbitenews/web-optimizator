@@ -81,7 +81,7 @@ class admin {
 					$this->compress_options['license'] :
 						$this->input['wss_license'];
 			$this->premium = $this->view->validate_license($this->compress_options['license'],
-				$this->basepath . 'cache/', $this->compress_options['host']);
+				$this->compress_options['html_cachedir'], $this->compress_options['host']);
 			$this->need_access = in_array($this->input['wss_page'],
 				array('install_enter_password', 'install_set_password'));
 /* Make sure password valid */
