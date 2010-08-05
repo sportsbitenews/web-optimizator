@@ -64,7 +64,7 @@ case 34:
 _.wzz[6]=1;_.wiz(35);
 break;
 case 32:
-_.timer=(new Date()).getTime();_.wiz0=0;var c=_('.wssC12');c[3].style.display='none';c[4].style.display='block';b=_('#wss_website')[0].src+=a;_.wiz6('website',function(){if(_.wiz1()){_.wiz(34)}else{var a=_('head link',_.wiz3('website_initial'))[1],b=a[a.length-1];_('#wss_website_tech')[0].src=b;_.wiz7('website_tech',function(){_.wiz(_.wiz3('website_tech').body.innerHTML.length<102400?33:35)})}});
+_.timer=(new Date()).getTime();_.wiz0=0;var c=_('.wssC12');c[3].style.display='none';c[4].style.display='block';b=_('#wss_website')[0].src+=a;_.wiz6('website',function(){if(_.wiz1()){_.wiz(34)}else{var a=_.wiz3('website').styleSheets,b,c=0,d,e=0,g=0;try{while(b=a[c++]){if(typeof b.cssText!=='undefined'){g+=b.cssText.length}else{while(d=b.cssRules[e++]){g+=d.cssText.length}e=0}}}catch(e){}_.wiz(e<200000?33:35)}});
 break;
 case 31:
 _.wzz[5]=1;_.wiz(32);
