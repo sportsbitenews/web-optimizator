@@ -1209,7 +1209,6 @@ class web_optimizer {
 			default:
 				if ($this->options['page']['html_tidy']) {
 					$styles = strpos($source, "@@@WSSSTYLES@@@");
-					$updated = 0;
 					$script1 = strpos($source, "<script");
 					$script2 = strpos($source, "<SCRIPT");
 					if ($script1 !== false && $script1 < $styles) {
@@ -1263,7 +1262,7 @@ class web_optimizer {
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
 					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
-				$include .= 'if(/WebK/i.test(navigator.userAgent)){var w=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				$source = str_replace("@@@WSSSTYLES@@@", $include . "@@@WSSSTYLES@@@", $source);
 				break;
 		}

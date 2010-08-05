@@ -547,6 +547,14 @@ class admin {
 						$this->save_option("['html_cache']['timeout']", 3600);
 						$this->save_option("['sql_cache']['enabled']", 1);
 						$this->save_option("['sql_cache']['timeout']", 600);
+/* check for caching extensions */
+						if (function_exists('xcache_set')) {
+							$this->save_option("['performance']['cache_engine']", 3);
+						} elseif (function_exists('apc_store')) {
+							$this->save_option("['performance']['cache_engine']", 2);
+						} elseif (@class_exists('Memcached') || @class_exists('Memcache')) {
+							$this->save_option("['performance']['cache_engine']", 1);
+						}
 					}
 /* some errors with .htaccess, disable all options */
 					if ($ht && !@file_get_contents($test_file)) {
