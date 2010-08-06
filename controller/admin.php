@@ -3966,10 +3966,11 @@ class admin {
 		$content = '# Web Optimizer options';
 		$content2 = '';
 		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
-/* create rules for enhanced HTML caching mode */
-			$content_enhanced = "
-	AddDefaultCharset utf-8";
+			$content_enhanced = '';
 			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
+/* create rules for enhanced HTML caching mode */
+				$content_enhanced = "
+	AddDefaultCharset utf-8";
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
 				if (strstr($this->basepath, 'wp-content')) {
