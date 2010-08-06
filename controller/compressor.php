@@ -1834,10 +1834,25 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 								$this->initial_files[] = $file;
+/* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
 									$this->shadowbox_base = preg_replace("@https?://" .
 										$this->host_escaped . "/(.*/)[^/]+@",
 										"//" . $this->options['javascript']['host'] . "/$1", $file['file']);
+								}
+/* fix scriptaculous loader */
+								if (!empty($file['file']) && ($acpos = strpos($variant_type[1], '?load='))) {
+									$scripts = explode(',', substr($variant_type[1], $acpos + 6));
+									$acbase = preg_replace("@/[^/]+$@", '/', $file['file']);
+									foreach ($scripts as $script) {
+										$acfile = array(
+											'tag' => 'script',
+											'source' => '',
+											'content' => '',
+											'file' => $acbase . $script . '.js'
+										);
+										$this->initial_files[] = $acfile;
+									}
 								}
 					}
 				}
