@@ -5771,6 +5771,18 @@ require valid-user';
 							'location' => 'echo $html;'
 						)
 					);
+				} else {
+					$files = array(
+						array(
+							'file' => 'index.php',
+							'mode' => 'start'
+						),
+						array(
+							'file' => 'index.php',
+							'mode' => 'finish',
+							'location' => 'end'
+						)
+					);
 				}
 				break;
 /* VaM Shop */
