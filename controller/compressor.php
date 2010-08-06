@@ -1951,7 +1951,8 @@ class web_optimizer {
 							$this->host_escaped . "/+@", "/", $value['file']);
 						$new_src =
 							$this->options['page']['cachedir_relative'] . 
-							'wo.static.php?' . $value['file'];
+							'wo.static.php?' . $this->convert_path_to_absolute($value['file'],
+							array('file' => $_SERVER['REQUEST_URI']));
 						$new_script = str_replace($value['file'],
 							$new_src, $value['file_raw']);
 						$this->content = str_replace($value['file_raw'],
