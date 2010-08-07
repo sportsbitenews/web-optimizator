@@ -1003,9 +1003,9 @@ class web_optimizer {
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
 			foreach ($imgs as $image) {
 				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], ' src="'))) {
-					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), '"'));
+					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), '"'));
 				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], " src='"))) {
-					$old_src = substr($image[0], $pos+5, strpos(substr($image[0], $pos+5), "'"));
+					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), "'"));
 				} else {
 					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				}
