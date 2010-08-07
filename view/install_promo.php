@@ -30,16 +30,22 @@
 	echo _WEBO_SPLASH2_COMPARISON;
 ?></h1><table class="wssT wssT0"><col width="220"/><col width="180"/><col width="180"/><col width="180"/><thead class="wssT5"><tr class="wssT6"><th> </th><th class="wssT7"><?php
 	echo _WEBO_SPLASH2_COMPARISON_DEMO;
+?> <?php
+	echo _WEBO_SPLASH2_COMPARISON_VERSION;
 ?><span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_FREE;
 ?></span></th><th class="wssT7"><?php
 	echo _WEBO_SPLASH2_COMPARISON_LITE;
+?> <?php
+	echo _WEBO_SPLASH2_COMPARISON_VERSION;
 ?><span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_LITEPRICE;
 ?></span><?php
 	echo _WEBO_GENERAL_BUYNOWLITE;
 ?></th><th class="wssT7"><?php
 	echo _WEBO_SPLASH2_COMPARISON_FULL;
+?> <?php
+	echo _WEBO_SPLASH2_COMPARISON_VERSION;
 ?><span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_FULLPRICE;
 ?></span><?php

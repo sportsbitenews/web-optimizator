@@ -781,9 +781,9 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользовательские на
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Сравнение версий WEBO Site SpeedUp');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Характеристики');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая версия');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная версия');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная версия');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Корпоративная');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'версия');

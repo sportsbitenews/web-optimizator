@@ -781,9 +781,9 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Description de configuration utilisat
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Comparaison des versions ');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caractéristiques');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community Edition');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite Edition');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium Edition');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edition');
