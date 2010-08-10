@@ -2307,7 +2307,7 @@ class web_optimizer {
 		}
 /* remove all leading spaces, tabs and carriage returns NOT preceeded by a php close tag */
 		if (!empty($this->options['page']['minify'])) {
-			$source = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $source));
+			$source = trim(preg_replace('/((?<!\?>)\n)[\t\s]+/m', '\1', $source));
 /* replace ' >' with '>', remove \r symbols */
 			$source = str_replace(array(' >', "\r"), array('>', ''), $source);
 		}

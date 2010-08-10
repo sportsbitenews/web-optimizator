@@ -52,7 +52,7 @@ case 43:
 _.timer=(new Date()).getTime();_.wiz0=0;var k=_('.wssC12');k[6].style.display='none';k[7].style.display='block';_('#wss_website')[0].src+=a;_.wiz6('website',function(){_.wiz4(44,45)});
 break;
 case 38:
-_.timer=(new Date()).getTime();_.wiz0=0;var b=_.wiz3('website'),c=_('img',b),d,e=0,f=0,g=_('.wssC12');g[5].style.display='none';g[6].style.display='block';while(d=c[e++]){if(parseInt(_.wiz2(d,b).height)<17&&parseInt(_.wiz2(d,b).width)<17){f++}}_.wiz(f>2?40:43);
+_.timer=(new Date()).getTime();_.wiz0=0;var b=_.wiz3('website'),c=_('img',b),d,e=0,f=0,g=_('.wssC12');g[5].style.display='none';g[6].style.display='block';while(d=c[e++]){if((parseInt(_.wiz2(d,b).height)<17&&parseInt(_.wiz2(d,b).width)<17)||(d.height<17&&d.width<17)){f++}}_.wiz(f>2?40:43);
 break;
 case 36:
 var b=_('img',_.wiz3('website')),c,d=0,e=_.doc.domain.replace(/^www/i,''),f='',g;while(c=b[d++]){if(c.src.indexOf(e)!=-1){g=c.src.replace(/https?:\/\//,'').replace(/\/.*/,'');if(g!=e){g=' '+g+' ';if(f.indexOf(g)){f+=g}}}}_.wiz('39&web_optimizer_wizard_options='+f.slice(1,-1).replace(/\s+/,' '));
