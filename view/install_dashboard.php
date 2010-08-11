@@ -59,13 +59,13 @@
 	echo _WEBO_DASHBOARD_AWARDS;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM16"><?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?></span></a></li></ul><div class="wssN"><div class="wssN4"><div class="wssN5 wssN11"><div class="wssN2"><h2 class="wssB"><a href="mailto:infod@webo.name?subject=WEBO Site SpeedUp Installation" class="wssN3"><?php
+?></span></a></li></ul><div class="wssN"><div class="wssN4"><div class="wssN5 wssN11"><div class="wssN2"><h2 class="wssB"><a href="mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_HELP;
 ?></a></h2><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_HELP1;
 ?></p><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_HELP2;
-?></p><p class="wssI"><a href="mailto:speed@webo.name?subject=WEBO Site SpeedUp Installation" class="wssJ5"><?php
+?></p><p class="wssI"><a href="mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation" class="wssJ5"><?php
 	echo _WEBO_DASHBOARD_SEND;
 ?><span class="wssJ6"></span></a></p></div></div><div class="wssN5<?php
 	echo strpos($cookie, 'wss_aw') !== false ? ' wssA0' : '';
