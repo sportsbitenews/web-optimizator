@@ -62,7 +62,7 @@ a.wss_g:active,a.wss_g:focus{color:#fff!important;opacity:1}
 .wss_n{background:url(promo.over.png) no-repeat;display:block;height:49px;position:absolute;right:1px;top:35px;width:47px}
 .wss_o{display:block;font:700 16px/16px Tahoma,Sans-serif;margin-top:-1px}
 .wss_p{display:block;font-size:10px;line-height:12px;text-indent:-13px}
-.wss_q{background:-105px 0;color:#333;display:none;font:700 13px/63px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:63px;left:30%;position:absolute;top:120px;width:330px;z-index:1000}
+.wss_q{background:-105px 0;color:#333;display:none;font:700 13px/63px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:63px;left:30%;position:absolute;top:120px;width:327px;z-index:1000}
 .wss_q0{background:url(loading.gif) 20px 0 no-repeat;padding-left:41px}
 #wss_content{background:#fff;padding:16px 5px}
 #wss_help{background:#fff;border:1px solid #aed0e0;display:none;margin:0 1%;position:absolute;top:102px;z-index:101;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
@@ -690,3 +690,4 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 #element-box{position:relative;top:-22px}
 #wss_website{border:1px solid #000;height:400px;width:100%;overflow:auto}
 #wss_website_initial{border:1px solid #fff;height:400px;width:100%;overflow:auto;margin-top:-402px;visibility:hidden}
+#wss_version_stable{font-size:14px}

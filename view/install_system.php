@@ -380,13 +380,19 @@
 ?> (<?php
 		echo $version;
 ?>).</p><?php
-		if (strpos($version, 'b')) {
+	}
+	if (count($versions)) {
 ?><p class="wssI"><a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
-			echo _WEBO_SYSTEM_ROLLBACK;
-?> <?php
-			echo $version_new;
-?><span class="wssJ6"></span></a></p><?php
+		echo _WEBO_SYSTEM_ROLLBACK;
+?><span class="wssJ6"></span></a> <select name="wss_version_stable" id="wss_version_stable"><?php
+		foreach ($versions as $version_stable) {
+?><option value="<?php
+			echo $version_stable;
+?>"><?php
+			echo $version_stable;
+?></option><?php
 		}
+?></select></p><?php
 	}
 ?><div id="wss_beta"<?php
 	if (!$showbeta) {

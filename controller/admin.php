@@ -38,9 +38,11 @@ class admin {
 		$this->start_cache_engine();
 
 /* to check and download new Web Optimizer version */
-		$this->svn = 'http://web-optimizator.googlecode.com/svn/trunk-stable/';
-		$this->svn_beta = 'http://web-optimizator.googlecode.com/svn/trunk/';
+		$this->svn_generic = 'http://web-optimizator.googlecode.com/svn/';
+		$this->svn = $this->svn_generic . 'trunk-stable/';
+		$this->svn_beta = $this->svn_generic . 'trunk/';
 		$this->version = str_replace("\r\n", "", @file_get_contents($this->basepath . 'version'));
+		$this->version_stable = preg_replace("[^0-9\.]", "", $this->input['wss_version_stable']);
 /* get the latest version */
 		$version_new_file = 'version.new';
 		if (in_array($this->input['wss_page'],
@@ -1980,6 +1982,8 @@ class admin {
 		}
 /* get basic errors / warnings */
 		$page_variables = $this->dashboard_system(1);
+/* get stable versions */
+		$this->view->download('http://web-optimizator.googlecode.com/svn/versions/versions', $this->basepath . 'versions');
 /* sey all other variables */
 		$page_variables['version'] = $this->version;
 		$page_variables['version_new'] = $this->version_new;
@@ -2010,6 +2014,7 @@ class admin {
 		$page_variables['version'] = $this->version;
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['version_beta'] = $this->version_beta;
+		$page_variables['versions'] = explode("\n", @file_get_contents($this->basepath . 'versions'));
 		$page_variables['skip_render'] = $this->skip_render;
 		$page_variables['internal'] = $this->internal;
 		$page_variables['total'] = $total;
@@ -2505,7 +2510,7 @@ class admin {
 	function install_update_generic($stable = 1) {
 		@chdir($this->basepath);
 		$file = 'files';
-		$svn = $stable ? $this->svn : $this->svn_beta;
+		$svn = $stable ? $this->version_stable ? $this->svn_generic . 'versions/' . $this->version_stable . '/' : $this->svn : $this->svn_beta;
 		$this->view->download($svn . $file, $file);
 		$i = 1;
 		if (@is_file($file)) {
