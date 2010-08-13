@@ -81,7 +81,7 @@ if (!$ajax) {
 ?></span><span class="wss_p"><?php
 		echo _WEBO_GENERAL_EDITION
 ?></span><span class="wss_n"></span></a><a id="wss_bal" class="wssN5<?php
-		if (round)$premium) != 10) {
+		if (round($premium) != 10) {
 ?> wssA0<?php
 		}
 ?>" href="#wss_balance"><span class="wssN2"><span class="wssJ"><?php
