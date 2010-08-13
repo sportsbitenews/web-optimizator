@@ -2142,28 +2142,31 @@ class admin {
 		if (!empty($this->compress_options['password'])) {
 			$this->install_enter_password();
 		} else {
-			$error = array();
+			$this->error = array();
 			if (!empty($submit)) {
 				if (empty($password)) {
-					$error[1] = 1;
+					$this->error[1] = 1;
 				}
 				if (empty($password) || empty($confirm) || $password != $confirm) {
-					$error[2] = 1;
+					$this->error[2] = 1;
 				}
 				if (empty($email) ||
 					!preg_match("/.+@.+\..+/", $email)) {
-						$error[3] = 1;
+						$this->error[3] = 1;
 				}
 				if (empty($confirmagreement)) {
-					$error[4] = 1;
+					$this->error[4] = 1;
 				}
 			}
-			if (count($error) || empty($submit)) {
+			if (!count($this->error) && !empty($submit)) {
+				$this->install_install(1);
+			}
+			if (count($this->error) || empty($submit)) {
 				$page_variables = array(
 					"title" => _WEBO_NEW_ENTER,
 					"page" => 'install_set_password',
 					"version" => $this->version,
-					"error" => $error,
+					"error" => $this->error,
 					"username" => $username,
 					"password" => $password,
 					"confirm" => $confirm,
@@ -2180,18 +2183,17 @@ class admin {
 /* Show the install page */
 				$this->view->render("admin_container", $page_variables);
 			} else {
-				$this->save_option("['htpasswd']",
-					":" . $this->encrypt_password($password));
-				$this->compress_options['password'] = md5($password);
-				$this->save_option("['password']", $this->compress_options['password']);
-				$this->save_option("['email']", htmlspecialchars($email));
-				$this->save_option("['username']", htmlspecialchars($username));
-				$this->save_option("['name']", htmlspecialchars($username));
-				$this->save_option("['license']", htmlspecialchars($license));
-				$this->premium = $this->view->validate_license($license);
-				$this->install_install(1);
-				$this->install_favicon();
-				$this->install_dashboard();
+					$this->save_option("['htpasswd']",
+						":" . $this->encrypt_password($password));
+					$this->compress_options['password'] = md5($password);
+					$this->save_option("['password']", $this->compress_options['password']);
+					$this->save_option("['email']", htmlspecialchars($email));
+					$this->save_option("['username']", htmlspecialchars($username));
+					$this->save_option("['name']", htmlspecialchars($username));
+					$this->save_option("['license']", htmlspecialchars($license));
+					$this->premium = $this->view->validate_license($license);
+					$this->install_favicon();
+					$this->install_dashboard();
 			}
 		}
 	}
@@ -3837,9 +3839,7 @@ class admin {
 			@copy($this->basepath . 'images/' . $image,
 				$this->compress_options['css_cachedir'] . $image);
 		}
-		if (!@is_writable($this->basepath . $this->options_file)) {
-			$this->error[1] = 1;
-		} elseif (!empty($this->input['wss_page']) && $this->input['wss_page'] == 'install_options') {
+		if (!empty($this->input['wss_page']) && $this->input['wss_page'] == 'install_options') {
 /* Try to re-define configuration name from predefined set */
 			if (empty($this->input['wss_apply'])) {
 				if (in_array($this->input['wss_config'], array('safe', 'optimal', 'extreme', 'basic'))) {

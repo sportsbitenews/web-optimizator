@@ -20,53 +20,6 @@ if ($submit) {
 			'.php . ' .
 			_WEBO_SPLASH3_HTACCESS_CHMOD;
 ?></li><li class="wssL1<?php
-		if (empty($error[1])) {
-?> wssA0<?php
-		}
-?>"><?php
-		echo _WEBO_SPLASH3_CONFIGERROR .
-			' ' .
-			_WEBO_SPLASH3_CONFIGERROR2 .
-			' ' .
-			$basepath .
-			' ' .
-			_WEBO_SPLASH3_CONFIGERROR3;
-?></li><li class="wssL1<?php
-		if (empty($error[2])) {
-?> wssA0<?php
-		}
-?>"><?php
-		echo _WEBO_SPLASH3_CANTWRITE .
-			' ' .
-			$cssdir . ' ' .
-			_WEBO_SPLASH3_CANTWRITE2 .
-			' ' .
-			_WEBO_SPLASH3_CANTWRITE3;
-?></li><li class="wssL1<?php
-		if (empty($error[3])) {
-?> wssA0<?php
-		}
-?>"><?php
-		echo _WEBO_SPLASH3_CANTWRITE .
-			' ' .
-			$jsdir .
-			' ' .
-			_WEBO_SPLASH3_CANTWRITE2 .
-			' ' .
-			_WEBO_SPLASH3_CANTWRITE3;
-?></li><li class="wssL1<?php
-		if (empty($error[4])) {
-?> wssA0<?php
-		}
-?>"><?php
-		echo _WEBO_SPLASH3_CANTWRITE .
-			' ' .
-			$htmldir .
-			' ' .
-			_WEBO_SPLASH3_CANTWRITE2 . 
-			' ' .
-			_WEBO_SPLASH3_CANTWRITE3;
-?></li><li class="wssL1<?php
 		if (empty($error[10])) {
 ?> wssA0<?php
 		}

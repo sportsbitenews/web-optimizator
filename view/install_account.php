@@ -102,9 +102,8 @@
 			}
 ?> <?php
 			echo _WEBO_SPLASH2_COMPARISON_VERSION;
-?>, <?php
 		}
-?><a href="<?php
+?>, <a href="<?php
 		echo $root;
 ?>LICENSE<?php
 		echo in_array($language, array('ru', 'ua')) ? '.utf8.ru' : '';

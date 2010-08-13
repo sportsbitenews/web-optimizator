@@ -13,9 +13,15 @@
 ?>"><div class="wssK1"><h2 class="wssB"><?php
 	echo _WEBO_ERROR_TITLE;
 ?></h2><ul class="wssL"><li class="wssL1<?php
-			if (empty($error[1])) {
+	if (empty($error[0])) {
 ?> wssA0<?php
-			}
+	}
+?>" id="wss_error0"><?php
+	echo _WEBO_SPLASH3_CONFIGERROR;
+?></li><li class="wssL1<?php
+	if (empty($error[1])) {
+?> wssA0<?php
+	}
 ?>" id="wss_error1"><?php
 	echo _WEBO_LOGIN_ENTERPASSWORD;
 ?></li><li class="wssL1<?php
