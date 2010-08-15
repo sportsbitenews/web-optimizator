@@ -4160,6 +4160,15 @@ Options +FollowSymLinks";
 	AddType text/html .df";
 				}
 				$content .= "
+	AddType video/ogg ogg ogv
+	AddType video/mp4 mp4
+	AddType video/webm webm
+	AddType image/svg+xml svg svgz 
+	AddType application/vnd.ms-fontobject eot
+	AddType font/ttf ttf
+	AddType font/otf otf
+	AddType font/x-woff woff
+	AddType text/cache-manifest manifest
 </IfModule>";
 				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 					$content .= "
@@ -4270,7 +4279,11 @@ Options +FollowSymLinks";
 				$content2 .= "
 # Web Optimizer options
 <IfModule mod_expires.c>
-	ExpiresActive On";
+	ExpiresActive On
+	<FilesMatch \.manifest$>
+		ExpiresDefault A0
+	</FilesMatch>
+	ExpiresByType text/cache-manifest A0";
 				if (!empty($this->input['wss_far_future_expires_html'])) {
 					$content2 .= "
 	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
@@ -4279,7 +4292,8 @@ Options +FollowSymLinks";
 	ExpiresByType text/html A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType application/xhtml+xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
-	ExpiresByType text/plain A" . $this->input['wss_far_future_expires_html_timeout'];
+	ExpiresByType text/plain A" . $this->input['wss_far_future_expires_html_timeout'] . "
+	ExpiresByType application/rss+xml A" . $this->input['wss_far_future_expires_html_timeout'];
 				}
 				if (!empty($this->input['wss_far_future_expires_css'])) {
 					$content2 .= "
@@ -4309,31 +4323,37 @@ Options +FollowSymLinks";
 	</FilesMatch>
 	ExpiresByType image/gif A315360000
 	ExpiresByType image/png A315360000
+	ExpiresByType image/jpg A315360000
 	ExpiresByType image/jpeg A315360000
 	ExpiresByType image/x-icon A315360000
 	ExpiresByType image/bmp A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_fonts'])) {
 					$content2 .= "
-	<FilesMatch \.(eot|ttf|otf|svg)$>
+	<FilesMatch \.(eot|ttf|otf|svg|woff)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
+	ExpiresByType image/svg+xml A315360000
 	ExpiresByType application/x-font-opentype A315360000
 	ExpiresByType application/x-font-truetype A315360000
 	ExpiresByType application/x-font-ttf A315360000
 	ExpiresByType application/x-font A315360000
+	ExpiresByType application/vnd.oasis.opendocument.formula-template A315360000
+	ExpiresByType application/vnd.ms-fontobject A315360000
+	ExpiresByType font/ttf A315360000
 	ExpiresByType font/opentype A315360000
 	ExpiresByType font/otf A315360000
-	ExpiresByType application/vnd.oasis.opendocument.formula-template A315360000
-	ExpiresByType image/svg+xml A315360000
-	ExpiresByType application/vnd.ms-fontobject A315360000
 	ExpiresByType font/woff A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_video'])) {
 					$content2 .= "
-	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm)$>
+	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|mid|wav)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
+	ExpiresByType audio/mpeg A315360000
+	ExpiresByType audio/ogg A315360000
+	ExpiresByType audio/mid A315360000
+	ExpiresByType audio/x-wav A315360000
 	ExpiresByType video/x-flv A315360000
 	ExpiresByType video/x-ms-wmv A315360000
 	ExpiresByType video/x-ms-asf A315360000
@@ -4341,7 +4361,9 @@ Options +FollowSymLinks";
 	ExpiresByType video/x-ms-wma A315360000
 	ExpiresByType video/x-ms-wax A315360000
 	ExpiresByType video/x-ms-wmx A315360000
-	ExpiresByType video/x-ms-wm A315360000";
+	ExpiresByType video/x-ms-wm A315360000
+	ExpiresByType video/ogg A315360000
+	ExpiresByType video/mp4 A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_static'])) {
 					$content2 .= "
@@ -4414,10 +4436,10 @@ Options +FollowSymLinks";
 				}
 				if (!empty($this->input['wss_htaccess_mod_expires'])) {
 					$content .= "
-	<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg)$>
+	<FilesMatch \.(bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|wav|mid|swf|pdf|doc|rtf|xls|ppt|eot|ttf|otf|svg|woff)$>
 		Header append Cache-Control public
 	</FilesMatch>
-	<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt)$>
+	<FilesMatch \.(js|css|bmp|png|gif|jpe?g|ico|flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|wav|mid|swf|pdf|doc|rtf|xls|ppt|woff)$>
 		Header unset Last-Modified
 		FileETag MTime
 	</FilesMatch>";
