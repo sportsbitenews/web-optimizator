@@ -3,9 +3,6 @@ controller/admin.php
 controller/compressor.php
 images/schemas.png
 images/web.optimizer.stamp.png
-images/web.optimizer.stamp.black.png
-images/web.optimizer.stamp.gray.png
-images/web.optimizer.stamp.white.png
 images/welcome.screens.en.jpg
 images/welcome.screens.ru.jpg
 libs/css/buttons.png
