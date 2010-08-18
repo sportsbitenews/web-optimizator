@@ -144,7 +144,7 @@ class web_optimizer {
 			$this->uri = $this->convert_request_uri();
 /* gzip cached content before output? (plugins have onCache) */
 			$gzip_me = is_array($this->options['plugins']);
-			$cache_plain_key = $this->uri . 'index' . $this->ua_mod . '.html';
+			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) . 'index' . $this->ua_mod . '.html';
 			$cache_key = $cache_plain_key .
 				($this->options['page']['flush'] ||
 				empty($this->encoding_ext) ||
@@ -866,7 +866,7 @@ class web_optimizer {
 						substr($this->content, 0, $options['flush_size']);
 				}
 			}
-			$ordinary_cache_key = $this->uri . 'index' . $this->ua_mod . '.html';
+			$ordinary_cache_key = $this->view->ensure_trailing_slash($this->uri) . 'index' . $this->ua_mod . '.html';
 			$cache_key = $ordinary_cache_key . (empty($this->encoding_ext) ? '' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
 /* set ETag, thx to merzmarkus */
@@ -3323,11 +3323,12 @@ class web_optimizer {
 	**/
 	function convert_basehref ($uri) {
 /* check if BASE URI is given */
+		$slash = substr($uri, 0, 1) != '/';
 		if (!empty($this->basehref) &&
 /* convert only non-external URI */
 			strpos($uri, '//') !== 0 && !strpos($uri, '://') &&
 /* convert absolute URI only if another host is given */			
-			(!preg_match("@^https?://(www\.)?" . $this->host_escaped . "/+@", $this->basehref) || ($slash = substr($uri, 0, 1) != '/'))) {
+			(!preg_match("@^https?://(www\.)?" . $this->host_escaped . "/+@", $this->basehref) || ($slash))) {
 /* convert absolute URL, change host */
 				if ($slash) {
 					return preg_replace("@^https?://[^/]+/@", '', $this->basehref) . $uri;
