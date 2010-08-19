@@ -618,7 +618,7 @@ class webo_cache_files extends webo_cache_engine
 	 				{
 	 					if (@is_file($file))
 	 					{
-	 						@unlink($file);
+	 						$this->__recurse_rm($file);
  						}
 						elseif (@is_dir($file))
 						{
@@ -634,7 +634,7 @@ class webo_cache_files extends webo_cache_engine
  				{
  					if (@is_file($file))
  					{
- 						@unlink($file);
+ 						$this->__recurse_rm($file);
 					}
 					elseif (@is_dir($file))
 					{
@@ -783,6 +783,39 @@ class webo_cache_files extends webo_cache_engine
         	}
 		
 	    }
+	}
+	
+	function __recurse_rm($path)
+	{
+		if (is_dir($path))
+		{
+			if (substr($path, strlen($path) - 1))
+			{
+				$path .= '/';
+			}
+			$dh = @opendir($path);
+			while (($file = @readdir($dh)) !== false)
+			{
+				if (($file == '.') || ($file == '..'))
+				{
+					//do nothing
+				}
+				elseif (is_dir($path . $file))
+				{
+					recurse_rm($path . $file);
+				}
+				else
+				{
+					@unlink($path . $file);
+				}
+			}
+			@closedir($dh);
+			@rmdir($path);
+		}
+		else
+		{
+			@unlink($path);
+		}
 	}
 	
 	/* Gets total size and number of cache files defined by mask */
