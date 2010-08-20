@@ -2087,7 +2087,6 @@ class admin {
 	function install_promo() {
 		$page_variables = array(
 			"title" => _WEBO_SPLASH2_COMPARISON,
-			"page" => 'install_promo',
 			"version" => $this->version,
 			"promo" => true,
 			"premium" => true,
@@ -2095,7 +2094,7 @@ class admin {
 			"language" => $this->language,
 			"skip_render" => $this->skip_render
 		);
-		$this->view->render("admin_container", $page_variables);
+		$this->view->render("install_promo", $page_variables);
 	}
 
 	/**

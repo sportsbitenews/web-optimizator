@@ -92,8 +92,18 @@ if (!$ajax) {
 	}
 ?><div id="wss_content"><?php
 }
-	
-require($page.".php");
+
+switch ($page) {
+	case 'install_enter_password':
+		include('install_enter_password.php');
+		break;
+	case 'install_set_password':
+		include('install_set_password.php');
+		break;
+	default :
+		require($page.".php");
+		break;
+}
 
 if (!$ajax) {
 ?></div><p class="wss_y"><?php
