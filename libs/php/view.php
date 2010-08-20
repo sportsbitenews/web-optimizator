@@ -158,7 +158,7 @@ class compressor_view {
 			case 'install_wizard':
 				include($folder . 'install_wizard.php');
 				break;
-			case 'options_configuration.php':
+			case 'options_configuration':
 				include($folder . 'options_configuration.php');
 				break;
 			default:
