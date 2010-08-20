@@ -4185,7 +4185,7 @@ Options +FollowSymLinks";
 					}
 					if (!empty($this->input['wss_far_future_expires_images'])) {
 						$content .= "
-	RewriteRule ^(.*)\.wo[0-9]+\.(jpg|png)$ $1.$2";
+	RewriteRule ^(.*)\.wo[0-9]+\.(jpe?g|png)$ $1.$2";
 					}
 					if (!empty($this->input['wss_gzip_page'])) {
 						$content .= "
@@ -4459,6 +4459,10 @@ Options +FollowSymLinks";
 			if (!empty($this->input['wss_far_future_expires_javascript'])) {
 				$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(js|php)$ $1.$2";
+			}
+			if (!empty($this->input['wss_far_future_expires_images'])) {
+				$content .= "
+	RewriteRule ^(.*)\.wo[0-9]+\.(jpe?g|png)$ $1.$2";
 			}
 			$content .= "
 </IfModule>";
