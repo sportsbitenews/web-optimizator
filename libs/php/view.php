@@ -104,61 +104,61 @@ class compressor_view {
 /* this is required for auto-maker all these files into 1 final */
 		switch ($file_name) {
 			case 'compress_gzip':
-				include('../../view/compress_gzip.php');
+				include('view/compress_gzip.php');
 				break;
 			case 'dashboard_awards':
-				include('../../view/dashboard_awards.php');
+				include('view/dashboard_awards.php');
 				break;
 			case 'dashboard_cache':
-				include('../../view/dashboard_cache.php');
+				include('view/dashboard_cache.php');
 				break;
 			case 'dashboard_options':
-				include('../../view/dashboard_options.php');
+				include('view/dashboard_options.php');
 				break;
 			case 'dashboard_speed':
-				include('../../view/dashboard_speed.php');
+				include('view/dashboard_speed.php');
 				break;
 			case 'dashboard_system':
-				include('../../view/dashboard_system.php');
+				include('view/dashboard_system.php');
 				break;
 			case 'install_about':
-				include('../../view/install_about.php');
+				include('view/install_about.php');
 				break;
 			case 'install_account':
-				include('../../view/install_account.php');
+				include('view/install_account.php');
 				break;
 			case 'install_awards':
-				include('../../view/install_awards.php');
+				include('view/install_awards.php');
 				break;
 			case 'install_balance':
-				include('../../view/install_balance.php');
+				include('view/install_balance.php');
 				break;
 			case 'install_cdn':
-				include('../../view/install_cdn.php');
+				include('view/install_cdn.php');
 				break;
 			case 'install_gzip':
-				include('../../view/install_gzip.php');
+				include('view/install_gzip.php');
 				break;
 			case 'install_image':
-				include('../../view/install_image.php');
+				include('view/install_image.php');
 				break;
 			case 'install_options':
-				include('../../view/install_options.php');
+				include('view/install_options.php');
 				break;
 			case 'install_promo':
-				include('../../view/install_promo.php');
+				include('view/install_promo.php');
 				break;
 			case 'install_system':
-				include('../../view/install_system.php');
+				include('view/install_system.php');
 				break;
 			case 'install_uninstall':
-				include('../../view/install_uninstall.php');
+				include('view/install_uninstall.php');
 				break;
 			case 'install_wizard':
-				include('../../view/install_wizard.php');
+				include('view/install_wizard.php');
 				break;
 			case 'options_configuration.php':
-				include('../../view/options_configuration.php');
+				include('view/options_configuration.php');
 				break;
 			default:
 				if (@file_exists ($this->paths['full']['view'] . "$file_name.php")) {
