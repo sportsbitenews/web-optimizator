@@ -4008,7 +4008,10 @@ class admin {
 							'MSIE 8' => '.ie8',
 							'Android|BlackBerry|HTC|iPhone|iPod|LG|MOT|Mobile|NetFront|Nokia|Opera Mini|Palm|PPC|SAMSUNG|Smartphone|SonyEricsson|Symbian|UP.Browser|webOS' => '.ma') : array();
 					$browsers[] = '';
-					$encodings = empty($this->input['wss_gzip_page']) && !empty($this->input['wss_htaccess_mod_mime']) ?
+					$encodings = (empty($this->input['wss_gzip_page']) ||
+						!empty($this->input['wss_htaccess_mod_gzip']) ||
+						!empty($this->input['wss_htaccess_mod_deflate'])) &&
+						!empty($this->input['wss_htaccess_mod_mime']) ?
 						array() : array('gzip' => '.gz', 'deflate' => '.df');
 					$encodings[] = '';
 					foreach ($encodings as $enc => $encoding) {
@@ -4099,7 +4102,9 @@ class admin {
 	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html";
 				if (!empty($this->input['wss_html_cache_enabled']) &&
 					!empty($this->input['wss_html_cache_enhanced']) &&
-					!empty($this->input['wss_gzip_page'])) {
+					!empty($this->input['wss_gzip_page']) &&
+					empty($this->input['wss_htaccess_mod_gzip']) &&
+					empty($this->input['wss_htaccess_mod_deflate'])) {
 						$content .= "
 	SetEnvIfNoCase accept-encoding deflate WSSENC=.df
 	SetEnvIfNoCase accept-encoding gzip WSSENC=.gz";
