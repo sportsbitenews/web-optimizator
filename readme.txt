@@ -116,14 +116,14 @@ A lot of different persons contributed to this project. Some of them:
  
 License
 -----------------------
-WEBO Site SpeedUp is licensed under Eclipse Public License (LICENSE.txt). It's
-located in this package. For Russian users there is LICENSE.ru.txt or
+WEBO Site SpeedUp core is licensed under Eclipse Public License (LICENSE.txt).
+It's located in this package. For Russian users there is LICENSE.ru.txt or
 LICENSE.ru.utf8.txt
-Some parts of WEBO Site SpeedUp are open source and licensed under different
-licenses:
+Some parts of WEBO Site SpeedUp products are open source and licensed under
+different licenses:
  * JSMin library - GNU GPLv2
  * Packer library - GNU LGPLv2
- * YUI Compressor binary - BSD License
+ * YUI Compressor binary / its envelope - BSD License
  * YASS library - MIT License
  * CSS Tidy library - GNU LGPLv2
  * XHTML document.write() Support - GNU GPL
@@ -132,3 +132,4 @@ licenses:
  * WEBO HTML Sprites - WEBO License
  * WEBO PHP Static library - WEBO License
  * WEBO HTML Cache library - WEBO License
+ * WEBO SQL Cache library - WEBO License

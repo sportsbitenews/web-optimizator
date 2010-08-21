@@ -31,7 +31,7 @@
 +e) data:URI
 +f) auto CSS Sprites (+image optimization)
 +g) Caching headers (Expires, Cache-Control, Last-Modified)
-?h) CDN integration options / Multiple hosts
++h) CDN integration options / Multiple hosts
 +i) Cache directory
  j) Source directories for CSS / JS files
 +k) Source PHP / HTML files to auto-change
@@ -74,19 +74,20 @@
  g) Trash cleaner (i.e. Thumbs.db)
 
 7. CDN integration
- a) Google Apps Engine
- b) Amazon S3
- c) EdgeCast
- d) ?
- e) NGENIX
++a) Google Apps Engine
++b) Amazon S3
++c) EdgeCast
+ d) Custom CDN
++e) NGENIX
 +f) Apply multiple static hosts if possible
 +g) General CDN support
 
 8. Server cache integration
 +a) Raw files (cache directory)
- b) APC
- c) Memcache
++b) APC
++c) Memcache
  d) Zend Cache
+ e) Semaphores
 
 9. Look and feel
 +a) Design
@@ -132,12 +133,13 @@
 +B) UMI.CMS (2.7)
 +C) ExpressionEngine (1.6.8)
 +D) osCommerce (2.2)
- E) PHP-Fusion (7.0)
++E) PHP-Fusion (7.0)
 +F) MaxDev Pro (1.082)
 +G) Xaraya (1.1.5)
 +H) Website Baker (2.8.0)
 +I) Open Slaed (1.2)
 +J) 4images
++K) X-Cart
 
 12. Localization
 +a) English
@@ -146,29 +148,35 @@
 ?d) Hebrew
 +e) Ukranian
 +f) Spanish
-?g) French
- h) Italian
++g) French
++h) Italian
 ?i) Latvian
++j) Urdu
+ k) Dutch
  
- 13) Plugin API
- +a) Possiblity to add plugin for any system
- +b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
+13. Plugin API
++a) Possiblity to add plugin for any system
++b) Joomla! 1.5 (System-Cache, System-Debug, VirtueMart)
++c) CS-Cart captcha fix
  
- 14. Documentation
- +a) Installation process
- +b) Settings description
- +c) Troubleshooter
- +d) Use cases
- +e) Full .pdf
- +f) Integration examples
+14. Documentation
++a) Installation process
++b) Settings description
++c) Troubleshooter
++d) Use cases
++e) Full .pdf
++f) Integration examples
   
- 15) External plugins
- +a) Wordpress 2.6+
- +b) Joomla! 1.5
- +c) Joomla! 1.0
- +d) Drupal 6.x
- +e) Drupal 5.x
-  f) Drupal 7.x
- +g) Bitrix
-  h) UMI.CMS
-  i) NetCat
+15. External plugins
++a) Wordpress 2.6+
++b) Joomla! 1.5
++c) Joomla! 1.0
++d) Drupal 6.x
++e) Drupal 5.x 
+ f) Drupal 7.x
++g) Bitrix
+ h) UMI.CMS
++i) NetCat
++j) CS-Cart
++k) Magento
+ l) MODx
