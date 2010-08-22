@@ -441,6 +441,10 @@
 
 	function clear_expired_sql()
 	{
+		if (empty($this->sql_cached_queries) || !is_array($this->sql_cached_queries))
+		{
+			return;
+		}
 		foreach ($this->sql_cached_queries as $query => $info)
 		{
 			if ($this->current_time - $info['time'] > $this->sql_cache_timeout)
