@@ -2449,6 +2449,12 @@ class web_optimizer {
 						case 'aa':
 							$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
 							break;
+						case 'cp':
+							$pos = strpos($value[0], 'thumb_size:') + 11;
+							$posend = strpos($value[0], ',', $pos);
+							$dims = explode('x', str_replace(array("'", " ", '"'), array(), substr($value[0], $pos, $posend)));
+							$height = round($dims[1]);
+							break;
 						case 'if':
 						case 'IF':
 							if (preg_match("@height\s*=@is", $value[0])) {
@@ -2545,23 +2551,35 @@ class web_optimizer {
 /* Amazon Ads */
 				'aa' => array(
 					'marker' => 'amazon_ad',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*amazon_ad_tag.*?ads.js\"></script>"
+					'regexp' => "<script[^>]+><!--[^\da-zA-Z]*amazon_ad_tag.*?ads.js\"></script>"
 /* BlogBang */
 				), 'bb' => array(
 					'marker' => 'blogbang.com/d.php',
-					'regexp' => "<script src=\"http://www.blogbang.com/d.php\?id=.*?</script>"
+					'regexp' => "<script[^>]+src=[\"']http://www.blogbang.com/d.php\?id=.*?</script>"
 /* Begun */
 				), 'bu' => array(
 					'marker' => 'autocontext.begun.ru',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2\.js\"></script>"
+					'regexp' => "<script[^>]+><!--[^\da-zA-Z]*var begun_auto_pad.*?autocontext.begun.ru/autocontext2\.js[\"']></script>"
+/* Carpediem */
+				), 'cp' => array(
+					'marker' => 'media.yesmessenger.com',
+					'regexp' => "<script[^>]+>[^\da-zA-Z]*var yesmsng_flash_banner.*?media.yesmessenger.com/flashbanner/[^>]+></script>"
 /* eBuzzing */
 				), 'eb' => array(
 					'marker' => 'ebuzzing.com/player',
-					'regexp' => "<script type='text/javascript' src='http://www.ebuzzing.com/player/player.php\?parametre=[0-9]+'></script>"
+					'regexp' => "<script[^>]+src=[\"']http://www.ebuzzing.com/player[^>]+></script>"
+/* ExoClick */
+				), 'ec' => array(
+					'marker' => 'syndication.exoclick.com',
+					'regexp' => "<script[^>]+src=[\"']http://syndication.exoclick.com.*?</script>"
+/* GoViral */
+				), 'gv' => array(
+					'marker' => 'videos.video-loader.com',
+					'regexp' => "<script[^>]+src=[\"']http://videos.video-loader.com.*?</script>"
 /* Google AdWords */
 				), 'gw' => array(
 					'marker' => 'pagead2.googlesyndication.com',
-					'regexp' => "<script type=\"text/javascript\">[\s\t\r\n]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
+					'regexp' => "<script[^>]+>[^<\da-zA-Z]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
 					'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
 					'onload_after' => '$1;document.write(\'\x3cscript type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js">\x3c/script>\');setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Novoteka */
@@ -2572,16 +2590,24 @@ class web_optimizer {
 					'onload_after' => 'document.write(\'\x3cscript type="text/javascript" charset="windows-1251" src="//nnn.novoteka.ru$1">\x3c/script>\');wss_onload_ready=1'
 /* OpenX */
 				), 'ox' => array(
-					'marker' => 'ajs.php',
+					'marker' => 'OpenX Javascript',
 					'regexp' => "<!--/\*\sOpenX\sJavascript.*?</noscript>"
 /* PredictAd */
 				), 'pa' => array(
 					'marker' => 'PredictAd',
 					'regexp' => "<!-- PredictAd Code.*?End PredictAd Code -->"
+/* Generic OpenX */
+				), 'rb' => array(
+					'marker' => '/delivery/ajs.php',
+					'regexp' => "<script[^>]+><!--//<!\[CDATA\[[^\da-zA-Z]*var m3_u.*?</script>"
 /* Yandex.Direct */
 				), 'yd' => array(
 					'marker' => 'yandex_partner_id',
-					'regexp' => "<script type=\"text/javascript\"><!--[\s\t\r\n]*yandex_partner_id.*?</script>"
+					'regexp' => "<script[^>]+><!--[^\da-zA-Z]*yandex_partner_id.*?</script>"
+/* Unruly Media */
+				), 'um' => array(
+					'marker' => 'video.unrulymedia.com',
+					'regexp' => "<script[^>]+src=[\"']http://video.unrulymedia.com.*?</script>"
 				)
 			), 'unobtrusive_iframes' => array (
 				'if' => array(
