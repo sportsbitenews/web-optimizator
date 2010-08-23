@@ -43,7 +43,7 @@ case 47:
 var x=_('.wssC9 .wssO8'),w=_('.wssC12'),y=_('.wssC13'),z=_('.wssC14'),b,c=0;if(x[0]){x[2].className='wssO8';x[1].className='wssO8 wssO9';x[0].className='wssO8 wssO10';while(b=w[c++]){b.style.display='none'}c=0;while(b=y[c++]){b.style.display='none'}c=0;while(b=z[c++]){b.style.display='none'}y[0].style.display='block'}
 break;
 case 45:
-if(!_.wiz0){_.wiz0=1;var b=0,c=['amazon_ad_tag','google_ad_client','runPredictor','_blogbang_div'],d,e=0,f=0,g=_.wiz5('website'),h=['google','FB','_ate','odnaknopka1','odnaknopka2','MyOtzivCl'];while(d=c[e++]){if(g[d]){f=1}}b+=f||g.frames['myIframe']?4:0;e=f=0;while(d=h[e++]){if(g[d]){f=1}}b+=f||g.frames['1px']?1:0;b+=b||!g.frames.length?0:8;_.wiz('45&web_optimizer_wizard_options='+b)}else{_.wiz(47)}
+if(!_.wiz0){_.wiz0=1;var b=0,c=['amazon_ad_tag','google_ad_client','runPredictor','_blogbang_div','m3_u','Goog_AdSense_getAdAdapterInstance'],d,e=0,f=0,g=_.wiz5('website'),h=['google','FB','_ate','odnaknopka1','odnaknopka2','MyOtzivCl'];while(d=c[e++]){if(g[d]){f=1}}b+=f||g.frames['myIframe']?4:0;e=f=0;while(d=h[e++]){if(g[d]){f=1}}b+=f||g.frames['1px']?1:0;b+=b||!g.frames.length?0:8;_.wiz('45&web_optimizer_wizard_options='+b)}else{_.wiz(47)}
 break;
 case 44:
 _.wzz[7]=1;_.wiz(45);
