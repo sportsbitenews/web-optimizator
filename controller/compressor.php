@@ -95,7 +95,7 @@ class web_optimizer {
 		$included_user_agents = '';
 		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
-		$this->start_cache_engine();
+			$this->start_cache_engine();
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore']) ||
 				!empty($this->options['restricted'])) {
@@ -3153,7 +3153,7 @@ class web_optimizer {
 	 *
 	 **/
 	function convert_request_uri ($uri = false) {
-		$uri = $uri ? $uri : $_SERVER['REQUEST_URI'];
+		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
 /* replace /, ?, & with - */
 		$uri = str_replace(
 			array('/', '?', '&'),
