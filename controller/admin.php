@@ -4164,6 +4164,7 @@ Options +FollowSymLinks";
 	AddType text/html .df";
 				}
 				$content .= "
+	AddType image/x-icon ico
 	AddType video/ogg ogg ogv
 	AddType video/mp4 mp4
 	AddType video/webm webm
