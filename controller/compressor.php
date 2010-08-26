@@ -2836,10 +2836,13 @@ class web_optimizer {
 					if ($this->content{$baseend-1} === '/') {
 						$baseend--;
 					}
-					$this->basehref = str_replace(array('"', ""), array(), substr($this->content, $basepos, $baseend - $basepos));
+					$this->basehref = trim(str_replace(array('"', ""), array(), substr($this->content, $basepos + 5, $baseend - $basepos - 6)));
 				}
 			} elseif (preg_match("@<base\s+href@is", $this->content)) {
-				$this->basehref = preg_replace("@<base\s*href\s*=\s*['\"](.*?)['\"]@", "$1", $this->content);
+				$this->basehref = preg_replace("@.*<base\s*href\s*=\s*['\"](.*?)['\"].*@is", "$1", $this->content);
+			}
+			if (!empty($this->basehref) && preg_match("@https?://(www\.)?" . $this->host . "@", $this->basehref)) {
+				$this->basehref = '';
 			}
 /* change all links on the page according to DEBUG mode */
 			if (!empty($_GET['web_optimizer_debug'])) {
@@ -3355,9 +3358,7 @@ class web_optimizer {
 		$slash = substr($uri, 0, 1) != '/';
 		if (!empty($this->basehref) &&
 /* convert only non-external URI */
-			strpos($uri, '//') !== 0 && !strpos($uri, '://') &&
-/* convert absolute URI only if another host is given */			
-			(!preg_match("@^https?://(www\.)?" . $this->host_escaped . "/+@", $this->basehref) || ($slash))) {
+			strpos($uri, '//') !== 0 && !strpos($uri, '://')) {
 /* convert absolute URL, change host */
 				if ($slash) {
 					return preg_replace("@^https?://[^/]+/@", '', $this->basehref) . $uri;
