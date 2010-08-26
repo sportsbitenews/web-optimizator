@@ -157,6 +157,13 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
+				if (class_exists('JUtility'))
+				{
+					$token  = JUtility::getToken();
+					$search = '#<input type="hidden" name="[0-9a-f]{32}" value="1" />#';
+					$replacement = '<input type="hidden" name="'.$token.'" value="1" />';
+					$content = preg_replace($search, $replacement, $content);
+				}
 /* execute plugin-specific logic */
 				if (is_array($this->options['plugins'])) {
 					foreach ($this->options['plugins'] as $plugin) {
