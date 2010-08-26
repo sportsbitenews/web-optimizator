@@ -67,7 +67,6 @@ config.optimal.php
 config.safe.php
 config.webo.php
 index.php
-install.php
 LICENSE.ru.txt
 LICENSE.txt
 LICENSE.utf8.ru.txt
