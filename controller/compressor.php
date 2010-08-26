@@ -3225,24 +3225,20 @@ class web_optimizer {
 				@fclose($fph);
 /* check if we deal with 404 error, remove result */
 				$headers = @file_get_contents($return_filename . '.headers');
-				if (strpos($headers, '404 Not Found')) {
-					@unlink($return_filename);
-				}
-				@unlink($return_filename . '.headers');
+				if (strpos($headers, 'HTTP/1.1 404') !== false ||
+					strpos($headers, 'HTTP/1.0 404') !== false ||
+					strpos($headers, 'HTTP/0.1 404') !== false ||
+					strpos($headers, 'HTTP/0.9 404') !== false) {
+						@unlink($return_filename);
+				} else {
 /* try to replace background images to local ones */
-				$contents = @file_get_contents($return_filename);
-				if (!empty($contents)) {
-					$fp = @fopen($return_filename, "w");
-					if ($fp) {
-/* replace only in CSS files */
-						if ($tag == 'link') {
-/* correct background-images */
-							$contents = $this->convert_paths_to_absolute($contents, array('file' => $file), 1);
-						}
-						@fwrite($fp, $contents);
-						@fclose($fp);
+					$contents = @file_get_contents($return_filename);
+					if (!empty($contents) && $tag == 'link') {
+/* correct background-images in CSS file */
+						$this->write_file($return_filename, $this->convert_paths_to_absolute($contents, array('file' => $file), 1));
 					}
 				}
+				@unlink($return_filename . '.headers');
 				chdir($current_directory);
 				return $return_filename;
 			}
