@@ -4157,22 +4157,46 @@ Options +FollowSymLinks";
 				$content .= "
 <IfModule mod_mime.c>
 	AddEncoding gzip .gz
-	AddEncoding deflate .df";
-				if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
-					$content .= "
-	AddType text/html .gz
-	AddType text/html .df";
-				}
-				$content .= "
-	AddType image/x-icon ico
+	AddEncoding deflate .df
+	<FilesMatch \.html\.(gz|df)$>
+		ForceType text/html
+	</FilesMatch>
+	<FilesMatch \.xml\.gz$>
+		ForceType text/xml
+	</FilesMatch>
+	<FilesMatch \.txt\.gz$>
+		ForceType text/plain
+	</FilesMatch>
+	<FilesMatch \.ico\.gz$>
+		ForceType image/x-icon
+	</FilesMatch>
+	<FilesMatch \.css\.gz$>
+		ForceType text/css
+	</FilesMatch>
+	<FilesMatch \.js\.gz$>
+		ForceType application/x-javascript
+	</FilesMatch>
+	<FilesMatch \.svg\.gz$>
+		ForceType image/svg+xml
+	</FilesMatch>
+	<FilesMatch \.ttf\.gz$>
+		ForceType font/ttf
+	</FilesMatch>
+	<FilesMatch \.otf\.gz$>
+		ForceType font/otf
+	</FilesMatch>
+	<FilesMatch \.eot\.gz$>
+		ForceType application/vnd.ms-fontobject
+	</FilesMatch>
 	AddType video/ogg ogg ogv
 	AddType video/mp4 mp4
 	AddType video/webm webm
-	AddType image/svg+xml svg svgz 
+	AddType image/svg+xml svg svgz
 	AddType application/vnd.ms-fontobject eot
 	AddType font/ttf ttf
 	AddType font/otf otf
 	AddType font/x-woff woff
+	AddType application/vnd.ms-fontobject eot
 	AddType text/cache-manifest manifest
 </IfModule>";
 				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
@@ -4198,64 +4222,56 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
 	RewriteRule ^(.*)\.ico$ $1.ico.gz [QSA,L]
-	<FilesMatch \.ico\.gz$>
-		ForceType image/x-icon
-	</FilesMatch>
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
 	RewriteRule ^(.*)\.xml$ $1.xml.gz [QSA,L]
-	<FilesMatch \.xml\.gz$>
-		ForceType text/xml
-	</FilesMatch>
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
-	RewriteRule ^(.*)\.txt$ $1.txt.gz [QSA,L]
-	<FilesMatch \.txt\.gz$>
-		ForceType text/plain
-	</FilesMatch>";
+	RewriteRule ^(.*)\.txt$ $1.txt.gz [QSA,L]";
 				}
 					if (!empty($this->input['wss_gzip_css'])) {
 						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
-	RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]
-	<FilesMatch \.css\.gz$>
-		ForceType text/css
-	</FilesMatch>";
+	RewriteRule ^(.*)\.css$ $1.css.gz [QSA,L]";
 					}
 					if (!empty($this->input['wss_gzip_javascript'])) {
 						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
-	RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]
-	<FilesMatch \.js\.gz$>
-		ForceType application/x-javascript
-	</FilesMatch>";
+	RewriteRule ^(.*)\.js$ $1.js.gz [QSA,L]";
 					}
 					if (!empty($this->input['wss_gzip_fonts'])) {
 						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
-	RewriteRule ^(.*)\.(ttf|otf|eot|svg)$ $1.$2.gz [QSA,L]
-	<FilesMatch \.ttf\.gz$>
-		ForceType application/x-font-truetype
-	</FilesMatch>
-	<FilesMatch \.otf\.gz$>
-		ForceType application/x-font-opentype
-	</FilesMatch>
-	<FilesMatch \.svg\.gz$>
-		ForceType image/svg+xml
-	</FilesMatch>
-	<FilesMatch \.eot\.gz$>
-		ForceType application/vnd.ms-fontobject
-	</FilesMatch>";
+	RewriteRule ^(.*)\.(ttf|otf|eot|svg)$ $1.$2.gz [QSA,L]";
 					}
 					$content .= $content_enhanced;
+/* there is gzip enabled, mod_expires exists, but no mod_deflate/mod_gzip */
+					if (!empty($this->input['wss_htaccess_mod_expires']) &&
+						empty($this->input['wss_htaccess_mod_gzip']) &&
+						empty($this->input['wss_htaccess_mod_deflate']) &&
+						@is_file($this->compress_options['css_cachedir'] . 'wo.static.php') &&
+						!empty($this->premium)) {
+							$cachedir = str_replace($this->compress_options['document_root'],
+								"/", $this->compress_options['css_cachedir']);
+							if (!empty($this->input['wss_gzip_css'])) {
+							$content2 .= "
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
+							}
+							if (!empty($this->input['wss_gzip_javascript'])) {
+							$content2 .= "
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
+							}
+					}
 					$content .= "
 </IfModule>";
 				}
