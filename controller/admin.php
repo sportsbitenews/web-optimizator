@@ -164,6 +164,10 @@ class admin {
 		);
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app@", $this->basepath);
+/* check for database driver , WordPress */
+		$this->internal_sql = defined(WP_CACHE) ||
+/* Joomla! 1.5x */
+			(defined(JPATH_SITE) && @is_file(JPATH_SITE . '/libraries/joomla/database/database/WeboMySql.php'));
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it')) ? $this->language : 'en';
@@ -3377,22 +3381,22 @@ class admin {
 					'value' => $this->compress_options['sql_cache']['enabled'],
 					'type' => 'checkbox',
 					'price' => 12,
-					'disabled' => empty($this->internal)
+					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_time' => array(
 					'value' => $this->compress_options['sql_cache']['time'],
 					'type' => 'smalltext',
-					'disabled' => empty($this->internal)
+					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_timeout' => array(
 					'value' => $this->compress_options['sql_cache']['timeout'],
 					'type' => 'smalltext',
-					'disabled' => empty($this->internal)
+					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_tables_exclude' => array(
 					'value' => $this->compress_options['sql_cache']['tables_exclude'],
 					'type' => 'textarea',
-					'disabled' => empty($this->internal)
+					'disabled' => empty($this->internal_sql)
 				)
 			),
 			'unobtrusive' => array(
