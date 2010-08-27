@@ -4262,12 +4262,12 @@ Options +FollowSymLinks";
 							$cachedir = str_replace($this->compress_options['document_root'],
 								"/", $this->compress_options['css_cachedir']);
 							if (!empty($this->input['wss_gzip_css'])) {
-							$content2 .= "
+							$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 							}
 							if (!empty($this->input['wss_gzip_javascript'])) {
-							$content2 .= "
+							$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 							}
