@@ -180,7 +180,7 @@ class html_sprites {
 						$need_refresh = 1;
 						$width = $height = 0;
 						$class = '';
-						if (strpos($image[0], 'nosprites')) {
+						if (strpos($image[0], 'nosprites') === false) {
 							list($width, $height) = $this->optimizer->get_image(0, '', $absolute_src);
 							$width = empty($width) ? 0 : $width;
 							$height = empty($height) ? 0 : $height;
