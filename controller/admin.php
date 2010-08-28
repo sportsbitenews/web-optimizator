@@ -3936,7 +3936,7 @@ class admin {
 	* Checks FTP / API access to remote CDN host
 	**/
 	function check_cdn () {
-		$this->error = $this->error ? array();
+		$this->error = $this->error ? $this->error : array();
 		$auth = $this->input['wss_parallel_ftp'];
 /* Rack Space Cloud */
 		if ($last = strpos($auth, '@RSC')) {
@@ -3969,7 +3969,7 @@ class admin {
 				$this->options['document_root'] . 'favicon.ico' :
 				$this->basepath . 'favicon.ico';
 			$headers = $this->view->upload('ftp://' .
-				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $upload)
+				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $upload),
 				str_replace($this->options['document_root'], "/", $file),
 				$file, $this->options['html_cachedir'], array(), 
 				preg_replace("!(.*)@.*!", "$1", $upload));
