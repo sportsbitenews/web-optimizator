@@ -894,6 +894,7 @@ define('_WEBO_CDN_INFO2' , '<strong>Attenzione</strong>: il trasferimento di inf
 define('_WEBO_CDN_DISABLED' , 'Per usare questo tool necessiti to impostare <a href="#wss_options#multiple_hosts">Credenziali accesso FTP</a> dal tuo provider CDN.');
 define('_WEBO_CDN_SYNC', 'Sincronizza');
 define('_WEBO_CDN_STATUS', 'Risultati');
+define('_WEBO_CDN_NOACCESS0', 'Incorrect CDN access string');
 define('_WEBO_CDN_NOACCESS', 'Credenziali FTP non corrette, non posso caricare file ');
 
 /* Help screen */

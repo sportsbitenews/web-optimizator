@@ -896,6 +896,7 @@ define('_WEBO_CDN_INFO2' , '<strong>Attention</strong>: getting information on f
 define('_WEBO_CDN_DISABLED' , 'To use this tool you need to set <a href="#wss_options#multiple_hosts">FTP access credentials</a> from your CDN provider.');
 define('_WEBO_CDN_SYNC', 'Sync');
 define('_WEBO_CDN_STATUS', 'Result');
+define('_WEBO_CDN_NOACCESS0', 'Incorrect CDN access string');
 define('_WEBO_CDN_NOACCESS', 'Incorrect FTP credentials, can\'t upload file ');
 
 /* Help screen */

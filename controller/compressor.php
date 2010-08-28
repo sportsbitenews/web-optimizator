@@ -939,7 +939,7 @@ class web_optimizer {
 	* Write content to file
 	* 
 	**/
-	function write_file ($file, $content, $ftp = 0) {
+	function write_file ($file, $content, $upload = 0, $mime = '') {
 		if (@function_exists('file_put_contents')) {
 			@file_put_contents($file, $content);
 		} else {
@@ -956,20 +956,8 @@ class web_optimizer {
 		}
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));
-		if ($ftp && !empty($this->options['page']['parallel_ftp']) &&
-			@function_exists('curl_init')) {
-				$ch = @curl_init('ftp://' .
-					preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->options['page']['parallel_ftp']) .
-					str_replace($this->options['document_root'], "/", $file));
-				$fp = @fopen($file, 'r');
-				@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->options['page']['parallel_ftp']));
-				@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
-				@curl_setopt($ch, CURLOPT_UPLOAD, 1);
-				@curl_setopt($ch, CURLOPT_INFILE, $fp);
-				@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($file));
-				@curl_exec($ch);
-				@curl_close($ch);
-				@fclose($fp);
+		if ($upload && !empty($this->options['page']['parallel_ftp'])) {
+			$this->view->upload_cdn($file, $this->options['document_root'], $this->options['page']['parallel_ftp'], $mime);
 		}
 	}
 
@@ -1532,7 +1520,7 @@ class web_optimizer {
 						if (($options['gzip'] || $options['far_future_expires']) && !empty($minified_resource)) {
 							$minified_resource = $this->gzip_header[$options['header']] . $minified_resource;
 						}
-						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, 1);
+						$this->write_file($physical_file . '.' . $options['ext'], $minified_resource, in_array($options['ext'], array('css', 'js')), 'text/css');
 /* create static gzipped versions for static gzip in nginx, Apache */
 						if ($options['ext'] == 'css') {
 							$c = @gzencode($minified_resource, $options['gzip_level'], FORCE_GZIP);
@@ -1613,7 +1601,7 @@ class web_optimizer {
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
-				$this->write_file($physical_file, $contents, 1);
+				$this->write_file($physical_file, $contents, in_array($options['ext'], array('css', 'js')), $options['ext'] == 'js' ? 'application/javascript' : 'text/css');
 /* create static gzipped versions for static gzip in nginx, Apache */
 				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
 					$c = @gzencode($contents, $options['gzip_level'], FORCE_GZIP);
@@ -3238,7 +3226,7 @@ class web_optimizer {
 					$contents = @file_get_contents($return_filename);
 					if (!empty($contents) && $tag == 'link') {
 /* correct background-images in CSS file */
-						$this->write_file($return_filename, $this->convert_paths_to_absolute($contents, array('file' => $file), 1));
+						$this->write_file($return_filename, $this->convert_paths_to_absolute($contents, array('file' => $file)));
 					}
 				}
 				@unlink($return_filename . '.headers');

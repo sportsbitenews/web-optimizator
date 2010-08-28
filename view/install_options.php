@@ -35,6 +35,12 @@ if ($submit) {
 		echo _WEBO_SPLASH3_CANTWRITE4 .
 			htmlspecialchars($config) .
 			_WEBO_SPLASH3_HTACCESS_CHMOD;
+?></li><li class="wssL1<?php
+		if (empty($error[11])) {
+?> wssA0<?php
+		}
+?>"><?php
+		echo _WEBO_CDN_NOACCESS0;
 ?></li></ul></div></div><?php
 	} else {
 ?><div class="wssS"><div class="wssS1"><h2 class="wssB"><?php

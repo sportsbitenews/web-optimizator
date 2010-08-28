@@ -103,6 +103,8 @@ class css_sprites_optimize {
 		$memory_available = function_exists('memory_get_usage') ? memory_get_usage() : 10000000;
 /* restrict square for large Sprites due to system limitations */
 		$this->possible_square = round((round(str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit')))) - $memory_available) / 10);
+/* view library (to upload files) */
+		$this->lib = new compressor_view();
 	}
 /* download requested image */
 	function get_image ($mode = 0, $location = 1, $css_image) {
@@ -909,20 +911,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						if (@is_file($sprite)) {
 							$this->smushit($this->current_dir . $sprite);
 /* upload file to CDN */
-							if (!empty($this->ftp_access) &&
-								@function_exists('curl_init')) {
-									$ch = @curl_init('ftp://' .
-										preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->ftp_access) .
-										str_replace($this->website_root, "/", $this->current_dir . $sprite));
-									$fp = @fopen($sprite, 'r');
-									@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->ftp_access));
-									@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
-									@curl_setopt($ch, CURLOPT_UPLOAD, 1);
-									@curl_setopt($ch, CURLOPT_INFILE, $fp);
-									@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($this->current_dir . $sprite));
-									@curl_exec($ch);
-									@curl_close($ch);
-									@fclose($fp);
+							if (!empty($this->ftp_access)) {
+								$this->lib->upload_cdn($this->current_dir . $sprite, $this->current_dir, $this->ftp_access, $this->truecolor_in_jpeg ? 'image/jpeg' : 'image/png');
 							}
 						}
 					}

@@ -879,6 +879,7 @@ define('_WEBO_CDN_INFO2' , '<strong>Внимание</strong>: поиск фай
 define('_WEBO_CDN_DISABLED' , 'Для использования данного инструмента необходимо задать <a href="#wss_options#multiple_hosts">настройки FTP-доступа</a>.');
 define('_WEBO_CDN_SYNC', 'Синхронизовать');
 define('_WEBO_CDN_STATUS', 'Результат');
+define('_WEBO_CDN_NOACCESS0', 'Неверные реквизиты доступа к CDN');
 define('_WEBO_CDN_NOACCESS', 'Неверные реквизиты FTP-доступа, не удается загрузить файл ');
 
 /* Help screen */

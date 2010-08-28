@@ -878,6 +878,7 @@ define('_WEBO_CDN_INFO2' , '<strong>توجہ فرمائیں</strong>: سنکرو
 define('_WEBO_CDN_DISABLED' , 'اس آلہ کو استعمال کرنے کیلئے آپ کو سیٹ کرنا ہوگا۔ <a href="#wss_options#multiple_hosts">ایف ٹی پی رسائی کی معلومات</a> اپنے CDN مہیا کرنے والوں سے.');
 define('_WEBO_CDN_SYNC', ' یکساں کریں');
 define('_WEBO_CDN_STATUS', 'نتائج');
+define('_WEBO_CDN_NOACCESS0', 'Incorrect CDN access string');
 define('_WEBO_CDN_NOACCESS', 'ایف ٹی پی کی غلط معلومات داخل کی گئی ہیں۔ فائل اپ لوڈ نہیں کی جا سکتی۔ ');
 
 

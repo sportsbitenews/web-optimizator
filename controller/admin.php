@@ -3842,6 +3842,9 @@ class admin {
 			@copy($this->basepath . 'images/' . $image,
 				$this->compress_options['css_cachedir'] . $image);
 		}
+		if (!empty($this->input['wss_parallel_ftp'])) {
+			$this->check_cdn();
+		}
 		if (!empty($this->input['wss_page']) && $this->input['wss_page'] == 'install_options') {
 /* Try to re-define configuration name from predefined set */
 			if (empty($this->input['wss_apply'])) {
@@ -3925,6 +3928,53 @@ class admin {
 					if (!empty($this->error[0])) {
 						$this->save_option("['config']", 'safe');
 					}
+			}
+		}
+	}
+	
+	/**
+	* Checks FTP / API access to remote CDN host
+	**/
+	function check_cdn () {
+		$this->error = $this->error ? array();
+		$auth = $this->input['wss_parallel_ftp'];
+/* Rack Space Cloud */
+		if ($last = strpos($auth, '@RSC')) {
+			$first = strpos($auth, ':');
+			$user = substr($auth, 0, $first);
+			$key = substr($auth, $first + 1, $last - $first - 1);
+/* perform authorization */
+			$headers = $this->view->upload('https://auth.api.rackspacecloud.com/v1.0',
+				'', $this->options['html_cachedir'],
+				array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key), 'GET');
+			if (strpos($headers, 'Error: ') === false) {
+				$token = preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers);
+/* create wo container */
+				$this->view->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers),
+					'', $this->options['html_cachedir'],
+					array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'PUT');
+/* remember current CDN URL */
+				$headers = $this->view->upload(preg_replace("@.*X-CDN-Management-Url: https://(.*?)\r?\n.*@is", "$1", $headers),
+					'', $this->options['html_cachedir'],
+					array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'HEAD');
+				$this->input['wss_minify_css_host'] =
+				$this->input['wss_minify_javascript_host'] =
+					preg_replace("@.*X-CDN-URI: https?://(.*?)\r?\n.*@is", "$1", $headers);
+			} else {
+				$this->error[11] = 1;
+			}
+/* common FTP */
+		} else {
+			$file = @is_file($this->options['document_root'] . 'favicon.ico') ?
+				$this->options['document_root'] . 'favicon.ico' :
+				$this->basepath . 'favicon.ico';
+			$headers = $this->view->upload('ftp://' .
+				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $upload)
+				str_replace($this->options['document_root'], "/", $file),
+				$file, $this->options['html_cachedir'], array(), 
+				preg_replace("!(.*)@.*!", "$1", $upload));
+			if (strpos($headers, 'Error: ') !== false) {
+				$this->error[11] = 1;
 			}
 		}
 	}

@@ -291,5 +291,108 @@ class compressor_view {
 		}
 		return array($gzip, $code);
 	}
+
+	/**
+	* Generic upload function to put local files / send commands
+	*
+	**/
+	function upload ($remote_file, $local_file, $tmpdir, $headers = array(), $method = '', $auth = '') {
+		$headers = '';
+		if (function_exists('curl_init')) {
+			$file_headers = $tmpdir . "wo.headers";
+/* start curl */
+			$ch = @curl_init($remote_file);
+			$fph = @fopen($file_headers, "w");
+			$fp = NULL;
+			if ($ch) {
+				switch ($method) {
+					case 'PUT':
+						if ($local_file) {
+							$fp = @fopen($local_file, "r");
+							@curl_setopt($ch, CURLOPT_INFILE, $fp);
+							@curl_setopt($ch, CURLOPT_UPLOAD, true);
+							@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($local_file));
+							@curl_setopt($ch, CURLOPT_PUT, 1);
+						} else {
+							@curl_setopt($ch, CURLOPT_NOBODY, 1);
+						}
+						@curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+						break;
+					case 'HEAD':
+						@curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+						@curl_setopt($ch, CURLOPT_NOBODY, 1);
+						break;
+					default:
+						break;
+				}
+				@curl_setopt($ch, CURLOPT_HEADER, 0);
+				@curl_setopt($ch, CURLOPT_USERAGENT,
+					empty($_SERVER['HTTP_USER_AGENT']) ?
+					"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
+					$_SERVER['HTTP_USER_AGENT']);
+				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				@curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
+/* FTP authorization */
+				if ($auth) {
+					@curl_setopt($ch, CURLOPT_USERPWD, $auth);
+					@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
+				}
+/* write given headers */
+				if (count($headers)) {
+					@curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				}
+/* write headers - to get gzip info */
+				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
+				@curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+/* skip SSL verification */
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+				@curl_exec($ch);
+				$error = @curl_errno($ch);
+				@curl_close($ch);
+				if ($fp) {
+					@fclose($fp);
+				}
+				@fclose($fph);
+				$headers = $error ? 'Error: ' . $error : @file_get_contents($file_headers);
+				@unlink($file_headers);
+			}
+		}
+		return $headers;
+	}
+	
+	/**
+	* CDN upload function (FTP / API)
+	*
+	**/
+	function upload_cdn ($file, $cachedir, $auth, $mime) {
+/* Rack Space Cloud */
+		if ($last = strpos($auth, '@RSC')) {
+			$first = strpos($auth, ':');
+			$user = substr($auth, 0, $first);
+			$key = substr($auth, $first + 1, $last - $first - 1);
+/* perform authorization */
+			$headers = $this->upload('https://auth.api.rackspacecloud.com/v1.0',
+				'', $cachedir,
+				array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key), 'GET');
+/* upload file to storage */
+			$this->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) .
+				'/wo' . str_replace($cachedir, "/", $file),
+				'', $cachedir,
+				array('X-Auth-Token: ' . preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers),
+				'Content-Type: ' . $mime,
+				'ETag: ' . md5(@file_get_contents($file)),
+				'X-Referrer-ACL: 259200'), 'PUT');
+/* common FTP */
+		} else {
+			$this->upload('ftp://' .
+				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $auth)
+				str_replace($cachedir, "/", $file),
+				$file, $cachedir, array(), 
+				preg_replace("!(.*)@.*!", "$1", $auth));
+		}
+	}
+
 }
 ?>
