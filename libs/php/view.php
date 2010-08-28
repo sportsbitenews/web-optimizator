@@ -297,7 +297,6 @@ class compressor_view {
 	*
 	**/
 	function upload ($remote_file, $local_file, $tmpdir, $headers = array(), $method = '', $auth = '') {
-		$headers = '';
 		if (function_exists('curl_init')) {
 			$file_headers = $tmpdir . "wo.headers";
 /* start curl */
@@ -305,6 +304,7 @@ class compressor_view {
 			$fph = @fopen($file_headers, "w");
 			$fp = NULL;
 			if ($ch) {
+				@curl_setopt($ch, CURLOPT_VERBOSE, true);
 				switch ($method) {
 					case 'PUT':
 						if ($local_file) {
@@ -366,7 +366,7 @@ class compressor_view {
 	* CDN upload function (FTP / API)
 	*
 	**/
-	function upload_cdn ($file, $cachedir, $auth, $mime) {
+	function upload_cdn ($file, $cachedir, $auth, $mime, $host) {
 /* Rack Space Cloud */
 		if ($last = strpos($auth, '@RSC')) {
 			$first = strpos($auth, ':');
@@ -379,11 +379,12 @@ class compressor_view {
 /* upload file to storage */
 			$this->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) .
 				'/wo' . str_replace($cachedir, "/", $file),
-				'', $cachedir,
+				$file, $cachedir,
 				array('X-Auth-Token: ' . preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers),
 				'Content-Type: ' . $mime,
 				'ETag: ' . md5(@file_get_contents($file)),
-				'X-Referrer-ACL: 259200'), 'PUT');
+				'X-Referrer-ACL: 259200',
+				'X-Referrer-ACL: ' . $host), 'PUT');
 /* common FTP */
 		} else {
 			$this->upload('ftp://' .

@@ -957,7 +957,11 @@ class web_optimizer {
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));
 		if ($upload && !empty($this->options['page']['parallel_ftp'])) {
-			$this->view->upload_cdn($file, $this->options['document_root'], $this->options['page']['parallel_ftp'], $mime);
+			$this->view->upload_cdn($file,
+				$this->options['document_root'],
+				$this->options['page']['parallel_ftp'],
+				$mime,
+				$this->options['page']['host']);
 		}
 	}
 
@@ -3131,6 +3135,7 @@ class web_optimizer {
 			'punypng' => $options['punypng'],
 			'restore_properties' => $options['css_restore_properties'],
 			'ftp_access' => $this->options['page']['parallel_ftp'],
+			'http_host' => $this->options['page']['host'],
 			'https_host' => $this->options['page']['parallel_https'],
 			'uniform_cache' => $this->options['uniform_cache']
 		));

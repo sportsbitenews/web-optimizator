@@ -3946,20 +3946,24 @@ class admin {
 /* perform authorization */
 			$headers = $this->view->upload('https://auth.api.rackspacecloud.com/v1.0',
 				'', $this->options['html_cachedir'],
-				array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key), 'GET');
-			if (strpos($headers, 'Error: ') === false) {
+				array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key));
+			if (strpos($headers, 'Error: ') === false && strpos($headers, 'HTTP/1.1 401') === false) {
 				$token = preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers);
 /* create wo container */
-				$this->view->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers),
+				$this->view->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) . '/wo',
 					'', $this->options['html_cachedir'],
 					array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'PUT');
 /* remember current CDN URL */
-				$headers = $this->view->upload(preg_replace("@.*X-CDN-Management-Url: https://(.*?)\r?\n.*@is", "$1", $headers),
+				$headers = $this->view->upload(preg_replace("@.*X-CDN-Management-Url: (.*?)\r?\n.*@is", "$1", $headers) . '/wo',
 					'', $this->options['html_cachedir'],
 					array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'HEAD');
-				$this->input['wss_minify_css_host'] =
-				$this->input['wss_minify_javascript_host'] =
-					preg_replace("@.*X-CDN-URI: https?://(.*?)\r?\n.*@is", "$1", $headers);
+				$cdn = preg_replace("@.*X-CDN-URI: https?://(.*?)\r?\n.*@is", "$1", $headers);
+				if (!$this->input['wss_minify_css_host']) {
+					$this->input['wss_minify_css_host'] = $cdn;
+				}
+				if (!$this->input['wss_minify_javascript_host']) {
+					$this->input['wss_minify_javascript_host'] = $cdn;
+				}
 			} else {
 				$this->error[11] = 1;
 			}

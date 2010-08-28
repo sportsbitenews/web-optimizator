@@ -93,6 +93,8 @@ class css_sprites_optimize {
 			$this->ftp_access = $options['ftp_access'];
 /* using HTTPS ?*/
 			$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* ordinar host for HTTP */
+			$this->http_host = $options['http_host'];
 /* special host for HTTPS */
 			$this->https_host = $options['https_host'];
 /* create only data:URI chunks? */
@@ -912,7 +914,11 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 							$this->smushit($this->current_dir . $sprite);
 /* upload file to CDN */
 							if (!empty($this->ftp_access)) {
-								$this->lib->upload_cdn($this->current_dir . $sprite, $this->current_dir, $this->ftp_access, $this->truecolor_in_jpeg ? 'image/jpeg' : 'image/png');
+								$this->lib->upload_cdn($this->current_dir . $sprite,
+									$this->current_dir,
+									$this->ftp_access,
+									$this->truecolor_in_jpeg ? 'image/jpeg' : 'image/png',
+									$this->http_host);
 							}
 						}
 					}

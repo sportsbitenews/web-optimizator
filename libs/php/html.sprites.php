@@ -55,6 +55,7 @@ class html_sprites {
 			'punypng' => $this->options['css']['punypng'],
 			'restore_properties' => 0,
 			'ftp_access' => $this->options['page']['parallel_ftp'],
+			'http_host' => $this->options['page']['host'],
 			'https_host' => $this->options['page']['parallel_https'],
 			'uniform_cache' => $this->options['uniform_cache']
 		));
