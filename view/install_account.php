@@ -80,10 +80,10 @@
 ?> <?php
 			echo date("Y-m-d", time() + $expires*86400);
 ?>, <?php
-		} elseif (empty($expires) || $expires < 0) {
+		} elseif ((empty($expires) || $expires < 0) && !$premium) {
 ?><a class="wssJ" href="javascript:(function(){var s=_.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+_('#wss_name')[0].value+'&amp;email='+_('#wss_email')[0].value;_('head')[0].appendChild(s)}())"><?php
 			echo _WEBO_LOGIN_TRIAL;
-?></a><?php
+?></a> <?php
 		}
 		if ($premium) {
 			switch (round($premium)) {

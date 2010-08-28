@@ -450,7 +450,7 @@ define('_WEBO_parallel_custom2', 'موجودہ CDN (cdn.website.com)');
 define('_WEBO_parallel_custom3', 'کورل CDN (nyud.net.)');
 define('_WEBO_parallel_custom4', 'ویبو CDN (weboin.ru)');
 define('_WEBO_parallel_ftp', 'فائلیں اپ لوڈ کرنے کیلئے ایف ٹی پی کا اختیار');
-define('_WEBO_parallel_ftp_HELP', 'اگر آپ ادائیگی والا CDN استعمال کر رہے ہیں مثلاً (EdgeCast) تو تمام نئے اثاثے اپ لوڈ کرنے کیلئے ایف ٹی پی اختیار کو سیٹ اپ کرنا ضروری ہو سکتا ہے۔ ایف ٹی پی کا اختیار اس فارمیٹ میں دیا جانا چاہئے۔ user:password@host (or user:password@host:port).');
+define('_WEBO_parallel_ftp_HELP', 'اگر آپ ادائیگی والا CDN استعمال کر رہے ہیں مثلاً (EdgeCast) تو تمام نئے اثاثے اپ لوڈ کرنے کیلئے ایف ٹی پی اختیار کو سیٹ اپ کرنا ضروری ہو سکتا ہے۔ ایف ٹی پی کا اختیار اس فارمیٹ میں دیا جانا چاہئے۔ &lt;user&gt;:&lt;password&gt;@&lt;host&gt; (or &lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;). For RackSpaceCloud please use the following format &lt;user&gt;:&lt;key&gt;@RSC');
 define('_WEBO_parallel_ftp_EFFECT', 'موجودہ CDN کے ساتھ ویبو سائٹ اسپیڈ اپ کی کیشے مطابقت');
 define('_WEBO_parallel_https', 'HTTPS کے ذریعے دستیاب میزبان');
 define('_WEBO_parallel_https_HELP', 'اگر آپ کی ویب سائٹ HTTPS استعمال کر رہی ہے، تو آپ کو کم سے کم ایک ڈومین ایسی چاہئے جس کے پاس SSL سرٹیفیکیٹ ہو تاکہ CDN کے ذریعے فائلز کو لوڈ کیا جا سکے۔  یہ ہوسٹ تمام طرح کی فائلز کو بانٹنے کیلئے استعمال ہوگا جو کہ محفوظ HTTPS درخواست بھیجیں گے۔');

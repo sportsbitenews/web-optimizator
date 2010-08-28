@@ -480,7 +480,7 @@ define('_WEBO_parallel_custom2', 'Текущая CDN (cdn.website.ru)');
 define('_WEBO_parallel_custom3', 'Coral CDN (.nyud.net)');
 define('_WEBO_parallel_custom4', 'WEBO CDN (weboin.ru) by NGENIX');
 define('_WEBO_parallel_ftp', 'FTP-доступ для загрузки файлов');
-define('_WEBO_parallel_ftp_HELP', 'В случае использования платных CDN (например, EdgeCast) необходимо указать строку FTP-доступа для загрузки новых файлов вида user:password@host (или user:password@host:port).');
+define('_WEBO_parallel_ftp_HELP', 'В случае использования платных CDN (например, EdgeCast) необходимо указать строку FTP-доступа для загрузки новых файлов вида &lt;user&gt;:&lt;password&gt;@&lt;host&gt; (или &lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;). Для RackSpaceCloud используйте строку &lt;user&gt;:&lt;key&gt;@RSC');
 define('_WEBO_parallel_ftp_EFFECT', 'Совместимость кэша WEBO Site SpeedUp с текущей CDN');
 define('_WEBO_parallel_https', 'Хост, доступный по HTTPS');
 define('_WEBO_parallel_https_HELP', 'Если ваш сайт доступен по протоколу HTTPS, то для корректного использования CDN необходим хост, имеющий SSL-сертификат. Этот хост будет использоваться для распределения всех типов файлов при защищенных (HTTPS) запросах.');
