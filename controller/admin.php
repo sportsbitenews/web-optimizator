@@ -165,9 +165,9 @@ class admin {
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app@", $this->basepath);
 /* check for database driver , WordPress */
-		$this->internal_sql = defined(WP_CACHE) ||
+		$this->internal_sql = strpos("wp-content", $this->basepath) !== false ||
 /* Joomla! 1.5x */
-			(defined(JPATH_SITE) && @is_file(JPATH_SITE . '/libraries/joomla/database/database/WeboMySql.php'));
+			(strpos("components", $this->basepath) !== false && @is_file($this->compress_options['website_root'] . 'libraries/joomla/database/database/WeboMySql.php'));
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it')) ? $this->language : 'en';
