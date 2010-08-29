@@ -2786,11 +2786,9 @@ class web_optimizer {
 		if (!empty($this->options['javascript']['inline_scripts']) && !$cssonly) {
 			$dest = str_replace(
 				array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
-					'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-					'<!--/*--><![CDATA[//><!--','//-->',		'//<!--'),
-				array('',			'',			'',				'',
-					'',				'',			'',				'',
-					'',							'',				''), $dest);
+					'<![CDATA[',	'//><!--',	'//--><!]]>',	'//-->',
+					'<!--/*--><![CDATA[//><!--','//-->',		'//<!--',
+					'// <!--', '// -->'), '', $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
