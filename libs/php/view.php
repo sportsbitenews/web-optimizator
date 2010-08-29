@@ -344,7 +344,7 @@ class compressor_view {
 				}
 /* write headers - to get gzip info */
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
-				@curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+				@curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 /* skip SSL verification */
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

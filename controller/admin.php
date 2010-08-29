@@ -2313,6 +2313,29 @@ class admin {
 		{
 			$deleted_sql = false;
 		}
+		if ($auth = $this->compress_options['parallel']['ftp']) {
+/* Rack Space Cloud */
+			if ($last = strpos($auth, '@RSC')) {
+				$first = strpos($auth, ':');
+				$user = substr($auth, 0, $first);
+				$key = substr($auth, $first + 1, $last - $first - 1);
+/* perform authorization */
+				$headers = $this->view->upload('https://auth.api.rackspacecloud.com/v1.0',
+					'', $this->options['html_cachedir'],
+					array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key));
+				if (strpos($headers, 'Error: ') === false && strpos($headers, 'HTTP/1.1 401') === false) {
+					$token = preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers);
+/* remove wo container */
+					$headers = $this->view->upload(preg_replace("@.*X-CDN-Management-Url: (.*?)\r?\n.*@is", "$1", $headers) . '/wo',
+						'', $this->options['html_cachedir'],
+						array('X-Auth-Token: ' . $token, 'X-CDN-Enabled: False'), 'HEAD');
+/* create container once more */
+					$this->view->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) . '/wo',
+						'', $this->options['html_cachedir'],
+						array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'PUT');
+				}
+			}
+		}
 	}
 
 	/**
