@@ -316,7 +316,7 @@
 		echo htmlspecialchars($restricted);
 ?></textarea></dd><?php
 	}
-?></dl><p class="wssI"><a href="javascript:_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]});void(0)" class="wssJ5"><?php
+?></dl><p class="wssI"><a href="javascript:var a=_('.wssC6')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
 <fieldset id="cache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php

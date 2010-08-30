@@ -429,11 +429,11 @@ if ($submit) {
 	}
 ?><p class="wssI wssU18"><a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;
-?></a> <span class="wss_butt1"><a href="javascript:_('#wss_apply')[0].value=0;_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ5"><?php
+?></a> <span class="wss_butt1"><a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=0;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
-?><span class="wssJ6"></span></a> <a href="javascript:_('#wss_apply')[0].value=1;_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ7"><?php
+?><span class="wssJ6"></span></a> <a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=1;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ7"><?php
 	echo _WEBO_OPTIONS_APPLY;
-?><span class="wssJ6"></span></a></span><span class="wss_butt2"><a href="javascript:_('#wss_apply')[0].value=1;_('.wssC6')[0].onsubmit({target:_('.wssC6')[0]},_.y);void(0)" class="wssJ7"><?php
+?><span class="wssJ6"></span></a></span><span class="wss_butt2"><a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=1;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ7"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a></span><input type="hidden" name="wss_Submit" value="1"/></p></form><?php
 }

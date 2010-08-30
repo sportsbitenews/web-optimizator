@@ -44,7 +44,7 @@
 			echo _WEBO_CDN_SYNC;
 ?><span class="wssJ6"></span></a></p><?php
 		}
-?><p class="wssI"><a href="#wss_cdn" class="wssJ5" onclick="_('.wssI3')[0].style.display='block';_('.wssC4')[0].onsubmit({target:_('.wssC4')[0]})"><?php
+?><p class="wssI"><a href="#wss_cdn" class="wssJ5" onclick="_('.wssI3')[0].style.display='block';var a=_('.wssC4')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}"><?php
 		echo _WEBO_GZIP_FIND;
 ?><span class="wssJ6"></span></a></p><dl class="wssD"><dd class="wssD1"><label for="wss_directory" class="wssE"><?php
 		echo _WEBO_GZIP_DIRECTORY;
