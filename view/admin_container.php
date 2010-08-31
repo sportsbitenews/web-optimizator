@@ -29,7 +29,13 @@ if (!$ajax) {
 	}
 ?><a id="wss_spot"></a><div class="wss_a"><div class="wss_q"><span class="wss_q0"><?php
 	echo _WEBO_GENERAL_LOADING;
-?></span> <span id="wss_q1"></span><span id="wss_q2"></span></div><a id="wss_dashboard" title="WEBO Site SpeedUp" href="#wss_dashboard"></a><span class="wss_c"><?php
+?></span> <span id="wss_q1"></span><span id="wss_q2"></span></div><a id="wss_dashboard" title="WEBO Site SpeedUp" href="<?php
+	if (in_array($page, array('install_enter_password', 'install_set_password'))) {
+?>http://www.webogroup.com/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer<?php
+	} else {
+?>#wss_dashboard<?php
+	}
+?>"></a><span class="wss_c"><?php
 	if (empty($page) || (!empty($page) && $page != 'install_enter_password')) {
 		echo $version;
 	}
@@ -114,7 +120,13 @@ if (!$ajax) {
 	}
 ?><a href="http://www.webogroup.com/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wss_x" title="WEBO Software"></a>&copy; 2009-<?php
 	echo date("Y");
-?> <a href="#wss_about" class="wss_z" title="About WEBO Site SpeedUp">WEBO Site SpeedUp</a><?php
+?> <a href="<?php
+	if (in_array($page, array('install_enter_password', 'install_set_password'))) {
+?>http://www.webogroup.com/home/site-speedup/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer<?php
+	} else {
+?>#wss_about<?php
+	}
+?>" class="wss_z" title="About WEBO Site SpeedUp">WEBO Site SpeedUp</a><?php
 	if (empty($page) || (!empty($page) && $page != 'install_enter_password' && $page != 'install_set_password')) {
 ?> | <a class="wss_w" href="#wss_promo" title="WEBO Site SpeedUp"><span class="wss_w1<?php
 		if (!$premium) {
@@ -159,7 +171,7 @@ if (!$ajax) {
 ?></span></a><?php
 	}
 ?></p><?php
-	if (empty($page) || ($page != 'install_enter_password' && $page != 'install_set_password')) {
+	if (empty($page) || !in_array($page, array('install_enter_password','install_set_password'))) {
 		$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
 ?><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
