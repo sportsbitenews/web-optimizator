@@ -13,9 +13,6 @@ class admin {
 		if (!empty($options['skip_startup'])) {
 			return;
 		}
-		if (function_exists('date_default_timezone_set')) {
-			date_default_timezone_set('Europe/Moscow');
-		}
 		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
@@ -25,6 +22,10 @@ class admin {
 			header('Expires: ' . date("r"));
 			header("Cache-Control: no-store, no-cache, must-revalidate, private");	
 			header("Pragma: no-cache");
+/* Fixes time zone for future usage */
+			if (function_exists('date_default_timezone_set')) {
+				@date_default_timezone_set('Europe/Moscow');
+			}
 		}
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
