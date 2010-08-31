@@ -220,6 +220,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* set correct content-encoding header */
 	header('Content-Type: ' . $extension);
 	$mtime = empty($mtime) ? @filemtime($filename) : $mtime;
+	$mtime = empty($mtime) ? $_SERVER['REQUEST_TIME'] : $mtime;
 	$contents = '';
 	if ($gzip) {
 		$gz = $xgzip = $deflate = $xdeflate = 0;
@@ -287,9 +288,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 			$extension = strpos($encoding, "gzip") !== false ? 'gz' : 'df';
 			$compressed = $cached . '.' . $extension;
 /* check file's existence and its mtime */
-			if (@is_file($compressed) && @filemtime($compressed) === $mtime) {
-				$contents = @file_get_contents($compressed);
-			} else {
+			if (!@is_file($compressed) || @filemtime($compressed) !== $mtime || !($contents = @file_get_contents($compressed))) {
 				$content = @file_get_contents($cached);
 				if (!empty($content)) {
 /* Make compressed contents */
