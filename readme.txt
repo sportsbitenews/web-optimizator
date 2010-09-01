@@ -1,6 +1,6 @@
 WEBO Site SpeedUp
 -----------------------
-WEBO Site SpeedUp is a PHP solution that automatically speeds up your website by
+WEBO Site SpeedUp is a PHP solution that automatically speeds your website up by
 combining and compressing your JavaScript and CSS assets.
 It can also GZIP these assets, and the page itself (via PHP or .htaccess
 options). Also it applies CSS Sprites and data:URI techniques. It supports
@@ -17,13 +17,19 @@ WEBO Site SpeedUp native component+plugin for Joomla! 1.5 and Joomla! 1.0:
 http://extensions.joomla.org/extensions/site-management/site-performance/10152
 
 WEBO Site SpeedUp native module for Drupal 6.x and Drupal 5.x:
-http://www.web-optimizer.us/web-optimizer/download.html
+http://www.webogroup.com/home/download/
 
 WEBO Site SpeedUp native module for Bitrix:
-http://www.web-optimizer.us/web-optimizer/download.html
+http://www.webogroup.com/corporate/download/
 
-WEBO Site SpeedUp native module for CS-Cart:
-http://www.web-optimizer.us/web-optimizer/download.html
+WEBO Site SpeedUp native addon for CS-Cart:
+http://www.webogroup.com/corporate/download/
+
+WEBO Site SpeedUp native addon for Magento:
+http://www.webogroup.com/corporate/download/
+
+WEBO Site SpeedUp native module for NetCat:
+http://www.webogroup.com/corporate/download/
 
 Installation
 -----------------------
@@ -102,7 +108,7 @@ A lot of different persons contributed to this project. Some of them:
    performance tuning, promotion, other stuff)
  * graphite (3rd party modules, server architecture, server caching)
  * fade (design, logo, general usability, product interface)
- * gkondratenko (documentation, integration, interface & usability, make up
+ * gkondratenko (documentation, integration, interface & usability, make-up
    fixes, known issues gathering)
  * bazik (test cases for CSS Sprites, and CSS rules, and JS logic)
  * beshkenadze (initial YUI Compressor envelope)
@@ -119,7 +125,7 @@ License
 WEBO Site SpeedUp core is licensed under Eclipse Public License (LICENSE.txt).
 It's located in this package. For Russian users there is LICENSE.ru.txt or
 LICENSE.ru.utf8.txt
-Some parts of WEBO Site SpeedUp products are open source and licensed under
+Some parts of WEBO Site SpeedUp product are open source and licensed under
 different licenses:
  * JSMin library - GNU GPLv2
  * Packer library - GNU LGPLv2
