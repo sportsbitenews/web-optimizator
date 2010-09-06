@@ -22,6 +22,8 @@
 	echo _WEBO_DASHBOARD_CRITICAL_STEP1_3;
 ?></p></li><li class="wssO8"><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
+?></p></li><li class="wssO8"><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_5;
 ?></p></li></ol><ol class="wssO7 wssK03"><li class="wssO8"><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_STEP2_1;
 ?> <code><?php

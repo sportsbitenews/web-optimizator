@@ -539,7 +539,8 @@ define('_WEBO_DASHBOARD_CRITICAL_DO', 'Пожалуйста, выполните 
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Откройте исходные файлы вашего сайта по FTP или SSH.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Найдите файл <code>config.webo.php</code> в установочной директории WEBO Site SpeedUp');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Откройте этот файл и измените значения констант <code>$compress_options[\'website_root\']</code> и <code>$compress_options[\'document_root\']</code> на правильные (фактическое расположение вашего сайта и DOCUMENT_ROOT). Если вы не представляете, что нужно изменить, проконсультирутесь со своим хостинг-провайдером.');
-define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'Перезагрузите страницу.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'Если установлен suPHP, то проверьте соответствие прав на файлы WEBO Site SpeedUp настройкам этого модуля.');
+define('_WEBO_DASHBOARD_CRITICAL_STEP1_5', 'Перезагрузите страницу.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'Проверьте права и возможные ошибки (например, через лог-файлы) при доступе к файлу');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'Разрешите доступ к этому файлу через веб (по HTTP-протоколу).');
 define('_WEBO_DASHBOARD_CRITICAL_REFER', 'Если ошибка по-прежнему возникает, пожалуйста, обратитесь к');
