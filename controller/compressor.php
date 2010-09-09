@@ -160,9 +160,11 @@ class web_optimizer {
 				if (class_exists('JUtility'))
 				{
 					$token  = JUtility::getToken();
-					$search = '#<input type="hidden" name="[0-9a-f]{32}" value="1" />#';
+					$search = '#<input\s+type="hidden"\s+name="[0-9a-f]{32}"\s+value="1"\s*/>#';
+					$search1 = '#<input\s+type="hidden"\s+value="1"\s+name="[0-9a-f]{32}"\s*/>#';
 					$replacement = '<input type="hidden" name="'.$token.'" value="1" />';
 					$content = preg_replace($search, $replacement, $content);
+					$content = preg_replace($search1, $replacement, $content);
 				}
 /* execute plugin-specific logic */
 				if (is_array($this->options['plugins'])) {
@@ -511,7 +513,7 @@ class web_optimizer {
 		if (empty($this->options['active'])) {
 			return $content;
 		}
-		if (!$content) {
+		if ($content === false) {
 			$this->content = ob_get_clean();
 /* clear all other buffers */
 			while (@ob_end_clean());
