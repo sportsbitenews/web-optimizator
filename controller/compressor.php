@@ -29,9 +29,7 @@ class web_optimizer {
 				$_GET['password']);
 			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' :
 				$_GET['auto_rewrite']);
-			$this->chained_redirect = 
-				$this->username && $this->password ?
-					'optimizing.php' : 'index.php';
+			$this->chained_redirect = 'optimizing.php';
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
 				$_GET['cache_version']);
 /* get major stage number, all stages:
@@ -260,7 +258,7 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$this->write_file($this->options['javascript']['cachedir'] . '/progress.html', $progress);
+		$this->write_file($this->options['javascript']['cachedir'] . 'progress.html', $progress);
 	}
 
 	/**
@@ -625,7 +623,7 @@ class web_optimizer {
 					if ($this->web_optimizer_stage > 85) {
 						if ($this->chained_redirect === 'optimizing.php') {
 							$this->write_progress(97);
-							header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password]=' .
+							header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password=' .
 								$this->password);
 						}
 /* else redirect to the next stage */

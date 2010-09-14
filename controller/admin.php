@@ -1153,8 +1153,8 @@ class admin {
 /* need to make these async requests safe somehow
 		$this->save_option("['active']", 0); */
 		$this->chained_load(str_replace(
-			$this->compress_options['document_root'], "/" ,
-			$this->compress_options['website_root']) . 'index.php');
+			$this->compress_options['document_root'], "/",
+			$this->compress_options['website_root']));
 		$this->save_option("['active']", $this->compress_options['active']);
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
@@ -1173,7 +1173,7 @@ class admin {
 		$this->save_option("['active']", 0); */
 		$this->chained_load(str_replace(
 			$this->compress_options['document_root'], "/" ,
-			$this->compress_options['website_root']) . 'index.php');
+			$this->compress_options['website_root']));
 		$this->save_option("['active']", $this->compress_options['active']);
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
@@ -1188,7 +1188,7 @@ class admin {
 		if (empty($this->compress_options['active'])) {
 			$this->chained_load(str_replace(
 				$this->compress_options['document_root'], "/" ,
-				$this->compress_options['website_root']) . 'index.php');
+				$this->compress_options['website_root']));
 			$this->compress_options['active'] = 1;
 			$this->save_option("['active']", 1);
 			$options = $this->get_options();
@@ -5173,7 +5173,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 					$this->compress_options['html_cachedir']) .
 				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=1',
 				$this->compress_options['html_cachedir'] . 'chained.load', 25);
-			@unlink($this->compress_options['html_cachedir'] . 'progress.html');
+			@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			@unlink($this->compress_options['html_cachedir'] . 'optimizing.php');
 /* or via cached HTML */
