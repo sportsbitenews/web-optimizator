@@ -2551,6 +2551,10 @@ class web_optimizer {
 				'aa' => array(
 					'marker' => 'amazon_ad',
 					'regexp' => "<script[^>]+><!--[^\da-zA-Z]*amazon_ad_tag.*?ads.js\"></script>"
+/* Affiz */
+				), 'af' => array(
+					'marker' => 'affiz.net/tracking',
+					'regexp' => "<script[^>]+>[^\da-zA-Z]*var rdads.*?affiz.net/tracking/ads_display.php.*?</script>"
 /* BlogBang */
 				), 'bb' => array(
 					'marker' => 'blogbang.com/d.php',
