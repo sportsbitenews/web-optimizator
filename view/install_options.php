@@ -262,7 +262,7 @@ if ($submit) {
 							echo !empty($value['price']) &&
 								!empty($value['value']) &&
 								($value['value'] == $i-1 || $value['type'] != 'radio') &&
-								(!is_array($value['price']) || $value['price'][$i-1]) ? ' wssD22' : '';
+								(!is_array($value['price']) || $value['price'][$i-1]) ? ' wssD23' : '';
 ?>"><label for="wss_<?php
 							echo $option . ($value['type'] == 'radio' ? $i : '');
 ?>" class="wssE"><?php
