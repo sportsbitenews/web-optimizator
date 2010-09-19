@@ -550,12 +550,12 @@ define('_WEBO_DASHBOARD_CRITICAL_ISSUES', 'известным проблемам
 
 /* Dashboard status block */
 define('_WEBO_DASHBOARD_STATUS_IS', '');
-define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'работает');
+define('_WEBO_DASHBOARD_STATUS_ACTIVE', 'включен');
 define('_WEBO_DASHBOARD_STATUS_LIVE', 'рабочий&nbsp;режим');
 define('_WEBO_DASHBOARD_STATUS_WORKING', 'Вы можете ');
 define('_WEBO_DASHBOARD_STATUS_WORKING2', 'проверить ваш сайт');
 define('_WEBO_DASHBOARD_STATUS_WORKING3', ' или перевести приложение обратно в режим отладки. Для этого надо нажать &laquo;Отключить&raquo;.');
-define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'не работает');
+define('_WEBO_DASHBOARD_STATUS_NOTACTIVE', 'отключен');
 define('_WEBO_DASHBOARD_STATUS_DEBUG', 'режим&nbsp;отладки');
 define('_WEBO_DASHBOARD_STATUS_TESTING', 'Вы можете отладить работу приложения:');
 define('_WEBO_DASHBOARD_STATUS_TESTING2', 'используя GET-параметр ');
