@@ -48,7 +48,7 @@ class compressor_view {
 		}
 
 		$this->paths['full']['current_directory'] = $this->ensure_trailing_slash($this->unify_dir_separator($this->paths['full']['current_directory']));
-		$this->paths['full']['current_directory'] = $this->unify_dir_separator(str_replace("//", "/", $this->paths['full']['current_directory']));
+		$this->paths['full']['current_directory'] = $this->unify_dir_separator(str_replace("//", "/", realpath($this->paths['full']['current_directory']) . '/'));
 /* Set the current relative path */
 		$this->paths['relative']['current_directory'] = str_replace($this->prevent_trailing_slash($this->paths['full']['document_root']), "", $this->paths['full']['current_directory']);
 /* Set the root relative path */
