@@ -1354,19 +1354,9 @@ class web_optimizer {
 			}
 			return $source;
 		}
-/* Include all libraries. Save ~1M if no compression */
-		if ($this->php == 4) {
-			foreach ($this->libraries as $klass => $library) {
-/* it seems PHP4 receives on 1 parameter for class_exists */
-				if (!class_exists($klass)) {
-					require($options['installdir'] . 'libs/php/' . $library);
-				}
-			}
-		} else {
-			foreach ($this->libraries as $klass => $library) {
-				if (!class_exists($klass, false)) {
-					require($options['installdir'] . 'libs/php/' . $library);
-				}
+		foreach ($this->libraries as $klass => $library) {
+			if (!class_exists($klass, false)) {
+				require($options['installdir'] . 'libs/php/' . $library);
 			}
 		}
 /* If the file didn't exist, continue. Get files' content */
@@ -3255,7 +3245,7 @@ class web_optimizer {
 /* min. supported IE version */
 			$this->min_ie_version = 5;
 /* max. supported IE version */
-			$this->max_ie_version = 10;
+			$this->max_ie_version = 11;
 			if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
 				for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 					if (strpos($this->ua, 'MSIE ' . $version)) {

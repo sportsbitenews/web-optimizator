@@ -10,23 +10,12 @@
 $basepath = realpath(dirname(__FILE__)) . '/';
 $compress_options['php'] = substr(phpversion(), 0, 1);
 
-if ($compress_options['php'] == 4) {
-	if (!class_exists('compressor')) {
-		require_once($basepath . "controller/compressor.php");
-	}
+if (!class_exists('compressor', false)) {
+	require_once($basepath . "controller/compressor.php");
+}
 /* Include this for path getting help */
-	if (!class_exists('compressor_view')) {
-		require_once($basepath . "libs/php/view.php");
-	}
-/* skip __autoload for PPH5+ */
-} else {
-	if (!class_exists('compressor', false)) {
-		require_once($basepath . "controller/compressor.php");
-	}
-/* Include this for path getting help */
-	if (!class_exists('compressor_view', false)) {
-		require_once($basepath . "libs/php/view.php");
-	}
+if (!class_exists('compressor_view', false)) {
+	require_once($basepath . "libs/php/view.php");
 }
 
 /* We need to know the config */
@@ -44,27 +33,14 @@ $libraries = array();
 /* Include this for CSS Sprites generating */
 $libraries['css_sprites'] = 'css.sprites.php';
 $libraries['css_sprites_optimize'] = 'css.sprites.optimize.php';
-
-if ($compress_options['php'] == 4) {
 /* JSMin */
-	$libraries['JSMin'] = 'jsmin4.php';
+$libraries['JSMin'] = 'jsmin5.php';
 /* Dean Edwards Packer */
-	$libraries['JavaScriptPacker'] = 'packer4.php';
+$libraries['JavaScriptPacker'] = 'packer5.php';
 /* CSS Tidy */
-	$libraries['csstidy'] = 'class.csstidy4.php';
+$libraries['csstidy'] = 'class.csstidy.php';
 /* YUI Compressor */
-	$libraries['YuiCompressor'] = 'class.yuicompressor4.php';
-/* if not PHP4 -- PHP5 by default */
-} else {
-/* JSMin */
-	$libraries['JSMin'] = 'jsmin5.php';
-/* Dean Edwards Packer */
-	$libraries['JavaScriptPacker'] = 'packer5.php';
-/* CSS Tidy */
-	$libraries['csstidy'] = 'class.csstidy.php';
-/* YUI Compressor */
-	$libraries['YuiCompressor'] = 'class.yuicompressor.php';
-}
+$libraries['YuiCompressor'] = 'class.yuicompressor.php';
 
 /* Con. the compression controller */
 $web_optimizer = new web_optimizer(array(
