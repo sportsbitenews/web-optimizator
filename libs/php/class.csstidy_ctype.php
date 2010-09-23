@@ -45,4 +45,5 @@ if (!function_exists("ctype_xdigit")){
         return !strlen(trim($string, '1234567890abcdefABCDEF'));
     }
 }
+
 ?>

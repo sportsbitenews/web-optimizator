@@ -147,12 +147,11 @@ class csstidy_print
 		if ($externalcss) {
 			$output .= "\n    <style type=\"text/css\">\n";
 			$cssparsed = file_get_contents('cssparsed.css');
-			$output .= $cssparsed; // Adds an invisible BOM or something, but not in css_optimised.php
+			$output .= $cssparsed; /* Adds an invisible BOM or something, but not in css_optimised.php */
 			$output .= "\n</style>";
 		}
 		else {
 				$output .= "\n".'    <link rel="stylesheet" type="text/css" href="cssparsed.css" />';
-//			}
 		}
 		$output .= "\n</head>\n<body><code id=\"copytext\">";
 		$output .= $this->formatted();
@@ -224,7 +223,7 @@ class csstidy_print
 
                 case SEL_START:
                     if($this->parser->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
-					// remove fake counter from @font-face
+					/* remove fake counter from @font-face */
 					if (substr($token[1], 0, 10) === '@font-face') {
 						$token[1] = '@font-face';
 					}
@@ -236,7 +235,7 @@ class csstidy_print
                     if($this->parser->get_cfg('case_properties') === 2)
 					{
 						$token[1] = strtoupper($token[1]);
-						// remove fake counter cursor property
+						/* remove fake counter cursor property */
 						if (substr($token[1], 0, 6) == 'CURSOR') {
 							$token[1] = 'CURSOR';
 						}
@@ -247,7 +246,7 @@ class csstidy_print
 					elseif($this->parser->get_cfg('case_properties') === 1)
 					{
 						$token[1] = strtolower($token[1]);
-						// remove fake counter cursor property
+						/* remove fake counter cursor property */
 						if (substr($token[1], 0, 6) == 'cursor') {
 							$token[1] = 'cursor';
 						}
@@ -255,7 +254,7 @@ class csstidy_print
 							$token[1] = 'src';
 						}
 					} else {
-						// remove fake counter cursor property
+						/* remove fake counter cursor property */
 						if (preg_match("/cursor|src/i", substr($token[1], 0, 6))) {
 							$token[1] = preg_replace("/(cursor|src)_[0-9]+/i", "$1", $token[1]);
 						}
@@ -296,7 +295,7 @@ class csstidy_print
             $this->output_css = $output;
             $this->_print(true);
         } else {
-			// If using spaces in the template, don't want these to appear in the plain output
+			/* If using spaces in the template, don't want these to appear in the plain output */
             $this->output_css_plain = str_replace('&#160;', '', $output);
         }
     }
@@ -440,3 +439,4 @@ class csstidy_print
         }
     }
 }
+?>

@@ -121,10 +121,10 @@ class csstidy_optimise
 	{
 		$shorthands =& $GLOBALS['csstidy']['shorthands'];
 
-		// optimise shorthand properties
+		/* optimise shorthand properties */
 		if(isset($shorthands[$this->property]))
 		{
-			$temp = csstidy_optimise::shorthand($this->value); // FIXME - move
+			$temp = csstidy_optimise::shorthand($this->value); /* FIXME - move */
 			if($temp != $this->value)
 			{
 				$this->parser->log('Optimised shorthand notation ('.$this->property.'): Changed "'.$this->value.'" to "'.$temp.'"','Information');
@@ -132,7 +132,7 @@ class csstidy_optimise
 			$this->value = $temp;
 		}
 
-		// Remove whitespace at ! important
+		/* Remove whitespace at ! important */
 		if($this->value != $this->compress_important($this->value))
 		{
 			$this->parser->log('Optimised !important','Information');
@@ -182,7 +182,7 @@ class csstidy_optimise
 		$replace_colors =& $GLOBALS['csstidy']['replace_colors'];
 
 		$this->sub_value = trim($this->sub_value);
-		if($this->sub_value == '') // caution : '0'
+		if($this->sub_value == '') /* caution : '0' */
 		{
 			return;
 		}
@@ -194,7 +194,7 @@ class csstidy_optimise
 		}
 		$this->sub_value = csstidy::gvw_important($this->sub_value);
 
-		// Compress font-weight
+		/* Compress font-weight */
 		if($this->property === 'font-weight' && $this->parser->get_cfg('compress_font-weight'))
 		{
 			if($this->sub_value === 'bold')
@@ -318,7 +318,7 @@ class csstidy_optimise
 	{
 		$replace_colors =& $GLOBALS['csstidy']['replace_colors'];
 
-		// rgb(0,0,0) -> #000000 (or #000 in this case later)
+		/* rgb(0,0,0) -> #000000 (or #000 in this case later) */
 		if(strtolower(substr($color,0,4)) === 'rgb(')
 		{
 			$color_tmp = substr($color,4,strlen($color)-5);
@@ -343,13 +343,13 @@ class csstidy_optimise
 			}
 		}
 
-		// Fix bad color names
+		/* Fix bad color names */
 		if(isset($replace_colors[strtolower($color)]))
 		{
 			$color = $replace_colors[strtolower($color)];
 		}
 
-		// #aabbcc -> #abc
+		/* #aabbcc -> #abc */
 		if(strlen($color) == 7)
 		{
 			$color_temp = strtolower($color);
@@ -394,7 +394,7 @@ class csstidy_optimise
 		$unit_values =& $GLOBALS['csstidy']['unit_values'];
 		$color_values =& $GLOBALS['csstidy']['color_values'];
 
-		// for font:1em/1em sans-serif...;
+		/* for font:1em/1em sans-serif...; */
 		if($this->property === 'font')
 		{
 			$temp = explode('/',$subvalue);
@@ -405,14 +405,14 @@ class csstidy_optimise
 		}
 		for ($l = 0; $l < count($temp); $l++)
 		{
-			// if we are not dealing with a number at this point, do not optimise anything
+			/* if we are not dealing with a number at this point, do not optimise anything */
 			$number = $this->AnalyseCssNumber($temp[$l]);
 			if ($number === false)
 			{
 				return $subvalue;
 			}
 
-			// Fix bad colors
+			/* Fix bad colors */
 			if (in_array($this->property, $color_values))
 			{
 				$temp[$l] = '#'.$temp[$l];
@@ -442,7 +442,7 @@ class csstidy_optimise
 	 */
 	function AnalyseCssNumber($string)
 	{
-		// most simple checks first
+		/* most simple checks first */
 		if (strlen($string) == 0 || ctype_alpha($string{0})) {
 			return false;
 		}
@@ -459,12 +459,12 @@ class csstidy_optimise
 			}
 		}
 		
-		// Look for unit and split from value if exists
+		/* Look for unit and split from value if exists */
 		foreach ($units as $unit)
 		{
 			$expectUnitAt = strlen($string) - strlen($unit);
 			if( ! ($unitInString = stristr( $string, $unit )) )
-			{ // mb_strpos() fails with "false"
+			{ /* mb_strpos() fails with "false" */
 				continue;
 			}
 			$actualPosition = strpos($string, $unitInString);
@@ -500,9 +500,9 @@ class csstidy_optimise
 			}
 			$newsel = '';
 
-			// Check if properties also exist in another selector
+			/* Check if properties also exist in another selector */
 			$keys = array();
-			// PHP bug (?) without $css = $array; here
+			/* PHP bug (?) without $css = $array; here */
 			foreach($css as $selector => $vali)
 			{
 				if($selector == $key)
@@ -547,8 +547,8 @@ class csstidy_optimise
 				$simple_selectors = preg_split('/\s*[+>~\s]\s*/', $s);
 				foreach ($simple_selectors as $ss) {
 					if ($ss === '') $ok = false;
-					// could also check $ss for internal structure,
-					// but that probably would be too slow
+					/* could also check $ss for internal structure,
+					   but that probably would be too slow */
 				}
 			}
 			if (!$ok) unset($array[$selector]);
@@ -809,9 +809,9 @@ class csstidy_optimise
 	function merge_bg($input_css)
 	{
 		$background_prop_default =& $GLOBALS['csstidy']['background_prop_default'];
-		// Max number of background images. CSS3 not yet fully implemented
+		/* Max number of background images. CSS3 not yet fully implemented */
 		$number_of_values = @max(count(csstidy_optimise::explode_ws(',',$input_css['background-image'])),count(csstidy_optimise::explode_ws(',',$input_css['background-color'])),1);
-		// Array with background images to check if BG image exists
+		/* Array with background images to check if BG image exists */
 		$bg_img_array = @csstidy_optimise::explode_ws(',',csstidy::gvw_important($input_css['background-image']));
 		$new_bg_value = '';
 		$important = '';
@@ -820,7 +820,7 @@ class csstidy_optimise
 		{
 			foreach($background_prop_default as $bg_property => $default_value)
 			{
-				// Skip if property does not exist
+				/* Skip if property does not exist */
 				if(!isset($input_css[$bg_property]))
 				{
 					continue;
@@ -828,7 +828,7 @@ class csstidy_optimise
 
 				$cur_value = $input_css[$bg_property];
 
-				// Skip some properties if there is no background image
+				/* Skip some properties if there is no background image */
 				if((!isset($bg_img_array[$i]) || $bg_img_array[$i] === 'none')
 					&& ($bg_property === 'background-size' || $bg_property === 'background-position'
 					|| $bg_property === 'background-attachment' || $bg_property === 'background-repeat'))
@@ -836,14 +836,14 @@ class csstidy_optimise
 					continue;
 				}
 
-				// Remove !important
+				/* Remove !important */
 				if(csstidy::is_important($cur_value))
 				{
 					$important = ' !important';
 					$cur_value = csstidy::gvw_important($cur_value);
 				}
 
-				// Do not add default values
+				/* Do not add default values */
 				if($cur_value === $default_value)
 				{
 					continue;
@@ -868,13 +868,13 @@ class csstidy_optimise
 			if($i != $number_of_values-1) $new_bg_value .= ',';
 		}
 
-		// Delete all background-properties
+		/* Delete all background-properties */
 		foreach($background_prop_default as $bg_property => $default_value)
 		{
 			unset($input_css[$bg_property]);
 		}
 
-		// Add new background property
+		/* Add new background property */
 		if($new_bg_value !== '') $input_css['background'] = $new_bg_value.$important;
 
 		return $input_css;
@@ -904,10 +904,10 @@ class csstidy_optimise
 
 		$have['style'] = false; $have['variant'] = false;
 		$have['weight'] = false; $have['size'] = false;
-		// Detects if font-family consists of several words w/o quotes
+		/* Detects if font-family consists of several words w/o quotes */
 		$multiwords = false;
 
-		// Workaround with multiple font-family
+		/* Workaround with multiple font-family */
 		$str_value = csstidy_optimise::explode_ws(',',trim($str_value));
 		
 		$str_value[0] = csstidy_optimise::explode_ws(' ',trim($str_value[0]));
@@ -948,7 +948,7 @@ class csstidy_optimise
 				}
 			}
 		}
-		// add quotes if we have several qords in font-family
+		/* add quotes if we have several qords in font-family */
 		if ($multiwords !== false) {
 			$return['font-family'] = '"' . $return['font-family'] . '"';
 		}
@@ -958,7 +958,7 @@ class csstidy_optimise
 			$i++;
 		}
 		
-		// Fix for 100 and more font-size
+		/* Fix for 100 and more font-size */
 		if ($have['size'] === false && isset($return['font-weight']) &&
 			is_numeric($return['font-weight']{0}))
 		{
@@ -989,10 +989,10 @@ class csstidy_optimise
 		$font_prop_default =& $GLOBALS['csstidy']['font_prop_default'];
 		$new_font_value = '';
 		$important = '';
-		// Skip if not font-family and font-size set
+		/* Skip if not font-family and font-size set */
 		if (isset($input_css['font-family']) && isset($input_css['font-size']))
 		{
-			// fix several words in font-family - add quotes
+			/* fix several words in font-family - add quotes */
 			if (isset($input_css['font-family']))
 			{
 				$families = explode(",", $input_css['font-family']);
@@ -1014,7 +1014,7 @@ class csstidy_optimise
 			foreach($font_prop_default as $font_property => $default_value)
 			{
 
-				// Skip if property does not exist
+				/* Skip if property does not exist */
 				if(!isset($input_css[$font_property]))
 				{
 					continue;
@@ -1022,13 +1022,13 @@ class csstidy_optimise
 				
 				$cur_value = $input_css[$font_property];
 				
-				// Skip if default value is used
+				/* Skip if default value is used */
 				if ($cur_value === $default_value)
 				{
 					continue;
 				}
 
-				// Remove !important
+				/* Remove !important */
 				if(csstidy::is_important($cur_value))
 				{
 					$important = '!important';
@@ -1036,20 +1036,20 @@ class csstidy_optimise
 				}
 
 				$new_font_value .= $cur_value;
-				// Add delimiter
+				/* Add delimiter */
 				$new_font_value .= ($font_property === 'font-size' &&
 					isset($input_css['line-height'])) ? '/' : ' ';
 			}
 
 			$new_font_value = trim($new_font_value);
 
-			// Delete all font-properties
+			/* Delete all font-properties */
 			foreach($font_prop_default as $font_property => $default_value)
 			{
 				unset($input_css[$font_property]);
 			}
 
-			// Add new font property
+			/* Add new font property */
 			if($new_font_value !== '')
 			{
 				$input_css['font'] = $new_font_value . $important;
@@ -1059,3 +1059,5 @@ class csstidy_optimise
 		return $input_css;
 	}
 }
+
+?>
