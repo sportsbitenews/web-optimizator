@@ -43,7 +43,7 @@ class admin {
 		$this->svn = $this->svn_generic . 'trunk-stable/';
 		$this->svn_beta = $this->svn_generic . 'trunk/';
 		$this->version = str_replace("\r\n", "", @file_get_contents($this->basepath . 'version'));
-		$this->version_stable = preg_replace("[^0-9\.]", "", $this->input['wss_version_stable']);
+		$this->version_stable = preg_replace("[^0-9\.]", "", empty($this->input['wss_version_stable']) ? '' : $this->input['wss_version_stable']);
 /* get the latest version */
 		$version_new_file = 'version.new';
 		if (in_array($this->input['wss_page'],
