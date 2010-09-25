@@ -286,342 +286,341 @@ wss_pass='<?php
 wss_c='<?php
 	echo $cache_folder;
 ?>';
-wss_messages=[];
-wss_messages.push("<?php
+wss_messages=["<?php
 	echo _WEBO_DASHBOARD_STATUS0;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS1;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS2;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS2;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS4;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS5;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS6;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS6;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS8;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS8;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS10;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS11;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS12;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS13;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS14;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS15;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS16;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS17;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS18;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS19;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS20;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS21;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS22;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS23;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS24;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS10;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS11;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS12;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS13;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS14;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS15;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS16;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS17;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS18;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS19;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS20;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS21;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS22;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS23;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS24;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS10;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS11;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS12;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS13;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS14;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS15;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS16;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS17;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS18;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS19;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS20;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS21;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS22;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS23;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS24;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS10;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS11;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS12;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS13;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS14;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS15;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS16;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS17;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS18;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS19;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS20;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS21;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS22;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS23;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS24;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS10;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS11;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS12;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS13;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS14;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS15;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS16;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS17;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS18;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS19;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS20;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS21;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS22;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS23;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS24;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS85;
 ?> (<?php
 	echo _WEBO_DASHBOARD_STATUS_ALL;
-?>)");
-wss_messages.push("<?php
+?>)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS85;
-?> (IE6)");
-wss_messages.push("<?php
+?> (IE6)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS85;
-?> (IE7)");
-wss_messages.push("<?php
+?> (IE7)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS85;
-?> (IE8)");
-wss_messages.push("<?php
+?> (IE8)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS85;
-?> (IE7@Vista)");
-wss_messages.push("<?php
+?> (IE7@Vista)",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS90;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS90;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS90;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS90;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS90;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS95;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS95;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS95;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS95;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS95;
-?>");
-wss_messages.push("<?php
+?>",
+"<?php
 	echo _WEBO_DASHBOARD_STATUS100;
-?>");
+?>"];
 wss_install="<?php
 	echo _WEBO_LOGIN_UPGRADE;
 ?> <?php
