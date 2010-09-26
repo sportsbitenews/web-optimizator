@@ -10,6 +10,7 @@ class admin {
 	* Sets the options and defines the gzip headers
 	**/
 	function admin ($options = null) {
+	@chmod('/var/www/components/com_webositespeedup/web-optimizer/controller/compressor.php', octdec('0666'));
 		if (!empty($options['skip_startup'])) {
 			return;
 		}
