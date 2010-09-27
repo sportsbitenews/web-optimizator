@@ -305,7 +305,7 @@ define('_WEBO_html_cache_additional_list', 'Lista dei COOKIE da escludere dalla 
 define('_WEBO_html_cache_additional_list_HELP', 'Puoi anche saltare la cache Server Side per gli utenti che hanno uno dei COOKIE di questa lista. Questo può essere utile per gli utenti autorizzati o se si lavora con una Shopping Cart.');
 define('_WEBO_html_cache_additional_list_EFFECT', 'Compatibilità Cache Server side per l\'attività degli utenti');
 define('_WEBO_html_cache_params', 'GET parameters list to exclude on caching (separated by space)');
-define('_WEBO_html_cache_params_HELP', 'You can define GET parameters which will be striped from hash key creation to cache any website page. This can help if you have some statistical parameters (i.e. advertisement campaings) which don\'t influence your website content). This will help to reduce cache size and increase its efficiency.');
+define('_WEBO_html_cache_params_HELP', 'You can define GET parameters which will be striped from hash key creation to cache any website page. This can help if you have some statistical parameters (i.e. advertisement campaigns) which don\'t influence your website content). This will help to reduce cache size and increase its efficiency.');
 define('_WEBO_html_cache_params_EFFECT', 'Increased caching efficiency');
 define('_WEBO_html_cache_enhanced', 'Extreme mode');
 define('_WEBO_html_cache_enhanced_HELP', 'Con la Extreme mode tutti i documenti HTML saranno serviti bypassando il normale processo CMS. Questo ti permetterà di liberare la cache solo manualmente ma incrementerà significativamente le performance del sito (specialmente nei picchi di traffico).');
