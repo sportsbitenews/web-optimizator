@@ -682,7 +682,7 @@ class webo_cache_files extends webo_cache_engine
  	
  	function __get_path($key)
  	{
- 		$key = $_SERVER['HTTP_HOST'] . '/' . $key;
+ 		$key = strtolower($_SERVER['HTTP_HOST']) . '/' . $key;
  		return preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
  	}
  	
