@@ -3159,12 +3159,12 @@ class web_optimizer {
 /* remove excessive GET params */
 		if (trim($this->options['page']['cache_params'])) {
 			$params = str_replace(" ", "|", $this->options['page']['cache_params']);
-			$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]@", "", $uri);
+			$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]?@", "", $uri);
 		}
 /* replace /, ?, & with - */
 		$uri = str_replace(
-			array('/', '?', '&'),
-			array('+', '+', '+'),
+			array('/?', '/', '?', '&'),
+			array('+', '+', '+', '+'),
 			$uri);
 		return $uri;
 	}
