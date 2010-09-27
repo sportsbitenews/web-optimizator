@@ -622,11 +622,11 @@ class webo_cache_files extends webo_cache_engine
 	 				{
 	 					if (@is_file($file))
 	 					{
-	 						$this->__recurse_rm($file);
+	 						@unlink($file);
  						}
 						elseif (@is_dir($file))
 						{
-							@rmdir($file);
+							$this->__recurse_rm($file);
 						}
 	 				}
  				}
@@ -638,11 +638,11 @@ class webo_cache_files extends webo_cache_engine
  				{
  					if (@is_file($file))
  					{
- 						$this->__recurse_rm($file);
+ 						@unlink($file);
 					}
 					elseif (@is_dir($file))
 					{
-						@rmdir($file);
+						$this->__recurse_rm($file);
 					}
  				}
  			}
@@ -807,7 +807,7 @@ class webo_cache_files extends webo_cache_engine
 				}
 				elseif (is_dir($path . $file))
 				{
-					recurse_rm($path . $file);
+					$this->__recurse_rm($path . $file);
 				}
 				else
 				{
