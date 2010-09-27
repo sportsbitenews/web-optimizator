@@ -153,6 +153,8 @@ $compress_options['html_cache']['ignore_list'] = "";
 $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 ## Cookies to skip HTML caching
 $compress_options['html_cache']['additional_list'] = "";
+## Exclude GET params from hash
+$compress_options['html_cache']['params'] = "";
 ## Enhanced mode for HTML caching
 $compress_options['html_cache']['enhanced'] = "0";
 ## Cache SQL queries results

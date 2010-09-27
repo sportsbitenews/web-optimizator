@@ -431,6 +431,7 @@ class web_optimizer {
 				"flush" => $this->options['html_cache']['flush_only'],
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->options['html_cache']['ignore_list'],
+				"cache_params" => $this->options['html_cache']['params'],
 				"allowed_user_agents" => $this->options['html_cache']['allowed_list'],
 				"exclude_cookies" => $this->options['html_cache']['additional_list'],
 				"parallel" => $this->options['parallel']['enabled'],
@@ -3155,6 +3156,11 @@ class web_optimizer {
 	 **/
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
+/* remove excessive GET params */
+		if (trim($this->options['page']['cache_params'])) {
+			$params = str_replace(" ", "|", $this->options['page']['cache_params']);
+			$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]@", "", $uri);
+		}
 /* replace /, ?, & with - */
 		$uri = str_replace(
 			array('/', '?', '&'),

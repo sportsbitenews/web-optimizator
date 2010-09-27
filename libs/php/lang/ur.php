@@ -295,6 +295,9 @@ define('_WEBO_html_cache_allowed_list_HELP', 'اس اختیار کی مدد سے
 define('_WEBO_html_cache_additional_list', 'کوکیز کی فہرست جنہیں سرور سائیڈ کیشے میں شامل نہیں کرنا ہے (اسپیس سے علیحدہ کریں)۔');
 define('_WEBO_html_cache_additional_list_HELP', 'سرور سائیڈ کیشے کو اس یوزر کیلئے بھی غیر فعال کیا جا سکتا ہے جس کے پاس اس فہرست میں سے کوئی کوکی موجود ہو۔ یہ بااختیار یوزرز کیلئے مفید ہو سکتا ہے یا اس وقت جب آپ شاپنگ کارٹ پر کام کرنے لگے ہوں۔');
 define('_WEBO_html_cache_additional_list_EFFECT', ' صارفین کی سرگرمیوں کے ساتھ سرور سائڈ کیشے مطابقت');
+define('_WEBO_html_cache_params', 'GET parameters list to exclude on caching (separated by space)');
+define('_WEBO_html_cache_params_HELP', 'You can define GET parameters which will be striped from hash key creation to cache any website page. This can help if you have some statistical parameters (i.e. advertisement campaings) which don\'t influence your website content). This will help to reduce cache size and increase its efficiency.');
+define('_WEBO_html_cache_params_EFFECT', 'Increased caching efficiency');
 define('_WEBO_html_cache_enhanced', 'انتہائی موڈ');
 define('_WEBO_html_cache_enhanced_HELP', 'In extreme mode all HTML documents will be served from cache directly, bypassing normal CMS processing. This will significantly increase website performance (especially useful on traffic peaks), but cache can be refreshed only manually. By default extreme mode for server side caching is available only on systems which uses web-servers with .htaccess support (Apache, LiteSpeed). Other web-servers configurations should be manually changed, according to [http://code.google.com/p/web-optimizator/wiki/IntegrationWithWebsite Integration with website] section of documentation.');
 define('_WEBO_html_cache_enhanced_EFFECT', 'سی پی یو بچت 4-40%');

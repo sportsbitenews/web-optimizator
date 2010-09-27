@@ -3392,6 +3392,11 @@ class admin {
 					'type' => 'textarea',
 					'price' => 3
 				),
+				'html_cache_params' => array(
+					'value' => $this->compress_options['html_cache']['params'],
+					'type' => 'textarea',
+					'price' => 2
+				),
 				'html_cache_enhanced' => array(
 					'value' => $this->compress_options['html_cache']['enhanced'],
 					'type' => 'checkbox',
@@ -3679,6 +3684,7 @@ class admin {
 			'wss_html_cache_ignore_list',
 			'wss_html_cache_allowed_list',
 			'wss_html_cache_additional_list',
+			'wss_html_cache_params',
 			'wss_sql_cache_tables_exclude',
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
