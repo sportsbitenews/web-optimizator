@@ -794,7 +794,7 @@ class webo_cache_files extends webo_cache_engine
 	{
 		if (is_dir($path))
 		{
-			if (substr($path, strlen($path) - 1))
+			if (substr($path, strlen($path) - 1) != '/')
 			{
 				$path .= '/';
 			}

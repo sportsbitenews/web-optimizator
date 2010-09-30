@@ -157,12 +157,8 @@ class web_optimizer {
 				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
 				if (class_exists('JUtility'))
 				{
-					$token  = JUtility::getToken();
-					$search = '#<input\s+type="hidden"\s+name="[0-9a-f]{32}"\s+value="1"\s*/>#';
-					$search1 = '#<input\s+type="hidden"\s+value="1"\s+name="[0-9a-f]{32}"\s*/>#';
-					$replacement = '<input type="hidden" name="'.$token.'" value="1" />';
-					$content = preg_replace($search, $replacement, $content);
-					$content = preg_replace($search1, $replacement, $content);
+					$token = JUtility::getToken();
+					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $this->content);
 				}
 /* execute plugin-specific logic */
 				if (is_array($this->options['plugins'])) {
@@ -859,6 +855,11 @@ class web_optimizer {
 				}
 				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}())</script>$1', $this->content);
 			}
+			if (class_exists('JUtility'))
+			{
+				$token = JUtility::getToken();
+				$this->content = str_replace($token, '##WSS_JTOKEN_WSS##', $this->content);
+			}				
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
 				if (empty($options['flush_size'])) {
