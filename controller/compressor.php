@@ -2188,12 +2188,19 @@ class web_optimizer {
 						// try to get gzipped content from file
 						$extension = $gzip || $xgzip ? "gz" : "df";
 						$content = @file_get_contents(__FILE__ . "." . $extension);
+						$gzipped = 0;
 						if (empty($content)) {
 						// Send compressed contents
 							if ($gzip || $xgzip) {
-								$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', FORCE_GZIP);
+								if (function_exists("gzencode")) {
+									$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', FORCE_GZIP);
+									$gzipped = 1;
+								}
 							} else {
-								$contents = gzdeflate($contents, '. $this->options[$type]['gzip_level'] .');
+								if (function_exists("gzdeflate")) {
+									$contents = gzdeflate($contents, '. $this->options[$type]['gzip_level'] .');
+									$gzipped = 1;
+								}
 							}
 							$fp = @fopen(__FILE__ . "." . $extension, "wb");
 							if ($fp) {
@@ -2203,7 +2210,9 @@ class web_optimizer {
 						} else {
 							$contents = $content;
 						}
-						header ("Content-Encoding: " . $encoding);
+						if ($gzipped) {
+							header ("Content-Encoding: " . $encoding);
+						}
 						header ("Content-Length: " . strlen($contents));
 					}
 

@@ -699,7 +699,7 @@ function parse($string) {
                     $this->str_char = $string{$i};
                     $this->from = 'is';
 					/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
-					$this->quoted_string = ($string{$i-1} == '=' );
+					$this->quoted_string = ($string{$i-1} == '=');
                 } elseif($this->invalid_at && $string{$i} === ';') {
                     $this->invalid_at = false;
                     $this->status = 'is';
@@ -743,6 +743,10 @@ function parse($string) {
                     $this->status = 'iv';
                     if(!$this->get_cfg('discard_invalid_properties') || csstidy::property_is_valid($this->property)) {
                         $this->_add_token(PROPERTY, $this->property);
+						/* fix MS expressions */
+						if (in_array(strtolower($this->property), array('-ms-filter', 'filter', 'zoom'))) {
+							$this->quoted_string = true;
+						}
                     }
                 }
                 elseif($string{$i} === '/' && @$string{$i+1} === '*' && $this->property == '')
@@ -933,7 +937,7 @@ function parse($string) {
 							// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
 							// Attribute selectors fixed, added quotes to @chartset, no problems with properties detected. Enabled
 							$this->cur_string = substr($this->cur_string, 1, -1);
-						} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
+						} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) {
 							$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
 						}
 					} else {
