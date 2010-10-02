@@ -3012,7 +3012,8 @@ class admin {
 			'minify' => array(
 				'minify_css_min' => array(
 					'value' => $this->compress_options['minify']['css_min'],
-					'type' => 'checkbox'
+					'type' => 'radio',
+					'count' => 3
 				),
 				'minify_js' => array(
 					'value' => $this->compress_options['minify']['with_jsmin'] ? 1 :

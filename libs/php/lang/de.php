@@ -202,10 +202,13 @@ define('_WEBO_external_scripts_duplicates_HELP', 'All noticed duplicates of comm
 
 define('_WEBO_minify_css_min', 'CSS-Dateien minimieren');
 define('_WEBO_minify_css_min_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined CSS file.');
+define('_WEBO_minify_css_min1', 'CSS nicht minimieren');
+define('_WEBO_minify_css_min2', 'Mit regular expressions minimieren');
+define('_WEBO_minify_css_min3', 'Mit CSS Tidy minimieren');
 define('_WEBO_minify_js', 'JavaScript-Dateien minimieren');
 define('_WEBO_minify_js_HELP', 'All excessive spaces, tabs, line breaks, and comments will be deleted from combined JavaScript file. Library choice affects minify algorithm and compression rate. Maximum compression can be achieved with any of these libraries depending on initial conditions.');
 define('_WEBO_minify_js_HELP_DISABLED', 'There is no support for java execution under PHP on your website, so minify with YUI Compressor is impossible.');
-define('_WEBO_minify_js1', 'Don\'t minify JavaScript');
+define('_WEBO_minify_js1', 'JavaScript nicht minimieren');
 define('_WEBO_minify_js2', 'Mit JSMin minimieren');
 define('_WEBO_minify_js3', 'Mit YUI Compressor mimimieren');
 define('_WEBO_minify_js4', 'Mit Packer minimieren');

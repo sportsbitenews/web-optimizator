@@ -198,8 +198,11 @@ define('_WEBO_external_scripts_include_try_HELP', 'With this option all external
 define('_WEBO_external_scripts_duplicates', 'Remove duplicates');
 define('_WEBO_external_scripts_duplicates_HELP', 'All noticed duplicates of common libraries (jQuery, Prototype, MooTools) will be removed from merging. This reduces final JavaScript file size and its initialization time, but in a few cases can break integrity of cliet side logic.');
 
-define('_WEBO_minify_css_min', 'Minimizar archivos CSS');
+define('_WEBO_minify_css_min', 'Minimiza archivos CSS');
 define('_WEBO_minify_css_min_HELP', 'Todos los espacios, tabs, apartes, y comentarios excesivos ser&aacute;n borrados del archivo combinado CSS.');
+define('_WEBO_minify_css_min1', 'No minimice CSS');
+define('_WEBO_minify_css_min2', 'Minimizar con regular expressions');
+define('_WEBO_minify_css_min3', 'Minimizar con CSS Tidy');
 define('_WEBO_minify_js', 'Minimiza archivos JavaScript');
 define('_WEBO_minify_js_HELP', 'Todos los espacios, tabs, apartes, y comentarios excesivos ser&aacute;n borrados del archivo combinado JavaScript. Elecci&oacute;n de librer&iacute;a afecta minimizar el algoritmo y efectividad de compresi&oacute;n. Compresi&oacute;n m&aacute;xima puede ser conseguida con cualquiera de estas librer&iacute;as dependiendo de las condiciones iniciales.');
 define('_WEBO_minify_js_HELP_DISABLED', 'There is no support for java execution under PHP on your website, so minify with YUI Compressor is impossible.');

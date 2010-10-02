@@ -201,6 +201,9 @@ define('_WEBO_external_scripts_duplicates_HELP', 'Tutti i tipi di librerie conos
 
 define('_WEBO_minify_css_min', 'Minify files CSS');
 define('_WEBO_minify_css_min_HELP', 'Tutti gli spazi eccessivi, tabulazioni, interruzioni di linea, e commenti saranno eliminati dal file CSS fuso.');
+define('_WEBO_minify_css_min1', 'Non minimizzare il CSS');
+define('_WEBO_minify_css_min2', 'Minimizza con regular expressions');
+define('_WEBO_minify_css_min3', 'Minimizza con CSS Tidy');
 define('_WEBO_minify_js', 'Minify files JavaScript');
 define('_WEBO_minify_js_HELP', 'Tutti gli spazi eccessivi, tabulazioni, interruzioni di linea, e commenti saranno eliminati dal file JavaScript fuso. La scelta delle librerie avrà effetto sull\'algoritmo di minificazione e sul tasso di compressione. La compressione massima potrà essere raggiunta con ognuna di queste librerie dipendentemente dalle impostazioni iniziali.');
 define('_WEBO_minify_js_HELP_DISABLED', 'Non c\'è supporto per l\'esecuzione java con il PHP presente sul tuo sito quindi la minimizzazione con la compressione YUI è impossibile.');

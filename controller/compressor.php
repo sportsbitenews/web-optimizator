@@ -351,7 +351,8 @@ class web_optimizer {
 				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
-				"minify_with" => $this->options['minify']['css_min'] ? 'basic' : '',
+				"minify_with" => $this->options['minify']['css_min'] == 2 ?
+					'tidy' : ($this->options['minify']['css_min'] ? 'basic' : ''),
 				"far_future_expires" => $this->options['far_future_expires']['css'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
@@ -1507,7 +1508,11 @@ class web_optimizer {
 					if (!empty($options['data_uris_separate'])) {
 						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']);
 					}
-					$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
+					if (!empty($options['css_min']) && $options['css_min'] == 'tidy') {
+						$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
+					} else {
+						$minified_content_array = $this->convert_data_uri($contents, $options, $resource_file);
+					}
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
 /* write data:URI / mhtml content */
@@ -1586,8 +1591,7 @@ class web_optimizer {
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if ($options['minify_with'] == 'basic' &&
 				!empty($options['minify']) &&
-				empty($options['css_sprites']) &&
-				empty($options['data_uris'])) {
+				empty($options['css_sprites'])) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
@@ -3014,7 +3018,7 @@ class web_optimizer {
 			}
 			for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
-				if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie77')) {
+				if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie7')) {
 /* detect equality */
 					if (strpos($source, 'IE ' . $version . ']>') !== false) {
 						$source = preg_replace("@<!--\[if ((gte|lte) )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$3", $source);
@@ -3152,12 +3156,94 @@ class web_optimizer {
 	}
 
 	/**
-	 * Gets file extension
-	 *
+	* Convert all background image to data:URI / mhtml
 	**/
-	function get_file_extension ($file) {
-		$f = explode('.', $file);
-		return array_pop($f);
+	function convert_data_uri ($content, $options, $css_url) {
+		@chdir($options['cachedir']);
+		$compressed = '';
+		preg_match_all("!([^\{\}]+){[^\}]*(background[^:]*):([^;]+);[^\}]*}!is", $content, $imgs, PREG_SET_ORDER);
+		if (is_array($imgs)) {
+			$replaced = array();
+			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
+			$location = 0;
+			foreach ($imgs as $image) {
+				$base64 = '';
+				if (strpos(strtolower($image[3]), "url")) {
+					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[3])));
+					$image_saved = $css_image;
+					$css_image = $css_image{0} == '/' ? $this->options['website_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
+					$chunks = explode(".", $css_image);
+					$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
+					$chunks = explode("/", $css_image);
+					$filename = array_pop($chunks);
+					if (empty($replaced[$image_saved])) {
+						if (!@is_file($css_image) ||
+							in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) ||
+							strpos($css_image, "://") ||
+							strpos($css_image, "mhtml:") !== false ||
+							strpos($css_image, "data:") !== false) {
+								$css_image = $image_saved;
+						} else {
+							$encoded = base64_encode(@file_get_contents($css_image));
+							if ($mhtml) {
+								if (@filesize($css_image) < $options['data_uris_mhtml_size'] &&
+									!in_array($filename, $options['data_uris_exclude_mhtml']) &&
+									!empty($encoded)) {
+										$compressed .= "\n\n--_\nContent-Location:" .
+											$location .
+											"\nContent-Transfer-Encoding:base64\n\n" .
+											$encoded;
+										$css_image = 'mhtml:' . $css_url . '!' . $location;
+										$location++;
+								} else {
+									$css_image = $image_saved;
+								}
+							} else {
+								if (@filesize($css_image) < $options['data_uris_size'] &&
+									!in_array($filename, $options['data_uris_exclude']) &&
+									!empty($encoded)) {
+										$css_image = '';
+										$base64 = 'data:image/' .
+											$extension .
+											';base64,' .
+											$encoded;
+								} else {
+									$css_image = $image_saved;
+								}
+							}
+						}
+						$replaced[$image_saved] = $css_image;
+						$content = str_replace($image_saved, $css_image, $content);
+					}
+					if (!$mhtml && $base64) {
+						$compressed .= $image[1] .
+							'{' .
+							$image[2] . 
+							':' .
+							str_replace($image_saved, $base64, $image[3]) .
+							'}';
+					}
+					if ($this->options['uniform_cache']) {
+						$sel = 'html ' .
+							$image[1] .
+							'{' .
+							$image[2] .
+							':' .
+							$image[3] .
+							'}';
+						$content .= '* ' . $sel . '*+' . $sel;
+					}
+				} else {
+					$compressed .= $image[1] .
+						'{' .
+						$image[2] . 
+						':' .
+						$image[3] .
+						'}';
+				}
+			}
+		}
+		return array($content, $compressed);
 	}
 
 	/**

@@ -131,7 +131,7 @@ class css_sprites_optimize {
 /* check for cached version */
 				if (!@is_file($cached)) {
 					$this->download_file($css_image, $cached);
-					$css_image = is_file($cached) ? $cached : '';
+					$css_image = @is_file($cached) ? $cached : '';
 				} else {
 					$css_image = $cached;
 				}
@@ -141,9 +141,11 @@ class css_sprites_optimize {
 				}
 			}
 		}
-		$extension = strtolower(preg_replace("/jpg/i", "jpeg", preg_replace("/.*\./", "", $css_image)));
+		$chunks = explode(".", $css_image);
+		$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
 		if ($mode > 0) {
-			$filename = preg_replace("!.*/!", "", $css_image);
+			$chunks = explode("/", $css_image);
+			$filename = array_pop($chunks);
 /* Thx for htc for ali@ */
 			if (!@is_file($css_image) || in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) || strpos($css_image, "://")) {
 				$css_image = $image_saved;
@@ -153,7 +155,7 @@ class css_sprites_optimize {
 		switch ($mode) {
 /* mhtml */
 			case 2:
-/* 50KB deafault restriction for mhtml: -- why? */
+/* 50KB default restriction for mhtml: -- why? */
 				if (@filesize($css_image) < $this->mhtml_size && !in_array($filename, $this->mhtml_ignore_list)) {
 					$this->compressed_mhtml .= "\n\n--_\nContent-Location:$location\nContent-Transfer-Encoding:base64\n\n" . base64_encode(@file_get_contents($css_image));
 					$css_image = 'mhtml:' . $this->css_url . '!' . $location;
