@@ -2206,13 +2206,16 @@ class web_optimizer {
 									$gzipped = 1;
 								}
 							}
-							$fp = @fopen(__FILE__ . "." . $extension, "wb");
-							if ($fp) {
-								@fwrite($fp, $contents);
-								@fclose($fp);
+							if ($gzipped) {
+								$fp = @fopen(__FILE__ . "." . $extension, "wb");
+								if ($fp) {
+									@fwrite($fp, $contents);
+									@fclose($fp);
+								}
 							}
 						} else {
 							$contents = $content;
+							$gzipped = 1;
 						}
 						if ($gzipped) {
 							header ("Content-Encoding: " . $encoding);
