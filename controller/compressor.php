@@ -2854,7 +2854,7 @@ class web_optimizer {
 			}
 /* change all links on the page according to DEBUG mode */
 			if (!empty($_GET['web_optimizer_debug'])) {
-				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]+?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
+				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]*?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
 			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
@@ -3176,7 +3176,7 @@ class web_optimizer {
 				if (strpos(strtolower($image[3]), "url")) {
 					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[3])));
 					$image_saved = $css_image;
-					$css_image = $css_image{0} == '/' ? $this->options['website_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
+					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
 					$chunks = explode(".", $css_image);
 					$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
 					$chunks = explode("/", $css_image);
