@@ -2117,7 +2117,9 @@ class admin {
 			"premium" => $this->premium,
 			"password" => $this->compress_options['password'],
 			"active" => $this->compress_options['active'],
-			"website" => $_SERVER['HTTP_HOST'],
+			"website" => $_SERVER['HTTP_HOST'] .
+				str_replace($this->compress_options['document_root'],
+				"", $this->compress_options['website_root']),
 			"cache_folder" => str_replace($this->compress_options['document_root'],
 				"/", $this->compress_options['javascript_cachedir']),
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],
@@ -3702,6 +3704,7 @@ class admin {
 /* make numeric options save */
 		foreach (array(
 			'wss_combine_css',
+			'wss_minify_css_min',
 			'wss_minify_javascript',
 			'wss_minift_js',
 			'wss_unobtrusive_on',
@@ -3727,7 +3730,8 @@ class admin {
 			'wss_performance_cache_engine',
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_parallel_custom',
-			'wss_unobtrusive_on') as $val) {
+			'wss_unobtrusive_on',
+			'wss_minify_css_min') as $val) {
 				if ($this->input[$val]) {
 					$this->input[$val]--;
 				}
@@ -3755,7 +3759,6 @@ class admin {
 			'wss_performance_cache_version',
 			'wss_performance_uniform_cache',
 			'wss_performance_restore_properties',
-			'wss_minify_css_min',
 			'wss_minify_page',
 			'wss_minify_html_comments',
 			'wss_minify_html_one_string',
