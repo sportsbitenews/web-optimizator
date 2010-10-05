@@ -1508,7 +1508,7 @@ class web_optimizer {
 					if (!empty($options['data_uris_separate'])) {
 						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']);
 					}
-					if (!empty($options['css_min']) && $options['css_min'] == 'tidy') {
+					if (!empty($options['minify_with']) && $options['minify_with'] == 'tidy') {
 						$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					} else {
 						$minified_content_array = $this->convert_data_uri($contents, $options, $resource_file);
