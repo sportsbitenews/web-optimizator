@@ -3169,6 +3169,8 @@ class web_optimizer {
 			$replaced = array();
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
 			$location = 0;
+			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
+			$mhtml_exclude = explode(" ", $options['data_uris_exclude_html']);
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[3]), "url")) {
@@ -3190,7 +3192,7 @@ class web_optimizer {
 							$encoded = base64_encode(@file_get_contents($css_image));
 							if ($mhtml) {
 								if (@filesize($css_image) < $options['data_uris_mhtml_size'] &&
-									!in_array($filename, $options['data_uris_exclude_mhtml']) &&
+									!in_array($filename, $mhtml_exclude) &&
 									!empty($encoded)) {
 										$compressed .= "\n\n--_\nContent-Location:" .
 											$location .
@@ -3203,7 +3205,7 @@ class web_optimizer {
 								}
 							} else {
 								if (@filesize($css_image) < $options['data_uris_size'] &&
-									!in_array($filename, $options['data_uris_exclude']) &&
+									!in_array($filename, $data_uri_exclude) &&
 									!empty($encoded)) {
 										$css_image = '';
 										$base64 = 'data:image/' .
