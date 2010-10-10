@@ -158,7 +158,7 @@ class web_optimizer {
 				if (class_exists('JUtility'))
 				{
 					$token = JUtility::getToken();
-					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $this->content);
+					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
 				}
 /* execute plugin-specific logic */
 				if (is_array($this->options['plugins'])) {
