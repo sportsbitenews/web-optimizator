@@ -897,7 +897,7 @@ class webo_cache_files extends webo_cache_engine
 		$num = 0;
 		foreach ($this->all_files as $key => $value)
 		{
-			if (preg_match($mask, $key))
+			if (preg_match('/' . $mask . '/', $key))
 			{
 				$size += $value;
 				$num++;
