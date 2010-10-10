@@ -552,8 +552,45 @@ class webo_cache_files extends webo_cache_engine
 		{
 			$this->enabled = false;
 		}
+		$this->all_files = false;
 	}
-	
+
+	function __get_files_list()
+	{
+ 		if ($this->all_files === false)
+ 		{
+ 			if (@is_file($this->cache_dir . 'wo.files.php'))
+ 			{
+ 				include($this->cache_dir . 'wo.files.php');
+ 				$this->all_files = $webo_cache_files_list;
+			}
+			else
+			{
+				$this->all_files = array();
+			}
+ 		}
+	}
+
+	function __put_files_list()
+	{
+ 		$str = '<?php';
+ 		foreach ($this->all_files as $k => $v)
+ 		{
+ 			$str .= '$webo_cache_files_list[' . $k . '] = ' . "'$v';\n";
+ 		}
+ 		$str .= '?>';
+		$fp = @fopen($this->cache_dir . 'wo.files.php', "a");
+		if ($fp) {
+/* block file from writing */
+			@flock($fp, LOCK_EX);
+/* erase content and move to the beginning */
+			@ftruncate($fp, 0);
+			@fseek($fp, 0);
+			@fwrite($fp, $str);
+			@fclose($fp);
+		}
+	}
+
  	/* Adds or updates entry. Expects key string and value to cache. */
  	
  	function put_entry($key, $value, $time)
@@ -563,6 +600,9 @@ class webo_cache_files extends webo_cache_engine
  			return;
  		}
  		$path = $this->__get_path($key);
+ 		$this->__get_files_list();
+ 		$this->all_files[$path] = strlen($value);
+ 		$this->__put_files_list();
  		if (!@is_dir(dirname($path)))
  		{
  			$this->__make_path($path);
@@ -646,6 +686,7 @@ class webo_cache_files extends webo_cache_engine
 					}
  				}
  			}
+	 		$this->__put_files_list();
  		}
  	}
 
@@ -792,6 +833,7 @@ class webo_cache_files extends webo_cache_engine
 	
 	function __recurse_rm($path)
 	{
+		$this->__get_files_list();
 		if (is_dir($path))
 		{
 			if (substr($path, strlen($path) - 1) != '/')
@@ -811,6 +853,10 @@ class webo_cache_files extends webo_cache_engine
 				}
 				else
 				{
+					if (isset($this->all_files[$path . $file]))
+					{
+						unset($this->all_files[$path . $file]);
+					}
 					@unlink($path . $file);
 				}
 			}
@@ -826,6 +872,7 @@ class webo_cache_files extends webo_cache_engine
 	/* Gets total size and number of cache files defined by mask */
 	function get_cache_size($mask, $number = false)
 	{
+		$this->__get_files_list();
  		if (!$this->enabled)
  		{
  			if ($number === false)
@@ -837,13 +884,27 @@ class webo_cache_files extends webo_cache_engine
 				return array(0,0);
 			}
  		}
+ 		$mask = str_replace('.', '\\.', $mask);
+ 		$mask = str_replace('*', '.*', $mask);
+		$size = 0;
+		$num = 0;
+		foreach ($this->all_files as $key => $value)
+		{
+			if (preg_match($mask, $key))
+			{
+				$size += $value;
+				$num++;
+			}
+		}
 		if ($number === false)
 		{
-			return $this->__recurse_glob($this->__get_path($mask), 0);
+			return $size;
+			//return $this->__recurse_glob($this->__get_path($mask), 0);
 		}
 		else
 		{
-			return $this->__recurse_glob($this->__get_path($mask), 0, 0);
+			return array($size, $num);
+			//return $this->__recurse_glob($this->__get_path($mask), 0, 0);
 		}
 	}
 
