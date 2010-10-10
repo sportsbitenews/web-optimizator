@@ -260,7 +260,6 @@ class admin {
 						$optimizer->smushit($file);
 						break;
 				}
-				$optimizer->smushit($file);
 /* copy backup back */
 				@copy($file . '.bkp', $backup);
 				@unlink($file . '.bkp');
