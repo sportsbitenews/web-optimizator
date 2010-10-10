@@ -1059,6 +1059,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				$fp = @fopen($file, 'r');
 				$fd = @fopen($tmp_file, 'w');
 				@fwrite ($fd, "\xFF\xD8"); /* Write JPEG header */
+				@fread($fp, 2);
 				for ($sum = 0; !@feof ($fp); ) {
 					$handle = @fread ($fp, 2);
 					$seg = join ('', unpack("H*", $handle));

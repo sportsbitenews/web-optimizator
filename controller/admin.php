@@ -254,7 +254,7 @@ class admin {
 						$optimizer->punypng($file);
 						break;
 					case 1:
-						$optimizer->weboit($file);
+						$optimizer->webolk($file);
 						break;
 					default:
 						$optimizer->smushit($file);

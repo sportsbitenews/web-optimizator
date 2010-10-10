@@ -876,7 +876,7 @@ define('_WEBO_GZIP_NOSUCCESS', 'ناکامی');
 
 /* تصویر اپٹمائزیشن */
 define('_WEBO_IMAGE_INSTALLED', 'اس آلے کے ذریعے آپ اپنی ویب سائٹ پر کسی بھی متعین کردہ ڈائریکٹری میں معیار کے نقصان کے بغیر تصاویر کا سائز کم کر سکتے ہیں. ہر اپٹمائزڈ فائل کیلئے اپٹمائزیشن کے عمل کے دوران ایک <code>.backup</code> ورژن بنا دیا جائے گا۔ GIF فائلز کو PNG سے بدل دیا جائے گا اگر اس سے سائز چھوٹا ہو سکے تو۔');
-define('_WEBO_IMAGE_INSTALLED2', 'تصاویر کی اپٹمائزیشن کیلئے درج ذیل میں سے کوئی سروس استعمال کی جا سکتی ہے۔: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">سروس کی شرائط</a>) یا <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">سروس کی شرائط</a>).');
+define('_WEBO_IMAGE_INSTALLED2', 'تصاویر کی اپٹمائزیشن کیلئے درج ذیل میں سے کوئی سروس استعمال کی جا سکتی ہے۔: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">سروس کی شرائط</a>), یا <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">سروس کی شرائط</a>), یا WEBO Nimblizer.');
 
 /* CDN Sync */
 define('_WEBO_TOOLS_CDN', 'CDN سنکرونائزیشن');

@@ -895,7 +895,7 @@ define('_WEBO_GZIP_NOSUCCESS', 'Failed');
 
 /* Image optimization */
 define('_WEBO_IMAGE_INSTALLED', 'Usando esta herramienta puede reducir el tamaño de imágenes sin perder calidad en cualquier directorio específico en su Sitio Web. Para cada archivo versión <code>.backup</code> optimizado será creado durante el proceso de optimización. Archivos GIF son reemplazados por PNG si los últimos son más pequeños.');
-define('_WEBO_IMAGE_INSTALLED2', 'Uno de los siguientes servicios puede ser utilizado para optimización de imágenes: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">reglas de uso</a>) o <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">reglas de uso</a>).');
+define('_WEBO_IMAGE_INSTALLED2', 'Uno de los siguientes servicios puede ser utilizado para optimización de imágenes: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">reglas de uso</a>), o <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">reglas de uso</a>), o WEBO Nimblizer.');
 
 /* CDN Sync */
 define('_WEBO_TOOLS_CDN', 'CDN synchronization');
