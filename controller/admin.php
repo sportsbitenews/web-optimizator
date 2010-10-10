@@ -2310,19 +2310,11 @@ class admin {
 							$deleted_html = false;
 						}
 					}
-					elseif(@is_dir($this->compress_options['html_cachedir'] . $file))
-					{
-						$this->cache_engine->delete_entries($file . '/*');
-						@rmdir($this->compress_options['html_cachedir'] . $file);
-					}
 				}
 			}
 			$success = true;
 		}
-		else
-		{
-			$this->cache_engine->delete_entries('*');
-		}
+		$this->cache_engine->delete_entries('*');
 		if (!$this->cache_engine->clear_sql_cache())
 		{
 			$deleted_sql = false;

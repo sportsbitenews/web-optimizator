@@ -562,7 +562,14 @@ class webo_cache_files extends webo_cache_engine
  			if (@is_file($this->cache_dir . 'wo.files.php'))
  			{
  				include($this->cache_dir . 'wo.files.php');
- 				$this->all_files = $webo_cache_files_list;
+ 				if (is_array($webo_cache_files_list))
+ 				{
+ 					$this->all_files = $webo_cache_files_list;
+				}
+				else
+				{
+					$this->all_files = array();
+				}
 			}
 			else
 			{
@@ -573,10 +580,10 @@ class webo_cache_files extends webo_cache_engine
 
 	function __put_files_list()
 	{
- 		$str = '<?php';
+ 		$str = "<?php\n";
  		foreach ($this->all_files as $k => $v)
  		{
- 			$str .= '$webo_cache_files_list[' . $k . '] = ' . "'$v';\n";
+ 			$str .= '$webo_cache_files_list[\'' . addcslashes($k, "\0'\\") . '\'] = ' . "'$v';\n";
  		}
  		$str .= '?>';
 		$fp = @fopen($this->cache_dir . 'wo.files.php', "a");
@@ -651,6 +658,7 @@ class webo_cache_files extends webo_cache_engine
  		{
  			return false;
  		}
+ 		$this->__get_files_list();
  		if (!empty($patterns))
  		{
  			if (is_array($patterns))
@@ -833,7 +841,6 @@ class webo_cache_files extends webo_cache_engine
 	
 	function __recurse_rm($path)
 	{
-		$this->__get_files_list();
 		if (is_dir($path))
 		{
 			if (substr($path, strlen($path) - 1) != '/')
