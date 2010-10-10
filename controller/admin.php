@@ -232,6 +232,7 @@ class admin {
 	**/
 	function compress_image () {
 		$file = realpath($this->input['wss_file']);
+		$service = empty($this->input['wss_service']) ? 0 : round($this->input['wss_service']);
 		$mtime = @filemtime($file);
 		$size = @filesize($file);
 		$backup = $file . '.backup';
@@ -248,6 +249,17 @@ class admin {
 					@copy($file, $file . '.bkp');
 				}
 				$optimizer->website_root = $this->view->paths['full']['document_root'];
+				switch ($service) {
+					case 2:
+						$optimizer->punypng($file);
+						break;
+					case 1:
+						$optimizer->weboit($file);
+						break;
+					default:
+						$optimizer->smushit($file);
+						break;
+				}
 				$optimizer->smushit($file);
 /* copy backup back */
 				@copy($file . '.bkp', $backup);
@@ -4090,8 +4102,8 @@ class admin {
 					}
 					$content_enhanced .= "
 	RewriteCond %{REQUEST_METHOD} !=POST
-	RewriteCond \"" . $this->compress_options['html_cachedir'] . "/%{HTTP_HOST}%{REQUEST_URI}%{QUERY_STRING}/index%{ENV:WSSBR}.html%{ENV:WSSENC}\" -f
-	RewriteRule (.*) /%{HTTP_HOST}" . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
+	RewriteCond \"" . $this->compress_options['html_cachedir'] . "%{HTTP_HOST}%{REQUEST_URI}%{QUERY_STRING}/index%{ENV:WSSBR}.html%{ENV:WSSENC}\" -f
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "%{HTTP_HOST}$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
 				} else {
 					$browsers = empty($this->input['wss_performance_uniform_cache']) ?
 						array(
