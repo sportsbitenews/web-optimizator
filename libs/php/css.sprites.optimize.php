@@ -1019,7 +1019,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 		$jpeg = 0;
 		switch (strtolower(preg_replace("/.*\./", "", $file))) {
 			case 'gif':
-				$im = @imagecreatefromgif($file);
+				if (!$this->is_animated_gif($file)) {
+					$im = @imagecreatefromgif($file);
+				}
 				break;
 			case 'png':
 				$im = @imagecreatefrompng($file);
@@ -1043,7 +1045,9 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				$jpeg = 1;
 			}
 			if (empty($im)) {
-				$im = @imagecreatefromgif($file);
+				if (!$this->is_animated_gif($file)) {
+					$im = @imagecreatefromgif($file);
+				}
 			}
 			if (empty($im)) {
 				$im = @imagecreatefromwbmp($file);
