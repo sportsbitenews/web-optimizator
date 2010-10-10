@@ -4103,7 +4103,7 @@ class admin {
 					$content_enhanced .= "
 	RewriteCond %{REQUEST_METHOD} !=POST
 	RewriteCond \"" . $this->compress_options['html_cachedir'] . "%{HTTP_HOST}%{REQUEST_URI}%{QUERY_STRING}/index%{ENV:WSSBR}.html%{ENV:WSSENC}\" -f
-	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "", $this->compress_options['html_cachedir']) . "%{HTTP_HOST}$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
+	RewriteRule (.*) " . str_replace($this->compress_options['document_root'], "/", $this->compress_options['html_cachedir']) . "%{HTTP_HOST}$1/index%{ENV:WSSBR}.html%{ENV:WSSENC} [L]";
 				} else {
 					$browsers = empty($this->input['wss_performance_uniform_cache']) ?
 						array(

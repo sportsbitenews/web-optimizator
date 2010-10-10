@@ -886,29 +886,25 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 /* output final sprite */
 						if ($this->truecolor_in_jpeg) {
 							$sprite = preg_replace("/png$/", "jpg", $sprite);
-							@imagejpeg($sprite_raw, $sprite, 80);
-/* need to add PHP5-branch to make this working
-								try {
-									@imagejpeg($sprite_raw, $sprite, 80);
-								} catch (Exception $e) {
-									$failed = 1;
-								} */
+							try {
+								@imagejpeg($sprite_raw, $sprite, 80);
+							} catch (Exception $e) {
+								$failed = 1;
+							}
 						} else {
-							@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
-/* need to add PHP5-branch to make this working
+							try {
+								@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+							} catch (Exception $e) {
 								try {
-									@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+									@imagepng($sprite_raw, $sprite, 9);
 								} catch (Exception $e) {
 									try {
-										@imagepng($sprite_raw, $sprite, 9);
+										@imagepng($sprite_raw, $sprite);
 									} catch (Exception $e) {
-										try {
-											@imagepng($sprite_raw, $sprite);
-										} catch (Exception $e) {
-											$failed = 1;
-										}
+										$failed = 1;
 									}
-								} */
+								}
+							}
 						}
 						@imagedestroy($sprite_raw);
 /* additional optimization via smush.it */
@@ -1009,6 +1005,115 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				curl_close($ch);
 				fclose($fp);
 			}
+		}
+	}
+	function SegReg($h, $str, $s, $e) {
+		if ($h >= $s && $h <= $e)
+		return $str.(ord($h) - ord($s));
+		return false;
+	}
+/* image optimization via WEBO + bolk algorithm */
+	function webolk ($file) {
+		$tmp_file = $file . '.tmp';
+		$im = null;
+		$jpeg = 0;
+		switch (strtolower(preg_replace("/.*\./", "", $file))) {
+			case 'gif':
+				$im = @imagecreatefromgif($file);
+				break;
+			case 'png':
+				$im = @imagecreatefrompng($file);
+				break;
+			case 'jpg':
+			case 'jpeg':
+				$im = @imagecreatefromjpeg($file);
+				$jpeg = 1;
+				break;
+			case 'bmp':
+				$im = @imagecreatefromwbmp($file);
+				break;
+			default:
+				$im = 1;
+				break;
+		}
+		if (empty($im)) {
+			$im = @imagecreatefrompng($file);
+			if (empty($im)) {
+				$im = @imagecreatefromjpeg($file);
+				$jpeg = 1;
+			}
+			if (empty($im)) {
+				$im = @imagecreatefromgif($file);
+			}
+			if (empty($im)) {
+				$im = @imagecreatefromwbmp($file);
+			}
+			if (empty($im)) {
+				$im = @imagecreatefromxbm($file);
+			}
+		}
+		if (!empty($im)) {
+/* PCR from bolk, more info as bolknote.ru */
+			if ($jpeg) {
+				@imagedestroy($im);
+				$fp = @fopen($file, 'r');
+				$fd = @fopen($tmp_file, 'w');
+				@fwrite ($fd, "\xFF\xD8"); /* Write JPEG header */
+				for ($sum = 0; !@feof ($fp); ) {
+					$handle = @fread ($fp, 2);
+					$seg = join ('', unpack("H*", $handle));
+					$h = $handle[1];
+					if ($h == "\x01" || $h >= "\xD0" && $h <= "\xD7") {
+						continue;
+					}
+					if ($h == "\xDA") {
+						break;
+					}
+					$t = array ("\xC4" => "DHT", "\xC8" => 'JPG', "\xCC" => 'DAC', "\xD8" => 'SOI', "\xD9" => 'EOI', "\xDA" => 'SOS', "\xDB" => 'DQT', "\xDC" => 'DNL', "\xDD" => 'DRI', "\xFE" => 'COM');
+					if (isset($type[$h])) {
+						$type = $t[$h];
+					} elseif (($v = $this->SegReg($h, 'SOF', "\xC0", "\xCA")) !== false) {
+						$type = $v;
+					} elseif (($v = $this->SegReg($h, 'RST', "\xD0", "\xD7")) !== false) {
+						$type = $v;
+					} elseif (($v = $this->SegReg($h, 'APP', "\xE0", "\xEF")) !== false) {
+						$type = $v;
+					} else {
+						$type = 'UNKNOWN';
+					}
+					$len = join('', unpack ('n', $str = @fread ($fp, 2)));
+					if ($type == 'UNKNOWN' || $h >= "\xE0" && $h <= "\xEF" || $h == "\xFE") {
+						@fseek ($fp, $len - 2, SEEK_CUR);
+						$sum += $len + 2;
+					} else {
+						@fwrite ($fd, $handle);
+						@fwrite ($fd, $str.fread ($fp, $len - 2));
+					}
+				}
+				if (!feof($fp)) {
+					@fwrite ($fd, "\xFF\xDA"); /* Write SOS signature */
+					while (!feof($fp)) { /* Copy content */
+						@fwrite ($fd, fread ($fp, 4096));
+					}
+				}
+				@fclose ($fp);
+				@fclose ($fd);
+			} else {
+				try {
+					@imagepng($im, $tmp_file, 9, PNG_ALL_FILTERS);
+				} catch (Exception $e) {
+					try {
+						@imagepng($im, $tmp_file, 9);
+					} catch (Exception $e) {
+						@imagepng($im, $tmp_file);
+					}
+				}
+			}
+			if (@filesize($file) > @filesize($tmp_file)) {
+				@copy($file . '.backup', $file);
+				@copy($tmp_file, $file);
+			}
+			@unlink($tmp_file);
 		}
 	}
 /* image optimization via punypng.com */
