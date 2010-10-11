@@ -42,6 +42,7 @@ libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
 libs/php/class.plugin.php
 libs/php/class.yuicompressor.php
+libs/php/config.unobtrusive.php
 libs/php/css.sprites.optimize.php
 libs/php/css.sprites.php
 libs/php/css.template.tpl
