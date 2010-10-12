@@ -1033,13 +1033,16 @@ class web_optimizer {
 										$end = strpos(substr($image[0], $pos + 7), "'");
 										$new_image = substr($image[0], 0, $pos + 7 + $end) .
 											' ' . $class . substr($image[0], $end);
-									} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
+									} else {
 										$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
 											$class . "$4$5$6", $image[0]);
 									}
-							} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
+							} elseif (preg_match("@\sclass\s*=\s*['\"]@is", $image[0])) {
 								$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
 									$class . "$4$5$6", $image[0]);
+							} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
+								$new_image = preg_replace("!(.*\sclass\s*=\s*)([^\s]+)\s!is", "$1\"$2 " .
+									$class . "\" ", $image[0]);
 							} else {
 								$new_image = substr($image[0], 0, 4) . ' class="' .
 									$class . '"' . substr($image[0], 4);
