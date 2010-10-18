@@ -1139,6 +1139,7 @@ class webo_cache_files extends webo_cache_engine
  	{
  		if(function_exists('apc_add'))
  		{
+ 			ini_set('apc.slam_defense','Off');
 			$this->enabled = true;
 		}
 		else
