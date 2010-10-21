@@ -59,7 +59,11 @@ class YuiCompressor {
 	}
 
 	function check() {
-		$locate = @shell_exec('whereis java');
+		if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false) {
+			try {
+				$locate = shell_exec('whereis java');
+			} catch (Expression $e) {}
+		}
 		if (isset($locate)) {
 			return true;
 		} else {

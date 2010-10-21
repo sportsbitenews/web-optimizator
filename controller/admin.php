@@ -1651,14 +1651,10 @@ class admin {
 /* check for YUI */
 		$YUI_available = 0;
 		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS')) &&
-			(is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php'))) {
-			if (substr(phpversion(), 0, 1) == 4) {
-				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
-			} else {
+			is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
 				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
-			}
-			$YUI = new YuiCompressor($javascript_cachedir, $this->basepath);
-			$YUI_checked = $YUI->check();
+				$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
+				$YUI_checked = $YUI->check();
 		}
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
