@@ -42,6 +42,12 @@
 	}
 ?>" id="wss_error4"><?php
 	echo _WEBO_LOGIN_LICENSEAGREEMENT . _WEBO_LOGIN_LICENSEAGREEMENT2;
+?></li>><li class="wssL1<?php
+	if (empty($error[10])) {
+?> wssA0<?php
+	}
+?>" id="wss_error10"><?php
+	echo _WEBO_SPLASH3_HTACCESS_CHMOD3 . ' ' . _WEBO_SPLASH3_HTACCESS_CHMOD4;
 ?></li></ul></div></div><h2 class="wssB"><?php
 	echo _WEBO_NEW_ENTER;
 ?></h2><form action="index.php" method="post" class="wssC wssC1"><dl class="wssD"><dt class="wssD1"><label for="wss_username" class="wssE"><?php 
