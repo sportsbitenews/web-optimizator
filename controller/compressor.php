@@ -573,7 +573,8 @@ class web_optimizer {
 				strpos($spot, '<rss') !== false ||
 				strpos($spot, '<feed') !== false ||
 				strpos($spot, '<urlset') !== false ||
-				strpos($spot, '<smf') !== false) {
+				strpos($spot, '<smf') !== false ||
+				strpos($spot, '{') === 0) {
 					$skip = 1;
 			}
 		}
