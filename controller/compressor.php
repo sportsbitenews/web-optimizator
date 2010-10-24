@@ -816,9 +816,9 @@ class web_optimizer {
 /* Add script to check gzip possibility */
 		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
-			if ($options['html_tidy'] && ($bodypos = strpos($this->content, "</body>"))) {
+			if ($options['html_tidy'] && ($bodypos = strpos($this->content, '</body>'))) {
 				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
-			} elseif ($options['html_tidy'] && ($bodypos = strpos($this->content, "</BODY>"))) {
+			} elseif ($options['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {
 				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
 			} else {
 				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
@@ -1060,7 +1060,7 @@ class web_optimizer {
 						!empty($this->options['page']['parallel_hosts']) &&
 						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
 /* skip images on different hosts */
-						if (preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src) || strpos('//', $old_src) === false) {
+						if (preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src) || strpos($old_src, '//') === false) {
 /* using secure host */
 							if ($this->https && !empty($this->options['page']['parallel_https'])) {
 								$new_host = $this->options['page']['parallel_https'];
@@ -1157,17 +1157,17 @@ class web_optimizer {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
 			$gzip_no_ie = !in_array($this->ua_mod, array('.ie6', '.ie7')) || empty($this->options['page']['gzip_noie']);
 			$ae = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
-			if (strpos($ae, "x-gzip") !== false && $gzip_no_ie) {
-				$this->encoding = "x-gzip";
+			if (strpos($ae, 'x-gzip') !== false && $gzip_no_ie) {
+				$this->encoding = 'x-gzip';
 				$this->encoding_ext = '.gz';
-			} elseif ((strpos($ae, "gzip") !== false || !empty($_COOKIE['_wo_gzip'])) && $gzip_no_ie) {
-				$this->encoding = "gzip";
+			} elseif ((strpos($ae, 'gzip') !== false || !empty($_COOKIE['_wo_gzip'])) && $gzip_no_ie) {
+				$this->encoding = 'gzip';
 				$this->encoding_ext = '.gz';
-			} elseif (strpos($ae, "x-deflate") !== false) {
-				$this->encoding = "x-deflate";
+			} elseif (strpos($ae, 'x-deflate') !== false) {
+				$this->encoding = 'x-deflate';
 				$this->encoding_ext = '.df';
-			} elseif (strpos($ae, "deflate") !== false) {
-				$this->encoding = "deflate";
+			} elseif (strpos($ae, 'deflate') !== false) {
+				$this->encoding = 'deflate';
 				$this->encoding_ext = '.df';
 			}
 		}
