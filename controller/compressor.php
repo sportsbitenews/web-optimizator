@@ -1174,6 +1174,9 @@ class web_optimizer {
 				$this->encoding = 'deflate';
 				$this->encoding_ext = '.df';
 			}
+		} elseif (empty($_SERVER['HTTP_ACCEPT_ENCODING']) && !empty($_COOKIE['_wo_gzip'])) {
+			$this->encoding = 'gzip';
+			$this->encoding_ext = '.gz';
 		}
 	}
 	
