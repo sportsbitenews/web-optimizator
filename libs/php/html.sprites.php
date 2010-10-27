@@ -74,6 +74,7 @@ class html_sprites {
 	function process ($content) {
 		$str = '';
 		$equal = 1;
+		$exclude_list = explode(" ", $this->options['css']['css_sprites_exclude']);
 /* calculate styles */
 		foreach ($this->images as $url => $image) {
 			$width = $image[0];
@@ -86,8 +87,8 @@ class html_sprites {
 			if ($width <= $this->options['page']['dimensions_limited'] &&
 				$height <= $this->options['page']['dimensions_limited'] &&
 				$width && $height && !empty($class) && !empty($active) &&
-				((empty($this->options['css']['css_sprites_ignore']) && !in_array($name, $this->options['css']['css_sprites_exclude'])) ||
-				(!empty($this->options['css']['css_sprites_ignore']) && in_array($name, $this->options['css']['css_sprites_exclude'])))) {
+				((empty($this->options['css']['css_sprites_ignore']) && !in_array($name, $exclude_list)) ||
+				(!empty($this->options['css']['css_sprites_ignore']) && in_array($name, $exclude_list)))) {
 					$this->css_images[$url] = array($filename,
 						$width, $height, 0, 0, 0, 0, 42, '.' . $class);
 					$this->css[42]['.' . $class] = array(
