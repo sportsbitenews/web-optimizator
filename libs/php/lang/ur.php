@@ -414,7 +414,12 @@ define('_WEBO_css_sprites_no_ie6_HELP_DISABLED', 'آپ کی ویب سائٹ پر
 define('_WEBO_css_sprites_dimensions_limited', 'تصاویر کی زیادہ سے زیادہ چوڑائی اور اونچائی (پکسل میں)۔');
 define('_WEBO_css_sprites_dimensions_limited_HELP', 'دئے گئے نمبرز سے زیادہ وسیع یا چوڑی تصاویر کو سی ایس ایس sprites میں شامل نہیں کیا جائے گا۔ بغیر قیمت یا زیرو قیمت کا مطلب ہوگا کوئی پابندی نہیں۔');
 define('_WEBO_css_sprites_dimensions_limited_HELP_DISABLED', 'آپ کی ویب سائٹ پر GD لائبریری کی مکمل سپورٹ موجود نہیں ہے۔ لہٰذا سی ایس ایس sprites کی تخلیق ناممکن ہے۔');
-define('_WEBO_css_sprites_ignore_list', 'سی ایس ایس sprites سے ان فائلوں کو علیحدہ رکھیں (اسپیس سے علیحدہ کریں)۔');
+define('_WEBO_css_sprites_ignore', 'Exclude / include files for CSS Sprites');
+define('_WEBO_css_sprites_ignore_HELP', 'All images listed below either won\'t included into CSS Sprites, or there will be included only these images.');
+define('_WEBO_css_sprites_ignore_HELP_DISABLED', 'آپ کی ویب سائٹ پر GD لائبریری کی مکمل سپورٹ موجود نہیں ہے۔ لہٰذا سی ایس ایس sprites کی تخلیق ناممکن ہے۔');
+define('_WEBO_css_sprites_ignore1', 'Exclude the following files from CSS Sprites');
+define('_WEBO_css_sprites_ignore2', 'Include to CSS Sprites only the following files');
+define('_WEBO_css_sprites_ignore_list', 'List of files (separated by space)');
 define('_WEBO_css_sprites_ignore_list_HELP', 'اس اختیار میں دی گئی تصاویر سی ایس ایس sprites میں نہیں بدلی جائیں گی۔ ازراہ کرم صرف تصاویر کے نام دیجئے، مکمل پاتھ دینے کی ضرورت نہیں۔');
 define('_WEBO_css_sprites_ignore_list_HELP_DISABLED', 'آپ کی ویب سائٹ پر GD لائبریری کی مکمل سپورٹ موجود نہیں ہے۔ لہٰذا سی ایس ایس sprites کی تخلیق ناممکن ہے۔');
 define('_WEBO_css_sprites_html_sprites', 'مرکب ایچ ٹی ایم ایل تصاویر');

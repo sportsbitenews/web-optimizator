@@ -205,6 +205,8 @@ $compress_options['css_sprites']['extra_space'] = "0";
 $compress_options['css_sprites']['no_ie6'] = "0";
 ## Restrict large Sprites creation on GDlib failure, in pixels
 $compress_options['css_sprites']['dimensions_limited'] = "900";
+## CSS Sprites ignore or allow list, 0 - ignore, 1 - allow
+$compress_options['css_sprites']['ignore'] = "0";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
 $compress_options['css_sprites']['ignore_list'] = "corners.gif";
 ## Combine small HTML images to sprites?
@@ -259,6 +261,8 @@ $compress_options['plugins'] = "";
 $compress_options['awards'] = "00000";
 ## SaaS license daily payments, used only in UI
 $compress_options['fee'] = "14";
+## Current points, used only in UI
+$compress_options['points'] = "";
 ## Web Optimizer license, empty for free edition
 $compress_options['license'] = "";
 #########################################

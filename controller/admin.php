@@ -1618,6 +1618,11 @@ class admin {
 		foreach ($errors as $key => $value) {
 			$delta += $value;
 		}
+/* overwrite delta */
+		if (!empty($this->compress_options['points'])) {
+			$delta = 100 - $points;
+			$delta = $delta < 0 ? 0 : ($delta > 100 ? 100 : $delta);
+		}
 /* set variables */
 		$page_variables = array(
 			'errors' => $errors,
@@ -3341,6 +3346,11 @@ class admin {
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']),
 					'price' => 2
 				),
+				'css_sprites_ignore' => array(
+					'value' => $this->compress_options['css_sprites']['ignore'],
+					'type' => 'radio',
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
+				),
 				'css_sprites_ignore_list' => array(
 					'value' => $this->compress_options['css_sprites']['ignore_list'],
 					'type' => 'textarea',
@@ -3719,6 +3729,7 @@ class admin {
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
 			'wss_css_sprites_truecolor_in_jpeg',
+			'wss_css_sprites_ignore',
 			'wss_css_sprites_html_limit',
 			'wss_parallel_custom',
 			'wss_fee') as $val) {
@@ -3728,6 +3739,7 @@ class admin {
 		foreach (array(
 			'wss_performance_cache_engine',
 			'wss_css_sprites_truecolor_in_jpeg',
+			'wss_css_sprites_ignore',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on',
 			'wss_minify_css_min') as $val) {

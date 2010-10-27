@@ -257,10 +257,11 @@ class css_sprites {
 					$img_has['pos_x_comp'] = strpos($background_position[0], '%') && $img_has['abs_width'];
 /* Can we calculate background-posititon-y for this image? */
 					$img_has['pos_y_comp'] = strpos($background_position[1], '%') && $img_has['abs_height'];
+					$imgname = preg_replace("/.*\//", "", substr($back, 4, strlen($back) - 5));
 /* exclude files from ignore list */
 					if (!empty($this->optimizer->ignore_list) &&
-						in_array(preg_replace("/.*\//", "", substr($back, 4,
-							strlen($back) - 5)), $this->optimizer->ignore_list)) {
+						(in_array($imgname, $this->optimizer->ignore_list) && empty($this->optimizer->ignore) ||
+						!in_array($imgname, $this->optimizer->ignore_list) && !empty($this->optimizer->ignore))) {
 								unset($this->optimizer->media[$import][$key]);
 					}
 

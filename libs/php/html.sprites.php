@@ -33,6 +33,7 @@ class html_sprites {
 			'truecolor_in_jpeg' => $this->options['css']['truecolor_in_jpeg'],
 			'aggressive' => 0,
 			'no_ie6' => 0,
+			'ignore' => $this->options['css']['css_sprites_ignore'],
 			'ignore_list' => $this->options['css']['css_sprites_exclude'],
 			'partly' => 0,
 			'extra_space' => $this->options['css']['css_sprites_extra_space'],

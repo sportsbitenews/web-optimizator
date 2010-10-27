@@ -375,6 +375,7 @@ class web_optimizer {
 				"css_sprites_expires_rewrite" => (!$this->options['htaccess']['mod_rewrite'] ||
 					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['images'],
+				"css_sprites_ignore" => $this->options['css_sprites']['ignore'],
 				"css_sprites_exclude" => $this->options['css_sprites']['ignore_list'],
 				"truecolor_in_jpeg" => $this->options['css_sprites']['truecolor_in_jpeg'],
 				"aggressive" => $this->options['css_sprites']['aggressive'],
@@ -751,6 +752,7 @@ class web_optimizer {
 					'mhtml_size' => $options['data_uris_mhtml_size'],
 					'mhtml_exclude' => $options['data_uris_exclude_mhtml'],
 					'css_sprites' => $options['css_sprites'],
+					'css_sprites_ignore' => $options['css_sprites_ignore'],
 					'css_sprites_exclude' => $options['css_sprites_exclude'],
 					'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 					'aggressive' => $options['aggressive'],
@@ -1020,7 +1022,8 @@ class web_optimizer {
 					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
-						!in_array($img, $ignore_sprites) &&
+						((!in_array($img, $ignore_sprites) && !empty($this->options['css']['ignore'])) ||
+						(in_array($img, $ignore_sprites) && !empty($this->options['css']['ignore']))) &&
 						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2]) &&
 						(empty($this->ua_mod) || $this->ua_mod != '.ie6' || empty($this->options['css']['no_ie6']))) {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);
@@ -2933,6 +2936,7 @@ class web_optimizer {
 			'truecolor_in_jpeg' => $options['truecolor_in_jpeg'],
 			'aggressive' => $options['aggressive'],
 			'no_ie6' => $options['no_ie6'],
+			'ignore' => $options['css_sprites_ignore'],
 			'ignore_list' => $options['css_sprites_exclude'],
 			'partly' => $options['css_sprites_partly'],
 			'extra_space' => $options['css_sprites_extra_space'],
