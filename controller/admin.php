@@ -1620,7 +1620,7 @@ class admin {
 		}
 /* overwrite delta */
 		if (!empty($this->compress_options['points'])) {
-			$delta = 100 - $points;
+			$delta = 100 - round($this->compress_options['points']);
 			$delta = $delta < 0 ? 0 : ($delta > 100 ? 100 : $delta);
 		}
 /* set variables */
@@ -3349,6 +3349,7 @@ class admin {
 				'css_sprites_ignore' => array(
 					'value' => $this->compress_options['css_sprites']['ignore'],
 					'type' => 'radio',
+					'count' => 2,
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_ignore_list' => array(

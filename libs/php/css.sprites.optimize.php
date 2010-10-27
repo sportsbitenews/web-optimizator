@@ -934,24 +934,25 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								($this->no_rewrite && $this->cache_images && $this->cache_images_htaccess ? '?' . time() : '')) .')';
 						}
 					}
+					if (count($this->css_images[$sprite]['images'])) {
 /* finish deal with CSS */
-					foreach ($this->css_images[$sprite]['images'] as $image) {
-						$import = empty($image[7]) ? '' : $image[7];
-						$key = empty($image[8]) ? '' : $image[8];
+						foreach ($this->css_images[$sprite]['images'] as $image) {
+							$import = empty($image[7]) ? '' : $image[7];
+							$key = empty($image[8]) ? '' : $image[8];
 /* delete initial CSS rules only on success */
-						if (is_file($sprite)) {
-							unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
+							if (is_file($sprite)) {
+								unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 /* otherwise restore background-image */
-						} else {
-							if (!empty($image[10])) {
-								$this->css->css[$import][$key]['background'] = $image[10];
-							}
-							if (!empty($image[11])) {
+							} else {
+								if (!empty($image[10])) {
+									$this->css->css[$import][$key]['background'] = $image[10];
+								}
+								if (!empty($image[11])) {
 								$this->css->css[$import][$key]['background-image'] = $image[11];
+								}
 							}
 						}
 					}
-
 				}
 
 			}

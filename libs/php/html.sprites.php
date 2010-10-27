@@ -81,10 +81,13 @@ class html_sprites {
 			$class = $image[2];
 			$active = empty($image[3]) ? 0 : $image[3];
 			$filename = $this->options['document_root'] . $url;
+			$name = preg_replace("@.*/@", "", $url);
 /* skip big images */
 			if ($width <= $this->options['page']['dimensions_limited'] &&
 				$height <= $this->options['page']['dimensions_limited'] &&
-				$width && $height && !empty($class) && !empty($active)) {
+				$width && $height && !empty($class) && !empty($active) &&
+				((empty($this->options['css']['css_sprites_ignore']) && !in_array($name, $this->options['css']['css_sprites_exclude'])) ||
+				(!empty($this->options['css']['css_sprites_ignore']) && in_array($name, $this->options['css']['css_sprites_exclude'])))) {
 					$this->css_images[$url] = array($filename,
 						$width, $height, 0, 0, 0, 0, 42, '.' . $class);
 					$this->css[42]['.' . $class] = array(
