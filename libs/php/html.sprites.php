@@ -207,7 +207,7 @@ class html_sprites {
 /* cache images' dimensions to file */
 			$str = '<?php';
 			foreach ($images as $k => $i) {
-				$str .= "\n" . '$images[\'' . $k .
+				$str .= "\n" . '$images[\'' . str_replace('//', '/', $k) .
 					"'] = array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "');";
 				if (empty($this->options['page']['per_page'])) {
 					$images[$k][3] = 1;

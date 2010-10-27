@@ -1022,7 +1022,7 @@ class web_optimizer {
 					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
-						((!in_array($img, $ignore_sprites) && !empty($this->options['css']['ignore'])) ||
+						((!in_array($img, $ignore_sprites) && empty($this->options['css']['ignore'])) ||
 						(in_array($img, $ignore_sprites) && !empty($this->options['css']['ignore']))) &&
 						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2]) &&
 						(empty($this->ua_mod) || $this->ua_mod != '.ie6' || empty($this->options['css']['no_ie6']))) {
