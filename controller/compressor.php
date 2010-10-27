@@ -2161,6 +2161,8 @@ class web_optimizer {
 				$xgzip = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-gzip");
 				$deflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "deflate");
 				$xdeflate = strstr($_SERVER["HTTP_ACCEPT_ENCODING"], "x-deflate");
+			} elseif (empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($_COOKIE["_wo_gzip"])) {
+				$gzip = 1;
 			}
 			// Determine used compression method
 			$encoding = empty($gzip) ? (empty($xgzip) ? (empty($deflate) ? (empty($xdeflate) ? "none" : "x-deflate") : "deflate") : "x-gzip") : "gzip";
