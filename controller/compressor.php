@@ -201,8 +201,8 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 /* set content-type */
-				if (!empty($this->options['encoding'])) {
-					header("Content-Type: text/html; charset=" . $this->compress_options['encoding']);
+				if (!empty($this->options['charser'])) {
+					header("Content-Type: text/html; charset=" . $this->compress_options['charser']);
 				}
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
@@ -481,7 +481,7 @@ class web_optimizer {
 			"restricted" => ($this->premium > 1) &&
 				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
 			"days_to_delete" => round($this->options['performance']['delete_old']),
-			"encoding" => $this->options['encoding']
+			"charser" => $this->options['charser']
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */

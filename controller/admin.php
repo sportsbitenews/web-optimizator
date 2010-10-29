@@ -1715,11 +1715,11 @@ class admin {
 			'?web_optimizer_debug=1', $tmp_file);
 		$wss_delay = time() + microtime() - $time;
 /* save default encoding */
-		if (empty($this->compress_options['encoding']) && !empty($results[2])) {
+		if (empty($this->compress_options['charser']) && !empty($results[2])) {
 			$headers = strtolower($results[2]);
-			if (strpos($headers, 'content-type') && ($encoding = trim(preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers)))) {
-				$this->save_option("['encoding']", $encoding);
-				$this->compress_options['encoding'] = $encoding;
+			if (strpos($headers, 'content-type') && ($charser = trim(preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers)))) {
+				$this->save_option("['charser']", $charser);
+				$this->compress_options['charser'] = $charser;
 			}
 		}
 /* check activity for the website */
@@ -1845,8 +1845,8 @@ class admin {
 		if (!empty($submit)) {
 			$this->compress_options['host'] = empty($this->input['wss_host']) ?
 				$this->compress_options['host'] : $this->input['wss_host'];
-			$this->compress_options['encoding'] = empty($this->input['wss_encoding']) ?
-				$this->compress_options['encoding'] : $this->input['wss_encoding'];
+			$this->compress_options['charser'] = empty($this->input['wss_charser']) ?
+				$this->compress_options['charser'] : $this->input['wss_charser'];
 			$this->compress_options['website_root'] = empty($this->input['wss_website_root']) ?
 				$this->compress_options['website_root'] : $this->input['wss_website_root'];
 			$this->compress_options['document_root'] = empty($this->input['wss_document_root']) ?
@@ -1916,7 +1916,7 @@ class admin {
 				@copy($this->basepath . 'libs/php/0.gif',
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
-				$this->save_option("['encoding']", $this->compress_options['encoding']);
+				$this->save_option("['charser']", $this->compress_options['charser']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
 				$this->save_option("['css_cachedir']", $this->compress_options['css_cachedir']);
@@ -2023,7 +2023,7 @@ class admin {
 		$page_variables['cache_folder'] = str_replace($this->compress_options['document_root'],
 			"/", $this->compress_options['javascript_cachedir']);
 		$page_variables['host'] = $this->compress_options['host'];
-		$page_variables['encoding'] = $this->compress_options['encoding'];
+		$page_variables['charser'] = $this->compress_options['charser'];
 		$page_variables['website_root'] = $this->compress_options['website_root'];
 		$page_variables['document_root'] = $this->compress_options['document_root'];
 		$page_variables['css_cachedir'] = $this->compress_options['css_cachedir'];
@@ -4090,7 +4090,7 @@ class admin {
 			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
 /* create rules for enhanced HTML caching mode */
 				$content_enhanced = "
-	AddDefaultCharset " . (empty($this->compress_options['encoding']) ? '' : $this->compress_options['encoding']);
+	" . (empty($this->compress_options['charser']) ? '' : 'AddDefaultCharset ' . $this->compress_options['charser']);
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
 				if (strstr($this->basepath, 'wp-content')) {
