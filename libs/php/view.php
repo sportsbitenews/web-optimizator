@@ -244,6 +244,7 @@ class compressor_view {
 		}
 		$code = 0;
 		$gzip = false;
+		$headers = '';
 		if (function_exists('curl_init')) {
 			$local_dir = preg_replace("/\/[^\/]*$/", "/", $local_file);
 /* try to create local directory*/
@@ -282,14 +283,13 @@ class compressor_view {
 				@fclose($fp);
 				@fclose($fph);
 			}
-			if (@is_file($local_file_headers)) {
-				$headers = @file_get_contents($local_file_headers);
+			if ($headers = @file_get_contents($local_file_headers)) {
 				$gzip = preg_match('/content-encoding/i', $headers);
 				$code = round(preg_replace('!HTTP/1\.[01]\s([0-9][0-9][0-9])\s.*!', '$1', $headers));
 				@unlink($local_file_headers);
 			}
 		}
-		return array($gzip, $code);
+		return array($gzip, $code, $headers);
 	}
 
 	/**

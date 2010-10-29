@@ -143,6 +143,8 @@ define('_WEBO_document_root', ' <code>DOCUMENT_ROOT</code> کا راستہ');
 define('_WEBO_document_root_HELP', 'ویب سائٹ ہوسٹ کی روٹ ڈائریکٹری کا Absolute راستہ');
 define('_WEBO_host', 'ویب سائٹ کا ایڈریس');
 define('_WEBO_host_HELP', 'ڈومین کا نام یا آپ کی ویب سائٹ کا آئی پی ایڈریس. مثال کے طور پر : mysite.com');
+define('_WEBO_charset', 'Website encoding');
+define('_WEBO_charset_HELP', 'Website content encoding, is required for correct server-side caching. Example: utf-8');
 define('_WEBO_external_scripts_user', 'صارف کا نام (ایچ ٹی ٹی پی کی بنیادی شناخت کے ذریعے رسائی کے لئے)');
 define('_WEBO_external_scripts_user_HELP', 'اگر آپ کی ویب سائٹ ایچ ٹی ٹی پی کی بنیادی شناخت کے ذریعے محفوظ کی گئی ہے۔ تو آپ کو یوزر نیم اور پاس ورڈ داخل کرنا ہوگا تاکہ ویبو سائٹ اسپیڈ اپ ویب سائٹ سے تمام درکار ریسورسز کو پراسیس کر سکے۔');
 define('_WEBO_external_scripts_pass', 'پاس ورڈ (ایچ ٹی ٹی پی کی بنیادی شناخت کے ذریعے رسائی کے لئے)');

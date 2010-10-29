@@ -200,6 +200,8 @@ class web_optimizer {
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
+/* set content-type */
+				header("Content-Type: text/html; charset=" . (empty($this->options['encoding']) ? '' : $this->compress_options['encoding']));
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
 /* not really GMT but is valid locally */
@@ -476,7 +478,8 @@ class web_optimizer {
 				!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '',
 			"restricted" => ($this->premium > 1) &&
 				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
-			"days_to_delete" => round($this->options['performance']['delete_old'])
+			"days_to_delete" => round($this->options['performance']['delete_old']),
+			"encoding" => $this->options['encoding']
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */

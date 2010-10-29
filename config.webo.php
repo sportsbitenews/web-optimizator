@@ -24,6 +24,8 @@ $compress_options['website_root'] = "";
 $compress_options['document_root'] = "";
 ## Host name, to include before static resources
 $compress_options['host'] = "";
+## Website charset, to include to .htaccess and cache hit
+$compress_options['encoding'] = "";
 ## Add JS loader for all widgets on onload event
 $compress_options['unobtrusive']['on'] = "0";
 ## Add merged script right before </body>
