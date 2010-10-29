@@ -21,6 +21,7 @@ class web_optimizer {
 			return;
 		}
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
+		$this->debug_mode = empty($_GET['web_optimizer_debug']) && empty($_COOKIE['web_optimizer_debug']) ? 0 : 1;
 /* get chained optimization params */
 		if (!empty($this->web_optimizer_stage)) {
 			$this->username = htmlspecialchars(empty($_GET['username']) ? '' :
@@ -57,7 +58,7 @@ class web_optimizer {
 		foreach ($options as $key => $value) {
 			$this->$key = $value;
 		}
-		$this->options['active'] = !empty($_GET['web_optimizer_debug']) || !empty($_COOKIE['web_optimizer_debug']) ? 1 : $this->options['active'];
+		$this->options['active'] = $this->debug_mode ? 1 : $this->options['active'];
 /* disable any actions if not active */
 		if (empty($this->options['active'])) {
 			return;
@@ -135,7 +136,7 @@ class web_optimizer {
 			!headers_sent() &&
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
-			empty($_GET['web_optimizer_debug']) &&
+			!$this->debug_mode &&
 			empty($this->no_cache);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
@@ -2669,7 +2670,7 @@ class web_optimizer {
 				$this->basehref = '';
 			}
 /* change all links on the page according to DEBUG mode */
-			if (!empty($_GET['web_optimizer_debug'])) {
+			if ($this->debug_mode) {
 				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]*?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
 			}
 /* Remove comments ?*/
@@ -2755,7 +2756,7 @@ class web_optimizer {
 				$this->content .= '<!--WSS-->';
 			}
 /* add info about client side load speed */
-			if (!empty($_GET['web_optimizer_debug'])) {
+			if ($this->debug_mode) {
 				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
 			}
 /* add WEBO Site SpeedUp stamp */
