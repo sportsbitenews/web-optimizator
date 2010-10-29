@@ -201,7 +201,9 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 /* set content-type */
-				header("Content-Type: text/html; charset=" . (empty($this->options['encoding']) ? '' : $this->compress_options['encoding']));
+				if (!empty($this->options['encoding'])) {
+					header("Content-Type: text/html; charset=" . $this->compress_options['encoding']);
+				}
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
 /* not really GMT but is valid locally */

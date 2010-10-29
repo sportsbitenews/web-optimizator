@@ -45,7 +45,7 @@ class admin {
 		$this->version = str_replace("\r\n", "", @file_get_contents($this->basepath . 'version'));
 		$this->version_stable = preg_replace("[^0-9\.]", "", empty($this->input['wss_version_stable']) ? '' : $this->input['wss_version_stable']);
 /* get the latest version */
-		$version_new_file = 'version.new';
+		$version_new_file = $this->compress_options['html_cachedir'] . 'version.new';
 		if (in_array($this->input['wss_page'],
 			array('install_dashboard',
 				'install_set_password',
@@ -1717,7 +1717,7 @@ class admin {
 /* save default encoding */
 		if (empty($this->compress_options['encoding']) && !empty($results[2])) {
 			$headers = strtolower($results[2]);
-			if (strpos($headers, 'content-type') && ($encoding = trim(preg_replace("@.*content-type:[^;]*;(.*?)\r?\n.*@is", "$1", $headers)))) {
+			if (strpos($headers, 'content-type') && ($encoding = trim(preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers)))) {
 				$this->save_option("['encoding']", $encoding);
 				$this->compress_options['encoding'] = $encoding;
 			}

@@ -283,6 +283,9 @@ class compressor_view {
 				@fclose($fp);
 				@fclose($fph);
 			}
+/* reset buffers */
+			$fph = @fopen($local_file_headers, "r");
+			@fclose($fph);
 			if ($headers = @file_get_contents($local_file_headers)) {
 				$gzip = preg_match('/content-encoding/i', $headers);
 				$code = round(preg_replace('!HTTP/1\.[01]\s([0-9][0-9][0-9])\s.*!', '$1', $headers));
