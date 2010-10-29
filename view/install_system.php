@@ -267,9 +267,9 @@
 ?>"><span class="wssD3">*</span><input value="<?php
 	echo htmlspecialchars($html_cachedir);
 ?>" name="wss_html_cachedir" id="wss_html_cachedir" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_encoding"><?php
-	echo _WEBO_encoding;
+	echo _WEBO_charset;
 ?> <a class="wssJ9" href="#" title="<?php
-						echo _WEBO_encoding_HELP;
+						echo _WEBO_charset_HELP;
 ?>">?</a></label></dt><dd class="wssD2"><input value="<?php
 	echo htmlspecialchars($encoding);
 ?>" name="wss_encoding" id="wss_encoding" class="wssF"/></dd><?php
