@@ -202,8 +202,8 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 /* set content-type */
-				if (!empty($this->options['charser'])) {
-					header("Content-Type: text/html; charset=" . $this->compress_options['charser']);
+				if (!empty($this->options['charset'])) {
+					header("Content-Type: text/html; charset=" . $this->compress_options['charset']);
 				}
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
@@ -482,7 +482,7 @@ class web_optimizer {
 			"restricted" => ($this->premium > 1) &&
 				!empty($this->options['restricted']) ? $this->options['restricted'] : '',
 			"days_to_delete" => round($this->options['performance']['delete_old']),
-			"charser" => $this->options['charser']
+			"charset" => $this->options['charset']
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
@@ -1028,8 +1028,8 @@ class web_optimizer {
 					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
-						((!in_array($img, $ignore_sprites) && empty($this->options['css']['ignore'])) ||
-						(in_array($img, $ignore_sprites) && !empty($this->options['css']['ignore']))) &&
+						((!in_array($img, $ignore_sprites) && empty($this->options['css']['css_sprites_ignore'])) ||
+						(in_array($img, $ignore_sprites) && !empty($this->options['css']['css_sprites_ignore']))) &&
 						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2]) &&
 						(empty($this->ua_mod) || $this->ua_mod != '.ie6' || empty($this->options['css']['no_ie6']))) {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);

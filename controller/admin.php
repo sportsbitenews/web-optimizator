@@ -1224,6 +1224,7 @@ class admin {
 				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled'],
 				'wss_htaccess_mod_rewrite' => $this->compress_options['htaccess']['mod_rewrite'],
 				'wss_far_future_expires_css' => $this->compress_options['far_future_expires']['css'],
+				'wss_far_future_expires_images' => $this->compress_options['far_future_expires']['images'],
 				'wss_far_future_expires_javascript' => $this->compress_options['far_future_expires']['javascript']
 			);
 			$this->compress_options['active'] = 0;
@@ -1715,11 +1716,11 @@ class admin {
 			'?web_optimizer_debug=1', $tmp_file);
 		$wss_delay = time() + microtime() - $time;
 /* save default encoding */
-		if (empty($this->compress_options['charser']) && !empty($results[2])) {
+		if (empty($this->compress_options['charset']) && !empty($results[2])) {
 			$headers = strtolower($results[2]);
-			if (strpos($headers, 'content-type') && ($charser = trim(preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers)))) {
-				$this->save_option("['charser']", $charser);
-				$this->compress_options['charser'] = $charser;
+			if (strpos($headers, 'content-type') && ($charset = trim(preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers)))) {
+				$this->save_option("['charset']", $charset);
+				$this->compress_options['charset'] = $charset;
 			}
 		}
 /* check activity for the website */
@@ -1845,8 +1846,8 @@ class admin {
 		if (!empty($submit)) {
 			$this->compress_options['host'] = empty($this->input['wss_host']) ?
 				$this->compress_options['host'] : $this->input['wss_host'];
-			$this->compress_options['charser'] = empty($this->input['wss_charser']) ?
-				$this->compress_options['charser'] : $this->input['wss_charser'];
+			$this->compress_options['charset'] = empty($this->input['wss_charset']) ?
+				$this->compress_options['charset'] : $this->input['wss_charset'];
 			$this->compress_options['website_root'] = empty($this->input['wss_website_root']) ?
 				$this->compress_options['website_root'] : $this->input['wss_website_root'];
 			$this->compress_options['document_root'] = empty($this->input['wss_document_root']) ?
@@ -1916,7 +1917,7 @@ class admin {
 				@copy($this->basepath . 'libs/php/0.gif',
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
-				$this->save_option("['charser']", $this->compress_options['charser']);
+				$this->save_option("['charset']", $this->compress_options['charset']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
 				$this->save_option("['css_cachedir']", $this->compress_options['css_cachedir']);
@@ -2023,7 +2024,7 @@ class admin {
 		$page_variables['cache_folder'] = str_replace($this->compress_options['document_root'],
 			"/", $this->compress_options['javascript_cachedir']);
 		$page_variables['host'] = $this->compress_options['host'];
-		$page_variables['charser'] = $this->compress_options['charser'];
+		$page_variables['charset'] = $this->compress_options['charset'];
 		$page_variables['website_root'] = $this->compress_options['website_root'];
 		$page_variables['document_root'] = $this->compress_options['document_root'];
 		$page_variables['css_cachedir'] = $this->compress_options['css_cachedir'];
@@ -4090,7 +4091,7 @@ class admin {
 			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
 /* create rules for enhanced HTML caching mode */
 				$content_enhanced = "
-	" . (empty($this->compress_options['charser']) ? '' : 'AddDefaultCharset ' . $this->compress_options['charser']);
+	" . (empty($this->compress_options['charset']) ? '' : 'AddDefaultCharset ' . $this->compress_options['charset']);
 				$cookie = array();
 /* WordPress-related cookie to skip server side caching */
 				if (strstr($this->basepath, 'wp-content')) {
@@ -4406,7 +4407,7 @@ Options +FollowSymLinks";
 				}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 					$content .= "
-	RewriteRule ^(.*)\.wo[0-9]+\.(jpg|png)$ $1.$2";
+	RewriteRule ^(.*)\.wo[0-9]+\.(jpe?g|png)$ $1.$2";
 				}
 				$content .= $content_enhanced;
 				$content .= "
