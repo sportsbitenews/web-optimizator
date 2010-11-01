@@ -271,7 +271,7 @@
 ?> <a class="wssJ9" href="#" title="<?php
 						echo _WEBO_charset_HELP;
 ?>">?</a></label></dt><dd class="wssD2"><input value="<?php
-	echo htmlspecialchars($encoding);
+	echo htmlspecialchars($charset);
 ?>" name="wss_encoding" id="wss_encoding" class="wssF"/></dd><?php
 	if (!$internal) {
 ?><dt class="wssD5"><label class="wssE" for="wss_htaccess_access"><?php
