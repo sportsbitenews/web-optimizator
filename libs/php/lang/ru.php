@@ -743,6 +743,7 @@ define('_WEBO_DASHBOARD_HELP', 'Закажите настройку');
 define('_WEBO_DASHBOARD_HELP1', 'Возникли проблемы с настройкой WEBO Site SpeedUp?');
 define('_WEBO_DASHBOARD_HELP2', 'Наши специалисты помогут установить и отладить WEBO Site SpeedUp для вашего сайта.');
 define('_WEBO_DASHBOARD_SEND', 'Отправить заявку');
+define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Срок действия истекает');
@@ -1064,4 +1065,5 @@ define('_WEBO_WIZARD_TO', 'до');
 define('_WEBO_WIZARD_STEP31_LIST', 'Не удалось настроить следующие параметры:');
 define('_WEBO_WIZARD_NEXT', 'Дальше');
 define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
+define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration');
 ?>

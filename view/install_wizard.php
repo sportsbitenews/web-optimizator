@@ -140,7 +140,9 @@ if ($wizard_mode) {
 	echo _WEBO_SPLASH2_OPTIONS;
 ?></a> <?php
 	echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <a href="mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration"><?php
+?> <a href="<?php
+	echo _WEBO_WIZARD_ORDER;
+?>"><?php
 	echo _WEBO_WIZARD_STEP31_INFO3;
 ?></a>. <?php
 	echo _WEBO_WIZARD_STEP31_INFO4;

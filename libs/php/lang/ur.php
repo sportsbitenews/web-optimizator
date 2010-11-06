@@ -724,6 +724,7 @@ define('_WEBO_DASHBOARD_HELP', 'پروفیشنل مدد کیلئے آرڈر کر
 define('_WEBO_DASHBOARD_HELP1', 'ویبو سائٹ اسپیڈ اپ کی کنفیگریشن میں کوئی مشکل؟');
 define('_WEBO_DASHBOARD_HELP2', 'ہمارے انجینئرز آپ کی ویب سائٹ کیلئے ویبو سائٹ اسپیڈ اپ کو انسٹال اور ٹیون کرنے میں آپ کی مدد کر سکتے ہیں');
 define('_WEBO_DASHBOARD_SEND', 'درخواست ارسال کریں');
+define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
 
 /* اکاؤنٹ صفحہ */
 define('_WEBO_ACCOUNT_EXPIRES', 'اس تاریخ تک کیلئے دستیاب ہے');
@@ -1046,4 +1047,5 @@ define('_WEBO_WIZARD_TO', 'to');
 define('_WEBO_WIZARD_STEP31_LIST', 'Can\'t tune the following methods:');
 define('_WEBO_WIZARD_NEXT', 'Next');
 define('_WEBO_WIZARD_SAVE', 'Enable WEBO Site SpeedUp');
+define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration');
 ?>
