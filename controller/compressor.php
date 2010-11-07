@@ -2991,7 +2991,7 @@ class web_optimizer {
 			$mhtml_exclude = explode(" ", $options['data_uris_exclude_html']);
 			foreach ($imgs as $image) {
 				$base64 = '';
-				if (strpos(strtolower($image[3]), "url")) {
+				if (strpos(strtolower($image[3]), "url") !== false) {
 					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[3])));
 					$image_saved = $css_image;
 					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
