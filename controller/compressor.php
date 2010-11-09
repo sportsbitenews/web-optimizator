@@ -581,7 +581,8 @@ class web_optimizer {
 				strpos($spot, '<feed') !== false ||
 				strpos($spot, '<urlset') !== false ||
 				strpos($spot, '<smf') !== false ||
-				strpos($spot, '{') === 0) {
+				strpos($spot, '{') === 0 ||
+				strlen($this->content) < 200) {
 					$skip = 1;
 			}
 		}
