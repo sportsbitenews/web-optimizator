@@ -554,6 +554,7 @@ define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'Если установлен suPHP,
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_5', 'Перезагрузите страницу.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'Проверьте права и возможные ошибки (например, через лог-файлы) при доступе к файлу');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'Разрешите доступ к этому файлу через веб (по HTTP-протоколу).');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_3', 'Если в системе установлен Smart Optimizer, то удалите его, пожалуйста.');
 define('_WEBO_DASHBOARD_CRITICAL_REFER', 'Если ошибка по-прежнему возникает, пожалуйста, обратитесь к');
 define('_WEBO_DASHBOARD_CRITICAL_DOCS', 'пользовательской документации');
 define('_WEBO_DASHBOARD_CRITICAL_OR', 'или');

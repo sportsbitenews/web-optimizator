@@ -549,6 +549,7 @@ define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'If suPHP is installed please check r
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_5', 'Reload this page.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'Check permissions and possible errors (i.e. via log files) while accessing the file');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'Allow this file to be accessed via web (through HTTP protocol).');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_3', 'If there is Smart Optimizer installed - please uninstall it.');
 define('_WEBO_DASHBOARD_CRITICAL_REFER', 'If error still occurs please refer to');
 define('_WEBO_DASHBOARD_CRITICAL_DOCS', 'user documentation');
 define('_WEBO_DASHBOARD_CRITICAL_OR', 'or');

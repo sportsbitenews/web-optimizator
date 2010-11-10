@@ -27,11 +27,13 @@
 ?></p></li></ol><ol class="wssO7 wssK03"><li class="wssO8"><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_STEP2_1;
 ?> <code><?php
-	echo str_replace("//", "/", str_replace("\\", "/", realpath(dirname(__FILE__) . '/../') . '/index.php'));
+	echo str_replace("//", "/", str_replace("\\", "/", realpath(dirname(__FILE__) . '/../') . '/libs/css/wss.css'));
 ?></code>.</p></li><li class="wssO8"><p class="wssI"><?php
 	echo _WEBO_DASHBOARD_CRITICAL_STEP2_2;
 ?></p></li><li class="wssO8"><p class="wssI"><?php
-	echo _WEBO_DASHBOARD_CRITICAL_STEP1_4;
+	echo _WEBO_DASHBOARD_CRITICAL_STEP2_3;
+?></p></li><li class="wssO8"><p class="wssI"><?php
+	echo _WEBO_DASHBOARD_CRITICAL_STEP1_5;
 ?></p></li></ol><p class="wssI"><?php 
 	echo _WEBO_DASHBOARD_CRITICAL_REFER;
 ?> <a href="http://code.google.com/p/web-optimizator/w/list" rel="nofollow" class="wssJ"><?php

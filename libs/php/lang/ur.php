@@ -534,6 +534,7 @@ define('_WEBO_DASHBOARD_CRITICAL_STEP1_4', 'If suPHP is installed please check r
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_5', 'یہ صفحہ ریفریش کریں۔');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_1', 'پرمیشن چیک کریں اور اس فائل تک رسائی کرتے ہوئے ظاہر ہونے والی امکانی غلطیوں کو (لاگ فائلز کے ذریعے) چیک کریں');
 define('_WEBO_DASHBOARD_CRITICAL_STEP2_2', 'اس فائل کو ویب کے ذریعے رسائی کی اجازت دیں (HTTP پروٹوکول کے ذریعے)۔');
+define('_WEBO_DASHBOARD_CRITICAL_STEP2_3', 'If there is Smart Optimizer installed - please uninstall it.');
 define('_WEBO_DASHBOARD_CRITICAL_REFER', 'اگر پھر بھی خرابی ظاہر ہو تو');
 define('_WEBO_DASHBOARD_CRITICAL_DOCS', 'صارف دستاویز');
 define('_WEBO_DASHBOARD_CRITICAL_OR', 'یا');
