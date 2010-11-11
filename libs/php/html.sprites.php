@@ -12,17 +12,10 @@ class html_sprites {
 	* Sets the options and converts
 	**/
 	function html_sprites ($imgs, $options, $main) {
-		$t = time() + microtime();
 		$this->options = $options;
 		$this->main = $main;
-		if ($this->main->php == 4) {
-			if (!class_exists('css_sprites_optimize')) {
-				require($this->options['css']['installdir'] . 'libs/php/css.sprites.optimize.php');
-			}
-		} else {
-			if (!class_exists('css_sprites_optimize', false)) {
-				require($this->options['css']['installdir'] . 'libs/php/css.sprites.optimize.php');
-			}
+		if (!class_exists('css_sprites_optimize', false)) {
+			require($this->options['css']['installdir'] . 'libs/php/css.sprites.optimize.php');
 		}
 /* create CSS Sprites combiner */
 		$this->optimizer = new css_sprites_optimize(array(
@@ -180,8 +173,9 @@ class html_sprites {
 				$old_src = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, 0, $old_src_param_pos) : $old_src;
 				$absolute_src = $this->main->convert_path_to_absolute($old_src,
 					array('file' => $_SERVER['REQUEST_URI']));
+				$filename = array_pop(split("/", $absolute_src));
 /* fetch only non-cached images */
-				if (!empty($absolute_src)) {
+				if (!empty($absolute_src) && (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list))) {
 					if (empty($images[$absolute_src]))  {
 						$need_refresh = 1;
 						$width = $height = 0;

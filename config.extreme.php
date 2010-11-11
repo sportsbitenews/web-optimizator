@@ -95,6 +95,7 @@ $compress_options['css_sprites']['aggressive']="0";
 $compress_options['css_sprites']['extra_space']="1";
 $compress_options['css_sprites']['no_ie6']="1";
 $compress_options['css_sprites']['dimensions_limited']="900";
+$compress_options['css_sprites']['ignore'] = "0";
 $compress_options['css_sprites']['ignore_list']="corners.gif";
 $compress_options['css_sprites']['html_sprites']="0";
 $compress_options['css_sprites']['html_limit']="200";
