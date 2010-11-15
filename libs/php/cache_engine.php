@@ -562,7 +562,7 @@ class webo_cache_files extends webo_cache_engine
  			if (@is_file($this->cache_dir . 'wo.files.php'))
  			{
  				include($this->cache_dir . 'wo.files.php');
- 				if (is_array($webo_cache_files_list))
+ 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list))
  				{
  					$this->all_files = $webo_cache_files_list;
 				}
@@ -586,15 +586,22 @@ class webo_cache_files extends webo_cache_engine
  			$str .= '$webo_cache_files_list[\'' . addcslashes($k, "\0'\\") . '\'] = ' . "'$v';\n";
  		}
  		$str .= '?>';
-		$fp = @fopen($this->cache_dir . 'wo.files.php', "a");
-		if ($fp) {
-/* block file from writing */
-			@flock($fp, LOCK_EX);
-/* erase content and move to the beginning */
-			@ftruncate($fp, 0);
-			@fseek($fp, 0);
-			@fwrite($fp, $str);
-			@fclose($fp);
+ 		$length = strlen($str);
+ 		$i = 0;
+ 		$written = 0;
+ 		while (($i < 3) && ($written != $length))
+ 		{
+			$fp = @fopen($this->cache_dir . 'wo.files.php', "a");
+			if ($fp) {
+	/* block file from writing */
+				@flock($fp, LOCK_EX);
+	/* erase content and move to the beginning */
+				@ftruncate($fp, 0);
+				@fseek($fp, 0);
+				$written = @fwrite($fp, $str);
+				@fclose($fp);
+			}
+			$i++;
 		}
 	}
 
