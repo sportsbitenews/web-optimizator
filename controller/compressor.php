@@ -1281,7 +1281,7 @@ class web_optimizer {
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
 					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
-				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(d.readyState)){clearInterval(w);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
 				$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include, $source);
 				break;
 		}
@@ -2922,7 +2922,7 @@ class web_optimizer {
 /* replace path in initial CSS */
 					$content = preg_replace("@url\s*\(\s*['\"]?" .
 						str_replace("?", "\?", $file) .
-						"['\"]?\s*\)@", "url(" . $absolute_path . ")", $content);
+						"['\"]?\s*\)@is", "url(" . $absolute_path . ")", $content);
 				}
 			}
 		}
