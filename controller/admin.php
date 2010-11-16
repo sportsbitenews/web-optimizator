@@ -231,7 +231,7 @@ class admin {
 	*
 	**/
 	function compress_image () {
-		$file = realpath($this->input['wss_file']);
+		$file = str_replace('\\', '/', realpath($this->input['wss_file']));
 		$service = empty($this->input['wss_service']) ? 0 : round($this->input['wss_service']);
 		$mtime = @filemtime($file);
 		$size = @filesize($file);
