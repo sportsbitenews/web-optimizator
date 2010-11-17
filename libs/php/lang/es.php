@@ -373,6 +373,8 @@ define('_WEBO_footer_css_code', 'Estilos para posicionamiento backlink');
 define('_WEBO_footer_css_code_HELP', 'Estos estilos serán aplicados por el enlace de WEBO Site SpeedUp. Usted puede definir el posicionamiento del enlace, su color, fondo, tamaño, etc.');
 define('_WEBO_footer_spot', 'Añadir <code>&lt;!--WSS-&gt;</code> a <code>body</code>');
 define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; existence indicates that WEBO Site SpeedUp successfully parses this page It\'s used in internal algorithms.');
+define('_WEBO_footer_counter', 'Add load time counter');
+define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats.');
 
 define('_WEBO_data_uris_on', 'Ejecuta <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Imágenes de fondo serán transformadas a formato base64 e incluidos directamente a archivos CSS para todos los navegadores que son compatibles con data:URI.');

@@ -179,6 +179,8 @@ $compress_options['footer']['link'] = "Accelerated with WEBO Site SpeedUp";
 $compress_options['footer']['css_code'] = "float:right;margin:-104px 4px -100px";
 ## Add a spot to <title>: lang="wo" or xml:lang="wo"
 $compress_options['footer']['spot'] = "1";
+## Add load speed counter (via Google Analytics)
+$compress_options['footer']['counter'] = "0";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "0";
 ## Should Web Optimizer separate CSS for rules and images?

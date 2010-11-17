@@ -374,6 +374,8 @@ define('_WEBO_footer_css_code', 'Styles pour l\'emplacement du rétro lien');
 define('_WEBO_footer_css_code_HELP', 'Ces styles seront appliqués pour le lien WEBO Site SpeedUp. Vous pouvez définir l\'emplacement du lien, sa couleur, fond, taille, etc. ');
 define('_WEBO_footer_spot', 'Ajouter <code>&lt;!--WSS--&gt;</code> to HTML document');
 define('_WEBO_footer_spot_HELP', 'L\'existance &lt;!--WSS--&gt; indique que WEBO Site SpeedUp analyse la pages avec succès. Il est utilisé dans les algorithmes internes.');
+define('_WEBO_footer_counter', 'Add load time counter');
+define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats.');
 
 define('_WEBO_data_uris_on', 'Appliquer <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Les images de fond seront converties au format base64 et seront inclus directement dans les fichiers CSS pour tous les serveurs qui supportent data:URI.');

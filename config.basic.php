@@ -81,6 +81,7 @@ $compress_options['footer']['image']="web.optimizer.stamp.png";
 $compress_options['footer']['link']="Accelerated with WEBO Site SpeedUp";
 $compress_options['footer']['css_code']="float:right;margin:-104px 4px -100px";
 $compress_options['footer']['spot']="1";
+$compress_options['footer']['counter']="0";
 $compress_options['data_uris']['on']="0";
 $compress_options['data_uris']['separate']="0";
 $compress_options['data_uris']['domloaded']="0";

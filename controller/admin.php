@@ -3215,6 +3215,10 @@ class admin {
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['footer']['spot'],
 					'type' => 'checkbox'
+				),
+				'footer_counter' => array(
+					'value' => $this->compress_options['footer']['counter'],
+					'type' => 'checkbox'
 				)
 			),
 			'performance' => array(
@@ -3807,6 +3811,7 @@ class admin {
 			'wss_sql_cache_enabled',
 			'wss_footer_text',
 			'wss_footer_spot',
+			'wss_footer_counter',
 			'wss_data_uris_on',
 			'wss_data_uris_separate',
 			'wss_data_uris_domloaded',

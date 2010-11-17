@@ -364,6 +364,8 @@ define('_WEBO_footer_css_code', 'بیک لنک لگانے کیلئے اسٹائ�
 define('_WEBO_footer_css_code_HELP', 'یہ اسٹائلز ویبو سائٹ اسپیڈ اپ لنک کیلئے اپلائی ہوں گے۔ آپ لنک کی جگہ، رنگ، بیک گراؤنڈ، سائز وغیرہ سیٹ کر سکتے ہیں۔');
 define('_WEBO_footer_spot', ' <code>&lt;!--WSS--&gt;</code> کو ایچ ٹی ایم ایل ڈاکومنٹ میں شامل کریں۔');
 define('_WEBO_footer_spot_HELP', ' &lt;!--WSS--&gt; کی موجودگی یہ بتاتی ہے کہ ویبو سائٹ اسپیڈ اپ نے کامیابی سے اس  صفحہ کو پراسیس کر لیا ہے۔ یہ اندرونی الگورتھم میں استعمال ہوتا ہے۔');
+define('_WEBO_footer_counter', 'Add load time counter');
+define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats.');
 define('_WEBO_data_uris_on', 'اپلائی <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'بیک گراؤنڈ تصاویر کو base64 میں کنورٹ کیا جائے گا اور براہ راست سی ایس ایس فائلز میں شامل کیا جائے گا ، ان تمام براؤزرز کیلئے جو data:URI کو سپورٹ کرتے ہیں۔');
 define('_WEBO_data_uris_on_EFFECT', 'آبجیکٹ کی تعداد میں 15-75% کمی');

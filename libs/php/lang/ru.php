@@ -509,6 +509,8 @@ define('_WEBO_footer_css_code', 'Стили для размещения ссыл
 define('_WEBO_footer_css_code_HELP', 'Эти стили будут присвоены ссылке на WEBO Site SpeedUp. Вы можете вручную задать положение ссылки, ее цвет, фон, размер и т.д.');
 define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--WSS--&gt;</code> в <code>body</code> оптимизированных страниц');
 define('_WEBO_footer_spot_HELP', 'Наличие &lt;!--WSS--&gt; сигнализирует о том, что WEBO Site SpeedUp успешно обработал текущую страницу, и используется во внутренних алгоритмах.');
+define('_WEBO_footer_counter', 'Добавлять счетчик времени загрузки');
+define('_WEBO_footer_counter_HELP', 'При сборе статистики посещаемости по сайту через Google Analytics данные о времени загрузки сайта будут попадать в События.');
 
 define('_WEBO_htaccess_access', 'Защитить установку WEBO Site SpeedUp с помощью <code>htpasswd</code>');
 define('_WEBO_htaccess_access_HELP', 'Обеспечивает дополнительную безопасность WEBO Site SpeedUp при помощи механизма, основанного на применении технологии HTTP Basic Authorization и файлов .htaccess и .htpasswd.');

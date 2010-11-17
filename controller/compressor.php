@@ -465,6 +465,7 @@ class web_optimizer {
 				"footer_text" => $this->options['footer']['link'],
 				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
+				"counter" => $this->options['footer']['counter'],
 				"htaccess_username" => $this->options['external_scripts']['user'],
 				"htaccess_password" => $this->options['external_scripts']['pass'],
 				"html_tidy" => $this->options['performance']['plain_string'],
@@ -2755,6 +2756,10 @@ class web_optimizer {
 /* add WEBO Site SpeedUp spot */
 			if (!empty($this->options['page']['spot'])) {
 				$this->content .= '<!--WSS-->';
+			}
+/* add WEBO Site SpeedUp page load counter */
+			if (!empty($this->options['page']['counter'])) {
+				$this->content .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined")var a=_gat._getTracker(_gat.vb["~0"].s),b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",Math.round(b*50/50)+"ms",b)},false)})()</script>';
 			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
