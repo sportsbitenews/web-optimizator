@@ -2757,61 +2757,64 @@ class web_optimizer {
 			if (!empty($this->options['page']['spot'])) {
 				$this->content .= '<!--WSS-->';
 			}
-/* add WEBO Site SpeedUp page load counter */
-			if (!empty($this->options['page']['counter'])) {
-				$this->content .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined")var a=_gat._getTracker(_gat.vb["~0"].s),b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",Math.round(b*50/50)+"ms",b)},false)})()</script>';
-			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
 				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
 			}
+			if (!empty($this->options['page']['footer']) || !empty($this->options['page']['counter'])) {
+				$stamp = '';
 /* add WEBO Site SpeedUp stamp */
-			if (!empty($this->options['page']['footer'])) {
-				$style = empty($this->options['page']['footer_style']) ? '' :
-					 ' style="' . $this->options['page']['footer_style'] . '"';
-				$title = empty($this->options['page']['footer_text']) ? '' :
-					' title="' . $this->options['page']['footer_text'] . '"';
-				$text = empty($this->options['page']['footer_text']) ||
-					!empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
+				if (!empty($this->options['page']['footer'])) {
+					$style = empty($this->options['page']['footer_style']) ? '' :
+						' style="' . $this->options['page']['footer_style'] . '"';
+					$title = empty($this->options['page']['footer_text']) ? '' :
+						' title="' . $this->options['page']['footer_text'] . '"';
+					$text = empty($this->options['page']['footer_text']) ||
+						!empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
 /* place or not image? */
-				if (empty($this->options['page']['footer_image'])) {
-					$background_image = $background_style = '';
-				} else {
-					$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
-					$image_style =
-						'display:block;text-decoration:none;width:100px;height:100px;';
-					if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
-						$background_style = $image_style . 
-							'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
-								$background_image .
-							',sizingMethod=\'scale\')';
+					if (empty($this->options['page']['footer_image'])) {
+						$background_image = $background_style = '';
 					} else {
-						$background_style = $image_style . 
-							'background:url(' .
-								$background_image .
-							')';
+						$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
+						$image_style =
+							'display:block;text-decoration:none;width:100px;height:100px;';
+						if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
+							$background_style = $image_style . 
+								'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
+									$background_image .
+								',sizingMethod=\'scale\')';
+						} else {
+							$background_style = $image_style . 
+								'background:url(' .
+									$background_image .
+								')';
+						}
+						$background_style = ' style="' . $background_style . '"';
 					}
-					$background_style = ' style="' . $background_style . '"';
-				}
 /* choose between link or span */
-				if (empty($text)) {
-					$el = 'a href="http://www.webogroup.com/" rel="nofollow"';
-					$el_close = 'a';
-				} else {
-					$el = $el_close = 'span';
-				}
+					if (empty($text)) {
+						$el = 'a href="http://www.webogroup.com/" rel="nofollow"';
+						$el_close = 'a';
+					} else {
+						$el = $el_close = 'span';
+					}
 /* finally from stamp */
-				$stamp = '<div' .
-						$style .
-					'><' .
-						$el .
-						$title .
-						$background_style .
-					'>'.
-						$text .
-					'</' .
-						$el_close .
-					'></div>';
+					$stamp .= '<div' .
+							$style .
+						'><' .
+							$el .
+							$title .
+							$background_style .
+						'>'.
+							$text .
+						'</' .
+							$el_close .
+						'></div>';
+				}
+/* add WEBO Site SpeedUp page load counter */
+				if (!empty($this->options['page']['counter'])) {
+					$stamp .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined")var a=_gat._getTracker(_gat.vb["~0"].s),b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",Math.round(b*50/50)+"ms",b)},false)})()</script>';
+				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
 						$this->content = substr_replace($this->content,
