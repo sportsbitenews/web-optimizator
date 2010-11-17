@@ -2757,9 +2757,26 @@ class web_optimizer {
 			if (!empty($this->options['page']['spot'])) {
 				$this->content .= '<!--WSS-->';
 			}
+			if ($this->debug_mode || !empty($this->options['page']['counter'])) {
+				$stamp = '<script type="text/javascript">__WSS=(new Date()).getTime()</script>';
+				if ($this->options['page']['html_tidy'] &&
+					($headpos = strpos($this->content, '<head'))) {
+						$headend = strpos($this->content, '>', $headpos);
+						$this->content = substr_replace($this->content,
+							$stamp, $headpos + $headend + 1, 0);
+				} elseif ($this->options['page']['html_tidy'] &&
+					($headpos = strpos($this->content, '<HEAD'))) {
+						$headend = strpos($this->content, '>', $headpos);
+						$this->content = substr_replace($this->content,
+							$stamp, $headpos + $headend + 1, 0);
+				} else {
+					$this->content = preg_replace("@<head.+>@is",
+						"$0" . $stamp, $this->content);
+				}
+			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
-				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
+				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
 			}
 			if (!empty($this->options['page']['footer']) || !empty($this->options['page']['counter'])) {
 				$stamp = '';
@@ -2813,7 +2830,7 @@ class web_optimizer {
 				}
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
+					$stamp .= '<script type="text/javascript">(function(){var window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
 				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
