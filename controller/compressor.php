@@ -2813,7 +2813,7 @@ class web_optimizer {
 				}
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",Math.round(b*50/50)+"ms",b)}},false)})()</script>';
+					$stamp .= '<script type="text/javascript">(function(){var a=window;a.__WSS=(new Date()).getTime();a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
 				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
