@@ -1687,8 +1687,8 @@ class web_optimizer {
 	function get_new_file ($options, $cache_file, $timestamp = false, $add = false) {
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
-			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) .'"' .
-			(empty($options['rel']) ? '' : ' rel="' . $options['rel'] . '"') . 
+			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) . '" rel="' .
+			(empty($options['rel'])? '' : $options['rel'] . ' ') . 'nofollow"' . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		return $newfile;
 	}

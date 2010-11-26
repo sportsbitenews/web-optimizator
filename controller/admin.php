@@ -4037,10 +4037,10 @@ class admin {
 				$this->options['document_root'] . 'favicon.ico' :
 				$this->basepath . 'favicon.ico';
 			$headers = $this->view->upload('ftp://' .
-				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $upload),
+				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $auth),
 				str_replace($this->options['document_root'], "/", $file),
 				$file, $this->options['html_cachedir'], array(), 
-				preg_replace("!(.*)@.*!", "$1", $upload));
+				preg_replace("!(.*)@.*!", "$1", $auth));
 			if (strpos($headers, 'Error: ') !== false) {
 				$this->error[11] = 1;
 			}
