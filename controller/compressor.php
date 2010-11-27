@@ -2763,14 +2763,14 @@ class web_optimizer {
 					($headpos = strpos($this->content, '<head'))) {
 						$headend = strpos($this->content, '>', $headpos);
 						$this->content = substr_replace($this->content,
-							$stamp, $headpos + $headend + 1, 0);
+							$stamp, $headend + 1, 0);
 				} elseif ($this->options['page']['html_tidy'] &&
 					($headpos = strpos($this->content, '<HEAD'))) {
 						$headend = strpos($this->content, '>', $headpos);
 						$this->content = substr_replace($this->content,
-							$stamp, $headpos + $headend + 1, 0);
+							$stamp, $headend + 1, 0);
 				} else {
-					$this->content = preg_replace("@<head.+>@is",
+					$this->content = preg_replace("@<head[^>]*>@is",
 						"$0" . $stamp, $this->content);
 				}
 			}
