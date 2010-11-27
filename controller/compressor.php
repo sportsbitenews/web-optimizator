@@ -1020,7 +1020,7 @@ class web_optimizer {
 				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], " src='"))) {
 					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), "'"));
 				} else {
-					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
+					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*[\"'\s]src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				}
 				$old_src = $this->convert_basehref($old_src);
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
@@ -1037,23 +1037,23 @@ class web_optimizer {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);
 							if (!empty($this->options['page']['html_tidy']) &&
 								(strpos($image[0], 'class') || strpos($image[0], 'CLASS'))) {
-									if ($pos=strpos($image[0], 'class="')) {
+									if ($pos=strpos($image[0], ' class="')) {
 										$end = strpos(substr($image[0], $pos + 7), '"');
 										$new_image = substr($image[0], 0, $pos + 7 + $end) .
 											' ' . $class . substr($image[0], $pos + 7 + $end);
-									} elseif ($pos=strpos($image[0], "class='")) {
+									} elseif ($pos=strpos($image[0], " class='")) {
 										$end = strpos(substr($image[0], $pos + 7), "'");
 										$new_image = substr($image[0], 0, $pos + 7 + $end) .
 											' ' . $class . substr($image[0], $end);
 									} else {
-										$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
+										$new_image = preg_replace("!(.*['\"\s]class\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
 											$class . "$4$5$6", $image[0]);
 									}
-							} elseif (preg_match("@\sclass\s*=\s*['\"]@is", $image[0])) {
-								$new_image = preg_replace("!(.*\sclass\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
+							} elseif (preg_match("@['\"\s]class\s*=\s*['\"]@is", $image[0])) {
+								$new_image = preg_replace("!(.*['\"\s]class\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
 									$class . "$4$5$6", $image[0]);
-							} elseif (preg_match("@\sclass\s*=\s*@is", $image[0])) {
-								$new_image = preg_replace("!(.*\sclass\s*=\s*)([^\s]+)\s!is", "$1\"$2 " .
+							} elseif (preg_match("@['\"\s]class\s*=\s*@is", $image[0])) {
+								$new_image = preg_replace("!(.*['\"\s]class\s*=\s*)([^\s]+)\s!is", "$1\"$2 " .
 									$class . "\" ", $image[0]);
 							} else {
 								$new_image = substr($image[0], 0, 4) . ' class="' .
