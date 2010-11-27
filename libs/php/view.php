@@ -391,9 +391,9 @@ class compressor_view {
 /* common FTP */
 		} else {
 			$this->upload('ftp://' .
-				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $auth),
+				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $auth) .
 				str_replace($cachedir, "/", $file),
-				$file, $cachedir, array(), 
+				$file, $cachedir, array(), 'PUT', 
 				preg_replace("!(.*)@.*!", "$1", $auth));
 		}
 	}
