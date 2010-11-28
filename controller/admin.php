@@ -4062,7 +4062,8 @@ class admin {
 			str_replace($root, '/', $html),
 			str_replace($root, '/', $css),
 			str_replace($root, '/', $javascript)));
-		$content_saved .= '# Web Optimizer options
+		$content_saved .= '
+# Web Optimizer options
 User-Agent: *
 ';
 		foreach ($directories as $dir) {
