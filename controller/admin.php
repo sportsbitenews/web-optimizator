@@ -4048,6 +4048,30 @@ class admin {
 	}
 
 	/**
+	* Write Disallow instructions to robots.txt
+	**/
+	function write_robots ($root, $html, $css, $javascript) {
+		$robots = $root . '/robots.txt';
+/* create backup */
+		if (!@is_file($robots . '.backup')) {
+			@copy($robots, $robots . '.backup');
+		}
+		$content_saved = @file_get_contents($robots);
+		$content_saved = $this->clean_htaccess($content_saved);
+		$directories = array_unique(
+			str_replace($root, '/', $html),
+			str_replace($root, '/', $css),
+			str_replace($root, '/', $javascript));
+		$content_saved .= '# Web Optimizer options
+User-Agent: *';
+		foreach ($directories as $dir) {
+			$content_saved .= 'Disallow: ' . $dir . "\n";
+		}
+		$content_saved .= '#Web Optimizer end';
+		$this->write_file($robots, $content_saved);
+	}
+
+	/**
 	* Returns actual .htaccess file name
 	**/
 	function detect_htaccess () {
@@ -4062,8 +4086,10 @@ class admin {
 	/**
 	* Cleans all previous rules from .htaccess file content
 	**/
-	function clean_htaccess () {
-		$content_saved = @file_get_contents($this->htaccess);
+	function clean_htaccess ($content_saved = '') {
+		if (empty($content_saved)) {
+			$content_saved = @file_get_contents($this->htaccess);
+		}
 		$content_saved = preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
 		return $content_saved;
 	}
@@ -4078,6 +4104,11 @@ class admin {
 			$base = str_replace($this->compress_options['document_root'], '/',
 				$this->compress_options['website_root']);
 		}
+/* write robotx.txt exclusion for cache files */
+		$this->write_robots($this->compress_options['website_root'],
+			$this->compress_options['html_cachedir'],
+			$this->compress_options['css_cachedir'],
+			$this->compress_options['javascript_cachedir']);
 /* delete previous Web Optimizer rules */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
