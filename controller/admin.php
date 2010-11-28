@@ -4058,16 +4058,19 @@ class admin {
 		}
 		$content_saved = @file_get_contents($robots);
 		$content_saved = $this->clean_htaccess($content_saved);
-		$directories = array_unique(
+		$directories = array_unique(array(
 			str_replace($root, '/', $html),
 			str_replace($root, '/', $css),
-			str_replace($root, '/', $javascript));
+			str_replace($root, '/', $javascript)));
 		$content_saved .= '# Web Optimizer options
-User-Agent: *';
+User-Agent: *
+';
 		foreach ($directories as $dir) {
-			$content_saved .= 'Disallow: ' . $dir . "\n";
+			$content_saved .= 'Disallow: ' . $dir . '
+';
 		}
-		$content_saved .= '#Web Optimizer end';
+		$content_saved .= '#Web Optimizer end
+';
 		$this->write_file($robots, $content_saved);
 	}
 
