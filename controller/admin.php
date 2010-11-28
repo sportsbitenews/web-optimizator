@@ -4069,7 +4069,7 @@ User-Agent: *
 			$content_saved .= 'Disallow: ' . $dir . '
 ';
 		}
-		$content_saved .= '#Web Optimizer end
+		$content_saved .= '# Web Optimizer end
 ';
 		$this->write_file($robots, $content_saved);
 	}
