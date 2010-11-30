@@ -5188,7 +5188,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 		while (!($filesize = @filesize($cachedir . 'module.test')) &&
 			$recursive++ < 10) {
 				$curl = $this->view->download(str_replace(realpath($root),
-					"http://" . $_SERVER['HTTP_HOST'],
+					'http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'],
 					realpath($this->basepath)) . '/' .
 					$curlfile, $cachedir . 'module.test', 1, 0,
 					$this->compress_options['external_scripts']['user'],
