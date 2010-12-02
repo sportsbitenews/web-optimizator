@@ -1690,7 +1690,7 @@ class web_optimizer {
 			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) . '"'.
 /* IE7- don't understand stylesheet nofollow in rel */
 			(empty($this->ua_mod) || !empty($options['rel']) ? 'rel="' .
-				(empty($options['rel']) ? '' : $options['rel'] . ' ') .
+				(empty($options['rel']) ? '' : $options['rel']) .
 				(!empty($options['rel']) && empty($this->ua_mod) ? ' ' : '') .
 				(empty($this->ua_mod) ? 'nofollow' : '') . '"' : '') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
