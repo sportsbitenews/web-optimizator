@@ -1855,7 +1855,8 @@ class web_optimizer {
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
 									$this->shadowbox_base = preg_replace("@https?://" .
 										$this->host_escaped . "/(.*/)[^/]+@",
-										"//" . $this->options['javascript']['host'] . "/$1", $file['file']);
+										(empty($this->options['javascript']['host']) ?
+										'' : '//' . $this->options['javascript']['host']) . "/$1", $file['file']);
 								}
 /* fix scriptaculous loader */
 								if (!empty($file['file']) && ($acpos = strpos($variant_type[1], '?load='))) {
