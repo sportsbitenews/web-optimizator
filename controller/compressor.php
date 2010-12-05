@@ -78,6 +78,8 @@ class web_optimizer {
 		$this->buffered = $this->options['buffered'];
 /* Sets User Agent to differ IE from non-IE */
 		$this->ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+/* HTTPS or not ? */
+		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
@@ -231,8 +233,6 @@ class web_optimizer {
 				}
 			}
 		}
-/* HTTPS or not ? */
-		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
 			$this->options['javascript']['host'] =
@@ -365,7 +365,9 @@ class web_optimizer {
 					$this->options['htaccess']['enabled'] &&
 					$this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
-				"data_uris_mhtml" => $this->options['data_uris']['mhtml'],
+/* disable mhtml for IE7- under HTTPS */
+				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] &&
+					!$this->https || (!strpos($this->ua, 'MSIE 6') && !strpos($this->ua, 'MSIE 7')),
 				"data_uris_separate" => $this->options['data_uris']['separate'] &&
 					((!empty($this->ua_mod) &&
 							$this->options['data_uris']['mhtml']) ||
