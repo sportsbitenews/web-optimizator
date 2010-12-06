@@ -397,6 +397,10 @@
  	
  	function add_to_sql_cache($mysql_result, $start, $query_tables, $sql)
  	{
+ 		if (!is_resource($mysql_result) || (stripos(get_resource_type($mysql_result), 'mysql') === false))
+ 		{
+ 			return false;
+ 		}
 		$end = explode(' ', microtime());
 		$end = $end[1] + $end[0];
 		if (((($end - $start) * 1000) > $this->sql_cache_time))
