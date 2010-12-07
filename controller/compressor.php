@@ -2385,11 +2385,12 @@ class web_optimizer {
 							$source = substr_replace($source,
 								$before_body, $bodypos, 0);
 					} else {
-						$source = preg_replace('@(</body>)@is',
-							$before_body . "$1", $source);
 /* a number of engines doesn't set </body> */
-						if (!strpos($source, $before_body)) {
+						if (!preg_match('@</body>@is', $source)) {
 							$source .= $before_body;
+						} else {
+							$source = preg_replace('@(</body>)@is',
+								$before_body . "$1", $source);
 						}
 					}
 				}
