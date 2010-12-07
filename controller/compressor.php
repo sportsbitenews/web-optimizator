@@ -1691,10 +1691,10 @@ class web_optimizer {
 			' type="' . $options['type'] . '" ' .
 			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) . '"'.
 /* IE7- don't understand stylesheet nofollow in rel */
-			(empty($this->ua_mod) || !empty($options['rel']) ? ' rel="' .
+			((empty($this->ua_mod) && $options['ext'] == 'php') || !empty($options['rel']) ? ' rel="' .
 				(empty($options['rel']) ? '' : $options['rel']) .
 				(!empty($options['rel']) && empty($this->ua_mod) ? ' ' : '') .
-				(empty($this->ua_mod) ? 'nofollow' : '') . '"' : '') . 
+				(empty($this->ua_mod) && $options['ext'] == 'php' ? 'nofollow' : '') . '"' : '') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		return $newfile;
 	}
