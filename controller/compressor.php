@@ -1693,7 +1693,7 @@ class web_optimizer {
 /* IE7- don't understand stylesheet nofollow in rel */
 			((empty($this->ua_mod) && $options['ext'] == 'php') || !empty($options['rel']) ? ' rel="' .
 				(empty($options['rel']) ? '' : $options['rel']) .
-				(!empty($options['rel']) && $options['ext'] == 'php' ? ' ' : '') .
+				(!empty($options['rel']) && $options['ext'] == 'php' && empty($this->ua_mod) ? ' ' : '') .
 				(empty($this->ua_mod) && $options['ext'] == 'php' ? 'nofollow' : '') . '"' : '') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		return $newfile;
