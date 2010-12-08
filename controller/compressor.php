@@ -367,7 +367,7 @@ class web_optimizer {
 				"data_uris" => $this->options['data_uris']['on'],
 /* disable mhtml for IE7- under HTTPS */
 				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] &&
-					!$this->https || (!strpos($this->ua, 'MSIE 6') && !strpos($this->ua, 'MSIE 7')),
+					(!$this->https || (!strpos($this->ua, 'MSIE 6') && !strpos($this->ua, 'MSIE 7'))),
 				"data_uris_separate" => $this->options['data_uris']['separate'] &&
 					((!empty($this->ua_mod) &&
 							$this->options['data_uris']['mhtml']) ||
