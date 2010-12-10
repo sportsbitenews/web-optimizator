@@ -316,6 +316,10 @@ class compressor_view {
 							@curl_setopt($ch, CURLOPT_UPLOAD, true);
 							@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($local_file));
 							@curl_setopt($ch, CURLOPT_PUT, 1);
+/* enter active mode for EdgeCast */
+							if (strpos($remote_file, 'edgecastcdn.net') !== false || strpos($remote_file, 'gdlcdn.com') !== false) {
+								@curl_setopt($ch, CURLOPT_FTPPORT, ':30001-31000');
+							}
 						} else {
 							@curl_setopt($ch, CURLOPT_NOBODY, 1);
 						}
