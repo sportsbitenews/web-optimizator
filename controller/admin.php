@@ -4140,9 +4140,11 @@ User-Agent: *
 				}
 /* generic cookies to skip server side caching */
 				if (!empty($this->input['wss_html_cache_additional_list'])) {
-					$cookies = explode($this->input['wss_html_cache_additional_list'], ' ');
+					$cookies = explode(' ', $this->input['wss_html_cache_additional_list']);
 					foreach ($cookies as $c) {
-						$cookie[] = $c;
+						if (!empty($c)) {
+							$cookie[] = $c;
+						}
 					}
 				}
 				if (count($cookie)) {
