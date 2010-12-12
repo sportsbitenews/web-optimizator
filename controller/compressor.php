@@ -1531,6 +1531,8 @@ class web_optimizer {
 					if (!empty($options['minify_with']) && $options['minify_with'] == 'tidy') {
 						$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					} else {
+/* need to remove comments before */
+						$contents = $this->minify_text($contents);
 						$minified_content_array = $this->convert_data_uri($contents, $options, $resource_file);
 					}
 					$minified_content = $minified_content_array[0];
@@ -1611,7 +1613,10 @@ class web_optimizer {
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if ($options['minify_with'] == 'basic' &&
 				!empty($options['minify']) &&
-				empty($options['css_sprites'])) {
+				empty($options['css_sprites']) &&
+/* data:URI with regular expressions must clean the comments before */
+				empty($options['data_uris']) &&
+				empty($options['mhtml'])) {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
