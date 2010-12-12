@@ -3021,7 +3021,7 @@ class web_optimizer {
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}]+){[^\}]*(background[^:]*):([^;]+);[^\}]*}!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}]+){[^\}]*(background[^:]*):([^;\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
