@@ -514,7 +514,7 @@ __________________
 			if (!empty($this->optimizer->data_uris) ||
 				!empty($this->optimizer->multiple_hosts_count) ||
 				!empty($this->proxy) ||
-				!empty($this->optimizer->proxy_rewrite)) {
+				!empty($this->optimizer->cache_images_htaccess)) {
 					$this->css_to_data_uri();
 			}
 /* after 0.6.2 return array of separated files */
@@ -528,7 +528,7 @@ __________________
 /* location for mhtml */
 		$location = 0;
 		$general_access = !empty($this->optimizer->mhtml) ||
-			!empty($this->optimizer->proxy_rewrite) ||
+			!empty($this->optimizer->cache_images_htaccess) ||
 			!empty($this->multiple_hosts);
 		foreach ($this->optimizer->css->css as $import => $token) {
 /* open @media definition*/
@@ -644,7 +644,7 @@ __________________
 			}
 		}
 	}
-/* cdistribute image through multiple hosts */
+/* distribute image through multiple hosts */
 	function distribute_image ($image) {
 		if (!empty($this->optimizer->multiple_hosts_count) &&
 			(!strpos($image, "://") ||
@@ -663,7 +663,7 @@ __________________
 							'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
 					}
 					return "//" . $new_host . $image;
-		} elseif (!empty($this->optimizer->proxy_rewrite)) {
+		} elseif ($this->optimizer->cache_images_htaccess) {
 /* add absolute path for sprited images */
 			if (0 === strpos($image, 'webo')) {
 				$image = str_replace($this->optimizer->website_root, "/", $this->optimizer->current_dir) . $image;

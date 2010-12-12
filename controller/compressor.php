@@ -3047,6 +3047,7 @@ class web_optimizer {
 								$css_image = $image_saved;
 						} else {
 							$encoded = base64_encode(@file_get_contents($css_image));
+							$next = 0;
 							if ($mhtml) {
 								if (@filesize($css_image) < $options['data_uris_mhtml_size'] &&
 									!in_array($filename, $mhtml_exclude) &&
@@ -3058,7 +3059,7 @@ class web_optimizer {
 										$css_image = 'mhtml:' . $css_url . '!' . $location;
 										$location++;
 								} else {
-									$css_image = $image_saved;
+									$next = 1;
 								}
 							} else {
 								if (@filesize($css_image) < $options['data_uris_size'] &&
@@ -3069,6 +3070,28 @@ class web_optimizer {
 											$extension .
 											';base64,' .
 											$encoded;
+								} else {
+									$next = 1;
+								}
+							}
+/* add multiple hosts/wo.static.php */
+							if ($next) {
+								$image = str_replace($this->options['document_root'], '/', $css_image);
+								if ($this->options['page']['enabled']) {
+									$hosts = explode(" ", $this->options['page']['allowed_list']);
+									$host = $hosts[strlen($image)%count($hosts)];
+/* if we have dot in the distribution host - it's a domain name */
+									if (!$this->https || !($new_host = $this->options['page']['parallel_https'])) {
+										$new_host = $host .
+											((strpos($host, '.') === false) ?
+											'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
+									}
+									$css_image = "//" . $new_host . $image;
+								} elseif ($this->options['page']['far_future_expires_rewrite']) {
+									if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
+/* do not touch dynamic images -- how we can handle them? */
+										$css_image = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $image;
+									}
 								} else {
 									$css_image = $image_saved;
 								}
