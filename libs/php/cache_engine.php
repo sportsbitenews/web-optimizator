@@ -547,6 +547,11 @@ class webo_cache_files extends webo_cache_engine
 		    }
 		}
 
+		if(!empty($options['host']))
+		{
+			$this->_host = preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
+		}
+
 		if(!empty($options['cache_dir']))
 		{
 			$this->enabled = true;
@@ -677,6 +682,10 @@ class webo_cache_files extends webo_cache_engine
  				foreach($patterns as $pattern)
  				{
 	 				$files = $this->__recurse_glob($this->__get_path($pattern));
+	 				if (!empty($this->_host))
+	 				{
+	 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($pattern, $this->_host)));
+	 				}
 	 				foreach($files as $file)
 	 				{
 	 					if (@is_file($file))
@@ -693,6 +702,10 @@ class webo_cache_files extends webo_cache_engine
  			else
  			{
  				$files = $this->__recurse_glob($this->__get_path($patterns));
+ 				if (!empty($this->_host))
+ 				{
+ 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($pattern, $this->_host)));
+ 				}
  				foreach($files as $file)
  				{
  					if (@is_file($file))
@@ -740,9 +753,22 @@ class webo_cache_files extends webo_cache_engine
  	
  	/* Gets path to file from cache entry key */
  	
- 	function __get_path($key)
+ 	function __get_path($key, $host = '')
  	{
- 		$key = strtolower($_SERVER['HTTP_HOST']) . '/' . $key;
+ 		$cur_host = strtolower($_SERVER['HTTP_HOST']);
+ 		$set_host = strtolower($host);
+ 		if (empty($host))
+ 		{
+ 			$key = $cur_host . '/' . $key;
+		}
+		elseif ($cur_host == $set_host)
+		{
+			return array();
+		}
+		else
+		{
+			$key = $set_host . '/' . $key;
+		}
  		return preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
  	}
  	

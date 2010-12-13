@@ -6084,7 +6084,7 @@ require valid-user';
 			'2' => 'apc',
 			'3' => 'xcache'
 			);
-		$cache_engines_options = array('0' => array('cache_dir' => $this->compress_options['html_cachedir']),
+		$cache_engines_options = array('0' => array('cache_dir' => $this->compress_options['html_cachedir'], 'host' => $this->compress_options['host']),
 			'1' => array('server' => @$this->compress_options['performance']['cache_engine_options']),
 			'2' => '',
 			'3' => ''
