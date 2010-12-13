@@ -704,7 +704,7 @@ class webo_cache_files extends webo_cache_engine
  				$files = $this->__recurse_glob($this->__get_path($patterns));
  				if (!empty($this->_host))
  				{
- 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($pattern, $this->_host)));
+ 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($patterns, $this->_host)));
  				}
  				foreach($files as $file)
  				{
