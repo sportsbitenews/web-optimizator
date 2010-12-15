@@ -1284,8 +1284,8 @@ class web_optimizer {
 /* place second CSS call to onDOMready */
 			case 4:
 				$file = 'document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
-				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);'
-				if (!$this->options['css']['data_uris_domloaded']) {
+				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);';
+				if ($this->options['page']['sprites_domloaded']) {
 					$include .= '_webo_hsprites();';
 				}
 				$include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
