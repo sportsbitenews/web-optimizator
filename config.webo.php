@@ -40,6 +40,8 @@ $compress_options['unobtrusive']['counters'] = "0";
 $compress_options['unobtrusive']['ads'] = "0";
 ## Load all iframes near </body>
 $compress_options['unobtrusive']['iframes'] = "0";
+## Load background images on DOMready event?
+$compress_options['unobtrusive']['background'] = "0";
 ## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head
@@ -185,8 +187,6 @@ $compress_options['footer']['counter'] = "0";
 $compress_options['data_uris']['on'] = "0";
 ## Should Web Optimizer separate CSS for rules and images?
 $compress_options['data_uris']['separate'] = "0";
-## Should Web Optimizer load resource CSS on DOMloaded event?
-$compress_options['data_uris']['domloaded'] = "0";
 ## Maximum size of images to be converted, in bytes
 $compress_options['data_uris']['size'] = "24576";
 ## data:URI ignore list, files separated by space, i.e. head.jpg

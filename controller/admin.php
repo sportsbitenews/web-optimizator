@@ -791,19 +791,19 @@ class admin {
 				case 32:
 					$this->save_option("['data_uris']['on']", 1);
 					$this->save_option("['data_uris']['separate']", 1);
-					$this->save_option("['data_uris']['domloaded']", 1);
+					$this->save_option("['unobtrusive']['background']", 1);
 					$this->save_option("['data_uris']['mhtml']", 1);
 					break;
 /* disable separation data:URI */
 				case 33:
 					$this->save_option("['data_uris']['separate']", 0);
-					$this->save_option("['data_uris']['domloaded']", 0);
+					$this->save_option("['unobtrusive']['background']", 0);
 					break;
 /* disable data:URI + mhtml */
 				case 34:
 					$this->save_option("['data_uris']['on']", 0);
 					$this->save_option("['data_uris']['separate']", 0);
-					$this->save_option("['data_uris']['domloaded']", 0);
+					$this->save_option("['unobtrusive']['background']", 0);
 					$this->save_option("['data_uris']['mhtml']", 0);
 					break;
 /* set JS host */
@@ -3314,11 +3314,6 @@ class admin {
 					'value' => $this->compress_options['data_uris']['separate'],
 					'type' => 'checkbox',
 					'price' => 2
-				),
-				'data_uris_domloaded' => array(
-					'value' => $this->compress_options['data_uris']['domloaded'],
-					'type' => 'checkbox',
-					'price' => 2
 				)
 			),
 			'css_sprites' => array(
@@ -3499,6 +3494,11 @@ class admin {
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 3
+				),
+				'unobtrusive_background' => array(
+					'value' => $this->compress_options['unobtrusive']['background'],
+					'type' => 'checkbox',
+					'price' => 2
 				)
 			),
 			'multiple_hosts' => array(
@@ -3776,6 +3776,7 @@ class admin {
 			'wss_unobtrusive_ads',
 			'wss_unobtrusive_counters',
 			'wss_unobtrusive_iframes',
+			'wss_unobtrusive_background',
 			'wss_external_scripts_on',
 			'wss_external_scripts_inline',
 			'wss_external_scripts_head_end',
@@ -3814,7 +3815,6 @@ class admin {
 			'wss_footer_counter',
 			'wss_data_uris_on',
 			'wss_data_uris_separate',
-			'wss_data_uris_domloaded',
 			'wss_data_uris_mhtml',
 			'wss_css_sprites_enabled',
 			'wss_css_sprites_aggressive',

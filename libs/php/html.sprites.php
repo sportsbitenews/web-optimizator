@@ -264,7 +264,13 @@ class html_sprites {
 	function add_styles ($content, $styles) {
 		if (!empty($styles)) {
 /* insert css chunk to spot */
-			$content = str_replace("@@@WSSSTYLES@@@", $styles, $content);
+			if (!$this->options['page']['sprites_domloaded']) {
+				$content = str_replace("@@@WSSSTYLES@@@", $styles, $content);
+/* or to the end of the document */
+			} else {
+				$content = str_replace("@@@WSSREADY@@@", 'document.getElementsByTagName["head"][0].innerHTML+="' .
+					str_replace("<", "\x27", $styles) . '";', $content);
+			}
 		} else {
 			unset($this->css_images);
 		}

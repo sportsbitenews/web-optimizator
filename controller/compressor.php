@@ -373,7 +373,8 @@ class web_optimizer {
 							$this->options['data_uris']['mhtml']) ||
 						(empty($this->ua_mod) &&
 							$this->options['data_uris']['on'])),
-				"data_uris_domloaded" => $this->options['data_uris']['domloaded'],
+				"data_uris_domloaded" => $this->options['unobtrusive']['background'] &&
+					($this->premium > 1),
 				"data_uris_size" => round($this->options['data_uris']['size']),
 				"data_uris_mhtml_size" => round($this->options['data_uris']['mhtml_size']),
 				"data_uris_exclude" => $this->options['data_uris']['ignore_list'],
@@ -472,6 +473,8 @@ class web_optimizer {
 				"htaccess_password" => $this->options['external_scripts']['pass'],
 				"html_tidy" => $this->options['performance']['plain_string'],
 				"sprites" => $this->options['css_sprites']['html_sprites'],
+				"sprites_domloaded" => $this->options['unobtrusive']['background'] &&
+					($this->premium > 1),
 				"dimensions_limited" => round($this->options['css_sprites']['html_limit']),
 				"per_page" => $this->options['css_sprites']['html_page']
 			),
@@ -649,7 +652,7 @@ class web_optimizer {
 				}
 		}
 /* remove marker for styles */
-		$this->content = str_replace('@@@WSSSTYLES@@@', '', $this->content);
+		$this->content = str_replace(array('@@@WSSSTYLES@@@', '@@@WSSREADY@@@'), '', $this->content);
 /* Return content to requestor */
 		if ($content) {
 			return $this->content;
@@ -1280,12 +1283,28 @@ class web_optimizer {
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
-				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
+				$file = 'document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
+				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);@@@WSSREADY@@@window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
 					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
-				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
-				$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include, $source);
+				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}())';
+				if (!$this->options['css']['data_uris_domloaded']) {
+					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include . ';' . $file, $source);
+				} else {
+					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@<script type="text/javascript">' . $file, $source);
+/* separate scripts for 2 parts, the second move to the end of the document */
+					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
+						$source = substr_replace($source, $include, $bodypos, 0);
+					} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
+						$source = substr_replace($source, $include, $bodypos, 0);
+					} else {
+						$source = preg_replace("!</body>!is", $include . "$0", $source);
+						if (!strpos($source, $include)) {
+							$source .= $include;
+						}
+					}
+				}
 				break;
 		}
 		return $source;
