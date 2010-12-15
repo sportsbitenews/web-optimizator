@@ -1492,6 +1492,8 @@ class web_optimizer {
 			}
 			$source = $this->_remove_scripts($external_array, $source,
 				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
+/* add spor for HTML Sprites ? */
+			$addhtml = 1;
 			if ($options['css_sprites'] || ($options['data_uris'] && empty($this->ua_mod)) || ($options['mhtml'] && !empty($this->ua_mod))) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
@@ -1589,18 +1591,20 @@ class web_optimizer {
 							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
 						} else {
+							$addhtml = 0;
 							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.' . $options['ext']));
 						}
 					} elseif (!empty($minified_content)) {
 						$minified_content .= $minified_resource;
-/* include spot for HTML Sprites */
-					} elseif (!empty($options['data_uris_domloaded']) && !empty($this->options['page']['sprites'])) {
-						$source = $this->include_bundle($source, '', $handlers, $cachedir_relative, 4, '');
 					}
 				}
 				if (!empty($minified_content)) {
 					$contents = $minified_content;
 				}
+			}
+/* include spot for HTML Sprites */
+			if ($addhtml && !empty($options['data_uris_domloaded']) && !empty($this->options['page']['sprites'])) {
+				$source = $this->include_bundle($source, '', $handlers, $cachedir_relative, 4, '');
 			}
 		}
 		if (!empty($contents)) {
