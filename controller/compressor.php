@@ -1285,7 +1285,7 @@ class web_optimizer {
 			case 4:
 				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->' : '';
 				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
-				if ($this->options['css']['data_uris_domloaded']) {
+				if ($this->options['css']['data_uris_separate']) {
 					$include .= 'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);';
 				}
 				if ($this->options['page']['sprites_domloaded']) {
@@ -1301,7 +1301,8 @@ class web_optimizer {
 					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include , $source);
 				} else {
 					$include .= '</script>@@@WSSREADY@@@';
-					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@<script type="text/javascript">' . $file, $source);
+					$file = ($file ? '<script type="text/javascript">' : '') . $file;
+					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@' . $file, $source);
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
 						$source = substr_replace($source, $include, $bodypos, 0);
@@ -1585,16 +1586,16 @@ class web_optimizer {
 						$newfile = $this->get_new_file($options, $cache_file, $this->time, '.' . $options['ext']);
 /* raw include right after the main CSS file */
 						if (empty($options['data_uris_domloaded'])) {
-							$contents = $this->include_bundle($contents, $newfile, $handlers, $cachedir_relative, 0);
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 0);
 /* include via JS loader to provide fast flush of content */
 						} else {
-							$contents = $this->include_bundle($contents, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.' . $options['ext']));
+							$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, 4, $this->get_new_file_name($options, $cache_file, $this->time, '.' . $options['ext']));
 						}
 					} elseif (!empty($minified_content)) {
 						$minified_content .= $minified_resource;
 /* include spot for HTML Sprites */
 					} elseif (!empty($options['data_uris_domloaded']) && !empty($this->options['page']['sprites'])) {
-						$contents = $this->include_bundle($contents, '', $handlers, $cachedir_relative, 4, '');
+						$source = $this->include_bundle($source, '', $handlers, $cachedir_relative, 4, '');
 					}
 				}
 				if (!empty($minified_content)) {
