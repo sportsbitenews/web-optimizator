@@ -243,6 +243,10 @@ define('_WEBO_unobtrusive_ads_EFFECT', 'ویب سائٹ کی رفتار میں 2
 define('_WEBO_unobtrusive_iframes', 'iframe لوڈنگ کو مختلف کریں۔');
 define('_WEBO_unobtrusive_iframes_HELP', 'iframe کالز سے تمام ایچ ٹی ایم ایل کوڈ کو &lt;/body&gt; کی طرف منتقل کریں');
 define('_WEBO_unobtrusive_iframes_EFFECT', 'ویب سائٹ کی رفتار میں 20-35% اضافہ');
+define('_WEBO_unobtrusive_background', 'تصاویر کو <code>DOMready</code> event پر لوڈ کریں۔');
+define('_WEBO_unobtrusive_background_HELP', 'بیک گراؤنڈ تصایر کا لوڈ DOMready event کی وجہ سے موخر ہو جائے گا۔ اس کی وجہ سے براؤزر میں ابتدائی ویب صفحہ کی پراسیسنگ تیز ہو جانی چاہئے۔');
+define('_WEBO_unobtrusive_background_EFFECT', 'ویب سائٹ رینڈرنگ اسپیڈ میں 20-50% اضافہ');
+define('_WEBO_unobtrusive_background_HELP_DISABLED', 'کراس براؤزر data:URI بنانا ناممکن ہے کیونکہ ایک اختیار بنام &quot; کارکردگی۔یکساں کیشے فائلز تمام براؤزرز کیلئے&quot; فعال ہے۔');
 define('_WEBO_gzip_css', 'Gzip سی ایس ایس');
 define('_WEBO_gzip_css_HELP', 'سب سی ایس ایس فائل gzip کے ذریعے کمپریس کی جائیں گی.');
 define('_WEBO_gzip_javascript', 'Gzip جاوا سکرپٹ');
@@ -377,10 +381,6 @@ define('_WEBO_data_uris_separate', 'تصاویر کو سی ایس ایس کوڈ 
 define('_WEBO_data_uris_separate_HELP', 'مرکب سی ایس ایس کوڈ اور base64 اور mthml فارمیٹ کی تصاویر کو مختلف فائلز میں محفوظ کیا جائے گا۔ اس کی مدد سے کیشنگ بڑھنی چاہئے۔');
 define('_WEBO_data_uris_separate_EFFECT', 'ویب سائٹ کی رفتار میں 3-5% اضافہ');
 define('_WEBO_data_uris_separate_HELP_DISABLED', 'کراس براؤزر data:URI بنانا ناممکن ہے کیونکہ ایک آپشن &quot;پرمارمنس۔ تمام براؤزرز کیلئے یکساں کیشے فائلز&quot; فعال ہے۔');
-define('_WEBO_data_uris_domloaded', 'تصاویر کو <code>DOMready</code> event پر لوڈ کریں۔');
-define('_WEBO_data_uris_domloaded_HELP', 'بیک گراؤنڈ تصایر کا لوڈ DOMready event کی وجہ سے موخر ہو جائے گا۔ اس کی وجہ سے براؤزر میں ابتدائی ویب صفحہ کی پراسیسنگ تیز ہو جانی چاہئے۔');
-define('_WEBO_data_uris_domloaded_EFFECT', 'ویب سائٹ رینڈرنگ اسپیڈ میں 20-50% اضافہ');
-define('_WEBO_data_uris_domloaded_HELP_DISABLED', 'کراس براؤزر data:URI بنانا ناممکن ہے کیونکہ ایک اختیار بنام &quot; کارکردگی۔یکساں کیشے فائلز تمام براؤزرز کیلئے&quot; فعال ہے۔');
 define('_WEBO_data_uris_size', 'زیادہ سے زیادہ <code>data:URI</code> سائز (بائٹس میں)۔');
 define('_WEBO_data_uris_size_HELP', 'تصاویر جن کا سائز دئے گئے نمبر سے زیادہ ہوگا، انہیں base64 فارمیٹ میں نہیں بدلا جائے گا۔ کوئی ویلیو نہ دینے پر یا زیرو ویلیو دینے کا مطلب ہوگا کوئی حدود نہیں۔');
 define('_WEBO_data_uris_size_HELP_DISABLED', 'کراس براؤزر data:URI بنانا ناممکن ہے کیونکہ ایک اختیار بنام &quot; کارکردگی۔یکساں کیشے فائلز تمام براؤزرز کیلئے&quot; فعال ہے۔');

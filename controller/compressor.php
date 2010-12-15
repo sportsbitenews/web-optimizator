@@ -1284,14 +1284,20 @@ class web_optimizer {
 /* place second CSS call to onDOMready */
 			case 4:
 				$file = 'document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->';
-				$include = '<script type="text/javascript">function _weboptimizer_load(){var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);@@@WSSREADY@@@window._weboptimizer_load=function(){}}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
+				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);'
+				if (!$this->options['css']['data_uris_domloaded']) {
+					$include .= '_webo_hsprites();';
+				}
+				$include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
 					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				}
 				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}())';
 				if (!$this->options['css']['data_uris_domloaded']) {
-					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include . ';' . $file, $source);
+					$include .=  ';' . $file;
+					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include , $source);
 				} else {
+					$include .= '</script>@@@WSSREADY@@@';
 					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@<script type="text/javascript">' . $file, $source);
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {

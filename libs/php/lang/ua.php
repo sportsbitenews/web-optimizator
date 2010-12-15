@@ -251,6 +251,10 @@ define('_WEBO_unobtrusive_ads_EFFECT', 'Увеличение скорости з
 define('_WEBO_unobtrusive_iframes', 'Отложить загрузку фреймов');
 define('_WEBO_unobtrusive_iframes_HELP', 'Код всех фреймов  будет переноситься к закрывющему тэгу &lt;/body&gt;.');
 define('_WEBO_unobtrusive_iframes_EFFECT', 'Увеличение скорости загрузки сайта на 20-35%');
+define('_WEBO_unobtrusive_background', 'Загружать фоновые изображения по событию <code>DOMready</code>');
+define('_WEBO_unobtrusive_background_HELP', 'Загрузка фоновых изображений будет откладываться до события DOMReady. Это увеличит скорость появления страницы на экране браузера.');
+define('_WEBO_unobtrusive_background_EFFECT', 'Ускорение отображения сайта в браузере на 20-50%');
+define('_WEBO_unobtrusive_background_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка &laquo;Производительность - Использовать файлы в кэше для всех браузеров&raquo;.');
 
 define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
 define('_WEBO_gzip_css_HELP', 'Все CSS-файлы будут передаваться в сжатом виде.');
@@ -390,10 +394,6 @@ define('_WEBO_data_uris_separate', 'Отделить изображения от
 define('_WEBO_data_uris_separate_HELP', 'Преобразованный код CSS и изображения в форматах base64 и mhtml будут храниться в отдельных файлах. Это должно улучшить их кэширующее поведение.');
 define('_WEBO_data_uris_separate_EFFECT', 'Увеличение скорости загрузки сайта на 3-5%');
 define('_WEBO_data_uris_separate_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка &laquo;Производительность - Использовать файлы в кэше для всех браузеров&raquo;.');
-define('_WEBO_data_uris_domloaded', 'Загружать изображения по событию <code>DOMready</code>');
-define('_WEBO_data_uris_domloaded_HELP', 'Загрузка фоновых изображений будет откладываться до события DOMReady. Это увеличит скорость появления страницы на экране браузера.');
-define('_WEBO_data_uris_domloaded_EFFECT', 'Ускорение отображения сайта в браузере на 20-50%');
-define('_WEBO_data_uris_domloaded_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка &laquo;Производительность - Использовать файлы в кэше для всех браузеров&raquo;.');
 
 define('_WEBO_css_sprites_enabled', 'Застосувати CSS Sprites');
 define('_WEBO_css_sprites_enabled_HELP', 'Фоновые изображения будут объединяться по технологии CSS Sprites, а CSS-код, отвечающий за их вывод, будет соответствующим образом преобразовываться.');

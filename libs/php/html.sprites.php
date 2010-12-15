@@ -268,8 +268,8 @@ class html_sprites {
 				$content = str_replace("@@@WSSSTYLES@@@", $styles, $content);
 /* or to the end of the document */
 			} else {
-				$content = str_replace("@@@WSSREADY@@@", 'document.getElementsByTagName["head"][0].innerHTML+="' .
-					str_replace("<", "\x27", $styles) . '";', $content);
+				$content = str_replace("@@@WSSREADY@@@", '<script type="text/javascript">function _webo_hsprites(){document.getElementsByTagName("head")[0].innerHTML+="' .
+					str_replace(array('<', '"'), array("\\x27", '\\"'), $styles) . '"}</script>', $content);
 			}
 		} else {
 			unset($this->css_images);
