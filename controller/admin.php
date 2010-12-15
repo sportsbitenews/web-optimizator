@@ -3498,6 +3498,7 @@ class admin {
 				'unobtrusive_background' => array(
 					'value' => $this->compress_options['unobtrusive']['background'],
 					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				)
 			),
