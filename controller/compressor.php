@@ -1564,11 +1564,13 @@ class web_optimizer {
 						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']);
 					}
 					if (!empty($options['minify_with']) && $options['minify_with'] == 'tidy') {
-						$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
+						$minified_content_array = $this->convert_css_sprites($contents, $options,
+							(empty($options['css_host']) ? '' : '//' . $options['css_host']) . $resource_file);
 					} else {
 /* need to remove comments before */
 						$contents = $this->minify_text($contents);
-						$minified_content_array = $this->convert_data_uri($contents, $options, $resource_file);
+						$minified_content_array = $this->convert_data_uri($contents, $options,
+							(empty($options['css_host']) ? '' : '//' . $options['css_host']) . $resource_file);
 					}
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
@@ -1906,10 +1908,10 @@ class web_optimizer {
 								$i++;
 /* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
-									$this->shadowbox_base = preg_replace("@https?://" .
-										$this->host_escaped . "/(.*/)[^/]+@",
+									$this->shadowbox_base = preg_replace("@^(https?://" .
+										$this->host_escaped . ")?/(.*/)[^/]+$@",
 										(empty($this->options['javascript']['host']) ?
-										'' : '//' . $this->options['javascript']['host']) . "/$1", $file['file']);
+										'' : '//' . $this->options['javascript']['host']) . "/$2", $file['file']);
 								}
 /* fix scriptaculous loader */
 								if (!empty($file['file']) && ($acpos = strpos($variant_type[1], '?load='))) {
@@ -2139,6 +2141,11 @@ class web_optimizer {
 						} else {
 							$content_from_file = @file_get_contents($this->get_file_name($value['file']));
 						}
+/* detect Shadowbox variables */
+						if (strpos($value['file'], 'shadowbox.js') !== false) {
+							$this->shadowbox_sizzle = preg_match("@useSizzle:\s*true@is", $content_from_file);
+							$this->shadowbox_language = preg_replace("@.*language:\s*['\"]([^'\"]+)['\"].*@is", "$1", $content_from_file);
+						}
 /* remove duplicates */
 						if ($value['tag'] == 'script' &&
 							$this->options['javascript']['remove_duplicates']) {
@@ -2170,17 +2177,25 @@ class web_optimizer {
 							} else {
 /* fix to merge dynamic Shadowbox files */
 								if (!empty($this->shadowbox_base) && preg_match("@players:\s*\[@is", $value['content'])) {
-									$players = preg_replace("@.*(players:\s*\[[^]+]]\s*),\r?\n?.*@is", "$1". $value['content']);
-									$value['content'] = str_replace($players . ',', '', $value['content']);
+									$players = preg_replace("@.*players:\s*\[([^\]]+)]\s*,\r?\n?.*@is", "$1", $value['content']);
+									$value['content'] = str_replace($players, '', $value['content']);
 									$players = str_replace(array(" ", "'", '"'), '', $players);
 									$players = explode(',', $players);
 									$d = $this->shadowbox_base;
+									$c = '';
+									if (!empty($this->shadowbox_sizzle)) {
+										$c .= @file_get_contents($this->get_file_name($d . 'libraries/sizzle/sizzle.js'));
+									}
+									if (!empty($this->shadowbox_language)) {
+										$c .= @file_get_contents($this->get_file_name($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js'));
+									}
 									foreach ($players as $player) {
 										if ($player == 'swf' || $player == 'flv') {
-											$value['content'] .= @file_get_contents($this->get_file_name($d . 'libraries/swfobject/swfobject.js'));
+											$c .= @file_get_contents($this->get_file_name($d . 'libraries/swfobject/swfobject.js'));
 										}
-										$value['content'] .= @file_get_contents($this->get_file_name($d . 'players/shadowbox-' . $player . '.js'));
+										$c .= @file_get_contents($this->get_file_name($d . 'players/shadowbox-' . $player . '.js'));
 									}
+									$value['content'] = $c . $value['content'];
 								}
 							}
 							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
