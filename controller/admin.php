@@ -2888,6 +2888,8 @@ class admin {
 					$saved['external_scripts']['user'];
 				$this->compress_options['external_scripts']['pass'] = 
 					$saved['external_scripts']['pass'];
+				$this->compress_options['javascript_cachedir'] = 
+					$saved['javascript_cachedir'];
 				$options[$key] = $this->get_options($ext);
 				$this->compress_options = $saved;
 			}
