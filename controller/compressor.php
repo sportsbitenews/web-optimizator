@@ -2167,6 +2167,21 @@ class web_optimizer {
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'],
 									array('file' => $this->options['document_root_relative']));
+							} else {
+/* fix to merge dynamic Shadowbox files */
+								if (!empty($this->shadowbox_base) && preg_match("@players:\s*\[@is", $value['content'])) {
+									$players = preg_replace("@.*(players:\s*\[[^]+]]\s*),\r?\n?.*@is", "$1". $value['content']);
+									$value['content'] = str_replace($players . ',', '', $value['content']);
+									$players = str_replace(array(" ", "'", '"'), '', $players);
+									$players = explode(',', $players);
+									$d = $this->shadowbox_base;
+									foreach ($players as $player) {
+										if ($player == 'swf' || $player == 'flv') {
+											$value['content'] .= @file_get_contents($this->get_file_name($d . 'libraries/swfobject/swfobject.js'));
+										}
+										$value['content'] .= @file_get_contents($this->get_file_name($d . 'players/shadowbox-' . $player . '.js'));
+									}
+								}
 							}
 							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
 /* if we can't add to existing tag -- store for the future */
