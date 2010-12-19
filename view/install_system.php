@@ -436,7 +436,13 @@ require('<?php
 					echo _WEBO_SPLASH3_TOFILE3;
 ?> <code><?php
 					echo preg_replace("/\\\/", "/", $document_root) . $file['file'];
-?></code>:</p><textarea cols="80" rows="2" class="wssF wssF1">$web_optimizer->finish();</textarea><?php
+?></code>:</p><textarea cols="80" rows="2" class="wssF wssF1"><?php
+					if (empty($file['text'])) {
+?>$web_optimizer->finish();<?php
+					} else {
+						echo $file['text'];
+					}
+?></textarea><?php
 				} else {
 ?><p><?php
 					echo _WEBO_SPLASH3_TOFILE;
@@ -457,7 +463,11 @@ require('<?php
 						echo preg_replace("/\\\/", "/", $current_directory);
 ?>web.optimizer.php');<?php
 					} else {
+						if (empty($file['text'])) {
 ?>$web_optimizer->finish();<?php
+						} else {
+							echo $file['text'];
+						}
 					}
 ?></textarea><?php
 				}

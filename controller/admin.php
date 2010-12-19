@@ -2788,7 +2788,7 @@ class admin {
 	function cleanup_file ($file, $return = false) {
 		if (@is_file($file)) {
 /* clean content from Web Optimizer calls */
-			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", @file_get_contents($file));
+			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", @file_get_contents($file));
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -4921,6 +4921,22 @@ Options +FollowSymLinks";
 					$auto_rewrite = 1;
 				}
 			}
+/* and for Koobi */
+		} elseif ($this->cms_version == 'Koobi CMS') {
+			$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
+			$c = @file_get_contents($mainfile);
+			if (!empty($c)) {
+/* create backup */
+				@copy($mainfile, $mainfile . '.backup');
+				$c = preg_replace("!\(define\(\"BASEDIR\",\s*dirname\(__FILE__\)\);\r?\n?)!s", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $c);
+				$c = preg_replace("!(\\\$gz_content\s*=\s*ob_get_clean\(\);\r?\n?)!s", "$1" . '$gz_content = $web_optimizer->finish($gz_content);' . "\n", $c);
+				$c = preg_replace("!(\\\$content\s*=\s*ob_get_clean\(\);\r?\n?)!s", "$1" . '$content = $web_optimizer->finish($content);' . "\n", $c);
+/* update mainfile */
+				$return = $this->write_file($mainfile, $c, 1);
+				if (!empty($return)) {
+					$auto_rewrite = 1;
+				}
+			}
 		} else {
 			$index = $this->view->paths['absolute']['document_root'] . 'index.php';
 			if (substr($this->cms_version, 0, 9) == 'vBulletin') {
@@ -5639,6 +5655,9 @@ require valid-user';
 /* PrestaShop 1.2.5 */
 		} elseif (@is_file($root . '/modules/paypal/prestashop_paypal.png')) {
 			return 'PrestaShop';
+/* Koobi CMS */
+		} elseif (@is_file($root . '/class/tpl/Koobi.class.php')) {
+			return 'Koobi CMS';
 		}
 		return 'CMS 42';
 	}
@@ -6053,6 +6072,28 @@ require valid-user';
 						'file' => 'include/func/func.core.php',
 						'mode' => 'finish',
 						'location' => '$templater->display($tpl);'
+					)
+				);
+				break;
+/* Koobi CMS */
+			case 'Koobi':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start',
+						'location' => 'define("BASEDIR", dirname(__FILE__));'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => '$gz_content = ob_get_clean();',
+						'text' => '$gz_content = $web_optimizer->finish($gz_content)'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => '$content = ob_get_clean();',
+						'text' => '$content = $web_optimizer->finish($content);'
 					)
 				);
 				break;
