@@ -21,6 +21,7 @@ $compress_options['external_scripts']['include_code']="";
 $compress_options['external_scripts']['include_try']="0";
 $compress_options['external_scripts']['duplicates']="0";
 $compress_options['external_scripts']['minify_exclude']="";
+$compress_options['external_scripts']['include_mask']="";
 $compress_options['performance']['mtime']="1";
 $compress_options['performance']['plain_string']="1";
 $compress_options['performance']['cache_version']="0";

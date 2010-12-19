@@ -3026,7 +3026,12 @@ class admin {
 				'external_scripts_duplicates' => array(
 					'value' => $this->compress_options['external_scripts']['duplicates'],
 					'type' => 'checkbox'
-				)
+				),
+				'external_scripts_include_mask' => array(
+					'value' => $this->compress_options['external_scripts']['include_mask'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+				),
 			),
 			'minify' => array(
 				'minify_css_min' => array(
@@ -3705,6 +3710,7 @@ class admin {
 			'wss_external_scripts_ignore_list',
 			'wss_external_scripts_additional_list',
 			'wss_external_scripts_minify_exclude',
+			'wss_external_scripts_include_mask',
 			'wss_performance_cache_engine_options',
 			'wss_footer_image',
 			'wss_footer_link',

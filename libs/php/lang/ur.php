@@ -190,6 +190,8 @@ define('_WEBO_minify_javascript_host_HELP', 'مرکب جاوا اسکرپٹ فا
 define('_WEBO_minify_javascript_host_EFFECT', 'ویب سائٹ رفتار میں 5-10% اضافہ');
 define('_WEBO_external_scripts_ignore_list', 'ان فائلز کو مرکب بننے سے خارج کریں');
 define('_WEBO_external_scripts_ignore_list_HELP', 'مقررہ فائلز مشترکہ جاوا اسکرپٹ فائل میں شامل نہیں کی جائیں گی۔ آپ کو صرف فائل کا نام لکھنا ہے ، مکمل راستہ مت لکھیں۔');
+define('_WEBO_external_scripts_include_mask', 'Mask to merge scripts');
+define('_WEBO_external_scripts_include_mask_HELP', 'You can set the mask according to which all scripts will be included. For example you need to include the first 3 script tag to merged file, and exclude the next 2. So the mask will be xxx00. If there is no mask matching the current script tag - it will included or excluded according to the other rules.');
 define('_WEBO_external_scripts_head_end', 'مرکب اسکرپٹ کو زبردستی <code>&lt;/head&gt;</code>میں دھکیلیں۔');
 define('_WEBO_external_scripts_head_end_HELP', 'مرکب جاوا اسکرپٹ فائل کال بند ہونے والے &lt;/head&gt;ٹیگ کی طرف دھکیلی جائے گی');
 define('_WEBO_external_scripts_include_try', 'محفوظ مرکب موڈ');

@@ -64,6 +64,8 @@ $compress_options['external_scripts']['include_try'] = "1";
 $compress_options['external_scripts']['duplicates'] = "1";
 ## Exclude the following scripts from minify
 $compress_options['external_scripts']['minify_exclude'] = "";
+## Merge scripts by this mask, x - to include, 0 - to exclude
+$compress_options['external_scripts']['include_mask'] = "";
 ## To get through HTTP Basic Authorization
 $compress_options['external_scripts']['user'] = "";
 $compress_options['external_scripts']['pass'] = "";

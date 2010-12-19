@@ -337,6 +337,7 @@ class web_optimizer {
 					$this->options['minify']['javascript'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
+				"external_scripts_mask" => $this->options['external_scripts']['include_mask'],
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"file" => $this->options['minify']['javascript_file'],
 				"host" => $this->options['minify']['javascript_host'],
@@ -1873,6 +1874,7 @@ class web_optimizer {
 /* find all scripts from head */
 			$regex = "!(<script[^>]*>)(.*?</script>)!is";
 			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
+			$i = 0;
 			if (!empty($matches)) {
 				foreach($matches as $match) {
 					$file = array(
@@ -1895,7 +1897,13 @@ class web_optimizer {
 							preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))) ||
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
-								$this->initial_files[] = $file;
+/* filter scripts through include mask */
+								if (empty($this->options['javascript']['include_mask']) ||
+									empty($this->options['javascript']['include_mask']{$i}) ||
+									$this->options['javascript']['include_mask']{$i} == 'x') {
+									$this->initial_files[] = $file;
+								}
+								$i++;
 /* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
 									$this->shadowbox_base = preg_replace("@https?://" .

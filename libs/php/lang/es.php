@@ -199,6 +199,8 @@ define('_WEBO_external_scripts_include_try', 'Safe combine mode');
 define('_WEBO_external_scripts_include_try_HELP', 'With this option all external files will be enveloped into try-catch construction (with individual files\' inclusion on failed content execution in common scope). This reduces JavaScript performance but guarantee that there will be no broken JavaScript calls due to their combine.');
 define('_WEBO_external_scripts_duplicates', 'Remove duplicates');
 define('_WEBO_external_scripts_duplicates_HELP', 'All noticed duplicates of common libraries (jQuery, Prototype, MooTools) will be removed from merging. This reduces final JavaScript file size and its initialization time, but in a few cases can break integrity of cliet side logic.');
+define('_WEBO_external_scripts_include_mask', 'Mask to merge scripts');
+define('_WEBO_external_scripts_include_mask_HELP', 'You can set the mask according to which all scripts will be included. For example you need to include the first 3 script tag to merged file, and exclude the next 2. So the mask will be xxx00. If there is no mask matching the current script tag - it will included or excluded according to the other rules.');
 
 define('_WEBO_minify_css_min', 'Minimiza archivos CSS');
 define('_WEBO_minify_css_min_HELP', 'Todos los espacios, tabs, apartes, y comentarios excesivos ser&aacute;n borrados del archivo combinado CSS.');
