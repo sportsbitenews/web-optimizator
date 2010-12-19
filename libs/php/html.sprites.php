@@ -270,7 +270,7 @@ class html_sprites {
 			} else {
 				$content = str_replace("@@@WSSREADY@@@", '<script type="text/javascript">function _webo_hsprites(){var a=document,b=a.createElement("style"),c=a.createTextNode("' .
 				str_replace('"', '\\"', $styles) .
-				'"),d;b.type="text/css";if(d=b.styleSheet){d.cssText=c.nodeValue}else{b.appendChild(rules)}a.getElementsByTagName("head")[0].appendChild(b)}', $content);
+				'"),d;b.type="text/css";if(d=b.styleSheet){d.cssText=c.nodeValue}else{b.appendChild(c)}a.getElementsByTagName("head")[0].appendChild(b)}</script>', $content);
 			}
 		} else {
 			unset($this->css_images);
