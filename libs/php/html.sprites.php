@@ -235,7 +235,7 @@ class html_sprites {
 		}
 		if (!empty($css)) {
 /* form final css chunk */
-			$styles = '<style type="text/css">';
+			$styles = '';
 			foreach ($css as $class => $rules) {
 				$styles .= $class . '{';
 				foreach ($rules as $k => $v) {
@@ -252,7 +252,7 @@ class html_sprites {
 				}
 				$styles .= '}';
 			}
-			$styles = str_replace(';}', '}', $styles) . '</style>';
+			$styles = str_replace(';}', '}', $styles);
 		}
 		return $styles;
 	}
@@ -265,11 +265,12 @@ class html_sprites {
 		if (!empty($styles)) {
 /* insert css chunk to spot */
 			if (!$this->options['page']['sprites_domloaded']) {
-				$content = str_replace("@@@WSSSTYLES@@@", $styles, $content);
+				$content = str_replace("@@@WSSSTYLES@@@", '<style type="text/css">' . $styles . '</style>', $content);
 /* or to the end of the document */
 			} else {
-				$content = str_replace("@@@WSSREADY@@@", '<script type="text/javascript">function _webo_hsprites(){document.getElementsByTagName("head")[0].innerHTML+="' .
-					str_replace(array('<', '"'), array("\\x3c", '\\"'), $styles) . '"}</script>', $content);
+				$content = str_replace("@@@WSSREADY@@@", '<script type="text/javascript">function _webo_hsprites(){var a=document,b=a.createElement("style"),c=a.createTextNode("' .
+				str_replace('"', '\\"', $styles) .
+				'"),d;b.type="text/css";if(d=b.styleSheet){d.cssText=c.nodeValue}else{b.appendChild(rules)}a.getElementsByTagName("head")[0].appendChild(b)}', $content);
 			}
 		} else {
 			unset($this->css_images);
