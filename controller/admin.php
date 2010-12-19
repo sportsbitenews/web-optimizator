@@ -3731,7 +3731,7 @@ class admin {
 			'wss_title',
 			'wss_config') as $val) {
 				$this->input[$val] = trim(str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"),
-					isset($this->input[$val]) ? '' : $this->input[$val]));
+					!isset($this->input[$val]) ? '' : $this->input[$val]));
 		}
 /* make numeric options save */
 		foreach (array(
