@@ -3126,7 +3126,7 @@ class web_optimizer {
 							$encoded = base64_encode(@file_get_contents($css_image));
 							$next = 0;
 							if ($mhtml) {
-								if (@filesize($css_image) < $options['data_uris_mhtml_size'] &&
+								if (@filesize($css_image) < $options['mhtml_size'] &&
 									!in_array($filename, $mhtml_exclude) &&
 									!empty($encoded)) {
 										$compressed .= "\n\n--_\nContent-Location:" .
