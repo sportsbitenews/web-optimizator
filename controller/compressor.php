@@ -1898,9 +1898,9 @@ class web_optimizer {
 						(empty($file['file']) &&
 							$this->options['javascript']['inline_scripts'])) {
 /* filter scripts through include mask */
-								if (empty($this->options['javascript']['include_mask']) ||
-									empty($this->options['javascript']['include_mask']{$i}) ||
-									$this->options['javascript']['include_mask']{$i} == 'x') {
+								if (!isset($this->options['javascript']['external_scripts_mask']) ||
+									!isset($this->options['javascript']['external_scripts_mask']{$i}) ||
+									$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
 									$this->initial_files[] = $file;
 								}
 								$i++;
