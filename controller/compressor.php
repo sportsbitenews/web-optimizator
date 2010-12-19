@@ -1360,7 +1360,7 @@ class web_optimizer {
 		$external_file = 'http' . $this->https . '://' .
 			(empty($options['host']) ?
 				$_SERVER['HTTP_HOST'] :
-				(empty($options['https']) ?
+				(empty($options['https']) || !$this->https ?
 				$options['host'] :
 				$options['https'])) .
 			str_replace($this->options['document_root'], "/", $physical_file);
