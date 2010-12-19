@@ -3643,11 +3643,7 @@ class admin {
 		$YUI_checked = 0;
 		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS')) &&
 			(is_file($this->basepath . 'libs/php/class.yuicompressor4.php') || is_file($this->basepath . 'libs/php/class.yuicompressor.php'))) {
-			if (substr(phpversion(), 0, 1) == 4) {
-				require_once($this->basepath . 'libs/php/class.yuicompressor4.php');
-			} else {
-				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
-			}
+			require_once($this->basepath . 'libs/php/class.yuicompressor.php');
 			$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
 			$YUI_checked = $YUI->check();
 		}
