@@ -4928,7 +4928,7 @@ Options +FollowSymLinks";
 			if (!empty($c)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
-				$c = preg_replace("!\(define\(\"BASEDIR\",\s*dirname\(__FILE__\)\);\r?\n?)!s", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $c);
+				$c = preg_replace("!(define\(\"BASEDIR\",\s*dirname\(__FILE__\)\);\r?\n?)!s", "$1" . ' require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $c);
 				$c = preg_replace("!(\\\$gz_content\s*=\s*ob_get_clean\(\);\r?\n?)!s", "$1" . '$gz_content = $web_optimizer->finish($gz_content);' . "\n", $c);
 				$c = preg_replace("!(\\\$content\s*=\s*ob_get_clean\(\);\r?\n?)!s", "$1" . '$content = $web_optimizer->finish($content);' . "\n", $c);
 /* update mainfile */
