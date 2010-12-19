@@ -1908,10 +1908,11 @@ class web_optimizer {
 								$i++;
 /* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
-									$this->shadowbox_base = preg_replace("@^(https?://" .
-										$this->host_escaped . ")?/(.*/)[^/]+$@",
-										(empty($this->options['javascript']['host']) ?
-										'' : '//' . $this->options['javascript']['host']) . "/$2", $file['file']);
+									$this->shadowbox_base_raw = preg_replace("@^(https?://" .
+										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
+									$this->shadowbox_base = (empty($this->options['javascript']['host']) ?
+										'' : '//' . $this->options['javascript']['host']) .
+										'/' . $this->shadowbox_base_raw;
 								}
 /* fix scriptaculous loader */
 								if (!empty($file['file']) && ($acpos = strpos($variant_type[1], '?load='))) {
@@ -2181,19 +2182,19 @@ class web_optimizer {
 									$value['content'] = str_replace($players, '', $value['content']);
 									$players = str_replace(array(" ", "'", '"'), '', $players);
 									$players = explode(',', $players);
-									$d = $this->shadowbox_base;
+									$d = $this->options['document_root'] . $this->shadowbox_base_raw;
 									$c = '';
 									if (!empty($this->shadowbox_sizzle)) {
-										$c .= @file_get_contents($this->get_file_name($d . 'libraries/sizzle/sizzle.js'));
+										$c .= @file_get_contents($d . 'libraries/sizzle/sizzle.js');
 									}
 									if (!empty($this->shadowbox_language)) {
-										$c .= @file_get_contents($this->get_file_name($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js'));
+										$c .= @file_get_contents($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js');
 									}
 									foreach ($players as $player) {
 										if ($player == 'swf' || $player == 'flv') {
-											$c .= @file_get_contents($this->get_file_name($d . 'libraries/swfobject/swfobject.js'));
+											$c .= @file_get_contents($d . 'libraries/swfobject/swfobject.js');
 										}
-										$c .= @file_get_contents($this->get_file_name($d . 'players/shadowbox-' . $player . '.js'));
+										$c .= @file_get_contents($d . 'players/shadowbox-' . $player . '.js');
 									}
 									$value['content'] = $c . $value['content'];
 								}
