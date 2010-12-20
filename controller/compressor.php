@@ -3102,6 +3102,7 @@ class web_optimizer {
 		if (is_array($imgs)) {
 			$replaced = array();
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
+			$mhtml_code = "/*\nContent-Type:multipart/related;boundary=\"_\"";
 			$location = 0;
 			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
 			$mhtml_exclude = explode(" ", $options['mhtml_exclude']);
@@ -3129,7 +3130,7 @@ class web_optimizer {
 								if (@filesize($css_image) < $options['mhtml_size'] &&
 									!in_array($filename, $mhtml_exclude) &&
 									!empty($encoded)) {
-										$compressed .= "\n\n--_\nContent-Location:" .
+										$mhtml_code .= "\n\n--_\nContent-Location:" .
 											$location .
 											"\nContent-Transfer-Encoding:base64\n\n" .
 											$encoded;
@@ -3205,6 +3206,9 @@ class web_optimizer {
 						$image[3] .
 						'}';
 				}
+			}
+			if (!empty($mhtml_code)) {
+				$compressed .= $mhtml_code . "--_--\n*/";
 			}
 /* clear content from junk */
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$4", $content);
