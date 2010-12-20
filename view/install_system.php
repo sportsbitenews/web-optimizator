@@ -122,9 +122,12 @@
 	echo _WEBO_SYSTEM_SETTINGS;
 ?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#cache" class="wssJ"><?php
 	echo _WEBO_DASHBOARD_CACHE;
-?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#updates" class="wssJ"><?php
-	echo _WEBO_SYSTEM_UPDATES;
 ?><span class="wssJ6"></span></a></li><?php
+	if (@function_exists('curl_init')) {
+?><li class="wssO4"><a href="#updates" class="wssJ"><?php
+		echo _WEBO_SYSTEM_UPDATES;
+?><span class="wssJ6"></span></a></li><?php
+	}
 	if (!$internal) {
 ?><li class="wssO4"><a href="#install" class="wssJ"><?php
 		echo _WEBO_SYSTEM_INSTALL;
@@ -363,52 +366,55 @@
 	}
 ?></tbody></table><p class="wssI"><a href="#wss_renew" class="wssJ7"><?php
 	echo _WEBO_DASHBOARD_CACHE_REFRESH;
-?><span class="wssJ6"></span></a></p></div></fieldset><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
-	echo _WEBO_SYSTEM_UPDATES_TITLE;
+?><span class="wssJ6"></span></a></p></div></fieldset><?php
+	if (@function_exists('curl_init')) {
+?><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
+		echo _WEBO_SYSTEM_UPDATES_TITLE;
 ?></h2><dl><dt class="wssD5"><label class="wssE" for="wss_showbeta"><?php
-	echo _WEBO_showbeta;
+		echo _WEBO_showbeta;
 ?> <a class="wssJ9" href="#" title="<?php
-	echo _WEBO_showbeta_HELP;
+		echo _WEBO_showbeta_HELP;
 ?>">?</a></label></dt><dd class="wssD6"><input type="checkbox"<?php
-							echo $showbeta ? ' checked="checked"' : '';
+		echo $showbeta ? ' checked="checked"' : '';
 ?> name="wss_showbeta" id="wss_showbeta" title="<?php
-	echo $version;
+		echo $version;
 ?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/></dd></dl><?php
-	if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
+		if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
 ?><div id="wss_upd" title="<?php
+			echo _WEBO_LOGIN_VERSION;
+?> <?php
+			echo $version_new;
+?>"></div><?php
+		} else {
+?><p class="wssI"><?php
+			echo _WEBO_SYSTEM_NOUPDATES;
+?> (<?php
+			echo $version;
+?>).</p><?php
+		}
+		if (count($versions)) {
+?><p class="wssI"><a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
+			echo _WEBO_SYSTEM_ROLLBACK;
+?><span class="wssJ6"></span></a> <select name="wss_version_stable" id="wss_version_stable"><?php
+			foreach ($versions as $version_stable) {
+?><option value="<?php
+				echo $version_stable;
+?>"><?php
+				echo $version_stable;
+?></option><?php
+			}
+?></select></p><?php
+		}
+?><div id="wss_beta"<?php
+		if (!$showbeta) {
+?> class="wssA0"<?php
+		}
+?> title="<?php
 		echo _WEBO_LOGIN_VERSION;
 ?> <?php
-		echo $version_new;
-?>"></div><?php
-	} else {
-?><p class="wssI"><?php
-		echo _WEBO_SYSTEM_NOUPDATES;
-?> (<?php
-		echo $version;
-?>).</p><?php
-	}
-	if (count($versions)) {
-?><p class="wssI"><a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
-		echo _WEBO_SYSTEM_ROLLBACK;
-?><span class="wssJ6"></span></a> <select name="wss_version_stable" id="wss_version_stable"><?php
-		foreach ($versions as $version_stable) {
-?><option value="<?php
-			echo $version_stable;
-?>"><?php
-			echo $version_stable;
-?></option><?php
-		}
-?></select></p><?php
-	}
-?><div id="wss_beta"<?php
-	if (!$showbeta) {
-?> class="wssA0"<?php
-	}
-?> title="<?php
-	echo _WEBO_LOGIN_VERSION;
-?> <?php
-	echo $version_beta;
+		echo $version_beta;
 ?>"></div></div></fieldset><?php
+	}
 	if (!$internal) {
 ?><fieldset id="install" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 		echo _WEBO_SYSTEM_INSTALL_TITLE;
