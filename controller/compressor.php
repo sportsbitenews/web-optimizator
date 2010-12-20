@@ -3207,7 +3207,7 @@ class web_optimizer {
 						'}';
 				}
 			}
-			if (!empty($mhtml_code)) {
+			if ($mhtml && !empty($mhtml_code)) {
 				$compressed .= $mhtml_code . "--_--\n*/";
 			}
 /* clear content from junk */
