@@ -3104,7 +3104,7 @@ class web_optimizer {
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
 			$location = 0;
 			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
-			$mhtml_exclude = explode(" ", $options['data_uris_exclude_html']);
+			$mhtml_exclude = explode(" ", $options['mhtml_exclude']);
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false) {
