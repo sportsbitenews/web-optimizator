@@ -3098,7 +3098,7 @@ class web_optimizer {
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}]+){[^\}]*(background[^:]*):([^;\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^;\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
@@ -3107,8 +3107,8 @@ class web_optimizer {
 			$mhtml_exclude = explode(" ", $options['data_uris_exclude_html']);
 			foreach ($imgs as $image) {
 				$base64 = '';
-				if (strpos(strtolower($image[3]), "url") !== false) {
-					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[3])));
+				if (strpos(strtolower($image[4]), "url") !== false) {
+					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[4])));
 					$image_saved = $css_image;
 					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
 					$chunks = explode(".", $css_image);
@@ -3180,9 +3180,10 @@ class web_optimizer {
 					if (!$mhtml && $base64) {
 						$compressed .= $image[1] .
 							'{' .
-							$image[2] . 
+							$image[2] .
+							$image[3] . 
 							':' .
-							str_replace($image_saved, $base64, $image[3]) .
+							str_replace($image_saved, $base64, $image[4]) .
 							'}';
 					}
 					if ($this->options['uniform_cache']) {
@@ -3190,8 +3191,9 @@ class web_optimizer {
 							$image[1] .
 							'{' .
 							$image[2] .
-							':' .
 							$image[3] .
+							':' .
+							$image[4] .
 							'}';
 						$content .= '* ' . $sel . '*+' . $sel;
 					}
@@ -3204,6 +3206,8 @@ class web_optimizer {
 						'}';
 				}
 			}
+/* clear content from junk */
+			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$4", $content);
 		}
 		return array($content, $compressed);
 	}
