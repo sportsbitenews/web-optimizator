@@ -1908,7 +1908,8 @@ class web_optimizer {
 									$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
 									$this->initial_files[] = $file;
 								}
-								if (!in_array(preg_replace("@.*([^/]+)$@", "$1", $file['file']), $excluded_scripts_js)) {
+								if (isset($this->options['javascript']['external_scripts_mask']) &&
+									!in_array(preg_replace("@.*/@", "", $file['file']), $excluded_scripts_js)) {
 									$i++;
 								}
 /* fix shadowbox loader */
@@ -2008,7 +2009,7 @@ class web_optimizer {
 					!$this->options['css']['inline_scripts']) ||
 					(!empty($excluded_scripts_css[0]) &&
 						!empty($value['file'] ) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_css)) ||
+						in_array(preg_replace("@.*/@", "", $value['file']), $excluded_scripts_css)) ||
 						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
 /* just skip them */
 					unset($this->initial_files[$key]);
