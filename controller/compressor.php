@@ -1908,7 +1908,7 @@ class web_optimizer {
 									$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
 									$this->initial_files[] = $file;
 								}
-								if (!in_array($file['file'], $excluded_scripts_js)) {
+								if (!in_array(preg_replace("@.*([^/]+)$@", "$1", $file['file']), $excluded_scripts_js)) {
 									$i++;
 								}
 /* fix shadowbox loader */
