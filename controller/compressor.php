@@ -1867,6 +1867,9 @@ class web_optimizer {
 /* get head with all content */
 		$this->get_head();
 		$curl = function_exists('curl_init');
+/* strange thing: array is filled even if string is empty */
+		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
+		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript']) {
 			if (empty($this->options['javascript']['minify_body'])) {
 				$toparse = $this->head;
@@ -1905,7 +1908,9 @@ class web_optimizer {
 									$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
 									$this->initial_files[] = $file;
 								}
-								$i++;
+								if (!in_array($file['file'], $excluded_scripts_js)) {
+									$i++;
+								}
 /* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
 									$this->shadowbox_base_raw = preg_replace("@^(https?://" .
@@ -1982,9 +1987,6 @@ class web_optimizer {
 				}
 			}
 		}
-/* strange thing: array is filled even if string is empty */
-		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
-		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if (is_array($this->initial_files)) {
 /* enable caching / gzipping proxy? */
 			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
