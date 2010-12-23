@@ -1565,12 +1565,12 @@ class web_optimizer {
 					}
 					if (!empty($options['minify_with']) && $options['minify_with'] == 'tidy') {
 						$minified_content_array = $this->convert_css_sprites($contents, $options,
-							(empty($options['css_host']) ? '' : '//' . $options['css_host']) . $resource_file);
+							(empty($options['host']) ? '' : '//' . $options['host']) . $resource_file);
 					} else {
 /* need to remove comments before */
 						$contents = $this->minify_text($contents);
 						$minified_content_array = $this->convert_data_uri($contents, $options,
-							(empty($options['css_host']) ? '' : '//' . $options['css_host']) . $resource_file);
+							(empty($options['host']) ? '' : '//' . $options['host']) . $resource_file);
 					}
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
@@ -1663,8 +1663,11 @@ class web_optimizer {
 			}
 /* Change absolute paths for distributed URLs */
 			if ($options['host'] && $options['header'] == 'css') {
-				$folder = preg_replace("@^[^/]/(.*)/$@", "$1", empty($options['https']) || !$this->https ? $options['host'] : $options['https']);
-				$contents = preg_replace("@(url\(\s*['\"]?/)@", "$1" . $folder, $contents);
+				$host = empty($options['https']) || !$this->https ? $options['host'] : $options['https'];
+				if (strpos($host, "/") !== false) {
+					$folder = preg_replace("@^[^/]+/(.*)/$@", "$1/", $host);
+					$contents = preg_replace("@(url\(\s*['\"]?/)@", "$1" . $folder, $contents);
+				}
 			}
 /* Allow for gzipping and headers */
 			if ($options['gzip'] || $options['far_future_expires']) {
