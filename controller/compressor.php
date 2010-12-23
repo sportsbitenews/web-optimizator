@@ -1564,13 +1564,11 @@ class web_optimizer {
 						$resource_file = $this->get_new_file_name($options, $resource_file, $this->time, '.' . $options['ext']);
 					}
 					if (!empty($options['minify_with']) && $options['minify_with'] == 'tidy') {
-						$minified_content_array = $this->convert_css_sprites($contents, $options,
-							(empty($options['host']) ? '' : '//' . $options['host']) . $resource_file);
+						$minified_content_array = $this->convert_css_sprites($contents, $options, $resource_file);
 					} else {
 /* need to remove comments before */
 						$contents = $this->minify_text($contents);
-						$minified_content_array = $this->convert_data_uri($contents, $options,
-							(empty($options['host']) ? '' : '//' . $options['host']) . $resource_file);
+						$minified_content_array = $this->convert_data_uri($contents, $options, $resource_file);
 					}
 					$minified_content = $minified_content_array[0];
 					$minified_resource = $minified_content_array[1];
@@ -1665,8 +1663,8 @@ class web_optimizer {
 			if ($options['host'] && $options['header'] == 'css') {
 				$host = empty($options['https']) || !$this->https ? $options['host'] : $options['https'];
 				if (strpos($host, "/") !== false) {
-					$folder = preg_replace("@^[^/]+/(.*)/$@", "$1/", $host);
-					$contents = preg_replace("@(url\(\s*['\"]?/)@", "$1" . $folder, $contents);
+					$folder = preg_replace("@^[^/]+/(.*)/?$@is", "$1/", $host);
+					$contents = preg_replace("@(url\(\s*['\"]?)/@is", "$1/" . $folder, $contents);
 				}
 			}
 /* Allow for gzipping and headers */
