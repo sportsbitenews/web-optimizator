@@ -150,11 +150,22 @@ class web_optimizer {
 				($this->options['page']['flush'] ||
 				empty($this->encoding_ext) ||
 				$gzip_me ? '' : $this->encoding_ext);
-			$timestamp = $this->cache_engine->get_mtime($cache_key);
+			if (defined('WSS_CACHE_MISS'))
+			{
+				$timestamp = 0;
+			}
+			else
+			{
+				$timestamp = $this->cache_engine->get_mtime($cache_key);
+			}
 /* try to get from cache non-gzipped page if gzipped one doesn't exist */
 			if (!$timestamp && !$this->options['page']['flush'] && !empty($this->encoding_ext) && !$gzip_me) {
 				$timestamp = $this->cache_engine->get_mtime($cache_plain_key);
 				$gzip_me = 1;
+			}
+			if (!$timestamp)
+			{
+				define('WSS_CACHE_MISS', 1);
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
