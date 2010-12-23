@@ -1661,6 +1661,11 @@ class web_optimizer {
 /* Minify CSS */
 				$contents = $this->minify_text($contents);
 			}
+/* Change absolute paths for distributed URLs */
+			if ($options['host'] && $options['header'] == 'css') {
+				$folder = preg_replace("@^[^/]/(.*)/$@", "$1", empty($options['https']) || !$this->https ? $options['host'] : $options['https']);
+				$contents = preg_replace("@(url\(\s*['\"]?/)@", "$1" . $folder, $contents);
+			}
 /* Allow for gzipping and headers */
 			if ($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] . $contents;
