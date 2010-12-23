@@ -3182,7 +3182,6 @@ class web_optimizer {
 						$compressed .= $image[1] .
 							'{' .
 							$image[2] .
-							$image[3] . 
 							':' .
 							str_replace($image_saved, $base64, $image[4]) .
 							'}';
@@ -3192,13 +3191,12 @@ class web_optimizer {
 							$image[1] .
 							'{' .
 							$image[2] .
-							$image[3] .
 							':' .
 							$image[4] .
 							'}';
 						$content .= '* ' . $sel . '*+' . $sel;
 					}
-				} else {
+				} elseif (!empty($image[3])) {
 					$compressed .= $image[1] .
 						'{' .
 						$image[2] . 
