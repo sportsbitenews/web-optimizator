@@ -131,7 +131,8 @@ class web_optimizer {
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
 				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
-				preg_match("!" . $included_user_agents . "!is", $this->ua)) &&
+				!$this->ua ||
+				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
 			!$retricted_cookie &&
 			(empty($this->options['page']['gzip']) ||
 				empty($this->options['page']['flush'])) &&
@@ -234,6 +235,7 @@ class web_optimizer {
 					$this->set_gzip_header();
 				}
 				while (@ob_end_clean());
+				header('WEBO: cache hit');
 				echo $content;
 /* content is a head part, flush it after */
 				if ($this->options['page']['flush']) {
@@ -242,6 +244,8 @@ class web_optimizer {
 				} else {
 					die();
 				}
+			} else {
+				header('WEBO: cache miss');
 			}
 		}
 /* change some hosts if HTTPS is used */
