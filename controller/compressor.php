@@ -247,6 +247,8 @@ class web_optimizer {
 			} else {
 				header('WEBO: cache miss');
 			}
+		} elseif (!empty($this->options['page']['cache'])) {
+			header('WEBO: cache miss');
 		}
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
