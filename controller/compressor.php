@@ -302,7 +302,9 @@ class web_optimizer {
 /* IE 8.0 */
 				'.ie8',
 /* Mobile Agents */
-				'.ma'
+				'.ma',
+/* dummy UA, thx to peterbowey */
+				'.end'
 			);
 			$this->ua_mod = $mods[$this->cache_stage];
 		}
