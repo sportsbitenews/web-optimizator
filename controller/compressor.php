@@ -217,7 +217,7 @@ class web_optimizer {
 				header("ETag: \"" . $hash . "\"");
 /* set content-type */
 				if (!empty($this->options['charset'])) {
-					header("Content-Type: text/html; charset=" . $this->compress_options['charset']);
+					header("Content-Type: text/html; charset=" . $this->options['charset']);
 				}
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
