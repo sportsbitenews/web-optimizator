@@ -4980,7 +4980,7 @@ Options +FollowSymLinks";
 					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-					$content_saved = preg_replace("/^<\?(php)?( |\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
+					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} else {
 					$content_saved = "<?php require('" . $this->basepath . "web.optimizer.php'); ?>" . $content_saved;
 				}
