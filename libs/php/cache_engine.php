@@ -348,7 +348,7 @@
  		$key = $sql;
  		if ($this->sql_cache_timeout >= 3600)
  		{
- 			$key = preg_replace('(/(\d\d\d\d-\d\d-\d\d \d\d:)\d\d:\d\d/', '${1}00:00', $key);
+ 			$key = preg_replace('/(\d\d\d\d-\d\d-\d\d \d\d:)\d\d:\d\d/', '${1}00:00', $key);
  		}
  		elseif ($this->sql_cache_timeout >= 600)
  		{
