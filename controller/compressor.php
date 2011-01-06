@@ -892,11 +892,6 @@ class web_optimizer {
 				}
 				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}())</script>$1', $this->content);
 			}
-			if (class_exists('JUtility'))
-			{
-				$token = JUtility::getToken();
-				$this->content = str_replace($token, '##WSS_JTOKEN_WSS##', $this->content);
-			}				
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
 				if (empty($options['flush_size'])) {
@@ -933,12 +928,22 @@ class web_optimizer {
 				}
 /* don't create empty files */
 				if (!empty($content_to_write)) {
+					if (class_exists('JUtility'))
+					{
+						$token = JUtility::getToken();
+						$content_to_write = str_replace($token, '##WSS_JTOKEN_WSS##', $content_to_write);
+					}
 					$this->cache_engine->put_entry($cache_key, $content_to_write, $this->time);
 				}
 /* create uncompressed file for plugins */
 				if (is_array($this->options['plugins']) &&
 					!empty($this->encoding_ext)) {
-						$this->cache_engine->put_entry($ordinary_cache_key, $this->content, $this->time);
+						if (class_exists('JUtility'))
+						{
+							$token = JUtility::getToken();
+							$content_to_write = str_replace($token, '##WSS_JTOKEN_WSS##', $this->content);
+						}
+						$this->cache_engine->put_entry($ordinary_cache_key, $content_to_write, $this->time);
 				}
 			}
 		}
