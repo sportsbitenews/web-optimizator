@@ -79,7 +79,7 @@ class css_sprites_optimize {
 /* cache images */
 			$this->cache_images = $options['cache_images'];
 /* cache images (wo.static.php will be used?) */
-			$this->cache_images_htaccess = !$options['cache_images_rewrite'];
+			$this->cache_images_htaccess = $options['cache_images_rewrite'];
 /* current USER AGENT spot */
 			$this->ua = empty($options['user_agent']) ? '' : substr($options['user_agent'], 1);
 /* is USER AGENT old IE? */
@@ -931,7 +931,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								substr($sprite, 0, strlen($sprite) - 3) . 
 								(!$this->no_rewrite && $this->cache_images ? 'wo' . time() . '.' : '') .
 								substr($sprite, strlen($sprite) - 3) .
-								($this->no_rewrite && $this->cache_images && $this->cache_images_htaccess ? '?' . time() : '')) .')';
+								($this->no_rewrite && $this->cache_images && !$this->cache_images_htaccess ? '?' . time() : '')) .')';
 						}
 					}
 					if (count($this->css_images[$sprite]['images'])) {
