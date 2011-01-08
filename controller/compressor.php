@@ -3188,8 +3188,8 @@ class web_optimizer {
 /* add multiple hosts/wo.static.php */
 							if ($next) {
 								$image = str_replace($this->options['document_root'], '/', $css_image);
-								if ($this->options['page']['enabled']) {
-									$hosts = explode(" ", $this->options['page']['allowed_list']);
+								if ($this->options['page']['parallel'] && !empty($this->options['page']['parallel_hosts'])) {
+									$hosts = explode(" ", $this->options['page']['parallel_hosts']);
 									$host = $hosts[strlen($image)%count($hosts)];
 /* if we have dot in the distribution host - it's a domain name */
 									if (!$this->https || !($new_host = $this->options['page']['parallel_https'])) {
