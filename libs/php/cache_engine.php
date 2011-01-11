@@ -763,7 +763,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 		elseif ($cur_host == $set_host)
 		{
-			return array();
+			return ''; //thx to peterbowey
 		}
 		else
 		{
