@@ -794,6 +794,10 @@ class webo_cache_files extends webo_cache_engine
  	/* Internal method that returns all keys that match given pattern. Expects pattern. */
 
 	function __recurse_glob($pattern, $size = false, $number = false) {
+		if ($pattern == '')
+		{
+			return array();
+		}
 	    $split=explode('/',str_replace('\\','/',$pattern));
 	    $mask=array_pop($split);
 	    $path=implode('/',$split);
