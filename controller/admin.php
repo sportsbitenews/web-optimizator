@@ -5330,6 +5330,10 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 		}
 		$content = @file_get_contents($option_file);
 		if ($content) {
+                        if (get_magic_quotes_runtime())
+                        {
+                                $content = stripslashes($content);
+                        }
 			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			if (!$this->write_file($option_file, $content, 1)) {
 				$this->error[0] = 1;
