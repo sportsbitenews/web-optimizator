@@ -658,7 +658,14 @@ class webo_cache_files extends webo_cache_engine
  		}
 		if (@is_file($this->__get_path($key)))
 		{
-			return @file_get_contents($this->__get_path($key));
+			if (get_magic_quotes_runtime())
+			{
+				return stripslashes(@file_get_contents($this->__get_path($key)));
+			}
+			else
+			{
+				return @file_get_contents($this->__get_path($key));
+			}
 		}
 		else
 		{

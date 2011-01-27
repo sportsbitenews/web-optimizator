@@ -11,6 +11,10 @@
 /* replace all urls with absolute paths */
 function replace_urls ($cached, $filename, $document_root) {
 	$content = @file_get_contents($filename);
+	if (get_magic_quotes_runtime())
+	{
+		$content = stripslashes($content);
+	}
 	$path = str_replace($document_root, "", $filename);
 	$path = substr($path, 0, strrpos($path, '/') + 1);
 	preg_match_all("@url\s*\(['\"\s]*([^\"'\)]+)['\"\s]*\)@", $content, $urls, PREG_SET_ORDER);
@@ -290,6 +294,10 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* check file's existence and its mtime */
 			if (!@is_file($compressed) || @filemtime($compressed) !== $mtime || !($contents = @file_get_contents($compressed))) {
 				$content = @file_get_contents($cached);
+				if (get_magic_quotes_runtime())
+				{
+					$content = stripslashes($content);
+				}
 				if (!empty($content)) {
 /* Make compressed contents */
 					if ($extension === 'gz') {

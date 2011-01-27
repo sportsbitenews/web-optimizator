@@ -18,7 +18,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 		function onInstall ($root) {
 /* Add some exclusions to System-Cache plugin */
 			$cache_file = $root . 'plugins/system/cache.php';
-			$content = str_replace('!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\'', '!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\' && !in_array($_GET[\'page\'], array(\'shop.cart\', \'checkout.index\')) && $_GET[\'option\'] != \'com_contact\'', @file_get_contents($cache_file));
+			$content = str_replace('!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\'', '!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\' && !in_array($_GET[\'page\'], array(\'shop.cart\', \'checkout.index\')) && $_GET[\'option\'] != \'com_contact\'', $this->file_get_contents($cache_file));
 			if (!empty($content)) {
 				$fp = @fopen($cache_file, 'wb');
 				if ($fp) {
@@ -28,7 +28,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 			}
 /* Add additional Cache headers for VirtueMart images */
 			$virtuemart_file = $root . 'components/com_virtuemart/show_image_in_imgtag.php';
-			$content = @file_get_contents($virtuemart_file);
+			$content = $this->file_get_contents($virtuemart_file);
 			if (!empty($content)) {
 				$content = str_replace('$age = 3600;', '$age = 2592000;$etag = md5($fileout);', $content);
 				$content = str_replace('header( \'Cache-Control: max-age=\'.$age.\', must-revalidate\' );', 'if ($_SERVER[\'HTTP_IF_NONE_MATCH\'] == $etag) {' .
@@ -49,7 +49,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 			}
 			if (class_exists('JConfig')) {
 /* Disable caching in configuration */
-				$content = str_replace('$caching = \'1\'', '$caching = \'0\'', @file_get_contents($config_file));
+				$content = str_replace('$caching = \'1\'', '$caching = \'0\'', $this->file_get_contents($config_file));
 				if (!empty($content)) {
 					$fp = @fopen($config_file, 'wb');
 					if ($fp) {
@@ -87,7 +87,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 		function onUninstall ($root) {
 /* Return System-Cache plugin initial state */
 			$cache_file = $root . 'plugins/system/cache.php';
-			$content = str_replace('!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\' && !in_array($_GET[\'page\'], array(\'shop.cart\', \'checkout.index\')) && $_GET[\'option\'] != \'com_contact\'', '!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\'', @file_get_contents($cache_file));
+			$content = str_replace('!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\' && !in_array($_GET[\'page\'], array(\'shop.cart\', \'checkout.index\')) && $_GET[\'option\'] != \'com_contact\'', '!$user->get(\'aid\') && $_SERVER[\'REQUEST_METHOD\'] == \'GET\'', $this->file_get_contents($cache_file));
 			if (!empty($content)) {
 				$fp = @fopen($cache_file, 'wb');
 				if ($fp) {
@@ -97,7 +97,7 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 			}
 /* Remove additional Cache headers for VirtueMart images */
 			$virtuemart_file = $root . 'components/com_virtuemart/show_image_in_imgtag.php';
-			$content = @file_get_contents($virtuemart_file);
+			$content = $this->file_get_contents($virtuemart_file);
 			if (!empty($content)) {
 				$content = str_replace('$age = 2592000;$etag = md5($fileout);', '$age = 3600;', $content);
 				$content = str_replace('header( \'Cache-Control: max-age=\'.$age);' .
@@ -127,6 +127,19 @@ if (!class_exists('web_optimizer_plugin_joomla15')) {
 /* HTML Cacher */
 		function onCache ($content) {
 			return $content;
+		}
+
+/* Helper for file_get_contents */
+		function file_get_contents ($file)
+		{
+			if (get_magic_quotes_runtime())
+			{
+				return stripslashes(@file_get_contents($file));
+			}
+			else
+			{
+				return @file_get_contents($file);
+			}
 		}
 
 

@@ -30,7 +30,7 @@ class admin {
 /* Set name of options file */
 		$this->options_file = "config.webo.php";
 /* try to restore options backup */
-		if (@is_file($this->basepath . '.config.webo.php') && !strpos(@file_get_contents($this->basepath . $this->options_file), '$compress_options[\'license\']')) {
+		if (@is_file($this->basepath . '.config.webo.php') && !strpos($this->file_get_contents($this->basepath . $this->options_file), '$compress_options[\'license\']')) {
 			@copy($this->basepath . '.config.webo.php', $this->basepath . $this->options_file);
 			$this->error = array(-1 => 1);
 		}
@@ -42,7 +42,7 @@ class admin {
 		$this->svn_generic = 'http://web-optimizator.googlecode.com/svn/';
 		$this->svn = $this->svn_generic . 'trunk-stable/';
 		$this->svn_beta = $this->svn_generic . 'trunk/';
-		$this->version = str_replace("\r\n", "", @file_get_contents($this->basepath . 'version'));
+		$this->version = str_replace("\r\n", "", $this->file_get_contents($this->basepath . 'version'));
 		$this->version_stable = preg_replace("[^0-9\.]", "", empty($this->input['wss_version_stable']) ? '' : $this->input['wss_version_stable']);
 /* get the latest version */
 		$version_new_file = $this->compress_options['html_cachedir'] . 'version.new';
@@ -58,7 +58,7 @@ class admin {
 		}
 		$this->version_new = $this->version . '+';
 		if (@is_file($version_new_file)) {
-			$this->version_new = @file_get_contents($version_new_file);
+			$this->version_new = $this->file_get_contents($version_new_file);
 			@unlink($version_new_file);
 		}
 		$this->version_beta = $this->version;
@@ -69,7 +69,7 @@ class admin {
 				'install_stable'))) {
 			$this->view->download($this->svn_beta . 'version', $version_new_file);
 			if (@is_file($version_new_file)) {
-				$this->version_beta = @file_get_contents($version_new_file);
+				$this->version_beta = $this->file_get_contents($version_new_file);
 				@unlink($version_new_file);
 			}
 		}
@@ -310,7 +310,7 @@ class admin {
 					}
 				}
 				if ($raw) {
-					$content = @gzencode(@file_get_contents($file), 9, FORCE_GZIP);
+					$content = @gzencode($this->file_get_contents($file), 9, FORCE_GZIP);
 					if (strlen($content)) {
 						$success = $this->write_file($gzipped, $content);
 /* can't overwrite targeted file */
@@ -348,9 +348,9 @@ class admin {
 	*
 	**/
 	function calculate_awards () {
-		$evaluation1 = @file_get_contents($this->basepath . $this->index_before);
+		$evaluation1 = $this->file_get_contents($this->basepath . $this->index_before);
 		$evaluation1 = strpos($evaluation1, '<b>Warning') ? '' : $evaluation1;
-		$evaluation2 = @file_get_contents($this->basepath . $this->index_after);
+		$evaluation2 = $this->file_get_contents($this->basepath . $this->index_after);
 		$evaluation2 = strpos($evaluation2, '<b>Warning') ? '' : $evaluation2;
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
 		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
@@ -435,7 +435,7 @@ class admin {
 				$this->compress_options['css_cachedir']) .
 				'webo-site-speedup.php') .
 			'&format=txt', $this->compress_options['css_cachedir'] . 'url');
-		$short_link = @file_get_contents($this->compress_options['css_cachedir'] . 'url');
+		$short_link = $this->file_get_contents($this->compress_options['css_cachedir'] . 'url');
 		@unlink($this->compress_options['css_cachedir'] . 'url');
 		return array($level1, $level2, $level3, $level4, $level5,
 			100 - $options, $grade, $files, round($size2 / 1024),
@@ -575,7 +575,7 @@ class admin {
 						}
 					}
 /* some errors with .htaccess, disable all options */
-					if ($ht && !@file_get_contents($test_file)) {
+					if ($ht && !$this->file_get_contents($test_file)) {
 						foreach ($modules as $module) {
 							$this->save_option("['htaccess']['" . $module . "']", 0);
 							$this->input['wss_htaccess_' . $module] = 0;
@@ -1037,7 +1037,7 @@ class admin {
 		if (empty($this->premium) && !empty($license)) {
 			$error[4] = 1;
 		} elseif (@is_file($this->basepath . 'cache/wo')) {
-			$expires = @file_get_contents($this->basepath . 'cache/wo');
+			$expires = $this->file_get_contents($this->basepath . 'cache/wo');
 		}
 		$page_variables = array(
 			"version" => $this->version,
@@ -1380,9 +1380,9 @@ class admin {
 	function dashboard_speed () {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
-		$before = @file_get_contents($this->basepath . $this->index_before);
+		$before = $this->file_get_contents($this->basepath . $this->index_before);
 		$before = strpos($before, '<b>Warning') ? '' : $before;
-		$after = @file_get_contents($this->basepath . $this->index_after);
+		$after = $this->file_get_contents($this->basepath . $this->index_after);
 		$after = strpos($after, '<b>Warning') ? '' : $after;
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
@@ -1687,7 +1687,7 @@ class admin {
 /* define caching for WordPress */
 		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
 		{
-			$content = @file_get_contents($this->compress_options['website_root'] . 'wp-config.php');
+			$content = $this->file_get_contents($this->compress_options['website_root'] . 'wp-config.php');
 			if(preg_match('/define\s*\(\s*[\'"]WP_CACHE[\'"]\s*,\s*true\s*\)\s*;/', $content))
 			{
 				$wp_cache_enabled = true;
@@ -1724,7 +1724,7 @@ class admin {
 			}
 		}
 /* check activity for the website */
-		$spot = strpos(@file_get_contents($tmp_file), '<!--WSS-->') || !@filesize($tmp_file);
+		$spot = strpos($this->file_get_contents($tmp_file), '<!--WSS-->') || !@filesize($tmp_file);
 		@unlink($tmp_file);
 		$errors = array(
 			'javascript_writable' => @is_writable($javascript_cachedir),
@@ -2044,7 +2044,7 @@ class admin {
 		$page_variables['version'] = $this->version;
 		$page_variables['version_new'] = $this->version_new;
 		$page_variables['version_beta'] = $this->version_beta;
-		$page_variables['versions'] = explode("\n", @file_get_contents($this->basepath . 'versions'));
+		$page_variables['versions'] = explode("\n", $this->file_get_contents($this->basepath . 'versions'));
 		$page_variables['skip_render'] = $this->skip_render;
 		$page_variables['internal'] = $this->internal;
 		$page_variables['total'] = $total;
@@ -2072,7 +2072,7 @@ class admin {
 	**/		
 	function check_acceleration () {
 		$before = @filesize($this->basepath . $this->index_before);
-		$a = @file_get_contents($this->basepath . $this->index_after);
+		$a = $this->file_get_contents($this->basepath . $this->index_after);
 		$after = strlen($a);
 		if ($this->premium > 1) {
 /* re-check if there was 503 error */
@@ -2243,7 +2243,7 @@ class admin {
 				$this->basepath . $this->index_check, 2);
 /* calculate favicon */
 			$favicon = preg_replace("@.*(<link.*rel=['\"\s](shortcut\s)?icon[^>]*>).*@is", "$1",
-				@file_get_contents($this->basepath . $this->index_check));
+				$this->file_get_contents($this->basepath . $this->index_check));
 			if (!empty($favicon) && strlen($favicon) < 1000) {
 				$favicon = preg_replace("@.*href\s*=[\s'\"](.*?)[\s'\"].*@is", "$1",
 					$favicon);
@@ -2562,7 +2562,7 @@ class admin {
 		$this->view->download($svn . $file, $file);
 		$i = 1;
 		if (@is_file($file)) {
-			$files = preg_split("/\r?\n/", @file_get_contents($file));
+			$files = preg_split("/\r?\n/", $this->file_get_contents($file));
 			$total = count($files);
 			foreach ($files as $file) {
 				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total, 1);
@@ -2788,7 +2788,7 @@ class admin {
 	function cleanup_file ($file, $return = false) {
 		if (@is_file($file)) {
 /* clean content from Web Optimizer calls */
-			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", @file_get_contents($file));
+			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", $this->file_get_contents($file));
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -4061,7 +4061,7 @@ class admin {
 		if (!@is_file($robots . '.backup')) {
 			@copy($robots, $robots . '.backup');
 		}
-		$content_saved = @file_get_contents($robots);
+		$content_saved = $this->file_get_contents($robots);
 		$content_saved = $this->clean_htaccess($content_saved);
 		$directories = array_unique(array(
 			str_replace($root, '/', $html),
@@ -4097,7 +4097,7 @@ User-Agent: *
 	**/
 	function clean_htaccess ($content_saved = '') {
 		if (empty($content_saved)) {
-			$content_saved = @file_get_contents($this->htaccess);
+			$content_saved = $this->file_get_contents($this->htaccess);
 		}
 		$content_saved = preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
 		return $content_saved;
@@ -4742,8 +4742,8 @@ Options +FollowSymLinks";
 		if ($this->cms_version == 'PHP-Nuke') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'mainfile.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4765,7 +4765,7 @@ Options +FollowSymLinks";
 		} elseif ($this->cms_version == 'phpBB') {
 			$mainfile = $this->view->paths['absolute']['document_root'] .
 				'includes/functions.php';
-			$mainfile_content = @file_get_contents($mainfile);
+			$mainfile_content = $this->file_get_contents($mainfile);
 			if (!empty($mainfile_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4793,7 +4793,7 @@ Options +FollowSymLinks";
 		} elseif ($this->cms_version == 'Invision Power Board') {
 			$mainfile = $this->view->paths['absolute']['document_root'] .
 				'sources/classes/class_display.php';
-			$mainfile_content = @file_get_contents($mainfile);
+			$mainfile_content = $this->file_get_contents($mainfile);
 			if (!empty($mainfile_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4814,8 +4814,8 @@ Options +FollowSymLinks";
 		} elseif ($this->cms_version == 'Bitrix') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'bitrix/header.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'bitrix/modules/main/include/epilog_after.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4833,8 +4833,8 @@ Options +FollowSymLinks";
 		} elseif (substr($this->cms_version, 0, 10) == 'Open Slaed') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'function/function.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4854,8 +4854,8 @@ Options +FollowSymLinks";
 		} elseif ($this->cms_version == '4images') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/page_header.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'includes/page_footer.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4874,8 +4874,8 @@ Options +FollowSymLinks";
 		} elseif ($this->cms_version == 'VaM Shop' || $this->cms_version == 'osCommerce') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'includes/application_top.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'includes/application_bottom.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4894,8 +4894,8 @@ Options +FollowSymLinks";
 		} elseif (substr($this->cms_version, 0, 13) == 'Social Engine') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'header.php';
 			$footer = $this->view->paths['absolute']['document_root'] . 'footer.php';
-			$mainfile_content = @file_get_contents($mainfile);
-			$footer_content = @file_get_contents($footer);
+			$mainfile_content = $this->file_get_contents($mainfile);
+			$footer_content = $this->file_get_contents($footer);
 			if (!empty($mainfile_content) && !empty($footer_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4913,7 +4913,7 @@ Options +FollowSymLinks";
 /* and for X-Cart */
 		} elseif ($this->cms_version == 'X-Cart') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'include/func/func.core.php';
-			$mainfile_content = @file_get_contents($mainfile);
+			$mainfile_content = $this->file_get_contents($mainfile);
 			if (!empty($mainfile_content)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -4928,7 +4928,7 @@ Options +FollowSymLinks";
 /* and for Koobi */
 		} elseif ($this->cms_version == 'Koobi CMS') {
 			$mainfile = $this->view->paths['absolute']['document_root'] . 'index.php';
-			$c = @file_get_contents($mainfile);
+			$c = $this->file_get_contents($mainfile);
 			if (!empty($c)) {
 /* create backup */
 				@copy($mainfile, $mainfile . '.backup');
@@ -5035,14 +5035,14 @@ Options +FollowSymLinks";
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'plugins/system/cache.php';
 					if (@is_file($cache_file)) {
 						@copy($cache_file, $cache_file . '.backup');
-						$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", @file_get_contents($cache_file));
+						$content = preg_replace("/(\\\$mainframe->close)/", 'global \$web_optimizer;\$web_optimizer->finish();' . "$1", $this->file_get_contents($cache_file));
 						$this->write_file($cache_file, $content);
 					}
 /* JRE component */
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'administrator/components/com_jrecache/includes/cache_handler.php';
 					if (@is_file($cache_file)) {
 						@copy($cache_file, $cache_file . '.backup');
-						$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+						$content = preg_replace("/(echo \\\$output;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', $this->file_get_contents($cache_file));
 						$this->write_file($cache_file, $content);
 					}
 				}
@@ -5051,14 +5051,14 @@ Options +FollowSymLinks";
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'components/com_pagecache/pagecache.class.php';
 					if (@is_file($cache_file)) {
 						@copy($cache_file, $cache_file . '.backup');
-						$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
+						$content = preg_replace("/(echo \\\$data;)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', $this->file_get_contents($cache_file));
 						$this->write_file($cache_file, $content);
 					}
 /* System-Cache mambot */
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'mambots/system/cache.php';
 					if (@is_file($cache_file)) {
 						@copy($cache_file, $cache_file . '.backup');
-						$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', @file_get_contents($cache_file));
+						$content = preg_replace("/(echo \\\$content;)/", 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "$1" . '\$web_optimizer->finish();', $this->file_get_contents($cache_file));
 						$this->write_file($cache_file, $content);
 					}
 				}
@@ -5066,7 +5066,7 @@ Options +FollowSymLinks";
 					$cache_file = $this->view->paths['absolute']['document_root'] . 'class/theme.php';
 					if (@is_file($cache_file)) {
 						@copy($cache_file, $cache_file . '.backup');
-						$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', @file_get_contents($cache_file));
+						$content = preg_replace("/(\\\$this->render\([^\(]+\);)/", "$1" . 'global \$web_optimizer;\$web_optimizer->finish();', $this->file_get_contents($cache_file));
 						$this->write_file($cache_file, $content);
 					}
 				}
@@ -5259,7 +5259,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			$test_file = $this->compress_options['html_cachedir'] . 'optimizing.php';
 /* load home page */
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . $index . '?web_optimizer_disabled=1', $test_file);
-			$contents = @file_get_contents($test_file);
+			$contents = $this->file_get_contents($test_file);
 			$this->write_file($test_file, "<?php require('" .
 				$this->basepath . "web.optimizer.php'); ?>" .
 				preg_replace("/<\?xml[^>]+\?>/", "", $contents) .
@@ -5281,7 +5281,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 /* try to download main file */
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/?web_optimizer_disabled=1', $test_file);
 			$this->write_progress(9);
-			$contents = @file_get_contents($test_file);
+			$contents = $this->file_get_contents($test_file);
 			if (!empty($contents)) {
 				$return = $this->write_file($test_file, "<?php require('" .
 						$this->basepath .
@@ -5328,12 +5328,8 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 			@copy($this->basepath . 'config.safe.php', $option_file);
 			@chmod($option_file, octdec("0644"));
 		}
-		$content = @file_get_contents($option_file);
+		$content = $this->file_get_contents($option_file);
 		if ($content) {
-                        if (get_magic_quotes_runtime())
-                        {
-                                $content = stripslashes($content);
-                        }
 			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			if (!$this->write_file($option_file, $content, 1)) {
 				$this->error[0] = 1;
@@ -5372,7 +5368,7 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 	**/
 	function protect_installation() {
 		$htaccess = $this->basepath . '.htaccess';
-		$htaccess_content = @file_get_contents($htaccess);
+		$htaccess_content = $this->file_get_contents($htaccess);
 /* clean current content */
 		$htaccess_content = preg_replace("!\r?\n# Web Optimizer protection(\r?\n.*)*Web Optimizer protection end!", "", $htaccess_content);
 		$htaccess_content .= '
@@ -5581,7 +5577,7 @@ require valid-user';
 			return 'Symfony';
 /* Textpattern */
 		} elseif (@is_file($root . 'textpattern/index.php')) {
-			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$thisversion\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'textpattern/index.php'))));
+			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$thisversion\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", $this->file_get_contents($root . 'textpattern/index.php'))));
 			return 'Textpattern ' . $version;
 /* Kohana */
 		} elseif (@is_file($root . 'system/core/Kohana.php')) {
@@ -5594,14 +5590,14 @@ require valid-user';
 			return 'Invision Power Board';
 /* Simple Machines Forum */
 		} elseif (@is_file($root . 'Sources/LogInOut.php')) {
-			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'index.php'))));
+			$version = preg_replace("/['\"].*/", "", preg_replace("/.*\\\$forum_version\s*=\s*['\"]/", "", preg_replace("/\r?\n/", "", $this->file_get_contents($root . 'index.php'))));
 			return 'Simple Machines Forum' . (empty($version) ? '' : ' ' . $version);
 /* Bitrix */
 		} elseif (@is_dir($root . 'bitrix/')) {
 			return 'Bitrix';
 /* cogear */
 		} elseif (@is_file($root . 'gears/global/global.info')) {
-			$version = preg_replace("/group.*/", "", preg_replace("/.*version\s*=\s*/", "", preg_replace("/\r?\n/", "", @file_get_contents($root . 'gears/global/global.info'))));
+			$version = preg_replace("/group.*/", "", preg_replace("/.*version\s*=\s*/", "", preg_replace("/\r?\n/", "", $this->file_get_contents($root . 'gears/global/global.info'))));
 			return 'cogear' . (empty($version) ? '' : ' ' . $version);
 /* NetCat */
 		} elseif (@is_dir($root . 'netcat/')) {
@@ -5671,7 +5667,7 @@ require valid-user';
 	}
 	
 	function validate() {
-		$a = @file_get_contents(dirname(__FILE__) . '/../libs/php/view.php');
+		$a = $this->file_get_contents(dirname(__FILE__) . '/../libs/php/view.php');
 		$a = preg_replace("!.*(function validate_.*/\*\*).*!is", "$1", $a);
 		if (!empty($a) && strlen($a) < 1000) {
 			$this->premium = 0;
@@ -6161,6 +6157,18 @@ require valid-user';
 		if (!empty($patterns))
 		{
 			$this->cache_engine->delete_entries($patterns);
+		}
+	}
+
+	function file_get_contents ($file)
+	{
+		if (get_magic_quotes_runtime())
+		{
+			return stripslashes(@file_get_contents($file));
+		}
+		else
+		{
+			return @file_get_contents($file);
 		}
 	}
 

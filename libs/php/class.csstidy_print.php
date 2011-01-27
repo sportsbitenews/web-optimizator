@@ -146,7 +146,14 @@ class csstidy_print
 
 		if ($externalcss) {
 			$output .= "\n    <style type=\"text/css\">\n";
-			$cssparsed = file_get_contents('cssparsed.css');
+			if (get_magic_quotes_runtime())
+			{
+				$cssparsed = stripslashes(file_get_contents('cssparsed.css'));
+			}
+			else
+			{
+				$cssparsed = file_get_contents('cssparsed.css');
+			}
 			$output .= $cssparsed; /* Adds an invisible BOM or something, but not in css_optimised.php */
 			$output .= "\n</style>";
 		}

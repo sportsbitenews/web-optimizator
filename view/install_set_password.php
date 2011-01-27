@@ -119,9 +119,23 @@
 	}
 ?>/></dd><dd class="wssD2 wssA0" id="wss_eula2"><pre class="wssF wssF1"><?php
 	if ($language == 'ru') {
-		echo htmlspecialchars(@file_get_contents('LICENSE.utf8.ru.txt'));
+		if (get_magic_quotes_runtime())
+		{
+			echo htmlspecialchars(stripslashes(@file_get_contents('LICENSE.utf8.ru.txt')));
+		}
+		else
+		{
+			echo htmlspecialchars(@file_get_contents('LICENSE.utf8.ru.txt'));
+		}
 	} else {
-		echo htmlspecialchars(@file_get_contents('LICENSE.txt'));
+		if (get_magic_quotes_runtime())
+		{
+			echo htmlspecialchars(stripslashes(@file_get_contents('LICENSE.txt')));
+		}
+		else
+		{
+			echo htmlspecialchars(@file_get_contents('LICENSE.txt'));
+		}
 	}
 ?></pre></dd></dl><p class="wssD"><input type="submit" value="<?php
 	echo _WEBO_SPLASH1_NEXT;

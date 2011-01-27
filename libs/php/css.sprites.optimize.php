@@ -159,7 +159,7 @@ class css_sprites_optimize {
 			case 2:
 /* 50KB default restriction for mhtml: -- why? */
 				if (@filesize($css_image) < $this->mhtml_size && !in_array($filename, $this->mhtml_ignore_list)) {
-					$this->compressed_mhtml .= "\n\n--_\nContent-Location:$location\nContent-Transfer-Encoding:base64\n\n" . base64_encode(@file_get_contents($css_image));
+					$this->compressed_mhtml .= "\n\n--_\nContent-Location:$location\nContent-Transfer-Encoding:base64\n\n" . base64_encode($this->file_get_contents($css_image));
 					$css_image = 'mhtml:' . $this->css_url . '!' . $location;
 				} else {
 					$css_image = $image_saved;
@@ -167,7 +167,7 @@ class css_sprites_optimize {
 				return $css_image;
 /* data:URI */
 			case 1:
-				$encoded = base64_encode(@file_get_contents($css_image));
+				$encoded = base64_encode($this->file_get_contents($css_image));
 /* don't create data:URI greater than 32KB -- for IE8 */
 				if (@filesize($css_image) < $this->data_uris_size &&
 					!in_array($filename, $this->data_uris_ignore_list) &&
@@ -969,7 +969,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
  * Original at http://it.php.net/manual/en/function.imagecreatefromgif.php#59787
 **/
 	function is_animated_gif ($filename) {
-		$raw = @file_get_contents($filename);
+		$raw = $this->file_get_contents($filename);
 		$offset = 0;
 		$frames = 0;
 		while ($frames < 2) {
@@ -1132,14 +1132,14 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			urlencode(str_replace($this->website_root, "", $file)) .
 			'&key=' . $this->punypng_key, $tmp_file);
 		if (is_file($tmp_file)) {
-			$str = @file_get_contents($tmp_file);
+			$str = $this->file_get_contents($tmp_file);
 			if (!preg_match("/['\"]error['\"]/i", $str) && @filesize($tmp_file)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*optimized_url['\"]:\s?['\"]/", "", $str)));
 				if (!@is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.gracepointafterfive.com/');
-				$content = @file_get_contents($file);
+				$content = $this->file_get_contents($file);
 				if (empty($content) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
 				} else {
@@ -1168,14 +1168,14 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			urlencode($_SERVER['HTTP_HOST']) . '%2F' .
 			urlencode(str_replace($this->website_root, "", $file)), $tmp_file);
 		if (@is_file($tmp_file)) {
-			$str = @file_get_contents($tmp_file);
+			$str = $this->file_get_contents($tmp_file);
 			if ((!preg_match("/['\"]error['\"]/i", $str) || strpos($str, 'No savings')) && strlen($str)) {
 				$optimized = preg_replace("/\\\\\//", "/", preg_replace("/['\"].*/", "", preg_replace("/.*dest['\"]:['\"]/", "", $str)));
 				if (!@is_file($file . '.backup')) {
 					@copy($file, $file . '.backup');
 				}
 				$this->download_file($optimized, $file, 'http://www.smushit.com/ysmush.it/');
-				$content = @file_get_contents($file);
+				$content = $this->file_get_contents($file);
 				if (empty($content) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
 				} else {
@@ -1313,7 +1313,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 	}
 
 	function imagecreatefromico($filename, $width = 16, $height = 16) {
-		if ($data = @file_get_contents($filename)) {
+		if ($data = $this->file_get_contents($filename)) {
 			list(, $count) = @unpack('v', substr($data, 4, 2));
 			$icon = null;
 			for ($i = 0; $i < $count; ++$i) {
@@ -1356,6 +1356,18 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 			}
 		}
 		return false;
+	}
+
+	function file_get_contents ($file)
+	{
+		if (get_magic_quotes_runtime())
+		{
+			return stripslashes(@file_get_contents($file));
+		}
+		else
+		{
+			return @file_get_contents($file);
+		}
 	}
 
 }

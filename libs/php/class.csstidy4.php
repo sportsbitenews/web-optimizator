@@ -545,7 +545,14 @@ function load_template($content, $from_file=true)
 
 	if($from_file)
 	{
-		$content = strip_tags(file_get_contents($content),'<span>');
+		if (get_magic_quotes_runtime())
+		{
+			$content = strip_tags(stripslashes(file_get_contents($content),'<span>'));
+		}
+		else
+		{
+			$content = strip_tags(file_get_contents($content),'<span>');
+		}
 	}
 	$content = str_replace("\r\n","\n",$content); // Unify newlines (because the output also only uses \n)
 	$template = explode('|',$content);
@@ -564,7 +571,14 @@ function load_template($content, $from_file=true)
  */
 function parse_from_url($url)
 {
-	return $this->parse(@file_get_contents($url));
+	if (get_magic_quotes_runtime())
+	{
+		return $this->parse(stripslashes(@file_get_contents($url)));
+	}
+	else
+	{
+		return $this->parse(@file_get_contents($url));
+	}
 }
 
 /**

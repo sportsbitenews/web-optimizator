@@ -214,12 +214,12 @@ class compressor_view {
 			if ($t1 || $t2 || $t3) {
 				if ($cachedir) {
 					$wof = $cachedir . 'wo';
-					$wo = @file_get_contents($wof);
+					$wo = $this->file_get_contents($wof);
 					if (!@is_file($wof) || $wo) {
 						if (time() - @filemtime($wof) > 86400) {
 							$this->download("http://webo.name/license/?key=" . $license, $wof, 5, $host);
 						}
-						$wo = @file_get_contents($wof);
+						$wo = $this->file_get_contents($wof);
 						if ($wo < 0) {
 							return false;
 						}
@@ -286,7 +286,7 @@ class compressor_view {
 /* reset buffers */
 			$fph = @fopen($local_file_headers, "r");
 			@fclose($fph);
-			if ($headers = @file_get_contents($local_file_headers)) {
+			if ($headers = $this->file_get_contents($local_file_headers)) {
 				$gzip = preg_match('/content-encoding/i', $headers);
 				$code = round(preg_replace('!HTTP/1\.[01]\s([0-9][0-9][0-9])\s.*!', '$1', $headers));
 				@unlink($local_file_headers);
@@ -362,7 +362,7 @@ class compressor_view {
 					@fclose($fp);
 				}
 				@fclose($fph);
-				$headers = $error ? 'Error: ' . $error : @file_get_contents($file_headers);
+				$headers = $error ? 'Error: ' . $error : $this->file_get_contents($file_headers);
 				@unlink($file_headers);
 			}
 		}
@@ -389,7 +389,7 @@ class compressor_view {
 				$file, $cachedir,
 				array('X-Auth-Token: ' . preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers),
 				'Content-Type: ' . $mime,
-				'ETag: ' . md5(@file_get_contents($file)),
+				'ETag: ' . md5($this->file_get_contents($file)),
 				'X-Referrer-ACL: 259200',
 				'X-Referrer-ACL: ' . $host), 'PUT');
 /* common FTP */
@@ -399,6 +399,18 @@ class compressor_view {
 				str_replace($cachedir, "/", $file),
 				$file, $cachedir, array(), 'PUT', 
 				preg_replace("!(.*)@.*!", "$1", $auth));
+		}
+	}
+
+	function file_get_contents ($file)
+	{
+		if (get_magic_quotes_runtime())
+		{
+			return stripslashes(@file_get_contents($file));
+		}
+		else
+		{
+			return @file_get_contents($file);
 		}
 	}
 

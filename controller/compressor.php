@@ -1853,7 +1853,7 @@ class web_optimizer {
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
 			}
 			if (@is_file($file)) {
-				$content = @file_get_contents($file);
+				$content = $this->file_get_contents($file);
 			}
 		} else {
 			$content = $src;
@@ -2173,7 +2173,7 @@ class web_optimizer {
 /* convert CSS images' paths to absolute */
 							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
 						} else {
-							$content_from_file = @file_get_contents($this->get_file_name($value['file']));
+							$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
 						}
 /* detect Shadowbox variables */
 						if (strpos($value['file'], 'shadowbox.js') !== false) {
@@ -2218,16 +2218,16 @@ class web_optimizer {
 									$d = $this->options['document_root'] . $this->shadowbox_base_raw;
 									$c = '';
 									if (!empty($this->shadowbox_sizzle)) {
-										$c .= @file_get_contents($d . 'libraries/sizzle/sizzle.js');
+										$c .= $this->file_get_contents($d . 'libraries/sizzle/sizzle.js');
 									}
 									if (!empty($this->shadowbox_language)) {
-										$c .= @file_get_contents($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js');
+										$c .= $this->file_get_contents($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js');
 									}
 									foreach ($players as $player) {
 										if ($player == 'swf' || $player == 'flv') {
-											$c .= @file_get_contents($d . 'libraries/swfobject/swfobject.js');
+											$c .= $this->file_get_contents($d . 'libraries/swfobject/swfobject.js');
 										}
-										$c .= @file_get_contents($d . 'players/shadowbox-' . $player . '.js');
+										$c .= $this->file_get_contents($d . 'players/shadowbox-' . $player . '.js');
 									}
 									$value['content'] = $c . $value['content'];
 								}
@@ -2334,6 +2334,10 @@ class web_optimizer {
 						// try to get gzipped content from file
 						$extension = $gzip || $xgzip ? "gz" : "df";
 						$content = @file_get_contents(__FILE__ . "." . $extension);
+						if (get_magic_quotes_runtime())
+						{
+							$content = stripslashes($content);
+						}
 						$gzipped = 0;
 						if (empty($content)) {
 						// Send compressed contents
@@ -3157,7 +3161,7 @@ class web_optimizer {
 							strpos($css_image, "data:") !== false) {
 								$css_image = $image_saved;
 						} else {
-							$encoded = base64_encode(@file_get_contents($css_image));
+							$encoded = base64_encode($this->file_get_contents($css_image));
 							$next = 0;
 							if ($mhtml) {
 								if (@filesize($css_image) < $options['mhtml_size'] &&
@@ -3321,7 +3325,7 @@ class web_optimizer {
 				@fclose($fp);
 				@fclose($fph);
 /* check if we deal with 404 error, remove result */
-				$headers = @file_get_contents($return_filename . '.headers');
+				$headers = $this->file_get_contents($return_filename . '.headers');
 				if (strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
 					strpos($headers, 'HTTP/0.1 404') !== false ||
@@ -3329,7 +3333,7 @@ class web_optimizer {
 						@unlink($return_filename);
 				} else {
 /* try to replace background images to local ones */
-					$contents = @file_get_contents($return_filename);
+					$contents = $this->file_get_contents($return_filename);
 					if (!empty($contents) && $tag == 'link') {
 /* correct background-images in CSS file */
 						$this->write_file($return_filename, $this->convert_paths_to_absolute($contents, array('file' => $file)));
@@ -3462,6 +3466,18 @@ class web_optimizer {
 				}
 		} else {
 			return $uri;
+		}
+	}
+
+	function file_get_contents ($file)
+	{
+		if (get_magic_quotes_runtime())
+		{
+			return stripslashes(@file_get_contents($file));
+		}
+		else
+		{
+			return @file_get_contents($file);
 		}
 	}
 
