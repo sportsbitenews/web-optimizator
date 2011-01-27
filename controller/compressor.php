@@ -3400,7 +3400,7 @@ class web_optimizer {
 	*
 	*/
 	function resolve_amps ($str) {
-		return str_replace(array('&amp;', '&#38;', '﻿'), array('&', '&', ''), $str);
+		return str_replace(array('&amp;', '&#38;', '&#038;', '﻿'), array('&', '&', '&', ''), $str);
 	}
 	
 	/**
