@@ -1049,6 +1049,8 @@ class admin {
 				$jar = 'libs/' . $jar;
 				if (!@is_file($this->basepath . $jar)) {
 					$this->view->download($this->svn . $jar, $this->basepath . $jar);
+/* make lib executable */
+					@chmod($this->basepath . $jar, octdec("0755"));
 				}
 			}
 		}
@@ -3679,8 +3681,6 @@ class admin {
 			!empty($gd['WBMP Support']))) {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
 		}
-/* try to set some libs executable */
-		@chmod($this->basepath . 'libs/yuicompressor/yuicompressor.jar', octdec("0755"));
 /* check for YUI&Google availability */
 		$YUI_checked = 0;
 		$Google_checked = 0;
