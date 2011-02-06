@@ -35,6 +35,7 @@ $compress_options['minify']['javascript_body']="0";
 $compress_options['minify']['with_jsmin']="0";
 $compress_options['minify']['with_packer']="0";
 $compress_options['minify']['with_yui']="0";
+$compress_options['minify']['with_google']="0";
 $compress_options['minify']['css']="1";
 $compress_options['minify']['css_min']="0";
 $compress_options['minify']['css_body']="0";

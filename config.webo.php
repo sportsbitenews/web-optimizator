@@ -95,6 +95,8 @@ $compress_options['minify']['with_jsmin'] = "0";
 $compress_options['minify']['with_packer'] = "0";
 ## Minify JS with YUI Compressor (requires java installed)
 $compress_options['minify']['with_yui'] = "0";
+## Minify JS with Google Compiler (requires java installed)
+$compress_options['minify']['with_google'] = "0";
 ## Minify CSS
 $compress_options['minify']['css'] = "0";
 ## Minify CSS, 0 - no, 1 - basic

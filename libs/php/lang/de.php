@@ -1,4 +1,4 @@
-<?php
+f<?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Enth&auml;lt alle DE Lokalisationkonstanten
@@ -10,8 +10,8 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'WEBO Site SpeedUp Konfiguration');
 define('_WEBO_GENERAL_FOOTER', 'Schneller als ein Blitz!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Kaufen</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Kaufen</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Extended Edition">Kaufen</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Standard Edition">Kaufen</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Kaufen');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
@@ -748,7 +748,7 @@ define('_WEBO_DASHBOARD_HELP', 'Order qualified help');
 define('_WEBO_DASHBOARD_HELP1', 'Any troubles with WEBO Site SpeedUp configuration?');
 define('_WEBO_DASHBOARD_HELP2', 'Our engineers can help you to install and tune WEBO Site SpeedUp for your website.');
 define('_WEBO_DASHBOARD_SEND', 'Send request');
-define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
+define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup/');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valid till');
@@ -800,17 +800,24 @@ define('_WEBO_OPTIONS_TITLES_basic', 'Basic configuration');
 define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which provide balanced speedup for your website. In a few cases can be incompatible with server environment.');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Version comparison');
+define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Merkmale');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Extended');
+define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
+define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Order');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edition');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Premium-Support');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
+define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Product install and tuning');
+define('_WEBO_SPLASH2_COMPARISON_PRIMARY', 'First website view speedup');
+define('_WEBO_SPLASH2_COMPARISON_SECONDARY', 'Consequent website views speedup');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Less server-side expenses');
+define('_WEBO_SPLASH2_COMPARISON_SEO', 'Advanced SEO compatibility');
+define('_WEBO_SPLASH2_COMPARISON_HTTPS', 'CDN support');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'and more');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'bis zu');
@@ -825,7 +832,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Alle Leistungen');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pries');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Kostenlos');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61,99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '339&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Free updates');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');

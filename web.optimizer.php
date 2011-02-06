@@ -41,6 +41,8 @@ $libraries['JavaScriptPacker'] = 'packer5.php';
 $libraries['csstidy'] = 'class.csstidy.php';
 /* YUI Compressor */
 $libraries['YuiCompressor'] = 'class.yuicompressor.php';
+/* Google Compiler */
+$libraries['GoogleCompiler'] = 'class.googlecompiler.php';
 
 /* Con. the compression controller */
 $web_optimizer = new web_optimizer(array(

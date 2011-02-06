@@ -10,8 +10,8 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuraci&oacute;n del WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'M&aacute;s r&aacute;pido que el rayo!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Comprar</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Comprar</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Extended Edition">Comprar</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Standard Edition">Comprar</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Comprar');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
@@ -749,7 +749,7 @@ define('_WEBO_DASHBOARD_HELP', 'Solicite ayuda calificada');
 define('_WEBO_DASHBOARD_HELP1', 'Tiene algún problema con la configuración de WEBO Site SpeedUp?');
 define('_WEBO_DASHBOARD_HELP2', 'Nuestros ingenieros pueden ayudarle a instalar y optimizar WEBO Site SpeedUp para su Sitio Web.');
 define('_WEBO_DASHBOARD_SEND', 'Enviar pedido');
-define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
+define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup/');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valido hasta');
@@ -800,17 +800,24 @@ define('_WEBO_OPTIONS_TITLES_basic', 'Configuración básica');
 define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which provide balanced speedup for your website. In a few cases can be incompatible with server environment.');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Comparación de versiones');
+define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Capacidades');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Extended');
+define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
+define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Order');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edicion');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Soporte Premium');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
+define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Product install and tuning');
+define('_WEBO_SPLASH2_COMPARISON_PRIMARY', 'First website view speedup');
+define('_WEBO_SPLASH2_COMPARISON_SECONDARY', 'Consequent website views speedup');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Less server-side expenses');
+define('_WEBO_SPLASH2_COMPARISON_SEO', 'Advanced SEO compatibility');
+define('_WEBO_SPLASH2_COMPARISON_HTTPS', 'CDN support');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'y más');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'hasta');
@@ -825,7 +832,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Todos los beneficios');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Precio');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratis');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '339&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Actualizaciones');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');

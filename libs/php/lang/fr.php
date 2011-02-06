@@ -10,8 +10,8 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Configuration de WEBO Site SpeedUp ');
 define('_WEBO_GENERAL_FOOTER', 'Plus rapide qu\'un éclair!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Acheter</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Acheter</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Extended Edition">Acheter</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Standard Edition">Acheter</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Acheter');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
@@ -747,7 +747,7 @@ define('_WEBO_DASHBOARD_HELP', 'Commander de l\'aide qualifiée');
 define('_WEBO_DASHBOARD_HELP1', 'Des problèmes avec la configuration de WEBO Site SpeedUp?');
 define('_WEBO_DASHBOARD_HELP2', 'Nos ingénieurs peuvent vous aider à installer et régler WEBO Site SpeedUp spécialement pour votre site.');
 define('_WEBO_DASHBOARD_SEND', 'Envoyer une demande');
-define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
+define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup/');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valide jusqu\'a');
@@ -799,17 +799,24 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Description de configuration utilisat
 
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Comparaison des versions ');
+define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caractéristiques');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Lite');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Premium');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Full');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Extended');
+define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
+define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Order');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Corporate');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'Edition');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Aide Premium');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
+define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Product install and tuning');
+define('_WEBO_SPLASH2_COMPARISON_PRIMARY', 'First website view speedup');
+define('_WEBO_SPLASH2_COMPARISON_SECONDARY', 'Consequent website views speedup');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Less server-side expenses');
+define('_WEBO_SPLASH2_COMPARISON_SEO', 'Advanced SEO compatibility');
+define('_WEBO_SPLASH2_COMPARISON_HTTPS', 'CDN support');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'et encore');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'jusqu\'a');
@@ -824,7 +831,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Tous les bénéfices');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Prix');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratuit');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '269&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '339&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Mise à jour');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');

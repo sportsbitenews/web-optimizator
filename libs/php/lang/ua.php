@@ -10,8 +10,8 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Premium Edition">Купить</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Lite Edition">Купить</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Extended Edition">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Standard Edition">Купить</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
@@ -732,7 +732,7 @@ define('_WEBO_DASHBOARD_HELP', 'Закажите настройку');
 define('_WEBO_DASHBOARD_HELP1', 'Возникли проблемы с настройкой WEBO Site SpeedUp?');
 define('_WEBO_DASHBOARD_HELP2', 'Наши специалисты помогут установить и отладить WEBO Site SpeedUp для вашего сайта.');
 define('_WEBO_DASHBOARD_SEND', 'Отправить заявку');
-define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
+define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup/');
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Срок действия истекает');
@@ -783,17 +783,24 @@ define('_WEBO_OPTIONS_TITLES_user', 'Пользовательская конфи
 define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользовательские настройки.');
 
 /* Version comparison */
-define('_WEBO_SPLASH2_COMPARISON', 'Сравнение версий WEBO Site SpeedUp');
+define('_WEBO_SPLASH2_COMPARISON', 'Купить ускорение сайта');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Характеристики');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Некоммерческая');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'Облегченная');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'Полная');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Полная');
+define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Быстрый сайт');
+define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Заказать');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Расширенная');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'Корпоративная');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'версия');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'Техническая поддержка');
+define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Установка и настройка продукта');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение сайта');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Серверные издержки');
+define('_WEBO_SPLASH2_COMPARISON_PRIMARY', 'Ускорение первого просмотра сайта');
+define('_WEBO_SPLASH2_COMPARISON_SECONDARY', 'Ускорение последующих просмотров сайта');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Снижение серверных издержек');
+define('_WEBO_SPLASH2_COMPARISON_SEO', 'Расширенная SEO-совместимость');
+define('_WEBO_SPLASH2_COMPARISON_HTTPS', 'Поддержка CDN');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'мс');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'и больше');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'до');

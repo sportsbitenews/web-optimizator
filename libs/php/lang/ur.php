@@ -729,7 +729,7 @@ define('_WEBO_DASHBOARD_HELP', 'پروفیشنل مدد کیلئے آرڈر کر
 define('_WEBO_DASHBOARD_HELP1', 'ویبو سائٹ اسپیڈ اپ کی کنفیگریشن میں کوئی مشکل؟');
 define('_WEBO_DASHBOARD_HELP2', 'ہمارے انجینئرز آپ کی ویب سائٹ کیلئے ویبو سائٹ اسپیڈ اپ کو انسٹال اور ٹیون کرنے میں آپ کی مدد کر سکتے ہیں');
 define('_WEBO_DASHBOARD_SEND', 'درخواست ارسال کریں');
-define('_WEBO_DASHBOARD_ORDER', 'mailto:sales@webo.name?subject=WEBO Site SpeedUp Installation');
+define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup/');
 
 /* اکاؤنٹ صفحہ */
 define('_WEBO_ACCOUNT_EXPIRES', 'اس تاریخ تک کیلئے دستیاب ہے');
@@ -782,17 +782,24 @@ define('_WEBO_OPTIONS_TITLES_basic', 'بنیادی کنفیگریشن');
 define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'بنیادی سیٹنگز کا مجموعہ جو آپ کی ویب سائٹ کو متوازن اسپیڈ دیتا ہے۔ کچھ حالتوں میں یہ سرور کے ماحول سے غیر مطابق ہو سکتا ہے۔');
 
 /* ورژن موازنہ */
-define('_WEBO_SPLASH2_COMPARISON', 'ورژن کا موازنہ');
+define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'خصوصیات اور ٹیکنالوجی');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'کمیونٹی');
-define('_WEBO_SPLASH2_COMPARISON_LITE', 'لائٹ');
-define('_WEBO_SPLASH2_COMPARISON_FULL', 'پریمیم');
+define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
+define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
+define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Order');
+define('_WEBO_SPLASH2_COMPARISON_FULL', 'Advanced');
 define('_WEBO_SPLASH2_COMPARISON_CORPORATE', 'کارپوریٹ');
 define('_WEBO_SPLASH2_COMPARISON_SAAS', 'SaaS');
 define('_WEBO_SPLASH2_COMPARISON_VERSION', 'ایڈیشن');
 define('_WEBO_SPLASH2_COMPARISON_SUPPORT', 'پریمیم سپورٹ');
 define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Website acceleration');
-define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server overhead');
+define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Product install and tuning');
+define('_WEBO_SPLASH2_COMPARISON_PRIMARY', 'First website view speedup');
+define('_WEBO_SPLASH2_COMPARISON_SECONDARY', 'Consequent website views speedup');
+define('_WEBO_SPLASH2_COMPARISON_CPU', 'Less server-side expenses');
+define('_WEBO_SPLASH2_COMPARISON_SEO', 'Advanced SEO compatibility');
+define('_WEBO_SPLASH2_COMPARISON_HTTPS', 'CDN support');
 define('_WEBO_SPLASH2_COMPARISON_ANDMORE', 'اور زیادہ');
 define('_WEBO_SPLASH2_COMPARISON_CPU_MS', 'ms');
 define('_WEBO_SPLASH2_COMPARISON_UPTO', 'تک');
@@ -807,7 +814,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'تمام فوائد');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'قیمت');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'مفت');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '89،99 $');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '349 $');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '440 $');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'تازہ ترین');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
