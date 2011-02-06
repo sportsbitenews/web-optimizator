@@ -215,6 +215,7 @@ define('_WEBO_minify_js1', 'Non minimizzare il JavaScript');
 define('_WEBO_minify_js2', 'Minimizza con JSMin (di Douglas Crockford)');
 define('_WEBO_minify_js3', 'Minimizza con YUI Compressor (necessita java)');
 define('_WEBO_minify_js4', 'Minimizza con Packer (di Dean Edwards)');
+define('_WEBO_minify_js5', 'Minimizza con Google Compiler');
 define('_WEBO_external_scripts_minify_exclude', 'Escludi i seguenti file(s) dalla minimizzazione (separati da spazi)');
 define('_WEBO_external_scripts_minify_exclude_HELP', 'I file nella lista non saranno minimizzati con la combinazione di codice JavaScript (ma saranno combinati con altre impostazioni di&quot;Combine JavaScript&quot; opzioni di gruppo).');
 define('_WEBO_external_scripts_minify_exclude_EFFECT', 'Risuzione peso sito tra 5-7%');

@@ -216,6 +216,7 @@ define('_WEBO_minify_js1', 'JavaScript nicht minimieren');
 define('_WEBO_minify_js2', 'Mit JSMin minimieren');
 define('_WEBO_minify_js3', 'Mit YUI Compressor mimimieren');
 define('_WEBO_minify_js4', 'Mit Packer minimieren');
+define('_WEBO_minify_js5', 'Mit Google Compiler minimieren');
 define('_WEBO_external_scripts_minify_exclude', 'Exclude the following file(s) from minify (separated by space)');
 define('_WEBO_external_scripts_minify_exclude_HELP', 'File(s) listed here won\'t be minified with combining of JavaScript code (but will be combined according to other settings from &quot;Combine JavaScript&quot; group of options).');
 define('_WEBO_external_scripts_minify_exclude_EFFECT', 'Website size reduction by 5-7%');

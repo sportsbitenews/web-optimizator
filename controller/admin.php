@@ -3062,7 +3062,7 @@ class admin {
 						($this->compress_options['minify']['with_packer'] ? 3 : 
 						($this->compress_options['minify']['with_google'] ? 4 : 0))),
 					'type' => 'radio',
-					'count' => $this->premium < 2 ? 3 : 5,
+					'count' => $this->premium < 2 ? 2 : 5,
 					'disabled' => array(
 						0,
 						!empty($this->restrictions['wss_minify_js1']),

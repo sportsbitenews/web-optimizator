@@ -208,8 +208,9 @@ define('_WEBO_minify_js_HELP', 'مرکب جاوا اسکرپٹ فائلز میں
 define('_WEBO_minify_js_HELP_DISABLED', 'آپ کی ویب سائٹ پر پی ایچ پی کے تحت جاوا عمل کی سپورٹ نہیں ہے۔ لہٰذا YUI کمپریسر سے چھوٹا کیا جانا ناممکن ہے۔');
 define('_WEBO_minify_js1', 'جاوا اسکرپٹ کو چھوٹا نہ کریں۔');
 define('_WEBO_minify_js2', 'JSMin کی مدد سے چھوٹا کریں۔ (ڈوگلاس کراکفورڈ کی ایجاد)۔');
-define('_WEBO_minify_js3', 'YUI کی مدد سے چھوٹا کریں (جاوا درکار)۔');
+define('_WEBO_minify_js3', 'YUI Compressor کی مدد سے چھوٹا کریں (جاوا درکار)۔');
 define('_WEBO_minify_js4', 'Packer کی مدد سے چھوٹا کریں۔ (ڈین ایڈورڈز کی ایجاد)۔');
+define('_WEBO_minify_js5', 'Google Compiler کی مدد سے چھوٹا کریں (جاوا درکار)۔');
 define('_WEBO_external_scripts_minify_exclude', 'درج ذیل فائلز کو چھوٹا کئے جانے سے خارج کریں (اسپیس سے علیحدہ کریں)');
 define('_WEBO_external_scripts_minify_exclude_HELP', 'اس لسٹ میں موجود فائلز کو جاوا اسکرپٹ کوڈ کے مرکب کے ساتھ چھوٹا نہیں کیا جائے گا (لیکن &quot;مرکب جاوا اسکرپٹ&quot; گروپ کے اختیارات میں موجود دوسری سیٹنگز کی مدد سے مرکب کیا جائے گا)۔');
 define('_WEBO_external_scripts_minify_exclude_EFFECT', 'ویب سائٹ کے سائز میں 5-7% کمی');

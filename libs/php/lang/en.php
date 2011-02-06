@@ -214,6 +214,7 @@ define('_WEBO_minify_js1', 'Don\'t minify JavaScript');
 define('_WEBO_minify_js2', 'Minify with JSMin (from Douglas Crockford)');
 define('_WEBO_minify_js3', 'Minify with YUI Compressor (requires java)');
 define('_WEBO_minify_js4', 'Minify with Packer (by Dean Edwards)');
+define('_WEBO_minify_js5', 'Minify with Google Compiler (requires java)');
 define('_WEBO_external_scripts_minify_exclude', 'Exclude the following file(s) from minify (separated by space)');
 define('_WEBO_external_scripts_minify_exclude_HELP', 'File(s) listed here won\'t be minified with combining of JavaScript code (but will be combined according to other settings from &quot;Combine JavaScript&quot; group of options).');
 define('_WEBO_external_scripts_minify_exclude_EFFECT', 'Website size reduction by 5-7%');

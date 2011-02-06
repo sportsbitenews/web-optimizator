@@ -217,6 +217,7 @@ define('_WEBO_minify_js1', 'Не минимизировать JavaScript');
 define('_WEBO_minify_js2', 'Мінімізувати за допомогою JSMin');
 define('_WEBO_minify_js3', 'Мінімізувати за допомогою YUI Compressor');
 define('_WEBO_minify_js4', 'Мінімізувати за допомогою Packer');
+define('_WEBO_minify_js5', 'Мінімізувати за допомогою Google Compiler');
 define('_WEBO_external_scripts_minify_exclude', 'Исключить из минимизации следующие файлы (через пробел)');
 define('_WEBO_external_scripts_minify_exclude_HELP', 'При объединении JavaScript-кода указанные в этом поле файлы не будут минимизированы (но будут объединены согласно остальным настройкам группы &laquo;Объединение JavaScript&raquo;).');
 define('_WEBO_external_scripts_minify_exclude_EFFECT', 'Уменьшение размера сайта на 5-7%');
