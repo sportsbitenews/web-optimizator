@@ -410,9 +410,7 @@
 ?> class="wssA0"<?php
 		}
 ?> title="<?php
-		echo _WEBO_LOGIN_VERSION;
-?> <?php
-		echo $version_beta;
+		echo _WEBO_LOGIN_VERSION . ' ' . $version_beta;
 ?>"></div></div></fieldset><?php
 	}
 	if (!$internal) {
