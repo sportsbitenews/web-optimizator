@@ -46,6 +46,7 @@ class admin {
 		$this->version_stable = preg_replace("[^0-9\.]", "", empty($this->input['wss_version_stable']) ? '' : $this->input['wss_version_stable']);
 /* get the latest version */
 		$version_new_file = $this->compress_options['html_cachedir'] . 'version.new';
+		$this->input['wss_page'] = empty($this->input['wss_page']) ? '' : $this->input['wss_page'];
 		if (in_array($this->input['wss_page'],
 			array('install_dashboard',
 				'install_set_password',
