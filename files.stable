@@ -37,6 +37,7 @@ libs/php/.htaccess
 libs/php/0.gif
 libs/php/cache_engine.php
 libs/php/class.csstidy.php
+libs/php/class.googlecompiler.php
 libs/php/class.plugin.php
 libs/php/class.yuicompressor.php
 libs/php/config.unobtrusive.php

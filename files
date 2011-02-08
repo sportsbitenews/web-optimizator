@@ -40,6 +40,7 @@ libs/php/class.csstidy.php
 libs/php/class.csstidy_ctype.php
 libs/php/class.csstidy_optimise.php
 libs/php/class.csstidy_print.php
+libs/php/class.googlecompiler.php
 libs/php/class.plugin.php
 libs/php/class.yuicompressor.php
 libs/php/config.unobtrusive.php
