@@ -230,10 +230,6 @@ class web_optimizer {
 						$this->options['page']['clientside_timeout']);
 					header("Expires: " . $ExpStr);
 				}
-/* check if cached content must be gzipped, can't gzip twice via php for flush */
-				if ($this->options['page']['gzip'] && !$this->options['page']['flush']) {
-					$this->set_gzip_header();
-				}
 				while (@ob_end_clean());
 				header('WEBO: cache hit');
 				echo $content;
@@ -988,7 +984,6 @@ class web_optimizer {
 			$content = $this->create_gz_compress($this->content,
 				in_array($this->encoding, array('gzip', 'x-gzip')));
 			if (!empty($content)) {
-				$this->set_gzip_header();
 				$this->content = $content;
 			}
 		}
@@ -2294,6 +2289,10 @@ class web_optimizer {
 	function set_gzip_headers () {
 /* define encoding for HTML page */
 		$this->set_gzip_encoding();
+/* check if content must be gzipped, can't gzip twice via php for flush */
+		if ($this->options['page']['gzip'] && !$this->options['page']['flush']) {
+			$this->set_gzip_header();
+		}
 /* When will the file expire? */
 		$offset = 6000000 * 60 ;
 		$ExpStr = "Expires: " .
@@ -3158,7 +3157,7 @@ class web_optimizer {
 		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^;\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
-			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7'));
+			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7')) && $options['mhtml'];
 			$mhtml_code = "/*\nContent-Type:multipart/related;boundary=\"_\"";
 			$location = 0;
 			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
@@ -3468,7 +3467,7 @@ class web_optimizer {
 	}
 	
 	/**
-	* Convert given URL to another with base URI (<base> tag / header)
+	* Converts given URL to another with base URI (<base> tag / header)
 	*
 	**/
 	function convert_basehref ($uri) {
@@ -3489,14 +3488,14 @@ class web_optimizer {
 		}
 	}
 
-	function file_get_contents ($file)
-	{
-		if (get_magic_quotes_runtime())
-		{
+	/**
+	* Removes quotes from file content if magic_quotes_runtime enabled
+	*
+	**/
+	function file_get_contents ($file) {
+		if (get_magic_quotes_runtime()) {
 			return stripslashes(@file_get_contents($file));
-		}
-		else
-		{
+		} else {
 			return @file_get_contents($file);
 		}
 	}

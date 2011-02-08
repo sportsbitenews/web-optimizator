@@ -577,10 +577,8 @@ __________________
 												$this->optimizer->css_image =
 													$this->optimizer->get_image(1, 0,
 													$this->optimizer->css_image);
-										} elseif (!empty($this->optimizer->data_uris) &&
-											!empty($this->optimizer->mhtml) &&
-											$this->optimizer->ie &&
-											!$this->optimizer->ie7v) {
+										} elseif (!empty($this->optimizer->mhtml) &&
+											$this->optimizer->ie) {
 /* convert image to mhtml: */
 												$this->optimizer->css_image =
 													$this->optimizer->get_image(2,
