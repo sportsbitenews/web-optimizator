@@ -373,7 +373,7 @@ class admin {
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */
-		$deltas = array(58, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		$deltas = array(28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		$options = $deltas[round($this->premium)];
 		foreach ($errors as $key => $value) {
 			$options += $value;
@@ -1452,44 +1452,50 @@ class admin {
 		$errors = array();
 		$value = 5;
 /* first priority issues */
-		if (empty($this->compress_options['css_sprites']['enabled']) &&
-			$this->premium > 1) {
+		if (empty($this->compress_options['performance']['plain_string']) &&
+			$this->premium) {
+				$errors['performance_plain_string'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['cookie']) &&
+			$this->premium) {
+				$errors['gzip_cookie'] = $value;
+		}
+		if (empty($this->compress_options['gzip']['noie']) &&
+			$this->premium) {
+				$errors['gzip_noie'] = $value;
+		}
+		if (empty($this->compress_options['performance']['restore_properties']) &&
+			$this->premium) {
+			$errors['performance_restore_properties'] = $value;
+		}
+		if (empty($this->compress_options['minify']['html_comments']) &&
+			$this->premium) {
+			$errors['minify_html_comments'] = $value;
+		}
+/* second priority issues */
+		$value = 4;
+		if (empty($this->compress_options['css_sprites']['enabled'])) {
 				$errors['css_sprites_enabled'] = $value;
 		}
-		if (empty($this->compress_options['parallel']['enabled']) &&
-			$this->premium > 1) {
+		if (empty($this->compress_options['parallel']['enabled'])) {
 				$errors['parallel_enabled'] = $value;
 		}
-		if (empty($this->compress_options['performance']['mtime']) &&
-			$this->premium > 0) {
+		if (empty($this->compress_options['performance']['mtime'])) {
 			$errors['performance_mtime'] = $value;
-		}
-		if (empty($this->compress_options['performance']['plain_string']) &&
-			$this->premium > 1) {
-				$errors['performance_plain_string'] = $value;
 		}
 		if (empty($this->compress_options['htaccess']['enabled']) ||
 			!$htaccess_available) {
 				$errors['htaccess_enabled'] = $value;
 		}
-/* second priority issues */
-		$value = 4;
-		if (empty($this->compress_options['unobtrusive']['ads']) &&
-			$this->premium > 1) {
-				$errors['unobtrusive_ads'] = $value;
-		}
-		if (empty($this->compress_options['unobtrusive']['informers']) &&
-			$this->premium > 1) {
-				$errors['unobtrusive_informers'] = $value;
-		}
-		if (empty($this->compress_options['gzip']['cookie']) &&
-			$this->premium > 1) {
-				$errors['gzip_cookie'] = $value;
-		}
-		if (empty($this->compress_options['unobtrusive']['body']) &&
-			$this->premium > 1) {
+		if (empty($this->compress_options['unobtrusive']['body'])) {
 				$errors['unobtrusive_body'] = $value;
 		}
+		if (empty($this->compress_options['minify']['html_one_string']) &&
+			$this->premium) {
+			$errors['minify_html_one_string'] = $value;
+		}
+/* third priority issues */
+		$value = 3;
 		if ((empty($this->compress_options['htaccess']['mod_deflate']) ||
 			!in_array('mod_deflate', $this->apache_modules))) {
 				$errors['htaccess_mod_deflate'] = $value;
@@ -1499,19 +1505,8 @@ class admin {
 			!$apache) {
 				$errors['htaccess_mod_gzip'] = $value;
 		}
-/* third priority issues */
-		$value = 3;
-		if (empty($this->compress_options['data_uris']['on']) &&
-			$this->premium > 0) {
+		if (empty($this->compress_options['data_uris']['on'])) {
 				$errors['data_uris_on'] = $value;
-		}
-		if (empty($this->compress_options['performance']['restore_properties']) &&
-			$this->premium > 1) {
-			$errors['performance_restore_properties'] = $value;
-		}
-		if (empty($this->compress_options['unobtrusive']['informers']) &&
-			$this->premium > 1) {
-				$errors['unobtrusive_informers'] = $value;
 		}
 		if (empty($this->compress_options['gzip']['page'])) {
 			$errors['gzip_page'] = $value;
@@ -1519,23 +1514,17 @@ class admin {
 		if (empty($this->compress_options['minify']['javascript'])) {
 			$errors['minify_javascript'] = $value;
 		}
-		if (empty($this->compress_options['unobtrusive']['iframes']) &&
-			$this->premium > 1) {
-				$errors['unobtrusive_iframes'] = $value;
-		}
-/* fourth priority issues */
-		$value = 2;
-		if (empty($this->compress_options['data_uris']['mhtml']) &&
-			$this->premium > 0) {
+		if (empty($this->compress_options['data_uris']['mhtml'])) {
 				$errors['data_uris_mhtml'] = $value;
 		}
-		if (empty($this->compress_options['css_sprites']['html_sprites']) &&
-			$this->premium > 1) {
+		if (empty($this->compress_options['css_sprites']['html_sprites'])) {
 				$errors['css_sprites_html_sprites'] = $value;
 		}
 		if (empty($this->compress_options['minify']['css'])) {
 			$errors['combine_css'] = $value;
 		}
+/* fourth priority issues */
+		$value = 2;
 		if (empty($this->compress_options['htaccess']['mod_expires']) ||
 			!in_array('mod_expires', $this->apache_modules)) {
 				$errors['htaccess_mod_expires'] = $value;
@@ -1546,8 +1535,6 @@ class admin {
 		if (empty($this->compress_options['gzip']['javascript'])) {
 			$errors['gzip_javascript'] = $value;
 		}
-/* fifth priority issues */
-		$value = 1;
 		if (empty($this->compress_options['htaccess']['mod_rewrite']) ||
 			!in_array('mod_rewrite', $this->apache_modules)) {
 				$errors['htaccess_mod_rewrite'] = $value;
@@ -1571,17 +1558,8 @@ class admin {
 		if (empty($this->compress_options['minify']['javascript'])) {
 			$errors['minify_javascript'] = $value;
 		}
-		if (empty($this->compress_options['minify']['page'])) {
-			$errors['minify_page'] = $value;
-		}
-		if (empty($this->compress_options['minify']['html_comments']) &&
-			$this->premium > 1) {
-			$errors['minify_html_comments'] = $value;
-		}
-		if (empty($this->compress_options['minify']['html_one_string']) &&
-			$this->premium > 1) {
-			$errors['minify_html_one_string'] = $value;
-		}
+/* fifth priority issues */
+		$value = 1;
 		if (empty($this->compress_options['external_scripts']['css'])) {
 			$errors['external_scripts_css'] = $value;
 		}
@@ -1593,9 +1571,6 @@ class admin {
 		}
 		if (empty($this->compress_options['gzip']['fonts'])) {
 			$errors['gzip_fonts'] = $value;
-		}
-		if (empty($this->compress_options['minify']['page'])) {
-			$errors['minify_page'] = $value;
 		}
 		if (empty($this->compress_options['htaccess']['mod_setenvif']) ||
 			!in_array('mod_setenvif', $this->apache_modules)) {

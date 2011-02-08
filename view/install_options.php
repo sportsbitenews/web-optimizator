@@ -242,7 +242,7 @@ if ($submit) {
 						}
 					}
 					$i = 0;
-					if ($value['type'] == 'radio') {
+					if ($value['type'] == 'radio' && empty($value['hidden'])) {
 ?><dt class="wssD5<?php
 						echo !empty($value['disabled']) && ($disabled || $value['disabled'] == 100) ? ' wssD22' : '';
 ?>"><label class="wssE" for="wss_<?php
