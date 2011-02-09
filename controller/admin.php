@@ -4092,7 +4092,7 @@ class admin {
 	* Returns actual .htaccess file name
 	**/
 	function detect_htaccess () {
-		if (empty($this->compress_options['htaccess']['local'])) {
+		if (empty($this->input['wss_htaccess_local'])) {
 			$htaccess = $this->compress_options['document_root'] . '.htaccess';
 		} else {
 			$htaccess = $this->compress_options['website_root'] . '.htaccess';
