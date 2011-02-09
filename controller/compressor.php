@@ -516,8 +516,7 @@ class web_optimizer {
 				$this->premium,
 			"plugins" => (!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '') &&
 				($this->premium > 1),
-			"restricted" => (!empty($this->options['restricted']) ? $this->options['restricted'] : '') &&
-				($this->premium > 1),
+			"restricted" => $this->premium > 1 && !empty($this->options['restricted']) ? $this->options['restricted'] : '',
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset']
 		);
