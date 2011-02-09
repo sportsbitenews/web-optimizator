@@ -537,7 +537,7 @@ define('_WEBO_DASHBOARD_UPDATES', 'Actualizaciones');
 define('_WEBO_DASHBOARD_RESULTS', 'Resultados de la optimización');
 define('_WEBO_DASHBOARD_TOOLS', 'Herramientas de optimización');
 define('_WEBO_DASHBOARD_LINKS', 'Enlaces rápidos');
-define('_WEBO_DASHBOARD_AVAILABLE', 'Disponible solo en Premium Edition');
+define('_WEBO_DASHBOARD_AVAILABLE', 'Disponible solo en Extended Edition');
 define('_WEBO_DASHBOARD_ALL', 'Blocks disponibles');
 define('_WEBO_DASHBOARD_INSTALL', 'Instalar');
 define('_WEBO_DASHBOARD_SHARE_RESULTS', 'Share results on Twitter');
