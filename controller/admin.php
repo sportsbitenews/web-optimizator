@@ -4293,7 +4293,7 @@ class admin {
 <IfModule mod_deflate.c>";
 				if (!empty($this->input['wss_gzip_page'])) {
 					$content .= "
-	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon";
+	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon text/richtext text/xsd text/xsl text/xml";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
 					$content .= "
@@ -4355,16 +4355,69 @@ Options +FollowSymLinks";
 	<FilesMatch \.eot\.gz$>
 		ForceType application/vnd.ms-fontobject
 	</FilesMatch>
+	<FilesMatch \.(rtf|rtx)\.gz$>
+		ForceType text/richtext
+	</FilesMatch>
+	<FilesMatch \.xsd\.gz$>
+		ForceType text/xsd
+	</FilesMatch>
+	<FilesMatch \.xsl\.gz$>
+		ForceType text/xsl
+	</FilesMatch>
+	AddType text/css css
+	AddType application/x-javascript js
+	AddType text/html html htm
+	AddType text/richtext rtf rtx
+	AddType text/plain txt
+	AddType text/xsd xsd
+	AddType text/xsl xsl
+	AddType text/xml xml
+	AddType text/cache-manifest manifest
+	AddType video/asf asf asx wax wmv wmx
+	AddType video/avi avi
 	AddType video/ogg ogg ogv
-	AddType video/mp4 mp4
+	AddType video/mp4 mp4 m4v
 	AddType video/webm webm
+	AddType video/divx divx
+	AddType video/quicktime mov qt
+	AddType video/mpeg mpeg mpg mpe
+	AddType audio/midi mid midi
+	AddType audio/mpeg mp3 m4a
+	AddType audio/ogg ogg
+	AddType audio/x-realaudio ra ram
+	AddType audio/wav wav
+	AddType audio/wma wma
 	AddType image/svg+xml svg svgz
-	AddType application/vnd.ms-fontobject eot
+	AddType image/bmp bmp
+	AddType image/gif gif
+	AddType image/x-icon ico
+	AddType image/jpeg jpg jpeg jpe
+	AddType image/png png
+	AddType image/tiff tif tiff
 	AddType font/ttf ttf
 	AddType font/otf otf
 	AddType font/x-woff woff
 	AddType application/vnd.ms-fontobject eot
-	AddType text/cache-manifest manifest
+	AddType application/msword doc docx
+	AddType application/x-msdownload exe
+	AddType application/vnd.ms-access mdb
+	AddType application/vnd.ms-project mpp
+	AddType application/vnd.ms-powerpoint pot pps ppt pptx
+	AddType application/vnd.ms-write wri
+	AddType application/vnd.ms-excel xla xls xlsx xlt xlw
+	AddType application/vnd.oasis.opendocument.database odb
+	AddType application/vnd.oasis.opendocument.chart odc
+	AddType application/vnd.oasis.opendocument.formula odf
+	AddType application/vnd.oasis.opendocument.graphics odg
+	AddType application/vnd.oasis.opendocument.presentation odp
+	AddType application/vnd.oasis.opendocument.spreadsheet ods
+	AddType application/vnd.oasis.opendocument.text odt
+	AddType application/java class
+	AddType application/x-gzip gzip
+	AddType application/pdf pdf
+	AddType application/x-shockwave-flash swf
+	AddType application/x-tar tar
+    AddType application/zip zip
 </IfModule>";
 				if (!empty($this->input['wss_htaccess_mod_rewrite'])) {
 					$content .= "
@@ -4474,13 +4527,16 @@ Options +FollowSymLinks";
 	ExpiresByType text/cache-manifest A0";
 				if (!empty($this->input['wss_far_future_expires_html'])) {
 					$content2 .= "
-	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php)$>
+	<FilesMatch \.(html|xhtml|xml|shtml|phtml|php|xsl|xsd|rtf|rtx)$>
 		ExpiresDefault \"access plus " . $this->input['wss_far_future_expires_html_timeout'] . " seconds\"
 	</FilesMatch>
 	ExpiresByType text/html A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType application/xhtml+xml A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/plain A" . $this->input['wss_far_future_expires_html_timeout'] . "
+	ExpiresByType text/richtext A" . $this->input['wss_far_future_expires_html_timeout'] . "
+	ExpiresByType text/xsd A" . $this->input['wss_far_future_expires_html_timeout'] . "
+	ExpiresByType text/xsl A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType application/rss+xml A" . $this->input['wss_far_future_expires_html_timeout'];
 				}
 				if (!empty($this->input['wss_far_future_expires_css'])) {
@@ -4535,13 +4591,20 @@ Options +FollowSymLinks";
 				}
 				if (!empty($this->input['wss_far_future_expires_video'])) {
 					$content2 .= "
-	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|mid|wav)$>
+	<FilesMatch \.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|midi?|wav|m4v|webm|divx|mov|qt|mpe?g|mpe|m4a|ra|ram)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType audio/mpeg A315360000
 	ExpiresByType audio/ogg A315360000
 	ExpiresByType audio/mid A315360000
+	ExpiresByType audio/midi A315360000
+	ExpiresByType audio/wav A31536000
 	ExpiresByType audio/x-wav A315360000
+	ExpiresByType audio/x-realaudio A31536000
+	ExpiresByType audio/wma A31536000
+	ExpiresByType video/asf A315360000
+	ExpiresByType video/avi A315360000
+	ExpiresByType video/divx A315360000
 	ExpiresByType video/x-flv A315360000
 	ExpiresByType video/x-ms-wmv A315360000
 	ExpiresByType video/x-ms-asf A315360000
@@ -4551,19 +4614,37 @@ Options +FollowSymLinks";
 	ExpiresByType video/x-ms-wmx A315360000
 	ExpiresByType video/x-ms-wm A315360000
 	ExpiresByType video/ogg A315360000
-	ExpiresByType video/mp4 A315360000";
+	ExpiresByType video/quicktime A31536000
+	ExpiresByType video/mp4 A315360000
+	ExpiresByType video/mpeg A31536000";
 				}
 				if (!empty($this->input['wss_far_future_expires_static'])) {
 					$content2 .= "
-	<FilesMatch \.(swf|pdf|doc|rtf|xls|ppt)$>
+	<FilesMatch \.(swf|pdf|docx?|rtf|xls|ppt|class|exe|g?zip|tar|mdb|mpp|pot|pps|ppt|pptx|wri|xla|xlsx?|xlt|xlw|odb|odc|odf|odg|odp|ods|odt)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType application/x-shockwave-flash A315360000
 	ExpiresByType application/pdf A315360000
 	ExpiresByType application/msword A315360000
 	ExpiresByType application/rtf A315360000
+	ExpiresByType application/java A315360000
 	ExpiresByType application/vnd.ms-excel A315360000
-	ExpiresByType application/vnd.ms-powerpoint A315360000";
+	ExpiresByType application/vnd.ms-powerpoint A315360000
+	ExpiresByType application/x-msdownload A31536000
+	ExpiresByType application/x-gzip A31536000
+	ExpiresByType application/x-tar A31536000
+	ExpiresByType application/zip A31536000
+	ExpiresByType application/vnd.ms-access A31536000
+	ExpiresByType application/vnd.ms-write A31536000
+	ExpiresByType application/vnd.oasis.opendocument.text A31536000
+	ExpiresByType application/vnd.ms-project A31536000
+	ExpiresByType application/vnd.oasis.opendocument.database A31536000
+	ExpiresByType application/vnd.oasis.opendocument.chart A31536000
+	ExpiresByType application/vnd.oasis.opendocument.formula A31536000
+	ExpiresByType application/vnd.oasis.opendocument.graphics A31536000
+	ExpiresByType application/vnd.oasis.opendocument.presentation A31536000
+	ExpiresByType application/vnd.oasis.opendocument.spreadsheet A31536000
+	ExpiresByType application/vnd.oasis.opendocument.text A31536000";
 				}
 				$content2 .= "
 </IfModule>
