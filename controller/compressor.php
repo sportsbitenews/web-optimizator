@@ -1233,8 +1233,15 @@ class web_optimizer {
 	**/
 	function set_gzip_header () {
 		if(!empty($this->encoding)) {
-			header("Content-Encoding: " . $this->encoding);
-			header("Vary: Accept-Encoding,User-Agent");
+/* try to use zlib instead or raw PHP */
+			if (round(@ini_get('zlib.output_compression_level'))) {
+				@ini_set('zlib.output_compression', 'On');
+				@ini_set('zlib.output_compression_level', $this->options['page']['gzip_level']);
+				$this->encoding = '';
+			} else {
+				header("Content-Encoding: " . $this->encoding);
+				header("Vary: Accept-Encoding,User-Agent");
+			}
 		}
 	}
 
