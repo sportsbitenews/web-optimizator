@@ -1324,7 +1324,7 @@ class web_optimizer {
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
-				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!--[if IE]><![endif]-->' : '';
+				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!-- // -->' : '';
 				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
 				if ($this->options['css']['data_uris_separate']) {
 					$include .= 'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);';
