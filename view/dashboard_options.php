@@ -37,10 +37,8 @@ echo 100 - $delta;
 			$i++;
 		}
 	}
-	if ($premium < 2) {
-?><li class="wssO4"><strong class="wssJ2">+<?php
-		echo $premium > 0 ? 48 : 58;
-?></strong> <a class="wssJ" href="#wss_promo"><?php
+	if ($premium < 1) {
+?><li class="wssO4"><strong class="wssJ2">+28</strong> <a class="wssJ" href="#wss_promo"><?php
 		echo _WEBO_DASHBOARD_AVAILABLE;
 ?></a></li><?php
 	}

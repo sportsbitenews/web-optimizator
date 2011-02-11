@@ -539,7 +539,7 @@ define('_WEBO_DASHBOARD_UPDATES', 'Обновления');
 define('_WEBO_DASHBOARD_RESULTS', 'Результат оптимизации');
 define('_WEBO_DASHBOARD_TOOLS', 'Инструменты оптимизации');
 define('_WEBO_DASHBOARD_LINKS', 'Быстрые ссылки');
-define('_WEBO_DASHBOARD_AVAILABLE', 'Доступно в расширенной версии');
+define('_WEBO_DASHBOARD_AVAILABLE', 'Доступно в полной версии');
 define('_WEBO_DASHBOARD_ALL', 'Все блоки');
 define('_WEBO_DASHBOARD_INSTALL', 'Установить');
 define('_WEBO_DASHBOARD_SHARE_RESULTS', 'Поделиться результатами в Twitter');
