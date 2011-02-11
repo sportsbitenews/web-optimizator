@@ -3201,7 +3201,7 @@ class web_optimizer {
 								} else {
 									$next = 1;
 								}
-							} else {
+							} elseif ($options['data_uris']) {
 								if (@filesize($css_image) < $options['data_uris_size'] &&
 									!in_array($filename, $data_uri_exclude) &&
 									!empty($encoded)) {
