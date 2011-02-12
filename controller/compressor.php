@@ -14,12 +14,13 @@ class web_optimizer {
 	* Sets the options and defines the gzip headers
 	**/
 	function web_optimizer ($options = false) {
-/* initialize chained optimization */
-		if(!empty($_GET['web_optimizer_disabled']))
-		{
-			$this->options['active'] = 0;
-			return;
+/* skip processing if disabled or restricted */
+		if (!empty($_GET['web_optimizer_disabled']) || (!empty($options['options']['restricted']) &&
+			preg_match("@" . preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $options['options']['restricted'])) . "@", $_SERVER['REQUEST_URI']))) {
+				$this->options['active'] = 0;
+				return;
 		}
+/* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
 		$this->debug_mode = empty($_GET['web_optimizer_debug']) && empty($_COOKIE['web_optimizer_debug']) ? 0 : 1;
 /* get chained optimization params */
@@ -98,11 +99,8 @@ class web_optimizer {
 		if (!empty($this->options['page']['cache'])) {
 			$this->start_cache_engine();
 /* HTML cache ? */
-			if (!empty($this->options['page']['cache_ignore']) ||
-				!empty($this->options['restricted'])) {
-				$list = (empty($this->options['page']['cache_ignore']) ? '' : $this->options['page']['cache_ignore']) .
-					(empty($this->options['restricted']) ? '' : ' ' . $this->options['restricted']);
-				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $list));
+			if (!empty($this->options['page']['cache_ignore'])) {
+				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
 			}
 			if (!empty($this->options['page']['allowed_user_agents'])) {
 				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
@@ -516,7 +514,6 @@ class web_optimizer {
 				$this->premium,
 			"plugins" => (!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '') &&
 				($this->premium > 1),
-			"restricted" => $this->premium > 1 && !empty($this->options['restricted']) ? $this->options['restricted'] : '',
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset']
 		);
@@ -621,17 +618,6 @@ class web_optimizer {
 				strlen($this->content) < 200) {
 					$skip = 1;
 			}
-		}
-/* restrict URL from configuration */
-		if (!$skip &&
-			!empty($this->options['restricted'])) {
-				if (preg_match("@" . preg_replace("/ /", "|",
-					preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/",
-					"\\\\$1",
-					$this->options['restricted'])) . "@",
-					$_SERVER['REQUEST_URI'])) {
-						$skip = 1;
-				}
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
@@ -1535,7 +1521,8 @@ class web_optimizer {
 				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
 /* add spor for HTML Sprites ? */
 			$addhtml = 1;
-			if ($options['css_sprites'] || ($options['data_uris'] && empty($this->ua_mod)) || ($options['mhtml'] && !empty($this->ua_mod)) || $options['parallel']) {
+			$ies = array('.ie4', '.ie5', '.ie6', '.ie7');
+			if ($options['css_sprites'] || ($options['data_uris'] && !in_array($this->ua_mod, $ies)) || ($options['mhtml'] && in_array($this->ua_mod, $ies)) || $options['parallel']) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
 				$remembered_mhtml = $options['mhtml'];
