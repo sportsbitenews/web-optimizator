@@ -1605,7 +1605,7 @@ class admin {
 	function dashboard_options () {
 		$errors = $this->options_count();
 /* count delta */
-		$deltas = array(58, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		$deltas = array(28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		$delta = $deltas[round($this->premium)];
 		foreach ($errors as $key => $value) {
 			$delta += $value;
@@ -1613,8 +1613,8 @@ class admin {
 /* overwrite delta */
 		if (!empty($this->compress_options['points'])) {
 			$delta = 100 - round($this->compress_options['points']);
-			$delta = $delta < 0 ? 0 : ($delta > 100 ? 100 : $delta);
 		}
+		$delta = $delta < 0 ? 0 : ($delta > 100 ? 100 : $delta);
 /* set variables */
 		$page_variables = array(
 			'errors' => $errors,
