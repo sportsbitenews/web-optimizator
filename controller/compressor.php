@@ -1456,36 +1456,51 @@ class web_optimizer {
 		if (!empty($this->options['days_to_delete'])) {
 			$dir = @getcwd();
 			@chdir($options['cachedir']);
-			foreach (glob('*.' . $options['ext']) as $file) {
-				if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
-					$this->time - filemtime($file) >
-					$this->options['days_to_delete'] * 86400) {
-						@unlink($file);
+			$files = glob('*.' . $options['ext']);
+			if (!empty($files)) {
+				foreach ($files as $file) {
+					if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
+						$this->time - filemtime($file) >
+						$this->options['days_to_delete'] * 86400) {
+							@unlink($file);
+					}
 				}
 			}
-			foreach (glob('*.' . $options['ext'] . '.gz') as $file) {
-				if ($this->time - filemtime($file) >
-					$this->options['days_to_delete'] * 86400) {
-						@unlink($file);
+			$files = glob('*.' . $options['ext'] . '.gz');
+			if (!empty($files)) {
+				foreach ($files as $file) {
+					if ($this->time - filemtime($file) >
+						$this->options['days_to_delete'] * 86400) {
+							@unlink($file);
+					}
 				}
 			}
-			foreach (glob('*.png') as $file) {
-				if (!in_array($file, array('webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png')) &&
-					$this->time - filemtime($file) >
-					$this->options['days_to_delete'] * 86400) {
-						@unlink($file);
+			$files = glob('*.png');
+			if (!empty($files)) {
+				foreach ($files as $file) {
+					if (!in_array($file, array('webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png')) &&
+						$this->time - filemtime($file) >
+						$this->options['days_to_delete'] * 86400) {
+							@unlink($file);
+					}
 				}
 			}
-			foreach (glob('*.gif') as $file) {
-				if ($file != '0.gif' && $this->time - filemtime($file) >
-					$this->options['days_to_delete'] * 86400) {
-						@unlink($file);
+			$files = glob('*.gif');
+			if (!empty($files)) {
+				foreach ($files as $file) {
+					if ($file != '0.gif' && $this->time - filemtime($file) >
+						$this->options['days_to_delete'] * 86400) {
+							@unlink($file);
+					}
 				}
 			}
-			foreach (glob('*.jpg') as $file) {
-				if ($this->time - filemtime($file) >
-					$this->options['days_to_delete'] * 86400) {
-						@unlink($file);
+			$files = glob('*.jpg');
+			if (!empty($files)) {
+				foreach ($files as $file) {
+					if ($this->time - filemtime($file) >
+						$this->options['days_to_delete'] * 86400) {
+							@unlink($file);
+					}
 				}
 			}
 			@chdir($dir);
