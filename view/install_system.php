@@ -276,56 +276,55 @@
 ?>">?</a></label></dt><dd class="wssD2"><input value="<?php
 	echo htmlspecialchars($charset);
 ?>" name="wss_encoding" id="wss_encoding" class="wssF"/></dd><?php
-	if (!$internal) {
+	if ($premium > 1) {
+		if (!$internal) {
 ?><dt class="wssD5"><label class="wssE" for="wss_htaccess_access"><?php
-		echo _WEBO_htaccess_access;
+			echo _WEBO_htaccess_access;
 ?> <a class="wssJ9" href="#" title="<?php
-		echo _WEBO_htaccess_access_HELP;
+			echo _WEBO_htaccess_access_HELP;
 ?>">?</a></label></dt><dd class="wssD6"><input type="checkbox"<?php
-		echo $htpasswd ? ' checked="checked"' : '';
+			echo $htpasswd ? ' checked="checked"' : '';
 ?> name="wss_htaccess_access" id="wss_htaccess_access" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_username"><?php
-		echo _WEBO_htaccess_login;
+			echo _WEBO_htaccess_login;
 ?> <a class="wssJ9" href="#" title="<?php
-		echo _WEBO_htaccess_login_HELP;
+			echo _WEBO_htaccess_login_HELP;
 ?>">?</a></label></dt><dd class="wssD2<?php
-		if (!empty($error[6])) {
+			if (!empty($error[6])) {
+?> wssD8<?php
+			}
+?>"><span class="wssD3"></span><input value="<?php
+			echo htmlspecialchars($username);
+?>" name="wss_username" id="wss_username" class="wssF"/></dd><?php
+		}
+?><dt class="wssD1"><label class="wssE" for="wss_external_scripts_user"><?php
+		echo _WEBO_external_scripts_user;
+?> <a class="wssJ9" href="#" title="<?php
+		echo _WEBO_external_scripts_user_HELP;
+?>">?</a></label></dt><dd class="wssD2<?php
+		if (!empty($error[7])) {
 ?> wssD8<?php
 		}
 ?>"><span class="wssD3"></span><input value="<?php
-		echo htmlspecialchars($username);
-?>" name="wss_username" id="wss_username" class="wssF"/></dd><?php
-	}
-?><dt class="wssD1"><label class="wssE" for="wss_external_scripts_user"><?php
-	echo _WEBO_external_scripts_user;
-?> <a class="wssJ9" href="#" title="<?php
-	echo _WEBO_external_scripts_user_HELP;
-?>">?</a></label></dt><dd class="wssD2<?php
-	if (!empty($error[7])) {
-?> wssD8<?php
-	}
-?>"><span class="wssD3"></span><input value="<?php
-	echo htmlspecialchars($external_scripts_user);
+		echo htmlspecialchars($external_scripts_user);
 ?>" name="wss_external_scripts_user" id="wss_external_scripts_user" class="wssF"/></dd><dt class="wssD1"><label class="wssE" for="wss_external_scripts_pass"><?php
-	echo _WEBO_external_scripts_pass;
+		echo _WEBO_external_scripts_pass;
 ?> <a class="wssJ9" href="#" title="<?php
-	echo _WEBO_external_scripts_pass_HELP;
+		echo _WEBO_external_scripts_pass_HELP;
 ?>">?</a></label></dt><dd class="wssD2<?php
-	if (!empty($error[7])) {
+		if (!empty($error[7])) {
 ?> wssD8<?php
-	}
+		}
 ?>"><span class="wssD3"></span><input value="<?php
 	echo htmlspecialchars($external_scripts_pass);
 ?>" name="wss_external_scripts_pass" id="wss_external_scripts_pass" class="wssF"/></dd><?php
-	if ($premium > 1) {
+	}
 ?><dt class="wssD1"><label class="wssE" for="wss_restricted"><?php
 		echo _WEBO_restricted;
 ?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_restricted_HELP;
 ?>">?</a></label></dt><dd class="wssD2"><textarea name="wss_restricted" id="wss_restricted" cols="80" rows="2" class="wssF wssF1"><?php
 		echo htmlspecialchars($restricted);
-?></textarea></dd><?php
-	}
-?></dl><p class="wssI"><a href="javascript:var a=_('.wssC6')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
+?></textarea></dd></dl><p class="wssI"><a href="javascript:var a=_('.wssC6')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
 <fieldset id="cache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php
