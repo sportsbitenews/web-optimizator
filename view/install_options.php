@@ -164,7 +164,11 @@ if ($submit) {
 	echo _WEBO_OPTIONS_ATTENTION;
 ?></h3><p class="wssI"><?php
 	echo _WEBO_OPTIONS_ATTENTION2;
-?></p></div><div class="wssA0 wssU0"><form method="post" enctype="multipart/form-data" action="#wss_options" class="wssC6"><dl class="wssU1"><dt class="wssU2"><label for="wss_title"><?php
+?></p></div><div class="wssA0 wssU0"><form method="post" enctype="multipart/form-data" action="#wss_options" class="wssC6"<?php
+	if (!$premium) {
+?> style="height:551px"<?php
+	}
+?>><dl class="wssU1"><dt class="wssU2"><label for="wss_title"><?php
 	echo _WEBO_OPTIONS_CONFIGURATION;
 ?>:</label></dt><dd class="wssU3"><input name="wss_title" id="wss_title" class="wssF" value="<?php
 	echo htmlspecialchars($options['title']);
@@ -226,7 +230,11 @@ if ($submit) {
 		echo $key;
 ?>" class="wssD9<?php
 		echo $key != 'combinecss' ? ' wssA0' : '';
-?>"><dl class="wssD10"><?php
+?>"><dl class="wssD10"<?php
+	if (!$premium) {
+?> style="height:355px"<?php
+	}
+?>><?php
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
 				if (is_array($value)) {

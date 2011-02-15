@@ -3037,7 +3037,7 @@ class admin {
 				'minify_css_min' => array(
 					'value' => $this->compress_options['minify']['css_min'],
 					'type' => 'radio',
-					'count' => 3
+					'count' => $this->premium < 2 ? 2 : 3,
 				),
 				'minify_js' => array(
 					'value' => $this->compress_options['minify']['with_jsmin'] ? 1 :
