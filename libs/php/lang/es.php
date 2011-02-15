@@ -81,7 +81,7 @@ define('_WEBO_UNINSTALL_SUCCESS', 'WEBO Site SpeedUp fue exitosamente desinstala
 /* Login y Contrase&ntilde;a */
 define('_WEBO_NEW_TITLE', 'Instalaci&oacute;n');
 define('_WEBO_NEW_ENTER', 'Ingrese los datos');
-define('_WEBO_NEW_PROTECT', '<p class="wssI">Durante la instalación de la raíz .htaccess y algunos otros archivos fuente de su sistema serán cambiados, por esto, asegúrese de permitir acceso a dichos archivos (cualquier archivo modificado será copiado en reserva automáticamente).</p><p class="wssI">Si no se ingresase una clave de licencia válida, WEBO Site SpeedUp <a href="http://www./home/site-speedup/comparison/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Community edition</a> será instalado.</p><p class="wssI">Una vez instalado, WEBO Site SpeedUp será configurado automaticamente según las capacidades de su servidor actual. Usted puede ver y cambiar cualquier opción luego usando la interfaz de administración.</p><p class="wssI">Más información sobre instalación y configuración de WEBO Site SpeedUp puede leer en este <a href="http://code.google.com/p/web-optimizator/wiki/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">documento electrónico</a>.</p>');
+define('_WEBO_NEW_PROTECT', '<p class="wssI">Durante la instalación de la raíz .htaccess y algunos otros archivos fuente de su sistema serán cambiados, por esto, asegúrese de permitir acceso a dichos archivos (cualquier archivo modificado será copiado en reserva automáticamente).</p><p class="wssI">Si no se ingresase una clave de licencia válida, WEBO Site SpeedUp <a href="http://www./home/site-speedup/comparison/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer">Free edition</a> será instalado.</p><p class="wssI">Una vez instalado, WEBO Site SpeedUp será configurado automaticamente según las capacidades de su servidor actual. Usted puede ver y cambiar cualquier opción luego usando la interfaz de administración.</p><p class="wssI">Más información sobre instalación y configuración de WEBO Site SpeedUp puede leer en este <a href="http://code.google.com/p/web-optimizator/wiki/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">documento electrónico</a>.</p>');
 define('_WEBO_NEW_NOSCRIPT', 'Para que trabaje correctamente, JavaScript tiene que estar activado!');
 
 /* First splash -- set document root */
@@ -754,7 +754,7 @@ define('_WEBO_DASHBOARD_ORDER', 'http://www.webogroup.com/corporate/site-speedup
 
 /* Account page */
 define('_WEBO_ACCOUNT_EXPIRES', 'Valido hasta');
-define('_WEBO_ACCOUNT_LICENSEINFO', 'La versión Community Edition puede ser utilizada solo en Sitios Web no comerciales (lea la página de <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">preguntas más comunes</a>). Para Sitios Web comerciales usted puede usar una de dos ediciones de WEBO Site SpeedUp &mdash; Lite o Premium (lea la página <a href="#wss_promo" class="wssJ">comparación de versiones</a>).');
+define('_WEBO_ACCOUNT_LICENSEINFO', 'La versión Free Edition puede ser utilizada solo en Sitios Web no comerciales (lea la página de <a href="http://www.webogroup.com/store/questions-answers/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">preguntas más comunes</a>). Para Sitios Web comerciales usted puede usar una de dos ediciones de WEBO Site SpeedUp &mdash; Lite o Premium (lea la página <a href="#wss_promo" class="wssJ">comparación de versiones</a>).');
 define('_WEBO_ACCOUNT_LICENSEINFO2', 'El registro de el número de serie se realiza automaticamente. Solo tiene que poner el número de serie correcto en los espacios correspondientes y seleccionar "guardar". Una vez que la licencia esté registrada usted verá información sobre su fecha de expiración.');
 define('_WEBO_ACCOUNT_LICENSEINFO3', 'Puede realizar cualquier pregunta sobre la poliza de licencias de WEBO Site SpeedUp usando<a href="http://www.webogroup.com/about/contacts/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ">nuestros contactos</a> listados en el Sitio Web oficial.');
 define('_WEBO_ACCOUNT_INVALID', 'Ingrese un número de serie válido o deje este espacio en blanco.');
@@ -803,7 +803,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basic complex of settings which prov
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Capacidades');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Community');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Free');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Extended');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
@@ -939,7 +939,7 @@ define('_WEBO_HELP_MINIMIZE', 'Minimize');
 define('_WEBO_HELP_CLOSE', 'Close');
 define('_WEBO_HELP_FIRSTTIME', 'Are you first time here?');
 define('_WEBO_HELP_LICENSEKEY', 'Register your license key or get a SaaS key on');
-define('_WEBO_HELP_LICENSEKEY2', 'page. This allows you to use WEBO Site SpeedUp at full throttle. You can skip this step if you are going to use WEBO Site SpeedUp Community Edition.');
+define('_WEBO_HELP_LICENSEKEY2', 'page. This allows you to use WEBO Site SpeedUp at full throttle. You can skip this step if you are going to use WEBO Site SpeedUp Free Edition.');
 define('_WEBO_HELP_TUNING', 'Tune WEBO Site SpeedUp for your website using <a href="#wss_wizard" class="wssJ">Configuration wizard</a>. Just a few minutes and you will get a faster website. To get the maximum speedup you can tune the product manually on the <a href="#wss_options" class="wssJ">Settings</a> page, or you can order a qualified help of WEBO Software specialists.');
 define('_WEBO_HELP_CONTROLPANEL', 'Open the <a href="#wss_dashboard" class="wssJ">Control Panel</a> page and learn more about your website. While tuning WEBO Site SpeedUp, use Debug Mode to make sure that your website looks and behaves fine. If you will face any issues with WEBO Site SpeedUp, please refer to <a href="http://code.google.com/p/web-optimizator/w/list" class="wssJ wssJ0">user documentation</a> or <a href="http://www.webogroup.com/home/support/" class="wssJ wssJ0">known issues</a>.');
 define('_WEBO_HELP_LINK1', 'WEBO Software Website');

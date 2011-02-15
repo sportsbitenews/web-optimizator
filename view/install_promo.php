@@ -64,7 +64,7 @@
 	echo _WEBO_SPLASH2_COMPARISON_ANDMORE;
 ?></td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU;
-?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT14">-</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_BASIC;
 ?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_ADVANCED;
@@ -72,7 +72,7 @@
 	echo _WEBO_SPLASH2_COMPARISON_HTTPS;
 ?></th><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_PARTLY;
-?></td><td class="wssT9 wssT13"><?php
+?></td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_PARTLY;
 ?></td></td><td class="wssT9"><?php
 	echo _WEBO_SPLASH2_COMPARISON_COMPLETE;

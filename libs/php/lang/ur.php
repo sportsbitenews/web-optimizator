@@ -785,7 +785,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'بنیادی سیٹنگز کا مج�
 /* ورژن موازنہ */
 define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'خصوصیات اور ٹیکنالوجی');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'کمیونٹی');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Free');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
 define('_WEBO_SPLASH2_COMPARISON_ORDER', 'Order');
