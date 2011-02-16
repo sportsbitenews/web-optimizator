@@ -4,8 +4,8 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.0.0
-// @copyright  Copyright &copy; 2009-2010 WEBO Software, All Rights Reserved
+// @version    1.4.0
+// @copyright  Copyright &copy; 2009-2011 WEBO Software, All Rights Reserved
 // ==============================================================================================
 // To install WEBO Site SpeedUp please copy this file to the document root, make document root
 // writable for your web server (or create writable web-optimizer directory) and go
