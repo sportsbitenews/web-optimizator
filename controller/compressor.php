@@ -373,8 +373,8 @@ class web_optimizer {
 				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
-				"minify_with" => $this->premium > 1 && ($this->options['minify']['css_min'] == 2 ?
-					'tidy' : ($this->options['minify']['css_min'] ? 'basic' : '')) : '',
+				"minify_with" => $this->premium > 1 && $this->options['minify']['css_min'] == 2 ?
+					'tidy' : ($this->options['minify']['css_min'] ? 'basic' : ''),
 				"far_future_expires" => $this->options['far_future_expires']['css'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
