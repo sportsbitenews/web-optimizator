@@ -83,11 +83,11 @@
 				if (is_file($install_directory . '/files')) {
 					if (get_magic_quotes_runtime())
 					{
-						$files = split("\r?\n", stripslashes(file_get_contents($install_directory . '/files')));
+						$files = explode("\r?\n", stripslashes(file_get_contents($install_directory . '/files')));
 					}
 					else
 					{
-						$files = split("\r?\n", file_get_contents($install_directory . '/files'));
+						$files = explode("\r?\n", file_get_contents($install_directory . '/files'));
 					}
 					foreach ($files as $file) {
 						if (!empty($file) && !is_file($install_directory . '/' . $file)) {
