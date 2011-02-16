@@ -49,25 +49,19 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 		echo _WEBO_SYSTEM_TOTAL;
 ?>: <?php
 		if ($e) {
-			echo $e;
-?> <?php
-			echo $e%10 == 1 ? _WEBO_SYSTEM_TROUBLE : ($e%10 < 5 ? _WEBO_SYSTEM_TROUBLES : _WEBO_SYSTEM_TROUBLES2);
+			echo $e . ' ' . ($e%10 == 1 ? _WEBO_SYSTEM_TROUBLE : ($e%10 < 5 ? _WEBO_SYSTEM_TROUBLES : _WEBO_SYSTEM_TROUBLES2));
 		}
 		if ($e && $w) {
 ?>, <?php
 		}
 		if ($w) {
-			echo $w;
-?> <?php
-			echo $w%10 == 1 ? _WEBO_SYSTEM_WARNING : ($w%10 < 5 ? _WEBO_SYSTEM_WARNINGS : _WEBO_SYSTEM_WARNINGS2);
+			echo $w . ' ' . ($w%10 == 1 ? _WEBO_SYSTEM_WARNING : ($w%10 < 5 ? _WEBO_SYSTEM_WARNINGS : _WEBO_SYSTEM_WARNINGS2));
 		}
 		if (($e || $w) && $i) {
 ?>, <?php
 		}
 		if ($i) {
-			echo $i;
-?> <?php
-			echo $i%10 == 1 ? _WEBO_SYSTEM_INFO : ($i%10 < 5 ? _WEBO_SYSTEM_INFOS : _WEBO_SYSTEM_INFOS2);
+			echo $i . ' ' . ($i%10 == 1 ? _WEBO_SYSTEM_INFO : ($i%10 < 5 ? _WEBO_SYSTEM_INFOS : _WEBO_SYSTEM_INFOS2));
 		}
 ?></p><?php
 	} else {
