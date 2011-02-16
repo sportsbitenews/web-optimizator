@@ -373,7 +373,7 @@ class web_optimizer {
 				"gzip_level" => round($this->options['gzip']['css_level']),
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
-				"minify_with" => $this->premium > 1 ? ($this->options['minify']['css_min'] == 2 ?
+				"minify_with" => $this->premium > 1 && ($this->options['minify']['css_min'] == 2 ?
 					'tidy' : ($this->options['minify']['css_min'] ? 'basic' : '')) : '',
 				"far_future_expires" => $this->options['far_future_expires']['css'] &&
 					!$this->options['htaccess']['mod_expires'],
@@ -647,6 +647,7 @@ class web_optimizer {
 								!empty($option['minify']) ||
 								!empty($option['far_future_expires']) ||
 								!empty($option['parallel']) ||
+								!empty($option['unobtrusive_onload']) ||
 								!empty($option['unobtrusive_all']) ||
 								!empty($option['unobtrusive_ads']) ||
 								!empty($option['unobtrusive_counters']) ||
@@ -726,7 +727,7 @@ class web_optimizer {
 					'type' => 'text/javascript',
 					'ext' => 'js',
 					'src' => 'src',
-					'self_close' => false,
+					'self_close' => 0,
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
@@ -739,14 +740,15 @@ class web_optimizer {
 					'far_future_expires_php' => $options['far_future_expires_php'],
 					'far_future_expires_rewrite' => $options['far_future_expires_rewrite'],
 					'header' => $type,
-					'css_sprites' => false,
-					'css_sprites_exclude' => false,
-					'aggressive' => false,
-					'no_ie6' => false,
-					'dimensions_limited' => false,
-					'css_sprites_extra_space' => false,
-					'data_uris' => false,
-					'mhtml' => false,
+					'css_sprites' => 0,
+					'css_sprites_exclude' => 0,
+					'parallel' => 0,
+					'aggressive' => 0,
+					'no_ie6' => 0,
+					'dimensions_limited' => 0,
+					'css_sprites_extra_space' => 0,
+					'data_uris' => 0,
+					'mhtml' => 0,
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
 					'inline_scripts' => $options['inline_scripts'],
@@ -807,7 +809,7 @@ class web_optimizer {
 					'css_sprites_expires_rewrite' => $options['css_sprites_expires_rewrite'],
 					'punypng' => $options['punypng'],
 					'css_restore_properties' => $options['css_restore_properties'],
-					'self_close' => true,
+					'self_close' => 1,
 					'gzip' => $options['gzip'],
 					'gzip_level' => $options['gzip_level'],
 					'minify' => $options['minify'],
@@ -2730,12 +2732,13 @@ class web_optimizer {
 	**/
 	function replace_informers ($options) {
 		$before_body = '';
+		$host = (empty($this->options['javascript']['host']) ?
+			$this->options['page']['host'] :
+			$this->options['javascript']['host']);
 		$before_body_onload = empty($this->options['page']['unobtrusive_onload']) ?
 			'' : (empty($this->options['page']['unobtrusive_inline']) ?
-				'<script type="text/javascript" src="//' .
-				(empty($this->options['javascript']['host']) ?
-				$this->options['page']['host'] :
-				$this->options['javascript']['host']) .
+				'<script type="text/javascript" src="' .
+				 (empty($host) ? '' : '//' . $host) .
 				(empty($this->options['javascript']['far_future_expires_rewrite']) ?
 				'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
 				$this->options['javascript']['cachedir_relative'] .
