@@ -3309,11 +3309,11 @@ class web_optimizer {
 	 **/
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
+		$exclude = trim($this->options['page']['cache_params']);
+		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+';
 /* remove excessive GET params */
-		if (trim($this->options['page']['cache_params'])) {
-			$params = str_replace(" ", "|", $this->options['page']['cache_params']);
-			$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]?@", "", $uri);
-		}
+		$params = str_replace(" ", "|", );
+		$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]?@", "", $uri);
 /* replace /, ?, & with - */
 		$uri = str_replace(
 			array('/?', '/', '?', '&'),

@@ -241,7 +241,7 @@ $compress_options['parallel']['additional'] = "";
 ## List of satellites' hosts, i.e. i1 i2 i3
 $compress_options['parallel']['additional_list'] = "";
 ## Lisf of ignored images, separated by space, i.e. xxc.php
-$compress_options['parallel']['ignore_list'] = "";
+$compress_options['parallel']['ignore_list'] = "captcha.php";
 ## Custom CDN usage, 0 - defailt, 1 - cdn.host.com, 2 - Coral CDN, 3 - WEBO CDN
 $compress_options['parallel']['custom'] = "0";
 ## FTP creadentials to upload new files to CDN
@@ -262,7 +262,7 @@ $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
 ## Restricted for logic website parts
-$compress_options['restricted'] = "";
+$compress_options['restricted'] = "captcha";
 ## Punypng api key
 $compress_options['punypng'] = "";
 ## List of enabled plugins for server side performance
