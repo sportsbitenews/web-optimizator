@@ -1905,6 +1905,7 @@ class admin {
 					$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 				@copy($this->basepath . 'libs/php/wo.static.php',
 					$this->compress_options['css_cachedir'] . 'wo.static.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
 				@copy($this->basepath . 'libs/php/0.gif',
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
@@ -4511,15 +4512,16 @@ Options +FollowSymLinks";
 						empty($this->input['wss_htaccess_mod_deflate']) &&
 						@is_file($this->compress_options['css_cachedir'] . 'wo.static.php') &&
 						!empty($this->premium)) {
+							@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
 							$cachedir = str_replace($this->compress_options['document_root'],
 								"/", $this->compress_options['css_cachedir']);
 							if (!empty($this->input['wss_gzip_css'])) {
-							$content .= "
+								$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 							}
 							if (!empty($this->input['wss_gzip_javascript'])) {
-							$content .= "
+								$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 							}
@@ -4684,6 +4686,7 @@ Options +FollowSymLinks";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
 				@is_file($this->compress_options['css_cachedir'] . 'wo.static.php')) {
+					@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
 					$cachedir = str_replace($this->compress_options['document_root'],
 						"/", $this->compress_options['css_cachedir']);
 					$content2 .= "
@@ -4852,6 +4855,7 @@ Options +FollowSymLinks";
 			$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 		@copy($this->basepath . 'libs/php/wo.static.php',
 			$this->compress_options['css_cachedir'] . 'wo.static.php');
+		@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
 		@copy($this->basepath . 'libs/php/0.gif',
 			$this->compress_options['css_cachedir'] . '0.gif');
 /* dirty hack for PHP-Nuke */
@@ -5810,6 +5814,7 @@ require valid-user';
 			@filemtime($this->compress_options['css_cachedir'] . 'wo.static.php')) {
 				@copy($this->basepath . 'libs/php/wo.static.php',
 				$this->compress_options['css_cachedir'] . 'wo.static.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
 		}
 		if (@filemtime($this->basepath . 'libs/php/0.gif') >
 			@filemtime($this->compress_options['css_cachedir'] . '0.gif')) {

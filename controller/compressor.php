@@ -142,8 +142,8 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
-/* gzip cached content before output? (plugins have onCache) */
-			$gzip_me = is_array($this->options['plugins']);
+/* gzip cached content before output? (plugins have onCache), JUtility must parse content */
+			$gzip_me = is_array($this->options['plugins']) || class_exists('JUtility', false);
 			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) . 'index' . $this->ua_mod . '.html';
 			$cache_key = $cache_plain_key .
 				($this->options['page']['flush'] ||
@@ -168,7 +168,7 @@ class web_optimizer {
 			}
 			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
 				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
-				if (class_exists('JUtility'))
+				if (class_exists('JUtility', false))
 				{
 					$token = JUtility::getToken();
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
@@ -934,31 +934,26 @@ class web_optimizer {
 					"\"");
 			}
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
-				if (!empty($options['gzip']) && !empty($this->encoding)) {
-					$content_to_write = $this->create_gz_compress($this->content,
+				$c = $this->content;
+				$jutility = class_exists('JUtility', false);
+				if ($jutility) {
+					$token = JUtility::getToken();
+					$c = str_replace($token, '##WSS_JTOKEN_WSS##', $c);
+				}
+				if (!empty($options['gzip']) && !empty($this->encoding) && !$jutility) {
+					$content_to_write = $this->create_gz_compress($c,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* or just write full or non-gzipped content */
 				} elseif (empty($options['flush']) || !empty($this->encoding)) {
-					$content_to_write = $this->content;
+					$content_to_write = $c;
 				}
 /* don't create empty files */
 				if (!empty($content_to_write)) {
-					if (class_exists('JUtility'))
-					{
-						$token = JUtility::getToken();
-						$content_to_write = str_replace($token, '##WSS_JTOKEN_WSS##', $content_to_write);
-					}
 					$this->cache_engine->put_entry($cache_key, $content_to_write, $this->time);
 				}
 /* create uncompressed file for plugins */
-				if (is_array($this->options['plugins']) &&
-					!empty($this->encoding_ext)) {
-						if (class_exists('JUtility'))
-						{
-							$token = JUtility::getToken();
-							$content_to_write = str_replace($token, '##WSS_JTOKEN_WSS##', $this->content);
-						}
-						$this->cache_engine->put_entry($ordinary_cache_key, $content_to_write, $this->time);
+				if ($cache_key != $ordinary_cache_key) {
+					$this->cache_engine->put_entry($ordinary_cache_key, $c, $this->time);
 				}
 			}
 		}
