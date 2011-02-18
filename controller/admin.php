@@ -5228,7 +5228,7 @@ Options +FollowSymLinks";
 		if (in_array('mod_gzip', $apache_modules)) {
 			$this->apache_modules[] = 'mod_gzip';
 		}
-		if (in_array('mod_deflate', $apache_modules) && in_array('mod_filter', $apache_modules)) {
+		if (in_array('mod_deflate', $apache_modules) && (in_array('mod_filter', $apache_modules) || in_array('mod_ext_filter', $apache_modules))) {
 			$this->apache_modules[] = 'mod_deflate';
 		}
 		if (in_array('mod_headers', $apache_modules)) {
