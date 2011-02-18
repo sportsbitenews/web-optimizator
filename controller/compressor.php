@@ -2415,7 +2415,7 @@ class web_optimizer {
 						if ($gzipped || $zlib) {
 							header ("Content-Encoding: " . $encoding);
 						}
-						if ($gzipped && $zlib) {
+						if ($gzipped && !$zlib) {
 							header ("Content-Length: " . strlen($contents));
 						}
 					}
