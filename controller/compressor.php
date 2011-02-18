@@ -3311,9 +3311,7 @@ class web_optimizer {
 		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
 		$exclude = trim($this->options['page']['cache_params']);
 		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+';
-/* remove excessive GET params */
-		$params = str_replace(" ", "|", );
-		$uri = preg_replace("@(" . $params . ")=[^&\?]+[\?&]?@", "", $uri);
+		$uri = preg_replace("@(" . str_replace(" ", "|", $exclude) . ")=[^&\?]+[\?&]?@", "", $uri);
 /* replace /, ?, & with - */
 		$uri = str_replace(
 			array('/?', '/', '?', '&'),
