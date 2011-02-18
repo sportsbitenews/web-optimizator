@@ -2357,9 +2357,15 @@ class web_optimizer {
 /* ob_start ("ob_gzhandler"); */
 			if (!empty($this->options[$type]['gzip'])) {
 				$this->gzip_header[$type] .= '<?php
+				$zlib = 0;
+				if (strtolower("' . $this->options['page']['zlib'] . '") == "on" && strlen(@ini_get("zlib.output_compression_level"))) {
+					@ini_set("zlib.output_compression", "On");
+					@ini_set("zlib.output_compression_level", ' . $this->options['page']['gzip_level'] . ');
+					$zlib = 1;
+				}
 				ob_start("compress_output_option");
 				function compress_output_option($contents) {
-					global $encoding, $gzip, $xgzip;
+					global $encoding, $gzip, $xgzip, $zlib;
 					// Check for buggy versions of Internet Explorer
 					if (!empty($_SERVER["HTTP_USER_AGENT"]) && !strstr($_SERVER["HTTP_USER_AGENT"], "Opera") &&
 						preg_match("/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i", $_SERVER["HTTP_USER_AGENT"], $matches)) {
@@ -2370,12 +2376,9 @@ class web_optimizer {
 						}
 					}
 
-					if (isset($encoding) && $encoding != "none")
-					{
-						if (strtolower("' . $this->options['page']['zlib'] . '") == "on" && strlen(@ini_get("zlib.output_compression_level"))) {
-							@ini_set("zlib.output_compression", "On");
-							@ini_set("zlib.output_compression_level", ' . $this->options['page']['gzip_level'] . ');
-							$gzipped = 2;
+					if (isset($encoding) && $encoding != "none") {
+						if ($zlib) {
+							$contents = $content;
 						} else {
 							// try to get gzipped content from file
 							$extension = $gzip || $xgzip ? "gz" : "df";
@@ -2409,10 +2412,10 @@ class web_optimizer {
 								$gzipped = 1;
 							}
 						}
-						if ($gzipped) {
+						if ($gzipped || $zlib) {
 							header ("Content-Encoding: " . $encoding);
 						}
-						if ($gzipped != 2) {
+						if ($gzipped && $zlib) {
 							header ("Content-Length: " . strlen($contents));
 						}
 					}
