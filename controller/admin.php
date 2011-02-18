@@ -3096,6 +3096,12 @@ class admin {
 					'type' => 'checkbox',
 					'disabled' => !empty($this->restrictions['wss_gzip_page'])
 				),
+				'gzip_zlib' => array(
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'value' => $this->compress_options['gzip']['zlib'],
+					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_gzip_zlib'])
+				),
 				'gzip_cookie' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['gzip']['cookie'],
@@ -3722,6 +3728,10 @@ class admin {
 			!empty($this->input['wss_htaccess_mod_gzip']) ||
 			!empty($this->input['wss_htaccess_mod_rewrite'])))) {
 				$this->restrictions['wss_gzip_fonts'] = 1;
+		}
+/* check for zlib possibility */
+		if (!strlen(@ini_get("zlib.output_compression_level"))) {
+			$this->restrictions['wss_gzip_zlib'] = 1;
 		}
 /* check for caching extensions */
 		if (!@class_exists('Memcached') && !@class_exists('Memcache')) {

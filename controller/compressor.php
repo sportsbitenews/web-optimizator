@@ -435,6 +435,7 @@ class web_optimizer {
 					((!$this->options['htaccess']['mod_gzip'] &&
 							!$this->options['htaccess']['mod_deflate']) ||
 						!$this->options['htaccess']['enabled']),
+				"zlib" => $this->options['gzip']['zlib'],
 				"gzip_noie" => $this->options['gzip']['noie'] &&
 					$this->premium > 1,
 				"gzip_level" => round($this->options['gzip']['page_level']),
@@ -1238,7 +1239,7 @@ class web_optimizer {
 	function set_gzip_header () {
 		if(!empty($this->encoding)) {
 /* try to use zlib instead or raw PHP */
-			if (round(@ini_get('zlib.output_compression_level'))) {
+			if ($this->options['page']['zlib'] && strlen(@ini_get('zlib.output_compression_level'))) {
 				@ini_set('zlib.output_compression', 'On');
 				@ini_set('zlib.output_compression_level', $this->options['page']['gzip_level']);
 				$this->encoding = '';
@@ -2376,42 +2377,49 @@ class web_optimizer {
 
 					if (isset($encoding) && $encoding != "none")
 					{
-						// try to get gzipped content from file
-						$extension = $gzip || $xgzip ? "gz" : "df";
-						$content = @file_get_contents(__FILE__ . "." . $extension);
-						if (get_magic_quotes_runtime())
-						{
-							$content = stripslashes($content);
-						}
-						$gzipped = 0;
-						if (empty($content)) {
-						// Send compressed contents
-							if ($gzip || $xgzip) {
-								if (function_exists("gzencode")) {
-									$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', FORCE_GZIP);
-									$gzipped = 1;
+						if (' . $this->options['page']['zlib'] . ' && strlen(@ini_get("zlib.output_compression_level"))) {
+							@ini_set("zlib.output_compression", "On");
+							@ini_set("zlib.output_compression_level", ' . $this->options['page']['gzip_level'] . ');
+							$gzipped = 2;
+						} else {
+							// try to get gzipped content from file
+							$extension = $gzip || $xgzip ? "gz" : "df";
+							$content = @file_get_contents(__FILE__ . "." . $extension);
+							if (get_magic_quotes_runtime()) {
+								$content = stripslashes($content);
+							}
+							$gzipped = 0;
+							if (empty($content)) {
+							// Send compressed contents
+								if ($gzip || $xgzip) {
+									if (function_exists("gzencode")) {
+										$contents = gzencode($contents, '. $this->options[$type]['gzip_level'] .', FORCE_GZIP);
+										$gzipped = 1;
+									}
+								} else {
+									if (function_exists("gzdeflate")) {
+										$contents = gzdeflate($contents, '. $this->options[$type]['gzip_level'] .');
+										$gzipped = 1;
+									}
+								}
+								if ($gzipped) {
+									$fp = @fopen(__FILE__ . "." . $extension, "wb");
+									if ($fp) {
+										@fwrite($fp, $contents);
+										@fclose($fp);
+									}
 								}
 							} else {
-								if (function_exists("gzdeflate")) {
-									$contents = gzdeflate($contents, '. $this->options[$type]['gzip_level'] .');
-									$gzipped = 1;
-								}
+								$contents = $content;
+								$gzipped = 1;
 							}
-							if ($gzipped) {
-								$fp = @fopen(__FILE__ . "." . $extension, "wb");
-								if ($fp) {
-									@fwrite($fp, $contents);
-									@fclose($fp);
-								}
-							}
-						} else {
-							$contents = $content;
-							$gzipped = 1;
 						}
-						if ($gzipped) {
+						if ($gzipped == 1) {
 							header ("Content-Encoding: " . $encoding);
 						}
-						header ("Content-Length: " . strlen($contents));
+						if ($gzipped != 2) {
+							header ("Content-Length: " . strlen($contents));
+						}
 					}
 
 					return $contents;

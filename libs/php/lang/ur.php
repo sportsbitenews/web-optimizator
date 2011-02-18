@@ -260,6 +260,9 @@ define('_WEBO_gzip_fonts_HELP_DISABLED', 'آپ کی ویب سائٹ پر mod_gzi
 define('_WEBO_gzip_page', 'Gzip ایچ ٹی ایم ایل');
 define('_WEBO_gzip_page_HELP', 'تمام ایچ ٹی ایم ایل فائلیں gzip کے ذریعے کمپریس کی جائیں گی۔');
 define('_WEBO_gzip_page_HELP_DISABLED', 'آپ کی ویب سائٹ پر mod_gzip یا mod_deflate یا zlib ایکسٹینشن کی سپورٹ موجود نہیں ہے لہٰذا ایچ ٹی ایم ایل کو gzip کرنا ناممکن ہے۔');
+define('_WEBO_gzip_zlib', 'Use <code>zlib</code>');
+define('_WEBO_gzip_zlib_HELP', 'PHP library zlib will be used for gzip.');
+define('_WEBO_gzip_zlib_HELP_DISABLED', 'Current server environment doesn\'t support zlib.');
 define('_WEBO_gzip_noie', 'IE6/7 کے لئے <code>gzip</code> کے بجائے <code>deflate</code> استعمال کریں');
 define('_WEBO_gzip_noie_HELP', 'کچھ حالات میں IE6 اور IE7 میں gzip کی وجہ سے پیج کا نظارہ غلط ہو سکتا ہے۔ یہ اختیار آپ کو اجازت دیتا ہے کہ دوسری ممکنہ کمپریشن کی تکنیک اختیار کی جائے جو ان براؤزرز کیلئے قابل استعمال ہو۔');
 define('_WEBO_gzip_noie_EFFECT', 'انٹرنیٹ ایکسپلورر کے ساتھ بہتر gzip مطابقت');

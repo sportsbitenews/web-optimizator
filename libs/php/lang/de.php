@@ -268,6 +268,9 @@ define('_WEBO_gzip_fonts_HELP_DISABLED', 'There is no support for mod_gzip, mod_
 define('_WEBO_gzip_page', 'Gzip HTML');
 define('_WEBO_gzip_page_HELP', 'All HTML files will be compressed via gzip.');
 define('_WEBO_gzip_page_HELP_DISABLED', 'There is no support for mod_gzip, or mod_deflate, or zlib extension on your website, so gzip for HTML is impossible.');
+define('_WEBO_gzip_zlib', 'Use <code>zlib</code>');
+define('_WEBO_gzip_zlib_HELP', 'PHP library zlib will be used for gzip.');
+define('_WEBO_gzip_zlib_HELP_DISABLED', 'Current server environment doesn\'t support zlib.');
 define('_WEBO_gzip_noie', 'Use <code>deflate</code> instead of <code>gzip</code> for IE6/7');
 define('_WEBO_gzip_noie_HELP', 'In some cases gzip in IE6 and IE7 browsers can lead to incorrect page view. This option allows you to force alternative compression technique usage for these browsers.');
 define('_WEBO_gzip_noie_EFFECT', 'Improved gzip compatibility with Internet Explorer');

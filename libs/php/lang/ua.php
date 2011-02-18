@@ -269,6 +269,9 @@ define('_WEBO_gzip_fonts_HELP_DISABLED', 'Текущее серверное ок
 define('_WEBO_gzip_page', 'Застосувати <code>gzip</code> для HTML');
 define('_WEBO_gzip_page_HELP', 'Все HTML-файлы будут передаваться в сжатом виде.');
 define('_WEBO_gzip_page_HELP_DISABLED', 'Текущее серверное окружение не поддерживает mod_gzip или mod_deflate и не имеет расширения zlib, поэтому gzip-сжатие HTML-документов невозможно.');
+define('_WEBO_gzip_zlib', 'Использовать <code>zlib</code>');
+define('_WEBO_gzip_zlib_HELP', 'Для gzip-сжатия будет использована PHP-библиотека zlib.');
+define('_WEBO_gzip_zlib_HELP_DISABLED', 'Текущее серверное окружение не имеет расширения zlib.');
 define('_WEBO_gzip_cookie', 'Перевіряти можливість <code>gzip</code> через cookie');
 define('_WEBO_gzip_cookie_HELP', 'WEBO Site SpeedUp будет осуществлять дополнительную проверку на поддержку gzip в браузере, и если она будет определена, данные будут передаваться в сжатом виде вне зависимости от заголовка Accept-Encoding.');
 define('_WEBO_gzip_cookie_EFFECT', 'Уменьшение размера HTML-файлов на 8-12%');

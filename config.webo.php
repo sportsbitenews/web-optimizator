@@ -127,6 +127,8 @@ $compress_options['gzip']['fonts'] = "1";
 $compress_options['gzip']['cookie'] = "1";
 ## Exclude IE6/7 from gzip logic
 $compress_options['gzip']['noie'] = "0";
+## Use PHP zlib library
+$compress_options['gzip']['zlib'] = "1";
 ## Compression levels for JS/HTML/CSS files, work only in PHP
 $compress_options['gzip']['javascript_level'] = "9";
 $compress_options['gzip']['page_level'] = "9";

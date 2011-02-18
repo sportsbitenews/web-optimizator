@@ -52,6 +52,7 @@ $compress_options['gzip']['css']="0";
 $compress_options['gzip']['fonts']="1";
 $compress_options['gzip']['cookie']="0";
 $compress_options['gzip']['noie']="0";
+$compress_options['gzip']['zlib'] = "0";
 $compress_options['gzip']['javascript_level']="9";
 $compress_options['gzip']['page_level']="9";
 $compress_options['gzip']['css_level']="9";
