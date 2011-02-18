@@ -1238,10 +1238,10 @@ class web_optimizer {
 				@ini_set('zlib.output_compression', 'On');
 				@ini_set('zlib.output_compression_level', $this->options['page']['gzip_level']);
 				$this->encoding = '';
-			} else {
-				header("Content-Encoding: " . $this->encoding);
-				header("Vary: Accept-Encoding,User-Agent");
+				$this->encoding_ext = '';
 			}
+			header("Vary: Accept-Encoding,User-Agent");
+			header("Content-Encoding: " . $this->encoding);
 		}
 	}
 
@@ -2372,7 +2372,7 @@ class web_optimizer {
 
 					if (isset($encoding) && $encoding != "none")
 					{
-						if (' . $this->options['page']['zlib'] . ' && strlen(@ini_get("zlib.output_compression_level"))) {
+						if (strtolower("' . $this->options['page']['zlib'] . '") == "on" && strlen(@ini_get("zlib.output_compression_level"))) {
 							@ini_set("zlib.output_compression", "On");
 							@ini_set("zlib.output_compression_level", ' . $this->options['page']['gzip_level'] . ');
 							$gzipped = 2;
