@@ -3860,6 +3860,7 @@ class admin {
 			'wss_gzip_page',
 			'wss_gzip_css',
 			'wss_gzip_fonts',
+			'wss_gzip_zlib',
 			'wss_gzip_cookie',
 			'wss_gzip_noie',
 			'wss_far_future_expires_javascript',
