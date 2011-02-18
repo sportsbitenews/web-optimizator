@@ -1233,6 +1233,8 @@ class web_optimizer {
 	**/
 	function set_gzip_header () {
 		if(!empty($this->encoding)) {
+			header("Vary: Accept-Encoding,User-Agent");
+			header("Content-Encoding: " . $this->encoding);
 /* try to use zlib instead or raw PHP */
 			if ($this->options['page']['zlib'] && strlen(@ini_get('zlib.output_compression_level'))) {
 				@ini_set('zlib.output_compression', 'On');
@@ -1240,8 +1242,6 @@ class web_optimizer {
 				$this->encoding = '';
 				$this->encoding_ext = '';
 			}
-			header("Vary: Accept-Encoding,User-Agent");
-			header("Content-Encoding: " . $this->encoding);
 		}
 	}
 
@@ -2409,7 +2409,7 @@ class web_optimizer {
 								$gzipped = 1;
 							}
 						}
-						if ($gzipped == 1) {
+						if ($gzipped) {
 							header ("Content-Encoding: " . $encoding);
 						}
 						if ($gzipped != 2) {
