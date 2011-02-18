@@ -5284,7 +5284,9 @@ Options +FollowSymLinks";
 				'mod_headers' => 'Header append Cache-Control public',
 				'mod_expires' => 'ExpiresActive On',
 				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
-				'mod_mime' => 'AddEncoding gzip .gz',
+				'mod_mime' => '<FilesMatch \.otf\.gz$>
+ForceType font/otf
+</FilesMatch>',
 				'mod_rewrite' => "RewriteEngine On
 RewriteRule wo\.cookie\.php$ " .
 str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/", dirname(__FILE__))) .
