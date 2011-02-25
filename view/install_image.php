@@ -52,7 +52,7 @@
 	echo _WEBO_GZIP_ENTERRECURSIVE;
 ?>"<?php
 	echo !$submit || $recursive ? ' checked="checked"' : '';
-?>/><input type="hidden" name="wss_Submit" id="wss_Submit" value="1"/></dd><dd class="wssD6 wssD7 wssD11"><label><input type="radio" name="wss_service" id="wss_service1" value="0"/> smush.it</label>&nbsp;&nbsp;&nbsp;<label><input type="radio" name="wss_service" id="wss_service2" value="1" checked="checked"/> WEBO Nimblizer</label></dd></dl><p class="wssA0 wssI3"><?php
+?>/><input type="hidden" name="wss_Submit" id="wss_Submit" value="1"/></dd><dd class="wssD6 wssD7 wssD11"><label><input type="radio" name="wss_service" id="wss_service1" value="0" checked="checked"/> smush.it</label>&nbsp;&nbsp;&nbsp;<label><input type="radio" name="wss_service" id="wss_service2" value="1"/> WEBO Nimblizer</label></dd></dl><p class="wssA0 wssI3"><?php
 	echo _WEBO_GZIP_WAIT;
 ?>...</p><?php
 	if (count($results)) {
