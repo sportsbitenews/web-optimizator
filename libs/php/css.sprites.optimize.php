@@ -1115,9 +1115,10 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					}
 				}
 			}
-			if (@filesize($file) > @filesize($tmp_file)) {
-				@copy($file . '.backup', $file);
+			if (@filesize($tmp_file) && @filesize($file) > @filesize($tmp_file)) {
 				@copy($tmp_file, $file);
+			} else {
+				@copy($file . '.backup', $file);
 			}
 			@unlink($tmp_file);
 		}
