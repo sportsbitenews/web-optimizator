@@ -710,7 +710,6 @@ class webo_cache_files extends webo_cache_engine
  			{
  			    if ($patterns == '*')
  			    {
- 			    	echo '123';
  			    	$this->__recurse_rm($this->__get_path(''));
  			    	if (!empty($this->_host))
  			    	{
