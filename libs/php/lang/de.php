@@ -173,7 +173,7 @@ define('_WEBO_minify_css_host_HELP', 'Host to load merged CSS file. With enabled
 define('_WEBO_minify_css_host_EFFECT', 'Website speedup by 5-10%');
 define('_WEBO_external_scripts_additional_list', 'CSS-Dateien vom Vermischen ausschlie&szlig;en');
 define('_WEBO_external_scripts_additional_list_HELP', 'Defined files won\'t be included into combined CSS file. You need to define only file names, not absolute paths to them.');
-define('_WEBO_external_scripts_include_code', 'Include CSS code to all files');
+define('_WEBO_external_scripts_include_code', 'Include CSS code into all combined files');
 define('_WEBO_external_scripts_include_code_HELP', 'Entered CSS code will be added to the end of each combined CSS file. This field allows you to define additional styles for website working under WEBO Site SpeedUp.');
 define('_WEBO_external_scripts_include_code_EFFECT', 'Better website view with WEBO Site SpeedUp');
 
