@@ -708,21 +708,33 @@ class webo_cache_files extends webo_cache_engine
  			}
  			else
  			{
- 				$files = $this->__recurse_glob($this->__get_path($patterns));
- 				if (!empty($this->_host))
- 				{
- 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($patterns, $this->_host)));
- 				}
- 				foreach($files as $file)
- 				{
- 					if (@is_file($file))
- 					{
- 						@unlink($file);
-					}
-					elseif (@is_dir($file))
-					{
-						$this->__recurse_rm($file);
-					}
+ 			    if ($patterns == '*')
+ 			    {
+ 			    	echo '123';
+ 			    	$this->__recurse_rm($this->__get_path(''));
+ 			    	if (!empty($this->_host))
+ 			    	{
+ 			        	$this->__recurse_rm($this->__get_path('', $this->_host));
+		        	}
+ 			    }
+ 			    else
+ 			    {
+     				$files = $this->__recurse_glob($this->__get_path($patterns));
+     				if (!empty($this->_host))
+     				{
+     					$files = array_merge($files, $this->__recurse_glob($this->__get_path($patterns, $this->_host)));
+     				}
+     				foreach($files as $file)
+     				{
+     					if (@is_file($file))
+     					{
+     						@unlink($file);
+					    }
+					    elseif (@is_dir($file))
+					    {
+						    $this->__recurse_rm($file);
+					    }
+     				}
  				}
  			}
 	 		$this->__put_files_list();
