@@ -124,7 +124,8 @@ class web_optimizer {
   - page is requested by GET,
   - no chained optimization,
   - no debug mode,
-  - external cache restriction.
+  - external cache restriction,
+  - exclude domains except the activated one for non-corporate licenses.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
@@ -138,7 +139,8 @@ class web_optimizer {
 			(getenv('REQUEST_METHOD') == 'GET') &&
 			empty($this->web_optimizer_stage) &&
 			!$this->debug_mode &&
-			empty($this->no_cache);
+			empty($this->no_cache) &&
+			($this->premium == 3 || strpos($this->options['host'], $this->host) !== false);
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -515,7 +517,8 @@ class web_optimizer {
 			"plugins" => (!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '') &&
 				($this->premium > 1),
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
-			"charset" => $this->options['charset']
+			"charset" => $this->options['charset'],
+			'host' => $this->options['host']
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
