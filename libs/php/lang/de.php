@@ -1,4 +1,4 @@
-f<?php
+<?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Enth&auml;lt alle DE Lokalisationkonstanten
