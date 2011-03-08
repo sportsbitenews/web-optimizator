@@ -98,6 +98,10 @@ class web_optimizer {
 		$retricted_cookie = 0;
 		if (!empty($this->options['page']['cache'])) {
 			$this->start_cache_engine();
+			if (!empty($this->clear_cache_key))
+			{
+			    $this->clear_html_cache($this->clear_cache_key);
+			}
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore'])) {
 				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));

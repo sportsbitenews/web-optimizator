@@ -63,7 +63,8 @@ if (!empty($webo_not_buffered)) {
 		'view' => $view,
 		'options' => $compress_options,
 		'libraries' => $libraries,
-		'no_cache' => empty($no_cache) ? false : $no_cache)
+		'no_cache' => empty($no_cache) ? false : $no_cache,
+		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key)
 	);
 }
 ?>
