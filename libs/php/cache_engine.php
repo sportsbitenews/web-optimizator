@@ -630,19 +630,15 @@ class webo_cache_files extends webo_cache_engine
  		{
  			$this->__make_path($path);
  		}
-		if (@function_exists('file_put_contents')) {
-			@file_put_contents($path, $value);
-		} else {
-			$fp = @fopen($path, "a");
-			if ($fp) {
+		$fp = @fopen($path, "a");
+		if ($fp) {
 /* block file from writing */
-				@flock($fp, LOCK_EX);
+			@flock($fp, LOCK_EX);
 /* erase content and move to the beginning */
-				@ftruncate($fp, 0);
-				@fseek($fp, 0);
-				@fwrite($fp, $value);
-				@fclose($fp);
-			}
+			@ftruncate($fp, 0);
+			@fseek($fp, 0);
+			@fwrite($fp, $value);
+			@fclose($fp);
 		}
 		@touch($path);
 		@chmod($path, octdec("0644"));
