@@ -7,17 +7,20 @@
 // @copyright  Copyright &copy; 2009-2011 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
-function finish_webositespeedup ($content) {
-    if ($content) {
-        $not_buffered = 1;
-        require(realpath(dirname(__FILE__)) . '/web-optimizer/web.optimizer.php');
-        if (!empty($web_optimizer)) {
-            $webo_content = $web_optimizer->finish($content);
+if (!function_exists('finish_webositespeedup'))
+{
+    function finish_webositespeedup ($content) {
+        if ($content) {
+            $not_buffered = 1;
+            require(realpath(dirname(__FILE__)) . '/web-optimizer/web.optimizer.php');
+            if (!empty($web_optimizer)) {
+                $webo_content = $web_optimizer->finish($content);
+            }
+            if (!empty($webo_content)) {
+                $content = $webo_content;
+            }
+            return $content;
         }
-        if (!empty($webo_content)) {
-            $content = $webo_content;
-        }
-        return $content;
     }
 }
 
