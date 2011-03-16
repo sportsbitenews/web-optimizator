@@ -180,9 +180,7 @@
 ?></a></h2><?php
 		if ($version_new > $version) {
 ?><div id="wss_upd" title="<?php
-			echo _WEBO_LOGIN_VERSION;
-?> <?php
-			echo $version_new;
+			echo _WEBO_LOGIN_VERSION . ' ' . $version_new;
 ?>"><p class="wssI3"><?php 
 			echo _WEBO_DASHBOARD_LOADING;
 ?></p></div><?php
@@ -632,9 +630,7 @@ wss_messages=["<?php
 	echo _WEBO_DASHBOARD_STATUS100;
 ?>"];
 wss_install="<?php
-	echo _WEBO_LOGIN_UPGRADE;
-?> <?php
-	echo _WEBO_LOGIN_UPGRADE_TO;
+	echo _WEBO_LOGIN_UPGRADE . ' ' . _WEBO_LOGIN_UPGRADE_TO;
 ?> ";wss_kb="<?php
 	echo _WEBO_LOGIN_EFFICIENCY_KB;
 ?>";

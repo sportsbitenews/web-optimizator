@@ -80,8 +80,7 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[0][$level1]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
+				echo _WEBO_DASHBOARD_CRITICAL_OR . ' ';
 			}
 			$i++;
 		}
@@ -117,8 +116,7 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[2][$level3]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
+				echo _WEBO_DASHBOARD_CRITICAL_OR . ' ';
 			}
 			$i++;
 		}
@@ -154,8 +152,7 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[3][$level4]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
+				echo _WEBO_DASHBOARD_CRITICAL_OR . ' ';
 			}
 			$i++;
 		}
@@ -191,8 +188,7 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[4][$level5]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
+				echo _WEBO_DASHBOARD_CRITICAL_OR . ' ';
 			}
 			$i++;
 		}
@@ -228,8 +224,7 @@
 ?>, <?php
 			}
 			if ($i && $i == count($level_options[1][$level2]) - 2) {
-				echo _WEBO_DASHBOARD_CRITICAL_OR;
-?> <?php
+				echo _WEBO_DASHBOARD_CRITICAL_OR . ' ';
 			}
 			$i++;
 		}

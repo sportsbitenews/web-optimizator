@@ -56,20 +56,12 @@
 ?></h2><ul class="wssL"><?php
 				if (!empty($error[1])) {
 ?><li class="wssL1"><?php
-					echo _WEBO_SPLASH2_UNABLE;
-?> <?php
-					echo $website_root;
-?> <?php
-					echo _WEBO_SPLASH2_MAKESURE;
+					echo _WEBO_SPLASH2_UNABLE . ' ' . $website_root . ' ' . _WEBO_SPLASH2_MAKESURE;
 ?></li><?php
 				}
 				if (!empty($error[2])) {
 ?><li class="wssL1"><?php
-					echo _WEBO_SPLASH2_UNABLE;
-?> <?php
-					echo $document_root;
-?> <?php
-					echo _WEBO_SPLASH2_MAKESURE;
+					echo _WEBO_SPLASH2_UNABLE . ' ' . $document_root . ' ' . _WEBO_SPLASH2_MAKESURE;
 ?></li><?php
 				}
 				if (!empty($error[3])) {
@@ -338,9 +330,7 @@
 ?></th></tr></thead><tfoot class="wssT1"><tr class="wssT8 wssT19"><th class="wssT9"><?php
 	echo _WEBO_CACHE_TOTAL;
 ?>:</th><th class="wssT9"><?php
-	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($size / 1024));
-?> <?php
-	echo _WEBO_LOGIN_EFFICIENCY_KB;
+	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($size / 1024)) . ' ' . _WEBO_LOGIN_EFFICIENCY_KB;
 ?></th><th class="wssT9"><?php
 	echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", $total);
 ?></th></tr></tfoot><tbody><?php
@@ -353,9 +343,7 @@
 ?>"><td class="wssT9"><?php
 				echo constant('_WEBO_DASHBOARD_CACHE_' . $index) . ' (' . str_replace('*', '', $mask) . ')';
 ?></td><td class="wssT9"><?php
-				echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($file[0] / 1024));
-?> <?php
-	echo _WEBO_LOGIN_EFFICIENCY_KB;
+				echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($file[0] / 1024)) . ' ' . _WEBO_LOGIN_EFFICIENCY_KB;
 ?></td><td class="wssT9"><?php
 				echo $file[1];
 ?></td></tr><?php
@@ -380,9 +368,7 @@
 ?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/></dd></dl><?php
 		if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
 ?><div id="wss_upd" title="<?php
-			echo _WEBO_LOGIN_VERSION;
-?> <?php
-			echo $version_new;
+			echo _WEBO_LOGIN_VERSION . ' ' . $version_new;
 ?>"></div><?php
 		} else {
 ?><p class="wssI"><?php

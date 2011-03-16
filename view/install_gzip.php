@@ -70,9 +70,7 @@
 ?>"><td class="wssT9"><?php
 			echo str_replace($directory, "", $result[0]);
 ?></td><td class="wssT9"><?php
-			echo printf("%.1f", $result[3] / 1024);
-?> <?php
-			echo _WEBO_LOGIN_EFFICIENCY_KB;
+			echo printf("%.1f", $result[3] / 1024) . ' ' . _WEBO_LOGIN_EFFICIENCY_KB;
 ?></td><td class="wssT9"><?php
 			echo $result[1] == $result[2] ? _WEBO_GZIP_NOTCHANGED : date("Y-m-d H:i", $result[1]);
 ?></td><td class="wssT9"><input type="checkbox"<?php

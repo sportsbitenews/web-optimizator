@@ -45,9 +45,7 @@ header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
 ?></dd><dt class="wssP1"><?php
 	echo _WEBO_DASHBOARD_AWARDS_SIZE;
 ?></dt><dd class="wssP2"><?php
-	echo $size;
-?> <?php
-	echo _WEBO_LOGIN_EFFICIENCY_KB;
+	echo $size . ' ' . _WEBO_LOGIN_EFFICIENCY_KB;
 ?></dd><dt class="wssP1"><?php
 	echo _WEBO_DASHBOARD_AWARDS_SPEEDUP;
 ?></dt><dd class="wssP2"><?php

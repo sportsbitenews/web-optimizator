@@ -76,9 +76,7 @@
 		echo round($premium);
 ?>"/><span class="wssD4"><?php
 		if (!empty($expires) && $expires > -1 && $premium > 9) {
-			echo _WEBO_ACCOUNT_EXPIRES;
-?> <?php
-			echo date("Y-m-d", time() + $expires*86400);
+			echo _WEBO_ACCOUNT_EXPIRES . ' ' . date("Y-m-d", time() + $expires*86400);
 ?>, <?php
 		} elseif ((empty($expires) || $expires < 0) && !$premium) {
 ?><a class="wssJ" href="javascript:(function(){var s=_.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+_('#wss_name')[0].value+'&amp;email='+_('#wss_email')[0].value;_('head')[0].appendChild(s)}())"><?php
@@ -100,8 +98,7 @@
 					echo _WEBO_SPLASH2_COMPARISON_LITE;
 					break;
 			}
-?> <?php
-			echo _WEBO_SPLASH2_COMPARISON_VERSION;
+			echo ' ' ._WEBO_SPLASH2_COMPARISON_VERSION;
 		}
 ?>, <a href="<?php
 		echo $root;
@@ -124,9 +121,7 @@
 ?> wssD8<?php
 	}
 ?>"><span class="wssD3">*</span><input id="wss_email" name="wss_email" title="<?php
-	echo _WEBO_LOGIN_ENTEREMAIL;
-?> <?php
-	echo _WEBO_LOGIN_EMAILNOTICE;
+	echo _WEBO_LOGIN_ENTEREMAIL . ' ' . _WEBO_LOGIN_EMAILNOTICE;
 ?>" class="wssF" value="<?php
 	if (empty($submit) || !empty($email)) {
 		echo htmlspecialchars($email);

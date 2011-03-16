@@ -75,9 +75,7 @@ if (!$ajax) {
 ?><a id="wss_promo" href="#wss_promo" title="<?php
 		echo _WEBO_GENERAL_BUY;
 ?> WEBO Site SpeedUp <?php
-		echo _WEBO_GENERAL_PREMIUM;
-?> <?php
-		echo _WEBO_GENERAL_EDITION
+		echo _WEBO_GENERAL_PREMIUM . ' ' . _WEBO_GENERAL_EDITION;
 ?>"<?php
 		echo $premium ? ' style="display:none"' : '';
 ?>><?php
@@ -133,41 +131,31 @@ if (!$ajax) {
 ?> wss_w0<?php
 		}
 ?>"><?php
-		echo _WEBO_SPLASH2_COMPARISON_DEMO;
-?> <?php
-		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+		echo _WEBO_SPLASH2_COMPARISON_DEMO . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?> </span><span class="wss_w2<?php
 		if ($premium == 1) {
 ?> wss_w0<?php
 		}
 ?>"> <?php
-		echo _WEBO_SPLASH2_COMPARISON_LITE;
-?> <?php
-		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+		echo _WEBO_SPLASH2_COMPARISON_LITE . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?> </span><span class="wss_w3<?php
 		if ($premium == 2) {
 ?> wss_w0<?php
 		}
 ?>"> <?php
-		echo _WEBO_SPLASH2_COMPARISON_FULL;
-?> <?php
-		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+		echo _WEBO_SPLASH2_COMPARISON_FULL . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span><span class="wss_w4<?php
 		if ($premium == 3) {
 ?> wss_w0<?php
 		}
 ?>"> <?php
-		echo _WEBO_SPLASH2_COMPARISON_CORPORATE;
-?> <?php
-		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+		echo _WEBO_SPLASH2_COMPARISON_CORPORATE . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span></a><a class="wss_w" href="#wss_balance" title="WEBO Site SpeedUp"><span class="wss_w5<?php
 		if ($premium == 10) {
 ?> wss_w0<?php
 		}
 ?>"> <?php
-		echo _WEBO_SPLASH2_COMPARISON_SAAS;
-?> <?php
-		echo  _WEBO_SPLASH2_COMPARISON_VERSION;
+		echo _WEBO_SPLASH2_COMPARISON_SAAS . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?></span></a><?php
 	}
 ?></p><?php

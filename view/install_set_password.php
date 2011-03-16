@@ -96,9 +96,7 @@
 ?> wssD8<?php
 	}
 ?>"><span class="wssD3">*</span><input id="wss_email" name="wss_email" title="<?php
-	echo _WEBO_LOGIN_ENTEREMAIL;
-?> <?php
-	echo _WEBO_LOGIN_EMAILNOTICE;
+	echo _WEBO_LOGIN_ENTEREMAIL . ' ' . _WEBO_LOGIN_EMAILNOTICE;
 ?>" class="wssF" value="<?php
 	if (empty($submit) || !empty($email)) {
 		echo htmlspecialchars($email);
