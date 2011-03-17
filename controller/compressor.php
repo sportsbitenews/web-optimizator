@@ -662,7 +662,8 @@ class web_optimizer {
 								!empty($option['unobtrusive_informers']) ||
 								!empty($option['unobtrusive_iframes']) ||
 								!empty($option['cache']) ||
-								!empty($option['sprites'])) {
+								!empty($option['sprites']) ||
+								!empty($option['counter'])) {
 									if (!empty($this->web_optimizer_stage)) {
 										$this->write_progress($this->web_optimizer_stage++);
 									}
@@ -868,6 +869,30 @@ class web_optimizer {
 			!empty($this->options['page']['far_future_expires_external']) ||
 			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
+		}
+		if ($this->debug_mode || !empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded'])) {
+			$stamp = '<script type="text/javascript">';
+			if ($this->debug_mode || !empty($this->options['page']['counter'])) {
+				$stamp .= '__WSS=(new Date()).getTime();';
+			}
+			if (!empty($this->options['page']['sprites_domloaded'])) {
+				$stamp .= 'var _webo_hsprites=function(){};';
+			}
+			$stamp .= '</script>';
+			if ($this->options['page']['html_tidy'] &&
+				($headpos = strpos($this->content, '<head'))) {
+					$headend = strpos($this->content, '>', $headpos);
+					$this->content = substr_replace($this->content,
+						$stamp, $headend + 1, 0);
+			} elseif ($this->options['page']['html_tidy'] &&
+				($headpos = strpos($this->content, '<HEAD'))) {
+					$headend = strpos($this->content, '>', $headpos);
+					$this->content = substr_replace($this->content,
+						$stamp, $headend + 1, 0);
+			} else {
+				$this->content = preg_replace("@<head[^>]*>@is",
+					"$0" . $stamp, $this->content);
+			}
 		}
 /* remove marker for styles and BOM */
 		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "﻿"), "", $this->content);
@@ -2942,23 +2967,6 @@ class web_optimizer {
 /* add WEBO Site SpeedUp spot */
 			if (!empty($this->options['page']['spot'])) {
 				$this->content .= '<!--WSS-->';
-			}
-			if ($this->debug_mode || !empty($this->options['page']['counter'])) {
-				$stamp = '<script type="text/javascript">__WSS=(new Date()).getTime()</script>';
-				if ($this->options['page']['html_tidy'] &&
-					($headpos = strpos($this->content, '<head'))) {
-						$headend = strpos($this->content, '>', $headpos);
-						$this->content = substr_replace($this->content,
-							$stamp, $headend + 1, 0);
-				} elseif ($this->options['page']['html_tidy'] &&
-					($headpos = strpos($this->content, '<HEAD'))) {
-						$headend = strpos($this->content, '>', $headpos);
-						$this->content = substr_replace($this->content,
-							$stamp, $headend + 1, 0);
-				} else {
-					$this->content = preg_replace("@<head[^>]*>@is",
-						"$0" . $stamp, $this->content);
-				}
 			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
