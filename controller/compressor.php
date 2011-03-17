@@ -915,21 +915,6 @@ class web_optimizer {
 		}
 /* remove marker for styles and BOM */
 		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
-/* Add script to check gzip possibility */
-		if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-			$cookie = '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
-			if ($options['html_tidy'] && ($bodypos = strpos($this->content, '</body>'))) {
-				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
-			} elseif ($options['html_tidy'] && ($bodypos = strpos($this->content, '</BODY>'))) {
-				$this->content = substr_replace($this->content, $cookie, $bodypos, 0);
-			} else {
-				$this->content = preg_replace('@(</body>)@is', $cookie . "$1", $this->content);
-/* a number of engines doesn't set </body> */
-				if (!strpos($this->content, "wo.cookie")) {
-					$this->content .= $cookie;
-				}
-			}
-		}
 /* execute plugin-specific logic, AfterOptimization event */
 		if (is_array($this->options['plugins'])) {
 			foreach ($this->options['plugins'] as $plugin) {
@@ -1376,17 +1361,16 @@ class web_optimizer {
 /* place second CSS call to onDOMready */
 			case 4:
 				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!-- // -->' : '';
-				$inc = $this->domready_include;
-				$inc .= 'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'.
-					$href .
-					'";d.getElementsByTagName("head")[0].appendChild(l);' .
-					$this->domready_include2;
-				$this->domready_include = '';
 				if (!$this->options['css']['data_uris_domloaded']) {
-					$inc .=  ';' . $file;
-					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $inc , $source);
+					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $file , $source);
 				} else {
-					$inc .= '@@@WSSREADY@@@';
+					$inc = '<script type="text/javascript">' .
+						$this->domready_include .
+						'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="' .
+						$href .
+						'";d.getElementsByTagName("head")[0].appendChild(l);' .
+						$this->domready_include2 .
+						'</script>@@@WSSREADY@@@';
 					$file = ($file ? '<script type="text/javascript">' : '') . $file;
 					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@' . $file, $source);
 /* separate scripts for 2 parts, the second move to the end of the document */
@@ -3039,7 +3023,7 @@ class web_optimizer {
 				if (!empty($this->options['page']['counter'])) {
 					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
 				}
-				if ($this->domready_include) {
+				if ($this->domready_include && !$this->options['css']['data_uris_separate']) {
 					$stamp .= '<script type="text/javascript">' .
 						$this->domready_include .
 						$this->domready_include2;
@@ -3049,6 +3033,10 @@ class web_optimizer {
 						').toGMTString())}},false)})();';
 					}
 					$stamp .= '</script>';
+				}
+/* Add script to check gzip possibility */
+				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+					$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
 				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
