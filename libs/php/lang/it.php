@@ -358,6 +358,9 @@ define('_WEBO_performance_uniform_cache_EFFECT', 'Compatibilità di WEBO Site Sp
 define('_WEBO_performance_restore_properties', 'Ripristina le proprietà CSS');
 define('_WEBO_performance_restore_properties_HELP', 'Tutte le proprietà CSS che possono migliorare CSS Sprites e la creazione di data:URI saranno cercate nel codice CSS. Questo condurrà in una dimensione inferiore della cache ma potrebbe condurre ad un grande utilizzo della CPU nel caso di un grande numero di regole CSS da analizzare.');
 define('_WEBO_performance_restore_properties_EFFECT', 'Riduzione degli oggetti del 5-10%');
+define('_WEBO_performance_https', 'Separate HTTPS cache from HTTP');
+define('_WEBO_performance_restore_properties_HELP', 'All HTML files requested by HTTPS (SSL connection) will be stored separately from ordinary HTML cache files. This will increase overall cache size but quarantee website consistency for different connection types.');
+define('_WEBO_performance_restore_properties_EFFECT', 'Improve website consistency');
 define('_WEBO_performance_delete_old', 'Giorni di mantenimento dei file di cache');
 define('_WEBO_performance_delete_old_HELP', 'Puoi diminuire la dimensione della cache definendo il tempo di detenzione dei file di cache (in giorni). Il valore Zero significa nessuna restrizione.');
 define('_WEBO_performance_delete_old_EFFECT', 'La cache di WEBO Site SpeedUp può essere ridotta del 20-80%');

@@ -3284,6 +3284,12 @@ class admin {
 					'type' => 'smalltext',
 					'price' => 2
 				),
+				'performance_https' => array(
+					'value' => $this->compress_options['performance']['https'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 1
+				),
 				'performance_cache_engine' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['performance']['cache_engine'],
@@ -3853,6 +3859,7 @@ class admin {
 			'wss_performance_cache_version',
 			'wss_performance_uniform_cache',
 			'wss_performance_restore_properties',
+			'wss_performance_https',
 			'wss_minify_page',
 			'wss_minify_html_comments',
 			'wss_minify_html_one_string',

@@ -150,7 +150,11 @@ class web_optimizer {
 			$this->uri = $this->convert_request_uri();
 /* gzip cached content before output? (plugins have onCache), JUtility must parse content */
 			$gzip_me = is_array($this->options['plugins']) || class_exists('JUtility', false);
-			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) . 'index' . $this->ua_mod . '.html';
+			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) .
+				'index' .
+				$this->ua_mod .
+				'.html' .
+				($this->options['page']['https_separate'] ? $this->https : '');
 			$cache_key = $cache_plain_key .
 				($this->options['page']['flush'] ||
 				empty($this->encoding_ext) ||
@@ -511,7 +515,8 @@ class web_optimizer {
 				"sprites_domloaded" => $this->options['unobtrusive']['background'] &&
 					$this->premium > 1,
 				"dimensions_limited" => $this->premium ? round($this->options['css_sprites']['html_limit']) : 0,
-				"per_page" => $this->premium && $this->options['css_sprites']['html_page']
+				"per_page" => $this->premium && $this->options['css_sprites']['html_page'],
+				"https_separate" => $this->premium > 1 ? $this->options['performance']['https'] : 0
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
@@ -958,7 +963,11 @@ class web_optimizer {
 						substr($this->content, 0, $options['flush_size']);
 				}
 			}
-			$ordinary_cache_key = $this->view->ensure_trailing_slash($this->uri) . 'index' . $this->ua_mod . '.html';
+			$ordinary_cache_key = $this->view->ensure_trailing_slash($this->uri) .
+				'index' .
+				$this->ua_mod .
+				'.html' .
+				($this->options['page']['https_separate'] ? $this->https : '');
 			$cache_key = $ordinary_cache_key . (empty($this->encoding_ext) ? '' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
 /* set ETag, thx to merzmarkus */

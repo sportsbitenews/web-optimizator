@@ -349,6 +349,9 @@ define('_WEBO_performance_uniform_cache_EFFECT', 'ویبو سائٹ اسپیڈ �
 define('_WEBO_performance_restore_properties', 'بحال سی ایس ایس کی خصوصیات');
 define('_WEBO_performance_restore_properties_HELP', 'All missing CSS properties which can improve CSS Sprites and data:URI creation will be searched across the CSS code. This will result in smaller cache size but may lead to huge CPU overhead in case of large amount of CSS rules to analyze.');
 define('_WEBO_performance_restore_properties_EFFECT', 'آبجیکٹس کی تعداد میں 5-10% کمی');
+define('_WEBO_performance_https', 'Separate HTTPS cache from HTTP');
+define('_WEBO_performance_restore_properties_HELP', 'All HTML files requested by HTTPS (SSL connection) will be stored separately from ordinary HTML cache files. This will increase overall cache size but quarantee website consistency for different connection types.');
+define('_WEBO_performance_restore_properties_EFFECT', 'Improve website consistency');
 define('_WEBO_performance_delete_old', 'کتنے دن تک کیشے فائلز کو محفوظ رکھنا ہے');
 define('_WEBO_performance_delete_old_HELP', 'آپ کیشے سائز کو پابند کر سکتے ہیں ، تمام کیشے فائلز کو محفوظ رکھنے کے وقت کا (دنوں میں ) تعین کر کے۔ زیرو قیمت کا مطلب ہے کوئی پابندی نہیں۔');
 define('_WEBO_performance_delete_old_EFFECT', 'ویبو سائٹ اسپیڈ اپ کیشے میں 20-80% کمی');

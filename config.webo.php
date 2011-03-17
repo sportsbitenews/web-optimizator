@@ -85,6 +85,8 @@ $compress_options['performance']['delete_old'] = "0";
 $compress_options['performance']['cache_engine'] = "0";
 ## Options to connect to cache engine, i.e. server and port
 $compress_options['performance']['cache_engine_options'] = "127.0.0.1:11211";
+## Separate HTTPS cache from HTTP or not?
+$compress_options['performance']['https'] = "0";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "0";
 ## Minify JS inside <body> tag. Please be carefull
