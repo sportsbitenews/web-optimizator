@@ -1394,7 +1394,7 @@ class web_optimizer {
 							$source .= $newfile;
 						}
 					}
-				{
+				}
 				break;
 		}
 		return $source;
