@@ -655,7 +655,7 @@ class web_optimizer {
 					$this->domready_include .= '_webo_hsprites();';
 				}
 				if ($this->joomla_cache) {
-					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("vmCartModule")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_vmcart}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_vmcart=");if(!e||e==1){a=c.substr(e+11)}}}if(a){g.innerHTML=a}}';
+					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("vmCartModule")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_vmcart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_vmcart=");if(!e||e==1){a=c.substr(e+11)}}}if(a&&a!="undefined"){g.innerHTML=a}}';
 				}
 				$this->domready_include2 = '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
