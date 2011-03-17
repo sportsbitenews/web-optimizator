@@ -250,6 +250,8 @@ class web_optimizer {
 		} elseif (!empty($this->options['page']['cache'])) {
 			header('WEBO: cache miss');
 		}
+/* remember Joomla! caching (VirtueMart) */
+		$this->joomla_cache = $this->options['page']['cache'] && class_exists('JUtility', false);
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
 			$this->options['javascript']['host'] =
@@ -1357,37 +1359,42 @@ class web_optimizer {
 /* place second CSS call to onDOMready */
 			case 4:
 				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!-- // -->' : '';
-				$include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
-				if ($this->options['css']['data_uris_separate']) {
-					$include .= 'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);';
-				}
-				if ($this->options['page']['sprites_domloaded']) {
-					$include .= '_webo_hsprites();';
-				}
-				$include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
-				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
-					$include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
-				}
-				$include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}())';
+				$inc = $this->domready_include;
+				$this->domready_include = '';
 				if (!$this->options['css']['data_uris_domloaded']) {
-					$include .=  ';' . $file;
-					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $include , $source);
+					$inc .=  ';' . $file;
+					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $inc , $source);
 				} else {
-					$include .= '</script>@@@WSSREADY@@@';
+					$inc .= '</script>@@@WSSREADY@@@';
 					$file = ($file ? '<script type="text/javascript">' : '') . $file;
 					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@' . $file, $source);
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
-						$source = substr_replace($source, $include, $bodypos, 0);
+						$source = substr_replace($source, $inc, $bodypos, 0);
 					} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
-						$source = substr_replace($source, $include, $bodypos, 0);
+						$source = substr_replace($source, $inc, $bodypos, 0);
 					} else {
-						$source = preg_replace("!</body>!is", $include . "$0", $source);
-						if (!strpos($source, $include)) {
-							$source .= $include;
+						$source = preg_replace("!</body>!is", $inc . "$0", $source);
+						if (!strpos($source, $inc)) {
+							$source .= $inc;
 						}
 					}
 				}
+				break;
+/* mode chunk to </body> */
+			case 5:
+				if ($newfile) {
+					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
+						$source = substr_replace($source, $newfile, $bodypos, 0);
+					} elseif ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</BODY>'))) {
+						$source = substr_replace($source, $newfile, $bodypos, 0);
+					} else {
+						$source = preg_replace("!</body>!is", $newfile . "$0", $source);
+						if (!strpos($source, $newfile)) {
+							$source .= $newfile;
+						}
+					}
+				{
 				break;
 		}
 		return $source;
@@ -1449,6 +1456,27 @@ class web_optimizer {
 		if ($this->ua_mod === '.ie6'&& !empty($options['css_sprites'])) {
 			$source = $this->include_bundle($source, '<script type="text/javascript">try{document.execCommand("BackgroundImageCache",false,true)}catch(e){}</script>', $handlers, $cachedir, 1);
 		}
+/* create DOMready chunk of JavaScript code, is required for different tasks */
+		$this->domready_include = '';
+		if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache) {
+			$this->domready_include = '<script type="text/javascript">__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
+			if ($this->options['css']['data_uris_separate']) {
+				$this->domready_include .= 'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="'. $href .'";d.getElementsByTagName("head")[0].appendChild(l);';
+			}
+			if ($this->options['page']['sprites_domloaded']) {
+				$this->domready_include .= '_webo_hsprites();';
+			}
+			if ($this->joomla_cache) {
+				$this->domready_include .= 'var g;if(g=document.getElementsByClassName("vmCartModule")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_vmcart}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_vmcart=");if(!e||e==1){a=c.substr(e+11)}}}g=a}';
+			}
+			$this->domready_include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
+			if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
+				$this->domready_include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
+			} else {
+				$this->domready_include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}';
+			}
+			$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}())';
+		}
 /* Check if the cache file exists */
 		if ($timestamp) {
 /* Put in locations and remove certain scripts */
@@ -1480,6 +1508,8 @@ class web_optimizer {
 					$source = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
 						$this->shadowbox_base . '";Shadowbox.init(', $source);
 			}
+/* include DOMready script if required */
+			$source = $this->include_bundle($source, $this->domready_include, '', '', 5);
 			return $source;
 		}
 		foreach ($this->libraries as $klass => $library) {
@@ -1773,6 +1803,8 @@ class web_optimizer {
 				$newfile = $this->get_new_file($options, $cache_file, $this->time);
 				$source = $this->include_bundle($source, $newfile, $handlers, $cachedir_relative, $options['unobtrusive_body'] ? 3 : ($options['header'] == 'javascript' && $options['external_scripts_head_end'] ? 1 : ($options['header'] == 'javascript' ? 2 : 0)));
 			}
+/* include DOMready script if required */
+			$source = $this->include_bundle($source, $this->domready_include, '', '', 5);
 		}
 		return $source;
 	}
@@ -3025,6 +3057,11 @@ class web_optimizer {
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
 					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
+				}
+				if ($this->joomla_cache) {
+					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("vmCartModule")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)vmCartModule(\s|$)/.test(c.className)){a=c;d=b.length}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">");if(typeof window.localStorage!="undefined"){window.localStorage.wss_vmcart=a}else{document.cookie="wss_vmcart="+a+";path=/;expires="+(new Date(new Date().getTime()+' .
+					($this->options['page']['cache_timeout'] * 1000) .
+					').toGMTString())}},false)})()</script>';
 				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
