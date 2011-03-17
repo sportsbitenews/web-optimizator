@@ -358,8 +358,8 @@ define('_WEBO_performance_uniform_cache_EFFECT', 'WEBO Site SpeedUp compatibilit
 define('_WEBO_performance_restore_properties_HELP', 'All missing CSS properties which can improve CSS Sprites and data:URI creation will be searched across the CSS code. This will result in smaller cache size but may lead to huge CPU overhead in case of large amount of CSS rules to analyze.');
 define('_WEBO_performance_restore_properties_EFFECT', 'Number of objects reduction by 5-10%');
 define('_WEBO_performance_https', 'Separate HTTPS cache from HTTP');
-define('_WEBO_performance_restore_properties_HELP', 'All HTML files requested by HTTPS (SSL connection) will be stored separately from ordinary HTML cache files. This will increase overall cache size but quarantee website consistency for different connection types.');
-define('_WEBO_performance_restore_properties_EFFECT', 'Improve website consistency');
+define('_WEBO_performance_https_HELP', 'All HTML files requested by HTTPS (SSL connection) will be stored separately from ordinary HTML cache files. This will increase overall cache size but quarantee website consistency for different connection types.');
+define('_WEBO_performance_https_EFFECT', 'Improve website consistency');
 define('_WEBO_performance_delete_old', 'Days to store cache files');
 define('_WEBO_performance_delete_old_HELP', 'You can restrict cache size by defining time to live for all cache files (in days). Zero value means no restriction.');
 define('_WEBO_performance_delete_old_EFFECT', 'WEBO Site SpeedUp cache reduction by 20-80%');

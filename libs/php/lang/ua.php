@@ -362,8 +362,8 @@ define('_WEBO_performance_restore_properties', 'Восстанавливать C
 define('_WEBO_performance_restore_properties_HELP', 'Все недостающие CSS-свойства, которые могут помочь более эффективно создавать CSS Sprites и data:URI будут определяться при помощи анализа всего CSS-кода. Это позволит уменьшить размер кэша, но может привести к существенным процессорным издержкам в случае большого количества CSS-правил.');
 define('_WEBO_performance_restore_properties_EFFECT', 'Уменьшение числа объектов на 5-10%');
 define('_WEBO_performance_https', 'Отделить HTTPS-кэш от HTTP');
-define('_WEBO_performance_restore_properties_HELP', 'Все HTML-файлы, запрашиваемые по HTTPS (SSL-соединение), будут храниться отдельно от обычных файлов, запрошенных по HTTP. Это увеличивает размер кэша, но гарантирует целостность сайта при запросах с использованием различных соединений.');
-define('_WEBO_performance_restore_properties_EFFECT', 'Увеличение целостности сайта');
+define('_WEBO_performance_https_HELP', 'Все HTML-файлы, запрашиваемые по HTTPS (SSL-соединение), будут храниться отдельно от обычных файлов, запрошенных по HTTP. Это увеличивает размер кэша, но гарантирует целостность сайта при запросах с использованием различных соединений.');
+define('_WEBO_performance_https_EFFECT', 'Увеличение целостности сайта');
 define('_WEBO_performance_delete_old', 'Срок хранения файлов в кэше (в днях)');
 define('_WEBO_performance_delete_old_HELP', 'Вы можете ограничить общий размер кэша при помощи срока хранения файлов в нем (в днях). Нулевое значение отключает данное ограничение.');
 define('_WEBO_performance_delete_old_EFFECT', 'Уменьшение размера кэша WEBO Site SpeedUp на 20-80%');
