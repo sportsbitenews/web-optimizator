@@ -68,11 +68,6 @@ class web_optimizer {
 		$this->head = '';
 /* remember current time */
 		$this->time = empty($_SERVER['REQUEST_TIME']) ? time() : $_SERVER['REQUEST_TIME'];
-		$this->host = $_SERVER['HTTP_HOST'];
-		if (strpos($_SERVER['HTTP_HOST'], "www.") !== false ||
-			strpos($_SERVER['HTTP_HOST'], "WWW.") !== false) {
-				$this->host = substr($this->host, 4);
-		}
 /* define PHP version */
 		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */

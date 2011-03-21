@@ -27,8 +27,19 @@ class admin {
 				@date_default_timezone_set('Europe/Moscow');
 			}
 		}
-/* Set name of options file */
-		$this->options_file = "config.webo.php";
+/* define website host */
+		$host = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
+		if (strpos($host, "www.") !== false ||
+			strpos($host, "WWW.") !== false) {
+				$host = substr($host, 4);
+		}
+/* Set name of options file, multi-configs supported */
+		if (!empty($host) && @file_exists($this->basepath . $host . ".config.webo.php")) {
+			$this->options_file = $host . ".config.webo.php";
+		} else {
+			$this->options_file = "config.webo.php";
+		}
+
 /* try to restore options backup */
 		if (@is_file($this->basepath . '.config.webo.php') && !strpos($this->file_get_contents($this->basepath . $this->options_file), '$compress_options[\'license\']')) {
 			@copy($this->basepath . '.config.webo.php', $this->basepath . $this->options_file);
@@ -2592,6 +2603,7 @@ class admin {
 			@copy($this->basepath . 'config.safe.php', $this->basepath . 'config.user.php');
 			if (@is_file($this->basepath . 'config.user.php')) {
 				$this->save_option("['config']", "user");
+				$this->options_file_backup = $this->options_file;
 				$this->options_file = 'config.user.php';
 				$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
 				$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
@@ -2604,6 +2616,7 @@ class admin {
 						$this->save_option("['" . strtolower($key) . "']", $option);
 					}
 				}
+				$this->options_fil = $this->options_file_backup;
 				$this->save_option("['config']", "user");
 			}
 		}
@@ -4040,6 +4053,7 @@ class admin {
 			if (!empty($this->input['wss_config']) &&
 				(strpos($this->input['wss_config'], 'user') !== false ||
 				strpos($this->input['wss_config'], 'auto') !== false)) {
+					$this->options_file_backup = $this->options_file;
 					$this->options_file = 'config.' .
 						preg_replace("/[^a-zA-Z0-9]*/", "",
 						$this->input['wss_config']) . '.php';
@@ -4072,6 +4086,7 @@ class admin {
 							}
 						}
 					}
+					$this->options_file = $this->options_file_backup;
 /* can't create new config file */
 					if (!empty($this->error[0])) {
 						$this->save_option("['config']", 'safe');

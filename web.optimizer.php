@@ -39,8 +39,19 @@ if (!empty($webo_not_buffered)) {
 	if (!class_exists('compressor_view', false)) {
 		require_once($basepath . "libs/php/view.php");
 	}
-/* We need to know the config */
-	require($basepath . "config.webo.php");
+/* define website host */
+	$host = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
+	if (strpos($host, "www.") !== false ||
+		strpos($host, "WWW.") !== false) {
+			$host = substr($host, 4);
+	}
+/* We need to know the config, multi-configs supported */
+	if (!empty($host) && @file_exists($basepath . $host . ".config.webo.php")) {
+		require($basepath . $host . ".config.webo.php");
+	} else {
+		require($basepath . "config.webo.php");
+	}
+
 /* buffer input stream or not */
 	$compress_options['buffered'] = empty($not_buffered) ? 1 : 0;
 /* Con. the view library */
@@ -67,7 +78,8 @@ if (!empty($webo_not_buffered)) {
 		'options' => $compress_options,
 		'libraries' => $libraries,
 		'no_cache' => empty($no_cache) ? false : $no_cache,
-		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key)
+		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key),
+		'host' => $host
 	);
 }
 ?>
