@@ -35,7 +35,7 @@ class css_sprites_optimize {
 /* use aggressive logic for repeat-x/y */
 			$this->aggressive = $options['aggressive'];
 /* leave some space for combined Sprites to handle resized fonts */
-			$this->extra_space = $options['extra_space'];
+			$this->extra_space = $options['extra_space'] ? 10 : 0;
 /* Exclude or include only files? */
 			$this->ignore = $options['ignore'];
 /* list of excluded from CSS Sprites files */
@@ -241,8 +241,8 @@ class css_sprites_optimize {
 /* initial coordinates */
 						$I = $J = 0;
 /* avoid affecting negative background-position to image placement, we have already counted it */
-						$width = $image[1] + ($image[3] > 0 ? $image[3] : 0) + $image[5] + ($this->extra_space && count($ordered_images) > 1 ? 5 : 0);
-						$height = $image[2] + ($image[4] > 0 ? $image[4] : 0) + $image[6] + ($this->extra_space && count($ordered_images) > 1 ? 5 : 0);
+						$width = $image[1] + ($image[3] > 0 ? $image[3] : 0) + $image[5] + (count($ordered_images) > 1 ? $this->extra_space : 0);
+						$height = $image[2] + ($image[4] > 0 ? $image[4] : 0) + $image[6] + (count($ordered_images) > 1 ? $this->extra_space : 0);
 						$shift_x = $image[3];
 						$shift_y = $image[4];
 /* all images have equal dimensions => loop with increased step */
@@ -486,7 +486,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 									$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;
 									$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'] - $height;
 									$this->css_images[$sprite]['images'][$key][5] = $final_x;
-									$this->css_images[$sprite]['x'] += $width + $final_x + $shift_x + ($this->extra_space ? 5 : 0);
+									$this->css_images[$sprite]['x'] += $width + $final_x + $shift_x + $this->extra_space;
 									if ($height > $this->css_images[$sprite]['y']) {
 										$shift = $this->css_images[$sprite]['y'] - $height;
 										$this->css_images[$sprite]['y'] = $height;
@@ -501,7 +501,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 									$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] - $width;
 									$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'] + $final_y;
 									$this->css_images[$sprite]['images'][$key][6] = $final_y;
-									$this->css_images[$sprite]['y'] += $height + $final_y + $shift_y + ($this->extra_space ? 5 : 0);
+									$this->css_images[$sprite]['y'] += $height + $final_y + $shift_y + $this->extra_space;
 									if ($width > $this->css_images[$sprite]['x']) {
 										$shift = $this->css_images[$sprite]['x'] - $width;
 										$this->css_images[$sprite]['x'] = $width;
@@ -559,8 +559,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								$final_y = $image[4];
 								$image[3] = 0;
 								$image[4] = $this->css_images[$sprite]['addon_y'] + $final_y + $image[6];
-								$this->css_images[$sprite]['addon_y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
-								$this->css_images[$sprite]['y'] += $image[2] + $final_y + $image[6] + ($this->extra_space ? 5 : 0);
+								$this->css_images[$sprite]['addon_y'] += $image[2] + $final_y + $image[6] + $this->extra_space;
+								$this->css_images[$sprite]['y'] += $image[2] + $final_y + $image[6] + $this->extra_space;
 								$image[] = 1;
 								$this->css_images[$sprite]['images'][] = $image;
 								unset($this->css_images[$no_repeat]['images'][$key]);
@@ -594,8 +594,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								$counted_images[$image[0]] = 1;
 								$final_x = $image[3];
 								$image[3] = $this->css_images[$sprite]['addon_x'] + $final_x + $image[5];
-								$this->css_images[$sprite]['addon_x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
-								$this->css_images[$sprite]['x'] += $image[1] + $final_x + $image[5] + ($this->extra_space ? 5 : 0);
+								$this->css_images[$sprite]['addon_x'] += $image[1] + $final_x + $image[5] + $this->extra_space;
+								$this->css_images[$sprite]['x'] += $image[1] + $final_x + $image[5] + $this->extra_space;
 								$image[] = 1;
 								$this->css_images[$sprite]['images'][] = $image;
 								unset($this->css_images[$no_repeat]['images'][$key]);
