@@ -41,7 +41,7 @@ if (!empty($webo_not_buffered)) {
 	}
 /* define website host */
 	$host = empty($_SERVER['HTTP_HOST']) ? '' : strtolower($_SERVER['HTTP_HOST']);
-	if (strpos($host, "www.") == 0) {
+	if (strpos($host, "www.") === 0) {
 		$host = substr($host, 4);
 	}
 /* We need to know the config, multi-configs supported */

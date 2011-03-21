@@ -29,7 +29,7 @@ class admin {
 		}
 /* define website host */
 		$host = empty($_SERVER['HTTP_HOST']) ? '' : strtolower($_SERVER['HTTP_HOST']);
-		if (strpos($host, "www.") == 0) {
+		if (strpos($host, "www.") === 0) {
 			$host = substr($host, 4);
 		}
 /* Set name of options file, multi-configs supported */
