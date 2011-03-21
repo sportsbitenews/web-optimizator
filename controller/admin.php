@@ -2042,7 +2042,7 @@ class admin {
 		$page_variables['total'] = $total;
 		$page_variables['size'] = $size;
 		$page_variables['files'] = $files;
-		$page_variables['custom'] = @function_exists('curl_init') || @is_file($this->basepath . 'custom');
+		$page_variables['custom'] = !@function_exists('curl_init') || @is_file($this->basepath . 'custom');
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
@@ -2145,7 +2145,7 @@ class admin {
 			"skip_render" => $this->skip_render,
 			"license" => $this->compress_options['license'],
 			"fee" => $this->compress_options['fee'],
-			"custom" => @function_exists('curl_init') || @is_file($this->basepath . 'custom')
+			"custom" => !@function_exists('curl_init') || @is_file($this->basepath . 'custom')
 		);
 		$this->view->render("admin_container", $page_variables);
 	}

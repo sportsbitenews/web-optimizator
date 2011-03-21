@@ -191,9 +191,9 @@
 		}
 ?><a class="wssJ20" href="javascript:_.hide('wss_updates')" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
-?>"></a></div></div></div><?php
+?>"></a></div></div><?php
 	}
-?><div class="wssN1<?php
+?></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_status') !== false ? ' wssA0' : '';
 ?>" id="wss_status"><div class="wssN2"><h2 class="wssB"><a href="#wss_system" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_STATUS;
