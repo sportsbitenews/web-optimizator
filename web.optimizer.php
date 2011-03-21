@@ -78,8 +78,8 @@ if (!empty($webo_not_buffered)) {
 		'options' => $compress_options,
 		'libraries' => $libraries,
 		'no_cache' => empty($no_cache) ? false : $no_cache,
-		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key),
-		'host' => $host
+		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key,
+		'host' => $host)
 	);
 }
 ?>
