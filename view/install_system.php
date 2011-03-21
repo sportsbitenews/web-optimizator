@@ -115,7 +115,7 @@
 ?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#cache" class="wssJ"><?php
 	echo _WEBO_DASHBOARD_CACHE;
 ?><span class="wssJ6"></span></a></li><?php
-	if (@function_exists('curl_init')) {
+	if (!$custom) {
 ?><li class="wssO4"><a href="#updates" class="wssJ"><?php
 		echo _WEBO_SYSTEM_UPDATES;
 ?><span class="wssJ6"></span></a></li><?php
@@ -354,7 +354,7 @@
 ?></tbody></table><p class="wssI"><a href="#wss_renew" class="wssJ7"><?php
 	echo _WEBO_DASHBOARD_CACHE_REFRESH;
 ?><span class="wssJ6"></span></a></p></div></fieldset><?php
-	if (@function_exists('curl_init')) {
+	if (!$custom) {
 ?><fieldset id="updates" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 		echo _WEBO_SYSTEM_UPDATES_TITLE;
 ?></h2><dl><dt class="wssD5"><label class="wssE" for="wss_showbeta"><?php

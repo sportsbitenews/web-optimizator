@@ -172,7 +172,7 @@
 ?><a class="wssJ20" href="javascript:_.hide('wss_tools')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
-	if (@function_exists('curl_init')) {
+	if (!$custom) {
 ?><div class="wssN5<?php
 		echo strpos($cookie, 'wss_updates') !== false ? ' wssA0' : '';
 ?>" id="wss_updates"><div class="wssN2 wssN21"><h2 class="wssB"><a href="#wss_system#updates" class="wssN3"><?php
