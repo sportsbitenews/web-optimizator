@@ -28,10 +28,9 @@ class admin {
 			}
 		}
 /* define website host */
-		$host = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
-		if (strpos($host, "www.") !== false ||
-			strpos($host, "WWW.") !== false) {
-				$host = substr($host, 4);
+		$host = empty($_SERVER['HTTP_HOST']) ? '' : strtolower($_SERVER['HTTP_HOST']);
+		if (strpos($host, "www.") == 0) {
+			$host = substr($host, 4);
 		}
 /* Set name of options file, multi-configs supported */
 		if (!empty($host) && @file_exists($this->basepath . $host . ".config.webo.php")) {

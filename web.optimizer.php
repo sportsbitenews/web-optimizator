@@ -40,10 +40,9 @@ if (!empty($webo_not_buffered)) {
 		require_once($basepath . "libs/php/view.php");
 	}
 /* define website host */
-	$host = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
-	if (strpos($host, "www.") !== false ||
-		strpos($host, "WWW.") !== false) {
-			$host = substr($host, 4);
+	$host = empty($_SERVER['HTTP_HOST']) ? '' : strtolower($_SERVER['HTTP_HOST']);
+	if (strpos($host, "www.") == 0) {
+		$host = substr($host, 4);
 	}
 /* We need to know the config, multi-configs supported */
 	if (!empty($host) && @file_exists($basepath . $host . ".config.webo.php")) {
