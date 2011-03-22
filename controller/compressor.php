@@ -68,8 +68,6 @@ class web_optimizer {
 		$this->head = '';
 /* remember current time */
 		$this->time = empty($_SERVER['REQUEST_TIME']) ? time() : $_SERVER['REQUEST_TIME'];
-/* define PHP version */
-		$this->php = $this->options['php'];
 /* skip buffering (need for integration as plugin) */
 		$this->buffered = $this->options['buffered'];
 /* Sets User Agent to differ IE from non-IE */
