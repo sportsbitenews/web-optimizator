@@ -655,7 +655,7 @@ class web_optimizer {
 					$this->domready_include .= '_webo_hsprites();';
 				}
 				if ($this->joomla_cache) {
-					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("vmCartModule")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_vmcart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_vmcart=");if(!e||e==1){a=c.substr(e+11)}}}if(a&&a!="undefined"){g.innerHTML=a}}';
+					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("vmCartModule")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_vmcart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_vmcart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"){g.innerHTML=a}}';
 				}
 				$this->domready_include2 = '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
@@ -3032,7 +3032,7 @@ class web_optimizer {
 						$this->domready_include .
 						$this->domready_include2;
 					if ($this->joomla_cache) {
-						$stamp .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("vmCartModule")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)vmCartModule(\s|$)/.test(c.className)){a=c;d=b.length}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">");if(typeof window.localStorage!="undefined"){window.localStorage.wss_vmcart=a}else{document.cookie="wss_vmcart="+a+";path=/;expires="+(new Date(new Date().getTime()+' .
+						$stamp .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("vmCartModule")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)vmCartModule(\s|$)/.test(c.className)){a=c;d=b.length}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_vmcart=a}else{document.cookie="wss_vmcart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 						($this->options['page']['cache_timeout'] * 1000) .
 						').toGMTString())}},false)})();';
 					}
