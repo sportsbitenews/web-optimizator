@@ -1115,13 +1115,11 @@ class web_optimizer {
 							if (!empty($this->options['page']['html_tidy']) &&
 								(strpos($image[0], 'class') || strpos($image[0], 'CLASS'))) {
 									if ($pos=strpos($image[0], ' class="')) {
-										$end = strpos(substr($image[0], $pos + 7), '"');
-										$new_image = substr($image[0], 0, $pos + 7 + $end) .
-											' ' . $class . substr($image[0], $pos + 7 + $end);
+										$new_image = substr($image[0], 0, $pos + 8) .
+											$class . ' ' . substr($image[0], $pos + 8);
 									} elseif ($pos=strpos($image[0], " class='")) {
-										$end = strpos(substr($image[0], $pos + 7), "'");
-										$new_image = substr($image[0], 0, $pos + 7 + $end) .
-											' ' . $class . substr($image[0], $end);
+										$new_image = substr($image[0], 0, $pos + 8) .
+											$class . ' ' . substr($image[0], $end);
 									} else {
 										$new_image = preg_replace("!(.*['\"\s]class\s*=\s*)([\"'])?([^\"']+)([\"'])?([\s/>])(.*)!is", "$1$2$3 " .
 											$class . "$4$5$6", $image[0]);
