@@ -2830,17 +2830,17 @@ class web_optimizer {
 	and some semi-standard complaint hacks, skip if we fetch body but not head */
 		if (!empty($this->options['javascript']['inline_scripts']) && !$cssonly) {
 			$dest = str_replace(
-				array('//]]>', '// ]]>', '<!--//-->', '<!--/*--><![CDATA[/*><!--*/',
+				array('//]]>', '// ]]>', '<!--//-->',
 					'<![CDATA[', '//><!--', '//--><!]]>', '//-->',
 					'<!--/*--><![CDATA[//><!--','//-->', '//<!--',
-					'// <!--', '// -->', '/*]]>*/-->', '<!-- // -->'), '', $dest);
+					'// <!--', '// -->', '<!-- // -->'), '', $dest);
 			$dest = preg_replace("@(<script[^>]*>)[\r\n\t\s]*<!--@is", "$1", $dest);
 			$dest = preg_replace("@-->[\r\n\t\s]*(</script>)@is", "$1", $dest);
 		}
 /* remove comments from <style> constructions */
 		if (!empty($this->options['css']['inline_scripts'])) {
-			$dest = preg_replace("@(<style type=[\"']text/css[^>]*>)[\t\s\r\n]*<!--@is", "$1", $dest);
-			$dest = preg_replace("@[\t\s\r\n]*-->(</style>)@is", "$1", $dest);
+			$dest = preg_replace("@(<style type=[\"']text/css[^>]*>)([\t\s\r\n]*<!--|\/\*--><!\[CDATA\[\/\*><!--\*\/)@is", "$1", $dest);
+			$dest = preg_replace("@([\t\s\r\n]*-->|\/\*\]\]>\*\/-->)</style>)@is", "$2", $dest);
 		}
 		if ($dest !== $source) {
 /* replace current content with updated version */
