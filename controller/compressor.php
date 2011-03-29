@@ -2874,10 +2874,10 @@ class web_optimizer {
 					$this->basehref = trim(str_replace(array('"', ""), array(), substr($this->content, $basepos + 5, $baseend - $basepos - 6)));
 				}
 			} elseif (preg_match("@<base\s+href@is", $this->content)) {
-				$this->basehref = preg_replace("@.*<base\s*href\s*=\s*['\"](.*?)['\"].*@is", "$1", $this->content);
+				$this->basehref = preg_replace("@.*<base\s+href\s*=\s*['\"](.*?)['\"].*@is", "$1", $this->content);
 			}
 			if (!empty($this->basehref) && preg_match("@https?://(www\.)?" . $this->host . "@", $this->basehref)) {
-				$this->basehref = '';
+				$this->basehref = '/';
 			}
 /* change all links on the page according to DEBUG mode */
 			if ($this->debug_mode) {
