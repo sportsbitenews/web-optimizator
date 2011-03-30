@@ -3317,7 +3317,7 @@ class web_optimizer {
 				}
 			}
 			if ($mhtml && !empty($mhtml_code)) {
-				$compressed .= $mhtml_code . "--_--\n*/";
+				$compressed .= $mhtml_code . "\n\n--_--\n*/";
 			}
 /* clear content from junk */
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$4", $content);
