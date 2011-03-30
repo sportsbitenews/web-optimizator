@@ -2888,16 +2888,16 @@ class web_optimizer {
 /* skip removing escaped JavaScript code, thx to smart */
 				preg_match_all("!(<script[^>]*>)(.*?</script>)!is", $this->content, $matches, PREG_SET_ORDER);
 				$i = 0;
+				$to_store = array();
+				$stubs = array();
 				foreach ($matches as $match) {
-					$this->content = str_replace($match, '@@@WSSLEAVE' . $i . '@@@', $this->content);
+					$to_store[] = $match[0];
+					$stubs[] = '@@@WSSLEAVE' . $i . '@@@';
 					$i++;
 				}
+				$this->content = str_replace($to_store, $stubs, $this->content);
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
-				$i = 0;
-				foreach ($matches as $match) {
-					$this->content = str_replace('@@@WSSLEAVE' . $i . '@@@', $match, $this->content);
-					$i++;
-				}
+				$this->content = str_replace($stubs, $to_store, $this->content);
 			}
 /* fix script positioning for DLE */
 			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
