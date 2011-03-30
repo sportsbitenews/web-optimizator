@@ -2886,27 +2886,18 @@ class web_optimizer {
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 /* skip removing escaped JavaScript code, thx to smart */
-				$this->content = str_replace(
-					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
-						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
-						'<script type="text/javascript"><!--',
-						'<script language="javascript"  type="text/javascript" ><!--'),
-					array('@@@WSSLEAVE1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
-						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
-						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@',
-						'@@@WSSLEAVE13@@@'), $this->content);
+				preg_match_all("!(<script[^>]*>)(.*?</script>)!is", $this->content, $matches, PREG_SET_ORDER);
+				$i = 0;
+				foreach ($matches as $match) {
+					$this->content = str_replace($match, '@@@WSSLEAVE' . $i . '@@@', $this->content);
+					$i++;
+				}
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
-				$this->content = str_replace(
-					array('@@@WSSLEAVE1@@@', '@@@WSSLEAVE2@@@', '@@@WSSLEAVE3@@@', '@@@WSSLEAVE4@@@',
-						'@@@WSSLEAVE5@@@', '@@@WSSLEAVE6@@@', '@@@WSSLEAVE7@@@', '@@@WSSLEAVE8@@@',
-						'@@@WSSLEAVE9@@@', '@@@WSSLEAVE10@@@', '@@@WSSLEAVE11@@@', '@@@WSSLEAVE12@@@',
-						'@@@WSSLEAVE13@@@'),
-					array('//]]>',		'// ]]>',	'<!--//-->',	'<!-- // -->',
-						'<![CDATA[',	'//><!--',	'//--><!]]>',	'// -->',
-						'<!--/*--><![CDATA[//><!--','//-->',		'--></script>',
-						'<script type="text/javascript"><!--',
-						'<script language="javascript"  type="text/javascript" ><!--'), $this->content);
+				$i = 0;
+				foreach ($matches as $match) {
+					$this->content = str_replace('@@@WSSLEAVE' . $i . '@@@', $match, $this->content);
+					$i++;
+				}
 			}
 /* fix script positioning for DLE */
 			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
