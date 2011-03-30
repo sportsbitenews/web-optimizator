@@ -1091,6 +1091,7 @@ class web_optimizer {
 		if (!empty($imgs)) {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
+			$request_file = empty($this->basehref) ? $_SERVER['REQUEST_URI'] : $this->basehref;
 			foreach ($imgs as $image) {
 				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], ' src="'))) {
 					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), '"'));
@@ -1099,12 +1100,11 @@ class web_optimizer {
 				} else {
 					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*[\"'\s]src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				}
-				$old_src = $this->convert_basehref($old_src);
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 /* image file name to check through ignore list */
 				$img = preg_replace("@.*/@", "", $old_src);
 				$absolute_src = $this->convert_path_to_absolute($old_src,
-					array('file' => $_SERVER['REQUEST_URI']));
+					array('file' => $request_file));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
 						((!in_array($img, $ignore_sprites) && empty($this->options['css']['css_sprites_ignore'])) ||
@@ -2876,8 +2876,8 @@ class web_optimizer {
 			} elseif (preg_match("@<base\s+href@is", $this->content)) {
 				$this->basehref = preg_replace("@.*<base\s+href\s*=\s*['\"](.*?)['\"].*@is", "$1", $this->content);
 			}
-			if (!empty($this->basehref) && preg_match("@https?://(www\.)?" . $this->host . "@", $this->basehref)) {
-				$this->basehref = '/';
+			if (!empty($this->basehref)) {
+				$this->basehref = preg_replace("@https?://(www\.)?" . $this->host . "@", "", $this->basehref);
 			}
 /* change all links on the page according to DEBUG mode */
 			if ($this->debug_mode) {
@@ -3126,7 +3126,11 @@ class web_optimizer {
 			if (substr($file, 0, 1) != '/' && !preg_match("!^https?://!", $file)) {
 /* add relative directory. Need somehow parse current meta base... */
 				if (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
-					$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+					if (!empty($this->basehref)) {
+						$endfile = $this->basehref . $endfile;
+					} else {
+						$endfile = preg_replace("@([^\?&]*/).*@", "$1", $_SERVER['REQUEST_URI']) . $endfile;
+					}
 				}
 				$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
 				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
