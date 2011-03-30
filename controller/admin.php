@@ -5150,6 +5150,10 @@ Options +FollowSymLinks";
 /* fix for PHP Fusion */							
 				} elseif ($this->cms_version == 'PHP Fusion') {
 					$content_saved = preg_replace("/(echo handle_output\(\\\$output\);\r?\n)/", "$1" . '$web_optimizer->finish();', $content_saved);
+/* fix for Contao */
+				} elseif (substr($this->cms_version, 0, 6) == 'Contao') {
+					$content_saved = preg_replace("/echo \\\$strBuffer/", "global \\\$web_optimizer;echo \\\$web_optimizer->finish(\\\$strBuffer)", $content_saved);
+					$content_saved = preg_replace("/(\\\$objIndex->run\(\);\r?\n)/", "$1" . '$web_optimizer->finish();' . "\r\n", $content_saved);
 				} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
 /* small fix for Joostina */
 					if (substr($this->cms_version, 0, 8) == 'Joostina') {
@@ -5808,6 +5812,9 @@ require valid-user';
 /* Koobi CMS */
 		} elseif (@is_file($root . '/class/tpl/Koobi.class.php')) {
 			return 'Koobi CMS';
+/* Contao */
+		} elseif (@is_dir($root . '/contao/')) {
+			return 'Contao';
 		}
 		return 'CMS 42';
 	}
@@ -6245,6 +6252,26 @@ require valid-user';
 						'mode' => 'finish',
 						'location' => '$content = ob_get_clean();',
 						'text' => '$content = $web_optimizer->finish($content);'
+					)
+				);
+				break;
+/* Contao */
+			case 'Contao':
+				$files = array(
+					array(
+						'file' => 'index.php',
+						'mode' => 'start'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => '$strBuffer = str_replace(array(\'[{]\', \'[}]\'), array(\'{{\', \'}}\'), $strBuffer);',
+						'text' => 'global $web_optimizer;$strBuffer = $web_optimizer->finish($strBuffer);'
+					),
+					array(
+						'file' => 'index.php',
+						'mode' => 'finish',
+						'location' => '$objIndex->run();'
 					)
 				);
 				break;
