@@ -3223,7 +3223,7 @@ class web_optimizer {
 				if (strpos(strtolower($image[4]), "url") !== false) {
 					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[4])));
 					$image_saved = $css_image;
-					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . $css_image : $options['cachedir'] . '/' .$css_image;
+					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
 					$chunks = explode(".", $css_image);
 					$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
 					$chunks = explode("/", $css_image);
@@ -3237,7 +3237,7 @@ class web_optimizer {
 								$css_image = $image_saved;
 						} else {
 							$encoded = base64_encode($this->file_get_contents($css_image));
-							$next = 0;
+							$next = !$mhtml && !$options['data_uris'];
 							if ($mhtml) {
 								if (@filesize($css_image) < $options['mhtml_size'] &&
 									!in_array($filename, $mhtml_exclude) &&
