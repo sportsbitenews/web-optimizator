@@ -1360,9 +1360,8 @@ class web_optimizer {
 				break;
 /* place second CSS call to onDOMready */
 			case 4:
-				$file = $newfile ? 'document.write("\x3c!--");</script>' . $newfile . '<!-- // -->' : '';
 				if (!$this->options['css']['data_uris_domloaded']) {
-					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $file , $source);
+					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $newfile , $source);
 				} else {
 					$inc = '<script type="text/javascript">' .
 						$this->domready_include .
@@ -1371,8 +1370,6 @@ class web_optimizer {
 						'";d.getElementsByTagName("head")[0].appendChild(l);' .
 						$this->domready_include2 .
 						'</script>@@@WSSREADY@@@';
-					$file = ($file ? '<script type="text/javascript">' : '') . $file;
-					$source = str_replace("@@@WSSSTYLES@@@", '@@@WSSSTYLES@@@' . $file, $source);
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
 						$source = substr_replace($source, $inc, $bodypos, 0);
