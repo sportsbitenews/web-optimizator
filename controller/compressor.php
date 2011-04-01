@@ -1846,7 +1846,9 @@ class web_optimizer {
 	**/
 	function get_new_file_name ($options, $cache_file, $timestamp = false, $add = false) {
 		$timestamp = $options['far_future_expires_php'] ? $timestamp : false;
-		return (empty($options['host']) ? '' : '//' . $options['host']) .
+		return (empty($options['host']) ? '' :
+			($options['page']['cache'] && !$options['page']['https_separate'] ? '//' : 'http' . $this->https . '://') .
+			$options['host']) .
 			$options['cachedir_relative'] . 
 			$cache_file .
 			($add ?  '.' . $options['ext'] : '') .
