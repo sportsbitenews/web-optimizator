@@ -173,7 +173,8 @@ class html_sprites {
 				$old_src = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, 0, $old_src_param_pos) : $old_src;
 				$absolute_src = $this->main->convert_path_to_absolute($old_src,
 					array('file' => $_SERVER['REQUEST_URI']));
-				$filename = array_pop(explode("/", $absolute_src));
+				$filename = explode("/", $absolute_src);
+				$filename = array_pop($filename);
 /* fetch only non-cached images */
 				if (!empty($absolute_src) && (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list))) {
 					if (empty($images[$absolute_src]))  {
