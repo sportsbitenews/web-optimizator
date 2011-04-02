@@ -87,7 +87,7 @@ class admin {
 /* validate license */
 		if (!empty($compress_options)) {
 /* reset license check */
-			if ($this->input['wss_license'] != $this->compress_options['license']) {
+			if (!empty($this->input['wss_license']) && $this->input['wss_license'] != $this->compress_options['license']) {
 				@unlink($this->compress_options['html_cachedir'] . 'wo');
 			}
 			$this->compress_options['license'] =
