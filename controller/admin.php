@@ -360,9 +360,9 @@ class admin {
 	**/
 	function calculate_awards () {
 		$evaluation1 = $this->file_get_contents($this->basepath . $this->index_before);
-		$evaluation1 = strpos($evaluation1, '<b>Warning') ? '' : $evaluation1;
+		$evaluation1 = strpos($evaluation1, '<?xml') === false ? '' : $evaluation1;
 		$evaluation2 = $this->file_get_contents($this->basepath . $this->index_after);
-		$evaluation2 = strpos($evaluation2, '<b>Warning') ? '' : $evaluation2;
+		$evaluation2 = strpos($evaluation1, '<?xml') === false ? '' : $evaluation2;
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
 		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
 		$level1 = $grade > 50 ? $grade > 70 ? $grade > 90 ? 3 : 2 : 1 : 0;
@@ -1407,9 +1407,9 @@ class admin {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = $this->file_get_contents($this->basepath . $this->index_before);
-		$before = strpos($before, '<b>Warning') ? '' : $before;
+		$before = strpos($evaluation1, '<?xml') === false ? '' : $before;
 		$after = $this->file_get_contents($this->basepath . $this->index_after);
-		$after = strpos($after, '<b>Warning') ? '' : $after;
+		$after = strpos($evaluation1, '<?xml') === false ? '' : $after;
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
 			$s_before = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $before);
@@ -2075,7 +2075,9 @@ class admin {
 	**/		
 	function check_acceleration () {
 		$before = @filesize($this->basepath . $this->index_before);
+		$before = strpos($this->file_get_contents($this->basepath . $this->index_before), '<?xml') === false ? 0 : $before;
 		$a = $this->file_get_contents($this->basepath . $this->index_after);
+		$a = strpos($a, '<?xml') === false ? '' : $a;
 		$after = strlen($a);
 		if ($this->premium > 1) {
 /* re-check if there was 503 error */
