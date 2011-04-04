@@ -3525,17 +3525,12 @@ class web_optimizer {
 	**/
 	function convert_basehref ($uri) {
 /* check if BASE URI is given */
-		$slash = substr($uri, 0, 1) != '/';
 		if (!empty($this->basehref) &&
 /* convert only non-external URI */
-			strpos($uri, '//') !== 0 && !strpos($uri, '://')) {
-/* convert absolute URL, change host */
-				if ($slash) {
-					return preg_replace("@^https?://[^/]+/@", '', $this->basehref) . $uri;
-/* convert relative URL, change host + folder */
-				} else {
-					return preg_replace("@[^/]*$@", '', $this->basehref) . $uri;
-				}
+			strpos($uri, '//') !== 0 && !strpos($uri, '://') &&
+/* convert relative URL */
+			substr($uri, 0, 1) != '/') {
+				return $this->basehref . $uri;
 		} else {
 			return $uri;
 		}
