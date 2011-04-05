@@ -2557,6 +2557,8 @@ class admin {
 		$this->install_dashboard();
 	}
 
+
+
 	/**
 	* Generic update function
 	*
@@ -2580,46 +2582,35 @@ class admin {
 /* remove old gzipped version */
 					@unlink($file . '.gz');
 					if ($file == $this->options_file) {
-/* save all options to the new file -- rewrite default ones  */
-						foreach($this->compress_options as $key => $option) {
-							if(is_array($option)) {
-								foreach($option as $option_name => $option_value) {
-									$this->save_option("['" .
-										strtolower($key) . "']['" .
-										strtolower($option_name) . "']",
-										$option_value);
-								}
-							} else {
-								$this->save_option("['" . strtolower($key) .
-									"']", $option);
-							}
-						}
+						$this->save_options();
 					}
 				}
 				$i++;
 			}
 		}
+		$config_file = 'config.' . $this->compress_options['config'] . '.php';
 /* make a fix to create new user config file if older config exists */
-		if (!@is_file($this->basepath . 'config.user.php')) {
-			@copy($this->basepath . 'config.safe.php', $this->basepath . 'config.user.php');
-			if (@is_file($this->basepath . 'config.user.php')) {
-				$this->save_option("['config']", "user");
-				$this->options_file_backup = $this->options_file;
-				$this->options_file = 'config.user.php';
-				$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
-				$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
-				foreach($this->compress_options as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
-						}
-					} else {
-						$this->save_option("['" . strtolower($key) . "']", $option);
-					}
-				}
-				$this->options_fil = $this->options_file_backup;
-				$this->save_option("['config']", "user");
-			}
+		if (!@is_file($this->basepath . $config_file)) {
+			@copy($this->basepath . 'config.safe.php', $this->basepath . $config_file);
+		}
+		if (@is_file($this->basepath . $config_file)) {
+			$this->save_option("['config']", $this->compress_options['config']);
+			$this->options_file_backup = $this->options_file;
+			$this->options_file = $config_file;
+			$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
+			$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
+			$this->save_options();
+			$this->options_file = $this->options_file_backup;
+			$this->save_option("['config']", $this->compress_options['config']);
+		}
+/* rewrite current hosts'/URLs configs with new options */
+		@chdir($this->basepath);
+		foreach (glob("*.config.webo.php") as $file) {
+			$this->options_file_backup = $this->options_file;
+			$this->options_file = $file;
+			@copy($this->basepath . 'config.webo.php', $this->basepath . $file);
+			$this->save_options();
+			$this->options_file = $this->options_file_backup;
 		}
 		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 	}
@@ -4024,25 +4015,7 @@ class admin {
 			if (!empty($this->input['wss_apply']) || 
 				($this->input['wss_config'] == $this->compress_options['config'])) {
 /* Save the options	to work config */
-				foreach($this->compress_options as $key => $option) {
-					if (is_array($option)) {
-						foreach($option as $option_name => $option_value) {
-							if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
-								$this->save_option("['" .
-									strtolower($key) . "']['" .
-									strtolower($option_name) . "']",
-									$this->input['wss_' .
-									strtolower($key) . '_' .
-									strtolower($option_name)]);
-							}
-						}
-					} else {
-						if (isset($this->input['wss_' . strtolower($key)])) {
-							$this->save_option("['" . strtolower($key)
-								. "']", $this->input['wss_' . strtolower($key)]);
-						}
-					}
-				}
+				$this->save_options();
 /* re-check grade if application is active */
 				if (!empty($this->compress_options['active']) && $this->premium > 1) {
 					@unlink($this->basepath . $this->index_after);
@@ -4068,25 +4041,7 @@ class admin {
 						$this->input['wss_title']);
 					$this->save_option("['description']",
 						$this->input['wss_description']);
-					foreach($this->compress_options as $key => $option) {
-						if (is_array($option)) {
-							foreach($option as $option_name => $option_value) {
-								if (isset($this->input['wss_' . strtolower($key) .
-									'_' . strtolower($option_name)])) {
-									$this->save_option("['" . strtolower($key) .
-										"']['" . strtolower($option_name) . "']",
-										$this->input['wss_' .
-										strtolower($key) . '_' .
-										strtolower($option_name)]);
-								}
-							}
-						} else {
-							if (isset($this->input['wss_' . strtolower($key)])) {
-								$this->save_option("['" . strtolower($key) . "']",
-									$this->input['wss_' . strtolower($key)]);
-							}
-						}
-					}
+					$this->save_options();
 					$this->options_file = $this->options_file_backup;
 /* can't create new config file */
 					if (!empty($this->error[0])) {
@@ -5458,6 +5413,22 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 						'&web_optimizer_debug=1');
 					die();
 				}
+			}
+		}
+	}
+
+	/**
+	* Saves all admin options
+	* 
+	**/
+	function save_options () {
+		foreach($this->compress_options as $key => $option) {
+			if (is_array($option)) {
+				foreach($option as $option_name => $option_value) {
+					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+				}
+			} else {
+				$this->save_option("['" . strtolower($key) . "']", $option);
 			}
 		}
 	}
