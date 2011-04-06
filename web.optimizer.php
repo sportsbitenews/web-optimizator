@@ -44,8 +44,25 @@ if (!empty($webo_not_buffered)) {
 	if (strpos($host, "www.") === 0) {
 		$host = substr($host, 4);
 	}
+# config spot
+	$wss_configs = array();
+
+/* Calculate current folder */
+	$uri = $_SERVER['REQUEST_URI'];
+	if ($uri != '/') {
+		$length = 0;
+		while (($slash = strpos($uri, '/')) !== false) {
+			$uri = substr($uri, $slash + 1);
+			$length += $slash + 1;
+		}
+		$folder = str_replace('/', '#', substr($_SERVER['REQUEST_URI'], 0, $length - 1));
+	} else {
+		$folder = '';
+	}
 /* We need to know the config, multi-configs supported */
-	if (!empty($host) && @file_exists($basepath . $host . ".config.webo.php")) {
+	if (!empty($wss_configs[$host . $folder])) {
+		require($basepath . $host . $folder . ".config.webo.php");
+	} elseif (!empty($wss_configs[$host])) {
 		require($basepath . $host . ".config.webo.php");
 	} else {
 		require($basepath . "config.webo.php");

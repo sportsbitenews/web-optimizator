@@ -33,7 +33,7 @@ class admin {
 			$host = substr($host, 4);
 		}
 /* Set name of options file, multi-configs supported */
-		if (!empty($host) && @file_exists($this->basepath . $host . ".config.webo.php")) {
+		if ($host && @file_exists($this->basepath . $host . ".config.webo.php")) {
 			$this->options_file = $host . ".config.webo.php";
 		} else {
 			$this->options_file = "config.webo.php";
@@ -183,6 +183,10 @@ class admin {
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it')) ? $this->language : 'en';
+/* calculate configuration files for Extended Edition */
+		if ($this->premium > 1 && $this->premium < 10) {
+			$this->find_configs();
+		}
 		if ($this->compress_options['active']) {
 			$this->validate();
 		}
@@ -6307,16 +6311,32 @@ require valid-user';
 		}
 	}
 
-	function file_get_contents ($file)
-	{
-		if (get_magic_quotes_runtime())
-		{
+	/**
+	* Envelopes standard file_get_contents in case of Magic Quotes
+	* 
+	**/		
+	function file_get_contents ($file) {
+		if (get_magic_quotes_runtime()) {
 			return stripslashes(@file_get_contents($file));
-		}
-		else
-		{
+		} else {
 			return @file_get_contents($file);
 		}
+	}
+
+	/**
+	* Finds all active configuration and writes info about them to web.optimizer.php
+	* 
+	**/		
+	function find_configs () {
+		@chdir($this->basepath);
+		$files = array();
+		foreach (glob('*.config.webo.php') as $file) {
+			$files[] = substr($file, 0, strlen($file) - 16);
+		}
+		$str = "# config spot\n\t\\\$wss_configs=array('" . implode($files, "','") . "');";
+		$c = $this->file_get_contents($this->basepath . 'web.optimizer.php');
+		$c = preg_replace("/# config spot[^\)]+;/", $str, $c);
+		file_put_contents($this->basepath . 'web.optimizer.php', $c);
 	}
 
 }
