@@ -6333,9 +6333,9 @@ require valid-user';
 		foreach (glob('*.config.webo.php') as $file) {
 			$files[] = substr($file, 0, strlen($file) - 16);
 		}
-		$str = "# config spot\n\t\\\$wss_configs=array('" . implode($files, "','") . "');";
+		$str = "# config spot\n\t\\\$wss_configs = array('" . implode($files, "','") . "');";
 		$c = $this->file_get_contents($this->basepath . 'web.optimizer.php');
-		$c = preg_replace("/# config spot[^\)]+;/", $str, $c);
+		$c = preg_replace("/# config spot[^\)]+\);/", $str, $c);
 		file_put_contents($this->basepath . 'web.optimizer.php', $c);
 	}
 
