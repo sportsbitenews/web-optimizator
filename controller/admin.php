@@ -2585,7 +2585,7 @@ class admin {
 					@unlink($tmp);
 /* remove old gzipped version */
 					@unlink($file . '.gz');
-					if ($file == $this->options_file) {
+					if ($file == 'config.webo.php') {
 						$this->save_options();
 					}
 				}
