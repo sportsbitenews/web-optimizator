@@ -2586,6 +2586,7 @@ class admin {
 /* remove old gzipped version */
 					@unlink($file . '.gz');
 					if ($file == 'config.webo.php') {
+						$this->options_file = 'config.webo.php';
 						$this->save_options();
 					}
 				}
@@ -2597,7 +2598,7 @@ class admin {
 		if (!@is_file($this->basepath . $config_file)) {
 			@copy($this->basepath . 'config.safe.php', $this->basepath . $config_file);
 		}
-		if (@is_file($this->basepath . $config_file)) {
+		if (@is_file($this->basepath . $config_file) && !in_array($this->compress_options['config'], array('safe', 'basic', 'optimal', 'extreme'))) {
 			$this->save_option("['config']", $this->compress_options['config']);
 			$this->options_file_backup = $this->options_file;
 			$this->options_file = $config_file;
