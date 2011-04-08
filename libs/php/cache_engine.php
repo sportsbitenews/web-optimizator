@@ -600,7 +600,7 @@ class webo_cache_files extends webo_cache_engine
  		$written = 0;
  		while (($i < 3) && ($written != $length))
  		{
-			$fp = @fopen($this->cache_dir . 'wo.files.php', "a");
+			$fp = @fopen($this->cache_dir . 'wo.files.php.tmp', "a");
 			if ($fp) {
 	/* block file from writing */
 				@flock($fp, LOCK_EX);
@@ -610,6 +610,8 @@ class webo_cache_files extends webo_cache_engine
 				$written = @fwrite($fp, $str);
 				@fclose($fp);
 			}
+	/* atomic operation to replace old files' list */
+			@rename($this->cache_dir . 'wo.files.php.tmp', $this->cache_dir . 'wo.files.php');
 			$i++;
 		}
 	}
