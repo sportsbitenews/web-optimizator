@@ -5464,7 +5464,6 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 					}
 				}
 				break;
-			}
 		}
 	}
 
