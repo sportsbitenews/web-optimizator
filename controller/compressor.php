@@ -14,7 +14,7 @@ class web_optimizer {
 	* Sets the options and defines the gzip headers
 	**/
 	function web_optimizer ($options = false) {
-		$this->homepage = empty($this->options['page']['allowed_user_agents']) && empty($options['options']['restricted'] ? '' :
+		$this->homepage = empty($this->options['page']['allowed_user_agents']) && empty($options['options']['restricted']) ? '' :
 			in_array($_SERVER['REQUEST_URI'], array('/', '/index.php', '/index.html'));
 /* skip processing if disabled or restricted */
 		if (!empty($_GET['web_optimizer_disabled']) || (!empty($options['options']['restricted']) &&
