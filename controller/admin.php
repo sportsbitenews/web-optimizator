@@ -4024,7 +4024,7 @@ class admin {
 			if (!empty($this->input['wss_apply']) || 
 				($this->input['wss_config'] == $this->compress_options['config'])) {
 /* Save the options	to work config */
-				$this->save_options();
+				$this->save_options(1);
 /* re-check grade if application is active */
 				if (!empty($this->compress_options['active']) && $this->premium > 1) {
 					@unlink($this->basepath . $this->index_after);
@@ -4050,7 +4050,7 @@ class admin {
 						$this->input['wss_title']);
 					$this->save_option("['description']",
 						$this->input['wss_description']);
-					$this->save_options();
+					$this->save_options(1);
 					$this->options_file = $this->options_file_backup;
 /* can't create new config file */
 					if (!empty($this->error[0])) {
@@ -5430,14 +5430,40 @@ str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/"
 	* Saves all admin options
 	* 
 	**/
-	function save_options () {
-		foreach($this->compress_options as $key => $option) {
-			if (is_array($option)) {
-				foreach($option as $option_name => $option_value) {
-					$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+	function save_options ($mode = 0) {
+		switch ($mode) {
+			case 1:
+				foreach($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
+								$this->save_option("['" .
+									strtolower($key) . "']['" .
+									strtolower($option_name) . "']",
+									$this->input['wss_' .
+									strtolower($key) . '_' .
+									strtolower($option_name)]);
+							}
+						}
+					} else {
+						if (isset($this->input['wss_' . strtolower($key)])) {
+							$this->save_option("['" . strtolower($key)
+								. "']", $this->input['wss_' . strtolower($key)]);
+						}
+					}
 				}
-			} else {
-				$this->save_option("['" . strtolower($key) . "']", $option);
+				break;
+			default:
+				foreach($this->compress_options as $key => $option) {
+					if (is_array($option)) {
+						foreach($option as $option_name => $option_value) {
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
+						}
+					} else {
+						$this->save_option("['" . strtolower($key) . "']", $option);
+					}
+				}
+				break;
 			}
 		}
 	}
