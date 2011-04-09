@@ -14,12 +14,12 @@ class web_optimizer {
 	* Sets the options and defines the gzip headers
 	**/
 	function web_optimizer ($options = false) {
-		$this->homepage = empty($options['options']['html_cache']['ignore_list']) && empty($options['options']['restricted']) ? '' :
+		$homepage = empty($options['options']['html_cache']['ignore_list']) && empty($options['options']['restricted']) ? '' :
 			in_array($_SERVER['REQUEST_URI'], array('/', '/index.php', '/index.html'));
 /* skip processing if disabled or restricted */
 		if (!empty($_GET['web_optimizer_disabled']) || (!empty($options['options']['restricted']) &&
 			(preg_match("@" . preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $options['options']['restricted'])) . "@", $_SERVER['REQUEST_URI']))) ||
-			(strpos($options['options']['restricted'], '#') !== false && $this->homepage)) {
+			(strpos($options['options']['restricted'], '#') !== false && $homepage)) {
 				$this->options['active'] = 0;
 				return;
 		}
@@ -130,8 +130,8 @@ class web_optimizer {
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
 				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
-				strpos($excluded_html_pages, '#') === false ||
-				!$this->homepage ||
+				strpos($this->options['page']['cache_ignore'], '#') === false ||
+				!$homepage ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
 			!$retricted_cookie &&
