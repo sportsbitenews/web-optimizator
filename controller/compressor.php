@@ -100,7 +100,7 @@ class web_optimizer {
 			}
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore'])) {
-				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['cache_ignore']));
+				$excluded_html_pages = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", str_replace('#', '', $this->options['page']['cache_ignore'])));
 			}
 			if (!empty($this->options['page']['allowed_user_agents'])) {
 				$included_user_agents = preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $this->options['page']['allowed_user_agents']));
