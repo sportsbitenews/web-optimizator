@@ -182,7 +182,7 @@ class admin {
 			(strpos($this->basepath, "components") !== false && @is_file($this->compress_options['website_root'] . 'libraries/joomla/database/database/WeboMySql.php'));
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
-		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it')) ? $this->language : 'en';
+		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it', 'da')) ? $this->language : 'en';
 /* calculate configuration files for Extended Edition */
 		if ($this->premium > 1 && $this->premium < 10) {
 			$this->find_configs();

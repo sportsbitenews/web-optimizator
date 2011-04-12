@@ -546,11 +546,7 @@ class webo_cache_files extends webo_cache_engine
 			return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
 		    }
 		}
-
-		if(!empty($options['host']))
-		{
-			$this->_host = preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
-		}
+		$this->_host = empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
 
 		if(!empty($options['cache_dir']))
 		{
@@ -598,9 +594,9 @@ class webo_cache_files extends webo_cache_engine
  		$length = strlen($str);
  		$i = 0;
  		$written = 0;
- 		while (($i < 3) && ($written != $length))
- 		{
-			$fp = @fopen($this->cache_dir . 'wo.files.php.tmp', "a");
+		$files_list = $this->cache_dir . 'wo.files.php';
+ 		while (($i < 3) && ($written != $length)) {
+			$fp = @fopen($files_list . '.tmp', "a");
 			if ($fp) {
 	/* block file from writing */
 				@flock($fp, LOCK_EX);
@@ -611,7 +607,7 @@ class webo_cache_files extends webo_cache_engine
 				@fclose($fp);
 			}
 	/* atomic operation to replace old files' list */
-			@rename($this->cache_dir . 'wo.files.php.tmp', $this->cache_dir . 'wo.files.php');
+			@rename($files_list . '.tmp', $files_list);
 			$i++;
 		}
 	}
@@ -632,7 +628,7 @@ class webo_cache_files extends webo_cache_engine
  		{
  			$this->__make_path($path);
  		}
-		$fp = @fopen($path, "a");
+		$fp = @fopen($path . '.tmp', "a");
 		if ($fp) {
 /* block file from writing */
 			@flock($fp, LOCK_EX);
@@ -642,6 +638,7 @@ class webo_cache_files extends webo_cache_engine
 			@fwrite($fp, $value);
 			@fclose($fp);
 		}
+		@rename($path . '.tmp', $path);
 		@touch($path);
 		@chmod($path, octdec("0644"));
  	}
@@ -708,19 +705,18 @@ class webo_cache_files extends webo_cache_engine
  			{
  			    if ($patterns == '*')
  			    {
- 			    	$this->__recurse_rm($this->__get_path(''));
- 			    	if (!empty($this->_host))
- 			    	{
- 			        	$this->__recurse_rm($this->__get_path('', $this->_host));
-		        	}
+					$path = $this->__get_path('', $this->_host);
+/* try to call shell_exec */
+					if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false && !@ini_get('safe_mode')) {
+						try {
+							@shell_exec('rm -rf ' . $path);
+						} catch (Expression $e) {}
+					}
+ 			    	$this->__recurse_rm($path);
  			    }
  			    else
  			    {
-     				$files = $this->__recurse_glob($this->__get_path($patterns));
-     				if (!empty($this->_host))
-     				{
-     					$files = array_merge($files, $this->__recurse_glob($this->__get_path($patterns, $this->_host)));
-     				}
+     				$files = $this->__recurse_glob($this->__get_path($patterns, $this->_host));
      				foreach($files as $file)
      				{
      					if (@is_file($file))
