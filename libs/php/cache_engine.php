@@ -618,7 +618,7 @@ class webo_cache_files extends webo_cache_engine
  		{
  			$this->__make_path($path);
  		}
-		@file_put_contents($path . 'tmp', $value);
+		@file_put_contents($path . '.tmp', $value);
 		@rename($path . '.tmp', $path);
 		@touch($path);
 		@chmod($path, octdec("0644"));
