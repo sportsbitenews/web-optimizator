@@ -596,20 +596,10 @@ class webo_cache_files extends webo_cache_engine
  		$written = 0;
 		$files_list = $this->cache_dir . 'wo.files.php';
  		while (($i < 3) && ($written != $length)) {
-			$fp = @fopen($files_list . '.tmp', "a");
-			if ($fp) {
-	/* block file from writing */
-				@flock($fp, LOCK_EX);
-	/* erase content and move to the beginning */
-				@ftruncate($fp, 0);
-				@fseek($fp, 0);
-				$written = @fwrite($fp, $str);
-				@fclose($fp);
-			}
-	/* atomic operation to replace old files' list */
-			@rename($files_list . '.tmp', $files_list);
+			$written = @file_put_contents($files_list . '.tmp', $str);
 			$i++;
 		}
+		@rename($files_list . '.tmp', $files_list);
 	}
 
  	/* Adds or updates entry. Expects key string and value to cache. */
@@ -628,16 +618,7 @@ class webo_cache_files extends webo_cache_engine
  		{
  			$this->__make_path($path);
  		}
-		$fp = @fopen($path . '.tmp', "a");
-		if ($fp) {
-/* block file from writing */
-			@flock($fp, LOCK_EX);
-/* erase content and move to the beginning */
-			@ftruncate($fp, 0);
-			@fseek($fp, 0);
-			@fwrite($fp, $value);
-			@fclose($fp);
-		}
+		@file_put_contents($path . 'tmp', $value);
 		@rename($path . '.tmp', $path);
 		@touch($path);
 		@chmod($path, octdec("0644"));
@@ -705,7 +686,7 @@ class webo_cache_files extends webo_cache_engine
  			{
  			    if ($patterns == '*')
  			    {
-					$path = $this->__get_path('', $this->_host);
+					$path = $this->__get_path('');
 /* try to call shell_exec */
 					if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false && !@ini_get('safe_mode')) {
 						try {
