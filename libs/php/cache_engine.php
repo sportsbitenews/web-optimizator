@@ -829,7 +829,7 @@ class webo_cache_files extends webo_cache_engine
 		foreach ($this->all_files as $key => $value) {
 			if (preg_match('/' . $mask . '/', $key)) {
 				if ($size === false) {
-					$glob[] = $this->cache_dir . $key;
+					$glob[] = $key;
 				} else {
 					if ($number === false) {
 						$glob += $value;
