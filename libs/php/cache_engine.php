@@ -543,7 +543,7 @@ class webo_cache_files extends webo_cache_engine
 		 */
 		if (!function_exists('fnmatch')) {
 		    function fnmatch($pattern, $string) {
-			return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
+				return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
 		    }
 		}
 		$this->_host = empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
@@ -806,90 +806,41 @@ class webo_cache_files extends webo_cache_engine
  	/* Internal method that returns all keys that match given pattern. Expects pattern. */
 
 	function __recurse_glob($pattern, $size = false, $number = false) {
-		if ($pattern == '')
-		{
+		if ($pattern == '') {
 			return array();
 		}
-	    $split=explode('/',str_replace('\\','/',$pattern));
-	    $mask=array_pop($split);
-	    $path=implode('/',$split);
-	    if (($dir=@opendir($path))!==false) {
-	    	if ($size === false)
-	    	{
-			$glob=array();
+	    $split = explode('/', str_replace('\\', '/', $pattern));
+	    $mask = array_pop($split);
+	    $path = implode('/', $split);
+		$this->__get_files_list();
+		
+ 		$mask = str_replace('.', '\\.', $mask);
+ 		$mask = str_replace('*', '.*', $mask);
+		if ($size === false) {
+			$glob = array();
+		} else {
+			if ($number === false) {
+				$glob = 0;
+			} else {
+				$glob = array(0, 0);
+			}
 		}
-        	else
-        	{
-        		if ($number === false)
-        		{
-        			$glob = $size;
-        		}
-        		else
-        		{
-        			$glob = array($size, $number);
-        		}
-        	}
-		while(($file=@readdir($dir))!==false) {
-		    if(is_dir($path.'/'.$file) && (!in_array($file,array('.','..'))) )
-		    {
-		    	if ($size === false)
-		    	{
-		        	$glob = array_merge($glob,$this->__recurse_glob($path.'/'.$file.'/'.$mask));
-	        	}
-	        	else
-	        	{
-	        		if ($number === false)
-	        		{
-	        			$glob = $this->__recurse_glob($path.'/'.$file.'/'.$mask, $glob);
-        			}
-        			else
-        			{
-        				$glob = $this->__recurse_glob($path.'/'.$file.'/'.$mask, $glob[0], $glob[1]);
-        			}
-	        	}
-	       	    }
-		    if (fnmatch($mask,$file)) {
-		        if (!in_array($file,array('.','..')))
-		        {
-		    		if ($size === false)
-			    	{
-					$glob[] = $path . '/'. $file;
-				}
-				else
-				{
-					if ($number === false)
-					{
-						$glob += @filesize($path . '/'. $file);
-					}
-					else
-					{
-						$glob[0] += @filesize($path . '/'. $file);
+
+		foreach ($this->all_files as $key => $value) {
+			if (preg_match('/' . $mask . '/', $key)) {
+				if ($size === false) {
+					$glob[] = $this->cache_dir . $key;
+				} else {
+					if ($number === false) {
+						$glob += $value;
+					} else {
+						$glob[0] += $value;
 						$glob[1]++;
 					}
 				}
-	        	}
-		    }
+			}
 		}
-		@closedir($dir);
 		return $glob;
-	    } else {
-	    	if ($size === false)
-	    	{
-			return array();
-		}
-        	else
-        	{
-        		if ($number === false)
-        		{
-        			return $size;
-        		}
-        		else
-        		{
-        			return array($size, $number);
-        		}
-        	}
-		
-	    }
 	}
 	
 	function __recurse_rm($path)
