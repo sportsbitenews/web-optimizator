@@ -521,6 +521,8 @@ define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--WSS--&gt;</code> в
 define('_WEBO_footer_spot_HELP', 'Наличие &lt;!--WSS--&gt; сигнализирует о том, что WEBO Site SpeedUp успешно обработал текущую страницу, и используется во внутренних алгоритмах.');
 define('_WEBO_footer_counter', 'Добавлять счетчик времени загрузки');
 define('_WEBO_footer_counter_HELP', 'При сборе статистики посещаемости по сайту через Google Analytics данные о времени загрузки сайта будут попадать в События.');
+define('_WEBO_footer_ab', 'A/B тестирование');
+define('_WEBO_footer_ab_HELP', 'Заданный процент пользователей сайта получит неоптимизированные страницы. Все данные о результатах будут отправлены в Google Analytics.');
 
 define('_WEBO_htaccess_access', 'Защитить установку WEBO Site SpeedUp с помощью <code>htpasswd</code>');
 define('_WEBO_htaccess_access_HELP', 'Обеспечивает дополнительную безопасность WEBO Site SpeedUp при помощи механизма, основанного на применении технологии HTTP Basic Authorization и файлов .htaccess и .htpasswd.');

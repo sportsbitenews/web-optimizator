@@ -191,6 +191,8 @@ $compress_options['footer']['css_code'] = "float:right;margin:-104px 4px -100px"
 $compress_options['footer']['spot'] = "1";
 ## Add load speed counter (via Google Analytics)
 $compress_options['footer']['counter'] = "0";
+## Add A/B testing (via Google Analytics)
+$compress_options['footer']['ab'] = "0";
 ## Should Web Optimizer use data URIs for background images?
 $compress_options['data_uris']['on'] = "0";
 ## Should Web Optimizer separate CSS for rules and images?

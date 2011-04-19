@@ -523,6 +523,8 @@ define('_WEBO_footer_spot', 'Добавлять <code>&lt;!--wss--&gt;</code> в
 define('_WEBO_footer_spot_HELP', 'Наличие аттрибута lang=&quot;wo&quot; сигнализирует о том, что WEBO Site SpeedUp успешно обработал текущую страницу, и используется во внутренних алгоритмах.');
 define('_WEBO_footer_counter', 'Добавлять счетчик времени загрузки');
 define('_WEBO_footer_counter_HELP', 'При сборе статистики посещаемости по сайту через Google Analytics данные о времени загрузки сайта будут попадать в События.');
+define('_WEBO_footer_ab', 'A/B тестирование');
+define('_WEBO_footer_ab_HELP', 'Заданный процент пользователей сайта получит неоптимизированные страницы. Все данные о результатах будут отправлены в Google Analytics.');
 
 define('_WEBO_htaccess_access', 'Захистити установку Web Optimizer за допомогою <code>htpasswd</code>');
 define('_WEBO_htaccess_access_HELP', 'Обеспечивает дополнительную безопасность WEBO Site SpeedUp при помощи механизма, основанного на применении технологии HTTP Basic Authorization и файлов .htaccess и .htpasswd.');

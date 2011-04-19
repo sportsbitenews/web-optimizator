@@ -23,6 +23,18 @@ class web_optimizer {
 				$this->options['active'] = 0;
 				return;
 		}
+/* A/B testing,  */
+		if (!empty($options['options']['footer']['ab'])) {
+			if (strpos($_SERVER['REQUEST_URI'], 'WSS_AB_TESTING')) {
+/* only if cookie are supported - redirect to initial URL */
+				if (!empty($_COOKIE['WSS_DISABLED']) || !empty($_COOKIE['WSS_ENABLED'])) {
+					header("Location: " . $_SERVER['REQUEST_URI']);
+				}
+			} elseif (empty($_COOKIE['WSS_DISABLED']) && empty($_COOKIE['WSS_ENABLED'])) {
+				setcookie(time()%100 < round($options['options']['footer']['ab']) ? "WSS_ENABLED" : "WSS_DISABLED", 1, time() + 60*60, '/', $_SERVER['HTTP_HOST'], false, true);
+				header("Location: " . $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') ? '&' : '?') . 'WSS_AB_TESTING');
+			}
+		}
 /* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
 		$this->debug_mode = empty($_GET['web_optimizer_debug']) && empty($_COOKIE['web_optimizer_debug']) ? 0 : 1;
@@ -504,6 +516,8 @@ class web_optimizer {
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
 				"counter" => $this->options['footer']['counter'] &&
 					$this->premium > 1,
+				"ab" => $this->options['footer']['ab'] &&
+					$this->premium > 1,
 				"htaccess_username" => $this->premium > 1 ? $this->options['external_scripts']['user'] : '',
 				"htaccess_password" => $this->premium > 1 ? $this->options['external_scripts']['pass'] : '',
 				"html_tidy" => $this->options['performance']['plain_string'] &&
@@ -649,6 +663,16 @@ class web_optimizer {
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
+			if (!empty($this->options['page']['ab']) || !empty($this->options['page']['counter'])) {
+				$this->ab = ';a.push(["_setCustomVar",1,"WEBOSiteSpeedUp",';
+			}
+/* enable A/B testing */
+			if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
+				return preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c)' .
+					$this->ab .
+					'0)}},false)})()</script>' .
+					"$1", $this->content);
+			}
 /* create DOMready chunk of JavaScript code, is required for different tasks */
 			$this->domready_include = $this->domready_include2 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache) {
@@ -672,6 +696,10 @@ class web_optimizer {
 /* Run the functions specified in options */
 			if (is_array($this->options)) {
 				foreach ($this->options as $func => $option) {
+					if ($func == 'page') {
+/* remove marker for styles and BOM */
+						$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
+					}
 					if (method_exists($this, $func)) {
 						if (!empty($option['gzip']) ||
 							!empty($option['minify']) ||
@@ -915,8 +943,6 @@ class web_optimizer {
 					"$0" . $stamp, $this->content);
 			}
 		}
-/* remove marker for styles and BOM */
-		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
 /* execute plugin-specific logic, AfterOptimization event */
 		if (is_array($this->options['plugins'])) {
 			foreach ($this->options['plugins'] as $plugin) {
@@ -3015,7 +3041,13 @@ class web_optimizer {
 				}
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
+					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a.push(["_trackEvent","WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)';
+				}
+				if (!empty($this->options['page']['ab'])) {
+					$stamp .= $this->ab . '1)';
+				}
+				if (!empty($this->options['page']['counter'])) {
+					$stamp .= '}},false)})()</script>';
 				}
 				if ($this->domready_include && !$this->options['css']['data_uris_separate']) {
 					$stamp .= '<script type="text/javascript">' .

@@ -3256,6 +3256,12 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['footer']['counter'],
 					'type' => 'checkbox'
+				),
+				'footer_ab' => array(
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'type' => 'smalltext',
+					'value' => $this->compress_options['footer']['ab'],
+					'disabled' => !empty($this->restrictions['wss_htaccess_mod_setenvif'])
 				)
 			),
 			'performance' => array(
@@ -3829,6 +3835,7 @@ class admin {
 			'wss_html_cache_flush_size',
 			'wss_sql_cache_time',
 			'wss_sql_cache_timeout',
+			'wss_footer_ab',
 			'wss_data_uris_size',
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
@@ -4159,7 +4166,7 @@ class admin {
 		$content2 = '';
 		if (!empty($this->input['wss_htaccess_enabled']) && $this->compress_options['active']) {
 			$content_enhanced = '';
-			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced'])) {
+			if (!empty($this->input['wss_html_cache_enabled']) && !empty($this->input['wss_html_cache_enhanced']) && empty($this->input['wss_footer_ab'])) {
 /* create rules for enhanced HTML caching mode */
 				$content_enhanced = "
 	" . (empty($this->compress_options['charset']) ? '' : 'AddDefaultCharset ' . $this->compress_options['charset']);
@@ -4228,7 +4235,7 @@ class admin {
 				}
 			}
 /* rules for gzip via mod_gzip */
-			if (!empty($this->input['wss_htaccess_mod_gzip'])) {
+			if (!empty($this->input['wss_htaccess_mod_gzip']) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 <IfModule mod_gzip.c>
 	mod_gzip_on Yes
@@ -4283,7 +4290,7 @@ class admin {
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['wss_htaccess_mod_setenvif'])) {
+			if (!empty($this->input['wss_htaccess_mod_setenvif']) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 <IfModule mod_setenvif.c>
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
@@ -4311,7 +4318,7 @@ class admin {
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['wss_htaccess_mod_deflate'])) {
+			if (!empty($this->input['wss_htaccess_mod_deflate']) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 <IfModule mod_deflate.c>";
 				if (!empty($this->input['wss_gzip_page'])) {
@@ -4338,12 +4345,12 @@ http://www.phpied.com/gzip-your-font-face-files/ */
 /* prevent 403 error due to no FollowSymLinks
 http://www.elharo.com/blog/software-development/web-development/2006/01/02/two-tips-for-fixing-apache-problems/
 http://code.google.com/p/web-optimizator/issues/detail?id=156 */
-			if (!empty($this->input['wss_htaccess_mod_symlinks'])) {
+			if (!empty($this->input['wss_htaccess_mod_symlinks']) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 Options +FollowSymLinks";
 			}
 /* try to add static gzip */
-			if (!empty($this->input['wss_htaccess_mod_mime'])) {
+			if (!empty($this->input['wss_htaccess_mod_mime']) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 <IfModule mod_mime.c>
 	AddEncoding gzip .gz
@@ -4540,7 +4547,7 @@ Options +FollowSymLinks";
 				$content .= "
 </IfModule>";
 			}
-			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium)) {
+			if (!empty($this->input['wss_htaccess_mod_expires']) && !empty($this->premium) && empty($this->input['wss_footer_ab'])) {
 				$content2 .= "
 # Web Optimizer options
 <IfModule mod_expires.c>
@@ -4684,39 +4691,69 @@ Options +FollowSymLinks";
 <IfModule mod_rewrite.c>";
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_javascript'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 					}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_video'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|midi?|wav|m4v|webm|divx|mov|qt|mpe?g|mpe|m4a|ra|ram)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_static'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.(swf|pdf|docx?|rtf|xls|ppt|class|exe|g?zip|tar|mdb|mpp|pot|pps|ppt|pptx|wri|xla|xlsx?|xlt|xlw|odb|odc|odf|odg|odp|ods|odt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_fonts'])) {
 						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{REQUEST_FILENAME} -f";
+							if (!empty($this->input['wss_footer_ab'])) {
+								$content .= "
+	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
+							}
+							$content .= "
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					$content2 .= "
 </IfModule>
 # Web Optimizer end";
 			}
-			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium)) {
+			if (!empty($this->input['wss_htaccess_mod_headers']) && !empty($this->premium) && empty($this->input['wss_footer_ab'])) {
 				$content .= "
 <IfModule mod_headers.c>";
 				if (!empty($this->input['wss_htaccess_mod_deflate']) ||

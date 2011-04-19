@@ -388,6 +388,8 @@ define('_WEBO_footer_spot', 'Tilføj <code>&lt;!--WSS--&gt;</code> til HTML doku
 define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; eksistensen indikerer at WEBO Site SpeedUp analyserede denne side korrekt. Det bruges i interne algorithms.');
 define('_WEBO_footer_counter', 'Tilføj indlæsningstæller');
 define('_WEBO_footer_counter_HELP', 'Information omkring indlæsningstiden vil blive tilføjet til Events sektionen, hvis der er installeret Google Analytics på hjemmesiden, for at samle besøgsstatistik.');
+define('_WEBO_footer_ab', 'A/B testing');
+define('_WEBO_footer_ab_HELP', 'Given per cent of users will get non-optimized website content. All data about results will be sent to Google Analytics.');
 
 define('_WEBO_data_uris_on', 'Anvend <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Baggrundsbilleder vil blive konverteret til base64 format og inkluderet direkte i CSS filer for alle browsere som understøtter data:URI.');

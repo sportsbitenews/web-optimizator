@@ -390,6 +390,8 @@ define('_WEBO_footer_spot', 'Aggiungi <code>&lt;!--WSS--&gt;</code> al documento
 define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; l\'esistenza indica che WEBO Site SpeedUp ha parsato con successo questa pagina. E\' usato negli algoritmi interni.');
 define('_WEBO_footer_counter', 'Add load time counter');
 define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats.');
+define('_WEBO_footer_ab', 'A/B testing');
+define('_WEBO_footer_ab_HELP', 'Given per cent of users will get non-optimized website content. All data about results will be sent to Google Analytics.');
 
 define('_WEBO_data_uris_on', 'Applica <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Le immagini di sfondo saranno convertite al formato base64 e incluse direttamente nel file CSS per tutti i browsers che supportano data:URI.');
