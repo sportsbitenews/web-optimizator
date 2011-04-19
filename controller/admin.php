@@ -4693,30 +4693,30 @@ Options +FollowSymLinks";
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_javascript'])) {
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
 					}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_video'])) {
@@ -4733,20 +4733,20 @@ Options +FollowSymLinks";
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.(swf|pdf|docx?|rtf|xls|ppt|class|exe|g?zip|tar|mdb|mpp|pot|pps|ppt|pptx|wri|xla|xlsx?|xlt|xlw|odb|odc|odf|odg|odp|ods|odt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_fonts'])) {
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.(eot|ttf|otf|svg)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					$content2 .= "

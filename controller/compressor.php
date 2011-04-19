@@ -28,7 +28,7 @@ class web_optimizer {
 			if (strpos($_SERVER['REQUEST_URI'], 'WSS_AB_TESTING')) {
 /* only if cookie are supported - redirect to initial URL */
 				if (!empty($_COOKIE['WSS_DISABLED']) || !empty($_COOKIE['WSS_ENABLED'])) {
-					header("Location: " . $_SERVER['REQUEST_URI']);
+					header("Location: " . preg_replace("![\?&]WSS_AB_TESTING!", "", $_SERVER['REQUEST_URI']));
 				}
 			} elseif (empty($_COOKIE['WSS_DISABLED']) && empty($_COOKIE['WSS_ENABLED'])) {
 				setcookie((microtime()*100)%100 < round($options['options']['footer']['ab']) ? "WSS_ENABLED" : "WSS_DISABLED", 1, time() + 60*60, '/', $_SERVER['HTTP_HOST'], false, true);
