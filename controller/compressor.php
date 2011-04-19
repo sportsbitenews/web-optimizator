@@ -31,7 +31,7 @@ class web_optimizer {
 					header("Location: " . $_SERVER['REQUEST_URI']);
 				}
 			} elseif (empty($_COOKIE['WSS_DISABLED']) && empty($_COOKIE['WSS_ENABLED'])) {
-				setcookie(time()%100 < round($options['options']['footer']['ab']) ? "WSS_ENABLED" : "WSS_DISABLED", 1, time() + 60*60, '/', $_SERVER['HTTP_HOST'], false, true);
+				setcookie((microtime()*100)%100 < round($options['options']['footer']['ab']) ? "WSS_ENABLED" : "WSS_DISABLED", 1, time() + 60*60, '/', $_SERVER['HTTP_HOST'], false, true);
 				header("Location: " . $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') ? '&' : '?') . 'WSS_AB_TESTING');
 			}
 		}
@@ -136,7 +136,8 @@ class web_optimizer {
   - no chained optimization,
   - no debug mode,
   - external cache restriction,
-  - exclude domains except the activated one for non-corporate licenses.
+  - exclude domains except the activated one for non-corporate licenses,
+  - disable cahce in case of negative A/B test.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
@@ -153,7 +154,8 @@ class web_optimizer {
 			empty($this->web_optimizer_stage) &&
 			!$this->debug_mode &&
 			empty($this->no_cache) &&
-			($this->premium == 3 || strpos($this->options['host'], $this->host) !== false);
+			($this->premium == 3 || strpos($this->options['host'], $this->host) !== false) &&
+			(empty($this->options['page']['ab']) || empty($_COOKIE['WSS_DISABLED']));
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri();
@@ -661,18 +663,19 @@ class web_optimizer {
 					$skip = 1;
 			}
 		}
+		if (!empty($this->options['page']['ab']) || !empty($this->options['page']['counter'])) {
+			$this->ab = ';a.push(["_setCustomVar",1,"WEBOSiteSpeedUp",';
+		}
+/* enable A/B testing */
+		if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
+			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c)' .
+				$this->ab .
+				'0)}},false)})()</script>' .
+				"$1", $this->content);
+			$skip = 1;
+		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
-			if (!empty($this->options['page']['ab']) || !empty($this->options['page']['counter'])) {
-				$this->ab = ';a.push(["_setCustomVar",1,"WEBOSiteSpeedUp",';
-			}
-/* enable A/B testing */
-			if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-				return preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c)' .
-					$this->ab .
-					'0)}},false)})()</script>' .
-					"$1", $this->content);
-			}
 /* create DOMready chunk of JavaScript code, is required for different tasks */
 			$this->domready_include = $this->domready_include2 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache) {
