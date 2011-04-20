@@ -4723,10 +4723,10 @@ Options +FollowSymLinks";
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
 							if (!empty($this->input['wss_footer_ab'])) {
-								$content .= "
+								$content2 .= "
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
-							$content .= "
+							$content2 .= "
 	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|midi?|wav|m4v|webm|divx|mov|qt|mpe?g|mpe|m4a|ra|ram)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_static'])) {

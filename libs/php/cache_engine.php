@@ -626,27 +626,15 @@ class webo_cache_files extends webo_cache_engine
 
 	/* Get cache entry by key. Expects key string. */
 
-	function get_entry($key)
-	{
- 		if (!$this->enabled)
- 		{
+	function get_entry($key) {
+ 		if (!$this->enabled) {
  			return false;
  		}
-		if (@is_file($this->__get_path($key)))
-		{
-			if (get_magic_quotes_runtime())
-			{
-				return stripslashes(@file_get_contents($this->__get_path($key)));
-			}
-			else
-			{
-				return @file_get_contents($this->__get_path($key));
-			}
+		$content = @file_get_contents($this->__get_path($key));
+		if (get_magic_quotes_runtime()) {
+			$content = stripslashes($content);
 		}
-		else
-		{
-			return false;
-		}
+		return $content;
 	}
 
  	/* Clear cache entries by pattern(s). Expects pattern or array of patterns. */

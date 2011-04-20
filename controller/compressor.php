@@ -187,30 +187,26 @@ class web_optimizer {
 			{
 				define('WSS_CACHE_MISS', 1);
 			}
-			if ($timestamp && $this->time - $timestamp < $this->options['page']['cache_timeout']) {
-				$content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key);
-				if (class_exists('JUtility', false))
-				{
+			if ($timestamp &&
+				$this->time - $timestamp < $this->options['page']['cache_timeout'] &&
+				($content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key))) {
+				if (class_exists('JUtility', false)) {
 					$token = JUtility::getToken();
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
 				}
 /* execute plugin-specific logic */
 				if (is_array($this->options['plugins'])) {
 					foreach ($this->options['plugins'] as $plugin) {
-						$plugin_file =
-							$this->options['css']['installdir'] .
-								'plugins/' . $plugin . '.php';
+						$plugin_file = $this->options['css']['installdir'] . 'plugins/' . $plugin . '.php';
 						if (@is_file($plugin_file)) {
 							include_once($plugin_file);
 							$web_optimizer_plugin = new $plugin;
-							$content =
-								$web_optimizer_plugin->onAfterOptimization($content);
+							$content = $web_optimizer_plugin->onAfterOptimization($content);
 						}
 					}
 				}
 				if ($gzip_me) {
-					$cnt = $this->create_gz_compress($content,
-						in_array($this->encoding, array('gzip', 'x-gzip')));
+					$cnt = $this->create_gz_compress($content, in_array($this->encoding, array('gzip', 'x-gzip')));
 					if (!empty($cnt)) {
 						$content = $cnt;
 /* skip gzip if we can't compress content */
@@ -219,8 +215,7 @@ class web_optimizer {
 						$this->encoding = '';
 					}
 				}
-				$hash = crc32($content) .
-					(empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
+				$hash = crc32($content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
 				if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 					stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') ||
