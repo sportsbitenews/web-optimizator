@@ -420,7 +420,7 @@ define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'E\' impossibile creare 
 define('_WEBO_css_sprites_enabled', 'Applica CSS Sprites');
 define('_WEBO_css_sprites_enabled_HELP', 'Le immagini di sfondo saranno combinate con l\'aiuto di tecniche CSS Sprites.I codici CSS correlati saranno modificati senza problemi.');
 define('_WEBO_css_sprites_enabled_EFFECT', 'Riduzione degli oggetti del 10-50%');
-define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Non ci sono librerie GD supportate sul tuo sito,quindi la creazione di CSS Sprites non è possibile.');
+define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Non ci sono librerie GD supportate sul tuo sito,quindi la creazione di CSS Sprites non è possibile. Or CSS Tidy library isn\'t selected to minify CSS.');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Images\' format');
 define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'Se scegli la selezione automatica del formato delle immagini la possibilità di problemi nelle immagini CSS Sprites saranno minime. Se scegli il formato JPEG qualità/dimensioni per le immagini in true color saranno al meglio ma non ci sarà trasparenza.');
 define('_WEBO_css_sprites_truecolor_in_jpeg_EFFECT', 'Dimensione Website ridotta del 5-20%');

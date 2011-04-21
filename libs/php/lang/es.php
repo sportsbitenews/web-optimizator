@@ -419,7 +419,7 @@ define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'It impossible to create
 define('_WEBO_css_sprites_enabled', 'Aplicar Sprites de CSS');
 define('_WEBO_css_sprites_enabled_HELP', 'Imágenes de fondo serán combinadas con la ayuda de la técnica CSS Sprites. Código CSS relativo será modificado de manera segura.');
 define('_WEBO_css_sprites_enabled_EFFECT', 'Number of objects reduction by 10-50%');
-define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'There is no complete GD library support on your website, so CSS Sprites creation is impossible.');
+define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'There is no complete GD library support on your website, so CSS Sprites creation is impossible. Or CSS Tidy library isn\'t selected to minify CSS.');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Imágenes\' format');
 define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'Si escoge formato de detección automaticamente la posibilidad de cualquier efecto segundo será mínima en imágenes CSS Sprites. Si escoge formato rango calidad/tamaño JPEG para color real las imágenes serán mejores pero no habrá transparencia.');
 define('_WEBO_css_sprites_truecolor_in_jpeg_EFFECT', 'Website size reduction by 5-20%');

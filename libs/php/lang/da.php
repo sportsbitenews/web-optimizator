@@ -418,7 +418,7 @@ define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'Det er ikke muligt at o
 define('_WEBO_css_sprites_enabled', 'Anvend CSS Sprites');
 define('_WEBO_css_sprites_enabled_HELP', 'Baggrundsbilleder vil blive sammenflettet ved hjælp af CSS Sprites teknikken. Relateret CSS kode vil blive ændret sikkert.');
 define('_WEBO_css_sprites_enabled_EFFECT', 'Antal af objekt reduktion med 10-50%');
-define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt.');
+define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt. Or CSS Tidy library isn\'t selected to minify CSS.');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Billeder\' format');
 define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'Hvis du vælger automatisk format opdagelse, vil muligheden for bivirkninger med CSS Sprites være minimal. Hvis du vælger JPEG-format, vil kvaliteten/størrelsen for ægte farvebilleder vil det bedste, men der vil så ikke være nogen understøttelse af gennemsigtighed på billederne.');
 define('_WEBO_css_sprites_truecolor_in_jpeg_EFFECT', 'Hjemmeside størrelse reduceres med 5-20%');

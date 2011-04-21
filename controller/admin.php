@@ -3703,7 +3703,7 @@ class admin {
 			}
 		}
 		$loaded_modules = @get_loaded_extensions();
-/* fix CSS Sprites options in case of GD lib failure */
+/* fix CSS Sprites options in case of GD lib failure or no CSS Tidy is used */
 		$gd = function_exists('gd_info') ? gd_info() : array();
 		if (!(in_array('gd', $loaded_modules) &&
 			function_exists('imagecreatetruecolor') &&
@@ -3711,7 +3711,9 @@ class admin {
 			!empty($gd['GIF Create Support']) &&
 			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 			!empty($gd['PNG Support']) &&
-			!empty($gd['WBMP Support']))) {
+			!empty($gd['WBMP Support'])) ||
+			(!empty($this->input['wss_minify_css_min']) &&
+			$this->input['wss_minify_css_min'] < 2)) {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
 		}
 /* check for YUI&Google availability */

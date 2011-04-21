@@ -3194,7 +3194,7 @@ class web_optimizer {
 	**/
 	function convert_css_sprites ($content, $options, $css_url) {
 /* try to get and increase memory limit */
-		$memory_limit = round(str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit'))));
+		$memory_limit = round(str_replace("G", "000000000", str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit')))));
 /* 64M must enough for any operations with images. I hope... */
 		if ($memory_limit < 64000000) {
 			@ini_set('memory_limit', '64M');
