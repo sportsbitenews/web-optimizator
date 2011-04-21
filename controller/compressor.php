@@ -688,6 +688,11 @@ class web_optimizer {
 					$this->domready_include2 .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}';
 				}
 				$this->domready_include2 .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
+				if ($this->joomla_cache) {
+					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("vmCartModule")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)vmCartModule(\s|$)/.test(c.className)){a=c;d=b.length}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_vmcart=a}else{document.cookie="wss_vmcart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					($this->options['page']['cache_timeout'] * 1000) .
+					').toGMTString())}},false)})();';
+				}
 			}
 /* find all files in head to process */
 			$this->get_script_array();
@@ -3046,17 +3051,6 @@ class web_optimizer {
 				}
 				if (!empty($this->options['page']['counter'])) {
 					$stamp .= '}},false)})()</script>';
-				}
-				if ($this->domready_include && !$this->options['css']['data_uris_separate']) {
-					$stamp .= '<script type="text/javascript">' .
-						$this->domready_include .
-						$this->domready_include2;
-					if ($this->joomla_cache) {
-						$stamp .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("vmCartModule")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)vmCartModule(\s|$)/.test(c.className)){a=c;d=b.length}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_vmcart=a}else{document.cookie="wss_vmcart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
-						($this->options['page']['cache_timeout'] * 1000) .
-						').toGMTString())}},false)})();';
-					}
-					$stamp .= '</script>';
 				}
 /* Add script to check gzip possibility */
 				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {

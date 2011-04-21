@@ -3377,28 +3377,28 @@ class admin {
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['enabled'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
 					'price' => 5,
 				),
 				'css_sprites_aggressive' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['aggressive'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
 					'price' => 2
 				),
 				'css_sprites_no_ie6' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['no_ie6'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
 					'price' => 2
 				),
 				'css_sprites_dimensions_limited' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
 					'type' => 'smalltext',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy'])
 				),
 				'css_sprites_html_sprites' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
@@ -3425,7 +3425,7 @@ class admin {
 					'value' => $this->compress_options['css_sprites']['ignore'],
 					'type' => 'radio',
 					'count' => 2,
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy'])
 				),
 				'css_sprites_ignore_list' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
@@ -3437,7 +3437,7 @@ class admin {
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['extra_space'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
 					'price' => 1
 				),
 				'css_sprites_truecolor_in_jpeg' => array(
@@ -3445,7 +3445,7 @@ class admin {
 					'value' => $this->compress_options['css_sprites']['truecolor_in_jpeg'],
 					'type' => 'radio',
 					'count' => 2,
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) ? 100 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) ? 100 : 0,
 					'price' => array(0, 1)
 				),
 			),
@@ -3703,7 +3703,7 @@ class admin {
 			}
 		}
 		$loaded_modules = @get_loaded_extensions();
-/* fix CSS Sprites options in case of GD lib failure or no CSS Tidy is used */
+/* fix CSS Sprites options in case of GD lib failure */
 		$gd = function_exists('gd_info') ? gd_info() : array();
 		if (!(in_array('gd', $loaded_modules) &&
 			function_exists('imagecreatetruecolor') &&
@@ -3711,10 +3711,13 @@ class admin {
 			!empty($gd['GIF Create Support']) &&
 			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 			!empty($gd['PNG Support']) &&
-			!empty($gd['WBMP Support'])) ||
-			(!empty($this->input['wss_minify_css_min']) &&
-			$this->input['wss_minify_css_min'] < 2)) {
+			!empty($gd['WBMP Support']))) {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
+		}
+/* Disable CSS Sprites if no CSS Tidy is used */
+		if (isset($this->input['wss_minify_css_min']) &&
+			$this->input['wss_minify_css_min'] < 2) {
+				$this->restrictions['wss_css_sprites_tidy'] = 1;
 		}
 /* check for YUI&Google availability */
 		$YUI_checked = 0;
