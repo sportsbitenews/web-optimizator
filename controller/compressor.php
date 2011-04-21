@@ -694,10 +694,6 @@ class web_optimizer {
 /* Run the functions specified in options */
 			if (is_array($this->options)) {
 				foreach ($this->options as $func => $option) {
-					if ($func == 'page') {
-/* remove marker for styles and BOM */
-						$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
-					}
 					if (method_exists($this, $func)) {
 						if (!empty($option['gzip']) ||
 							!empty($option['minify']) ||
@@ -718,6 +714,9 @@ class web_optimizer {
 								}
 								$this->$func($option, $func);
 						}
+					}
+					if ($func == 'page') {
+						$this->clear_trash();
 					}
 				}
 			}
@@ -958,6 +957,7 @@ class web_optimizer {
 		if (!empty($this->web_optimizer_stage)) {
 			$this->write_progress($this->web_optimizer_stage++);
 		}
+		$this->clear_trash();
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
 /* add client side replacement for WordPress comment fields */
@@ -3580,6 +3580,14 @@ class web_optimizer {
 		} else {
 			return @file_get_contents($file);
 		}
+	}
+
+	/**
+	* Removes markers for styles and BOM
+	*
+	**/
+	function clear_trash () {
+		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
 	}
 
 } // end class
