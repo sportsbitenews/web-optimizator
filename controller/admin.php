@@ -3715,8 +3715,10 @@ class admin {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
 		}
 /* Disable CSS Sprites if no CSS Tidy is used */
-		if (isset($this->compress_options['minify']['css_min']) &&
-			$this->compress_options['minify']['css_min'] < 2) {
+		if ((isset($this->compress_options['minify']['css_min']) &&
+			$this->compress_options['minify']['css_min'] < 2) &&
+			(!isset($this->input['wss_minify_css_min']) ||
+			$this->input['wss_minify_css_min'] < 2)) {
 				$this->restrictions['wss_css_sprites_tidy'] = 1;
 		}
 /* check for YUI&Google availability */
