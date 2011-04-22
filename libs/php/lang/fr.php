@@ -824,7 +824,6 @@ define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'First view and repeat view speedup')
 define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Installation and configuration');
 define('_WEBO_SPLASH2_COMPARISON_QUARANTEE', 'Guaranteed speedup');
 define('_WEBO_SPLASH2_COMPARISON_REPORT', 'Speedup report');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение первой и повторной загрузки страниц');
 define('_WEBO_SPLASH2_COMPARISON_BASIC', 'Basic speedup features');
 define('_WEBO_SPLASH2_COMPARISON_ADVANCED', 'Advanced speedup features');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server load reduction');

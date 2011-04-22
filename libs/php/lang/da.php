@@ -821,7 +821,6 @@ define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Sammenligning før og efter optimeri
 define('_WEBO_SPLASH2_COMPARISON_INSTALL', 'Installation og konfiguration');
 define('_WEBO_SPLASH2_COMPARISON_QUARANTEE', 'Garanteret hastighedsforøgelse');
 define('_WEBO_SPLASH2_COMPARISON_REPORT', 'Hastighedsrapport');
-define('_WEBO_SPLASH2_COMPARISON_SPEEDUP', 'Ускорение первой и повторной загрузки страниц');
 define('_WEBO_SPLASH2_COMPARISON_BASIC', 'Basis hastighedsfunktioner');
 define('_WEBO_SPLASH2_COMPARISON_ADVANCED', 'Advanceret hastighedsfunktioner');
 define('_WEBO_SPLASH2_COMPARISON_CPU', 'Server indlæsningsreducering');
