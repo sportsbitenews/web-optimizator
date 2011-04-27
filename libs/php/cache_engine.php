@@ -641,39 +641,28 @@ class webo_cache_files extends webo_cache_engine
  	
  	function delete_entries($patterns)
  	{
- 		if (!$this->enabled)
- 		{
+ 		if (!$this->enabled) {
  			return false;
  		}
  		$this->__get_files_list();
- 		if (!empty($patterns))
- 		{
- 			if (is_array($patterns))
- 			{
- 				foreach($patterns as $pattern)
- 				{
+ 		if (!empty($patterns)) {
+ 			if (is_array($patterns)) {
+ 				foreach($patterns as $pattern) {
 	 				$files = $this->__recurse_glob($this->__get_path($pattern));
-	 				if (!empty($this->_host))
-	 				{
+	 				if (!empty($this->_host)) {
 	 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($pattern, $this->_host)));
 	 				}
-	 				foreach($files as $file)
-	 				{
-	 					if (@is_file($file))
-	 					{
+	 				foreach($files as $file) {
+	 					if (@is_file($file)) {
 	 						@unlink($file);
- 						}
-						elseif (@is_dir($file))
-						{
+							unset($this->all_files[$file]);
+ 						} elseif (@is_dir($file)) {
 							$this->__recurse_rm($file);
 						}
 	 				}
  				}
- 			}
- 			else
- 			{
- 			    if ($patterns == '*')
- 			    {
+ 			} else {
+ 			    if ($patterns == '*') {
 					$path = $this->__get_path('');
 /* try to call shell_exec */
 					if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false && !@ini_get('safe_mode')) {
@@ -682,24 +671,20 @@ class webo_cache_files extends webo_cache_engine
 						} catch (Expression $e) {}
 					}
  			    	$this->__recurse_rm($path);
- 			    }
- 			    else
- 			    {
+ 			    } else {
      				$files = $this->__recurse_glob($this->__get_path($patterns, $this->_host));
-     				foreach($files as $file)
-     				{
-     					if (@is_file($file))
-     					{
+     				foreach($files as $file) {
+     					if (@is_file($file)) {
      						@unlink($file);
+							unset($this->all_files[$file]);
 					    }
-					    elseif (@is_dir($file))
-					    {
+					    elseif (@is_dir($file)) {
 						    $this->__recurse_rm($file);
 					    }
      				}
  				}
  			}
-	 		$this->__put_files_list();
+			$this->__put_files_list();
  		}
  	}
 

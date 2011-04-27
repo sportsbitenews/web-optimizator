@@ -4178,10 +4178,14 @@ class admin {
 				$content_enhanced = "
 	" . (empty($this->compress_options['charset']) ? '' : 'AddDefaultCharset ' . $this->compress_options['charset']);
 				$cookie = array();
-/* WordPress-related cookie to skip server side caching */
+/* WordPress-related cookie to skip server side extreme caching */
 				if (strstr($this->basepath, 'wp-content')) {
 					$cookie[] = 'wordpress';
 					$cookie[] = 'wp-postpass_';
+				}
+/* Bitrix-related cookie to skip server side extreme caching */
+				if (strstr($this->basepath, 'bitrix')) {
+					$cookie[] = 'BITRIX_SM_LOGIN';
 				}
 /* generic cookies to skip server side caching */
 				if (!empty($this->input['wss_html_cache_additional_list'])) {
