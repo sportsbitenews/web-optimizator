@@ -3413,7 +3413,7 @@ class web_optimizer {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
