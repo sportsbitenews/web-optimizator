@@ -1594,7 +1594,7 @@ class web_optimizer {
 							$contents .= '}catch(e){';
 							if (!empty($info['file'])) {
 								$contents .= 'document.write("' .
-									str_replace(array('<', '"', "\n", "\r"), array('\x3c', '\"', ' ', ''), $info['source']) .
+									str_replace(array('"', "\n", "\r"), array('\"', ' ', ''), $info['source']) .
 									'")';
 							}
 							$contents .= '}';

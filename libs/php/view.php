@@ -255,16 +255,16 @@ class compressor_view {
 			$local_file_headers = $local_file . ".headers";
 /* start curl */
 			$ch = @curl_init($remote_file);
-			$fp = @fopen($local_file, "w");
 			$fph = @fopen($local_file_headers, "w");
-			if ($fp && $ch) {
+			if ($ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
+				@curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				@curl_setopt($ch, CURLOPT_USERAGENT,
 					empty($_SERVER['HTTP_USER_AGENT']) ?
 					"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
 					$_SERVER['HTTP_USER_AGENT']);
-				@curl_setopt($ch, CURLOPT_ENCODING, "");
+				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 /* set username / password for HTTP Basic Authorization */
 				if ($user && $pass) {
@@ -278,10 +278,10 @@ class compressor_view {
 /* skip SSL verification */
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-				@curl_exec($ch);
+				$a = @curl_exec($ch);
 				@curl_close($ch);
-				@fclose($fp);
 				@fclose($fph);
+				file_put_contents($local_file, $a);
 			}
 /* reset buffers */
 			$fph = @fopen($local_file_headers, "r");

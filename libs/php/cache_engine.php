@@ -677,11 +677,10 @@ class webo_cache_files extends webo_cache_engine
      					if (@is_file($file)) {
      						@unlink($file);
 							unset($this->all_files[$file]);
-					    }
-					    elseif (@is_dir($file)) {
+					    } elseif (@is_dir($file)) {
 						    $this->__recurse_rm($file);
-					    }
-     				}
+						}
+					}
  				}
  			}
 			$this->__put_files_list();
