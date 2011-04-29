@@ -4185,7 +4185,7 @@ class admin {
 				}
 /* Bitrix-related cookie to skip server side extreme caching */
 				if (strstr($this->basepath, 'bitrix')) {
-					$cookie[] = 'BITRIX_SM_LOGIN';
+					$cookie[] = '_SM_LOGIN';
 				}
 /* generic cookies to skip server side caching */
 				if (!empty($this->input['wss_html_cache_additional_list'])) {
