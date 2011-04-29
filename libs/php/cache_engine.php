@@ -546,7 +546,9 @@ class webo_cache_files extends webo_cache_engine
 				return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
 		    }
 		}
-		$this->_host = empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
+		$this->_host = strtolower(empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host'])));
+		$this->_host_wo_www = preg_replace("!^www\.!i", "", $this->_host);
+		$this->_host_w_www = 'www.' . $this->_host_wo_www;
 
 		if(!empty($options['cache_dir']))
 		{
@@ -660,14 +662,15 @@ class webo_cache_files extends webo_cache_engine
  				}
  			} else {
  			    if ($patterns == '*') {
-					$path = $this->__get_path('');
 /* try to call shell_exec */
 					if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false && !@ini_get('safe_mode')) {
 						try {
-							@shell_exec('rm -rf ' . $path);
+							@shell_exec('rm -rf ' . $this->cache_dir . $this->_host_w_www);
+							@shell_exec('rm -rf ' . $this->cache_dir . $this->_host_wo_www);
 						} catch (Expression $e) {}
 					}
- 			    	$this->__recurse_rm($path);
+ 			    	$this->__recurse_rm($this->cache_dir . $this->_host_w_www);
+					$this->__recurse_rm($this->cache_dir . $this->_host_wo_www);
  			    } else {
      				$files = $this->__recurse_glob($this->__get_path($patterns, $this->_host));
      				foreach($files as $file) {
