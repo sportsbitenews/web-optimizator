@@ -649,10 +649,12 @@ class webo_cache_files extends webo_cache_engine
 /* try to call shell_exec */
 					if (strpos(@ini_get('disable_functions') . ' ' . @ini_get('suhosin.executor.func.blacklist'), 'shell_exec') === false && !@ini_get('safe_mode')) {
 						try {
-							@shell_exec('rm -rf ' . $path);
+							@shell_exec('rm -rf ' . $this->cache_dir . $path);
+							@shell_exec('rm -rf ' . $this->cache_dir . 'www.' . $path);
 						} catch (Expression $e) {}
 					}
- 			    	$this->__recurse_rm($path);
+ 			    	$this->__recurse_rm($this->cache_dir . $path);
+					$this->__recurse_rm($this->cache_dir . 'www.' . $path);
  			    } else {
      				$files = $this->__recurse_glob($this->__get_path($patterns));
      				foreach($files as $file) {
