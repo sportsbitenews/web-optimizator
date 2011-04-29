@@ -546,48 +546,35 @@ class webo_cache_files extends webo_cache_engine
 				return @preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string);
 		    }
 		}
-		$this->_host = empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']));
+		$this->_host = strtolower(preg_replace("!^www\.!", "", empty($options['host']) ? '' : preg_replace('/\\.+\\/+/','', str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $options['host']))));
 
-		if(!empty($options['cache_dir']))
-		{
+		if(!empty($options['cache_dir'])) {
 			$this->enabled = true;
 			$this->cache_dir = $options['cache_dir'];
-		}
-		else
-		{
+		} else {
 			$this->enabled = false;
 		}
 		$this->all_files = false;
 	}
 
-	function __get_files_list()
-	{
- 		if ($this->all_files === false)
- 		{
- 			if (@is_file($this->cache_dir . 'wo.files.php'))
- 			{
- 				include($this->cache_dir . 'wo.files.php');
- 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list))
- 				{
+	function __get_files_list() {
+ 		if ($this->all_files === false) {
+ 			if (@is_file($this->cache_dir . 'wo.files.php')) {
+ 				@include($this->cache_dir . 'wo.files.php');
+ 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
  					$this->all_files = $webo_cache_files_list;
-				}
-				else
-				{
+				} else {
 					$this->all_files = array();
 				}
-			}
-			else
-			{
+			} else {
 				$this->all_files = array();
 			}
  		}
 	}
 
-	function __put_files_list()
-	{
+	function __put_files_list() {
  		$str = "<?php\n";
- 		foreach ($this->all_files as $k => $v)
- 		{
+ 		foreach ($this->all_files as $k => $v) {
  			$str .= '$webo_cache_files_list[\'' . addcslashes($k, "\0'\\") . '\'] = ' . "'$v';\n";
  		}
  		$str .= '?>';
@@ -604,10 +591,8 @@ class webo_cache_files extends webo_cache_engine
 
  	/* Adds or updates entry. Expects key string and value to cache. */
  	
- 	function put_entry($key, $value, $time)
- 	{
- 		if (!$this->enabled)
- 		{
+ 	function put_entry($key, $value, $time) {
+ 		if (!$this->enabled) {
  			return;
  		}
  		$path = $this->__get_path($key);
@@ -649,9 +634,6 @@ class webo_cache_files extends webo_cache_engine
  			if (is_array($patterns)) {
  				foreach($patterns as $pattern) {
 	 				$files = $this->__recurse_glob($this->__get_path($pattern));
-	 				if (!empty($this->_host)) {
-	 					$files = array_merge($files, $this->__recurse_glob($this->__get_path($pattern, $this->_host)));
-	 				}
 	 				foreach($files as $file) {
 	 					if (@is_file($file)) {
 	 						@unlink($file);
@@ -672,7 +654,7 @@ class webo_cache_files extends webo_cache_engine
 					}
  			    	$this->__recurse_rm($path);
  			    } else {
-     				$files = $this->__recurse_glob($this->__get_path($patterns, $this->_host));
+     				$files = $this->__recurse_glob($this->__get_path($patterns));
      				foreach($files as $file) {
      					if (@is_file($file)) {
      						@unlink($file);
@@ -718,38 +700,19 @@ class webo_cache_files extends webo_cache_engine
  	
  	/* Gets path to file from cache entry key */
  	
- 	function __get_path($key, $host = '')
- 	{
- 		$cur_host = strtolower($_SERVER['HTTP_HOST']);
- 		$set_host = strtolower($host);
- 		if (empty($host))
- 		{
- 			$key = $cur_host . '/' . $key;
-		}
-		elseif ($cur_host == $set_host)
-		{
-			return ''; //thx to peterbowey
-		}
-		else
-		{
-			$key = $set_host . '/' . $key;
-		}
- 		return preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
+ 	function __get_path($key) {
+ 		return preg_replace('/\\.+\\/+/','', $this->_host . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
  	}
  	
  	/* Creates directory structure to store the file */
  	
- 	function __make_path($path)
- 	{
+ 	function __make_path($path) {
 		$dirs = explode('/', dirname($path));
 		$cur_dir = '/';
-		foreach($dirs as $dir)
-		{
-			if(!empty($dir))
-			{
+		foreach($dirs as $dir) {
+			if (!empty($dir)) {
  				$cur_dir .= $dir . '/';
- 				if(!@is_dir($cur_dir))
- 				{
+ 				if(!@is_dir($cur_dir)) {
  					@mkdir($cur_dir, 0755);
  				}
 			}
