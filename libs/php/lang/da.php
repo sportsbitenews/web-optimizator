@@ -153,6 +153,7 @@ define('_WEBO_external_scripts_pass', 'Adgangskode (til adgang via HTTP Basic Au
 define('_WEBO_external_scripts_pass_HELP', 'Hvis din hjemmeside er beskyttet via HTTP Basic Authorization, skal du angive brugernavn og adgangskode, så WEBO Site SpeedUp kan udføre alle handlingerne på hjemmesiden.');
 define('_WEBO_restricted', 'Eksluder URL fra optimering');
 define('_WEBO_restricted_HELP', 'Nogen gange kan det være nødvendigt, at udelukke dele af hjemmesiden fra WEBO Site SpeedUp. Dette kan gøres her, ved at angive sektioner/adresser, adskilt med et mellemrum.');
+
 define('_WEBO_combine_css', 'Sammenflet CSS filer');
 define('_WEBO_combine_css_HELP', 'Afhængig af denne funktion, vil CSS filer ikke sammenflettes, eller kun CSS i &lt;head&gt; vil blive sammenflettet, eller CSS filer på hele siden vil blive sammenflettet. Alt sammenflettet CSS kode vil blive komprimeret.');
 define('_WEBO_combine_css1', 'Sammenflet ikke CSS filer');
@@ -388,8 +389,8 @@ define('_WEBO_footer_spot', 'Tilføj <code>&lt;!--WSS--&gt;</code> til HTML doku
 define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; eksistensen indikerer at WEBO Site SpeedUp analyserede denne side korrekt. Det bruges i interne algorithms.');
 define('_WEBO_footer_counter', 'Tilføj indlæsningstæller');
 define('_WEBO_footer_counter_HELP', 'Information omkring indlæsningstiden vil blive tilføjet til Events sektionen, hvis der er installeret Google Analytics på hjemmesiden, for at samle besøgsstatistik.');
-define('_WEBO_footer_ab', 'A/B testing');
-define('_WEBO_footer_ab_HELP', 'Given per cent of users will get non-optimized website content. All data about results will be sent to Google Analytics.');
+define('_WEBO_footer_ab', 'A/B test');
+define('_WEBO_footer_ab_HELP', 'Given procent af brugerne vil ikke opnå optimeret hjemmeside indhold. Alle data resultater vil blive afsendt til Google Analytics.');
 
 define('_WEBO_data_uris_on', 'Anvend <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Baggrundsbilleder vil blive konverteret til base64 format og inkluderet direkte i CSS filer for alle browsere som understøtter data:URI.');
@@ -418,7 +419,7 @@ define('_WEBO_data_uris_additional_list_HELP_DISABLED', 'Det er ikke muligt at o
 define('_WEBO_css_sprites_enabled', 'Anvend CSS Sprites');
 define('_WEBO_css_sprites_enabled_HELP', 'Baggrundsbilleder vil blive sammenflettet ved hjælp af CSS Sprites teknikken. Relateret CSS kode vil blive ændret sikkert.');
 define('_WEBO_css_sprites_enabled_EFFECT', 'Antal af objekt reduktion med 10-50%');
-define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt. Or CSS Tidy library isn\'t selected to minify CSS.');
+define('_WEBO_css_sprites_enabled_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt.');
 define('_WEBO_css_sprites_truecolor_in_jpeg', 'Billeder\' format');
 define('_WEBO_css_sprites_truecolor_in_jpeg_HELP', 'Hvis du vælger automatisk format opdagelse, vil muligheden for bivirkninger med CSS Sprites være minimal. Hvis du vælger JPEG-format, vil kvaliteten/størrelsen for ægte farvebilleder vil det bedste, men der vil så ikke være nogen understøttelse af gennemsigtighed på billederne.');
 define('_WEBO_css_sprites_truecolor_in_jpeg_EFFECT', 'Hjemmeside størrelse reduceres med 5-20%');
