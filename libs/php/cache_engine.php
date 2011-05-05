@@ -562,31 +562,22 @@ class webo_cache_files extends webo_cache_engine
 		$this->all_files = false;
 	}
 
-	function __get_files_list()
-	{
- 		if ($this->all_files === false)
- 		{
- 			if (@is_file($this->cache_dir . 'wo.files.php'))
- 			{
- 				include($this->cache_dir . 'wo.files.php');
- 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list))
- 				{
+	function __get_files_list() {
+ 		if ($this->all_files === false) {
+ 			if (@is_file($this->cache_dir . 'wo.files.php')) {
+ 				@include($this->cache_dir . 'wo.files.php');
+ 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
  					$this->all_files = $webo_cache_files_list;
-				}
-				else
-				{
+				} else {
 					$this->all_files = array();
 				}
-			}
-			else
-			{
+			} else {
 				$this->all_files = array();
 			}
  		}
 	}
 
-	function __put_files_list()
-	{
+	function __put_files_list() {
  		$str = "<?php\n";
  		foreach ($this->all_files as $k => $v)
  		{
@@ -597,6 +588,7 @@ class webo_cache_files extends webo_cache_engine
  		$i = 0;
  		$written = 0;
 		$files_list = $this->cache_dir . 'wo.files.php';
+		@file_put_contents($files_list . '.tmp', '<?php ?>');
  		while (($i < 3) && ($written != $length)) {
 			$written = @file_put_contents($files_list . '.tmp', $str);
 			$i++;
@@ -606,18 +598,15 @@ class webo_cache_files extends webo_cache_engine
 
  	/* Adds or updates entry. Expects key string and value to cache. */
  	
- 	function put_entry($key, $value, $time)
- 	{
- 		if (!$this->enabled)
- 		{
+ 	function put_entry($key, $value, $time) {
+ 		if (!$this->enabled) {
  			return;
  		}
  		$path = $this->__get_path($key);
  		$this->__get_files_list();
  		$this->all_files[$path] = strlen($value);
  		$this->__put_files_list();
- 		if (!@is_dir(dirname($path)))
- 		{
+ 		if (!@is_dir(dirname($path))) {
  			$this->__make_path($path);
  		}
 		@file_put_contents($path . '.tmp', $value);
