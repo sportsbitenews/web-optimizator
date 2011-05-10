@@ -127,7 +127,7 @@ class web_optimizer {
 		}
 /* cache if
   - option is enabled,
-  - don't parse excluded pages,
+  - don't parse excluded pages (including home page),
   - or parse included USER AGENTS,
   - don't parse pages with excluded coockies,
   - flush or gzip for HTML are disabled,
@@ -141,9 +141,8 @@ class web_optimizer {
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
-				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
-				strpos($this->options['page']['cache_ignore'], '#') === false ||
-				!$homepage ||
+				(!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
+				(strpos($this->options['page']['cache_ignore'], '#') === false || !$homepage)) ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
 			!$retricted_cookie &&
@@ -589,7 +588,7 @@ class web_optimizer {
 			return $content;
 		}
 		if ($content === false) {
-			$this->content = ob_get_clean();
+			$this->content = @ob_get_clean();
 /* clear all other buffers */
 			while (@ob_end_clean());
 		} else {

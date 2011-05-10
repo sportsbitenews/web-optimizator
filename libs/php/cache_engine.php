@@ -578,6 +578,7 @@ class webo_cache_files extends webo_cache_engine
 	}
 
 	function __put_files_list() {
+		global $webo_files_list_var;
  		$str = "<?php\n";
  		foreach ($this->all_files as $k => $v)
  		{
@@ -587,13 +588,16 @@ class webo_cache_files extends webo_cache_engine
  		$length = strlen($str);
  		$i = 0;
  		$written = 0;
-		$files_list = $this->cache_dir . 'wo.files.php';
-		@file_put_contents($files_list . '.tmp', '<?php ?>');
+		$webo_files_list_var = $this->cache_dir . 'wo.files.php';
+		@file_put_contents($webo_files_list_var . '.tmp', '<?php ?>');
  		while (($i < 3) && ($written != $length)) {
-			$written = @file_put_contents($files_list . '.tmp', $str);
+			$written = @file_put_contents($webo_files_list_var . '.tmp', $str);
 			$i++;
 		}
-		@rename($files_list . '.tmp', $files_list);
+		@rename($files_list . '.tmp', $webo_files_list_var);
+/* failover callback */
+		register_shutdown_function('webo_files_list_handler');
+		@include($webo_files_list_var);
 	}
 
  	/* Adds or updates entry. Expects key string and value to cache. */
@@ -1472,6 +1476,16 @@ class webo_cache_files extends webo_cache_engine
 		else
 		{
 			return array($size, $count);
+		}
+	}
+}
+
+function webo_files_list_handler () {
+	global $webo_files_list_var;
+	$error = error_get_last();
+	foreach ($error as $key => $value) {
+		if ($key == 'file' && $value == $webo_files_list_var) {
+			@file_put_contents($webo_files_list_var, '<?php ?>');
 		}
 	}
 }
