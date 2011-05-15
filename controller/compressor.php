@@ -620,6 +620,9 @@ class web_optimizer {
 				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {
 					$skip--;
 				}
+				if (strpos($header, 'application/json')) {
+					$skip++;
+				}
 				if (strpos($header, 'content-base') !== false) {
 					$this->basehref = substr($head, 14);
 				}
