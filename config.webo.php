@@ -169,6 +169,8 @@ $compress_options['html_cache']['additional_list'] = "";
 $compress_options['html_cache']['params'] = "";
 ## Enhanced mode for HTML caching
 $compress_options['html_cache']['enhanced'] = "0";
+## Minutes to remove old files from cache
+$compress_options['html_cache']['cleanup'] = "0";
 ## Cache SQL queries results
 $compress_options['sql_cache']['enabled'] = "0";
 ## Minimum execution time to cache query result, in milliseconds

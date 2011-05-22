@@ -327,6 +327,9 @@ define('_WEBO_html_cache_enhanced', 'Extreme mode');
 define('_WEBO_html_cache_enhanced_HELP', 'In extreme mode all HTML documents will be served from cache directly, bypassing normal CMS processing. This will significantly increase website performance (especially useful on traffic peaks), but cache can be refreshed only manually. By default extreme mode for server side caching is available only on systems which uses web-servers with .htaccess support (Apache, LiteSpeed). Other web-servers configurations should be manually changed, according to [http://code.google.com/p/web-optimizator/wiki/IntegrationWithWebsite Integration with website] section of documentation.');
 define('_WEBO_html_cache_enhanced_EFFECT', 'CPU savings 4-40%');
 define('_WEBO_html_cache_enhanced_DISABLED', 'To enable extreme mode for server side caching you need to have mod_rewrite for your server environment isntalled.');
+define('_WEBO_html_cache_cleanup', 'Minutes to store entries in cache');
+define('_WEBO_html_cache_cleanup_HELP', 'After this timeframe all old entries (which time of creation is less than current timestamp minus given interval) will be deleted from HTML cache.');
+define('_WEBO_html_cache_cleanup_EFFECT', 'Increased caching efficiency');
 
 define('_WEBO_sql_cache_enabled', 'Cache DB queries');
 define('_WEBO_sql_cache_enabled_HELP', 'All DB queries will be cached if their execution take more than time set below. This will increase load speed of all website pages.');

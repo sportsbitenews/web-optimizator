@@ -76,6 +76,7 @@ $compress_options['html_cache']['allowed_list']="office data msfrontpage yahoo g
 $compress_options['html_cache']['additional_list']="";
 $compress_options['html_cache']['params']="";
 $compress_options['html_cache']['enhanced']="0";
+$compress_options['html_cache']['cleanup']="0";
 $compress_options['sql_cache']['enabled']="0";
 $compress_options['sql_cache']['time']="1";
 $compress_options['sql_cache']['tables_exclude']="session";

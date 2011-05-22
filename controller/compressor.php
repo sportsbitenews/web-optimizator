@@ -246,6 +246,10 @@ class web_optimizer {
 				while (@ob_end_clean());
 				header('WEBO: cache hit');
 				echo $content;
+/* clean expired entries */
+				if ($this->options['clean_html_cache']) {
+					$this->cache_engine->delete_entries_by_time($this->time, $this->options['clean_html_cache'] * 60);
+				}
 /* content is a head part, flush it after */
 				if ($this->options['page']['flush']) {
 					flush();
@@ -536,7 +540,9 @@ class web_optimizer {
 				($this->premium > 1),
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset'],
-			'host' => $this->options['host']
+			'host' => $this->options['host'],
+			"clean_html_cache" => round($this->options['html_cache']['cleanup']) &&
+				$this->premium > 1
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
@@ -609,7 +615,7 @@ class web_optimizer {
 			}
 		}
 		$skip = 0;
-		if (function_exists('get_headers')) {
+		if (function_exists('headers_list')) {
 			$headers = headers_list();
 /* define if Content-Type is text/html and allow it */
 			foreach ($headers as $head) {

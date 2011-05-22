@@ -327,6 +327,9 @@ define('_WEBO_html_cache_enhanced', 'Extreme mode');
 define('_WEBO_html_cache_enhanced_HELP', 'Con la Extreme mode tutti i documenti HTML saranno serviti bypassando il normale processo CMS. Questo ti permetterà di liberare la cache solo manualmente ma incrementerà significativamente le performance del sito (specialmente nei picchi di traffico).');
 define('_WEBO_html_cache_enhanced_EFFECT', 'Risparmio CPU 4-40%');
 define('_WEBO_html_cache_enhanced_DISABLED', 'Per abilitare extreme mode per la cache Server Side devi avere mod_rewrite per il tuo server installato.');
+define('_WEBO_html_cache_cleanup', 'Minutes to store entries in cache');
+define('_WEBO_html_cache_cleanup_HELP', 'After this timeframe all old entries (which time of creation is less than current timestamp minus given interval) will be deleted from HTML cache.');
+define('_WEBO_html_cache_cleanup_EFFECT', 'Increased caching efficiency');
 
 define('_WEBO_sql_cache_enabled', 'Cache DB queries');
 define('_WEBO_sql_cache_enabled_HELP', 'Tutte le query DB saranno inserite in cache se la loro esecuzione occupa più del tempo impostato. Questo incrementerà la velocità di caricamento di tutto il sito.');
