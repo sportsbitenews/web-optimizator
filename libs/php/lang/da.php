@@ -326,8 +326,8 @@ define('_WEBO_html_cache_enhanced', 'Ekstrem tilstand');
 define('_WEBO_html_cache_enhanced_HELP', 'I ekstrem tilstand, vil alle HTML dokumenter hentes direkte fra cache, udenom normal CMS. Dette vil øge ydelsen betragteligt (særlig brugbar ved trafik belastninger), men cache kan kun refreshes manuelt. Som standard, er ekstrem tilstand server caching kun tilgængelig på systemer som bruger webserver med .htaccess understøttelse (Apache, LiteSpeed). Andre webservere kan manuelt ændres, ved at læse [http://code.google.com/p/web-optimizator/wiki/IntegrationWithWebsite Integration with website] sektionen af dokumentationen.');
 define('_WEBO_html_cache_enhanced_EFFECT', 'CPU besparelse på 4-40%');
 define('_WEBO_html_cache_enhanced_DISABLED', 'For at aktivere ekstrem tilstanden for server caching, skal du have mod_rewrite installeret på dit servermiljø.');
-define('_WEBO_html_cache_cleanup', 'Minutes to store entries in cache');
-define('_WEBO_html_cache_cleanup_HELP', 'After this timeframe all old entries (which time of creation is less than current timestamp minus given interval) will be deleted from HTML cache.');
+define('_WEBO_html_cache_cleanup', 'Delete expired files from cache');
+define('_WEBO_html_cache_cleanup_HELP', 'After given cache timeout all old entries (which time of creation is less than current timestamp minus given timeout) will be deleted from HTML cache.');
 define('_WEBO_html_cache_cleanup_EFFECT', 'Increased caching efficiency');
 
 define('_WEBO_sql_cache_enabled', 'Cache DB forespørgelser');
