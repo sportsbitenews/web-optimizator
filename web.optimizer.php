@@ -93,9 +93,10 @@ if (!empty($webo_not_buffered)) {
 		'view' => $view,
 		'options' => $compress_options,
 		'libraries' => $libraries,
-		'no_cache' => empty($no_cache) ? false : $no_cache,
-		'clear_cache_key' => empty($clear_cache_key) ? false : $clear_cache_key,
-		'host' => $host)
+		'no_cache' => empty($no_cache) ? 0 : $no_cache,
+		'clear_cache_key' => empty($clear_cache_key) ? 0 : $clear_cache_key,
+		'host' => $host,
+		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip)
 	);
 }
 ?>

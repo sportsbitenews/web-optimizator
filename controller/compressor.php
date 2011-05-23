@@ -679,6 +679,10 @@ class web_optimizer {
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
+/* define gzip headers at the end */
+			if ($this->nogzip) {
+				$this->set_gzip_header();
+			}
 /* create DOMready chunk of JavaScript code, is required for different tasks */
 			$this->domready_include = $this->domready_include2 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache) {
@@ -2381,7 +2385,7 @@ class web_optimizer {
 /* define encoding for HTML page */
 		$this->set_gzip_encoding();
 /* check if content must be gzipped, can't gzip twice via php for flush */
-		if ($this->options['page']['gzip'] && !$this->options['page']['flush']) {
+		if ($this->options['page']['gzip'] && !$this->options['page']['flush'] && !$this->nogzip) {
 			$this->set_gzip_header();
 		}
 /* When will the file expire? */
