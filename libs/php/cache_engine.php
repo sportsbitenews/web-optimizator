@@ -638,7 +638,7 @@ class webo_cache_files extends webo_cache_engine
 	
 	function __make_path($path) {
 		$dirs = explode('/', dirname($path));
-		$cur_dir = $d{0} == '/' ? '/' : '';
+		$cur_dir = $path{0} == '/' ? '/' : '';
 		foreach ($dirs as $dir) {
 			if (!empty($dir)) {
 				$cur_dir .= $dir . '/';
