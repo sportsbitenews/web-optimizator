@@ -462,7 +462,10 @@ class webo_cache_files extends webo_cache_engine
 		global $webo_files_list_var;
 		$str = "<?php\n";
 		foreach ($this->all_files as $k => $v) {
-			$str .= '$webo_cache_files_list[\'' . addcslashes($k, "\0'\\") . '\'] = ' . "'$v';\n";
+			if (!is_array($v)) {
+				$v = array($v, time());
+			}
+			$str .= '$webo_cache_files_list[\'' . addcslashes($k, "\0'\\") . '\'] = array(' . $v[0] . ',' . $v[1] . ");\n";
 		}
 		$str .= '?>';
 		$length = strlen($str);
@@ -488,7 +491,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 		$path = $this->__get_path($key);
 		$this->__get_files_list();
-		$this->all_files[$path] = strlen($value) . ',' . $time;
+		$this->all_files[$path] = array(strlen($value), $time);
 		$this->__put_files_list();
 		if (!@is_dir(dirname($path))) {
 			$this->__make_path($path);
@@ -569,9 +572,10 @@ class webo_cache_files extends webo_cache_engine
 		if (!empty($time)) {
 			$changed = 0;
 			foreach($this->all_files as $path => $entry) {
-				$entry = explode(",", $entry);
-				$t = empty($entry[1]) ? @filemtime($path) : $entry[1];
-				if ($t + $interval < $time) {
+				if (!is_array($entry)) {
+					$entry = array($entry, @filemtime($path));
+				}
+				if ($entry[1] + $interval < $time) {
 					@unlink($path);
 					unset($this->all_files[$path]);
 					$changed = 1;
@@ -592,8 +596,11 @@ class webo_cache_files extends webo_cache_engine
 		$this->__get_files_list();
 		$path = $this->__get_path($key);
 		if (!empty($this->all_files[$path])) {
-			$entry = explode(",", $this->all_files[$path]);
-			return empty($entry[1]) ? @filemtime($path) : $entry[1];
+			$entry = $this->all_files[$path];
+			if (!is_array($entry)) {
+				$entry = array($entry, @filemtime($path));
+			}
+			return $entry[1];
 		} else {
 			return 0;
 		}
@@ -607,8 +614,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 		$this->__get_files_list();
 		$path = $this->__get_path($key);
-		$entry = explode($this->all_files[$path]);
-		$this->all_files[$path] = $entry[0] . ',' . $time;
+		$this->all_files[$path][1] = $time;
 		$this->__put_files_list();
 		@touch($path, $time);
 	}
