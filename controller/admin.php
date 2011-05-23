@@ -1690,20 +1690,14 @@ class admin {
 			$iis = strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
 		}
 /* define caching for WordPress */
-		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false))
-		{
+		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false)) {
 			$content = $this->file_get_contents($this->compress_options['website_root'] . 'wp-config.php');
-			if(preg_match('/define\s*\(\s*[\'"]WP_CACHE[\'"]\s*,\s*true\s*\)\s*;/', $content))
-			{
+			if(preg_match('/define\s*\(\s*[\'"]WP_CACHE[\'"]\s*,\s*true\s*\)\s*;/i', $content)) {
 				$wp_cache_enabled = true;
-			}
-			else
-			{
+			} else {
 				$wp_cache_enabled = false;
 			}
-		}
-		else
-		{
+		} else {
 			$wp_cache_enabled = true;
 		}
 /* check CPU usage for the website */
