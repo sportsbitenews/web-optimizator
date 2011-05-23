@@ -3506,7 +3506,7 @@ class admin {
 				'html_cache_cleanup' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['cleanup'],
-					'type' => 'smalltext',
+					'type' => 'checkbox',
 					'price' => 2
 				)
 			),
