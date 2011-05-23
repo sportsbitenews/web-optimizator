@@ -248,7 +248,7 @@ class web_optimizer {
 				echo $content;
 /* clean expired entries */
 				if ($this->options['clean_html_cache']) {
-					$this->cache_engine->delete_entries_by_time($this->time, $this->options['clean_html_cache'] * 60);
+					$this->cache_engine->delete_entries_by_time($this->time, $this->options['clean_html_cache']);
 				}
 /* content is a head part, flush it after */
 				if ($this->options['page']['flush']) {
@@ -541,8 +541,8 @@ class web_optimizer {
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset'],
 			'host' => $this->options['host'],
-			"clean_html_cache" => round($this->options['html_cache']['cleanup']) &&
-				$this->premium > 1
+			"clean_html_cache" => $this->options['html_cache']['cleanup'] &&
+				$this->premium > 1 ? $this->options['html_cache']['timeout'] : 0
 		);
 		$this->lc = $this->options['license'];
 /* overwrite other options array that we passed in */
