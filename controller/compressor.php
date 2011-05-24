@@ -665,19 +665,9 @@ class web_optimizer {
 					$skip = 1;
 			}
 		}
-		if (!empty($this->options['page']['ab']) || !empty($this->options['page']['counter'])) {
-			$this->ab = 'a._setCustomVar(1,"WEBOSiteSpeedUp",';
-		}
 /* enable A/B testing */
 		if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
-				$this->options['page']['counter'] .
-				'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker("'.
-				$this->options['page']['counter'] .
-				'")}if(a){' .
-				($this->ab ? ';' . $this->ab . '0)' : '') .
-				'}},false)})()</script>' .
-				"$1", $this->content);
+			$this->content = preg_replace("!(<head[^>]+>)!i", '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",0])</script>' . "$1", $this->content);
 			$skip = 1;
 		}
 /* skip RSS, SMF xml format */
@@ -3063,11 +3053,7 @@ class web_optimizer {
 						$this->options['page']['counter'] .
 						'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker("'.
 						$this->options['page']['counter'] .
-						'")}if(a){' .
-					if (!empty($this->options['page']['ab'])) {
-						$stamp .= $this->ab . '1);';
-					}
-					$stamp .= 'b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
+						'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
 				}
 /* Add script to check gzip possibility */
 				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
