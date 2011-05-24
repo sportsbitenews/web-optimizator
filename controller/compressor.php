@@ -667,7 +667,7 @@ class web_optimizer {
 		}
 /* enable A/B testing */
 		if (!$skip && !empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",0])</script>', $this->content);
+			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">_gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",0])</script>', $this->content);
 			$skip = 1;
 		}
 /* skip RSS, SMF xml format */
