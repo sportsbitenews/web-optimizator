@@ -668,9 +668,9 @@ class web_optimizer {
 /* enable A/B testing */
 		if (!$skip && !empty($this->options['page']['ab'])) {
 			$skip = !empty($_COOKIE['WSS_DISABLED']);
-			$this->content = preg_replace("!(<head[^>]+>)!i", '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",' .
+			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",' .
 				($skip ? 0 : 1) .
-				'])</script>' . "$1", $this->content);
+				'])</script>', $this->content);
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
