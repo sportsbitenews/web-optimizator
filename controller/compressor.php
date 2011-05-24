@@ -514,8 +514,7 @@ class web_optimizer {
 				"footer_text" => $this->options['footer']['link'],
 				"footer_style" => $this->options['footer']['css_code'],
 				"spot" => $this->premium ? $this->options['footer']['spot'] : 1,
-				"counter" => $this->options['footer']['counter'] &&
-					$this->premium > 1,
+				"counter" => $this->premium > 1 ? $this->options['footer']['counter'] : '',
 				"ab" => $this->options['footer']['ab'] &&
 					$this->premium > 1,
 				"htaccess_username" => $this->premium > 1 ? $this->options['external_scripts']['user'] : '',
