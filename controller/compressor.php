@@ -670,7 +670,7 @@ class web_optimizer {
 		}
 /* enable A/B testing */
 		if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
+			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){a=_gat||_gaq;if(typeof a!=="undefined"){a=a._getTracker("'.
 				$this->options['page']['counter'] .
 				'")' .
 				($this->ab ? $this->ab . '0)' : '') .
@@ -3057,7 +3057,7 @@ class web_optimizer {
 				}
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){a=_gat._getTracker("' .
+					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){a=_gat||_gaq;if(typeof a!=="undefined"){a=a._getTracker("' .
 					$this->options['page']['counter'] .
 					'");b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)';
 					if (!empty($this->options['page']['ab'])) {
