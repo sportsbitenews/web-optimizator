@@ -666,11 +666,9 @@ class web_optimizer {
 			}
 		}
 /* enable A/B testing */
-		if (!$skip && !empty($this->options['page']['ab'])) {
-			$skip = !empty($_COOKIE['WSS_DISABLED']);
-			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",' .
-				($skip ? 0 : 1) .
-				'])</script>', $this->content);
+		if (!$skip && !empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
+			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",0])</script>', $this->content);
+			$skip = 1;
 		}
 /* skip RSS, SMF xml format */
 		if (!$skip) {
@@ -720,6 +718,7 @@ class web_optimizer {
 							!empty($option['cache']) ||
 							!empty($option['sprites']) ||
 							!empty($option['counter']) ||
+							!empty($option['ab']) ||
 							!empty($this->domready_include)) {
 								if (!empty($this->web_optimizer_stage)) {
 									$this->write_progress($this->web_optimizer_stage++);
@@ -928,13 +927,16 @@ class web_optimizer {
 			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
-		if ($this->debug_mode || !empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded'])) {
+		if ($this->debug_mode || !empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
 			$stamp = '<script type="text/javascript">';
 			if ($this->debug_mode || !empty($this->options['page']['counter'])) {
 				$stamp .= '__WSS=(new Date()).getTime();';
 			}
 			if (!empty($this->options['page']['sprites_domloaded'])) {
 				$stamp .= 'var _webo_hsprites=function(){};';
+			}
+			if (!empty($this->options['page']['ab'])) {
+				$stamp .= 'gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",1]);';
 			}
 			$stamp .= '</script>';
 			if ($this->options['page']['html_tidy'] &&
