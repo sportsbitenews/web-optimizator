@@ -392,7 +392,7 @@ define('_WEBO_footer_css_code_HELP', 'Ces styles seront appliqués pour le lien 
 define('_WEBO_footer_spot', 'Ajouter <code>&lt;!--WSS--&gt;</code> to HTML document');
 define('_WEBO_footer_spot_HELP', 'L\'existance &lt;!--WSS--&gt; indique que WEBO Site SpeedUp analyse la pages avec succès. Il est utilisé dans les algorithmes internes.');
 define('_WEBO_footer_counter', 'Add load time counter');
-define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats.');
+define('_WEBO_footer_counter_HELP', 'Information about load time will be added to Events section if there is Google Analytics on the website installed to gather visitors stats. Please enter your Google Analytics ID (i.e. UA-123456-7) to activate this.');
 define('_WEBO_footer_ab', 'A/B testing');
 define('_WEBO_footer_ab_HELP', 'Given per cent of users will get non-optimized website content. All data about results will be sent to Google Analytics.');
 

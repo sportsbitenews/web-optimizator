@@ -3249,7 +3249,7 @@ class admin {
 				'footer_counter' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['footer']['counter'],
-					'type' => 'checkbox'
+					'type' => 'smalltext'
 				),
 				'footer_ab' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
@@ -3807,6 +3807,7 @@ class admin {
 			'wss_footer_image',
 			'wss_footer_link',
 			'wss_footer_css_code',
+			'wss_footer_counter',
 			'wss_data_uris_ignore_list',
 			'wss_data_uris_additional_list',
 			'wss_css_sprites_ignore_list',
@@ -3915,7 +3916,6 @@ class admin {
 			'wss_sql_cache_enabled',
 			'wss_footer_text',
 			'wss_footer_spot',
-			'wss_footer_counter',
 			'wss_data_uris_on',
 			'wss_data_uris_separate',
 			'wss_data_uris_mhtml',

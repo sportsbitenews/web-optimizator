@@ -671,9 +671,11 @@ class web_optimizer {
 		}
 /* enable A/B testing */
 		if (!empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c)' .
-				$this->ab .
-				'0)}},false)})()</script>' .
+			$this->content = preg_replace("!(</html>)!i", '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){a=_gat._getTracker('.
+				$this->options['page']['counter'] .
+				')' .
+				($this->ab ? $this->ab . '0)' : '') .
+				'}},false)})()</script>' .
 				"$1", $this->content);
 			$skip = 1;
 		}
@@ -3056,12 +3058,12 @@ class web_optimizer {
 				}
 /* add WEBO Site SpeedUp page load counter */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){var a,b=_gat.vb,c;for(a in _gat.vb){c=b[a].s}a=_gat._getTracker(c);b=(new Date()).getTime()-__WSS;a.push(["_trackEvent","WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)';
-				}
-				if (!empty($this->options['page']['ab'])) {
-					$stamp .= $this->ab . '1)';
-				}
-				if (!empty($this->options['page']['counter'])) {
+					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){if(typeof _gat!=="undefined"){a=_gat._getTracker(' .
+					$this->options['page']['counter'] .
+					');b=(new Date()).getTime()-__WSS;a.push(["_trackEvent","WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)';
+					if (!empty($this->options['page']['ab'])) {
+						$stamp .= $this->ab . '1)';
+					}
 					$stamp .= '}},false)})()</script>';
 				}
 /* Add script to check gzip possibility */

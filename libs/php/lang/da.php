@@ -391,7 +391,7 @@ define('_WEBO_footer_css_code_HELP', 'Disse styles vil blive anvendt til WEBO Si
 define('_WEBO_footer_spot', 'Tilføj <code>&lt;!--WSS--&gt;</code> til HTML dokument');
 define('_WEBO_footer_spot_HELP', '&lt;!--WSS--&gt; eksistensen indikerer at WEBO Site SpeedUp analyserede denne side korrekt. Det bruges i interne algorithms.');
 define('_WEBO_footer_counter', 'Tilføj indlæsningstæller');
-define('_WEBO_footer_counter_HELP', 'Information omkring indlæsningstiden vil blive tilføjet til Events sektionen, hvis der er installeret Google Analytics på hjemmesiden, for at samle besøgsstatistik.');
+define('_WEBO_footer_counter_HELP', 'Information omkring indlæsningstiden vil blive tilføjet til Events sektionen, hvis der er installeret Google Analytics på hjemmesiden, for at samle besøgsstatistik. Please enter your Google Analytics ID (i.e. UA-123456-7) to activate this.');
 define('_WEBO_footer_ab', 'A/B test');
 define('_WEBO_footer_ab_HELP', 'Given procent af brugerne vil ikke opnå optimeret hjemmeside indhold. Alle data resultater vil blive afsendt til Google Analytics.');
 
