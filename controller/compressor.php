@@ -936,7 +936,7 @@ class web_optimizer {
 				$stamp .= 'var _webo_hsprites=function(){};';
 			}
 			if (!empty($this->options['page']['ab'])) {
-				$stamp .= 'gaq=gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",1]);';
+				$stamp .= '_gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp",1]);';
 			}
 			$stamp .= '</script>';
 			if ($this->options['page']['html_tidy'] &&
