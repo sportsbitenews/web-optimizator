@@ -9,20 +9,29 @@ Short notice about CSS deploymner.
 3. Download new package and deploy it
 4. Final list of files
  wss.css
+ add.orange.hover.png
  buttons.png
  buttons.red.png
  corners.gif
  corner.welcome.gif
+ error-button.png
+ hlp.png
+ hlp.hover.png
  lang.hover.png
  lang.selected.png
  load.gif
  load.wizard.gif
  loading.gif
+ menu.png
+ minus.png
+ plus.png
  progress.png
  rocket.main.png
  rocket.back1.png
  rocket.back2.png
  stamps.png
+ success.png
+ table-head.png
  webos.png
  wss.png
  
@@ -634,6 +643,7 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 #wss_cache{padding-top:4px}
 
 * html .wssJ5,* html .wssJ6,* html .wssJ7{background-image:url(buttons.png)!important}
+* html .wssK .wssB{background:url(error-button.png) no-repeat}
 * html .wssM{height:25px}
 * html .wssM1,* html .wssM2{display:inline;position:relative}
 * html .wssN4{margin-left:1.5%}
@@ -647,6 +657,9 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 * html a.wssJ20:hover{background-image:url(corners.gif)}
 * html #wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
 * html .wssI3{background:url(load.gif) 50% 5px no-repeat}
+* html .wssJ9,* html .wssC6 .wssT20 .wssJ9{background:url(hlp.png) no-repeat}
+* html a.wssJ9:hover,* html .wssC6 .wssT20 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
+* html a.wssJ7:hover .wssH18,* html a.wssJ7:active .wssH18,* html a.wssJ7:focus .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat}
 * html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
 * html .wssU12 .wssU15{background:url(delete.active.png) no-repeat}
 * html #wss_opt .wssI{background-image:url(progress.png)}
@@ -657,9 +670,16 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 * html #wss_bal,* html #wss_bal .wssN2{display:inline;zoom:1}
 * html #wss_balance,* html .wssH11 .wssO15,* html .wssU21 .wssO15,* html .wssO4 .wssO15,* html .wssT20 .wssO15,* html #wss_bal .wssN2,* html .wssE .wssO15{background-image:url(webos.png)}
 * html .wssH16 .wssJ5{float:right}
+* html .wssS{background:url(success.png) repeat}
+* html .wssT5{background:#cedee6 url(table-head.png) repeat-x}
+* html .wssT13{background:url(plus.png) 54% 50% no-repeat}
+* html .wssT14{background:url(minus.png) 54% 50% no-repeat}
 
 *+html .wssI3{background:url(load.gif) 50% 5px no-repeat}
+*+html .wssJ9,*+html .wssC6 .wssT20 .wssJ9{background:url(hlp.png) no-repeat}
+*+html a.wssJ9:hover,*+html .wssC6 .wssT20 a.wssJ9:hover{background:url(hlp.hover.png) no-repeat}
 *+html .wssJ5,*+html .wssJ6,*+html .wssJ7{background-image:url(buttons.png)!important}
+*+html .wssK .wssB{background:url(error-button.png) no-repeat}
 *+html .wssM{height:25px}
 *+html .wssM1,*+html .wssM1{display:inline;position:relative}
 *+html .wss_a{width:900px}
@@ -672,6 +692,7 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 *+html .wssU1 .wssF1{margin-left: -183px}
 *+html a.wss_g:hover{background-image:url(lang.hover.png)}
 *+html .wssT7 .wssJ,*+html .wss_q,*+html .wssO9 .wssJ32{background-image:url(buttons.red.png)}
+*+html a.wssJ7:hover .wssH18,*+html a.wssJ7:active .wssH18,*+html a.wssJ7:focus .wssH18{background:url(add.orange.hover.png) 0 1px no-repeat}
 *+html a.wssJ20:hover{background-image:url(corners.gif)}
 *+html #wss_help a.wssJ20:hover{background:url(corner.welcome.gif) -1px 0 no-repeat}
 *+html .wssU17 .wssU15{background:url(delete.hover.png) no-repeat}
@@ -684,6 +705,10 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 *+html #wss_bal,*+html #wss_bal .wssN2{display:inline;zoom:1}
 *+html #wss_balance,*+html .wssH11 .wssO15,*+html .wssU21 .wssO15,*+html .wssO4 .wssO15,*+html .wssT20 .wssO15,*+html #wss_bal .wssN2,*+html .wssE .wssO15{background-image:url(webos.png)}
 *+html .wssH16 .wssJ5{float:right}
+*+html .wssS{background:url(success.png) repeat}
+*+html .wssT5{background:#cedee6 url(table-head.png) repeat-x}
+*+html .wssT13{background:url(plus.png) 54% 50% no-repeat}
+*+html .wssT14{background:url(minus.png) 54% 50% no-repeat}
 
 .left-corner .wss_a{padding:10px;top:-50px}
 #element-box{position:relative;top:-22px}

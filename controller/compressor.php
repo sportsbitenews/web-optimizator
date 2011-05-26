@@ -28,11 +28,17 @@ class web_optimizer {
 			if (strpos($_SERVER['REQUEST_URI'], 'WSS_AB_TESTING')) {
 /* only if cookie are supported - redirect to initial URL */
 				if (!empty($_COOKIE['WSS_DISABLED']) || !empty($_COOKIE['WSS_ENABLED'])) {
-					header("Location: " . preg_replace("![\?&]WSS_AB_TESTING!", "", $_SERVER['REQUEST_URI']));
+					if (!empty($_SERVER['HTTP_REFERER'])) {
+						header("Referer: " . $_SERVER['HTTP_REFERER']);
+					}
+					header("Location: " . preg_replace("![\?&]WSS_AB_TESTING.*!", "", $_SERVER['REQUEST_URI']));
 				}
 			} elseif (empty($_COOKIE['WSS_DISABLED']) && empty($_COOKIE['WSS_ENABLED'])) {
 				setcookie((microtime()*100)%100 < round($options['options']['footer']['ab']) ? "WSS_ENABLED" : "WSS_DISABLED", 1, time() + 60*60, '/', $_SERVER['HTTP_HOST'], false, true);
-				header("Location: " . $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') ? '&' : '?') . 'WSS_AB_TESTING');
+				if (!empty($_SERVER['HTTP_REFERER'])) {
+					header("Referer: " . $_SERVER['HTTP_REFERER']);
+				}
+				header("Location: " . $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') ? '&' : '?') . 'WSS_AB_TESTING' . $ref);
 			}
 		}
 /* initialize chained optimization */
