@@ -925,9 +925,9 @@ class web_optimizer {
 			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
-		if ($this->debug_mode || !empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
+		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
 			$stamp = '<script type="text/javascript">';
-			if ($this->debug_mode || !empty($this->options['page']['counter'])) {
+			if (!empty($this->options['page']['counter'])) {
 				$stamp .= '__WSS=(new Date()).getTime();';
 			}
 			if (!empty($this->options['page']['sprites_domloaded'])) {
@@ -2997,7 +2997,7 @@ class web_optimizer {
 			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
-				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
+				$this->content = preg_replace("@(<head[^>]*>)@is", "$1<script type=\"text/javascript\">__WSS=(new Date()).getTime();window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
 			}
 			if (!empty($this->options['page']['footer']) || !empty($this->options['page']['counter'])) {
 				$stamp = '';
