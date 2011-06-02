@@ -2138,13 +2138,15 @@ class web_optimizer {
 					!$this->options['javascript']['inline_scripts']) ||
 					(!empty($excluded_scripts_js[0]) &&
 						!empty($value['file']) &&
-						in_array(preg_replace("/.*\//", "", $value['file']), $excluded_scripts_js)) ||
+						(in_array(preg_replace("@.*/@", "", $value['file']), $excluded_scripts_js) ||
+						in_array($value['file'], $excluded_scripts_js))) ||
 						(!$this->options['javascript']['minify'] && $this->options['page']['parallel_javascript']))) ||
 					($value['tag'] == 'link' && ((empty($value['file']) &&
 					!$this->options['css']['inline_scripts']) ||
 					(!empty($excluded_scripts_css[0]) &&
-						!empty($value['file'] ) &&
-						in_array(preg_replace("@.*/@", "", $value['file']), $excluded_scripts_css)) ||
+						!empty($value['file']) &&
+						(in_array(preg_replace("@.*/@", "", $value['file']), $excluded_scripts_css) ||
+						in_array($value['file'], $excluded_scripts_css))) ||
 						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
 /* just skip them */
 					unset($this->initial_files[$key]);
