@@ -1771,6 +1771,10 @@ class web_optimizer {
 					$contents = str_replace('Shadowbox.init(', 'Shadowbox.path="' .
 						$this->shadowbox_base . '";Shadowbox.init(', $contents);
 			}
+/* remove HTML comments fro CSS code */
+			if ($options['header'] == 'css') {
+				$contents = str_replace(array('<!--', '-->'), '', $contents);
+			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
 			if ($options['minify_with'] == 'basic' &&
 				!empty($options['minify']) &&
@@ -2303,10 +2307,6 @@ class web_optimizer {
 					}
 /* remove BOM */
 					$content_from_file = str_replace('﻿', '', $content_from_file);
-/* remove HTML comments fro CSS code */
-					if ($value['tag'] == 'link') {
-						$value['content'] = $this->initial_files[$key]['content'] = str_replace(array('<!--', '-->'), '', $value['content']);
-					}
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
