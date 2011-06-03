@@ -2596,8 +2596,8 @@ class admin {
 			$this->save_option("['config']", $this->compress_options['config']);
 			$this->options_file_backup = $this->options_file;
 			$this->options_file = $config_file;
-			$this->save_option("['title']", constant('_WEBO_OPTIONS_TITLES_user'));
-			$this->save_option("['description']", constant('_WEBO_OPTIONS_DESCRIPTIONS_user'));
+			$this->save_option("['title']", $this->compress_options['title']);
+			$this->save_option("['description']", $this->compress_options['description']);
 			$this->save_options();
 			$this->options_file = $this->options_file_backup;
 			$this->save_option("['config']", $this->compress_options['config']);
