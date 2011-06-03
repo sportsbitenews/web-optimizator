@@ -3255,7 +3255,7 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'type' => 'smalltext',
 					'value' => $this->compress_options['footer']['ab'],
-					'disabled' => !empty($this->restrictions['wss_htaccess_mod_setenvif'])
+					'price' => 5
 				)
 			),
 			'performance' => array(
