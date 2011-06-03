@@ -2305,7 +2305,7 @@ class web_optimizer {
 					$content_from_file = str_replace('﻿', '', $content_from_file);
 /* remove HTML comments fro CSS code */
 					if ($value['tag'] == 'link') {
-						$value['content'] = str_replace(array('<!--', '-->'), '', $value['content']);
+						$value['content'] = $this->initial_files[$key]['content'] = str_replace(array('<!--', '-->'), '', $value['content']);
 					}
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
