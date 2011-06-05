@@ -1731,7 +1731,7 @@ class admin {
 			'html_writable' => @is_writable($html_cachedir),
 			'config_writable' => @is_writable($this->basepath . $this->options_file),
 			'memory_limit' => round($memory_limit) > 16,
-			'not_active' => $spot || !$this->compress_options['footer']['spot']
+			'not_active' => $spot || !$this->compress_options['footer']['spot'] || $this->compress_options['footer']['ab']
 		);
 		$warnings = array(
 			'index_writable' => @is_writable($website_root . 'index.php') ||
@@ -2441,7 +2441,7 @@ class admin {
 		if ($submit) {
 /* prevent PHP timeout on folders parsing */
 			$limit = @ini_get("max_execution_time");
-			set_time_limit($limit * 10);
+			@set_time_limit($limit * 10);
 			$this->time = time();
 			$results = $this->get_directory_files($directory,
 				'\\.(jpe?g|png|gif|tiff|bmp|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|txt|xml|css|js|ico|ttf|otf|eot|svg)$',
@@ -2476,7 +2476,7 @@ class admin {
 		if ($submit) {
 /* prevent PHP timeout on folders parsing */
 			$limit = @ini_get("max_execution_time");
-			set_time_limit($limit * 10);
+			@set_time_limit($limit * 10);
 			$this->time = time();
 			$results = $this->get_directory_files($directory,
 				'\\.(png|gif|jpe?g|bmp)$',
@@ -2510,7 +2510,7 @@ class admin {
 		if ($submit) {
 /* prevent PHP timeout on folders parsing */
 			$limit = @ini_get("max_execution_time");
-			set_time_limit($limit * 10);
+			@set_time_limit($limit * 10);
 			$this->time = time();
 			$results = $this->get_directory_files($directory,
 				'\\.(txt|xml|css|js|ico|ttf|otf|eot|svg)$',
