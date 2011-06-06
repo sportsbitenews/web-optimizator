@@ -1295,10 +1295,12 @@ class webo_cache_files extends webo_cache_engine
 
 function webo_files_list_handler () {
 	global $webo_files_list_var;
-	$error = error_get_last();
-	foreach ($error as $key => $value) {
-		if ($key == 'file' && $value == $webo_files_list_var) {
-			@file_put_contents($webo_files_list_var, '<?php ?>');
+	$error = @error_get_last();
+	if (!empty($error)) {
+		foreach ($error as $key => $value) {
+			if ($key == 'file' && $value == $webo_files_list_var) {
+				@file_put_contents($webo_files_list_var, '<?php ?>');
+			}
 		}
 	}
 }

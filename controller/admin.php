@@ -1411,9 +1411,9 @@ class admin {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = $this->file_get_contents($this->basepath . $this->index_before);
-		$before = strpos($evaluation1, '<?xml') === false ? '' : $before;
+		$before = strpos($before, '<?xml') === false ? '' : $before;
 		$after = $this->file_get_contents($this->basepath . $this->index_after);
-		$after = strpos($evaluation1, '<?xml') === false ? '' : $after;
+		$after = strpos($after, '<?xml') === false ? '' : $after;
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
 			$s_before = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $before);
