@@ -317,6 +317,8 @@ a.wssJ7:hover,a.wssJ7:focus,a.wssJ7:active{background:#ff7e53 0 -112px no-repeat
 a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-236px -112px no-repeat}
 .wssC4 .wssJ7,.wssU18 .wssJ7{background:#ff7e53 0 -228px no-repeat}
 .wssC4 .wssJ7 .wssJ6,.wssU18 .wssJ7 .wssJ6{background:-236px -228px no-repeat}
+.wssC4 a.wssJ7:hover,.wssC4 a.wssJ7:focus,.wssC4 a.wssJ7:active,.wssU18 a.wssJ7:hover,.wssU18 a.wssJ7:focus,.wssU18 a.wssJ7:active{background-position:0 -264px}
+.wssC4 a.wssJ7:hover .wssJ6,.wssC4 a.wssJ7:focus .wssJ6,.wssC4 a.wssJ7:active .wssJ6,.wssU18 a.wssJ7:hover .wssJ6,.wssU18 a.wssJ7:focus .wssJ6,.wssU18 a.wssJ7:active .wssJ6{background-position:-236px -264px}
 #wss_help .wssJ6{background-position:-236px -309px}
 .wssC7 .wssC4 .wssJ7{background-position:0 -76px}
 .wssC7 .wssC4 .wssJ7 .wssJ6{background-position:-236px -76px}
@@ -327,8 +329,8 @@ a.wssJ7:hover .wssJ6,a.wssJ7:focus .wssJ6,a.wssJ7:active .wssJ6{background:-236p
 .wssC14 a.wssJ7:hover,.wssC14 a.wssJ7:active,.wssC14 a.wssJ7:focus{background-position:0 -504px}
 .wssC14 a.wssJ7:hover .wssJ6,.wssC14 a.wssJ7:active .wssJ6,.wssC14 a.wssJ7:focus .wssJ6{background-position:-236px -504px}
 #wss_help a.wssJ5:hover .wssJ6,#wss_help a.wssJ5:active .wssJ6,#wss_help a.wssJ5:focus .wssJ6{background-position:-236px -348px}
-.wssH16 .wssJ7{left:0;margin:-2px 30px 0 10px;padding-right:0}
-.wssH16 .wssJ5{background-position:0 -388px;padding:0 30px;margin-top:-2px}
+.wssH16 a.wssJ7{left:0;margin:-2px 30px 0 10px;padding-right:0}
+.wssH16 a.wssJ5{background-position:0 -388px;padding:0 30px;margin-top:-2px}
 .wssH16 a.wssJ5:hover{background-position:0 -426px}
 .wssH16 .wssJ5 .wssJ6{background-position:-226px -388px;width:24px}
 .wssH16 a.wssJ5:hover .wssJ6{background-position:-226px -426px}
