@@ -979,7 +979,9 @@ class web_optimizer {
 						$this->content = str_replace('value="'. urldecode($value) .'"', 'value=""', $this->content);
 					}
 				}
-				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}())</script>$1', $this->content);
+				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){' .
+					(@is_dir($this->options['website_root'] . 'wp-content/plugins/wp-e-commerce/') ? 'jQuery.post("index.php?ajax=true","wpsc_ajax_action=get_cart",function(returned_data){eval(returned_data)});' : '') .
+					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}())</script>$1', $this->content);
 			}
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
