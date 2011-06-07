@@ -2269,7 +2269,7 @@ class web_optimizer {
 							$dynamic_file = $value['file_raw'];
 /* touch only non-external scripts */
 							if (!strpos($dynamic_file, "://")) {
-								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $value['file']), true);
+								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($_SERVER['REQUEST_URI'], array('file' => $value['file']), true);
 							}
 							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file($this->resolve_amps($dynamic_file), $value['tag']);
 							if (@is_file($static_file)) {
@@ -3169,6 +3169,8 @@ class web_optimizer {
 				}
 				$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
 				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
+			} elseif (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
+				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator(preg_replace("@[^/\\\]+$@", "", $file) . $endfile));
 			}
 		}
 /* remove HTTP host from absolute URL */
