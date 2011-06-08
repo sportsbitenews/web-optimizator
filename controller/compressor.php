@@ -2264,6 +2264,7 @@ class web_optimizer {
 					}
 					$content_from_file = '';
 					if (!empty($value['file'])) {
+						$value['file'] = preg_replace("@^(\.\./)+@", "", $value['file']);
 /* convert dynamic files to static ones */
 						if (!preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php/')) {
 							$dynamic_file = $value['file_raw'];
