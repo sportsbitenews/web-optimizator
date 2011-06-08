@@ -442,9 +442,14 @@ class webo_cache_files extends webo_cache_engine
 	/* Read wo.files.php to all_files array */
 
 	function __get_files_list() {
+		global $webo_files_list_var, $webo_files_list_ok;
+		$webo_files_list_var = $this->cache_dir . 'wo.files.php';
 		if ($this->all_files === false) {
-			if (@is_file($this->cache_dir . 'wo.files.php')) {
-				@include($this->cache_dir . 'wo.files.php');
+			if (@is_file($webo_files_list_var)) {
+				register_shutdown_function('webo_files_list_handler');
+				$webo_files_list_ok = 0;
+				@include($webo_files_list_var);
+				$webo_files_list_ok = 1;
 				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
 					$this->all_files = $webo_cache_files_list;
 				} else {
@@ -459,7 +464,7 @@ class webo_cache_files extends webo_cache_engine
 	/* Write all files' array to wo.files.php */
 
 	function __put_files_list() {
-		global $webo_files_list_var;
+		global $webo_files_list_var, $webo_files_list_ok;
 		$str = "<?php\n";
 		foreach ($this->all_files as $k => $v) {
 			if (!is_array($v)) {
@@ -471,7 +476,6 @@ class webo_cache_files extends webo_cache_engine
 		$length = strlen($str);
 		$i = 0;
 		$written = 0;
-		$webo_files_list_var = $this->cache_dir . 'wo.files.php';
 		@file_put_contents($webo_files_list_var . '.tmp', '<?php ?>');
 		while (($i < 3) && ($written != $length)) {
 			$written = @file_put_contents($webo_files_list_var . '.tmp', $str);
@@ -480,7 +484,9 @@ class webo_cache_files extends webo_cache_engine
 		@rename($webo_files_list_var . '.tmp', $webo_files_list_var);
 /* failover callback */
 		register_shutdown_function('webo_files_list_handler');
+		$webo_files_list_ok = 0;
 		@include($webo_files_list_var);
+		$webo_files_list_ok = 1;
 	}
 
 	/* Adds or updates entry. Expects key string and value to cache. */
@@ -1294,14 +1300,9 @@ class webo_cache_files extends webo_cache_engine
 /* Clean content of wo.files.php in case of failed store to this file. */
 
 function webo_files_list_handler () {
-	global $webo_files_list_var;
-	$error = @error_get_last();
-	if (!empty($error)) {
-		foreach ($error as $key => $value) {
-			if ($key == 'file' && $value == $webo_files_list_var) {
-				@file_put_contents($webo_files_list_var, '<?php ?>');
-			}
-		}
+	global $webo_files_list_var, $webo_files_list_ok;
+	if (empty($webo_files_list_ok)) {
+		@file_put_contents($webo_files_list_var, '<?php ?>');
 	}
 }
 

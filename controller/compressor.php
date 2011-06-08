@@ -1958,7 +1958,7 @@ class web_optimizer {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
 				if (!strpos($dynamic_file, "://") || strpos($dynamic_file, '//') === 0) {
-					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($dynamic_file, array('file' => $file), true);
+					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($_SERVER['REQUEST_URI'], array('file' => $file), true);
 				}
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
 			}
@@ -2242,7 +2242,7 @@ class web_optimizer {
 /* get an external file */
 								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
-									$file = $this->get_remote_file($this->resolve_amps($value['file_raw']), $value['tag']);
+									$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
 /* static file */
 								} else {
 									$file = $this->get_remote_file($value['file'], $value['tag']);
