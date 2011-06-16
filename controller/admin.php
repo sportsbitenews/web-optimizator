@@ -6384,8 +6384,7 @@ require valid-user';
 	* 
 	**/	
 	function clear_html_cache ($patterns) {
-		if (!empty($patterns))
-		{
+		if (!empty($patterns)) {
 			$this->cache_engine->delete_entries($patterns);
 		}
 	}
@@ -6409,13 +6408,13 @@ require valid-user';
 	function find_configs () {
 		@chdir($this->basepath);
 		$files = array();
-		foreach (glob('*.config.webo.php') as $file) {
-			$files[] = substr($file, 0, strlen($file) - 16);
+		foreach (glob('*config.webo.php') as $file) {
+			$files[] = substr($file, 0, strlen($file) - 15);
 		}
 		$str = "# config spot\n\t\\\$wss_configs = array('" . implode($files, "','") . "');";
 		$c = $this->file_get_contents($this->basepath . 'web.optimizer.php');
 		$c = preg_replace("/# config spot[^\)]+\);/", $str, $c);
-		file_put_contents($this->basepath . 'web.optimizer.php', $c);
+		$this->write_file($this->basepath . 'web.optimizer.php', $c);
 	}
 
 }
