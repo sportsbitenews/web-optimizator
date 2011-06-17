@@ -1712,7 +1712,7 @@ class admin {
 		$this->view->download("http://" .
 			$this->compress_options['host'] .
 			str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
-			'?web_optimizer_debug=1', $tmp_file);
+			'?web_optimizer_debug=1', $tmp_file, 60, $_SERVER['HTTP_HOST'], $this->compress_options['external_scripts']['user'], $this->compress_options['external_scripts']['pass']);
 		$wss_delay = time() + microtime() - $time;
 /* save default encoding */
 		if (empty($this->compress_options['charset']) && !empty($results[2])) {
@@ -1845,8 +1845,8 @@ class admin {
 		if (!empty($submit)) {
 			$this->compress_options['host'] = empty($this->input['wss_host']) ?
 				$this->compress_options['host'] : $this->input['wss_host'];
-			$this->compress_options['charset'] = empty($this->input['wss_charset']) ?
-				$this->compress_options['charset'] : $this->input['wss_charset'];
+			$this->compress_options['charset'] = empty($this->input['wss_encoding']) ?
+				$this->compress_options['charset'] : $this->input['wss_encoding'];
 			$this->compress_options['website_root'] = empty($this->input['wss_website_root']) ?
 				$this->compress_options['website_root'] : $this->input['wss_website_root'];
 			$this->compress_options['document_root'] = empty($this->input['wss_document_root']) ?
