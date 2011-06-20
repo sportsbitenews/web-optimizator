@@ -925,18 +925,38 @@ class web_optimizer {
 			!empty($this->options['page']['sprites'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
-		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
-			$stamp = '<script type="text/javascript">';
-			if (!empty($this->options['page']['counter'])) {
-				$stamp .= '__WSS=(new Date()).getTime();';
+		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab']) || !empty($this->options['page']['parallel'])) {
+			$stamp = '';
+			if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
+				$stamp .= '<script type="text/javascript">';
+				if (!empty($this->options['page']['counter'])) {
+					$stamp .= '__WSS=(new Date()).getTime();';
+				}
+				if (!empty($this->options['page']['sprites_domloaded'])) {
+					$stamp .= 'var _webo_hsprites=function(){};';
+				}
+				if (!empty($this->options['page']['ab'])) {
+					$stamp .= 'var _gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp","1"]);';
+				}
+				$stamp .= '</script>';
 			}
-			if (!empty($this->options['page']['sprites_domloaded'])) {
-				$stamp .= 'var _webo_hsprites=function(){};';
+			if (!empty($this->options['page']['parallel'])) {
+				$stamp .= '<meta http-equiv="x-dns-prefetch-control" content="on"' .
+					($this->xhtml ? '/' : '') .
+					'>';
+				$hosts = explode(" ", $this->options['page']['parallel_hosts']);
+				foreach ($hosts as $host) {
+					$stamp .= '<link rel="dns-prefetch" href="http' .
+						($this->https ? 's' : '') .
+						'://' .
+						$host .
+						((strpos($host, '.') === false) ? '.' . $this->host : '') .
+						'"' .
+						($this->xhtml ? '/' : '') .
+						'>';
+					}
+				}
 			}
-			if (!empty($this->options['page']['ab'])) {
-				$stamp .= 'var _gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp","1"]);';
-			}
-			$stamp .= '</script>';
 			if ($this->options['page']['html_tidy'] &&
 				($headpos = strpos($this->content, '<head'))) {
 					$headend = strpos($this->content, '>', $headpos);
@@ -1465,13 +1485,6 @@ class web_optimizer {
 		}
 		$cache_file = urlencode($cache_file . $this->ua_mod);
 		$physical_file = $options['cachedir'] . $cache_file . "." . $options['ext'];
-		$external_file = 'http' . $this->https . '://' .
-			(empty($options['host']) ?
-				$_SERVER['HTTP_HOST'] :
-				(empty($options['https']) || !$this->https ?
-				$options['host'] :
-				$options['https'])) .
-			str_replace($this->options['document_root'], "/", $physical_file);
 		if (empty($this->options['cache_version'])) {
 			if (@is_file($physical_file)) {
 				$timestamp = @filemtime($physical_file);
@@ -1518,6 +1531,13 @@ class web_optimizer {
 			}
 			return $source;
 		}
+		$timestamp = $this->time;
+		$external_file = 'http' . $this->https . '://' .
+			(empty($options['host']) ? $_SERVER['HTTP_HOST'] :
+				(empty($options['https']) || !$this->https ?
+				$options['host'] :
+				$options['https'])) .
+				$this->get_new_file_name($options, $cache_file, $timestamp);
 		foreach ($this->libraries as $klass => $library) {
 			if (!class_exists($klass, false)) {
 				require($options['installdir'] . 'libs/php/' . $library);
@@ -3267,7 +3287,7 @@ class web_optimizer {
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false) {
-					$css_image = trim(str_replace(array('"', "'"), '', preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[4])));
+					$css_image = trim(preg_replace("!^['\"]?(.*)['\"]?$!", "$1", preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[4])));
 					$image_saved = $css_image;
 					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
 					$chunks = explode(".", $css_image);
@@ -3354,12 +3374,12 @@ class web_optimizer {
 							'}';
 						$content .= '* ' . $sel . '*+' . $sel;
 					}
-				} elseif (!empty($image[3])) {
+				} elseif (!empty($image[4])) {
 					$compressed .= $image[1] .
 						'{' .
 						$image[2] . 
 						':' .
-						$image[3] .
+						$image[4] .
 						'}';
 				}
 			}
