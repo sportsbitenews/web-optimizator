@@ -1165,7 +1165,7 @@ class web_optimizer {
 /* image file name to check through ignore list */
 				$img = preg_replace("@.*/@", "", $old_src);
 				$absolute_src = $this->convert_path_to_absolute($old_src,
-					array('file' => $request_file));
+					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if (!empty($this->options['page']['sprites']) &&
 						((!in_array($img, $ignore_sprites) && empty($this->options['css']['css_sprites_ignore'])) ||

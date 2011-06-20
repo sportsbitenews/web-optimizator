@@ -1865,8 +1865,8 @@ class admin {
 				'' : $this->input['wss_external_scripts_user'];
 			$this->compress_options['external_scripts']['pass'] = empty($this->input['wss_external_scripts_pass']) ?
 				'' : $this->input['wss_external_scripts_pass'];
-			$this->compress_options['restricted'] = empty($this->input['wss_restricted']) ?
-				'' : str_replace(array("\r\n", "\n"), array(' ', ' '), $this->input['wss_restricted']);
+			$this->compress_options['restricted'] = trim(empty($this->input['wss_restricted']) ?
+				'' : str_replace(array("\r\n", "\n"), array(' ', ' '), $this->input['wss_restricted']));
 			if (!@is_dir($this->compress_options['website_root'])) {
 				$this->error[1] = 1;
 			}
