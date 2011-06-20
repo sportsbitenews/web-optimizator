@@ -954,7 +954,6 @@ class web_optimizer {
 						'"' .
 						($this->xhtml ? '/' : '') .
 						'>';
-					}
 				}
 			}
 			if ($this->options['page']['html_tidy'] &&
