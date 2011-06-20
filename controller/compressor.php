@@ -167,12 +167,9 @@ class web_optimizer {
 				($this->options['page']['flush'] ||
 				empty($this->encoding_ext) ||
 				$gzip_me ? '' : $this->encoding_ext);
-			if (defined('WSS_CACHE_MISS'))
-			{
+			if (defined('WSS_CACHE_MISS')) {
 				$timestamp = 0;
-			}
-			else
-			{
+			} else {
 				$timestamp = $this->cache_engine->get_mtime($cache_key);
 			}
 /* try to get from cache non-gzipped page if gzipped one doesn't exist */
@@ -180,8 +177,7 @@ class web_optimizer {
 				$timestamp = $this->cache_engine->get_mtime($cache_plain_key);
 				$gzip_me = 1;
 			}
-			if (!$timestamp)
-			{
+			if (!$timestamp) {
 				define('WSS_CACHE_MISS', 1);
 			}
 			if ($timestamp &&
@@ -223,6 +219,10 @@ class web_optimizer {
 					header ("Content-Length: 0");
 					while (@ob_end_clean());
 					die();
+				}
+/* define gzip headers */
+				if ($this->nogzip) {
+					$this->set_gzip_header();
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
