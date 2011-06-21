@@ -1756,7 +1756,7 @@ class web_optimizer {
 			if ($options['header'] == "javascript" && $options['minify']) {
 				$contents = $this->minify_javascript($contents, $options);
 			}
-/* we need to exclude some files from ninify */
+/* we need to exclude some files from minify */
 		} elseif(!empty($options['minify_exclude']) && $options['minify']) {
 			$exclude_list = explode(" ", trim($options['minify_exclude']));
 			foreach($external_array as $key => $info) {
@@ -1860,6 +1860,12 @@ class web_optimizer {
 			empty($minified_code))) {
 					$this->jsmin = new JSMin($code);
 					$minified_code = $this->jsmin->minify($code);
+		}
+		if (empty($options['minify_with']) || empty($minified_code)) {
+/* Remove comments // */
+			$minified_code = preg_replace("!^//.*\r?\n!is", "", $code);
+/* Remove comments /**, leave conditional compilation */
+			$minified_code = preg_replace("!/\*[^@].*?\*/!is", "", $minified_code);
 		}
 		if (!empty($minified_code)) {
 			$code = $minified_code;
