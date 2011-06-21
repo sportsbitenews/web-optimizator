@@ -1863,9 +1863,9 @@ class web_optimizer {
 		}
 		if (empty($options['minify_with']) || empty($minified_code)) {
 /* Remove comments // */
-			$minified_code = preg_replace("!^//.*\r?\n!is", "", $code);
+			$minified_code = preg_replace("!^[\s\t]*//.*\r?\n!i", "", $code);
 /* Remove comments /**, leave conditional compilation */
-			$minified_code = preg_replace("!/\*[^@].*?\*/!is", "", $minified_code);
+			$minified_code = preg_replace("!^/\*[^@].*?\*/!is", "", $minified_code);
 		}
 		if (!empty($minified_code)) {
 			$code = $minified_code;
