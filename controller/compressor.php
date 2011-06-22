@@ -1865,7 +1865,7 @@ class web_optimizer {
 /* Remove comments // */
 			$minified_code = preg_replace("!^[\s\t]*//.*\r?\n!i", "", $code);
 /* Remove comments /**, leave conditional compilation */
-			$minified_code = preg_replace("!^/\*[^@].*?\*/!is", "", $minified_code);
+			$minified_code = preg_replace("!(^/\n)/\*[^@].*?\*/!is", "", $minified_code);
 		}
 		if (!empty($minified_code)) {
 			$code = $minified_code;
