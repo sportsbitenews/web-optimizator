@@ -5331,7 +5331,7 @@ ForceType font/otf
 </FilesMatch>',
 				'mod_rewrite' => "RewriteEngine On
 RewriteRule wo\.cookie\.php$ " .
-str_replace($this->compress_options['document_root'], "/", str_replace("\\", "/", dirname(__FILE__))) .
+str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 "/../libs/js/yass.loader.js"
 			);
 			if (@function_exists('curl_init')) {
