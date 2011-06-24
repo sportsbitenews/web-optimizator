@@ -1274,9 +1274,8 @@ class webo_cache_files extends webo_cache_engine
 		}
 		$size = 0;
 		$count = 0;
-		$all_files = xcache_get('webo_files_list');
+		$all_files = @xcache_get('webo_files_list');
 		if (($all_files === NULL) || !is_array($all_files)) {
-			xcache_clear_cache();
 			xcache_set('webo_files_list', array());
 		} else {
 			foreach($all_files as $key => $value) {
