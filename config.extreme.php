@@ -127,4 +127,3 @@ $compress_options['htaccess']['mod_setenvif']="1";
 $compress_options['htaccess']['mod_rewrite']="1";
 $compress_options['htaccess']['mod_mime']="1";
 $compress_options['htaccess']['local']="1";
-?>

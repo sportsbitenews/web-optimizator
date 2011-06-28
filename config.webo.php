@@ -282,4 +282,3 @@ $compress_options['points'] = "";
 ## Web Optimizer license, empty for free edition
 $compress_options['license'] = "";
 #########################################
-?>
