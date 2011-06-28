@@ -2567,6 +2567,8 @@ class admin {
 		$svn = $stable ? $this->version_stable ? $this->svn_generic . 'versions/' . $this->version_stable . '/' : $this->svn : $this->svn_beta;
 		$this->view->download($svn . $file, $file);
 		$i = 1;
+		$title = $this->compress_options['title'];
+		$description = $this->compress_options['description'];
 		if (@is_file($file)) {
 			$files = preg_split("/\r?\n/", $this->file_get_contents($file));
 			$total = count($files);
@@ -2596,8 +2598,8 @@ class admin {
 			$this->save_option("['config']", $this->compress_options['config']);
 			$this->options_file_backup = $this->options_file;
 			$this->options_file = $config_file;
-			$this->save_option("['title']", $this->compress_options['title']);
-			$this->save_option("['description']", $this->compress_options['description']);
+			$this->save_option("['title']", $title);
+			$this->save_option("['description']", $description);
 			$this->save_options();
 			$this->options_file = $this->options_file_backup;
 			$this->save_option("['config']", $this->compress_options['config']);

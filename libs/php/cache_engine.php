@@ -1140,14 +1140,14 @@ class webo_cache_files extends webo_cache_engine
 		if (!$this->enabled) {
 			return;
 		}
-		$entries = xcache_get('webo_files_list');
+		$entries = @xcache_get('webo_files_list');
 		if(($entries === NULL) || !is_array($entries)) {	//filelist is broken or removed from server so we need to clear cache
-			xcache_unset('user');
+			@xcache_unset('user');
 			$entries = array();
 		}
-		xcache_set($this->prefix . $key, array('value' => $value, 'time' => $time));
+		@xcache_set($this->prefix . $key, array('value' => $value, 'time' => $time));
 		$entries[$key] = 1;
-		xcache_set('webo_files_list', $entries);
+		@xcache_set('webo_files_list', $entries);
 	}
 
 	/* Get cache entry by key. Expects key string. */
@@ -1159,7 +1159,7 @@ class webo_cache_files extends webo_cache_engine
 		if (!empty($this->cached[$key]['value'])) {
 			return $this->cached[$key]['value'];
 		}
-		$item = xcache_get($this->prefix . $key);
+		$item = @xcache_get($this->prefix . $key);
 		if(empty($item['value'])) {
 			return false;
 		} else {
@@ -1175,23 +1175,23 @@ class webo_cache_files extends webo_cache_engine
 			return false;
 		}
 		if (!empty($time)) {
-			$all_files = xcache_get('webo_files_list');
+			$all_files = @xcache_get('webo_files_list');
 			if (($all_files === NULL) || !is_array($all_files)) {
-				xcache_unset('user');
-				xcache_set('webo_files_list', array());
+				@xcache_unset('user');
+				@xcache_set('webo_files_list', array());
 				return;
 			}
 			$changed = 0;
 			foreach($all_files as $key => $value) {
 				$t = $this->get_mtime($key);
 				if ($t + $interval < $time) {
-					xcache_unset($this->prefix . $key);
+					@xcache_unset($this->prefix . $key);
 					unset($all_files[$key]);
 					$changed = 1;
 				}
 			}
 			if ($changed) {
-				xcache_set('webo_files_list', $all_files);
+				@xcache_set('webo_files_list', $all_files);
 			}
 		}
 	}
@@ -1203,30 +1203,30 @@ class webo_cache_files extends webo_cache_engine
 			return false;
 		}
 		if (!empty($patterns)) {
-			$all_files = xcache_get('webo_files_list');
+			$all_files = @xcache_get('webo_files_list');
 			if(($all_files === NULL) || !is_array($all_files)) {
-				xcache_unset('user');
-				xcache_set('webo_files_list', array());
+				@xcache_unset('user');
+				@xcache_set('webo_files_list', array());
 				return;
 			}
 			if (is_array($patterns)) {
 				foreach($patterns as $pattern) {
 					foreach($all_files as $key => $value) {
 						if (@preg_match('/^' . strtr(addcslashes($pattern, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key)) {
-							xcache_unset($this->prefix . $key);
+							@xcache_unset($this->prefix . $key);
 							unset($all_files[$key]);
 						}
 					}
 				}
-				xcache_set('webo_files_list', $all_files);
+				@xcache_set('webo_files_list', $all_files);
 			} else {
 				foreach($all_files as $key => $value) {
 					if (@preg_match('/^' . strtr(addcslashes($patterns, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key)) {
-						xcache_unset($this->prefix . $key);
+						@xcache_unset($this->prefix . $key);
 						unset($all_files[$key]);
 					}
 				}
-				xcache_set('webo_files_list', $all_files);
+				@xcache_set('webo_files_list', $all_files);
 			}
 		}
 	}
@@ -1240,7 +1240,7 @@ class webo_cache_files extends webo_cache_engine
 		if(!empty($this->cached[$key]['time'])) {
 			return $this->cached[$key]['time'];
 		}
-		$item = xcache_get($this->prefix . $key);
+		$item = @xcache_get($this->prefix . $key);
 		if (empty($item['time'])) {
 			return 0;
 		} else {
@@ -1255,12 +1255,12 @@ class webo_cache_files extends webo_cache_engine
 		if (!$this->enabled) {
 			return false;
 		}
-		$item = xcache_get($this->prefix . $key);
+		$item = @xcache_get($this->prefix . $key);
 		if (empty($item['time'])) {
 			return false;
 		} else {
 			$item['time'] = $time;
-			xcache_set($key, $item);
+			@xcache_set($key, $item);
 		}
 	}
  
@@ -1276,11 +1276,11 @@ class webo_cache_files extends webo_cache_engine
 		$count = 0;
 		$all_files = @xcache_get('webo_files_list');
 		if (($all_files === NULL) || !is_array($all_files)) {
-			xcache_set('webo_files_list', array());
+			@xcache_set('webo_files_list', array());
 		} else {
 			foreach($all_files as $key => $value) {
 				if(@preg_match('/^' . strtr(addcslashes($mask, '\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $key)) {
-					$item = xcache_get($this->prefix . $key);
+					$item = @xcache_get($this->prefix . $key);
 					if ($item !== NULL) {
 						$count++;
 						$size += strlen(serialize($item));
