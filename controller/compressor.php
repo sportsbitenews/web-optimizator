@@ -1843,7 +1843,7 @@ class web_optimizer {
 
 	function minify_javascript ($code, $options) {
 		$minified_code = '';
-		if ($options['minify_with'] == 'packer') {
+		if ($options['minify_with'] == 'google') {
 			$this->googlecompiler = new GoogleCompiler($options['cachedir'],
 				$options['installdir']);
 			$minified_code = $this->googlecompiler->compress($code);
