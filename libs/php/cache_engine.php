@@ -502,10 +502,10 @@ class webo_cache_files extends webo_cache_engine
 		if (!@is_dir(dirname($path))) {
 			$this->__make_path($path);
 		}
-		file_put_contents($path . '.tmp', $value);
-		rename($path . '.tmp', $path);
-		touch($path);
-		chmod($path, octdec("0644"));
+		@file_put_contents($path . '.tmp', $value);
+		@rename($path . '.tmp', $path);
+		@touch($path);
+		@chmod($path, octdec("0644"));
 	}
 
 	/* Get cache entry by key. Expects key string. */
