@@ -2892,7 +2892,7 @@ class web_optimizer {
 			 } elseif (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</BODY>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
 			 } else {
-				if (preg_match('@</body>@is'), $this->content) {
+				if (preg_match('@</body>@is', $this->content)) {
 					$this->content = preg_replace('@</body>@i', $before_body . "$0" , $this->content);
 				} else {
 /* a number of engines doesn't set </body> */
