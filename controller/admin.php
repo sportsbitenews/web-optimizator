@@ -6367,13 +6367,10 @@ require valid-user';
 			'2' => '',
 			'3' => ''
 			);
-		if (!empty($cache_engines[@$this->compress_options['performance']['cache_engine']]))
-		{
+		if (!empty($cache_engines[round($this->compress_options['performance']['cache_engine'])])) {
 			$engine_num = $this->compress_options['performance']['cache_engine'];
 			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['performance']['cache_engine']];
-		}
-		else
-		{
+		} else {
 			$engine_num = 0;
 			$engine_name = 'webo_cache_' . $cache_engines[0];
 		}
