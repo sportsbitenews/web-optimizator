@@ -3576,13 +3576,10 @@ class web_optimizer {
 			'2' => '',
 			'3' => ''
 			);
-		if (!empty($cache_engines[$this->options['page']['cache_engine']]))
-		{
+		if (!empty($cache_engines[$this->options['page']['cache_engine']])) {
 			$engine_name = 'webo_cache_' . $cache_engines[$this->options['page']['cache_engine']];
 			$engine_num = $this->options['page']['cache_engine'];
-		}
-		else
-		{
+		} else {
 			$engine_name = 'webo_cache_' . $cache_engines[0];
 			$engine_num = 0;
 		}
@@ -3595,8 +3592,7 @@ class web_optimizer {
 	* 
 	**/	
 	function clear_html_cache ($patterns) {
-		if (!empty($patterns))
-		{
+		if (!empty($patterns)) {
 			$this->cache_engine->delete_entries($patterns);
 		}
 	}

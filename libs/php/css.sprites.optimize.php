@@ -1177,9 +1177,8 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 				$content = $this->file_get_contents($file);
 				if (empty($content) || strpos($content, "DOCTYPE") || strpos($content, 'Error Code')) {
 					@copy($file . '.backup', $file);
-				} else {
-					@unlink($file . '.backup');
 				}
+				@unlink($file . '.backup');
 			}
 			@unlink($tmp_file);
 		}
