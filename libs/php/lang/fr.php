@@ -312,8 +312,12 @@ define('_WEBO_html_cache_flush_only_HELP', 'Le cache HTML contiendra pas toute l
 define('_WEBO_html_cache_flush_only_EFFECT', 'Website rendering speedup by 10-40%');
 define('_WEBO_html_cache_flush_size', 'Taille du cache vidé (in bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Taille de la partie page web dont le cache sera vidé. Cela peut-être réglé( afin d\'éviter des problèmes avec les navigateurs et connections réseau. Une valeur vide (ou zéro) donne lieu à un vidage de cache pour toute la page avant la balise de fermeture &lt;/head&gt;.');
-define('_WEBO_html_cache_ignore_list', 'Liste des parties des URLs à ignorer pour le cache.( séparées par un espace)');
-define('_WEBO_html_cache_ignore_list_HELP', 'Souvent, le cache coté serveur ne peut pas être utilisé pour des pages avec un contenu dynamique. Par exemple pour les pages comptes utilisateurs, pages de statistiques et autres. Cette option vous permet de fixer des parties du URL (masques) pour exclure les pages depuis le cache serveur. ');
+define('_WEBO_html_cache_ignore', 'Exclude / include URLs for HTML cache');
+define('_WEBO_html_cache_ignore_HELP', 'All URLs listed below will be excluded from HTML cache, or there will be included only these URLs.');
+define('_WEBO_html_cache_ignore1', 'Exclude the following URLs from HTML cache');
+define('_WEBO_html_cache_ignore2', 'Include to HTML cache the following URLs');
+define('_WEBO_html_cache_ignore_list', 'Liste des parties des URLs (séparées par un espace)');
+define('_WEBO_html_cache_ignore_list_HELP', 'Souvent, le cache coté serveur ne peut pas être utilisé pour des pages avec un contenu dynamique. Par exemple pour les pages comptes utilisateurs, pages de statistiques et autres. Cette option vous permet de fixer des parties du URL (masques) pour exclure les pages depuis le cache serveur. You can also set # for home page.');
 define('_WEBO_html_cache_ignore_list_EFFECT', 'Server side caching compatibility with dynamic pages');
 define('_WEBO_html_cache_allowed_list', 'Liste de AGENTS UTILISATEURS (robots) a ajouter au cache. (separé par un espace)');
 define('_WEBO_html_cache_allowed_list_HELP', 'Cette option vous permet de fixer une liste d\'AGENTS UTILISATEURS qui recevront que les pages cache en HTML. Par exemple faire une cache des pages HTML pour tous les moteurs de recherche peut réduire la taille de chargement coté serveur.');

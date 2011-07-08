@@ -3469,6 +3469,12 @@ class admin {
 					'value' => $this->compress_options['html_cache']['flush_size'],
 					'type' => 'smalltext'
 				),
+				'html_cache_ignore' => array(
+					'hidden' => $this->premium < 1 ? 1 : 0,
+					'value' => $this->compress_options['html_cache']['ignore'],
+					'type' => 'radio',
+					'count' => 2
+				),
 				'html_cache_ignore_list' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['ignore_list'],
@@ -3850,7 +3856,6 @@ class admin {
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
 			'wss_css_sprites_truecolor_in_jpeg',
-			'wss_css_sprites_ignore',
 			'wss_css_sprites_html_limit',
 			'wss_parallel_custom',
 			'wss_fee') as $val) {
@@ -3913,6 +3918,7 @@ class admin {
 			'wss_far_future_expires_external',
 			'wss_html_cache_enabled',
 			'wss_html_cache_flush_only',
+			'wss_html_cache_ignore',
 			'wss_html_cache_enhanced',
 			'wss_html_cache_cleanup',
 			'wss_sql_cache_enabled',
@@ -3924,6 +3930,7 @@ class admin {
 			'wss_css_sprites_enabled',
 			'wss_css_sprites_aggressive',
 			'wss_css_sprites_extra_space',
+			'wss_css_sprites_ignore',
 			'wss_css_sprites_no_ie6',
 			'wss_css_sprites_html_sprites',
 			'wss_css_sprites_html_page',

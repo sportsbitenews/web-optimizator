@@ -303,7 +303,11 @@ define('_WEBO_html_cache_flush_only_HELP', 'ایچ ٹی ایم ایل کیشے �
 define('_WEBO_html_cache_flush_only_EFFECT', 'ویب سائٹ رینڈرنگ کی رفتار میں 10-40% اضافہ');
 define('_WEBO_html_cache_flush_size', 'فلش مواد سائز (بائٹس میں)');
 define('_WEBO_html_cache_flush_size_HELP', 'ویب صفحہ کے کیشے شدہ فلشڈ حصہ کا سائز۔ اسے فکس کیا جا سکتا ہے (تاکہ براؤزر یا نیٹ ورک کنکشن کے مسائل کو ختم کیا جا سکے)۔ خالی (یا زیرو) قیمت &lt;/head&gt;ٹیگ بند ہونے سے پہلے پورے ویب صفحہ کے مواد کو فلش کر دے گی۔');
-define('_WEBO_html_cache_ignore_list', 'کیشے میں شامل نہ ہونے والے URLs کے حصوں کی لسٹ (اسپیس سے علیحدہ کریں)۔');
+define('_WEBO_html_cache_ignore', 'Exclude / include URLs for HTML cache');
+define('_WEBO_html_cache_ignore_HELP', 'All URLs listed below will be excluded from HTML cache, or there will be included only these URLs.');
+define('_WEBO_html_cache_ignore1', 'Exclude the following URLs from HTML cache');
+define('_WEBO_html_cache_ignore2', 'Include to HTML cache the following URLs');
+define('_WEBO_html_cache_ignore_list', 'List of parts of URLs (separated by space)');
 define('_WEBO_html_cache_ignore_list_HELP', 'صفحات جن پر متحرک مواد ہوتا ہے ، ان کیلئے سرور سائیڈ کیشے استعمال نہیں کیا جا سکتا۔ مثال کے طور پر یوزر اکاؤنٹ صفحات، اعداد و شمار کے صفحات وغیرہ۔ اس اختیار کی مدد سے آپ URL کے حصوں (ماسکس) کو سیٹ کر سکتے ہیں تاکہ انہیں سرور سائیڈ کیشے میں شامل نہ کیا جائے۔');
 define('_WEBO_html_cache_ignore_list_EFFECT', 'متحرک صفحات کے ساتھ سرور سائیڈ کیشے مطابقت');
 define('_WEBO_html_cache_allowed_list', 'یوزر ایجنٹ (روبوٹ) کی فہرست جنہیں کیشے میں شامل کیا جانا ہے (اسپیس سے علیحدہ کریں)۔');

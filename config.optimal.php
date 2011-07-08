@@ -71,6 +71,7 @@ $compress_options['html_cache']['enabled']="1";
 $compress_options['html_cache']['timeout']="600";
 $compress_options['html_cache']['flush_only']="0";
 $compress_options['html_cache']['flush_size']="0";
+$compress_options['html_cache']['ignore']="0";
 $compress_options['html_cache']['ignore_list']="";
 $compress_options['html_cache']['allowed_list']="office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 $compress_options['html_cache']['additional_list']="";

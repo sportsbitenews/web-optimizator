@@ -139,8 +139,11 @@ class web_optimizer {
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
-				(!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
+				(!$this->options['page']['ignore_include'] && 
+				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
 				(strpos($this->options['page']['cache_ignore'], '#') === false || !$homepage)) ||
+				($this->options['page']['ignore_include'] && preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
+				(strpos($this->options['page']['cache_ignore'], '#') === false || $homepage)) ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
 			!$retricted_cookie &&
@@ -484,6 +487,7 @@ class web_optimizer {
 					$this->premium > 1,
 				"flush_size" => $this->options['html_cache']['flush_size'],
 				"cache_ignore" => $this->premium ? $this->options['html_cache']['ignore_list'] : '',
+				"ignore_include" => $this->premium ? $this->options['html_cache']['ignore'] : '',
 				"cache_params" => $this->premium > 1 ? $this->options['html_cache']['params'] : '',
 				"allowed_user_agents" => $this->premium > 1 ? $this->options['html_cache']['allowed_list'] : '',
 				"exclude_cookies" => $this->premium > 1 ? $this->options['html_cache']['additional_list'] : '',

@@ -313,8 +313,12 @@ define('_WEBO_html_cache_flush_only_HELP', 'HTML cache will contain not the whol
 define('_WEBO_html_cache_flush_only_EFFECT', 'Website rendering speedup by 10-40%');
 define('_WEBO_html_cache_flush_size', 'Gr&ouml;&szlig;e des zu sp&uuml;lenden Inhalts (in Bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Size of cached flushed part of a web page. It can be fixed (to avoid any issues with browsers or network connection). Empty (or zero) value leads to flush the whole web page content before closing &lt;/head&gt; tag.');
-define('_WEBO_html_cache_ignore_list', 'Liste der Teile von URLs, die beim Zwischenspeichern ignoriert werden');
-define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching.');
+define('_WEBO_html_cache_ignore', 'Exclude / include URLs for HTML cache');
+define('_WEBO_html_cache_ignore_HELP', 'All URLs listed below will be excluded from HTML cache, or there will be included only these URLs.');
+define('_WEBO_html_cache_ignore1', 'Exclude the following URLs from HTML cache');
+define('_WEBO_html_cache_ignore2', 'Include to HTML cache the following URLs');
+define('_WEBO_html_cache_ignore_list', 'Liste der Teile von URLs');
+define('_WEBO_html_cache_ignore_list_HELP', 'Ofter server side caching can\'t be used for pages with dynamic content. For example user account pages, statistic pages, and more. This option allows you to set parts of URL (masks) to exclude pages from server side caching. You can also set # for home page.');
 define('_WEBO_html_cache_ignore_list_EFFECT', 'Server side caching compatibility with dynamic pages');
 define('_WEBO_html_cache_allowed_list', 'Liste der USER AGENTS (Robots), die zwischengespeichert werden');
 define('_WEBO_html_cache_allowed_list_HELP', 'This option allows you to set a list of USER AGENTS which will receive only cached HTML pages. For example caching HTML pages for all search engines can reduce server side load.');

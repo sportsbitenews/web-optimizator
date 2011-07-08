@@ -159,6 +159,8 @@ $compress_options['html_cache']['timeout'] = "600";
 $compress_options['html_cache']['flush_only'] = "0";
 ## Flush size of HTML body
 $compress_options['html_cache']['flush_size'] = "1024";
+## Ignore - 0, or include - 1, URL for HTML cache
+$compress_options['html_cache']['ignore'] = "0";
 ## Parts of ignore URL for HTML cache, separated by space
 $compress_options['html_cache']['ignore_list'] = "";
 ## Parts of user agents to output cached HTML, separated by space

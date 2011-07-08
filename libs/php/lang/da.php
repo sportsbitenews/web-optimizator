@@ -311,8 +311,12 @@ define('_WEBO_html_cache_flush_only_HELP', 'HTML cache vil ikke indeholde hele s
 define('_WEBO_html_cache_flush_only_EFFECT', 'Forøgelse af visningstid med 10-40%');
 define('_WEBO_html_cache_flush_size', 'Flush indholdsstørrelse (i bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Størrelse af cached flushed dele af hjemmesiden. Det kan være fast (for at undgå problemer med browsere eller netværksforbindelse). Tom (eller 0) værdi, vil flushe hele side indholdet før lukningstag &lt;/head&gt;.');
-define('_WEBO_html_cache_ignore_list', 'Liste af URLs som skal ignoreres fra caching (adskil med mellemrum)');
-define('_WEBO_html_cache_ignore_list_HELP', 'Serverside caching kan ofte ikke blive brugt for sider med dynamisk indhold. Foreksempel brugerkonto sider, statistik sider, og andre. Denne indstilling tillader dig at angive forskellige URL (masker), som ekskluderes fra serverside caching.');
+define('_WEBO_html_cache_ignore', 'Exclude / include URLs for HTML cache');
+define('_WEBO_html_cache_ignore_HELP', 'All URLs listed below will be excluded from HTML cache, or there will be included only these URLs.');
+define('_WEBO_html_cache_ignore1', 'Exclude the following URLs from HTML cache');
+define('_WEBO_html_cache_ignore2', 'Include to HTML cache the following URLs');
+define('_WEBO_html_cache_ignore_list', 'Liste af URLs (adskil med mellemrum)');
+define('_WEBO_html_cache_ignore_list_HELP', 'Serverside caching kan ofte ikke blive brugt for sider med dynamisk indhold. Foreksempel brugerkonto sider, statistik sider, og andre. Denne indstilling tillader dig at angive forskellige URL (masker), som ekskluderes fra serverside caching. You can also set # for home page.');
 define('_WEBO_html_cache_ignore_list_EFFECT', 'Serverside caching kompatibilitet med dynamiske sider');
 define('_WEBO_html_cache_allowed_list', 'Liste over USER AGENTS (robots) tilføjelse til caching (adskil med mellemrum)');
 define('_WEBO_html_cache_allowed_list_HELP', 'Denne indstilling tillader dig at angive en liste over USER AGENTS, som kun vil modtage cached HTML sider. Foreksempel caching af HTML sider for alle søgemaskiner, kan reducere belastningen af serveren.');

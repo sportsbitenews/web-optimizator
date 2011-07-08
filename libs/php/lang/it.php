@@ -312,8 +312,12 @@ define('_WEBO_html_cache_flush_only_HELP', 'HTML cache non conterrà l\'intero c
 define('_WEBO_html_cache_flush_only_EFFECT', 'Velocità di rendering aumentata del 10-40%');
 define('_WEBO_html_cache_flush_size', 'Flush content size (in bytes)');
 define('_WEBO_html_cache_flush_size_HELP', 'Dimensione cache flushed part di una web page. Può essere sistemata (per evitare problemi con i browser o le connessioni). Valori vuoti (o zero) conducono al flush dell\'intero sito web prima del tag di chiusura &lt;/head&gt;.');
-define('_WEBO_html_cache_ignore_list', 'Lista degli URLs da ignorare per la cache (separati da spazi)');
-define('_WEBO_html_cache_ignore_list_HELP', 'A volte la cache lato Server non può essere usata per siti con contenuti dinamici. Per esempio le pagine degli account utente, pagine di statistiche, e altro. Questa opzione ti permetterà di impostare parti di URL (maschere) da escludere dalla cache Server Side.');
+define('_WEBO_html_cache_ignore', 'Exclude / include URLs for HTML cache');
+define('_WEBO_html_cache_ignore_HELP', 'All URLs listed below will be excluded from HTML cache, or there will be included only these URLs.');
+define('_WEBO_html_cache_ignore1', 'Exclude the following URLs from HTML cache');
+define('_WEBO_html_cache_ignore2', 'Include to HTML cache the following URLs');
+define('_WEBO_html_cache_ignore_list', 'Lista degli URLs (separati da spazi)');
+define('_WEBO_html_cache_ignore_list_HELP', 'A volte la cache lato Server non può essere usata per siti con contenuti dinamici. Per esempio le pagine degli account utente, pagine di statistiche, e altro. Questa opzione ti permetterà di impostare parti di URL (maschere) da escludere dalla cache Server Side. You can also set # for home page.');
 define('_WEBO_html_cache_ignore_list_EFFECT', 'Compatibilità Cache Server Side per siti dinamici');
 define('_WEBO_html_cache_allowed_list', 'Lista degli USER AGENTS (robots) da aggiungere alla cache (separati da spazi)');
 define('_WEBO_html_cache_allowed_list_HELP', 'Questa opzione ti permetterà di impostare una lista di USER AGENTS che riceveranno solo pagine HTML di cache. Per esempio inserire in cache pagine per TUTTI i motori di ricerca diminuirà il lavoro del server.');
