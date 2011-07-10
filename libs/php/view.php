@@ -264,7 +264,7 @@ class compressor_view {
 					empty($_SERVER['HTTP_USER_AGENT']) ?
 					"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
 					$_SERVER['HTTP_USER_AGENT']);
-				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
+				@curl_setopt($ch, CURLOPT_ENCODING, "deflate,gzip");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 /* set username / password for HTTP Basic Authorization */
 				if ($user && $pass) {
