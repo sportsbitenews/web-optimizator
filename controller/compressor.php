@@ -1574,7 +1574,7 @@ class web_optimizer {
 			$files = glob('*.' . $options['ext']);
 			if (!empty($files)) {
 				foreach ($files as $file) {
-					if (!in_array($file, array('wo.cookie.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
+					if (!in_array($file, array('index.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
 						$this->time - filemtime($file) >
 						$this->options['days_to_delete'] * 86400) {
 							@unlink($file);
@@ -3111,7 +3111,7 @@ class web_optimizer {
 				}
 /* Add script to check gzip possibility */
 				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-					$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'wo.cookie.php"></script>';
+					$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'index.php"></script>';
 				}
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {

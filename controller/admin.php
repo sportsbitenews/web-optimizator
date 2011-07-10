@@ -1907,8 +1907,8 @@ class admin {
 					@copy($this->basepath . 'images/' . $image,
 						$this->compress_options['css_cachedir'] . $image);
 				}
-				@copy($this->basepath . 'libs/js/wo.cookie.php',
-					$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
+				@copy($this->basepath . 'libs/js/index.php',
+					$this->compress_options['javascript_cachedir'] . 'index.php');
 				@copy($this->basepath . 'libs/js/yass.loader.js',
 					$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 				@copy($this->basepath . 'libs/php/wo.static.php',
@@ -2291,7 +2291,7 @@ class admin {
 		$deleted_js = true;
 		$deleted_html = true;
 		$deleted_sql = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'wo.cookie.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while (($file = @readdir($dir)) !== false) {
@@ -4897,8 +4897,8 @@ Options +FollowSymLinks";
 /* copy some files */
 		@copy($this->basepath . 'images/web.optimizer.stamp.png',
 			$this->compress_options['css_cachedir'] . 'web.optimizer.stamp.png');
-		@copy($this->basepath . 'libs/js/wo.cookie.php',
-			$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
+		@copy($this->basepath . 'libs/js/index.php',
+			$this->compress_options['javascript_cachedir'] . 'index.php');
 		@copy($this->basepath . 'libs/js/yass.loader.js',
 			$this->compress_options['javascript_cachedir'] . 'yass.loader.js');
 		@copy($this->basepath . 'libs/php/wo.static.php',
@@ -5339,7 +5339,7 @@ Options +FollowSymLinks";
 ForceType font/otf
 </FilesMatch>',
 				'mod_rewrite' => "RewriteEngine On
-RewriteRule wo\.cookie\.php$ " .
+RewriteRule index\.php$ " .
 str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 "/../libs/js/yass.loader.js"
 			);
@@ -5369,14 +5369,14 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 	function check_apache_module ($rule, $root, $cachedir, $module) {
 		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'mod_gzip');
 		if ($module == 'mod_symlinks') {
-			$testfile = 'libs/js/wo.cookie.php';
-			$curlfile = 'libs/js/wo.cookie.php';
+			$testfile = 'libs/js/index.php';
+			$curlfile = 'libs/js/index.php';
 			$size = 131;
 		} else {
 			$testfile = $curlfile = 'libs/js/yass.loader.js';
 			$size = @filesize($this->basepath . $testfile);
 			if ($module == 'mod_rewrite') {
-				$curlfile = 'libs/js/wo.cookie.php';
+				$curlfile = 'libs/js/index.php';
 			}
 		}
 		$return = false;
@@ -5898,10 +5898,10 @@ require valid-user';
 				@copy($this->basepath . 'images/' . $image,
 				$this->compress_options['css_cachedir'] . $image);
 		}
-		if (@filemtime($this->basepath . 'libs/js/wo.cookie.php') >
-			@filemtime($this->compress_options['javascript_cachedir'] . 'wo.cookie.php')) {
-				@copy($this->basepath . 'libs/js/wo.cookie.php',
-				$this->compress_options['javascript_cachedir'] . 'wo.cookie.php');
+		if (@filemtime($this->basepath . 'libs/js/index.php') >
+			@filemtime($this->compress_options['javascript_cachedir'] . 'index.php')) {
+				@copy($this->basepath . 'libs/js/index.php',
+				$this->compress_options['javascript_cachedir'] . 'index.php');
 		}
 		if (@filemtime($this->basepath . 'libs/js/yass.loader.js') >
 			@filemtime($this->compress_options['javascript_cachedir'] . 'yass.loader.js')) {
