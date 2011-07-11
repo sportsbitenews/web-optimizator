@@ -256,6 +256,9 @@ define('_WEBO_unobtrusive_background', 'Cargar background imágenes en evento <c
 define('_WEBO_unobtrusive_background_HELP', 'Carga de imágenes de fondo serán retrasadas a evento DOMReady. Esto aumentará la velocidad de carga de la página web en navegadores.');
 define('_WEBO_unobtrusive_background_EFFECT', 'Website rendering speedup by 20-50%');
 define('_WEBO_unobtrusive_background_HELP_DISABLED', 'It impossible to create cross browser data:URI because there is option &quot;Performance - Uniformize los archivos del cache para todos los navegadores&quot; enabled.');
+define('_WEBO_unobtrusive_postload', 'Pre-load CSS or JavaScript files');
+define('_WEBO_unobtrusive_postload_HELP', 'All defined URLs will be loaded on window.onload event to speed the next page view up.');
+define('_WEBO_unobtrusive_postload_EFFECT', 'Faster next page views');
 
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_css_HELP', 'Todos los archivos CSS serán comprimidos vía gzip.');

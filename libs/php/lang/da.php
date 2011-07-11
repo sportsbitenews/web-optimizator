@@ -256,6 +256,9 @@ define('_WEBO_unobtrusive_background', 'Hent baggrunds billeder ved <code>DOMrea
 define('_WEBO_unobtrusive_background_HELP', 'Indlæsning af baggrunds billeder vil forsinkes til DOMReady. Dette vil øge hastigheden af indlæsning i browsere.');
 define('_WEBO_unobtrusive_background_EFFECT', 'Hjemmeside forøgelse med 20-50%');
 define('_WEBO_unobtrusive_background_HELP_DISABLED', 'Det er muligt at oprette cross browser data:URI, fordi det er muligt at aktivere funktionen &quot;Ydelse - Ens cache filer for alle browsere&quot;.');
+define('_WEBO_unobtrusive_postload', 'Pre-load CSS or JavaScript files');
+define('_WEBO_unobtrusive_postload_HELP', 'All defined URLs will be loaded on window.onload event to speed the next page view up.');
+define('_WEBO_unobtrusive_postload_EFFECT', 'Faster next page views');
 
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_css_HELP', 'Alle CSS filer vil blive komprimeret med gzip.');

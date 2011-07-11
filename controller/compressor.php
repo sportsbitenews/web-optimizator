@@ -514,6 +514,7 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_inline" => $this->options['unobtrusive']['on'] == 2 &&
 					($this->premium > 1),
+				"postload" => $this->premium > 1 ? $this->options['unobtrusive']['postload'] : '',
 				"footer" => $this->options['footer']['text'],
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
@@ -727,6 +728,7 @@ class web_optimizer {
 							!empty($option['unobtrusive_counters']) ||
 							!empty($option['unobtrusive_informers']) ||
 							!empty($option['unobtrusive_iframes']) ||
+							!empty($option['unobtrusive_postload']) ||
 							!empty($option['cache']) ||
 							!empty($option['sprites']) ||
 							!empty($option['counter']) ||
@@ -2890,6 +2892,11 @@ class web_optimizer {
 		$before_body .= $before_body_onload;
 		$before_body .= empty($this->options['page']['unobtrusive_onload']) ?
 			'' : '<script type="text/javascript">wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10)},false)</script>';
+		if (!empty($this->options['page']['postload'])) {
+			$before_body .= '<script type="text/javascript">window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,b,c,d=["' .
+				str_replace(" ", '","', $this->options['page']['postload']) .
+				'"],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=c[d++]){if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(o)}}},false)</script>';
+		}
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);

@@ -251,6 +251,9 @@ define('_WEBO_unobtrusive_background', 'تصاویر کو <code>DOMready</code> 
 define('_WEBO_unobtrusive_background_HELP', 'بیک گراؤنڈ تصایر کا لوڈ DOMready event کی وجہ سے موخر ہو جائے گا۔ اس کی وجہ سے براؤزر میں ابتدائی ویب صفحہ کی پراسیسنگ تیز ہو جانی چاہئے۔');
 define('_WEBO_unobtrusive_background_EFFECT', 'ویب سائٹ رینڈرنگ اسپیڈ میں 20-50% اضافہ');
 define('_WEBO_unobtrusive_background_HELP_DISABLED', 'کراس براؤزر data:URI بنانا ناممکن ہے کیونکہ ایک اختیار بنام &quot; کارکردگی۔یکساں کیشے فائلز تمام براؤزرز کیلئے&quot; فعال ہے۔');
+define('_WEBO_unobtrusive_postload', 'Pre-load CSS or JavaScript files');
+define('_WEBO_unobtrusive_postload_HELP', 'All defined URLs will be loaded on window.onload event to speed the next page view up.');
+define('_WEBO_unobtrusive_postload_EFFECT', 'Faster next page views');
 define('_WEBO_gzip_css', 'Gzip سی ایس ایس');
 define('_WEBO_gzip_css_HELP', 'سب سی ایس ایس فائل gzip کے ذریعے کمپریس کی جائیں گی.');
 define('_WEBO_gzip_javascript', 'Gzip جاوا سکرپٹ');

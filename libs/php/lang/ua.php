@@ -259,6 +259,9 @@ define('_WEBO_unobtrusive_background', 'Загружать фоновые изо
 define('_WEBO_unobtrusive_background_HELP', 'Загрузка фоновых изображений будет откладываться до события DOMReady. Это увеличит скорость появления страницы на экране браузера.');
 define('_WEBO_unobtrusive_background_EFFECT', 'Ускорение отображения сайта в браузере на 20-50%');
 define('_WEBO_unobtrusive_background_HELP_DISABLED', 'Создание кроссбраузерного data:URI невозможно, потому что включена настройка &laquo;Производительность - Использовать файлы в кэше для всех браузеров&raquo;.');
+define('_WEBO_unobtrusive_postload', 'Предзагружать CSS- или JavaScript-файлы');
+define('_WEBO_unobtrusive_postload_HELP', 'Все указанные URL будут загружены по событию window.onload, чтобы ускорить просмотр следующих страниц сайта.');
+define('_WEBO_unobtrusive_postload_EFFECT', 'Ускорение просмотра следующих страниц сайта');
 
 define('_WEBO_gzip_css', 'Застосувати <code>gzip</code> для CSS');
 define('_WEBO_gzip_css_HELP', 'Все CSS-файлы будут передаваться в сжатом виде.');

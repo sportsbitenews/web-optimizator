@@ -42,6 +42,8 @@ $compress_options['unobtrusive']['ads'] = "0";
 $compress_options['unobtrusive']['iframes'] = "0";
 ## Load background images on DOMready event?
 $compress_options['unobtrusive']['background'] = "0";
+## Load resources on onload
+$compress_options['unobtrusive']['postload'] = "";
 ## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head

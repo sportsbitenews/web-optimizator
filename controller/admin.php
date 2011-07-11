@@ -3590,7 +3590,13 @@ class admin {
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
-				)
+				),
+				'unobtrusive_postload' => array(
+					'value' => $this->compress_options['unobtrusive']['postload'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5
+				),
 			),
 			'multiple_hosts' => array(
 				'parallel_enabled' => array(
@@ -3802,6 +3808,7 @@ class admin {
 	function set_options() {
 /* fix multiple lines in textarea */
 		foreach (array(
+			'wss_unobtrusive_postload',
 			'wss_minify_css_file',
 			'wss_minify_css_host',
 			'wss_minify_javascript_file',
