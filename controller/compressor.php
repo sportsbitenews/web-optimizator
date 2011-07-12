@@ -2981,7 +2981,7 @@ class web_optimizer {
 				preg_match_all("!(<a[^>]+href\s*=\s*['\"])([^\?]*?)(\?(.+?))?(['\"])!is", $c, $m, PREG_SET_ORDER);
 				foreach ($m as $match) {
 /* skip javascript: etc links */
-					if (!preg_match('!(javascript|mailto|skype):!', $match[2])) {
+					if (!preg_match('!(javascript|mailto|skype):!i', $match[2]) && (preg_match('!^/[^/]+!', $match[2])) || preg_match('!https?://(www\.)?' . $this->host_escaped . '/!i', $match[2])) || preg_match('!^[^:/][^:]+$!', $match[2]))) {
 						$this->content = str_replace($match[0], $match[1] . $match[2] . ($match[3] ? $match[3] . '&amp;' : '?') . 'web_optimizer_debug=1' . $match[5], $this->content);
 					}
 				}
