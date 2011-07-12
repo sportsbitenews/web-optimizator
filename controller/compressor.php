@@ -267,8 +267,7 @@ class web_optimizer {
 /* remember Joomla! caching (VirtueMart) */
 		$this->joomla_cache = $this->options['page']['cache'] && class_exists('JUtility', false);
 /* remember WordPress caching (WP Digi Cart) */
-		$this->wp_cache = $this->options['page']['cache'] && defined('WP_CACHE');
-		$this->wp_cache = $this->wp_cache ? is_dir($this->options['document_root'] . 'wp-content/plugins/wp-digi-cart/') : 0;
+		$this->wp_cache = $this->options['page']['cache'] && defined('WP_CACHE') && @is_dir($this->options['document_root'] . 'wp-content/plugins/wp-cart-for-digital-products/');
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
 			$this->options['javascript']['host'] =
@@ -1007,6 +1006,7 @@ class web_optimizer {
 		$this->clear_trash();
 /* check if we need to store cached page */
 		if (!empty($this->cache_me)) {
+			$chunk = '';
 /* add client side replacement for WordPress comment fields */
 			if (defined('WP_CACHE')) {
 				foreach ($_COOKIE as $key => $value) {
@@ -1014,9 +1014,19 @@ class web_optimizer {
 						$this->content = str_replace('value="'. urldecode($value) .'"', 'value=""', $this->content);
 					}
 				}
-				$this->content = preg_replace("@(</body>)@is", '<script type="text/javascript">(function(){' .
+				$chunk = '(function(){' .
 					(@is_dir($this->options['website_root'] . 'wp-content/plugins/wp-e-commerce/') ? 'jQuery.post("index.php?ajax=true","wpsc_ajax_action=get_cart",function(returned_data){eval(returned_data)});' : '') .
-					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}())</script>$1', $this->content);
+					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}());';
+			}
+			if (($wp_cache || $joomla_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+				$chunk .= $domready_include . $domready_include2;
+			}
+			if ($chunk) {
+				if (preg_match("!</body>!I", $this->content)) {
+					$this->content = preg_replace("!</body>!", $chunk . "$1", $this->content);
+				} else {
+					$this->content .= $chunk;
+				}
 			}
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
