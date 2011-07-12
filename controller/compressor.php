@@ -1018,12 +1018,13 @@ class web_optimizer {
 					(@is_dir($this->options['website_root'] . 'wp-content/plugins/wp-e-commerce/') ? 'jQuery.post("index.php?ajax=true","wpsc_ajax_action=get_cart",function(returned_data){eval(returned_data)});' : '') .
 					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}());';
 			}
+/* Add on-fly caching for Cart in Joomla! and WP */
 			if (($wp_cache || $joomla_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
-				$chunk .= $domready_include . $domready_include2;
+				$chunk .= $this->domready_include . $this->domready_include2;
 			}
 			if ($chunk) {
-				if (preg_match("!</body>!I", $this->content)) {
-					$this->content = preg_replace("!</body>!", $chunk . "$1", $this->content);
+				if (preg_match("!</body>!i", $this->content)) {
+					$this->content = preg_replace("!</body>!", '<script type="text/javascript">'. $chunk . "</script>$1", $this->content);
 				} else {
 					$this->content .= $chunk;
 				}

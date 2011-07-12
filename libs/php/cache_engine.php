@@ -553,10 +553,10 @@ class webo_cache_files extends webo_cache_engine
 			  	$this->__recurse_rm($this->cache_dir . $this->_host_w_www);
 					$this->__recurse_rm($this->cache_dir . $this->_host_wo_www);
 			    } else {
-   				$files = $this->__recurse_glob($this->__get_path($patterns, $this->_host));
+   				$files = $this->__recurse_glob($this->__get_path($patterns));
    				foreach($files as $file) {
    					if (@is_file($file)) {
-   						@unlink($file);
+							@unlink($file);
 							unset($this->all_files[$file]);
 					    } elseif (@is_dir($file)) {
 						    $this->__recurse_rm($file);
@@ -666,8 +666,8 @@ class webo_cache_files extends webo_cache_engine
 	    $path = implode('/', $split);
 		$this->__get_files_list();
 		
-		$mask = str_replace('.', '\\.', $mask);
-		$mask = str_replace('*', '.*', $mask);
+		$path = str_replace('.', '\\.', $path);
+		$path = str_replace('*', '.*', $path);
 		if ($size === false) {
 			$glob = array();
 		} else {
@@ -679,7 +679,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 
 		foreach ($this->all_files as $key => $value) {
-			if (preg_match('/' . $mask . '/', $key)) {
+			if (preg_match('!' . $path . '!', $key)) {
 				if ($size === false) {
 					$glob[] = $key;
 				} else {
