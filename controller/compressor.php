@@ -2976,7 +2976,15 @@ class web_optimizer {
 			}
 /* change all links on the page according to DEBUG mode */
 			if ($this->debug_mode) {
-				$this->content = preg_replace("@(<a[^>]+href\s*=\s*['\"])([^\?]*?)(\?(.+?))?(['\"])@is", "$1$2?$4&amp;web_optimizer_debug=1$5", $this->content);
+/* don't touch content inside <script> */
+				$c = preg_replace("!<script[^>]*>.*?</script>!is", "", $this->content);
+				preg_match_all("!(<a[^>]+href\s*=\s*['\"])([^\?]*?)(\?(.+?))?(['\"])!is", $c, $m, PREG_SET_ORDER);
+				foreach ($m as $match) {
+/* skip javascript: etc links */
+					if (!preg_match('!(javascript|mailto|skype):!', $match[2])) {
+						$this->content = str_replace($match[0], $match[1] . $match[2] . ($match[3] ? $match[3] . '&amp;' : '?') . 'web_optimizer_debug=1' . $match[5], $this->content);
+					}
+				}
 			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
