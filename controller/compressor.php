@@ -3284,6 +3284,7 @@ class web_optimizer {
 		if ($memory_limit < 64000000) {
 			@ini_set('memory_limit', '64M');
 		}
+		$content = preg_replace("!/\*.*?\*/!is", "", $content);
 		@chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'],

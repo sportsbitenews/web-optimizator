@@ -777,7 +777,7 @@ __________________
 /* and try to find any selectors containing calculated one */
 					$selectors = array_keys($this->optimizer->css->css[$import]);
 					foreach ($selectors as $possible_selector) {
-						if (preg_match("&(^|,)" . preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $restored_selector) . "(,|$)&", $possible_selector)) {
+						if (preg_match("@(^|,)" . preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", str_replace('@', '', $restored_selector)) . "(,|$)@", $possible_selector)) {
 							$restored_selectors[] = $possible_selector;
 						}
 					}
