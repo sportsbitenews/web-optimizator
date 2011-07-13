@@ -3856,6 +3856,7 @@ class admin {
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
 			'wss_html_cache_flush_size',
+			'wss_html_cache_ignore',
 			'wss_sql_cache_time',
 			'wss_sql_cache_timeout',
 			'wss_footer_ab',
@@ -3872,6 +3873,7 @@ class admin {
 		foreach (array(
 			'wss_performance_cache_engine',
 			'wss_css_sprites_truecolor_in_jpeg',
+			'wss_html_cache_ignore',
 			'wss_css_sprites_ignore',
 			'wss_parallel_custom',
 			'wss_unobtrusive_on',
@@ -3925,7 +3927,6 @@ class admin {
 			'wss_far_future_expires_external',
 			'wss_html_cache_enabled',
 			'wss_html_cache_flush_only',
-			'wss_html_cache_ignore',
 			'wss_html_cache_enhanced',
 			'wss_html_cache_cleanup',
 			'wss_sql_cache_enabled',
