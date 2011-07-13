@@ -41,8 +41,8 @@
 ?> wssA0<?php
 	}
 ?>" id="wss_error4"><?php
-	echo _WEBO_LOGIN_LICENSEAGREEMENT . _WEBO_LOGIN_LICENSEAGREEMENT2;
-?></li>><li class="wssL1<?php
+	echo _WEBO_LOGIN_LICENSEAGREEMENT . ' ' . _WEBO_LOGIN_LICENSEAGREEMENT2;
+?></li><li class="wssL1<?php
 	if (empty($error[10])) {
 ?> wssA0<?php
 	}

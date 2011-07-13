@@ -1871,22 +1871,28 @@ class web_optimizer {
 	function minify_javascript ($code, $options) {
 		$minified_code = '';
 		if ($options['minify_with'] == 'google') {
-			$this->googlecompiler = new GoogleCompiler($options['cachedir'],
-				$options['installdir']);
-			$minified_code = $this->googlecompiler->compress($code);
+			try {
+				$this->googlecompiler = new GoogleCompiler($options['cachedir'], $options['installdir']);
+				$minified_code = $this->googlecompiler->compress($code);
+			} catch (Exception $e) {}
 		} elseif ($options['minify_with'] == 'packer') {
-			$this->packer = new JavaScriptPacker($code, 'Normal', false, false);
-			$minified_code = $this->packer->pack();
+			try {
+				$this->packer = new JavaScriptPacker($code, 'Normal', false, false);
+				$minified_code = $this->packer->pack();
+			} catch (Exception $e) {}
 		} elseif ($options['minify_with'] == 'yui' ) {
-			$this->yuicompressor = new YuiCompressor($options['cachedir'],
-				$options['installdir'], $this->charset);
-			$minified_code = $this->yuicompressor->compress($code);
+			try {
+				$this->yuicompressor = new YuiCompressor($options['cachedir'], $options['installdir'], $this->charset);
+				$minified_code = $this->yuicompressor->compress($code);
+			} catch (Exception $e) {}
 		}
 		if ($options['minify_with'] == 'jsmin' ||
 			(!empty($options['minify_with']) &&
 			empty($minified_code))) {
+				try {
 					$this->jsmin = new JSMin($code);
 					$minified_code = $this->jsmin->minify($code);
+				} catch (Exception $e) {}
 		}
 		if (empty($options['minify_with']) || empty($minified_code)) {
 /* Remove comments // */
