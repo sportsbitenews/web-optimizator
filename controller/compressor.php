@@ -3378,21 +3378,21 @@ class web_optimizer {
 							}
 /* add multiple hosts/wo.static.php */
 							if ($next) {
-								$image = str_replace($this->options['document_root'], '/', $css_image);
+								$img = str_replace($this->options['document_root'], '/', $css_image);
 								if ($this->options['page']['parallel'] && !empty($this->options['page']['parallel_hosts'])) {
 									$hosts = explode(" ", $this->options['page']['parallel_hosts']);
-									$host = $hosts[strlen($image)%count($hosts)];
+									$host = $hosts[strlen($img)%count($hosts)];
 /* if we have dot in the distribution host - it's a domain name */
 									if (!$this->https || !($new_host = $this->options['page']['parallel_https'])) {
 										$new_host = $host .
 											((strpos($host, '.') === false) ?
 											'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
 									}
-									$css_image = "//" . $new_host . $image;
+									$css_image = "//" . $new_host . $img;
 								} elseif ($this->options['page']['far_future_expires_rewrite']) {
-									if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $image)) {
+									if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $img)) {
 /* do not touch dynamic images -- how we can handle them? */
-										$css_image = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $image;
+										$css_image = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $img;
 									}
 								} else {
 									$css_image = $image_saved;
