@@ -3400,7 +3400,7 @@ class web_optimizer {
 							}
 						}
 						$replaced[$image_saved] = $css_image;
-						$content = str_replace($image_saved, $css_image, $content);
+						$content = str_replace($image[4], str_replace($image_saved, $css_image, $image[4]), $content);
 					}
 					if (!$mhtml && $base64) {
 						$compressed .= $image[1] .
