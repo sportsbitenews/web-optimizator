@@ -785,6 +785,11 @@ function parse($string) {
                 {
                     $this->property .= $this->_unicode($string,$i);
                 }
+/* keep IE hacks? */
+				elseif(!$this->get_cfg('discard_invalid_properties') && (in_array($string{$i}, array('*', '_'))))
+				{
+					$this->property .= $string{$i};
+				}
             }
             elseif(!ctype_space($string{$i}))
             {
