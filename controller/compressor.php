@@ -3427,13 +3427,6 @@ class web_optimizer {
 							'}';
 						$content .= '* ' . $sel . '*+' . $sel;
 					}
-				} elseif (!empty($image[4])) {
-					$compressed .= $image[1] .
-						'{' .
-						$image[2] . 
-						':' .
-						$image[4] .
-						'}';
 				}
 			}
 			if ($mhtml && !empty($mhtml_code)) {
