@@ -3329,7 +3329,7 @@ class web_optimizer {
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^;\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7')) && $options['mhtml'];
@@ -3340,21 +3340,21 @@ class web_optimizer {
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false) {
-					$css_image = preg_replace("@.*(url\(.*\))[^\)]*@is", "$1", $image[4]);
+					$css_image = preg_replace("@^.*(url\(.*\))[^\)]*$@is", "$1", $image[4]);
 					$image_saved = $css_image;
 					if (empty($replaced[$image_saved])) {
-						$css_image = explode(',', str_replace('base64,', '###', $image));
+						$css_image = explode(',', str_replace('base64,', '###', $css_image));
 						$images = array();
 						$b64 = array();
-						foreach ($image as $im) {
-							$arr = $this->convert_single_background(trim($im), $location, $css_url);
+						foreach ($css_image as $im) {
+							$arr = $this->convert_single_background(trim($im), $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude);
 							$images[] = $arr[0];
 							$location = $arr[1];
 							$b64[] = $arr[2];
 						}
 						if (count($images)) {
-							$css_image = 'url(' . implode('),url(', $images) . ')';
-							$base64 = 'url(' . implode('),url(', $b64) . ')';
+							$css_image = implode('),url(', $images);
+							$base64 = implode('),url(', $b64);
 						} else {
 							$css_image = $image_saved;
 							$base64 = '';
@@ -3394,7 +3394,7 @@ class web_optimizer {
 	/**
 	* Convert single background image to data:URI / mhtml / CDN
 	**/
-	function convert_single_background ($css_image, $location, $css_url) {
+	function convert_single_background ($css_image, $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude) {
 		$image_saved = $css_image;
 		$css_image = substr($css_image, 4, strlen($css_image) - 5);
 /* remove quotes */
@@ -3463,7 +3463,7 @@ class web_optimizer {
 				$css_image = "'" . $css_image . "'";
 			}
 		}
-		return array($css_image, $location, $base64);
+		return array(str_replace('###', 'base64,', $css_image), $location, $base64);
 	}
 
 	/**
