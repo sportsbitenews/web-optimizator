@@ -569,7 +569,7 @@ __________________
 /* separate background-image rules from the others? */
 										if (empty($this->optimizer->separated)) {
 											$this->optimizer->css->css[$import][$tags][$key] =
-												preg_replace("@url\([^\)]+\)(\s*)?@", "url(" . $this->optimizer->css_image . ")$1", $value);
+												preg_replace("@^url\([^\)]+\)(\s*)?$@", "url(" . $this->optimizer->css_image . ")$1", $value);
 										} else {
 /* add for IE add call to mhtml resource file */
 											if ($this->optimizer->ie) {
@@ -577,8 +577,7 @@ __________________
 													preg_replace("@^url\(.*\)([^\)]*)?$@", "url(" . $this->optimizer->css_image . ")$1", $value);
 /* for others just remove background-image call */
 											} else {
-												$this->optimizer->css->css[$import][$tags][$key] =
-													preg_replace("@url\([^\)]+\)@", "", $value);
+												$this->optimizer->css->css[$import][$tags][$key] = preg_replace("@^url\([^\)]+\)$@", "", $value);
 												$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->optimizer->css_image . ')}';
 											}
 /* skip empty background-image */
