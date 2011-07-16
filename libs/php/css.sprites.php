@@ -559,61 +559,27 @@ __________________
 								}
 								if (!empty($background['background-image'])) {
 									$image = trim(str_replace("!important", "", $background['background-image']));
-									$this->optimizer->css_image = substr($image, 4, strlen($image) - 5);
-									if ($this->optimizer->css_image{0} == '"' ||
-										$this->optimizer->css_image{0} == "'") {
-											$this->optimizer->css_image =
-												substr($this->optimizer->css_image, 1,
-												strlen($this->optimizer->css_image) - 2);
+									$image = explode(',', str_replace('base64,', '###', $image));
+									$images = array();
+									foreach ($image as $img) {
+										$images[] = $this->parse_single_background(trim($img), $tags);
 									}
-									if (!empty($this->optimizer->css_image)) {
-										$sprited =
-											strpos($this->optimizer->css_image,
-											'ebo.' . $this->optimizer->timestamp);
-										if (!empty($this->optimizer->data_uris) &&
-											!$this->optimizer->ie &&
-											!preg_match("@^\*(\s|\+)\s*html@s", $tags)) {
-/* convert image to data:URI */
-												$this->optimizer->css_image =
-													$this->optimizer->get_image(1, 0,
-													$this->optimizer->css_image);
-										} elseif (!empty($this->optimizer->mhtml) &&
-											$this->optimizer->ie) {
-/* convert image to mhtml: */
-												$this->optimizer->css_image =
-													$this->optimizer->get_image(2,
-													$location++,
-													$this->optimizer->css_image);
-										}
-										if (substr($this->optimizer->css_image, 0, 5) !== 'data:' &&
-											substr($this->optimizer->css_image, 0, 6) !== 'mhtml:') {
-/* skip images on different hosts */
-											$this->optimizer->css_image =
-												$this->distribute_image($this->optimizer->css_image);
-										}
-/* add quotes for background images with spaces */
-										if (strpos($this->optimizer->css_image, ' ')) {
-											$this->optimizer->css_image = "'" . $this->optimizer->css_image . "'";
-										}
+									if (count($images)) {
+										$this->optimizer->css_image = implode('),url(', $images);
 /* separate background-image rules from the others? */
 										if (empty($this->optimizer->separated)) {
 											$this->optimizer->css->css[$import][$tags][$key] =
-												preg_replace("@url\([^\)]+\)(\s*)?@", "url(" .
-												$this->optimizer->css_image .
-												")$1", $value);
+												preg_replace("@url\([^\)]+\)(\s*)?@", "url(" . $this->optimizer->css_image . ")$1", $value);
 										} else {
 /* add for IE add call to mhtml resource file */
 											if ($this->optimizer->ie) {
 												$this->optimizer->css->css[$import][$tags][$key] =
-													preg_replace("@url\([^\)]+\)(\s*)@", "url(" .
-													$this->optimizer->css_image . ")$1", $value);	
+													preg_replace("@^url\(.*\)([^\)]*)?$@", "url(" . $this->optimizer->css_image . ")$1", $value);
 /* for others just remove background-image call */
 											} else {
 												$this->optimizer->css->css[$import][$tags][$key] =
 													preg_replace("@url\([^\)]+\)@", "", $value);
-												$this->optimizer->compressed_mhtml .=
-													$tags . '{background-image:url(' .
-													$this->optimizer->css_image . ')}';
+												$this->optimizer->compressed_mhtml .= $tags . '{background-image:url(' . $this->optimizer->css_image . ')}';
 											}
 /* skip empty background-image */
 											if (empty($this->optimizer->css->css[$import][$tags][$key])) {
@@ -641,6 +607,33 @@ __________________
 				$this->optimizer->compressed_mhtml .= '}';
 			}
 		}
+	}
+/* operate with multiple backgrounds */
+	function parse_single_background ($image, $tags) {
+		$this->optimizer->css_image = substr($image, 4, strlen($image) - 5);
+		if ($this->optimizer->css_image{0} == '"' || $this->optimizer->css_image{0} == "'") {
+			$this->optimizer->css_image = substr($this->optimizer->css_image, 1,
+				strlen($this->optimizer->css_image) - 2);
+		}
+		if (!empty($this->optimizer->css_image)) {
+			$sprited = strpos($this->optimizer->css_image, 'ebo.' . $this->optimizer->timestamp);
+			if (!empty($this->optimizer->data_uris) && !$this->optimizer->ie && !preg_match("@^\*(\s|\+)\s*html@s", $tags)) {
+/* convert image to data:URI */
+				$this->optimizer->css_image = $this->optimizer->get_image(1, 0, $this->optimizer->css_image);
+			} elseif (!empty($this->optimizer->mhtml) && $this->optimizer->ie) {
+/* convert image to mhtml: */
+				$this->optimizer->css_image = $this->optimizer->get_image(2, $this->location++, $this->optimizer->css_image);
+			}
+			if (substr($this->optimizer->css_image, 0, 5) !== 'data:' && substr($this->optimizer->css_image, 0, 6) !== 'mhtml:') {
+/* skip images on different hosts */
+				$this->optimizer->css_image = $this->distribute_image($this->optimizer->css_image);
+			}
+/* add quotes for background images with spaces */
+			if (strpos($this->optimizer->css_image, ' ')) {
+				$this->optimizer->css_image = "'" . $this->optimizer->css_image . "'";
+			}
+		}
+		return str_replace('###', 'base64,', $this->optimizer->css_image);
 	}
 /* distribute image through multiple hosts */
 	function distribute_image ($image) {

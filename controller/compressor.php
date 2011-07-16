@@ -3324,7 +3324,7 @@ class web_optimizer {
 	}
 
 	/**
-	* Convert all background image to data:URI / mhtml
+	* Convert all background image to data:URI / mhtml / CDN
 	**/
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
@@ -3340,71 +3340,24 @@ class web_optimizer {
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false) {
-					$css_image = trim(preg_replace("!^['\"]?(.*)['\"]?$!", "$1", preg_replace("@.*url\(([^\)]+)\).*@is", "$1", $image[4])));
+					$css_image = preg_replace("@.*(url\(.*\))[^\)]*@is", "$1", $image[4]);
 					$image_saved = $css_image;
-					$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
-					$chunks = explode(".", $css_image);
-					$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
-					$chunks = explode("/", $css_image);
-					$filename = array_pop($chunks);
 					if (empty($replaced[$image_saved])) {
-						if (!@is_file($css_image) ||
-							in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) ||
-							strpos($css_image, "://") ||
-							strpos($css_image, "mhtml:") !== false ||
-							strpos($css_image, "data:") !== false) {
-								$css_image = $image_saved;
+						$css_image = explode(',', str_replace('base64,', '###', $image));
+						$images = array();
+						$b64 = array();
+						foreach ($image as $im) {
+							$arr = $this->convert_single_background(trim($im), $location, $css_url);
+							$images[] = $arr[0];
+							$location = $arr[1];
+							$b64[] = $arr[2];
+						}
+						if (count($images)) {
+							$css_image = 'url(' . implode('),url(', $images) . ')';
+							$base64 = 'url(' . implode('),url(', $b64) . ')';
 						} else {
-							$encoded = base64_encode($this->file_get_contents($css_image));
-							$next = !$mhtml && !$options['data_uris'];
-							if ($mhtml) {
-								if (@filesize($css_image) < $options['mhtml_size'] &&
-									!in_array($filename, $mhtml_exclude) &&
-									!empty($encoded)) {
-										$mhtml_code .= "\n\n--_\nContent-Location:" .
-											$location .
-											"\nContent-Transfer-Encoding:base64\n\n" .
-											$encoded;
-										$css_image = 'mhtml:' . $css_url . '!' . $location;
-										$location++;
-								} else {
-									$next = 1;
-								}
-							} elseif ($options['data_uris']) {
-								if (@filesize($css_image) < $options['data_uris_size'] &&
-									!in_array($filename, $data_uri_exclude) &&
-									!empty($encoded)) {
-										$css_image = '';
-										$base64 = 'data:image/' .
-											$extension .
-											';base64,' .
-											$encoded;
-								} else {
-									$next = 1;
-								}
-							}
-/* add multiple hosts/wo.static.php */
-							if ($next) {
-								$img = str_replace($this->options['document_root'], '/', $css_image);
-								if ($this->options['page']['parallel'] && !empty($this->options['page']['parallel_hosts'])) {
-									$hosts = explode(" ", $this->options['page']['parallel_hosts']);
-									$host = $hosts[strlen($img)%count($hosts)];
-/* if we have dot in the distribution host - it's a domain name */
-									if (!$this->https || !($new_host = $this->options['page']['parallel_https'])) {
-										$new_host = $host .
-											((strpos($host, '.') === false) ?
-											'.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
-									}
-									$css_image = "//" . $new_host . $img;
-								} elseif ($this->options['page']['far_future_expires_rewrite']) {
-									if (preg_match("@\.(bmp|gif|png|ico|jpe?g)$@i", $img)) {
-/* do not touch dynamic images -- how we can handle them? */
-										$css_image = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $img;
-									}
-								} else {
-									$css_image = $image_saved;
-								}
-							}
+							$css_image = $image_saved;
+							$base64 = '';
 						}
 						$replaced[$image_saved] = $css_image;
 						$content = str_replace($image[4], str_replace($image_saved, $css_image, $image[4]), $content);
@@ -3436,6 +3389,81 @@ class web_optimizer {
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$4", $content);
 		}
 		return array($content, $compressed);
+	}
+
+	/**
+	* Convert single background image to data:URI / mhtml / CDN
+	**/
+	function convert_single_background ($css_image, $location, $css_url) {
+		$image_saved = $css_image;
+		$css_image = substr($css_image, 4, strlen($css_image) - 5);
+/* remove quotes */
+		if ($css_image{0} == '"' || $css_image{0} == "'") {
+			$css_image = substr($css_image, 1, strlen($css_image) - 2);
+		}
+		$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
+		$chunks = explode(".", $css_image);
+		$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
+		$chunks = explode("/", $css_image);
+		$filename = array_pop($chunks);
+		$base64 = '';
+		if (!@is_file($css_image) ||
+			in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) ||
+			strpos($css_image, "://") ||
+			strpos($css_image, "mhtml:") !== false ||
+			strpos($css_image, "data:") !== false) {
+				$css_image = $image_saved;
+		} else {
+			$encoded = base64_encode($this->file_get_contents($css_image));
+			$next = !$mhtml && !$options['data_uris'];
+			if ($mhtml) {
+				if (@filesize($css_image) < $options['mhtml_size'] &&
+					!in_array($filename, $mhtml_exclude) && !empty($encoded)) {
+						$mhtml_code .= "\n\n--_\nContent-Location:" .
+							$location .
+							"\nContent-Transfer-Encoding:base64\n\n" .
+							$encoded;
+						$css_image = 'mhtml:' . $css_url . '!' . $location;
+						$location++;
+				} else {
+					$next = 1;
+				}
+			} elseif ($options['data_uris']) {
+				if (@filesize($css_image) < $options['data_uris_size'] &&
+					!in_array($filename, $data_uri_exclude) && !empty($encoded)) {
+						$css_image = '';
+						$base64 = 'data:image/' . $extension . ';base64,' . $encoded;
+				} else {
+					$next = 1;
+				}
+			}
+/* add multiple hosts/wo.static.php */
+			if ($next) {
+				$img = str_replace($this->options['document_root'], '/', $css_image);
+				if ($this->options['page']['parallel'] && !empty($this->options['page']['parallel_hosts'])) {
+					$hosts = explode(" ", $this->options['page']['parallel_hosts']);
+					$host = $hosts[strlen($img)%count($hosts)];
+/* if we have dot in the distribution host - it's a domain name */
+					if (!$this->https || !($new_host = $this->options['page']['parallel_https'])) {
+						$new_host = $host .
+							((strpos($host, '.') === false) ? '.' . preg_replace("/^www\./", "", $_SERVER['HTTP_HOST']): '');
+					}
+					$css_image = "//" . $new_host . $img;
+				} elseif ($this->options['page']['far_future_expires_rewrite']) {
+					if (in_array($extension, array('bmp', 'gif', 'png', 'ico', 'jpeg'))) {
+/* do not touch dynamic images -- how we can handle them? */
+						$css_image = $this->options['page']['cachedir_relative'] . 'wo.static.php?' . $img;
+					}
+				} else {
+					$css_image = $image_saved;
+				}
+			}
+/* add quotes for background images with spaces */
+			if (strpos($css_image, ' ')) {
+				$css_image = "'" . $css_image . "'";
+			}
+		}
+		return array($css_image, $location, $base64);
 	}
 
 	/**
