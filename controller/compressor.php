@@ -2601,7 +2601,7 @@ class web_optimizer {
 /* Remove spaces for }, {, ;, ,: */
 		$txt = str_replace(array(' :', ': ', ' ,', ', ', ' ;', '; ', ' {', '{ ', ' }', '} '), array(':', ':', ',', ',', ';', ';', '{', '{', '}', '}'), $txt);
 /* Remove excessive symbols */
-		$txt = str_replace(array(' 0px', ':0px', ';}', ':0 0 0 0', ':0.', ' 0.'), array(' 0', ':0', '}', ':0', ':.', ' .'), $txt);
+		$txt = str_replace(array(' 0px', ':0px', ';}', ':0 0 0 0', ':0.', ' 0.', ', '), array(' 0', ':0', '}', ':0', ':.', ' .', ','), $txt);
 		return trim($txt);
 	}
 
