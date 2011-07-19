@@ -512,18 +512,28 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 									}
 									break;
 								case 1:
-									$this->css_images[$sprite]['images'][$key][3] = 0;
-									$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'] + $final_y;
-									$this->css_images[$sprite]['images'][$key][6] = $final_y;
+									$a = $this->css_images[$sprite]['x'];
 									$this->css_images[$sprite]['x'] = $this->SCM($width, $this->css_images[$sprite]['x'] ? $this->css_images[$sprite]['x'] : 1);
-									$this->css_images[$sprite]['y'] += $height + $final_y + $shift_y;
+									if ($this->css_images[$sprite]['x'] > 1000) {
+										$this->css_images[$sprite]['x'] = $a;
+									} else {
+										$this->css_images[$sprite]['images'][$key][3] = 0;
+										$this->css_images[$sprite]['images'][$key][4] = $this->css_images[$sprite]['y'] + $final_y;
+										$this->css_images[$sprite]['images'][$key][6] = $final_y;
+										$this->css_images[$sprite]['y'] += $height + $final_y + $shift_y;
+									}
 									break;
 								case 2:
-									$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;
-									$this->css_images[$sprite]['images'][$key][4] = 0;
-									$this->css_images[$sprite]['images'][$key][5] = $final_x;
-									$this->css_images[$sprite]['x'] += $width + $final_x + $shift_x;
+									$a = $this->css_images[$sprite]['y'];
 									$this->css_images[$sprite]['y'] = $this->SCM($height, $this->css_images[$sprite]['y'] ? $this->css_images[$sprite]['y'] : 1);
+									if ($this->css_images[$sprite]['y'] > 1000) {
+										$this->css_images[$sprite]['y'] = $a;
+									} else {
+										$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;
+										$this->css_images[$sprite]['images'][$key][4] = 0;
+										$this->css_images[$sprite]['images'][$key][5] = $final_x;
+										$this->css_images[$sprite]['x'] += $width + $final_x + $shift_x;
+									}
 									break;
 							}
 							$counter_images[$filename] = 1;
