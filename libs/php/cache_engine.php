@@ -455,6 +455,9 @@ class webo_cache_files extends webo_cache_engine
 				} else {
 					$this->all_files = array();
 				}
+				if (!defined('WSS_CACHE_FILE')) {
+					$this->__put_files_list();
+				}
 			} else {
 				$this->all_files = array();
 			}
@@ -465,7 +468,7 @@ class webo_cache_files extends webo_cache_engine
 
 	function __put_files_list() {
 		global $webo_files_list_var, $webo_files_list_ok;
-		$str = "<?php\n";
+		$str = "<?php\ndefine('WSS_CACHE_FILE','1');\n";
 		foreach ($this->all_files as $k => $v) {
 			if (!is_array($v)) {
 				$v = array($v, time());
@@ -476,12 +479,13 @@ class webo_cache_files extends webo_cache_engine
 		$length = strlen($str);
 		$i = 0;
 		$written = 0;
-		@file_put_contents($webo_files_list_var . '.tmp', '<?php ?>');
+		$tmp = '.tmp.' . time() . microtime();
+		@file_put_contents($webo_files_list_var . $tmp, '<?php ?>');
 		while (($i < 3) && ($written != $length)) {
-			$written = @file_put_contents($webo_files_list_var . '.tmp', $str);
+			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
 			$i++;
 		}
-		@rename($webo_files_list_var . '.tmp', $webo_files_list_var);
+		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
 /* failover callback */
 		register_shutdown_function('webo_files_list_handler');
 		$webo_files_list_ok = 0;
@@ -1301,7 +1305,7 @@ class webo_cache_files extends webo_cache_engine
 function webo_files_list_handler () {
 	global $webo_files_list_var, $webo_files_list_ok;
 	if (empty($webo_files_list_ok)) {
-		@file_put_contents($webo_files_list_var, '<?php ?>');
+		@file_put_contents($webo_files_list_var, "<?php\ndefine('WSS_CACHE_FILE','1');\n ?>");
 	}
 }
 
