@@ -2912,7 +2912,7 @@ class web_optimizer {
 		if (!empty($this->options['page']['postload'])) {
 			$before_body .= '<script type="text/javascript">window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,b,c,d=[\'' .
 				str_replace(" ", "','", $this->options['page']['postload']) .
-				'\'],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")!=-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}}},false)</script>';
+				'\'],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}}},false)</script>';
 		}
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
