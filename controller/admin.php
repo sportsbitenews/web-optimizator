@@ -444,7 +444,7 @@ class admin {
 			$this->write_file($this->compress_options['css_cachedir'] . 'webo-site-speedup.css', $content);
 		}
 /* download shorten link for twitter */
-		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c894fbacd544a2076da03a825a6ec2d7&uri='.
+		$this->view->download('http://api.bit.ly/v3/shorten?login=wboptimizer&apiKey=R_c4fd5b38fe32971ae146abbf85aee568&uri='.
 			urlencode('http://' . $this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], "/",
 				$this->compress_options['css_cachedir']) .
