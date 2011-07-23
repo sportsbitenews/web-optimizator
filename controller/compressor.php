@@ -2916,7 +2916,7 @@ class web_optimizer {
 		$before_body .= $before_body_onload;
 		$onload = $onload_func = '';
 		$onload .= empty($this->options['page']['unobtrusive_onload']) && empty($this->options['page']['postload']) && empty($this->options['page']['postload_frames']) ? '' : 'wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){';
-		$onload_func .= empty($this->options['page']['unobtrusive_onload']) ? '' : 'wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10);'
+		$onload_func .= empty($this->options['page']['unobtrusive_onload']) ? '' : 'wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10);';
 		$onload_func .= empty($this->options['page']['postload']) ? '' : 'var a=0,b,c,d=["' .
 			str_replace(" ", '","', $this->options['page']['postload']) .
 			'"],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}};';
