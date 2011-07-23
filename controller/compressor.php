@@ -689,7 +689,7 @@ class web_optimizer {
 				if ($this->options['page']['sprites_domloaded']) {
 					$this->domready_include .= '_webo_hsprites();';
 				}
-				if ($this->joomla_cache || $this->wp_cache)) {
+				if ($this->joomla_cache || $this->wp_cache) {
 					$cart_class = $this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart';
 					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("' . 
 					$cart_class .
