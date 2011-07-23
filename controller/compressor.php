@@ -267,7 +267,7 @@ class web_optimizer {
 /* remember Joomla! caching (VirtueMart) */
 		$this->joomla_cache = $this->options['page']['cache'] && class_exists('JUtility', false);
 /* remember WordPress caching (WP Digi Cart) */
-		$this->wp_cache = $this->options['page']['cache'] && defined('WP_CACHE') && @is_dir($this->options['document_root'] . 'wp-content/plugins/wp-cart-for-digital-products/');
+		$this->wp_cache = defined('WP_CACHE') && @is_dir($this->options['document_root'] . 'wp-content/plugins/wp-cart-for-digital-products/');
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
 			$this->options['javascript']['host'] =
@@ -702,7 +702,9 @@ class web_optimizer {
 				}
 				$this->domready_include2 .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->joomla_cache || $this->wp_cache) {
-					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("' .
+					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;' .
+					($this->wp_cache ? 'if(document.location.pathname=="/cart/")return;' : '') .
+					'if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("' .
 					$cart_class .
 					'")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
 					$cart_class .
@@ -1019,7 +1021,7 @@ class web_optimizer {
 					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}());';
 			}
 /* Add on-fly caching for Cart in Joomla! and WP */
-			if (($wp_cache || $joomla_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+			if (($this->wp_cache || $this->joomla_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
 			if ($chunk) {
