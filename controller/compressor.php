@@ -135,7 +135,7 @@ class web_optimizer {
   - no debug mode,
   - external cache restriction,
   - exclude domains except the activated one for non-corporate licenses,
-  - disable cahce in case of negative A/B test.
+  - disable cache in case of negative A/B test.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			(empty($this->options['page']['cache_ignore']) ||
@@ -688,11 +688,13 @@ class web_optimizer {
 				if ($this->options['page']['sprites_domloaded']) {
 					$this->domready_include .= '_webo_hsprites();';
 				}
-				if ($this->joomla_cache || $this->wp_cache) {
+				if ($this->joomla_cache || $this->wp_cache)) {
 					$cart_class = $this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart';
 					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("' . 
 					$cart_class .
-					'")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"){g.innerHTML=a}}';
+					'")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
+					($this->wp_cache ? '&&document.location.pathname!="/cart/"' : '') .
+					'){g.innerHTML=a}}';
 				}
 				$this->domready_include2 = '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
@@ -702,9 +704,7 @@ class web_optimizer {
 				}
 				$this->domready_include2 .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->joomla_cache || $this->wp_cache) {
-					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;' .
-					($this->wp_cache ? 'if(document.location.pathname=="/cart/")return;' : '') .
-					'if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("' .
+					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a;if(typeof document.getElementsByClassName!="undefined"){a=document.getElementsByClassName("' .
 					$cart_class .
 					'")[0]}else{var b=document.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
 					$cart_class .
@@ -1006,8 +1006,8 @@ class web_optimizer {
 			$this->write_progress($this->web_optimizer_stage++);
 		}
 		$this->clear_trash();
-/* check if we need to store cached page */
-		if (!empty($this->cache_me)) {
+/* on-fly caching cart */
+		if (!empty($this->cache_me) || defined('WP_CACHE')) {
 			$chunk = '';
 /* add client side replacement for WordPress comment fields */
 			if (defined('WP_CACHE')) {
@@ -1031,6 +1031,9 @@ class web_optimizer {
 					$this->content .= $chunk;
 				}
 			}
+		}
+/* check if we need to store cached page */
+		if (!empty($this->cache_me)) {
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
 				if (empty($options['flush_size'])) {
