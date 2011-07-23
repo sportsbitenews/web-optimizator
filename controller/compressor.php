@@ -2921,10 +2921,10 @@ class web_optimizer {
 			str_replace(" ", '","', $this->options['page']['postload']) .
 			'"],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}};';
 		$onload_func .= empty($this->options['page']['postload_frames']) ? '' : 'var a=0,b,c,d=["' .
-			str_replace(" ", '","', $this->options['page']['frames']) .
+			str_replace(" ", '","', $this->options['page']['postload_frames']) .
 			'"],f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;c=f.createElement("iframe");c.style.display="none";c.src=b;f.body.appendChild(c)};';
 		if ($onload) {
-			$before_body .= $onload . $onload_func . '},false)</script>';
+			$before_body .= '<script type="text/javascript">'. $onload . $onload_func . '},false)</script>';
 		}
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
