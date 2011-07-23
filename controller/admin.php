@@ -3597,6 +3597,12 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
 				),
+				'unobtrusive_frames' => array(
+					'value' => $this->compress_options['unobtrusive']['frames'],
+					'type' => 'textarea',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5
+				),
 			),
 			'multiple_hosts' => array(
 				'parallel_enabled' => array(
@@ -3809,6 +3815,7 @@ class admin {
 /* fix multiple lines in textarea */
 		foreach (array(
 			'wss_unobtrusive_postload',
+			'wss_unobtrusive_frames',
 			'wss_minify_css_file',
 			'wss_minify_css_host',
 			'wss_minify_javascript_file',

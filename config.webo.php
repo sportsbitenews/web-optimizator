@@ -44,6 +44,8 @@ $compress_options['unobtrusive']['iframes'] = "0";
 $compress_options['unobtrusive']['background'] = "0";
 ## Load resources on onload
 $compress_options['unobtrusive']['postload'] = "";
+## Load frames on onload
+$compress_options['unobtrusive']['frames'] = "";
 ## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head

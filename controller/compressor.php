@@ -514,6 +514,7 @@ class web_optimizer {
 				"unobtrusive_inline" => $this->options['unobtrusive']['on'] == 2 &&
 					($this->premium > 1),
 				"postload" => $this->premium > 1 ? $this->options['unobtrusive']['postload'] : '',
+				"postload_frames" => $this->premium > 1 ? $this->options['unobtrusive']['frames'] : '',
 				"footer" => $this->options['footer']['text'],
 				"footer_image" => $this->options['footer']['image'],
 				"footer_text" => $this->options['footer']['link'],
@@ -729,7 +730,8 @@ class web_optimizer {
 							!empty($option['unobtrusive_counters']) ||
 							!empty($option['unobtrusive_informers']) ||
 							!empty($option['unobtrusive_iframes']) ||
-							!empty($option['unobtrusive_postload']) ||
+							!empty($option['postload']) ||
+							!empty($option['postload_frames']) ||
 							!empty($option['cache']) ||
 							!empty($option['sprites']) ||
 							!empty($option['counter']) ||
@@ -2912,12 +2914,17 @@ class web_optimizer {
 			}
 		}
 		$before_body .= $before_body_onload;
-		$before_body .= empty($this->options['page']['unobtrusive_onload']) ?
-			'' : '<script type="text/javascript">wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10)},false)</script>';
-		if (!empty($this->options['page']['postload'])) {
-			$before_body .= '<script type="text/javascript">window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,b,c,d=["' .
-				str_replace(" ", '","', $this->options['page']['postload']) .
-				'"],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}}},false)</script>';
+		$onload = $onload_func = '';
+		$onload .= empty($this->options['page']['unobtrusive_onload']) && empty($this->options['page']['postload']) && empty($this->options['page']['postload_frames']) ? '' : 'wss_onload_ready=1;window[/*@cc_on!@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){';
+		$onload_func .= empty($this->options['page']['unobtrusive_onload']) ? '' : 'wss_onload_counter=0;setTimeout(function(){var a=wss_onload[wss_onload_counter];if(wss_onload_ready){wss_onload_ready=0;if(a){a()}wss_onload_counter++}if(a){setTimeout(arguments.callee,10)}},10);'
+		$onload_func .= empty($this->options['page']['postload']) ? '' : 'var a=0,b,c,d=["' .
+			str_replace(" ", '","', $this->options['page']['postload']) .
+			'"],e=navigator.appName.indexOf("Microsoft")===0,f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;if(e){new Image().src=b}else{c=f.createElement("object");c.data=b;c.width=c.height=0;f.body.appendChild(c)}};';
+		$onload_func .= empty($this->options['page']['postload_frames']) ? '' : 'var a=0,b,c,d=["' .
+			str_replace(" ", '","', $this->options['page']['frames']) .
+			'"],f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;c=f.createElement("iframe");c.style.display="none";c.src=b;f.body.appendChild(c)};';
+		if ($onload) {
+			$before_body .= $onload . $onload_func . '},false)</script>';
 		}
 		if (!empty($before_body)) {
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
