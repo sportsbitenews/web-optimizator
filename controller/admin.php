@@ -2607,14 +2607,17 @@ class admin {
 /* rewrite current hosts'/URLs configs with new options */
 		$compress_options_backup = $this->compress_options;
 		@chdir($this->basepath);
-		foreach (glob("*.config.webo.php") as $file) {
-			include($this->basepath . $file);
-			$this->compress_options = $compress_options;
-			$this->options_file_backup = $this->options_file;
-			$this->options_file = $file;
-			@copy($this->basepath . 'config.webo.php', $this->basepath . $file);
-			$this->save_options();
-			$this->options_file = $this->options_file_backup;
+		$configs = glob("*.config.webo.php");
+		if (is_array($configs)) {
+			foreach ($configs as $file) {
+				include($this->basepath . $file);
+				$this->compress_options = $compress_options;
+				$this->options_file_backup = $this->options_file;
+				$this->options_file = $file;
+				@copy($this->basepath . 'config.webo.php', $this->basepath . $file);
+				$this->save_options();
+				$this->options_file = $this->options_file_backup;
+			}
 		}
 		$this->compress_options = $compress_options_backup;
 		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
