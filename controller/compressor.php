@@ -3359,14 +3359,14 @@ class web_optimizer {
 						$images = array();
 						$b64 = array();
 						foreach ($css_image as $im) {
-							$arr = $this->convert_single_background(trim($im), $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude);
+							$arr = $this->convert_single_background(trim($im), $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options);
 							$images[] = $arr[0];
 							$location = $arr[1];
 							$b64[] = $arr[2];
 						}
 						if (count($images)) {
-							$css_image = implode('),url(', $images);
-							$base64 = implode('),url(', $b64);
+							$css_image = 'url('. implode('),url(', $images) . ')';
+							$base64 = 'url('. implode('),url(', $b64) . ')';
 						} else {
 							$css_image = $image_saved;
 							$base64 = '';
@@ -3406,7 +3406,7 @@ class web_optimizer {
 	/**
 	* Convert single background image to data:URI / mhtml / CDN
 	**/
-	function convert_single_background ($css_image, $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude) {
+	function convert_single_background ($css_image, $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options) {
 		$image_saved = $css_image;
 		$css_image = substr($css_image, 4, strlen($css_image) - 5);
 /* remove quotes */
