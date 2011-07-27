@@ -3366,7 +3366,9 @@ class web_optimizer {
 						}
 						if (count($images)) {
 							$css_image = 'url('. implode('),url(', $images) . ')';
-							$base64 = 'url('. implode('),url(', $b64) . ')';
+							if (count($b64)) {
+								$base64 = 'url('. implode('),url(', $b64) . ')';
+							}
 						} else {
 							$css_image = $image_saved;
 							$base64 = '';
