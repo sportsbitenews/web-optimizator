@@ -65,6 +65,10 @@ class html_sprites {
 	/*
 	**/
 	function process ($content) {
+		global $webo_images_list_var, $webo_images_list_ok;
+		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
+		register_shutdown_function('webo_images_list_handler');
+		$webo_images_list_ok = 0;
 		$str = '';
 		$equal = 1;
 		$exclude_list = explode(" ", $this->options['css']['css_sprites_exclude']);
@@ -142,12 +146,14 @@ class html_sprites {
 						"'] = array(" . $i[0] . "," . $i[1] . ",'" . $i[2] . "');";
 				}
 				$str .= "\n?>";
-				$this->main->write_file($this->options['page']['cachedir'] . 'wo.img.cache.php', $str);
+				$this->main->write_file($webo_images_list_var, $str);
+				@include($webo_images_list_var);
 			}
 			$content = $this->add_styles($content, $styles);
 		} else {
 			unset($this->css_images);
 		}
+		$webo_images_list_ok = 1;
 		return $content;
 	}
 
@@ -156,6 +162,10 @@ class html_sprites {
 	*
 	**/
 	function get_images_dimensions ($imgs) {
+		global $webo_images_list_var, $webo_images_list_ok;
+		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
+		register_shutdown_function('webo_images_list_handler');
+		$webo_images_list_ok = 0;
 		$images = array();
 /* load cached images' dimensions */
 		@include($this->options['page']['cachedir'] . 'wo.img.cache.php');
@@ -175,6 +185,7 @@ class html_sprites {
 					array('file' => $_SERVER['REQUEST_URI']));
 				$filename = explode("/", $absolute_src);
 				$filename = array_pop($filename);
+				$absolute_src = str_replace("'", "\'", $absolute_src);
 /* fetch only non-cached images */
 				if (!empty($absolute_src) && (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list))) {
 					if (empty($images[$absolute_src]))  {
@@ -209,13 +220,15 @@ class html_sprites {
 				}
 			}
 			$str .= "\n?>";
-			$this->main->write_file($this->options['page']['cachedir'] . 'wo.img.cache.php', $str);
+			$this->main->write_file($webo_images_list_var, $str);
+			@include($webo_images_list_var);
 /* or just mark all images as active */
 		} elseif (empty($this->options['page']['per_page'])) {
 			foreach ($images as $k => $i) {
 				$images[$k][3] = 1;
 			}
 		}
+		$webo_images_list_ok = 1;
 		return $images;
 	}
 
@@ -279,6 +292,15 @@ class html_sprites {
 		return $content;
 	}
 
+}
+
+/* Clean content of wo.img.cache.php in case of failed store to this file. */
+
+function webo_images_list_handler () {
+	global $webo_images_list_var, $webo_images_list_ok;
+	if (empty($webo_images_list_ok)) {
+		@file_put_contents($webo_images_list_var, '<?php ?>');
+	}
 }
 
 ?>
