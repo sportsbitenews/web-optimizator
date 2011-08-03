@@ -711,9 +711,9 @@ class web_optimizer {
 					$cart_class .
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart-qty(\s|$)/.test(c.className)){y=c}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{x.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart-qty(\s|$)/.test(c.className)){y=c}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000) .
-					').toGMTString())}x.cookie="WSS_CART="+(y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString())}document.cookie="WSS_CART="+(y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 				}
@@ -1026,8 +1026,8 @@ class web_optimizer {
 					(@is_dir($this->options['website_root'] . 'wp-content/plugins/wp-e-commerce/') ? 'jQuery.post("index.php?ajax=true","wpsc_ajax_action=get_cart",function(returned_data){eval(returned_data)});' : '') .
 					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}());';
 			}
-/* Add on-fly caching for Cart in Joomla! and WP */
-			if (($this->wp_cache || $this->joomla_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+/* Add on-fly caching for Cart in Joomla! and WP, and others */
+			if (($this->wp_cache || $this->joomla_cache || $this->generic_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
 			if ($chunk) {
@@ -1039,7 +1039,7 @@ class web_optimizer {
 			}
 		}
 /* check if we need to store cached page */
-		if (!empty($this->cache_me)) {
+		if (!empty($this->cache_me) && empty($_COOKIE['WSS_CART'])) {
 /* prepare flushed part of content */
 			if (!empty($options['flush']) && empty($this->encoding)) {
 				if (empty($options['flush_size'])) {
