@@ -269,7 +269,7 @@ class web_optimizer {
 /* remember WordPress caching (WP Digi Cart) */
 		$this->wp_cache = defined('WP_CACHE') && @is_dir($this->options['document_root'] . 'wp-content/plugins/wp-cart-for-digital-products/');
 /* remember Generic caching for other carts */
-		$this->generic_cache = $this->options['page']['cache'];
+		$this->generic_cache = !$this->joomla_cache && !$this->wp_cache && $this->options['page']['cache'];
 /* change some hosts if HTTPS is used */
 		if ($this->https && !empty($this->options['page']['parallel_https'])) {
 			$this->options['javascript']['host'] =
@@ -711,11 +711,11 @@ class web_optimizer {
 					$cart_class .
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart-qty(\s|$)/.test(c.className)){y=c}}}a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{x.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart-qty(\s|$)/.test(c.className)){y=c}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{x.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000) .
 					').toGMTString())}x.cookie="WSS_CART="+(y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000) .
-					').toGMTString())},false)})();';
+					').toGMTString())}},false)})();';
 				}
 			}
 /* find all files in head to process */
