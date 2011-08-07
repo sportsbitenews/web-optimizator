@@ -712,9 +712,9 @@ class web_optimizer {
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
 					$cart_class .
 					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart-qty(\s|$)/.test(c.className)){y=c}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cache_timeout'] * 1000) .
+					($this->options['page']['cache_timeout'] * 1000000) .
 					').toGMTString())}document.cookie="WSS_CART="+(y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cache_timeout'] * 1000) .
+					($this->options['page']['cache_timeout'] * 1000000) .
 					').toGMTString())}},false)})();';
 				}
 			}
