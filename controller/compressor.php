@@ -693,10 +693,10 @@ class web_optimizer {
 				}
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
-					$this->domready_include .= 'var g;if(g=document.getElementsByClassName("' . 
+					$this->domready_include .= 'var g,x=document;if(typeof x.getElementsByClassName!="undefined"&&(g=document.getElementsByClassName("' . 
 					$cart_class .
-					'")[0]){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=document.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
-					($this->wp_cache ? '&&document.location.pathname!="/cart/"' : '') .
+					'")[0])){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
+					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){g.innerHTML=a}}';
 				}
 				$this->domready_include2 = '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
