@@ -3213,7 +3213,7 @@ class web_optimizer {
 				}
 			}
 		}
-		if (empty($this->options['uniform_cache']) && strpos($source, '<!--[if') !== false) {
+		if (empty($this->options['uniform_cache']) && strpos($source, '<!--[if') !== false && strpos($source, '[endif]-->') !== false) {
 			$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
 		}
 		return $source;
