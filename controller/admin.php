@@ -176,6 +176,8 @@ class admin {
 		);
 /* define if we can skip some info */
 		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app@", $this->basepath);
+/* detect CS-Cart to */
+		$this->cscart = strpos($this->basepath, 'addons/webositespeedup');
 /* check for database driver , WordPress */
 		$this->internal_sql = strpos($this->basepath, "wp-content") !== false ||
 /* Joomla! 1.5x */
@@ -4493,6 +4495,13 @@ Options +FollowSymLinks";
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
+/* Caching for AJAX requests, CS-Cart */
+					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
+						$content .= "
+	RewriteCond %{QUERY_STRING} dispatch=load_menu\.get_items&tree_id=([0-9_]+)&dir=&result_ids=sub_menu_content_([0-9_]+)
+	RewriteCond ". $this->compress_options['html_cachedir'] ."menu.%1.%2.html -f
+	RewriteRule ^(.*)$ /addons/webositespeedup/web-optimizer/cache/menu.%1.%2.html?";
+					}
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
