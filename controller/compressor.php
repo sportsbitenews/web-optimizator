@@ -693,9 +693,11 @@ class web_optimizer {
 				}
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
-					$this->domready_include .= 'var g,x=document;if(typeof x.getElementsByClassName!="undefined"&&(g=document.getElementsByClassName("' . 
+					$this->domready_include .= 'var g,x=document,f;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
 					$cart_class .
-					'")[0])){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
+					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
+					$cart_class .
+					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}}}}if(g&&(!f||!(f.innerHTML*1))){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){WSS_CART=g.innerHTML=a}}';
 				}
@@ -709,9 +711,9 @@ class web_optimizer {
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
 					$cart_class .
-					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(/(^|\s)' .
+					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000000) .
 					').toGMTString())}document.cookie="WSS_CART="+(typeof WSS_CART!=="undefined"||y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cache_timeout'] * 1000000) .
@@ -1012,9 +1014,9 @@ class web_optimizer {
 			$this->write_progress($this->web_optimizer_stage++);
 		}
 		$this->clear_trash();
+		$chunk = '';
 /* on-fly caching cart */
 		if (!empty($this->cache_me) || defined('WP_CACHE')) {
-			$chunk = '';
 /* add client side replacement for WordPress comment fields */
 			if (defined('WP_CACHE')) {
 				foreach ($_COOKIE as $key => $value) {
@@ -1030,12 +1032,14 @@ class web_optimizer {
 			if (($this->wp_cache || $this->joomla_cache || $this->generic_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
-			if ($chunk) {
-				if (preg_match("!</body>!i", $this->content)) {
-					$this->content = preg_replace("!</body>!", '<script type="text/javascript">'. $chunk . "</script>$1", $this->content);
-				} else {
-					$this->content .= $chunk;
-				}
+		} elseif($this->generic_cache) {
+			$chunk = $this->domready_include2;
+		}
+		if ($chunk) {
+			if (preg_match("!</body>!i", $this->content)) {
+				$this->content = preg_replace("!</body>!", '<script type="text/javascript">'. $chunk . "</script>$1", $this->content);
+			} else {
+				$this->content .= $chunk;
 			}
 		}
 /* check if we need to store cached page */
