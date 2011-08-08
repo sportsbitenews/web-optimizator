@@ -1032,8 +1032,8 @@ class web_optimizer {
 			if (($this->wp_cache || $this->joomla_cache || $this->generic_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
-		} elseif($this->generic_cache) {
-			$chunk = $this->domready_include2;
+		} elseif($this->generic_cache && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+			$chunk = $this->domready_include . $this->domready_include2;
 		}
 		if ($chunk) {
 			if (preg_match("!</body>!i", $this->content)) {
