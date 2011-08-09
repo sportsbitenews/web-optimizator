@@ -205,6 +205,7 @@ class web_optimizer {
 					$cnt = $this->create_gz_compress($content, in_array($this->encoding, array('gzip', 'x-gzip')));
 					if (!empty($cnt)) {
 						$content = $cnt;
+						header("Content-Length: " . strlen($content));
 /* skip gzip if we can't compress content */
 					} else {
 						$this->options['page']['gzip'] = 0;
@@ -1125,6 +1126,7 @@ class web_optimizer {
 				in_array($this->encoding, array('gzip', 'x-gzip')));
 			if (!empty($content)) {
 				$this->content = $content;
+				header("Content-Length: " . strlen($this->content));
 			}
 		}
 	}
@@ -3041,7 +3043,7 @@ class web_optimizer {
 			}
 /* fix script positioning for DLE */
 			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
-				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer.*=10\); \"></div>)[\r\n\t\s]*(<script.*?)<(body|div|table)@is", "$3$5$1$2$4<$6", $this->content);
+				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer\">.*?</div>)[\r\n\t\s]*(<script.*?)<(body|div|table)@is", "$3$5$1$2$4<$6", $this->content);
 			}
 /* fix Shadowbox inclusions */
 			if (($this->options['javascript']['minify'] || $this->options['css']['minify']) && strpos($this->content, 'Shadowbox.load')) {
