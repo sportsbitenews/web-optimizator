@@ -18,14 +18,14 @@ class admin {
 		}
 		$this->skip_render = empty($this->skip_render) ? 0 : $this->skip_render;
 		if (!$this->skip_render) {
-/* Ensure no caching */
-			header('Expires: ' . date("r"));
-			header("Cache-Control: no-store, no-cache, must-revalidate, private");	
-			header("Pragma: no-cache");
 /* Fixes time zone for future usage */
 			if (function_exists('date_default_timezone_set')) {
 				@date_default_timezone_set('Europe/Moscow');
 			}
+/* Ensure no caching */
+			header('Expires: ' . @date("r"));
+			header("Cache-Control: no-store, no-cache, must-revalidate, private");	
+			header("Pragma: no-cache");
 		}
 /* define website host */
 		$host = empty($_SERVER['HTTP_HOST']) ? '' : strtolower($_SERVER['HTTP_HOST']);
@@ -941,7 +941,7 @@ class admin {
 					}
 					$this->save_option("['config']", $this->input['wss_config']);
 					$this->input['wss_title'] = 'Auto Config';
-					$this->input['wss_description'] = 'Created by WEBO Wizard on ' . date("Y-m-d");
+					$this->input['wss_description'] = 'Created by WEBO Wizard on ' . @date("Y-m-d");
 					$this->input['wss_page'] = 'install_options';
 					$this->set_options();
 					break;
@@ -1132,7 +1132,7 @@ class admin {
 		$headers .= 'Content-Type: text/plain; charset=utf-8'."\r\n";
 		$headers .= 'Content-Transfer-Encoding: base64';
 /* general info */
-		$message = "On " . date("Y-m-d") . " at " . date("H:i:s") . " " .
+		$message = "On " . @date("Y-m-d") . " at " . @date("H:i:s") . " " .
 			$this->compress_options['name'] .
 			" (" . $this->compress_options['email'] . ") send a message: " .
 			($uninstall ? "(after uninstalltion) " : "") . "\r\n" . $message;
