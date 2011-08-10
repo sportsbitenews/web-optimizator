@@ -702,13 +702,13 @@ class web_optimizer {
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){WSS_CART=g.innerHTML=a}}';
 				}
-				$this->domready_include2 = '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
+				$this->domready_include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
-					$this->domready_include2 .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
+					$this->domready_include .= 'd.write("\x3cscript id=\"_weboptimizer\" defer=\"defer\" src=\"\">\x3c\/script>");(d.getElementById("_weboptimizer")).onreadystatechange=function(){if(this.readyState=="complete"){setTimeout(function(){if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}},0)}};';
 				} else {
-					$this->domready_include2 .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}';
+					$this->domready_include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}';
 				}
-				$this->domready_include2 .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
+				$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
 					$cart_class .
@@ -1034,7 +1034,7 @@ class web_optimizer {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
 		} elseif($this->generic_cache && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
-			$chunk = $this->domready_include . $this->domready_include2;
+			$chunk = $this->domready_include2;
 		}
 		if ($chunk) {
 			if (preg_match("!</body>!i", $this->content)) {
