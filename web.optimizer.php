@@ -3,7 +3,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.4.1
+// @version    1.5.0
 // @copyright  Copyright &copy; 2009-2011 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
@@ -46,7 +46,7 @@ if (!empty($webo_not_buffered)) {
 	}
 # config spot
 	$wss_configs = array();
-
+	
 /* Calculate current folder */
 	$uri = $_SERVER['REQUEST_URI'];
 	$folder = '';

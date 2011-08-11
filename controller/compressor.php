@@ -3043,7 +3043,7 @@ class web_optimizer {
 			}
 /* fix script positioning for DLE */
 			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
-				$this->content = preg_replace("@(</head>)[\r\n\t\s]*(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer\">.*?</div>)[\r\n\t\s]*(<script.*?)<(body|div|table)@is", "$3$5$1$2$4<$6", $this->content);
+				$this->content = preg_replace("@(</head>)(.*?)(<body[^>]*>)?[\r\n\t\s]*(<script.*?)(<div id=\"loading-layer\">.*?</div>)@is", "$2$4$1$3$5", $this->content);
 			}
 /* fix Shadowbox inclusions */
 			if (($this->options['javascript']['minify'] || $this->options['css']['minify']) && strpos($this->content, 'Shadowbox.load')) {
