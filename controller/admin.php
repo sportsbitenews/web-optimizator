@@ -4495,6 +4495,14 @@ Options +FollowSymLinks";
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase $base";
+/* Redirects for multiple domains */
+					if (!empty($this->input['wss_parallel_allowed_list'])) {
+						$hosts = implode("[OR]\n\tRewriteCond %{HTTP_HOST} ^", $this->input['wss_parallel_allowed_list']);
+						$content .= "
+	RewriteCond %{HTTP_HOST} ^" . $hosts . "
+	RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp)$
+	RewriteRule (.*) http://" . $this->options['host'] . "/$1 [R=301,L]";
+					}
 /* Caching for AJAX requests, CS-Cart */
 					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
 						$content .= "
