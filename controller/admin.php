@@ -4501,7 +4501,7 @@ Options +FollowSymLinks";
 						$content .= "
 	RewriteCond %{HTTP_HOST} ^" . $hosts . "
 	RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp)$
-	RewriteRule (.*) http://" . $this->options['host'] . "/$1 [R=301,L]";
+	RewriteRule (.*) http://" . $this->compress_options['host'] . "/$1 [R=301,L]";
 					}
 /* Caching for AJAX requests, CS-Cart */
 					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
