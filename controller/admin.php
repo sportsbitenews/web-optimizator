@@ -185,10 +185,8 @@ class admin {
 /* fix for not supported languages */
 		$this->language = empty($this->language) ? '' : $this->language;
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it', 'da')) ? $this->language : 'en';
-/* calculate configuration files for Extended Edition */
-		if ($this->premium > 1 && $this->premium < 10) {
-			$this->find_configs();
-		}
+/* calculate configuration files for Extended and Corporate Editions */
+		$this->find_configs($this->premium > 1 && $this->premium < 10);
 		if ($this->compress_options['active']) {
 			$this->validate();
 		}
@@ -6446,16 +6444,17 @@ require valid-user';
 	* Finds all active configuration and writes info about them to web.optimizer.php
 	* 
 	**/		
-	function find_configs () {
+	function find_configs ($licensed) {
 		@chdir($this->basepath);
-		$files = array();
-		foreach (glob('*config.webo.php') as $file) {
-			$files[] = substr($file, 0, strlen($file) - 15);
+		$str = '';
+		if ($licensed) {
+			$files = array();
+			foreach (glob('*config.webo.php') as $file) {
+				$files[] = substr($file, 0, strlen($file) - 15);
+			}
+			$str = "<?php \\\$wss_configs = array('" . implode($files, "','") . "'); ?>";
 		}
-		$str = "# config spot\n\t\\\$wss_configs = array('" . implode($files, "','") . "');";
-		$c = $this->file_get_contents($this->basepath . 'web.optimizer.php');
-		$c = preg_replace("/# config spot[^\)]+\);/", $str, $c);
-		$this->write_file($this->basepath . 'web.optimizer.php', $c);
+		$this->write_file($this->basepath . 'web.optimizer.configs.php', $str);
 	}
 
 }

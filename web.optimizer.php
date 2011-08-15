@@ -46,6 +46,7 @@ if (!empty($webo_not_buffered)) {
 	}
 # config spot
 	$wss_configs = array();
+	@include($basepath . "web.optimizer.configs.php");
 	
 /* Calculate current folder */
 	$uri = $_SERVER['REQUEST_URI'];
