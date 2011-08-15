@@ -6452,7 +6452,7 @@ require valid-user';
 			foreach (glob('*config.webo.php') as $file) {
 				$files[] = substr($file, 0, strlen($file) - 15);
 			}
-			$str = "<?php \\\$wss_configs = array('" . implode($files, "','") . "'); ?>";
+			$str = '<?php $wss_configs = array(\'' . implode($files, "','") . '\'); ?>';
 		}
 		$this->write_file($this->basepath . 'web.optimizer.configs.php', $str);
 	}
