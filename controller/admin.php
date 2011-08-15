@@ -3465,6 +3465,12 @@ class admin {
 					'value' => $this->compress_options['html_cache']['timeout'],
 					'type' => 'smalltext'
 				),
+				'html_cache_timeout_cart' => array(
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'value' => $this->compress_options['html_cache']['timeout_cart'],
+					'type' => 'smalltext',
+					'price' => 2
+				),
 				'html_cache_flush_only' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['flush_only'],
@@ -3491,12 +3497,12 @@ class admin {
 				'html_cache_allowed_list' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['allowed_list'],
-					'type' => 'textarea'
+					'type' => 'text'
 				),
 				'html_cache_additional_list' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['additional_list'],
-					'type' => 'textarea',
+					'type' => 'text',
 					'price' => 3
 				),
 				'html_cache_params' => array(
@@ -3869,6 +3875,7 @@ class admin {
 			'wss_performance_cache_engine',
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
+			'wss_html_cache_timeout_cart',
 			'wss_html_cache_flush_size',
 			'wss_html_cache_ignore',
 			'wss_sql_cache_time',

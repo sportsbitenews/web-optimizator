@@ -312,6 +312,9 @@ define('_WEBO_html_cache_enabled_HELP', 'HTML sider vil blive cached for timeout
 define('_WEBO_html_cache_enabled_EFFECT', 'CPU besparelse på 60-95%');
 define('_WEBO_html_cache_timeout', 'Standard HTML cache timeout (i sekunder)');
 define('_WEBO_html_cache_timeout_HELP', 'Efter denne tid vil alle cached HTML sider blive genindlæst på serversiden.');
+define('_WEBO_html_cache_timeout_cart', 'Time to cache cart in e-store (in seconds)');
+define('_WEBO_html_cache_timeout_cart_HELP', 'During this time all data about user\'s cart will be stored locally (in user\'s cookie or in localStorage).');
+define('_WEBO_html_cache_timeout_cart_EFFECT', 'Better website usability');
 define('_WEBO_html_cache_flush_only', 'Cache kun de første n bytes af indhold (flush tidligt)');
 define('_WEBO_html_cache_flush_only_HELP', 'HTML cache vil ikke indeholde hele siden, men kun de første n bytes af det (angives i indstillingen &quot;Flush indholdsstørrelse&quot;). Og denne del af data, vil blive flushed til browser tidligere en resten af sidens indhold. Browseren vil modtage de nødvendige data først og dernæst ikke vente med at indlæse resten af siden.');
 define('_WEBO_html_cache_flush_only_EFFECT', 'Forøgelse af visningstid med 10-40%');

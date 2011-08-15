@@ -485,6 +485,7 @@ class web_optimizer {
 				"cache" => $this->options['html_cache']['enabled'] &&
 					$this->premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
+				"cart_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_cart'] : 0,
 				"flush" => $this->options['html_cache']['flush_only'] &&
 					$this->premium > 1,
 				"flush_size" => $this->options['html_cache']['flush_size'],
@@ -698,7 +699,7 @@ class web_optimizer {
 					$cart_class .
 					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}}}}if(g&&(!f||(f.innerHTML*1))){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||""}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"'.
+					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}}}}if(g&&(!f||(f.innerHTML*1))){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"&&x.cookie.indexOf("WSS_CART=1")!==-1'.
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){WSS_CART=g.innerHTML=a}}';
 				}
@@ -715,9 +716,9 @@ class web_optimizer {
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
 					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cache_timeout'] * 1000000) .
+					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}document.cookie="WSS_CART="+(typeof WSS_CART!=="undefined"||y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cache_timeout'] * 1000000) .
+					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 				}
 			}
