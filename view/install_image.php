@@ -47,12 +47,18 @@
 ?>" title="<?php
 	echo _WEBO_GZIP_ENTERDIRECTORY;
 ?>"/></dd><dt class="wssD5"><label for="wss_recursive"><?php
-	echo _WEBO_GZIP_RECURSIVE;;
+	echo _WEBO_GZIP_RECURSIVE;
 ?></label></dt><dd class="wssD6 wssD7"><input type="checkbox" name="wss_recursive" id="wss_recursive" title="<?php
 	echo _WEBO_GZIP_ENTERRECURSIVE;
 ?>"<?php
 	echo !$submit || $recursive ? ' checked="checked"' : '';
-?>/><input type="hidden" name="wss_Submit" id="wss_Submit" value="1"/></dd><dd class="wssD6 wssD7 wssD11"><label><input type="radio" name="wss_service" id="wss_service1" value="0" checked="checked"/> smush.it</label>&nbsp;&nbsp;&nbsp;<label><input type="radio" name="wss_service" id="wss_service2" value="1"/> WEBO Nimblizer</label></dd></dl><p class="wssA0 wssI3"><?php
+?>/><input type="hidden" name="wss_Submit" id="wss_Submit" value="1"/></dd><dt class="wssD5"><label for="wss_backup"><?php
+	echo _WEBO_GZIP_BACKUP;
+?></label></dt><dd class="wssD6 wssD7"><input type="checkbox" name="wss_backup" id="wss_backup" title="<?php
+	echo _WEBO_GZIP_ENTERBACKUP;
+?>"<?php
+	echo !$submit || $backup ? ' checked="checked"' : '';
+?>/></dd><dd class="wssD6 wssD7 wssD11"><label><input type="radio" name="wss_service" id="wss_service1" value="0" checked="checked"/> smush.it</label>&nbsp;&nbsp;&nbsp;<label><input type="radio" name="wss_service" id="wss_service2" value="1"/> WEBO Nimblizer</label></dd></dl><p class="wssA0 wssI3"><?php
 	echo _WEBO_GZIP_WAIT;
 ?>...</p><?php
 	if (count($results)) {

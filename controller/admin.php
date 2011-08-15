@@ -250,15 +250,15 @@ class admin {
 		$service = empty($this->input['wss_service']) ? 0 : round($this->input['wss_service']);
 		$mtime = @filemtime($file);
 		$size = @filesize($file);
-		$backup = $file . '.backup';
+		$backup = empty($this->input['wss_backup']) ? '' : $file . '.backup';
 		$compressed_size = $size;
 		$error = 0;
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
-			if (!@is_file($backup) || $mtime != @filemtime($backup)) {
+			if (!$backup || !@is_file($backup) || $mtime != @filemtime($backup)) {
 				require(dirname(__FILE__) . '/../libs/php/css.sprites.optimize.php');
 				$optimizer = new css_sprites_optimize();
 /* CSS Sprites uses .backup itself, so just prepare another backup */
-				if (@is_file($backup)) {
+				if ($backup && @is_file($backup)) {
 					@copy($backup, $file . '.bkp');
 				} else {
 					@copy($file, $file . '.bkp');
@@ -276,7 +276,9 @@ class admin {
 						break;
 				}
 /* copy backup back */
-				@copy($file . '.bkp', $backup);
+				if ($backup) {
+					@copy($file . '.bkp', $backup);
+				}
 				@unlink($file . '.bkp');
 				$mtime2 = @filemtime($file);
 /* Has file been changed? */
@@ -2471,6 +2473,7 @@ class admin {
 					$this->compress_options['website_root']) :
 			$this->input['wss_directory'];
 		$recursive = empty($this->input['wss_recursive']) ? 0 : 1;
+		$backup = empty($this->input['wss_backup']) ? 0 : 1;
 		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
 		$results = array();
 		if ($submit) {
@@ -2488,6 +2491,7 @@ class admin {
 			"directory" => $directory,
 			"premium" => $this->premium,
 			"recursive" => $recursive,
+			"backup" => $backup,
 			"submit" => $submit,
 			"skip_render" => $this->skip_render
 		);

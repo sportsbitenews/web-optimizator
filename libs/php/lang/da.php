@@ -917,6 +917,8 @@ define('_WEBO_GZIP_ENTERDIRECTORY', 'Angiv indledningsmappen');
 define('_WEBO_GZIP_DIRECTORY', 'Mappe');
 define('_WEBO_GZIP_RECURSIVE', 'Inkluder undermapper');
 define('_WEBO_GZIP_ENTERRECURSIVE', 'Find/gzip filer rekursiv');
+define('_WEBO_GZIP_BACKUP', 'Create backup');
+define('_WEBO_GZIP_ENTERBACKUP', 'For each image backup copy with .backup extension will be created');
 define('_WEBO_GZIP_COMPRESS', 'Komprimer filer');
 define('_WEBO_GZIP_FIND', 'Find filer');
 define('_WEBO_GZIP_WAIT', 'Søger efter filer...');

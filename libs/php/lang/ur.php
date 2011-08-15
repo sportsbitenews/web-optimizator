@@ -902,6 +902,8 @@ define('_WEBO_GZIP_ENTERDIRECTORY', 'ابتدائی ڈائریکٹری میں د
 define('_WEBO_GZIP_DIRECTORY', 'ڈائرکٹری');
 define('_WEBO_GZIP_RECURSIVE', 'ذیلی ڈائریکٹری شامل کریں');
 define('_WEBO_GZIP_ENTERRECURSIVE', 'gzip فائلز کو recursively تلاش کریں۔');
+define('_WEBO_GZIP_BACKUP', 'Create backup');
+define('_WEBO_GZIP_ENTERBACKUP', 'For each image backup copy with .backup extension will be created');
 define('_WEBO_GZIP_COMPRESS', 'کمپریس فائلز');
 define('_WEBO_GZIP_FIND', 'فائلیں تلاش کیجیے');
 define('_WEBO_GZIP_WAIT', 'فائلوں کی تلاش جاری۔۔۔');

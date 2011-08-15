@@ -921,6 +921,8 @@ define('_WEBO_GZIP_ENTERDIRECTORY', 'Ingrese el directorio inicial');
 define('_WEBO_GZIP_DIRECTORY', 'Directorio');
 define('_WEBO_GZIP_RECURSIVE', 'Incluye subdirectorios');
 define('_WEBO_GZIP_ENTERRECURSIVE', 'Encontrar archivos / gzip si requerido');
+define('_WEBO_GZIP_BACKUP', 'Create backup');
+define('_WEBO_GZIP_ENTERBACKUP', 'For each image backup copy with .backup extension will be created');
 define('_WEBO_GZIP_COMPRESS', 'Comprimir archivos');
 define('_WEBO_GZIP_FIND', 'Encontrar archivos');
 define('_WEBO_GZIP_WAIT', 'Buscando archivos...');

@@ -918,6 +918,8 @@ define('_WEBO_GZIP_ENTERDIRECTORY', 'Inserisci la prima cartella');
 define('_WEBO_GZIP_DIRECTORY', 'Cartella');
 define('_WEBO_GZIP_RECURSIVE', 'Includi le sotto-cartelle');
 define('_WEBO_GZIP_ENTERRECURSIVE', 'Trova i file / gzip ricorsivi');
+define('_WEBO_GZIP_BACKUP', 'Create backup');
+define('_WEBO_GZIP_ENTERBACKUP', 'For each image backup copy with .backup extension will be created');
 define('_WEBO_GZIP_COMPRESS', 'Comprimi i files');
 define('_WEBO_GZIP_FIND', 'Trova i files');
 define('_WEBO_GZIP_WAIT', 'Cerca i files...');

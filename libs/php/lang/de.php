@@ -920,6 +920,8 @@ define('_WEBO_GZIP_ENTERDIRECTORY', 'Enter initial directory');
 define('_WEBO_GZIP_DIRECTORY', 'Directory');
 define('_WEBO_GZIP_RECURSIVE', 'Include subdirectories');
 define('_WEBO_GZIP_ENTERRECURSIVE', 'Find / gzip files recursively');
+define('_WEBO_GZIP_BACKUP', 'Create backup');
+define('_WEBO_GZIP_ENTERBACKUP', 'For each image backup copy with .backup extension will be created');
 define('_WEBO_GZIP_COMPRESS', 'Compress files');
 define('_WEBO_GZIP_FIND', 'Find files');
 define('_WEBO_GZIP_WAIT', 'Searching for files...');
