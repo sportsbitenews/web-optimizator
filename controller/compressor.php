@@ -1079,7 +1079,7 @@ class web_optimizer {
 /* set ETag, thx to merzmarkus */
 			if (empty($options['flush'])) {
 				header("ETag: \"" .
-					md5($this->content) .
+					crc32($this->content) .
 					(empty($this->encoding) ? '' : '-' .
 						str_replace("x-", "", $this->encoding)) .
 					"\"");
