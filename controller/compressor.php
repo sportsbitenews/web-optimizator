@@ -120,12 +120,12 @@ class web_optimizer {
 					if ($e = strpos($cookie, '=')) {
 						$c = substr($cookie, 0, $e);
 						$e = substr($cookie, $e+1);
-						if (isset($_COOKIE[$cookie]) && $_COOKIE[$c] == $e) {
-							$retricted_cookie = 1;
+						if (isset($_COOKIE[$c]) && $_COOKIE[$c] == $e) {
+							$restricted_cookie = 1;
 						}
 					} else {
 						if (isset($_COOKIE[$cookie])) {
-							$retricted_cookie = 1;
+							$restricted_cookie = 1;
 						}
 					}
 				}
@@ -154,7 +154,7 @@ class web_optimizer {
 				(strpos($this->options['page']['cache_ignore'], '#') === false || $homepage)) ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
-			!$retricted_cookie &&
+			!$restricted_cookie &&
 			(empty($this->options['page']['gzip']) ||
 				empty($this->options['page']['flush'])) &&
 			!headers_sent() &&
