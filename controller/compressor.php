@@ -117,8 +117,16 @@ class web_optimizer {
 			if (!empty($this->options['page']['exclude_cookies'])) {
 				$cookies = explode(" ", $this->options['page']['exclude_cookies']);
 				foreach ($cookies as $cookie) {
-					if (isset($_COOKIE[$cookie])) {
-						$retricted_cookie = 1;
+					if ($e = strpos($cookie, '=')) {
+						$cookie = substr($cookie, $e);
+						$e = substring($cookie, $e+1);
+						if (isset($_COOKIE[$cookie]) && $_COOKIE[$cookie] == $e) {
+							$retricted_cookie = 1;
+						}
+					} else {
+						if (isset($_COOKIE[$cookie])) {
+							$retricted_cookie = 1;
+						}
 					}
 				}
 			}
