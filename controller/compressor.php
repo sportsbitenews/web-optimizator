@@ -3047,6 +3047,10 @@ class web_optimizer {
 					$i++;
 				}
 				$this->content = str_replace($to_store, $stubs, $this->content);
+/* remove nonIE content at first */
+				if (!empty($this->ua_mod)) {
+					$this->content = preg_replace("@<!--\[if !IE.*?-->@is", '', $this->content);
+				}
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
 				$this->content = str_replace($stubs, $to_store, $this->content);
 			}
