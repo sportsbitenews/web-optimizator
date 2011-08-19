@@ -97,7 +97,8 @@ if (!empty($webo_not_buffered)) {
 		'no_cache' => empty($no_cache) ? 0 : $no_cache,
 		'clear_cache_key' => empty($clear_cache_key) ? 0 : $clear_cache_key,
 		'host' => $host,
-		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip)
+		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip,
+		'uri' => empty($webo_uri) ? '' : $webo_uri)
 	);
 }
 ?>

@@ -166,7 +166,7 @@ class web_optimizer {
 			(empty($this->options['page']['ab']) || empty($_COOKIE['WSS_DISABLED']));
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
-			$this->uri = $this->convert_request_uri();
+			$this->uri = $this->convert_request_uri(empty($this->uri) ? '' : $this->uri);
 /* gzip cached content before output? (plugins have onCache), JUtility must parse content */
 			$gzip_me = is_array($this->options['plugins']) || class_exists('JUtility', false);
 			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) .
