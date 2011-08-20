@@ -3577,7 +3577,8 @@ class web_optimizer {
 /* check if we deal with 404 error, remove result */
 				$headers = $this->file_get_contents($return_filename . '.headers');
 				$contents = $this->file_get_contents($return_filename);
-				if (strpos($headers, 'HTTP/1.1 404') !== false ||
+				if (empty($contents) ||
+					strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
 					strpos($headers, 'HTTP/0.1 404') !== false ||
 					strpos($headers, 'HTTP/0.9 404') !== false ||
