@@ -3555,10 +3555,11 @@ class web_optimizer {
 				@chdir($current_directory);
 				return $return_filename;
 			}
+			$return_filename_headers = $return_filename . '.headers';
 /* try to download remote file */
 			$ch = @curl_init($file);
 			$fp = @fopen($return_filename, "w");
-			$fph = @fopen($return_filename . '.headers', "w");
+			$fph = @fopen($return_filename_headers, "w");
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -3574,8 +3575,10 @@ class web_optimizer {
 				@curl_close($ch);
 				@fclose($fp);
 				@fclose($fph);
+				@touch($return_filename);
+				@touch($return_filename_headers);
 /* check if we deal with 404 error, remove result */
-				$headers = $this->file_get_contents($return_filename . '.headers');
+				$headers = $this->file_get_contents($return_filename_headers);
 				$contents = $this->file_get_contents($return_filename);
 				if (empty($contents) ||
 					strpos($headers, 'HTTP/1.1 404') !== false ||
