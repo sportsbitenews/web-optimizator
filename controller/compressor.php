@@ -3168,13 +3168,16 @@ class web_optimizer {
 							$el_close .
 						'></div>';
 				}
-/* add WEBO Site SpeedUp page load counter */
+/* add WEBO Site SpeedUp page load counter, ideas from
+http://www.optimisationbeacon.com/analytics/track-page-load-times-with-google-analytics-asynchronous-script/
+http://www.panalysis.com/tracking-webpage-load-times.php
+ */
 				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
+					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,c=document.location;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
 						$this->options['page']['counter'] .
 						'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker();a._setAccount("'.
 						$this->options['page']['counter'] .
-						'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("WEBO Site SpeedUp","Page Load Time",50*Math.round(b/50)+"ms",b)}},false)})()</script>';
+						'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("Page Load Time (WEBO)",50*Math.round(b/50)+"ms",c.pathname+c.search,b)}},false)})()</script>';
 				}
 /* Add script to check gzip possibility */
 				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
