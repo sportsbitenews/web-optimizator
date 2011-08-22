@@ -3587,11 +3587,9 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
 					strpos($headers, 'HTTP/0.1 404') !== false ||
-					strpos($headers, 'HTTP/0.9 404') !== false ||
-					strpos($contents, '<!DOCTYPE') !== false ||
-					strpos($contents, '<HTML') !== false ||
-					strpos($contents, '<html') !== false) {
+					strpos($headers, 'HTTP/0.9 404') !== false) {
 						@unlink($return_filename);
+						$return_filename = '';
 				} else {
 /* try to replace background images to local ones */
 					if (!empty($contents) && $tag == 'link') {
