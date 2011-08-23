@@ -3545,7 +3545,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				@chdir($this->options['javascript']['cachedir']);
 			}
 			$ua = '';
-			if (empty($_SERVER['HTTP_USER_AGENT']) !empty($this->options['uniform_cache'])) {
+			if (empty($_SERVER['HTTP_USER_AGENT']) && empty($this->options['uniform_cache'])) {
 				if (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ')) !== false) {
 					$ua = 'MSIE ' . substr($_SERVER['HTTP_USER_AGENT'], $a+5, 3);
 				} elseif (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome/')) !== false) {
