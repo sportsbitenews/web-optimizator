@@ -3279,13 +3279,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					}
 				}
 				$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
-				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator($full_path_to_image . $file));
+				$absolute_path = $this->view->unify_dir_separator($full_path_to_image . $file);
 			} elseif (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
-				$absolute_path = str_replace($root, "/", $this->view->unify_dir_separator(preg_replace("@[^/\\\]+$@", "", $file) . $endfile));
+				$absolute_path = $this->view->unify_dir_separator(preg_replace("@[^/\\\]+$@", "", $file) . $endfile);
 			}
 		}
 /* remove HTTP host from absolute URL */
-		return preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path);
+		return strpos($absolute_path, "http") !== false && strpos($absolute_path, "HTTP") !== false ?
+			preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path) : str_replace($root, "/", realpath($root . $absolute_path));
 	}
 
 	/**
@@ -3543,10 +3544,21 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			} else {
 				@chdir($this->options['javascript']['cachedir']);
 			}
-			$ua = empty($_SERVER['HTTP_USER_AGENT']) ||
-				!empty($this->options['uniform_cache']) ?
-				"Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6" :
-				$_SERVER['HTTP_USER_AGENT'];
+			$ua = '';
+			if (empty($_SERVER['HTTP_USER_AGENT']) !empty($this->options['uniform_cache'])) {
+				if (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ')) !== false) {
+					$ua = 'MSIE ' . substr($_SERVER['HTTP_USER_AGENT'], $a+5, 3);
+				} elseif (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome/')) !== false) {
+					$ua = 'Chrome ' . substr($_SERVER['HTTP_USER_AGENT'], $a+7, 3);
+				} elseif (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'Safari/')) !== false) {
+					$ua = 'Safari ' . substr($_SERVER['HTTP_USER_AGENT'], $a+7, 3);
+				} elseif (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox ')) !== false) {
+					$ua = 'Firefox ' . substr($_SERVER['HTTP_USER_AGENT'], $a+8, 3);
+				} elseif (($a = strpos($_SERVER['HTTP_USER_AGENT'], 'Opera/')) !== false) {
+					$ua = 'Opera ' . substr($_SERVER['HTTP_USER_AGENT'], $a+6, 3);
+				}
+			}
+			$ua = $ua ? $ua : "Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6";
 			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : 'js');
 			if (@file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
@@ -3566,7 +3578,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
-				@curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
 				@curl_setopt($ch, CURLOPT_REFERER, $host);
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
