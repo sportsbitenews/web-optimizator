@@ -3378,8 +3378,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$mhtml_exclude = explode(" ", $options['mhtml_exclude']);
 			foreach ($imgs as $image) {
 				$base64 = '';
-				if (strpos(strtolower($image[4]), "url") !== false) {
-					$css_image = preg_replace("@^.*(url\(.*\))[^\)]*$@is", "$1", $image[4]);
+				if (strpos(strtolower($image[4]), "url") !== false || strpos(strtolower($image[4]), "URL") !== false) {
+					$css_image = preg_replace("@^.*((url\([^\)]+\),?[\s]*)+).*$@is", "$1", $image[4]);
 					$image_saved = $css_image;
 					if (empty($replaced[$image_saved])) {
 						$css_image = explode(',', str_replace('base64,', '###', $css_image));
@@ -3387,7 +3387,6 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 						$b64 = array();
 						foreach ($css_image as $im) {
 							$arr = $this->convert_single_background(trim($im), $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options);
-							$arr[0] = strpos($arr[0], 'url(') === false ? $arr[0] : substr($arr[0], 4, strlen($arr[0]) - 5);
 							$images[] = $arr[0];
 							$location = $arr[1];
 							$b64[] = $arr[2];
@@ -3437,11 +3436,15 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	* Convert single background image to data:URI / mhtml / CDN
 	**/
 	function convert_single_background ($css_image, $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options) {
-		$image_saved = $css_image;
 		$css_image = substr($css_image, 4, strlen($css_image) - 5);
+		$image_saved = $css_image;
 /* remove quotes */
 		if ($css_image{0} == '"' || $css_image{0} == "'") {
 			$css_image = substr($css_image, 1, strlen($css_image) - 2);
+		}
+/* download external images */
+		if (strpos($css_image, "//") !== false) {
+			$css_image = $this->get_remote_file($css_image, $extension);
 		}
 		$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
 		$chunks = explode(".", $css_image);
@@ -3451,7 +3454,6 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$base64 = '';
 		if (!@is_file($css_image) ||
 			in_array($extension, array('htc', 'cur', 'eot', 'ttf', 'svg', 'otf', 'woff')) ||
-			strpos($css_image, "://") ||
 			strpos($css_image, "mhtml:") !== false ||
 			strpos($css_image, "data:") !== false) {
 				$css_image = $image_saved;
@@ -3540,10 +3542,10 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$current_directory = $this->options['css']['installdir'];
 		}
 		if (function_exists('curl_init')) {
-			if ($tag == 'link') {
-				@chdir($this->options['css']['cachedir']);
-			} else {
+			if ($tag == 'javascript') {
 				@chdir($this->options['javascript']['cachedir']);
+			} else {
+				@chdir($this->options['css']['cachedir']);
 			}
 			$ua = '';
 			if (empty($_SERVER['HTTP_USER_AGENT']) && empty($this->options['uniform_cache'])) {
@@ -3611,7 +3613,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					}
 				}
 				@unlink($return_filename . '.headers');
-				chdir($current_directory);
+				@chdir($current_directory);
 				return $return_filename;
 			}
 		}
