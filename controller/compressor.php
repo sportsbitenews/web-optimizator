@@ -3387,6 +3387,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 						$b64 = array();
 						foreach ($css_image as $im) {
 							$arr = $this->convert_single_background(trim($im), $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options);
+							$arr[0] = strpos($arr[0], 'url(') === false ? $arr[0] : substr($arr[0], 4, strlen($arr[0]) - 5);
 							$images[] = $arr[0];
 							$location = $arr[1];
 							$b64[] = $arr[2];
