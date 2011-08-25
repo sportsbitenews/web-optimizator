@@ -167,8 +167,9 @@ class web_optimizer {
 /* check if we can get out cached page */
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri(empty($this->uri) ? '' : $this->uri);
+			$jutility = class_exists('JUtility', false);
 /* gzip cached content before output? (plugins have onCache), JUtility must parse content */
-			$gzip_me = is_array($this->options['plugins']) || class_exists('JUtility', false);
+			$gzip_me = is_array($this->options['plugins']) || $jutility;
 			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) .
 				'index' .
 				$this->ua_mod .
@@ -194,7 +195,7 @@ class web_optimizer {
 			if ($timestamp &&
 				$this->time - $timestamp < $this->options['page']['cache_timeout'] &&
 				($content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key))) {
-				if (class_exists('JUtility', false)) {
+				if ($jutility) {
 					$token = JUtility::getToken();
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
 				}
@@ -213,7 +214,6 @@ class web_optimizer {
 					$cnt = $this->create_gz_compress($content, in_array($this->encoding, array('gzip', 'x-gzip')));
 					if (!empty($cnt)) {
 						$content = $cnt;
-						header("Content-Length: " . strlen($content));
 /* skip gzip if we can't compress content */
 					} else {
 						$this->options['page']['gzip'] = 0;
@@ -233,9 +233,7 @@ class web_optimizer {
 					die();
 				}
 /* define gzip headers */
-				if ($this->nogzip) {
-					$this->set_gzip_header();
-				}
+				$this->set_gzip_header();
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
 /* set content-type */
@@ -691,9 +689,7 @@ class web_optimizer {
 /* skip RSS, SMF xml format */
 		if (!$skip) {
 /* define gzip headers at the end */
-			if ($this->nogzip) {
-				$this->set_gzip_header();
-			}
+			$this->set_gzip_header();
 /* create DOMready chunk of JavaScript code, is required for different tasks */
 			$this->domready_include = $this->domready_include2 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache || $this->wp_cache || $this->generic_cache) {
@@ -1382,16 +1378,17 @@ class web_optimizer {
 	*
 	**/
 	function set_gzip_header () {
-		if(!empty($this->encoding)) {
+		if(!empty($this->encoding) && empty($this->gzip_set)) {
 			header("Vary: Accept-Encoding,User-Agent");
 			header("Content-Encoding: " . $this->encoding);
-/* try to use zlib instead or raw PHP */
+/* try to use zlib instead of raw PHP */
 			if ($this->options['page']['zlib'] && strlen(@ini_get('zlib.output_compression_level'))) {
 				@ini_set('zlib.output_compression', 'On');
 				@ini_set('zlib.output_compression_level', $this->options['page']['gzip_level']);
 				$this->encoding = '';
 				$this->encoding_ext = '';
 			}
+			$this->gzip_set = 1;
 		}
 	}
 
