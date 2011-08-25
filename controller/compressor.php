@@ -235,7 +235,11 @@ class web_optimizer {
 /* define gzip headers */
 				$this->set_gzip_header();
 /* set ETag, thx to merzmarkus */
-				header("ETag: \"" . $hash . "\"");
+				header("ETag: \"" .
+					crc32($this->content) .
+					(empty($this->encoding) ? '' : '-' .
+						str_replace("x-", "", $this->encoding)) .
+					"\"");
 /* set content-type */
 				if (!empty($this->options['charset'])) {
 					header("Content-Type: text/html; charset=" . $this->options['charset']);
@@ -1328,7 +1332,9 @@ class web_optimizer {
 	**/
 	function create_gz_compress ($content, $force_gzip = true) {
 		if (!empty($this->encoding)) {
-			if (!empty($force_gzip) && function_exists('gzcompress')) {
+			if (!empty($force_gzip) && function_exists('gzencode')) {
+				$cnt = gzencode($content, $this->options['page']['gzip_level'], FORCE_GZIP);
+			} elseif (!empty($force_gzip) && function_exists('gzcompress')) {
 				$size = strlen($content);
 				$crc = crc32($content);
 				$cnt = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
