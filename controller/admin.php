@@ -2571,8 +2571,6 @@ class admin {
 		$svn = $stable ? $this->version_stable ? $this->svn_generic . 'versions/' . $this->version_stable . '/' : $this->svn : $this->svn_beta;
 		$this->view->download($svn . $file, $file);
 		$i = 1;
-		$title = $this->compress_options['title'];
-		$description = $this->compress_options['description'];
 		if (@is_file($file)) {
 			$files = preg_split("/\r?\n/", $this->file_get_contents($file));
 			$total = count($files);
@@ -2594,6 +2592,9 @@ class admin {
 			}
 		}
 		$config_file = 'config.' . $this->compress_options['config'] . '.php';
+		@include($this->basepath . $config_file);
+		$title = $compress_options['title'];
+		$description = $compress_options['description'];
 /* make a fix to create new user config file if older config exists */
 		if (!@is_file($this->basepath . $config_file)) {
 			@copy($this->basepath . 'config.safe.php', $this->basepath . $config_file);
