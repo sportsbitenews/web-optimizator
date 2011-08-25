@@ -652,8 +652,8 @@ class webo_cache_files extends webo_cache_engine
 		foreach ($dirs as $dir) {
 			if (!empty($dir)) {
 				$cur_dir .= $dir . '/';
-				if(!@is_dir($cur_dir)) {
-					mkdir($cur_dir, 0755);
+				if (!@is_dir($cur_dir)) {
+					@mkdir($cur_dir, 0755);
 				}
 			}
 		}

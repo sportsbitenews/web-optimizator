@@ -235,11 +235,7 @@ class web_optimizer {
 /* define gzip headers */
 				$this->set_gzip_header();
 /* set ETag, thx to merzmarkus */
-				header("ETag: \"" .
-					crc32($this->content) .
-					(empty($this->encoding) ? '' : '-' .
-						str_replace("x-", "", $this->encoding)) .
-					"\"");
+				header("ETag: \"" . $hash . "\"");
 /* set content-type */
 				if (!empty($this->options['charset'])) {
 					header("Content-Type: text/html; charset=" . $this->options['charset']);
