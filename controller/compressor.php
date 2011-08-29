@@ -3437,7 +3437,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	* Convert single background image to data:URI / mhtml / CDN
 	**/
 	function convert_single_background ($css_image, $location, $css_url, $data_uri_exclude, $mhtml_uri_exclude, $mhtml, $options) {
-		$css_image = substr($css_image, 4, strlen($css_image) - 5);
+		$css_image = trim(substr($css_image, 4, strlen($css_image) - 5));
 		$image_saved = $css_image;
 /* remove quotes */
 		if ($css_image{0} == '"' || $css_image{0} == "'") {
