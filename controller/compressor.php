@@ -150,8 +150,8 @@ class web_optimizer {
 				(!$this->options['page']['ignore_include'] && 
 				!preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
 				(strpos($this->options['page']['cache_ignore'], '#') === false || !$homepage)) ||
-				($this->options['page']['ignore_include'] && preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) &&
-				(strpos($this->options['page']['cache_ignore'], '#') === false || $homepage)) ||
+				($this->options['page']['ignore_include'] && (preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI']) ||
+				(strpos($this->options['page']['cache_ignore'], '#') !== false && $homepage))) ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
 			!$restricted_cookie &&
