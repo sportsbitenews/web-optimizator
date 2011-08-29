@@ -4513,13 +4513,6 @@ Options +FollowSymLinks";
 	RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp)$
 	RewriteRule (.*) http://" . $this->compress_options['host'] . "/$1 [R=301,L]";
 					}
-/* Caching for AJAX requests, CS-Cart */
-					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
-						$content .= "
-	RewriteCond %{QUERY_STRING} dispatch=load_menu\.get_items&tree_id=([0-9_]+)&dir=&result_ids=sub_menu_content_([0-9_]+)
-	RewriteCond ". $this->compress_options['html_cachedir'] ."menu.%1.%2.html -f
-	RewriteRule ^(.*)$ /addons/webositespeedup/web-optimizer/cache/menu.%1.%2.html?";
-					}
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content .= "
 	RewriteRule ^(.*)\.wo[0-9]+\.(css|php)$ $1.$2";
@@ -4743,6 +4736,15 @@ Options +FollowSymLinks";
 	ExpiresByType application/vnd.oasis.opendocument.spreadsheet A31536000
 	ExpiresByType application/vnd.oasis.opendocument.text A31536000";
 				}
+/* Caching for AJAX requests, CS-Cart */
+					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
+						$content2 .= "
+</IfModule>
+<IfModule mod_rewrite.c>
+	RewriteCond %{QUERY_STRING} dispatch=load_menu\.get_items&tree_id=([0-9_]+)&dir=&result_ids=sub_menu_content_([0-9_]+)
+	RewriteCond ". $this->compress_options['html_cachedir'] ."menu.%1.%2.html -f
+	RewriteRule ^(.*)$ /addons/webositespeedup/web-optimizer/cache/menu.%1.%2.html?";
+					}
 				$content2 .= "
 </IfModule>
 # Web Optimizer end";
@@ -4755,6 +4757,13 @@ Options +FollowSymLinks";
 					$content2 .= "
 # Web Optimizer options
 <IfModule mod_rewrite.c>";
+/* Caching for AJAX requests, CS-Cart */
+					if (!empty($this->input['wss_html_cache_enabled']) && $this->cscart) {
+						$content2 .= "
+	RewriteCond %{QUERY_STRING} dispatch=load_menu\.get_items&tree_id=([0-9_]+)&dir=&result_ids=sub_menu_content_([0-9_]+)
+	RewriteCond ". $this->compress_options['html_cachedir'] ."menu.%1.%2.html -f
+	RewriteRule ^(.*)$ /addons/webositespeedup/web-optimizer/cache/menu.%1.%2.html?";
+					}
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
