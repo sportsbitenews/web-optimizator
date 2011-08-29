@@ -210,16 +210,6 @@ class web_optimizer {
 						}
 					}
 				}
-				if ($gzip_me) {
-					$cnt = $this->create_gz_compress($content, in_array($this->encoding, array('gzip', 'x-gzip')));
-					if (!empty($cnt)) {
-						$content = $cnt;
-/* skip gzip if we can't compress content */
-					} else {
-						$this->options['page']['gzip'] = 0;
-						$this->encoding = '';
-					}
-				}
 				$hash = crc32($content) . (empty($this->encoding) ? '' : '-' . str_replace("x-", "", $this->encoding));
 /* check for return visits */
 				if ((isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
@@ -234,8 +224,21 @@ class web_optimizer {
 				}
 /* define gzip headers */
 				$this->set_gzip_header();
+				if ($gzip_me && $this->encoding) {
+					$cnt = $this->create_gz_compress($content, in_array($this->encoding, array('gzip', 'x-gzip')));
+					if (!empty($cnt)) {
+						$content = $cnt;
+/* skip gzip if we can't compress content */
+					} else {
+						$this->options['page']['gzip'] = 0;
+						$this->encoding = '';
+					}
+				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
+				if ($this->encoding || !$this->gzip_set) {
+					header("Content-Length: " . strlen($content));
+				}
 /* set content-type */
 				if (!empty($this->options['charset'])) {
 					header("Content-Type: text/html; charset=" . $this->options['charset']);
@@ -787,7 +790,7 @@ class web_optimizer {
 /* or echo content to the browser */
 		} else {
 /* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
-			if (!empty($this->encoding)) {
+			if ($this->encoding || !$this->gzip_set) {
 				header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
@@ -1076,8 +1079,8 @@ class web_optimizer {
 			if (empty($options['flush'])) {
 				header("ETag: \"" .
 					crc32($this->content) .
-					(empty($this->encoding) ? '' : '-' .
-						str_replace("x-", "", $this->encoding)) .
+					(empty($this->encoding) && empty($this->gzip_set) ? '' : '-' .
+						(empty($this->gzip_set) ? str_replace("x-", "", $this->encoding) : 'gzip')) .
 					"\"");
 			}
 			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
@@ -1091,7 +1094,7 @@ class web_optimizer {
 					$content_to_write = $this->create_gz_compress($c,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* or just write full or non-gzipped content */
-				} elseif (empty($options['flush']) || !empty($this->encoding)) {
+				} elseif ((empty($options['flush']) || !empty($this->encoding))	&& !$jutility) {
 					$content_to_write = $c;
 				}
 /* don't create empty files */
@@ -1099,7 +1102,7 @@ class web_optimizer {
 					$this->cache_engine->put_entry($cache_key, $content_to_write, $this->time);
 				}
 /* create uncompressed file for plugins */
-				if ($cache_key != $ordinary_cache_key) {
+				if ($cache_key != $ordinary_cache_key || empty($content_to_write)) {
 					$this->cache_engine->put_entry($ordinary_cache_key, $c, $this->time);
 				}
 			}
@@ -1131,7 +1134,6 @@ class web_optimizer {
 				in_array($this->encoding, array('gzip', 'x-gzip')));
 			if (!empty($content)) {
 				$this->content = $content;
-				header("Content-Length: " . strlen($this->content));
 			}
 		}
 	}
