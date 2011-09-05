@@ -698,13 +698,13 @@ class web_optimizer {
 				}
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
-					$this->domready_include .= 'var g,x=document,f;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
+					$this->domready_include .= 'var g,x=document,f,h,j;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
 					$cart_class .
-					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
+					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0];h=x.getElementsByClassName("wss_cart2")[0];j=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}}}}if(g&&(!f||(f.innerHTML*1))){var a;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}}}if(a&&a!="undefined"&&x.cookie.indexOf("WSS_CART=1")!==-1'.
+					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){h=c}if(/(^|\s)wss_cart_qty2(\s|$)/.test(c.className)){j=c}}}}if(g&&!(f&&(f.innerHTML*1))){var a,a1;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"];delete window.localStorage["wss_cart2"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}e=c.indexOf("wss_cart2=");if(!e||e==1){a1=c.substr(e+11).replace(/@#/g,";")}}}if(((a&&a!="undefined")||(a1&&a1!="undefined"))&&x.cookie.indexOf("WSS_CART=1")!==-1'.
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
-					'){WSS_CART=g.innerHTML=a}}';
+					'){if(a){WSS_CART=g.innerHTML=a}if(a1){WSS_CART2=h.innerHTML=a1}}}';
 				}
 				$this->domready_include .= '__WSSLOADED=1}(function(){var d=document;if(d.addEventListener){d.addEventListener("DOMContentLoaded",_weboptimizer_load,false)}';
 				if (!empty($this->ua_mod) && substr($this->ua_mod, 3, 1) < 8) {
@@ -714,13 +714,15 @@ class web_optimizer {
 				}
 				$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
-					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
+					$this->domready_include2 .= '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
 					$cart_class .
-					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
+					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0];z=x.getElementsByClassName("wss_cart2")[0];r=x.getElementsByClassName("wss_cart_qty2")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}}}}if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&");if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){z=c}if(/(^|\s)wss_cart_qty2(\s|$)/.test(c.className)){r=c}}}}if(a||a1){if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&")}if(a1){a1=a1.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&")}if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a;window.localStorage.wss_cart2=a1}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+(typeof WSS_CART!=="undefined"||y&&y.innerHTML*1?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString());document.cookie="wss_cart2="+a1.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+					($this->options['page']['cart_timeout'] * 1000) .
+					').toGMTString())}document.cookie="WSS_CART="+(typeof WSS_CART!=="undefined"||WSS_CART2!=="undefined"||(y&&y.innerHTML*1?1:0)||(r&&r.innerHTML*1?1:0))+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 				}
