@@ -257,10 +257,6 @@ class web_optimizer {
 				while (@ob_end_clean());
 				header('WEBO: cache hit');
 				echo $content;
-/* clean expired entries */
-				if ($this->options['clean_html_cache']) {
-					$this->cache_engine->delete_entries_by_time($this->time, $this->options['clean_html_cache']);
-				}
 /* content is a head part, flush it after */
 				if ($this->options['page']['flush']) {
 					flush();
@@ -1104,6 +1100,10 @@ class web_optimizer {
 /* create uncompressed file for plugins */
 				if ($cache_key != $ordinary_cache_key || empty($content_to_write)) {
 					$this->cache_engine->put_entry($ordinary_cache_key, $c, $this->time);
+				}
+/* clean expired entries */
+				if ($this->options['clean_html_cache']) {
+					$this->cache_engine->delete_entries_by_time($this->time, $options['cache_timeout']);
 				}
 			}
 		}

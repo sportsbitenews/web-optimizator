@@ -486,6 +486,7 @@ class webo_cache_files extends webo_cache_engine
 			$i++;
 		}
 		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
+		@unlink($webo_files_list_var . $tmp);
 /* failover callback */
 		register_shutdown_function('webo_files_list_handler');
 		$webo_files_list_ok = 0;
