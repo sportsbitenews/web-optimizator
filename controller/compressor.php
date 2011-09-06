@@ -702,7 +702,7 @@ class web_optimizer {
 					$cart_class .
 					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0];h=x.getElementsByClassName("wss_cart2")[0];j=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){h=c}if(/(^|\s)wss_cart_qty2(\s|$)/.test(c.className)){j=c}}}}if(g&&!(f&&(f.innerHTML*1))){var a,a1;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"];delete window.localStorage["wss_cart2"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}e=c.indexOf("wss_cart2=");if(!e||e==1){a1=c.substr(e+11).replace(/@#/g,";")}}}if(((a&&a!="undefined")||(a1&&a1!="undefined"))&&x.cookie.indexOf("WSS_CART=1")!==-1'.
+					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){h=c}if(/(^|\s)wss_cart_qty2(\s|$)/.test(c.className)){j=c}}}}if(g&&!(f&&(f.innerHTML*1))){var a,a1;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";a1=window.localStorage.wss_cart2||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"];delete window.localStorage["wss_cart2"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}e=c.indexOf("wss_cart2=");if(!e||e==1){a1=c.substr(e+11).replace(/@#/g,";")}}}if(((a&&a!="undefined")||(a1&&a1!="undefined"))&&x.cookie.indexOf("WSS_CART=1")!==-1'.
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){if(a){WSS_CART=g.innerHTML=a}if(a1){WSS_CART2=h.innerHTML=a1}}}';
 				}
@@ -722,7 +722,7 @@ class web_optimizer {
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+(typeof WSS_CART!=="undefined"||typeof WSS_CART2!=="undefined"||(y&&y.innerHTML*1?1:0)||(r&&r.innerHTML*1?1:0))+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString())}document.cookie="WSS_CART="+((typeof WSS_CART!=="undefined"||typeof WSS_CART2!=="undefined"||(y&&y.innerHTML*1?1:0)||(r&&r.innerHTML*1?1:0))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 				}
