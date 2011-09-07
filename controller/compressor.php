@@ -3382,7 +3382,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false || strpos(strtolower($image[4]), "URL") !== false) {
-					$css_image = preg_replace("@^.*((url\([^\)]+\),?[\s]*)+).*$@is", "$1", $image[4]);
+					$css_image = preg_replace("@^.*((url\([^\)]+\)(,\s*)?)+).*$@is", "$1", $image[4]);
 					$image_saved = $css_image;
 					if (empty($replaced[$image_saved])) {
 						$css_image = explode(',', str_replace('base64,', '###', $css_image));
