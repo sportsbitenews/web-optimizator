@@ -2035,7 +2035,7 @@ class web_optimizer {
 	* The second param marks inline styles case
 	*
 	**/
-	function resolve_css_imports ($src, $inline = false) {
+	function resolve_css_imports ($src, $inline = false, $previuos = 0) {
 		$content = false;
 		$file = '';
 		if (!$inline) {
@@ -2069,14 +2069,18 @@ class web_optimizer {
 						$src = $import[2];
 						$src = trim($src, '\'" ');
 					}
+					$remote = '';
 					if (strpos($src, "//") && !preg_match('@//(www\.)?' . $this->host_escaped . '/@', $src)) {
+						$remote = $src;
 						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
+						if ($remote != $previous) {
+							$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src, $inline, $remote), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
+						}
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
 					}
