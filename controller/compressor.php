@@ -714,7 +714,7 @@ class web_optimizer {
 				}
 				$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
-					$this->domready_include2 .= 'WSS_CART_SET=0;(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){if(!WSS_CART_SET){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
+					$this->domready_include2 .= '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
 					$cart_class .
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0];z=x.getElementsByClassName("wss_cart2")[0];r=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
@@ -722,9 +722,9 @@ class web_optimizer {
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+((typeof WSS_CART!=="undefined"||typeof WSS_CART2!=="undefined"||(y&&y.innerHTML*1?1:0)||(r&&r.innerHTML*1?1:0))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString())}document.cookie="WSS_CART="+(((typeof WSS_CART!=="undefined"||typeof WSS_CART2!=="undefined")&&(!y||y.innerHTML*1)&&(!r||r.innerHTML*1))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}}WSS_CART_SET=1},false)})();';
+					').toGMTString())}},false)})();';
 				}
 			}
 /* find all files in head to process */
