@@ -1046,7 +1046,7 @@ class web_optimizer {
 			if (preg_match("!</body>!i", $this->content)) {
 				$this->content = preg_replace("!</body>!", '<script type="text/javascript">'. $chunk . "</script>$1", $this->content);
 			} else {
-				$this->content .= $chunk;
+				$this->content .= '<script type="text/javascript">'. $chunk . '</script>';
 			}
 		}
 /* check if we need to store cached page */
