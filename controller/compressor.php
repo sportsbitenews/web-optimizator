@@ -1673,7 +1673,7 @@ class web_optimizer {
 						if (!empty($options['minify_try'])) {
 							$contents .= 'try{';
 						}
-						$contents .= $file_contents . "\n";
+						$contents .= $file_contents . ($options['header'] == 'javascript' ? ';' : '') . "\n";
 						if (!empty($options['minify_try'])) {
 							$contents .= '}catch(e){';
 							if (!empty($info['file'])) {
@@ -1822,7 +1822,7 @@ class web_optimizer {
 					if (!empty($options['minify_try'])) {
 						$content .= 'try{';
 					}
-					$content .= $file_contents . "\n";
+					$content .= $file_contents;
 					if (!empty($options['minify_try'])) {
 						$content .= '}catch(e){';
 						if (!empty($info['file'])) {
@@ -1836,7 +1836,7 @@ class web_optimizer {
 						!in_array(preg_replace("@.*/@", "", $info['file']), $exclude_list)) {
 							$content = $this->minify_javascript($content, $options);
 					}
-					$contents .= $content . ($options['header'] == "javascript" ? ';' : '');
+					$contents .= $content . ($options['header'] == 'javascript' ? ';' : '') . "\n";
 				}
 			}
 		}
