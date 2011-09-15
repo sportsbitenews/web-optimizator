@@ -1836,7 +1836,7 @@ class web_optimizer {
 						!in_array(preg_replace("@.*/@", "", $info['file']), $exclude_list)) {
 							$content = $this->minify_javascript($content, $options);
 					}
-					$contents .= $content;
+					$contents .= $content . ($options['header'] == "javascript" ? ';' : '');
 				}
 			}
 		}

@@ -4,7 +4,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.4.0
+// @version    1.5.0
 // @copyright  Copyright &copy; 2009-2011 WEBO Software, All Rights Reserved
 // ==============================================================================================
 // To install WEBO Site SpeedUp please copy this file to the document root, make document root
@@ -18,6 +18,7 @@
 // in your .htaccess
 // ==============================================================================================
 
+	$error = '';
 	$loaded_modules = @get_loaded_extensions();
 	$install_directory = 'web-optimizer';
 	$download_package = 'download WEBO Site SpeedUp full package at <a href="http://code.google.com/p/web-optimizator/downloads/list" rel="nofollow">http://code.google.com/p/web-optimizator/downloads/list</a>.';
@@ -64,8 +65,13 @@
 		@chmod($install_directory . '/' . $file, octdec("0755"));
 	}
 
+/* check for php version */
+	if (phpversion() < 5) {
+		$error = 'PHP 5+ is required!';
+	}
+
 /* check for curl installed */
-	if (in_array('curl', $loaded_modules) && function_exists('curl_init')) {
+	if (!$error && in_array('curl', $loaded_modules) && function_exists('curl_init')) {
 /* check if directory already exists */
 		if (is_dir($install_directory) && is_file($install_directory . '/index.php')) {
 			header("Location: " . $install_directory . "/index.php");
