@@ -2035,10 +2035,10 @@ class web_optimizer {
 	* The second param marks inline styles case
 	*
 	**/
-	function resolve_css_imports ($src, $inline = false, $previuos = 0) {
+	function resolve_css_imports ($src, $inline = false, $previous = 0) {
 		$content = false;
 		$file = '';
-		if (!$inline) {
+		if (!$inline && $src) {
 			$file = $this->get_file_name($src);
 /* dynamic file */
 			if (!preg_match("!\.css$!is", $file)) {
@@ -3583,9 +3583,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$return_filename_headers = $return_filename . '.headers';
 /* try to download remote file */
 			$ch = @curl_init($file);
-			$fp = @fopen($return_filename, "w");
 			$fph = @fopen($return_filename_headers, "w");
-			if ($fp && $ch) {
+			if ($ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
@@ -3596,15 +3595,12 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
 					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
 				}
-				@curl_exec($ch);
+				$contents = @curl_exec($ch)
+				@file_put_contents($return_filename, $contents);
 				@curl_close($ch);
-				@fclose($fp);
 				@fclose($fph);
-				@touch($return_filename);
-				@touch($return_filename_headers);
 /* check if we deal with 404 error, remove result */
 				$headers = $this->file_get_contents($return_filename_headers);
-				$contents = $this->file_get_contents($return_filename);
 				if (empty($contents) ||
 					strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
