@@ -65,7 +65,7 @@ class admin {
 				'install_update',
 				'install_beta',
 				'install_stable'))) {
-			$this->view->download($this->svn . 'version', $version_new_file);
+			$this->view->download($this->svn . 'version', $version_new_file, 5);
 		}
 		$this->version_new = $this->version . '+';
 		if (@is_file($version_new_file)) {
@@ -78,7 +78,7 @@ class admin {
 			array('install_system',
 				'install_beta',
 				'install_stable'))) {
-			$this->view->download($this->svn_beta . 'version', $version_new_file);
+			$this->view->download($this->svn_beta . 'version', $version_new_file, 5);
 			if (@is_file($version_new_file)) {
 				$this->version_beta = $this->file_get_contents($version_new_file);
 				@unlink($version_new_file);
@@ -155,7 +155,7 @@ class admin {
 /* download counter */
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
 				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter',
-					$this->basepath . 'web-optimizer-counter');
+					$this->basepath . 'web-optimizer-counter', 10);
 			}
 		}
 /* define constants for stats */
