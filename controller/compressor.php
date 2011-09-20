@@ -1673,7 +1673,8 @@ class web_optimizer {
 						if (!empty($options['minify_try'])) {
 							$contents .= 'try{';
 						}
-						$contents .= $file_contents . ($options['header'] == 'javascript' ? ';' : '') . "\n";
+						$contents .= $file_contents .
+							($options['header'] == 'javascript' && substr($file_contents, strlen($file_contents) - 1) != ';' && !empty($external_array[$key+1]) ? ';' : '');
 						if (!empty($options['minify_try'])) {
 							$contents .= '}catch(e){';
 							if (!empty($info['file'])) {
@@ -1836,7 +1837,8 @@ class web_optimizer {
 						!in_array(preg_replace("@.*/@", "", $info['file']), $exclude_list)) {
 							$content = $this->minify_javascript($content, $options);
 					}
-					$contents .= $content . ($options['header'] == 'javascript' ? ';' : '') . "\n";
+					$contents .= $content .
+						($options['header'] == 'javascript' && substr($content, strlen($content) - 1) != ';' && !empty($external_array[$key+1]) ? ';' : '');
 				}
 			}
 		}
@@ -1930,7 +1932,7 @@ class web_optimizer {
 			$minified_code = preg_replace("!(^/\n)/\*[^@].*?\*/!is", "", $minified_code);
 		}
 		if (!empty($minified_code)) {
-			$code = $minified_code;
+			$code = preg_replace("!^[\r\n\t\s]*!s", "", $minified_code);
 		}
 		return $code;
 	}
