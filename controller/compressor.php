@@ -3595,7 +3595,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
 					@curl_setopt($ch, CURLOPT_USERPWD, $this->options['page']['htaccess_username'] . ':' . $this->options['page']['htaccess_password']);
 				}
-				$contents = @curl_exec($ch)
+				$contents = @curl_exec($ch);
 				@file_put_contents($return_filename, $contents);
 				@curl_close($ch);
 				@fclose($fph);
