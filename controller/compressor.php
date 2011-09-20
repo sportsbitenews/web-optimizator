@@ -2035,7 +2035,7 @@ class web_optimizer {
 	* The second param marks inline styles case
 	*
 	**/
-	function resolve_css_imports ($src, $inline = false, $previous = 0) {
+	function resolve_css_imports ($src, $inline = false, $previous = false) {
 		$content = false;
 		$file = '';
 		if (!$inline && $src) {
@@ -2078,8 +2078,8 @@ class web_optimizer {
 						$saved_directory = $this->view->paths['full']['current_directory'];
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
-						if ($remote != $previous) {
-							$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src, $inline, $remote), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
+						if (!$previous || $remote != $previous) {
+							$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src, 0, $remote), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
 						}
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
