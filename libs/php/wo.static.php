@@ -182,6 +182,7 @@ if ($_SERVER['QUERY_STRING']{0} === '/') {
 	$filename = str_replace("\\", "/",
 		realpath($website_root . '/' . $_SERVER['QUERY_STRING']));
 }
+$filename = urldecode($filename);
 /* get external files */
 if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
 	$filename = substr(str_replace("\\", "/", dirname(__FILE__)) .
