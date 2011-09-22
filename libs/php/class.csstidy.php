@@ -293,7 +293,7 @@ function csstidy()
 /* rewrite all properties with low case, better for later gzip */
 	$this->settings['case_properties'] = 1;
 /* sort properties in alpabetic order, better for later gzip */
-	$this->settings['sort_properties'] = true;
+	$this->settings['sort_properties'] = false;
 /*
 1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
 2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
