@@ -733,7 +733,7 @@ define('_WEBO_DASHBOARD_OPTIONS_FAST', 'تیز');
 define('_WEBO_DASHBOARD_OPTIONS_FLYING', 'اڑن کھٹولا');
 
 /* ڈیش بورڈ اسپیڈ بلاک */
-define('_WEBO_DASHBOARD_SPEED_GAINED', 'رفتار حاصل کر لی');
+define('_WEBO_DASHBOARD_SPEED_GAINED', 'Page Speed');
 define('_WEBO_DASHBOARD_SPEED_SAVINGS', 'بچت');
 define('_WEBO_DASHBOARD_SPEED_NODATA', 'کوئی ڈیٹا نہیں');
 

@@ -751,7 +751,7 @@ define('_WEBO_DASHBOARD_OPTIONS_FAST', 'Veloce');
 define('_WEBO_DASHBOARD_OPTIONS_FLYING', 'Vola');
 
 /* Dashboard speed block */
-define('_WEBO_DASHBOARD_SPEED_GAINED', 'Accelerazione guadagnata');
+define('_WEBO_DASHBOARD_SPEED_GAINED', 'Page Speed');
 define('_WEBO_DASHBOARD_SPEED_SAVINGS', 'Risparmio');
 define('_WEBO_DASHBOARD_SPEED_NODATA', 'Nessun dato');
 

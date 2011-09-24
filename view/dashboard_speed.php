@@ -7,20 +7,16 @@
  
 /* set correct content charset */
 header('Content-Type: text/html;charset=' . _WEBO_CHARSET);
-if (($s_after || $kb_after) && $premium > 1) {
-	if ($s_after && $s_before) {
+if (($grade_after || $kb_after) && $premium > 1) {
+	if ($grade_after && $grade_before) {
 ?><h5 class="wssB1"><?php
 		echo _WEBO_DASHBOARD_SPEED_GAINED;
 ?>:</h5><dl class="wssP"><dt class="wssP1"><span class="wssI2"><?php
-		echo $s_before;
-?></span> <?php
-		echo _WEBO_LOGIN_EFFICIENCY_S;
-?> &rarr; <strong class="wssI2"><?php
-		echo $s_after;
-?></strong> <?php
-		echo _WEBO_LOGIN_EFFICIENCY_S;
-?></dt><dd class="wssP2"><strong class="wssI2"><?php
-		echo round(100 * $s_before / ($s_after?$s_after:1) - 100);
+		echo $grade_before;
+?></span> &rarr; <strong class="wssI2"><?php
+		echo $grade_after;
+?></strong></dt><dd class="wssP2"><strong class="wssI2"><?php
+		echo round(100 * $grade_before / ($grade_after?$grade_after:1) - 100);
 ?></strong>%</dd></dl><?php
 	}
 	if ($kb_after && $kb_before) {
@@ -38,9 +34,9 @@ if (($s_after || $kb_after) && $premium > 1) {
 		echo round(100 * (1 - $kb_after / ($kb_before ? $kb_before : $kb_after)));
 ?></strong>%</dd></dl><?php
 	}
-	if ($s_after) {
+	if ($grade_after) {
 ?><p class="wssI"><a href="http://twitter.com/home?status=<?php
-		echo urlencode(_WEBO_DASHBOARD_SHARE_RESULTS2 . " " . round(100 * $s_before / $s_after - 100) . '% - ' . $_SERVER['HTTP_HOST']);
+		echo urlencode(_WEBO_DASHBOARD_SHARE_RESULTS2 . " " . round(100 * $grade_before / $grade_after - 100) . '% - ' . $_SERVER['HTTP_HOST']);
 ?>" class="wssJ wssJ10"><?php
 		echo _WEBO_DASHBOARD_SHARE_RESULTS;
 ?></a></p><?php

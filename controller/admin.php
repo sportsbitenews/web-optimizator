@@ -147,11 +147,10 @@ class admin {
 				round(empty($this->input['web_optimizer_stage']) ? 0 :
 					$this->input['web_optimizer_stage']);
 /* grade URL from webo.name */
-			$this->webo_grade = 'http://webo.name/check/index2.php?url=' .
+			$this->webo_grade = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?key=AIzaSyD1VD8YlfdF1RZpPrhOZ1awzuMs4t143Fo&url=http://' .
 				$this->compress_options['host'] .
 				str_replace($this->compress_options['document_root'], '/',
-					$this->compress_options['website_root']) .
-				'&mode=xml&source=wo';
+					$this->compress_options['website_root']);
 /* download counter */
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
 				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter',
@@ -366,26 +365,37 @@ class admin {
 	**/
 	function calculate_awards () {
 		$evaluation1 = $this->file_get_contents($this->basepath . $this->index_before);
-		$evaluation1 = strpos($evaluation1, '<?xml') === false ? '' : $evaluation1;
+		$evaluation1 = strpos($evaluation1, 'responseCode": 200') === false ? '' : $evaluation1;
 		$evaluation2 = $this->file_get_contents($this->basepath . $this->index_after);
-		$evaluation2 = strpos($evaluation1, '<?xml') === false ? '' : $evaluation2;
+		$evaluation2 = strpos($evaluation1, 'responseCode": 200') === false ? '' : $evaluation2;
 /* first level - WEBO grade (YSlow + Page Speed + WEBO) */
-		$grade = round(preg_replace("!.*<mark>([0-9]+)</mark>.*!", "$1", $evaluation2));
+		$grade = round(preg_replace("!.*score\":\s*([0-9]+),.*!s", "$1", $evaluation2));
 		$level1 = $grade > 50 ? $grade > 70 ? $grade > 90 ? 3 : 2 : 1 : 0;
 /* second level - website home page size savings */
-		$size1 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation1));
-		$size2 = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $evaluation2));
+		$size11 = round(preg_replace("!.*htmlResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$size12 = round(preg_replace("!.*cssResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$size13 = round(preg_replace("!.*imageResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$size14 = round(preg_replace("!.*javascriptResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$size1 = $size11 + $size12 + $size13 + $size14;
+		$size21 = round(preg_replace("!.*htmlResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$size22 = round(preg_replace("!.*cssResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$size23 = round(preg_replace("!.*imageResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$size24 = round(preg_replace("!.*javascriptResponseBytes\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$size2 = $size21 + $size22 + $size23 + $size24;
 		$delta = ($size1 - $size2) / ($size1 + 0.01);
 		$level2 = $size1 && $size2 && $delta > 0.25 ? $delta > 0.5 ? $delta > 0.75 ? 3 : 2 : 1 : 0;
+/* fourth level - number of files on home page */
+		$files1 = round(preg_replace("!.*numberResources\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$files = round(preg_replace("!.*numberResources\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$level4 = $files ? !$files || $files < 35 ? $files < 20 ? $files < 10 ? 3 : 2 : 1 : 0 : 0;
 /* third level - gained acceleration */
-		$time1 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation1) * 100);
-		$time2 = round(preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $evaluation2) * 100);
+		$time1 = round(preg_replace("!.*numberHosts\":\s*([0-9]+),.*!", "$1", $evaluation1));
+		$time2 = round(preg_replace("!.*numberHosts\":\s*([0-9]+),.*!", "$1", $evaluation2));
+		$time1 *= $size1 * $files1;
+		$time2 *= $size2 * $files2;
 		$speedup = ($time1 - $time2) / ($time1 + 0.01);
 		$speedup = $speedup < 0 || $speedup > 0.9998 ? 0 : $speedup;
 		$level3 = $speedup > 0.5 ? $speedup > 0.65 ? $speedup > 0.8 ? 3 : 2 : 1 : 0;
-/* fourth level - number of files on home page */
-		$files = round(preg_replace("!.*<files><number>([0-9]+)</number>.*!", "$1", $evaluation2));
-		$level4 = $files ? !$files || $files < 35 ? $files < 20 ? $files < 10 ? 3 : 2 : 1 : 0 : 0;
 /* fifth level - WEBO Site SpeedUp options */
 		$errors = $this->options_count();
 /* count delta */
@@ -1249,7 +1259,7 @@ class admin {
 			$this->set_options();
 			$this->write_htaccess();
 			if (!@is_file($this->basepath . $this->index_after) && $this->premium > 1) {
-				$this->view->download($this->webo_grade . '&refresh=on',
+				$this->view->download($this->webo_grade,
 					$this->basepath . $this->index_after, 2);
 			}
 		} else {
@@ -1414,23 +1424,28 @@ class admin {
 		$this->check_acceleration();
 		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = $this->file_get_contents($this->basepath . $this->index_before);
-		$before = strpos($before, '<?xml') === false ? '' : $before;
+		$before = strpos($before, 'responseCode": 200') === false ? '' : $before;
 		$after = $this->file_get_contents($this->basepath . $this->index_after);
-		$after = strpos($after, '<?xml') === false ? '' : $after;
+		$after = strpos($after, 'responseCode": 200') === false ? '' : $after;
 /* parse files' content for calculated load speed */
 		if (!empty($before) && !empty($after)) {
-			$s_before = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $before);
-			$kb_before = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $before));
-			if (strpos($after, '<high>')) {
-				$s_after = preg_replace("!.*<high>([0-9\.]+)</high>.*!", "$1", $after);
-				$kb_after = round(preg_replace("!.*</number><size>([0-9]+)</size>.*!", "$1", $after));
-			}
+			$grade_before = round(preg_replace("!.*score\":\s*([0-9]+),.*!s", "$1", $before));
+			$grade_after = round(preg_replace("!.*score\":\s*([0-9]+),.*!s", "$1", $after));
+			$size11 = round(preg_replace("!.*htmlResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
+			$size12 = round(preg_replace("!.*cssResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
+			$size13 = round(preg_replace("!.*imageResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
+			$size14 = round(preg_replace("!.*javascriptResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
+			$size21 = round(preg_replace("!.*htmlResponseBytes\":\s*([0-9]+),.*!", "$1", $after));
+			$size22 = round(preg_replace("!.*cssResponseBytes\":\s*([0-9]+),.*!", "$1", $after));
+			$size23 = round(preg_replace("!.*imageResponseBytes\":\s*([0-9]+),.*!", "$1", $after));
+			$size24 = round(preg_replace("!.*javascriptResponseBytes\":\s*([0-9]+),.*!", "$1", $after));
+			$kb_before = $size11 + $size12 + $size13 + $size14;
+			$kb_after = $size21 + $size22 + $size23 + $size24;
 			if (!empty($kb_before) && !empty($kb_after)) {
-				$saved_s = $s_before - $s_after;
 				$saved_kb = $kb_before - $kb_after;
 /* do not show negative numbers */
-				if ($saved_s <= 0) {
-					$s_after = 0;
+				if ($grade_after <= $grade_before) {
+					$grade_after = 0;
 				}
 				if ($saved_kb <= 0) {
 					$kb_after = 0;
@@ -1439,8 +1454,8 @@ class admin {
 		}
 /* set variables */
 		$page_variables = array(
-			's_after' => $s_after,
-			's_before' => $s_before,
+			'grade_after' => $grade_after,
+			'grade_before' => $grade_before,
 			'kb_after' => $kb_after,
 			'kb_before' => $kb_before,
 			'premium' => $this->premium,
@@ -2084,17 +2099,13 @@ class admin {
 /* re-check if there was 503 error */
 			if (!empty($this->compress_options['active']) && 
 				strpos($a, '503 Service')) {
-					$this->view->download($this->webo_grade . '&refresh=on',
-						$this->basepath . $this->index_after, 1);
+					$this->view->download($this->webo_grade, $this->basepath . $this->index_after, 1);
 			} elseif (!empty($this->compress_options['active']) &&
 				$before && (empty($after) || $after < 250)) {
 /* Request to re-check should be done on options save */
-					$this->view->download($this->webo_grade,
-						$this->basepath . $this->index_after, 1);
+					$this->view->download($this->webo_grade, $this->basepath . $this->index_after, 1);
 			} elseif (empty($before) || $before < 250) {
-				$this->view->download($this->webo_grade . '&first=1&email=' .
-					$this->compress_options['email'],
-						$this->basepath . $this->index_before, 1);
+				$this->view->download($this->webo_grade, $this->basepath . $this->index_before, 1);
 			}
 		}
 	}
@@ -4085,8 +4096,7 @@ class admin {
 /* re-check grade if application is active */
 				if (!empty($this->compress_options['active']) && $this->premium > 1) {
 					@unlink($this->basepath . $this->index_after);
-					$this->view->download($this->webo_grade . '&refresh=on',
-						$this->basepath . $this->index_after, 1);
+					$this->view->download($this->webo_grade, $this->basepath . $this->index_after, 1);
 				}
 			}
 /* Save the options to backup config */
