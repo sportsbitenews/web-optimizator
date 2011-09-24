@@ -1118,7 +1118,8 @@ class admin {
 			"message" => $message,
 			"error" => $error,
 			"submit" => $submit,
-			"skip_render" => $this->skip_render
+			"skip_render" => $this->skip_render,
+			"ready" => @is_file($this->basepath . 'ready')
 		);
 		$this->view->render("install_about", $page_variables);
 	}
@@ -2127,7 +2128,8 @@ class admin {
 			"premium" => true,
 			"password" => $this->compress_options['password'],
 			"language" => $this->language,
-			"skip_render" => $this->skip_render
+			"skip_render" => $this->skip_render,
+			"ready" => @is_file($this->basepath . 'ready')
 		);
 		$this->view->render("install_promo", $page_variables);
 	}

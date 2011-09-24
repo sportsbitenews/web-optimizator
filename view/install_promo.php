@@ -6,7 +6,9 @@
  **/
 ?><noscript><?php
 	echo _WEBO_NEW_NOSCRIPT;
-?></noscript><ul class="wssM"><li class="wssM1"><a href="#wss_dashboard" class="wssM3" title="<?php
+?></noscript><?php
+	if (!$ready) {
+?><ul class="wssM"><li class="wssM1"><a href="#wss_dashboard" class="wssM3" title="<?php
 	echo _WEBO_SPLASH2_CONTROLPANEL_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM10"><?php
 	echo _WEBO_SPLASH2_CONTROLPANEL;
@@ -26,7 +28,9 @@
 	echo _WEBO_DASHBOARD_AWARDS;
 ?>"><span class="wssM5"></span7><span class="wssM4 wssM16"><?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
-?></span></a></li></ul><h1 class="wssA wssA7"><?php
+?></span></a></li></ul><?php
+	}
+?><h1 class="wssA wssA7"><?php
 	echo _WEBO_SPLASH2_COMPARISON;
 ?></h1><table class="wssT wssT0"><col width="220"/><col width="180"/><col width="180"/><col width="180"/><thead class="wssT5"><tr class="wssT6"><th> </th><th class="wssT7"><?php
 	echo _WEBO_SPLASH2_COMPARISON_DEMO . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;

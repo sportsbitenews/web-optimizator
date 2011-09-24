@@ -6,7 +6,9 @@
  **/
 ?><noscript><?php
 	echo _WEBO_NEW_NOSCRIPT;
-?></noscript><ul class="wssM"><li class="wssM1"><a href="#wss_dashboard" class="wssM3" title="<?php
+?></noscript><?php
+	if (!$ready) {
+?><ul class="wssM"><li class="wssM1"><a href="#wss_dashboard" class="wssM3" title="<?php
 	echo _WEBO_SPLASH2_CONTROLPANEL_TITLE;
 ?>"><span class="wssM5"></span><span class="wssM4 wssM10"><?php
 	echo _WEBO_SPLASH2_CONTROLPANEL;
@@ -27,6 +29,7 @@
 ?>"><span class="wssM5"></span><span class="wssM4 wssM16"><?php
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li></ul><?php
+	}
 	if (!empty($submit) && !count($error)) {
 ?><div class="wssS"><div class="wssS1"><h2 class="wssB"><?php
 		echo _WEBO_ABOUT_SUCCESS;

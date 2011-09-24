@@ -159,7 +159,7 @@ if (!$ajax) {
 ?></span></a><?php
 	}
 ?></p><?php
-	if (empty($page) || !in_array($page, array('install_enter_password','install_set_password'))) {
+	if ((empty($page) || !in_array($page, array('install_enter_password','install_set_password'))) && empty($ready)) {
 		$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
 ?><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
