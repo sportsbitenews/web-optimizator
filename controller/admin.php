@@ -2157,7 +2157,8 @@ class admin {
 			"skip_render" => $this->skip_render,
 			"license" => $this->compress_options['license'],
 			"fee" => $this->compress_options['fee'],
-			"custom" => !@function_exists('curl_init') || @is_file($this->basepath . 'custom')
+			"custom" => !@function_exists('curl_init') || @is_file($this->basepath . 'custom'),
+			"ready" => @is_file($this->basepath . 'ready')
 		);
 		$this->view->render("admin_container", $page_variables);
 	}

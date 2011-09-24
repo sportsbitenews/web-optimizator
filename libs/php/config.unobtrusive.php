@@ -73,7 +73,7 @@ $unobtrusive_items = array(
 			'marker' => 'video.unrulymedia.com',
 			'regexp' => "<script[^>]+src=[\"']http://video.unrulymedia.com.*?</script>"
 		)
-			), 'unobtrusive_iframes' => array (
+	), 'unobtrusive_iframes' => array (
 		'if' => array(
 			'marker' => '<iframe',
 			'regexp' => "<iframe.*?</iframe>"
@@ -117,7 +117,7 @@ $unobtrusive_items = array(
 			'marker' => 'translate.google.com',
 			'regexp' => "<script[^>]+src=\"https?://translate.google.com/[^\"]+\"[^>]*></script>",
 			'onload_before' => '<script[^>]+src=\"https?://translate.google.com/([^\"]+)\"[^>]*></script>',
-			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$1" type="text/javascript">\x3c/script>\');'
+			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$1" type="text/javascript">\x3c/script>\');wss_onload_ready=1;'
 /* Odnaknopka */
 		), 'ok' => array(
 			'marker' => 'odnaknopka.ru',
@@ -201,10 +201,10 @@ $unobtrusive_items = array(
 			'inline' => true
 /* Yandex.Metrica */
 		), 'ym' => array(
-			'marker' => 'Yandex.Metrika',
-			'regexp' => "<!--\sYandex\.Metrika.*?Yandex\.Metrika\s-->",
+			'marker' => 'watch.js',
+			'regexp' => "<script[^>]+bs.yandex.ru/resource/watch.js.*?/script>",
 			'inline' => true
 		)
-			)
-		);
+	)
+);
 ?>
