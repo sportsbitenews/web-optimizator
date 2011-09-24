@@ -2091,14 +2091,14 @@ class admin {
 	**/		
 	function check_acceleration () {
 		$before = @filesize($this->basepath . $this->index_before);
-		$before = strpos($this->file_get_contents($this->basepath . $this->index_before), '<?xml') === false ? 0 : $before;
+		$before = strpos($this->file_get_contents($this->basepath . $this->index_before), 'responseCode": 200') === false ? 0 : $before;
 		$a = $this->file_get_contents($this->basepath . $this->index_after);
-		$a = strpos($a, '<?xml') === false ? '' : $a;
+		$a = strpos($a, 'responseCode": 200') === false ? '' : $a;
 		$after = strlen($a);
 		if ($this->premium > 1) {
 /* re-check if there was 503 error */
 			if (!empty($this->compress_options['active']) && 
-				strpos($a, '503 Service')) {
+				strpos($a, 'code": 503')) {
 					$this->view->download($this->webo_grade, $this->basepath . $this->index_after, 1);
 			} elseif (!empty($this->compress_options['active']) &&
 				$before && (empty($after) || $after < 250)) {
