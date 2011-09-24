@@ -15,9 +15,9 @@ if (($grade_after || $kb_after) && $premium > 1) {
 		echo $grade_before;
 ?></span> &rarr; <strong class="wssI2"><?php
 		echo $grade_after;
-?></strong></dt><dd class="wssP2"><strong class="wssI2"><?php
-		echo round(100 * $grade_before / ($grade_after?$grade_after:1) - 100);
-?></strong>%</dd></dl><?php
+?></strong></dt><dd class="wssP2"><strong class="wssI2">+<?php
+		echo $grade_after - $grade_before;
+?></strong></dd></dl><?php
 	}
 	if ($kb_after && $kb_before) {
 ?><h5 class="wssB1"><?php
