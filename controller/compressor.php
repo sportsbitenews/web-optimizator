@@ -722,7 +722,7 @@ class web_optimizer {
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+((a&&y&&y.innerHTML*1)||(z&&r&&r.innerHTML*1))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&y.innerHTML*1)||(z&&r&&r.innerHTML*1))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 				}
