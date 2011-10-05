@@ -392,7 +392,7 @@ class admin {
 		$time1 = round(preg_replace("!.*numberHosts\":\s*([0-9]+),.*!", "$1", $evaluation1));
 		$time2 = round(preg_replace("!.*numberHosts\":\s*([0-9]+),.*!", "$1", $evaluation2));
 		$time1 *= $size1 * $files1;
-		$time2 *= $size2 * $files2;
+		$time2 *= $size2 * $files;
 		$speedup = ($time1 - $time2) / ($time1 + 0.01);
 		$speedup = $speedup < 0 || $speedup > 0.9998 ? 0 : $speedup;
 		$level3 = $speedup > 0.5 ? $speedup > 0.65 ? $speedup > 0.8 ? 3 : 2 : 1 : 0;
@@ -1422,7 +1422,7 @@ class admin {
 	**/	
 	function dashboard_speed () {
 		$this->check_acceleration();
-		$saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
+		$grade_after = $grade_before = $saved_kb = $saved_s = $s_after = $s_before = $kb_after = $kb_before = 0;
 		$before = $this->file_get_contents($this->basepath . $this->index_before);
 		$before = strpos($before, 'responseCode": 200') === false ? '' : $before;
 		$after = $this->file_get_contents($this->basepath . $this->index_after);
