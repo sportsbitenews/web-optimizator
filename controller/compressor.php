@@ -3451,13 +3451,13 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		if ($css_image{0} == '"' || $css_image{0} == "'") {
 			$css_image = substr($css_image, 1, strlen($css_image) - 2);
 		}
+		$chunks = explode(".", $css_image);
+		$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
 /* download external images */
 		if (strpos($css_image, "//") !== false) {
 			$css_image = $this->get_remote_file($css_image, $extension);
 		}
 		$css_image = $css_image{0} == '/' ? $this->options['document_root'] . substr($css_image, 1) : $options['cachedir'] . $css_image;
-		$chunks = explode(".", $css_image);
-		$extension = str_replace('jpg', 'jpeg', strtolower(array_pop($chunks)));
 		$chunks = explode("/", $css_image);
 		$filename = array_pop($chunks);
 		$base64 = '';
@@ -3571,7 +3571,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				}
 			}
 			$ua = $ua ? $ua : "Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6";
-			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : 'js');
+			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : ($tag == 'javascript' ? 'js' : $tag));
 			if (@file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
 			} else {
