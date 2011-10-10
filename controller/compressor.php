@@ -236,7 +236,7 @@ class web_optimizer {
 				}
 /* set ETag, thx to merzmarkus */
 				header("ETag: \"" . $hash . "\"");
-				if ($this->encoding || !$this->gzip_set) {
+				if ($this->encoding || empty($this->gzip_set)) {
 					header("Content-Length: " . strlen($content));
 				}
 /* set content-type */
@@ -788,7 +788,7 @@ class web_optimizer {
 /* or echo content to the browser */
 		} else {
 /* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
-			if ($this->encoding || !$this->gzip_set) {
+			if ($this->encoding || empty($this->gzip_set)) {
 				header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
