@@ -3293,9 +3293,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				$absolute_path = $this->view->unify_dir_separator(preg_replace("@[^/\\\]+$@", "", $file) . $endfile);
 			}
 		}
+		$apath_stripped = $this->strip_querystring($absolute_path);
+		$query = str_replace($apath_stripped, "", $absolute_path);
 /* remove HTTP host from absolute URL */
 		return strpos($absolute_path, "http") !== false || strpos($absolute_path, "HTTP") !== false ?
-			preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path) : str_replace($root, "/", realpath($root . $absolute_path));
+			preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path) : str_replace($root, "/", realpath($root . $apath_stripped)) . $query;
 	}
 
 	/**
@@ -3306,6 +3308,9 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
 			foreach($matches[1] as $key => $file) {
+				if (strpos($file, '.eot?') || strpos($file, '.svg#')) {
+					$leave_querystring = true;
+				}
 				$absolute_path = $this->convert_path_to_absolute($file, $path, $leave_querystring);
 				if (!empty($absolute_path)) {
 /* add quotes if there is not plain URL */
@@ -3587,7 +3592,6 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$ch = @curl_init($file);
 			$fph = @fopen($return_filename_headers, "w");
 			if ($ch) {
-				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");

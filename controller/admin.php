@@ -1735,7 +1735,7 @@ class admin {
 /* save default encoding */
 		if (empty($this->compress_options['charset']) && !empty($results[2])) {
 			$headers = strtolower($results[2]);
-			if (strpos($headers, 'content-type') && ($charset = trim(preg_replace("!;.*!is", "", preg_replace("@.*content-type:[^;]*;?(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers))))) {
+			if (strpos($headers, 'content-type') && ($charset = trim(preg_replace("!;.*!is", "", preg_replace("@.*content-type:[^;]*;*(\s*charset=(.*?))?\r?\n.*@is", "$2", $headers))))) {
 				$this->save_option("['charset']", $charset);
 				$this->compress_options['charset'] = $charset;
 			}
