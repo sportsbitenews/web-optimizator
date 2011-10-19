@@ -4523,8 +4523,8 @@ Options +FollowSymLinks";
 						$hosts = str_replace(" ", " [OR]\n\tRewriteCond %{HTTP_HOST} ^", $this->input['wss_parallel_allowed_list']);
 						$content .= "
 	RewriteCond %{HTTP_HOST} ^" . $hosts . "
-	RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp)$
-	RewriteRule (.*) http://" . $this->compress_options['host'] . "/$1 [R=301,L]";
+	RewriteCond %{REQUEST_URI} !\.(jpe?g|png|gif|bmp)$
+	RewriteRule (.*) http://" . $this->compress_options['host'] . $base . "$1 [R=301,L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_css'])) {
 						$content .= "
