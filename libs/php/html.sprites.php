@@ -168,7 +168,7 @@ class html_sprites {
 		$webo_images_list_ok = 0;
 		$images = array();
 /* load cached images' dimensions */
-		@include($this->options['page']['cachedir'] . 'wo.img.cache.php');
+		@include($webo_images_list_var);
 /* calculate all dimensions for new images */
 		if (!empty($imgs)) {
 			foreach ($imgs as $key => $image) {
@@ -209,6 +209,7 @@ class html_sprites {
 				$imgs[$key] = $absolute_src;
 			}
 		}
+		$images_return = $images;
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
 			$str = '<?php';
@@ -229,7 +230,7 @@ class html_sprites {
 			}
 		}
 		$webo_images_list_ok = 1;
-		return $images;
+		return $images_return;
 	}
 
 	/**
