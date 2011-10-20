@@ -2162,7 +2162,7 @@ class admin {
 			"active" => $this->compress_options['active'],
 			"website" => $_SERVER['HTTP_HOST'] .
 				str_replace($this->compress_options['document_root'],
-				"", $this->compress_options['website_root']),
+				"/", $this->compress_options['website_root']),
 			"cache_folder" => str_replace($this->compress_options['document_root'],
 				"/", $this->compress_options['javascript_cachedir']),
 			"cookie" => empty($_COOKIE['wss_blocks']) ? '' : $_COOKIE['wss_blocks'],

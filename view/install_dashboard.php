@@ -177,7 +177,7 @@
 		echo _WEBO_DASHBOARD_STATUS_WORKING;
 ?><a href="http://<?php
 		echo $website;
-?>/" class="wssJ"><?php
+?>" class="wssJ"><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING2;
 ?></a><?php
 		echo _WEBO_DASHBOARD_STATUS_WORKING3;
