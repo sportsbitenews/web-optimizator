@@ -1073,6 +1073,7 @@ class web_optimizer {
 				($this->options['page']['https_separate'] ? $this->https : '');
 			$cache_key = $ordinary_cache_key . (empty($this->encoding_ext) ? '' : $this->encoding_ext);
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
+			$content = $this->cache_engine->get_entry($cache_key);
 /* set ETag, thx to merzmarkus */
 			if (empty($options['flush'])) {
 				header("ETag: \"" .
@@ -1081,7 +1082,7 @@ class web_optimizer {
 						(empty($this->gzip_set) ? str_replace("x-", "", $this->encoding) : 'gzip')) .
 					"\"");
 			}
-			if (empty($timestamp) || $this->time - $timestamp > $options['cache_timeout']) {
+			if (empty($timestamp) || empty($content) || $this->time - $timestamp > $options['cache_timeout']) {
 				$c = $this->content;
 				$jutility = class_exists('JUtility', false);
 				if ($jutility) {
@@ -3576,7 +3577,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				}
 			}
 			$ua = $ua ? $ua : "Mozilla/5.0 (WEBO Site SpeedUp; http://www.webogroup.com/) Firefox 3.6";
-			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : ($tag == 'javascript' ? 'js' : $tag));
+			$return_filename = 'wo' . md5($file . $ua) . '.' . ($tag == 'link' ? 'css' : ($tag == 'script' ? 'js' : $tag));
 			if (@file_exists($return_filename)) {
 				$timestamp = @filemtime($return_filename);
 			} else {
