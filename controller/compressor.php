@@ -3442,6 +3442,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				$compressed .= $mhtml_code . "\n\n--_--\n*/";
 			}
 /* clear content from junk */
+			$content = preg_replace("@(background(-image)?:)?url\(\);?(\})?@is", "$3", $content);
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$1$4", $content);
 		}
 		return array($content, $compressed);
