@@ -3392,7 +3392,7 @@ class admin {
 			'css_sprites' => array(
 				'premium' => $this->premium < 1 ? 1 : 0,
 				'css_sprites_enabled' => array(
-					'hidden' => $this->premium < 1 ? 1 : 0,
+					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['enabled'],
 					'type' => 'checkbox',
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
@@ -3413,7 +3413,7 @@ class admin {
 					'price' => 2
 				),
 				'css_sprites_dimensions_limited' => array(
-					'hidden' => $this->premium < 1 ? 1 : 0,
+					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
 					'type' => 'smalltext',
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy'])
@@ -3452,7 +3452,7 @@ class admin {
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_extra_space' => array(
-					'hidden' => $this->premium < 1 ? 1 : 0,
+					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['extra_space'],
 					'type' => 'checkbox',
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
