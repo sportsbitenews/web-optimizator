@@ -3356,12 +3356,13 @@ class admin {
 				'data_uris_on' => array(
 					'value' => $this->compress_options['data_uris']['on'],
 					'type' => 'checkbox',
+					'disabled' => !empty($this->restrictions['wss_css_minify']),
 					'price' => 5
 				),
 				'data_uris_mhtml' => array(
 					'value' => $this->compress_options['data_uris']['mhtml'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->compress_options['performance']['uniform_cache']),
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache']) || !empty($this->restrictions['wss_css_minify']),
 					'price' => 5
 				),
 				'data_uris_size' => array(
@@ -3386,7 +3387,8 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['data_uris']['separate'],
 					'type' => 'checkbox',
-					'price' => 2
+					'price' => 2,
+					'disabled' => !empty($this->restrictions['wss_css_minify'])
 				)
 			),
 			'css_sprites' => array(
@@ -3395,28 +3397,28 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['enabled'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify']),
 					'price' => 5,
 				),
 				'css_sprites_aggressive' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['aggressive'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify']),
 					'price' => 2
 				),
 				'css_sprites_no_ie6' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['no_ie6'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify']),
 					'price' => 2
 				),
 				'css_sprites_dimensions_limited' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['dimensions_limited'],
 					'type' => 'smalltext',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy'])
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify'])
 				),
 				'css_sprites_html_sprites' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
@@ -3455,7 +3457,7 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['extra_space'],
 					'type' => 'checkbox',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']),
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify']),
 					'price' => 1
 				),
 				'css_sprites_truecolor_in_jpeg' => array(
@@ -3463,7 +3465,7 @@ class admin {
 					'value' => $this->compress_options['css_sprites']['truecolor_in_jpeg'],
 					'type' => 'radio',
 					'count' => 2,
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) ? 100 : 0,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify']) ? 100 : 0,
 					'price' => array(0, 1)
 				),
 			),
@@ -3763,12 +3765,15 @@ class admin {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
 		}
 /* Disable CSS Sprites if no CSS Tidy is used */
-		if ((isset($this->compress_options['minify']['css_min']) &&
-			$this->compress_options['minify']['css_min'] < 2) &&
+		if (isset($this->compress_options['minify']['css_min']) &&
+			$this->compress_options['minify']['css_min'] < 2 &&
 			(!isset($this->input['wss_minify_css_min']) ||
 			$this->input['wss_minify_css_min'] < 2)) {
 				$this->restrictions['wss_css_sprites_tidy'] = 1;
 		}
+/* Disable CSS Sprites and data:URI if no CSS minify is used */
+		$this->restrictions['wss_css_minify'] = (empty($this->compress_options['minify']['css']) && !isset($this->input['wss_minify_css'])) ||
+			(isset($this->input['wss_minify_css']) && empty($this->input['wss_minify_css']));
 /* check for YUI&Google availability */
 		$YUI_checked = 0;
 		$Google_checked = 0;
