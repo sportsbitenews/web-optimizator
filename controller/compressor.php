@@ -3047,7 +3047,7 @@ class web_optimizer {
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
 /* skip removing escaped JavaScript code, thx to smart */
-				preg_match_all("!((<script[^>]*>)(.*?</script>)|(<style[^>]*>)(.*?</style>))!is", $this->content, $matches, PREG_SET_ORDER);
+				preg_match_all("!((<script[^>]*>.*?</script>)|(<style[^>]*>.*?</style>)|(<\!--\[.*?<\!\[endif\]-->))!is", $this->content, $matches, PREG_SET_ORDER);
 				$i = 0;
 				$to_store = array();
 				$stubs = array();
@@ -3063,10 +3063,6 @@ class web_optimizer {
 				}
 				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
 				$this->content = str_replace($stubs, $to_store, $this->content);
-			}
-/* fix script positioning for DLE */
-			if ($this->options['javascript']['minify'] && strpos($this->content, '<div id="loading-layer"')) {
-				$this->content = preg_replace("@(</head>)(.*?)(<body[^>]*>)?[\r\n\t\s]*(<script.*?)?(<div id=\"loading-layer\">.*?</div>)@is", "$2$4$1$3$5", $this->content);
 			}
 /* fix Shadowbox inclusions */
 			if (($this->options['javascript']['minify'] || $this->options['css']['minify']) && strpos($this->content, 'Shadowbox.load')) {
@@ -3245,8 +3241,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				}
 			}
 		}
-		if (empty($this->options['uniform_cache']) && strpos($source, '<!--[if') !== false && strpos($source, '[endif]-->') !== false) {
-			$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
+		if (empty($this->options['uniform_cache'])) {
+			if ($this->options['plain_string']) {
+				while (($a = strpos($source, '<!--[if')) !== false && ($b = strpos($source, '[endif]-->')) !== false) {
+					$source = substr($source, 0, $a) . substr($source, $b+10);
+				}
+			} else {
+				$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
+			}
 		}
 		return $source;
 	}
@@ -3614,7 +3616,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
 					strpos($headers, 'HTTP/0.1 404') !== false ||
-					strpos($headers, 'HTTP/0.9 404') !== false) {
+					strpos($headers, 'HTTP/0.9 404') !== false ||
+					($tag == 'link' && preg_match("!<body!is", $contents))) {
 						@unlink($return_filename);
 						$return_filename = '';
 				} else {
