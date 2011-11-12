@@ -703,7 +703,7 @@ define('_WEBO_SYSTEM_large_delay_HELP', 'صفحات تخلیق کا وقت ای�
 define('_WEBO_SYSTEM_large_wss_delay', 'صفحات اپٹمائزیشن کی رفتار میں کمی');
 define('_WEBO_SYSTEM_large_wss_delay_HELP', 'ویبو سائٹ اسپیڈ اپ کے فعال ہونے کے بعد صفحات کا لوڈنگ ٹائم دو گنا زیادہ ہو گیا ہے۔ قرین قیاس ہے کہ یہ ویب سائٹ یا ماحول سے مخصوص مسئلہ ہے۔ اس بارے میں مزید جانیں۔[http://code.google.com/p/web-optimizator/wiki/ServerSideIssues سسٹم ریسورسز اپٹمائزیشن]');
 define('_WEBO_SYSTEM_apc_enabled', 'APC is enabled');
-define('_WEBO_SYSTEM_apc_enabled_HELP', 'WEBO Site SpeedUp configuration save can be performed incorrectly. Please add string apc.filters="-/(.*)config(.*)\.php" to PHP configuration file');
+define('_WEBO_SYSTEM_apc_enabled_HELP', 'WEBO Site SpeedUp configuration save can be performed incorrectly. Please add string apc.filters="-/(.*)config(.*)\.php" to PHP configuration file. [http://www.php.net/manual/en/apc.configuration.php#ini.apc.filters Detailed info]');
 
 /* نظام کا اسٹیٹس */
 define('_WEBO_SYSTEM_STATUS', 'اسٹیٹس');

@@ -724,7 +724,7 @@ define('_WEBO_SYSTEM_large_delay_HELP', 'Pages creation time is more than 1 seco
 define('_WEBO_SYSTEM_large_wss_delay', 'Low pages optimization speed');
 define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Pages loading time with enabled WEBO Site SpeedUp takes 2x longer than without it. Most likely this is website specific or environment specific issue. Learn more about [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues system resources optimization]');
 define('_WEBO_SYSTEM_apc_enabled', 'APC is enabled');
-define('_WEBO_SYSTEM_apc_enabled_HELP', 'WEBO Site SpeedUp configuration save can be performed incorrectly. Please add string apc.filters="-/(.*)config(.*)\.php" to PHP configuration file');
+define('_WEBO_SYSTEM_apc_enabled_HELP', 'WEBO Site SpeedUp configuration save can be performed incorrectly. Please add string apc.filters="-/(.*)config(.*)\.php" to PHP configuration file. [http://www.php.net/manual/en/apc.configuration.php#ini.apc.filters Detailed info]');
 
 /* System status */
 define('_WEBO_SYSTEM_STATUS', 'Estado');
