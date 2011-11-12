@@ -2169,6 +2169,18 @@ class web_optimizer {
 										$this->initial_files[] = $acfile;
 									}
 								}
+/* fix niftycube loader */
+								if (!empty($file['file']) && strpos($file['file'], 'niftycube.js')) {
+									$niftycube_base = preg_replace("@^(https?://" .
+										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
+									$this->initial_files[] = array(
+										'tag' => 'link',
+										'source' = '<link type="text/css" rel="stylesheet" href="'.
+											$niftycube_base . 'niftyCorners.css">',
+										'file' => $niftycube_base . 'niftyCorners.css',
+										'file_raw' => $niftycube_base . 'niftyCorners.css',
+									)
+								}
 					}
 				}
 			}
@@ -2387,6 +2399,10 @@ class web_optimizer {
 						if (strpos($value['file'], 'shadowbox.js') !== false) {
 							$this->shadowbox_sizzle = preg_match("@useSizzle:\s*true@is", $content_from_file);
 							$this->shadowbox_language = preg_replace("@.*language:\s*['\"]([^'\"]+)['\"].*@is", "$1", $content_from_file);
+						}
+/* fix niftycube loader */
+						if (strpos($value['file'], 'niftycube.js') !== false) {
+							$content_from_file = preg_replace("!function AddCss()\{.*?\}!is", "function AddCss(){niftyCss=true}", $content_from_file);
 						}
 /* remove duplicates */
 						if ($value['tag'] == 'script' &&
