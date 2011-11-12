@@ -1816,6 +1816,7 @@ class admin {
 				!$this->compress_options['css_sprites']['html_sprites']),
 			'large_delay' => $standard_delay < 1,
 			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 300,
+			'apc_enabled' => @function_exists('apc_store') && strpos(@ini_get('apc.filters'), 'config') === false
 		);
 		$e = $w = $i = 0;
 /* count acturl troubles / warnings */
@@ -3826,16 +3827,16 @@ class admin {
 		if (!@class_exists('Memcached') && !@class_exists('Memcache')) {
 			$this->restrictions['wss_performance_cache_engine1'] = 1;
 		}
-		if (!function_exists('apc_store')) {
+		if (!@function_exists('apc_store')) {
 			$this->restrictions['wss_performance_cache_engine2'] = 1;
 		}
-		if (!function_exists('xcache_set')) {
+		if (!@function_exists('xcache_set')) {
 			$this->restrictions['wss_performance_cache_engine3'] = 1;
 		}
-		if (!function_exists('zend_shm_cache_store')) {
+		if (!@function_exists('zend_shm_cache_store')) {
 			$this->restrictions['wss_performance_cache_engine4'] = 1;
 		}
-		if (!function_exists('sem_get')) {
+		if (!@function_exists('sem_get')) {
 			$this->restrictions['wss_performance_cache_engine5'] = 1;
 		}
 	}

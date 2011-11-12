@@ -720,6 +720,8 @@ define('_WEBO_SYSTEM_large_delay', 'Lav side oprettelseshastighed');
 define('_WEBO_SYSTEM_large_delay_HELP', 'Sidernes oprettelsestid er mere end 1 sekund. Overvej venligst former for HTML caching eller brugerside optimering, for at reducere denne oprettelsestid. Lær mere om  [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues systemressource optimering]');
 define('_WEBO_SYSTEM_large_wss_delay', 'Lav side optimeringshastighed');
 define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Indlæsningstiden af sider med WEBO Site SpeedUp aktiveret, tager 2x længere tid end hvis WEBO Site SpeedUp ikke var aktiveret. Det er mest sandsynligt at er det et specifikt hjemmeside problem eller et servermiljø specifikt problem. Lær mere om [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues systemressource optimering]');
+define('_WEBO_SYSTEM_apc_enabled', 'APC is enabled');
+define('_WEBO_SYSTEM_apc_enabled_HELP', 'WEBO Site SpeedUp configuration save can be performed incorrectly. Please add string apc.filters="-/(.*)config(.*)\.php" to PHP configuration file');
 
 /* System status */
 define('_WEBO_SYSTEM_STATUS', 'Status');
