@@ -2175,11 +2175,11 @@ class web_optimizer {
 										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
 									$this->initial_files[] = array(
 										'tag' => 'link',
-										'source' = '<link type="text/css" rel="stylesheet" href="'.
+										'source' => '<link type="text/css" rel="stylesheet" href="' .
 											$niftycube_base . 'niftyCorners.css">',
 										'file' => $niftycube_base . 'niftyCorners.css',
-										'file_raw' => $niftycube_base . 'niftyCorners.css',
-									)
+										'file_raw' => $niftycube_base . 'niftyCorners.css'
+									);
 								}
 					}
 				}
