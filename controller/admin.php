@@ -1239,7 +1239,7 @@ class admin {
 	*
 	**/
 	function install_status () {
-		if (empty($this->compress_options['active'])) {
+		if (empty($this->compress_options['active']) && $this->premium > -1) {
 			$this->chained_load(str_replace(
 				$this->compress_options['document_root'], "/" ,
 				$this->compress_options['website_root']));
@@ -2172,7 +2172,8 @@ class admin {
 			"license" => $this->compress_options['license'],
 			"fee" => $this->compress_options['fee'],
 			"custom" => !@function_exists('curl_init') || @is_file($this->basepath . 'custom'),
-			"ready" => @is_file($this->basepath . 'ready')
+			"ready" => @is_file($this->basepath . 'ready'),
+			"days" => $this->days
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
@@ -5963,6 +5964,29 @@ require valid-user';
 		if (!empty($a) && strlen($a) < 1000) {
 			$this->premium = 0;
 		}
+		if (!@function_exists('sys_get_temp_dir')) {
+			if (!empty($_ENV['TMP'])) {
+				$tmp = realpath($_ENV['TMP']);
+			} elseif (!empty($_ENV['TMPDIR'])) {
+				$tmp = realpath( $_ENV['TMPDIR']);
+			} elseif(!empty($_ENV['TEMP'])) {
+				$tmp = realpath( $_ENV['TEMP']);
+			} else {
+				$tmp = realpath(dirname(__FILE__) . '/../..');
+			}
+		} else {
+			$tmp = sys_get_temp_dir();
+		}
+		$tmp .= '/wss';
+		if (!@is_file($tmp)) {
+			@touch($tmp);
+		} elseif (@filemtime($tmp) + 2592000 < $this->time && !$this->premium) {
+			$this->premium = -1;
+			$this->save_option("['active']", 0);
+			$this->compress_options['active'] = 0;
+		}
+		$this->days = ceil((@filemtime($tmp) + 2592000 - $this->time)/86400) + 1;
+		$this->days = $this->days > 20 || $this->days < 1 ? 0 : $this->days;
 		$image = $this->compress_options['footer']['image'];
 /* check cache integrity */
 		if (!empty($image) &&

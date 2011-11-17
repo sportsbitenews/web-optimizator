@@ -630,7 +630,11 @@ wss_error2="<?php
 ?>";
 wss_error6=wss_error67="<?php
 	echo _WEBO_CDN_NOACCESS;
-?>";
+?>";<?php if (!$premium && $days) { ?>
+alert("<?php
+	echo _WEBO_LICENSE_DAYS . $days . ' ' . ($days > 5 ? _WEBO_LICENSE_DAYS_DAYS : ($days > 1 ? _WEBO_LICENSE_DAYS2 : _WEBO_LICENSE_DAY)) . _WEBO_LICENSE_DAYS2;
+?>");
+<?php } ?>
 setTimeout(function(){if(typeof _==='undefined'){setTimeout(arguments.callee,10)}else{
 var a=_.doc,b=a.createElement('script');b.type='text/javascript';
 b.src='http://i.webo.in/wss/index.<?php

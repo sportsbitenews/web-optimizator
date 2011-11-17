@@ -827,7 +827,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basis, komplekse ændringer som give
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Køb website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Funktioner');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Gratis');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Trial');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Udvidet');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Hurtig hjemmeside');
@@ -861,7 +861,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Alle ydelser');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pris');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratis');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '$89.99');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', 'fra $440');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '$349');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Gratis opdateringer');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Uger');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Måneder');
@@ -1110,4 +1110,10 @@ define('_WEBO_WIZARD_STEP31_LIST', 'Kan ikke justere de følgende metoder:');
 define('_WEBO_WIZARD_NEXT', 'Næste');
 define('_WEBO_WIZARD_SAVE', 'Aktiver WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp konfiguration');
+
+define('_WEBO_LICENSE_DAYS', 'You have ');
+define('_WEBO_LICENSE_DAYS_DAYS', 'days');
+define('_WEBO_LICENSE_DAYS_DAYS2', 'days');
+define('_WEBO_LICENSE_DAYS_DAY', 'day');
+define('_WEBO_LICENSE_DAYS_DAY', ' remained for WEBO Site SpeedUp Trial Edition. Please purchase full version!');
 ?>

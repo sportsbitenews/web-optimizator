@@ -829,7 +829,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Description de configuration utilisat
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Caractéristiques');
-define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Free');
+define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Trial');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Full');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Extended');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
@@ -863,7 +863,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Tous les bénéfices');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Prix');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratuit');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '61.99&euro;');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', 'from 339&euro;');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '240&euro;');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Mise à jour');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
@@ -1112,4 +1112,10 @@ define('_WEBO_WIZARD_STEP31_LIST', 'Can\'t tune the following methods:');
 define('_WEBO_WIZARD_NEXT', 'Next');
 define('_WEBO_WIZARD_SAVE', 'Enable WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration');
+
+define('_WEBO_LICENSE_DAYS', 'You have ');
+define('_WEBO_LICENSE_DAYS_DAYS', 'days');
+define('_WEBO_LICENSE_DAYS_DAYS2', 'days');
+define('_WEBO_LICENSE_DAYS_DAY', 'day');
+define('_WEBO_LICENSE_DAYS_DAY', ' remained for WEBO Site SpeedUp Trial Edition. Please purchase full version!');
 ?>

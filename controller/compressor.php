@@ -550,8 +550,8 @@ class web_optimizer {
 				$this->premium > 1,
 			"uniform_cache" => $this->options['performance']['uniform_cache'] &&
 				$this->premium > 1,
-			"plugins" => (!empty($this->options['plugins']) ? explode(" ", $this->options['plugins']) : '') &&
-				($this->premium > 1),
+			"plugins" => !empty($this->options['plugins']) &&
+				$this->premium > 1 ? explode(" ", $this->options['plugins']) : '',
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset'],
 			'host' => $this->options['host'],
