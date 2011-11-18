@@ -155,6 +155,11 @@ class admin {
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
 				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter',
 					$this->basepath . 'web-optimizer-counter', 10);
+				$this->view->download('http://webo.name/check/wpt.php?url=http://' .
+					$this->compress_options['host'] .
+					str_replace($this->compress_options['document_root'], '/',
+						$this->compress_options['website_root']) .
+					'&email=' . $this->compress_options['email']);
 			}
 		}
 /* define constants for stats */
