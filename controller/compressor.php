@@ -2241,8 +2241,17 @@ class web_optimizer {
 				$this->options['css']['gzip']);
 			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['javascript']['gzip']);
+			$niftyUsed = 0;
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
+/* exclude niftyCorners duplicate */
+				if (strpos($value['file'], 'niftyCorners.css')) {
+					if ($niftyUsed) {
+						@unset($this->initial_files[$key]);
+					} else {
+						$niftyUsed = 1;
+					}
+				}
 				$use_proxy = (!$this->options['javascript']['minify'] && $value['tag'] == 'script') ||
 					(!$this->options['css']['minify'] && $value['tag'] == 'link');
 /* but keep CSS/JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
@@ -2261,7 +2270,7 @@ class web_optimizer {
 						in_array($value['file'], $excluded_scripts_css))) ||
 						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
 /* just skip them */
-					unset($this->initial_files[$key]);
+					@unset($this->initial_files[$key]);
 					$use_proxy = 1;
 /* rewrite skipped file with CDN host */
 					if (!empty($value['file']) &&
