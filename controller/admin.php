@@ -3379,7 +3379,7 @@ class admin {
 				'data_uris_mhtml_size' => array(
 					'value' => $this->compress_options['data_uris']['mhtml_size'],
 					'type' => 'smalltext',
-					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache']) || !empty($this->restrictions['wss_css_minify'])
 				),
 				'data_uris_ignore_list' => array(
 					'value' => $this->compress_options['data_uris']['ignore_list'],
@@ -3388,14 +3388,14 @@ class admin {
 				'data_uris_additional_list' => array(
 					'value' => $this->compress_options['data_uris']['additional_list'],
 					'type' => 'textarea',
-					'disabled' => !empty($this->compress_options['performance']['uniform_cache'])
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache']) || !empty($this->restrictions['wss_css_minify'])
 				),
 				'data_uris_separate' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['data_uris']['separate'],
 					'type' => 'checkbox',
 					'price' => 2,
-					'disabled' => !empty($this->restrictions['wss_css_minify'])
+					'disabled' => !empty($this->compress_options['performance']['uniform_cache']) || !empty($this->restrictions['wss_css_minify'])
 				)
 			),
 			'css_sprites' => array(

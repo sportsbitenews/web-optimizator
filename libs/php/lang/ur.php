@@ -401,6 +401,7 @@ define('_WEBO_footer_ab_HELP', 'Given per cent of users will get non-optimized w
 define('_WEBO_data_uris_on', 'اپلائی <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'بیک گراؤنڈ تصاویر کو base64 میں کنورٹ کیا جائے گا اور براہ راست سی ایس ایس فائلز میں شامل کیا جائے گا ، ان تمام براؤزرز کیلئے جو data:URI کو سپورٹ کرتے ہیں۔');
 define('_WEBO_data_uris_on_EFFECT', 'آبجیکٹ کی تعداد میں 15-75% کمی');
+define('_WEBO_data_uris_on_HELP_DISABLED', 'It impossible to create data:URI because CSS files are not combined.');
 define('_WEBO_data_uris_mhtml', 'اپلائی <code>mhtml</code>');
 define('_WEBO_data_uris_mhtml_HELP', 'بیک گراؤنڈ تصاویر کو mhtml میں کنورٹ کیا جائے گا اور براہ راست سی ایس ایس فائلز میں شامل کیا جائے گا, انٹرنیٹ ایکسپلورر کے ان تمام ورژن کیلئے جو data:URI کو سپورٹ نہیں کرتے۔');
 define('_WEBO_data_uris_mhtml_EFFECT', 'انٹرنیٹ ایکسپلورر کے ساتھdata:URI  مطابقت');
