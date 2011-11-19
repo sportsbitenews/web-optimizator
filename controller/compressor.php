@@ -3325,7 +3325,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$query = str_replace($apath_stripped, "", $absolute_path);
 /* remove HTTP host from absolute URL */
 		return strpos($absolute_path, "http") !== false || strpos($absolute_path, "HTTP") !== false ?
-			preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path) : str_replace($root, "/", realpath($root . $apath_stripped)) . $query;
+			preg_replace("!https?://(www\.)?". $this->host_escaped ."/+!i", "/", $absolute_path) :
+			str_replace($root, "/", str_replace('\\', '/', realpath($root . $apath_stripped))) . $query;
 	}
 
 	/**
