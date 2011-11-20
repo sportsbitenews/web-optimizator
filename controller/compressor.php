@@ -87,6 +87,8 @@ class web_optimizer {
 		$this->ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 /* HTTPS or not ? */
 		$this->https = empty($_SERVER['HTTPS']) ? '' : 's';
+/* Set list of outdated IE */
+		$this->ies = array('.ie4', '.ie5', '.ie6', '.ie7');
 /* Set options */
 		$this->set_options();
 /* Include base plugin class */
@@ -415,12 +417,11 @@ class web_optimizer {
 					$this->options['far_future_expires']['css'],
 				"data_uris" => $this->options['data_uris']['on'],
 /* disable mhtml for IE7- under HTTPS */
-				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] &&
-					(!$this->https || (!strpos($this->ua, 'MSIE 6') && !strpos($this->ua, 'MSIE 7'))),
+				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] && !$this->https,
 				"data_uris_separate" => $this->premium > 1 && $this->options['data_uris']['separate'] &&
-					((!empty($this->ua_mod) &&
+					((in_array($this->ua_mod, $this->ies) &&
 							$this->options['data_uris']['mhtml']) ||
-						(empty($this->ua_mod) &&
+						(!in_array($this->ua_mod, $this->ies) &&
 							$this->options['data_uris']['on'])),
 				"data_uris_domloaded" => $this->options['unobtrusive']['background'] &&
 					$this->premium > 1,
@@ -1359,7 +1360,7 @@ class web_optimizer {
 	**/
 	function set_gzip_encoding () {
 		if (!empty($_SERVER["HTTP_ACCEPT_ENCODING"]) && !empty($this->options['page']['gzip'])) {
-			$gzip_no_ie = !in_array($this->ua_mod, array('.ie6', '.ie7')) || empty($this->options['page']['gzip_noie']);
+			$gzip_no_ie = !in_array($this->ua_mod, $this->ies) || empty($this->options['page']['gzip_noie']);
 			$ae = strtolower($_SERVER["HTTP_ACCEPT_ENCODING"]);
 			if (strpos($ae, 'x-gzip') !== false && $gzip_no_ie) {
 				$this->encoding = 'x-gzip';
@@ -1551,7 +1552,7 @@ class web_optimizer {
 			$timestamp = $this->options['cache_version'];
 		}
 /* add BackgroundImageCache for IE6 to prevent CSS Sprites blinking */
-		if ($this->ua_mod === '.ie6'&& !empty($options['css_sprites'])) {
+		if (in_array($this->ua_mod, $this->ies) && !empty($options['css_sprites'])) {
 			$source = $this->include_bundle($source, '<script type="text/javascript">try{document.execCommand("BackgroundImageCache",false,true)}catch(e){}</script>', $handlers, $cachedir, 1);
 		}
 /* Check if the cache file exists */
@@ -1693,10 +1694,9 @@ class web_optimizer {
 			}
 			$source = $this->_remove_scripts($external_array, $source,
 				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
-/* add spor for HTML Sprites ? */
+/* add spot for HTML Sprites ? */
 			$addhtml = 1;
-			$ies = array('.ie4', '.ie5', '.ie6', '.ie7');
-			if ($options['css_sprites'] || ($options['data_uris'] && !in_array($this->ua_mod, $ies)) || ($options['mhtml'] && in_array($this->ua_mod, $ies)) || $options['parallel']) {
+			if ($options['css_sprites'] || ($options['data_uris'] && !in_array($this->ua_mod, $$this->ies)) || ($options['mhtml'] && in_array($this->ua_mod, $this->ies)) || $options['parallel']) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
 				$remembered_mhtml = $options['mhtml'];
@@ -3166,7 +3166,7 @@ class web_optimizer {
 						$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
 						$image_style =
 							'display:block;text-decoration:none;width:100px;height:100px;';
-						if (in_array($this->ua_mod, array('.ie5', '.ie6'))) {
+						if (in_array($this->ua_mod, $this->ies)) {
 							$background_style = $image_style . 
 								'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
 									$background_image .
@@ -3414,7 +3414,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
-			$mhtml = in_array($this->ua_mod, array('.ie6', '.ie7')) && $options['mhtml'];
+			$mhtml = in_array($this->ua_mod, $this->ies) && $options['mhtml'];
 			$mhtml_code = "/*\nContent-Type:multipart/related;boundary=\"_\"";
 			$location = 0;
 			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
