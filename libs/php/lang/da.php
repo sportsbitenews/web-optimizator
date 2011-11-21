@@ -460,6 +460,9 @@ define('_WEBO_css_sprites_no_ie6_HELP_DISABLED', 'Der er ingen komplet GD librar
 define('_WEBO_css_sprites_dimensions_limited', 'Maximum bredde og højde af billeder (i pixels)');
 define('_WEBO_css_sprites_dimensions_limited_HELP', 'Billeder højere eller breddere end det angivne, vil ikke blive inkluderet i CSS Sprites. Ingen værdi eller 0, betyder ingen begrænsning.');
 define('_WEBO_css_sprites_dimensions_limited_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt.');
+define('_WEBO_css_sprites_sprites_limited', 'Maximum width and height of final sprites (in pixels)');
+define('_WEBO_css_sprites_sprites_limited_HELP', 'Sprites\' dimensions will be restricted to defined value. No value or zero value means no restriction.');
+define('_WEBO_css_sprites_sprites_limited_HELP_DISABLED', 'There is no complete GD library support on your website, so CSS Sprites creation is impossible.');
 define('_WEBO_css_sprites_ignore', 'Ekskluder/Inkluder filer for CSS Sprites');
 define('_WEBO_css_sprites_ignore_HELP', 'Alle billeder som er listet herunder vil enten ikke blive inkluderet i CSS Sprites, eller der vil kun blive inkluderet disse billeder.');
 define('_WEBO_css_sprites_ignore_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt.');

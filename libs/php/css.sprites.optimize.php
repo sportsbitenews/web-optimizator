@@ -62,6 +62,8 @@ class css_sprites_optimize {
 			$this->no_ie6 = $options['no_ie6'];
 /* if there is initial images dimensional limit */
 			$this->dimensions_limited = $options['dimensions_limited'];
+/* if there is sprites dimensional limit */
+			$this->sprites_limited = empty($options['sprites_limited']) ? 10000 : $options['sprites_limited'];
 /* only compress CSS and convert images to data:URI */
 			$this->no_sprites = $options['no_css_sprites'];
 /* multiple hosts */
@@ -233,7 +235,7 @@ class css_sprites_optimize {
 /* add images to matrix */
 			foreach ($ordered_images as $key => $image) {
 /* restrict square if no memory */
-				if ($matrix_x * $matrix_y <= $this->possible_square) {
+				if ($matrix_x * $matrix_y <= $this->possible_square && $matrix_x <= $this->sprites_limited && $matrix_y <= $this->sprites_limited) {
 					$minimal_x = 0;
 					$minimal_y = 0;
 /* if this is a unique image */
@@ -514,7 +516,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								case 1:
 									$a = $this->css_images[$sprite]['x'];
 									$this->css_images[$sprite]['x'] = $this->SCM($width, $this->css_images[$sprite]['x'] ? $this->css_images[$sprite]['x'] : 1);
-									if ($this->css_images[$sprite]['x'] > 1000) {
+									if ($this->css_images[$sprite]['x'] > $this->sprites_limited) {
 										$this->css_images[$sprite]['x'] = $a;
 									} else {
 										$this->css_images[$sprite]['images'][$key][3] = 0;
@@ -526,7 +528,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 								case 2:
 									$a = $this->css_images[$sprite]['y'];
 									$this->css_images[$sprite]['y'] = $this->SCM($height, $this->css_images[$sprite]['y'] ? $this->css_images[$sprite]['y'] : 1);
-									if ($this->css_images[$sprite]['y'] > 1000) {
+									if ($this->css_images[$sprite]['y'] > $this->sprites_limited) {
 										$this->css_images[$sprite]['y'] = $a;
 									} else {
 										$this->css_images[$sprite]['images'][$key][3] = $this->css_images[$sprite]['x'] + $final_x;

@@ -3435,6 +3435,12 @@ class admin {
 					'type' => 'smalltext',
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify'])
 				),
+				'css_sprites_sprites_limited' => array(
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'value' => $this->compress_options['css_sprites']['sprites_limited'],
+					'type' => 'smalltext',
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify'])
+				),
 				'css_sprites_html_sprites' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['html_sprites'],
@@ -3925,6 +3931,7 @@ class admin {
 			'wss_data_uris_size',
 			'wss_data_uris_mhtml_size',
 			'wss_css_sprites_dimensions_limited',
+			'wss_css_sprites_sprites_limited',
 			'wss_css_sprites_truecolor_in_jpeg',
 			'wss_css_sprites_html_limit',
 			'wss_parallel_custom',

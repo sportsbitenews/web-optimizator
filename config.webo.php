@@ -229,8 +229,10 @@ $compress_options['css_sprites']['aggressive'] = "0";
 $compress_options['css_sprites']['extra_space'] = "0";
 ## Exclude IE6 from CSS Sprites creation
 $compress_options['css_sprites']['no_ie6'] = "0";
-## Restrict large Sprites creation on GDlib failure, in pixels
+## Restrict large images usage, in pixels
 $compress_options['css_sprites']['dimensions_limited'] = "900";
+## Restrict large Sprites creation, in pixels
+$compress_options['css_sprites']['sprites_limited'] = "2000";
 ## CSS Sprites ignore or allow list, 0 - ignore, 1 - allow
 $compress_options['css_sprites']['ignore'] = "0";
 ## CSS Sprites ignore list, files separated by space, i.e. head.jpg
