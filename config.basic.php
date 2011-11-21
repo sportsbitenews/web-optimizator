@@ -14,6 +14,7 @@ $compress_options['unobtrusive']['postload']="";
 $compress_options['unobtrusive']['frames']="";
 $compress_options['external_scripts']['on']="1";
 $compress_options['external_scripts']['inline']="1";
+$compress_options['external_scripts']['inline_body']="0";
 $compress_options['external_scripts']['head_end']="1";
 $compress_options['external_scripts']['css']="1";
 $compress_options['external_scripts']['css_inline']="1";

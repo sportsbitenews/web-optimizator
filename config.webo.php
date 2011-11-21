@@ -50,6 +50,8 @@ $compress_options['unobtrusive']['frames'] = "";
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head
 $compress_options['external_scripts']['inline'] = "1";
+## Merge inline scripts in body
+$compress_options['external_scripts']['inline_body'] = "0";
 ## Move merged scripts to </head>
 $compress_options['external_scripts']['head_end'] = "1";
 ## Merge external CSS files

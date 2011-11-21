@@ -3027,13 +3027,19 @@ class admin {
 			),
 			'combine_js' => array(
 				'minify_javascript' => array(
-					'value' => $this->compress_options['minify']['javascript'] ?
-						$this->compress_options['minify']['javascript_body'] ? 2 : 1 : 0,
-					'type' => 'radio',
-					'count' => 3
+					'value' => $this->compress_options['minify']['javascript'],
+					'type' => 'checkbox'
+				),
+				'minify_javascript_body' => array(
+					'value' => $this->compress_options['minify']['javascript_body'],
+					'type' => 'checkbox'
 				),
 				'external_scripts_inline' => array(
 					'value' => $this->compress_options['external_scripts']['inline'],
+					'type' => 'checkbox'
+				),
+				'external_scripts_inline_body' => array(
+					'value' => $this->compress_options['external_scripts']['inline_body'],
 					'type' => 'checkbox'
 				),
 				'external_scripts_on' => array(
@@ -3903,8 +3909,7 @@ class admin {
 		foreach (array(
 			'wss_combine_css',
 			'wss_minify_css_min',
-			'wss_minify_javascript',
-			'wss_minift_js',
+			'wss_minify_js',
 			'wss_unobtrusive_on',
 			'wss_performance_cache_version',
 			'wss_performance_delete_old',
@@ -3953,11 +3958,14 @@ class admin {
 			'wss_unobtrusive_background',
 			'wss_external_scripts_on',
 			'wss_external_scripts_inline',
+			'wss_external_scripts_inline_body',
 			'wss_external_scripts_head_end',
 			'wss_external_scripts_css',
 			'wss_external_scripts_css_inline',
 			'wss_external_scripts_include_try',
 			'wss_external_scripts_duplicates',
+			'wss_minify_javascript',
+			'wss_minify_javascript_body',
 			'wss_performance_mtime',
 			'wss_performance_plain_string',
 			'wss_performance_cache_version',
@@ -4038,21 +4046,6 @@ class admin {
 			default:
 				$this->input['wss_minify_css'] = 0;
 				$this->input['wss_minify_css_body'] = 0;
-				break;
-		}
-/* map JavaScript merge options to real one */
-		switch ($this->input['wss_minify_javascript']) {
-			case 3:
-				$this->input['wss_minify_javascript'] = 1;
-				$this->input['wss_minify_javascript_body'] = 1;
-				break;
-			case 2:
-				$this->input['wss_minify_javascript'] = 1;
-				$this->input['wss_minify_javascript_body'] = 0;
-				break;
-			default:
-				$this->input['wss_minify_javascript'] = 0;
-				$this->input['wss_minify_javascript_body'] = 0;
 				break;
 		}
 /* map JavaScript minify options to real one */

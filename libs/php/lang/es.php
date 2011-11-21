@@ -177,13 +177,14 @@ define('_WEBO_external_scripts_include_code', 'Incluir c&oacute;digo CSS a todos
 define('_WEBO_external_scripts_include_code_HELP', 'El c&oacute;digo CSS ingresado ser&aacute; a&ntilde;adido al final de cada archivo CSS combinado. Este espacio le permite definir estilos adicionales para el trabajo de su Sitio Web bajo WEBO Site SpeedUp.');
 define('_WEBO_external_scripts_include_code_EFFECT', 'Better website view with WEBO Site SpeedUp');
 
-define('_WEBO_minify_javascript', 'Combina archivos JavaScript');
-define('_WEBO_minify_javascript_HELP', 'Dependiendo en esta opci&oacute;n JavaScript no ser&aacute; combinado, o solo ser&aacute;n combinados los JavaScript en el tag &lt;head&gt;, o ser&aacute; combinado todo el JavaScript en la p&aacute;gina.');
-define('_WEBO_minify_javascript1', 'No combine archivos JavaScript');
-define('_WEBO_minify_javascript2', 'Combine solo el JavaScript incluido en el tag <code>&lt;head&gt;</code>');
-define('_WEBO_minify_javascript3', 'Combine todo el JavaScript en los tags <code>&lt;head&gt;</code> y <code>&lt;body&gt;</code>');
-define('_WEBO_external_scripts_inline', 'Activa fusionamiento interno de JavaScript');
-define('_WEBO_external_scripts_inline_HELP', 'Se combinar&aacute;n ambos, el c&oacute;digo escrito en los tags &lt;script&gt; y el c&oacute;digo JavaScript de archivos externos. De otra manera se combinar&aacute;n solo JavaScript incluidos v&iacute;a &lt;script src=&quot;...&quot;&gt;.');
+define('_WEBO_minify_javascript', 'Combine JavaScript files in <code>&lt;head&gt;</code>');
+define('_WEBO_minify_javascript_HELP', 'There will be combined only JavaScript files in &lt;head&gt; tag.');
+define('_WEBO_minify_javascript_body', 'Combine JavaScript files in <code>&lt;body&gt;</code>');
+define('_WEBO_minify_javascript_body_HELP', 'There will be combined only JavaScript files in &lt;body&gt; tag.');
+define('_WEBO_external_scripts_inline', 'Enable inline JavaScript merging in <code>&lt;head&gt;</code>');
+define('_WEBO_external_scripts_inline_HELP', 'There will be combined inline code in tags &lt;script&gt;. This affects only &lt;head&gt; tag content.');
+define('_WEBO_external_scripts_inline_body', 'Enable inline JavaScript merging in <code>&lt;body&gt;</code>');
+define('_WEBO_external_scripts_inline_body_HELP', 'There will be combined inline code in tags &lt;script&gt;. This affects only &lt;body&gt; tag content.');
 define('_WEBO_external_scripts_on', 'Activa fusionamiento externo de JavaScript');
 define('_WEBO_external_scripts_on_HELP', 'Habr&aacute;n archivos combinados, localizados en todos los hosts. De otra manera WEBO Site SpeedUp combinar&aacute; solo archivos localizados en el mismo host del Sitio Web inicial.');
 define('_WEBO_external_scripts_on_HELP_DISABLED', 'Current server environment doesn\'t have support for curl library, so dynamic and external files merging is impossible.');

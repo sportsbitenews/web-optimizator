@@ -385,6 +385,8 @@ class web_optimizer {
 					$this->options['minify']['javascript'],
 				"inline_scripts" => $this->options['external_scripts']['inline'] &&
 					$this->options['minify']['javascript'],
+				"inline_scripts_body" => $this->options['external_scripts']['inline_body'] &&
+					$this->options['minify']['javascript'],
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"external_scripts_mask" => $this->premium > 1 ? $this->options['external_scripts']['include_mask'] : '',
@@ -849,6 +851,7 @@ class web_optimizer {
 					'unobtrusive_body' => $options['unobtrusive_body'],
 					'external_scripts' => $options['external_scripts'],
 					'inline_scripts' => $options['inline_scripts'],
+					'inline_scripts_body' => $options['inline_scripts_body'],
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
@@ -1696,7 +1699,7 @@ class web_optimizer {
 				$options['header'] != 'css' ? $options['header'] == 'javascript' && !$options['external_scripts_head_end'] ? 1 : 0 : 2);
 /* add spot for HTML Sprites ? */
 			$addhtml = 1;
-			if ($options['css_sprites'] || ($options['data_uris'] && !in_array($this->ua_mod, $$this->ies)) || ($options['mhtml'] && in_array($this->ua_mod, $this->ies)) || $options['parallel']) {
+			if ($options['css_sprites'] || ($options['data_uris'] && !in_array($this->ua_mod, $this->ies)) || ($options['mhtml'] && in_array($this->ua_mod, $this->ies)) || $options['parallel']) {
 				$options['css_sprites_partly'] = 0;
 				$remembered_data_uri = $options['data_uris'];
 				$remembered_mhtml = $options['mhtml'];
@@ -2105,7 +2108,7 @@ class web_optimizer {
 		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
 		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
 		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript']) {
-			if (empty($this->options['javascript']['minify_body'])) {
+			if (empty($this->options['javascript']['minify_body']) || empty($this->options['javascript']['inline_scripts_body'])) {
 				$toparse = $this->head;
 			} else {
 				$toparse = $this->body;
@@ -2181,6 +2184,48 @@ class web_optimizer {
 										'file_raw' => $niftycube_base . 'niftyCorners.css'
 									);
 								}
+					}
+				}
+			}
+/* additional cycle - due to complex logic of JS inline/files merging */
+			if ($this->options['javascript']['minify_body'] + $this->options['javascript']['inline_scripts_body'] == 1) {
+/* find all scripts from body */
+				preg_match_all("!(<script[^>]*>)(.*?</script>)!is", $this->body, $matches, PREG_SET_ORDER);
+				if (!empty($matches)) {
+					foreach($matches as $match) {
+						$file = array(
+							'tag' => 'script',
+							'source' => $match[0],
+							'content' => preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0])
+						);
+						preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))@is", $match[1], $variants, PREG_SET_ORDER);
+						if (is_array($variants)) {
+							foreach ($variants as $variant_type) {
+								$variant_type[1] = ($variant_type[1] === '') ? (($variant_type[2] === '') ? str_replace('>', '', $variant_type[3]) : $variant_type[2]) : $variant_type[1];
+								$file['file'] = $this->convert_basehref(trim($this->strip_querystring($variant_type[1])));
+								$file['file_raw'] = $variant_type[1];
+							}
+						}
+/* skip external files if option is disabled */
+						if ((empty($file['file']) &&
+								$this->options['javascript']['inline_scripts_body']) ||
+							(!empty($file['file'] &&
+								$this->options['javascript']['minify_body'] && ($curl ||
+								(preg_match("@(index\.php/|\.js$)@i", $file['file']) &&
+								(!strpos($file['file'], '//') ||
+								preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))))))) {
+/* filter scripts through include mask */
+									if (!isset($this->options['javascript']['external_scripts_mask']) ||
+										!isset($this->options['javascript']['external_scripts_mask']{$i}) ||
+										$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
+											$this->initial_files[] = $file;
+									}
+									if (!empty($file['file']) &&
+										isset($this->options['javascript']['external_scripts_mask']) &&
+										!in_array(preg_replace("@.*/@", "", $file['file']), $excluded_scripts_js)) {
+										$i++;
+									}
+						}
 					}
 				}
 			}
