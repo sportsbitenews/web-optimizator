@@ -1781,7 +1781,7 @@ class admin {
 			'htaccess_writable' => !$htaccess_available ||
 				@is_writable($website_root) ||
 				@is_writable($website_root . '.htaccess'),
-			'webconfig_writable' => $this->iis && !@is_file($this->compress_options['website_root']) . 'web.config',
+			'webconfig_writable' => !$this->iis || @is_file($this->compress_options['website_root']) . 'web.config',
 			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) ||
 				$nginx || $this->iis ||
 				in_array('mod_gzip', $this->apache_modules),
