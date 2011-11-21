@@ -2209,11 +2209,11 @@ class web_optimizer {
 /* skip external files if option is disabled */
 						if ((empty($file['file']) &&
 								$this->options['javascript']['inline_scripts_body']) ||
-							(!empty($file['file'] &&
+							(!empty($file['file']) &&
 								$this->options['javascript']['minify_body'] && ($curl ||
 								(preg_match("@(index\.php/|\.js$)@i", $file['file']) &&
 								(!strpos($file['file'], '//') ||
-								preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file']))))))) {
+								preg_match("@//(www\.)?" . $this->host_escaped . "/@is", $file['file'])))))) {
 /* filter scripts through include mask */
 									if (!isset($this->options['javascript']['external_scripts_mask']) ||
 										!isset($this->options['javascript']['external_scripts_mask']{$i}) ||
