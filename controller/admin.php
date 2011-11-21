@@ -1786,7 +1786,7 @@ class admin {
 				$nginx || $this->iis ||
 				in_array('mod_gzip', $this->apache_modules),
 			'mod_gzip' => in_array('mod_gzip', $this->apache_modules) ||
-				$apache2 || $nginx || $iss ||
+				$apache2 || $nginx || $this->iis ||
 				in_array('mod_deflate', $this->apache_modules),
 			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx || $this->iis,
 			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx || $this->iis,
