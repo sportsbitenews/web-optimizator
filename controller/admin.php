@@ -194,6 +194,7 @@ class admin {
 		if ($this->compress_options['active']) {
 			$this->validate();
 		}
+		$this->iis = !empty($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -1710,7 +1711,6 @@ class admin {
 		}
 		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
 			$nginx = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx/') !== false;
-			$iis = strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
 		}
 /* define caching for WordPress */
 		if (!empty($this->compress_options['html_cache']['enabled']) && (strpos($this->basepath, "wp-content") !== false)) {
@@ -1781,18 +1781,19 @@ class admin {
 			'htaccess_writable' => !$htaccess_available ||
 				@is_writable($website_root) ||
 				@is_writable($website_root . '.htaccess'),
+			'webconfig_writable' => $this->iis && !@is_file($this->compress_options['website_root']) . 'web.config',
 			'mod_deflate' => in_array('mod_deflate', $this->apache_modules) ||
-				$nginx || $iis ||
+				$nginx || $this->iis ||
 				in_array('mod_gzip', $this->apache_modules),
 			'mod_gzip' => in_array('mod_gzip', $this->apache_modules) ||
 				$apache2 || $nginx || $iss ||
 				in_array('mod_deflate', $this->apache_modules),
-			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx || $iis,
-			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx || $iis,
-			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx || $iis,
-			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx || $iis,
-			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx || $iis,
-			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx || $iis,
+			'mod_headers' => in_array('mod_headers', $this->apache_modules) || $nginx || $this->iis,
+			'mod_expires' => in_array('mod_expires', $this->apache_modules) || $nginx || $this->iis,
+			'mod_mime' => in_array('mod_mime', $this->apache_modules) || $nginx || $this->iis,
+			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx || $this->iis,
+			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx || $this->iis,
+			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx || $this->iis,
 			'yui_possibility' => !empty($YUI_checked),
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
@@ -3759,6 +3760,12 @@ class admin {
 					}
 			}
 		}
+/* for IIS we can use web.config */
+		if ($this->iis) {
+			$this->restrictions['wss_htaccess_enabled'] = 0;
+			$this->restrictions['wss_htaccess_mod_gzip'] = 0;
+			$this->restrictions['wss_htaccess_mod_expires'] = 0;
+		}
 		$loaded_modules = @get_loaded_extensions();
 /* fix CSS Sprites options in case of GD lib failure */
 		$gd = function_exists('gd_info') ? gd_info() : array();
@@ -3784,7 +3791,7 @@ class admin {
 /* check for YUI&Google availability */
 		$YUI_checked = 0;
 		$Google_checked = 0;
-		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS'))) {
+		if (!$this->iis) {
 			if (@is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
 				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
 				$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
@@ -4191,13 +4198,88 @@ class admin {
 	}
 
 	/**
+	* Checks and writes all optimized rules to web.config file
+	**/
+	function write_webconfig ($base = '/', $content_saved) {
+		$content = "
+	<!-- Web Optimizer options -->";
+/* rules for gzip */
+		if (!empty($this->input['wss_htaccess_mod_gzip']) && empty($this->input['wss_footer_ab'])) {
+			$types = '';
+			if (!empty($this->input['wss_gzip_page'])) {
+				$types .="
+				<add mimeType=\"text/html\" enabled=\"true\" />
+				<add mimeType=\"text/xml\" enabled=\"true\" />
+				<add mimeType=\"text/plain\" enabled=\"true\" />
+				<add mimeType=\"text/richtext\" enabled=\"true\" />
+				<add mimeType=\"text/xsd\" enabled=\"true\" />
+				<add mimeType=\"text/xsl\" enabled=\"true\" />
+				<add mimeType=\"message/*\" enabled=\"true\" />
+				<add mimeType=\"application/json\" enabled=\"true\" />
+				<add mimeType=\"application/xhtml+xml\" enabled=\"true\" />
+				<add mimeType=\"image/x-icon\" enabled=\"true\" />";
+			}
+			if (!empty($this->input['wss_gzip_css'])) {
+				$types .="
+				<add mimeType=\"text/css\" enabled=\"true\" />";
+			}
+			if (!empty($this->input['wss_gzip_javascript'])) {
+				$types .="
+				<add mimeType=\"text/javascript\" enabled=\"true\" />
+				<add mimeType=\"text/x-js\" enabled=\"true\" />
+				<add mimeType=\"text/ecmascript\" enabled=\"true\" />
+				<add mimeType=\"text/vbscript\" enabled=\"true\" />
+				<add mimeType=\"text/fluffscript\" enabled=\"true\" />
+				<add mimeType=\"application/x-javascript\" enabled=\"true\" />
+				<add mimeType=\"application/javascript\" enabled=\"true\" />
+				<add mimeType=\"application/ecmascript\" enabled=\"true\" />
+				<add mimeType=\"application/json\" enabled=\"true\" />";
+			}
+			if (!empty($this->input['wss_gzip_font'])) {
+				$types .="
+				<add mimeType=\"font/*\" enabled=\"true\" />
+				<add mimeType=\"image/svg+xml\" enabled=\"true\" />
+				<add mimeType=\"application/x-font-ttf\" enabled=\"true\" />
+				<add mimeType=\"application/x-font\" enabled=\"true\" />
+				<add mimeType=\"application/x-font-truetype\" enabled=\"true\" />
+				<add mimeType=\"application/x-font-opentype\" enabled=\"true\" />
+				<add mimeType=\"application/vnd.ms-fontobject\" enabled=\"true\" />
+				<add mimeType=\"application/vnd.oasis.opendocument.formula-template\" enabled=\"true\" />";
+			}
+			$content .= "
+		<httpCompression directory=\"%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files\">
+			<scheme name=\"gzip\" dll=\"%Windir%\system32\inetsrv\gzip.dll\" staticCompressionLevel=\"9\" />
+			<dynamicTypes>" . $types .
+				"<add mimeType=\"*/*\" enabled=\"false\" />
+			</dynamicTypes>
+			<staticTypes>" . $types . 
+				"<add mimeType=\"*/*\" enabled=\"false\" />
+			</staticTypes>
+		</httpCompression>
+		<urlCompression doStaticCompression=\"true\" doDynamicCompression=\"true\" />";
+		}
+/* rules for expires */
+		if (!empty($this->input['wss_htaccess_mod_expires']) && empty($this->input['wss_footer_ab'])) {
+			$content .= "
+		<staticContent>
+			<clientCache cacheControlMaxAge=\"3650:00:00\" cacheControlMode=\"UseMaxAge\" />
+		</staticContent>";
+		}
+		$content .= "
+		<!-- Web Optimizer end -->
+	</system.webServer>";
+		$this->write_file($this->htaccess, str_replace("</system.webServer>", $content, $content_saved), 1);
+	}
+
+	/**
 	* Returns actual .htaccess file name
 	**/
 	function detect_htaccess () {
+		$htaccess = $this->iis ? 'web.config' : '.htaccess';
 		if (empty($this->input['wss_htaccess_local'])) {
-			$htaccess = $this->compress_options['document_root'] . '.htaccess';
+			$htaccess = $this->compress_options['document_root'] . $htaccess;
 		} else {
-			$htaccess = $this->compress_options['website_root'] . '.htaccess';
+			$htaccess = $this->compress_options['website_root'] . $htaccess;
 		}
 		return $htaccess;
 	}
@@ -4209,7 +4291,9 @@ class admin {
 		if (empty($content_saved)) {
 			$content_saved = $this->file_get_contents($this->htaccess);
 		}
-		$content_saved = preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
+		$content_saved = $this->iis ?
+			preg_replace("@\r?\n?<!-- Web Optimizer options.*?Web Optimizer end -->\r?\n?@is", "", $content_saved) :
+			preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
 		return $content_saved;
 	}
 	
@@ -4226,13 +4310,16 @@ class admin {
 /* delete previous Web Optimizer rules */
 		$this->htaccess = $this->detect_htaccess();
 		$content_saved = $this->clean_htaccess();
-		if (!@is_writable($this->htaccess) && @is_file($this->htaccess)) {
-			$this->error = $this->error ? $this->error : array();
-			$this->error[10] = 1;
-		}
 /* create backup */
 		if (!@is_file($this->htaccess . '.backup')) {
 			@copy($this->htaccess, $this->htaccess . '.backup');
+		}
+		if ($this->iis) {
+			return $this->write_webconfig($base, $content_saved);
+		}
+		if (!@is_writable($this->htaccess) && @is_file($this->htaccess)) {
+			$this->error = $this->error ? $this->error : array();
+			$this->error[10] = 1;
 		}
 		$content = '# Web Optimizer options';
 		$content2 = '';
@@ -4332,7 +4419,11 @@ class admin {
 	mod_gzip_item_include mime ^text/html$
 	mod_gzip_item_include mime ^text/xml$
 	mod_gzip_item_include mime ^application/xhtml+xml$
+	mod_gzip_item_include mime ^application/json$
 	mod_gzip_item_include mime ^image/x-icon$
+	mod_gzip_item_include mime ^text/richtext$
+	mod_gzip_item_include mime ^text/xsd$
+	mod_gzip_item_include mime ^text/xsl$
 	mod_gzip_item_include mime ^httpd/unix-directory$";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
@@ -4399,7 +4490,7 @@ class admin {
 <IfModule mod_deflate.c>";
 				if (!empty($this->input['wss_gzip_page'])) {
 					$content .= "
-	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon text/richtext text/xsd text/xsl text/xml";
+	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon text/richtext text/xsd text/xsl text/xml application/json";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
 					$content .= "
@@ -4916,7 +5007,7 @@ Options +FollowSymLinks";
 /* check if .htaccess isn't required */
 		$not_apache = 0;
 		if (!empty($_SERVER['SERVER_SOFTWARE'])) {
-			$not_apache = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') + strpos($_SERVER['SERVER_SOFTWARE'], 'IIS');
+			$not_apache = strpos($_SERVER['SERVER_SOFTWARE'], 'nginx');
 		}
 		if (!$not_apache) {
 			$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);

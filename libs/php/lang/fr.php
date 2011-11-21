@@ -674,6 +674,8 @@ define('_WEBO_SYSTEM_config_writable', 'Le fichier configuration n\'est pas insc
 define('_WEBO_SYSTEM_config_writable_HELP', 'Please check rights for the file config.webo.php located in the WEBO Site SpeedUp directory. You need to perform CHMOD 664, or CHMOD 666 for it.');
 define('_WEBO_SYSTEM_htaccess_writable', 'Le <code>.htaccess</code> n\'est pas inscriptible');
 define('_WEBO_SYSTEM_htaccess_writable_HELP', 'Please check rights for the .htaccess file located in your website root. You need to perform CHMOD 664, or CHMOD 666 for it. If there is no such file please make your website root directory writable (CHMOD 775, or CHMOD 777) or create a writable .htaccess file there.');
+define('_WEBO_SYSTEM_webconfig_writable', '<code>web.config</code> isn\'t writable');
+define('_WEBO_SYSTEM_webconfig_writable_HELP', 'Please check rights for the web.config file located in your website root. If there is no such file please make your website root directory writable or create a writable web.config file there.');
 define('_WEBO_SYSTEM_index_writable', 'le <code>index.php</code> n\'est pas inscriptible');
 define('_WEBO_SYSTEM_index_writable_HELP', 'Please check rights for the index.php file located in your website root. It should be writable to inject WEBO Site SpeedUp calls into it. You can leave it unwritable but you will have to include WEBO Site SpeedUp calls manually. More info is located on "System Status" page ("Install / Uninstall" tab). To make index.php writable please perform CHMOD 664, or CHMOD 666 for it.');
 define('_WEBO_SYSTEM_not_active', 'WEBO Site SpeedUp doesn\'t work');

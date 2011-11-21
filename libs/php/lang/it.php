@@ -674,6 +674,8 @@ define('_WEBO_SYSTEM_config_writable', 'Il file di configurazione non è scrivib
 define('_WEBO_SYSTEM_config_writable_HELP', 'Per favore controlla i diritti per il file config.webo.php localizzato nella cartella di WEBO Site SpeedUp. Necessiti Di eseguire CHMOD 664, o CHMOD 666 per essa.');
 define('_WEBO_SYSTEM_htaccess_writable', '<code>.htaccess</code> non è scrivibile');
 define('_WEBO_SYSTEM_htaccess_writable_HELP', 'Per favore controlla i diritti per il file .htaccess localizzato nella root del sito. Necessiti Di eseguire CHMOD 664, o CHMOD 666 per esso. Se non c\'è questo file per favore rendi la tua cartella root scrivibile (CHMOD 775, o CHMOD 777) oppure rendi scrivibile il file .htaccess.');
+define('_WEBO_SYSTEM_webconfig_writable', '<code>web.config</code> isn\'t writable');
+define('_WEBO_SYSTEM_webconfig_writable_HELP', 'Please check rights for the web.config file located in your website root. If there is no such file please make your website root directory writable or create a writable web.config file there.');
 define('_WEBO_SYSTEM_index_writable', '<code>index.php</code> non è scrivibile');
 define('_WEBO_SYSTEM_index_writable_HELP', 'Per favore controlla i diritti per index.php localizzato nella root del sito. Deve essere scrivibile per inserire le chiamate di WEBO Site SpeedUp. Puoi lasciarlo non scrivibile ma dovrai includere le chiamate di WEBO Site SpeedUp manualmente. Maggiori informazioni sono localizzate nella pagina "Stato sistema" ("Installa / Disinstalla" tabella). Per rendere index.php scrivibile per favore esegui CHMOD 664, o CHMOD 666.');
 define('_WEBO_SYSTEM_not_active', 'WEBO Site SpeedUp non funziona');
