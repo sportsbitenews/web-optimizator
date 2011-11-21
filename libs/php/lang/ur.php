@@ -525,7 +525,7 @@ define('_WEBO_htaccess_mod_rewrite', '<code>mod_rewrite</code> استعمال ک
 define('_WEBO_htaccess_mod_rewrite_HELP', 'یہ ساکن gzip یا فورسڈ کیشنگ کیلئے ضروری ہے۔');
 define('_WEBO_htaccess_mod_rewrite_HELP_DISABLED', 'آپ کی ویب سائٹ پر .htaccess, web.config یا (اور) mod_rewrite کی سپورٹ دستیاب نہیں ہے۔');
 define('_WEBO_htaccess_local', '<code>.htaccess</code> فائل کو لوکلی محفوظ کریں (ڈاکومنٹ روٹ میں نہ کریں)۔');
-define('_WEBO_htaccess_local_HELP', '.htaccess فائل کو لوکل ویب سائٹ فولڈر میں محفوظ کیا جائے گا نا کہ ویب سائٹ ہوسٹ کے ڈاکومنٹ روٹ میں۔');
+define('_WEBO_htaccess_local_HELP', '.htaccess / web.config فائل کو لوکل ویب سائٹ فولڈر میں محفوظ کیا جائے گا نا کہ ویب سائٹ ہوسٹ کے ڈاکومنٹ روٹ میں۔');
 define('_WEBO_htaccess_access', 'ویبو سائٹ اسپیڈ اپ کی انسٹالیشن کو <code>htpasswd</code> سے محفوظ کریں۔');
 define('_WEBO_htaccess_access_HELP', 'یہ آپشن .htaccess اور .htpasswd فائلز اور HTTP کی بنیادی Authorization کی مدد سے ویبو سائٹ اسپیڈ اپ کی انسٹالیشن کو اضافی سیکورٹی مہیا کرتا ہے۔');
 define('_WEBO_htaccess_login', '<code>.htpasswd</code> کے ساتھ ویبو سائٹ اسپیڈ اپ کو محفوظ کرنے کیلئے لاگ ان ہو جائیں۔');

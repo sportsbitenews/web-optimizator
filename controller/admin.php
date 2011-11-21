@@ -2964,7 +2964,7 @@ class admin {
 			"configs" => $configs,
 			"config" => $this->compress_options['config'],
 			"skip_render" => $this->skip_render,
-			"iss" => $this->iis
+			"iis" => $this->iis
 		);
 		$this->view->render("install_options", $this->page_variables);
 	}

@@ -539,7 +539,7 @@ define('_WEBO_htaccess_mod_rewrite', 'Usa <code>mod_rewrite</code>');
 define('_WEBO_htaccess_mod_rewrite_HELP', 'Questo è richiesto per gzip statico o la cache forzata.');
 define('_WEBO_htaccess_mod_rewrite_HELP_DISABLED', 'Non c\'è supporto per .htaccess, web.config o(e) mod_rewrite sul tuo sito.');
 define('_WEBO_htaccess_local', 'Inserisci il file <code>.htaccess</code> localmente (non nella Root)');
-define('_WEBO_htaccess_local_HELP', 'il file .htaccess sarà posizionato in una cartella locale del sito ma non nella root o nell\'host del sito.');
+define('_WEBO_htaccess_local_HELP', 'il file .htaccess / web.config sarà posizionato in una cartella locale del sito ma non nella root o nell\'host del sito.');
 define('_WEBO_htaccess_access', 'Proteggi l\'installazione di WEBO Site SpeedUp attraverso <code>htpasswd</code>');
 define('_WEBO_htaccess_access_HELP', 'Questa opzione fornisce maggiore sicurezza per l\'installazione di WEBO Site SpeedUp con l\'aiuto di HTTP Basic Autorizzation e .htaccess e .htpasswd files.');
 define('_WEBO_htaccess_login', 'Effettua il login per proteggere WEBO Site SpeedUp con <code>.htpasswd</code>');

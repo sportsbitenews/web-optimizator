@@ -538,7 +538,7 @@ define('_WEBO_htaccess_mod_rewrite', 'Brug <code>mod_rewrite</code>');
 define('_WEBO_htaccess_mod_rewrite_HELP', 'Dette er påkrævet for statisk gzip eller tvunget caching.');
 define('_WEBO_htaccess_mod_rewrite_HELP_DISABLED', 'Der er ingen understøttelse for .htaccess, web.config eller/og mod_rewrite på din hjemmeside.');
 define('_WEBO_htaccess_local', 'Placer <code>.htaccess</code> filen lokalt (ikke i dokument roden)');
-define('_WEBO_htaccess_local_HELP', '.htaccess filen vil blive placeret i den lokale hjemmeside mappe, men ikke dokumentroden af host.');
+define('_WEBO_htaccess_local_HELP', '.htaccess / web.config filen vil blive placeret i den lokale hjemmeside mappe, men ikke dokumentroden af host.');
 define('_WEBO_htaccess_access', 'Beskyt WEBO Site SpeedUp instalationen via <code>htpasswd</code>');
 define('_WEBO_htaccess_access_HELP', 'Denne indstilling giver ekstra sikkerhed for WEBO Site SpeedUp installationen, men hjælp af HTTP Basic Authorization og .htaccess og .htpasswd filer.');
 define('_WEBO_htaccess_login', 'Logind for at beskytte WEBO Site SpeedUp med <code>.htpasswd</code>');

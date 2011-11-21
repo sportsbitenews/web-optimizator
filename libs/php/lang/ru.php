@@ -470,7 +470,7 @@ define('_WEBO_htaccess_enabled', 'Использовать <code>.htaccess</code
 define('_WEBO_htaccess_enabled_HELP', 'Создает в корневой директории сайта файл .htaccess, либо модифицирует существующий файл, сохраняя все его исходное содержимое, а также создавая резервную копию исходного файла. Содержимое файла .htaccess изменяется в зависимости от других опций.');
 define('_WEBO_htaccess_enabled_HELP_DISABLED', 'Текущее серверное окружение не поддерживает .htaccess.');
 define('_WEBO_htaccess_local', 'Расположить <code>.htaccess</code> в локальной (не корневой) директории');
-define('_WEBO_htaccess_local_HELP', 'Файл .htaccess будет расположен в локальной папке сайта, а не корневой директории хоста.');
+define('_WEBO_htaccess_local_HELP', 'Файл .htaccess / web.config будет расположен в локальной папке сайта, а не корневой директории хоста.');
 define('_WEBO_htaccess_mod_deflate', 'Использовать <code>mod_deflate</code> + <code>mod_filter</code>');
 define('_WEBO_htaccess_mod_deflate_HELP', 'Требуется для динамического сжатия файлов и является альтернативой использованиюgzip.');
 define('_WEBO_htaccess_mod_deflate_HELP_DISABLED', 'Текущее серверное окружение не поддерживает .htaccess и(ли) mod_deflate или mod_filter.');
