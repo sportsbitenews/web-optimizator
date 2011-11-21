@@ -2190,7 +2190,7 @@ class web_optimizer {
 /* additional cycle - due to complex logic of JS inline/files merging */
 			if ($this->options['javascript']['minify_body'] + $this->options['javascript']['inline_scripts_body'] == 1) {
 /* find all scripts from body */
-				preg_match_all("!(<script[^>]*>)(.*?</script>)!is", $this->body, $matches, PREG_SET_ORDER);
+				preg_match_all("!(<script[^>]*>)(.*?</script>)!is", str_replace($this->head, "", $this->body), $matches, PREG_SET_ORDER);
 				if (!empty($matches)) {
 					foreach($matches as $match) {
 						$file = array(
@@ -3155,7 +3155,8 @@ class web_optimizer {
 			}
 /* skip parsing head if we include both CSS and JavaScript from head+body */
 			if (empty($this->options['javascript']['minify_body']) ||
-				empty($this->options['css']['minify_body'])) {
+				empty($this->options['css']['minify_body']) ||
+				empty($this->options['javascript']['inline_scripts_body'])) {
 					if (empty($this->options['page']['html_tidy'])) {
 						preg_match("!<head[^>]*>.*?<body!is",
 							$this->content, $matches);
@@ -3174,7 +3175,7 @@ class web_optimizer {
 					}
 			}
 /* get head+body if required */
-			if (!empty($this->options['javascript']['minify_body']) || !empty($this->options['css']['minify_body'])) {
+			if ($this->options['javascript']['minify_body'] + $this->options['css']['minify_body'] + $this->options['javascript']['inline_scripts_body']) {
 				preg_match("!<head.*!is", $this->content, $matches);
 				if (!empty($matches[0])) {
 					$this->body = $this->prepare_html($matches[0], empty($this->options['javascript']['minify_body']));
