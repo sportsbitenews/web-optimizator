@@ -1822,7 +1822,7 @@ class admin {
 				!$this->compress_options['css_sprites']['html_sprites']),
 			'large_delay' => $standard_delay < 1,
 			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 300,
-			'apc_enabled' => @function_exists('apc_store') && strpos(@ini_get('apc.filters'), 'config') === false
+			'apc_enabled' => !@function_exists('apc_store') || strpos(@ini_get('apc.filters'), 'config') !== false
 		);
 		$e = $w = $i = 0;
 /* count acturl troubles / warnings */
