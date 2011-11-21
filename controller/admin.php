@@ -3439,7 +3439,7 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['css_sprites']['sprites_limited'],
 					'type' => 'smalltext',
-					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled']) || !empty($this->restrictions['wss_css_sprites_tidy']) || !empty($this->restrictions['wss_css_minify'])
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'css_sprites_html_sprites' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
