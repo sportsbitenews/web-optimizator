@@ -211,7 +211,7 @@ if ($submit) {
 ?>"><a href="#<?php
 			echo $key;
 ?>" class="wssJ"><?php
-			echo constant('_WEBO_' . $key);
+			echo constant('_WEBO_' . $iis ? str_replace("htaccess", "iis", $key) : $key);
 ?><span class="wssJ6"></span></a></li><?php
 		}
 	}
@@ -256,7 +256,7 @@ if ($submit) {
 ?>"><label class="wssE" for="wss_<?php
 						echo $option;
 ?>1"><?php
-						echo constant('_WEBO_' . $option);
+						echo constant('_WEBO_' . $iis ? str_replace("htaccess", "iis", $option) : $option);
 ?> <a class="wssJ9" href="#" title="<?php
 						echo str_replace('"', '&quot;', constant('_WEBO_' . $option . '_HELP'));
 						echo defined('_WEBO_' . $option . '_HELP_DISABLED') ? '///'. constant('_WEBO_' . $option . '_HELP_DISABLED') : '';

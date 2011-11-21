@@ -2963,7 +2963,8 @@ class admin {
 			"basepath" => $this->basepath,
 			"configs" => $configs,
 			"config" => $this->compress_options['config'],
-			"skip_render" => $this->skip_render
+			"skip_render" => $this->skip_render,
+			"iss" => $this->iis
 		);
 		$this->view->render("install_options", $this->page_variables);
 	}
@@ -3762,9 +3763,10 @@ class admin {
 		}
 /* for IIS we can use web.config */
 		if ($this->iis) {
-			$this->restrictions['wss_htaccess_enabled'] = 0;
-			$this->restrictions['wss_htaccess_mod_gzip'] = 0;
-			$this->restrictions['wss_htaccess_mod_expires'] = 0;
+			unset($this->restrictions['wss_htaccess_enabled']);
+			unset($this->restrictions['wss_htaccess_mod_gzip']);
+			unset($this->restrictions['wss_htaccess_mod_expires']);
+			unset($this->restrictions['wss_htaccess_mod_rewrite']);
 		}
 		$loaded_modules = @get_loaded_extensions();
 /* fix CSS Sprites options in case of GD lib failure */
@@ -4201,8 +4203,7 @@ class admin {
 	* Checks and writes all optimized rules to web.config file
 	**/
 	function write_webconfig ($base = '/', $content_saved) {
-		$content = "
-	<!-- Web Optimizer options -->";
+		$content = "<!-- Web Optimizer options -->";
 /* rules for gzip */
 		if (!empty($this->input['wss_htaccess_mod_gzip']) && empty($this->input['wss_footer_ab'])) {
 			$types = '';
@@ -4249,11 +4250,11 @@ class admin {
 			$content .= "
 		<httpCompression directory=\"%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files\">
 			<scheme name=\"gzip\" dll=\"%Windir%\system32\inetsrv\gzip.dll\" staticCompressionLevel=\"9\" />
-			<dynamicTypes>" . $types .
-				"<add mimeType=\"*/*\" enabled=\"false\" />
+			<dynamicTypes>" . $types . "
+				<add mimeType=\"*/*\" enabled=\"false\" />
 			</dynamicTypes>
-			<staticTypes>" . $types . 
-				"<add mimeType=\"*/*\" enabled=\"false\" />
+			<staticTypes>" . $types . "
+				<add mimeType=\"*/*\" enabled=\"false\" />
 			</staticTypes>
 		</httpCompression>
 		<urlCompression doStaticCompression=\"true\" doDynamicCompression=\"true\" />";
@@ -4292,7 +4293,7 @@ class admin {
 			$content_saved = $this->file_get_contents($this->htaccess);
 		}
 		$content_saved = $this->iis ?
-			preg_replace("@\r?\n?<!-- Web Optimizer options.*?Web Optimizer end -->\r?\n?@is", "", $content_saved) :
+			preg_replace("@\r?\n?\t*<!-- Web Optimizer options.*?Web Optimizer end -->\r?\n?@is", "", $content_saved) :
 			preg_replace("@\r?\n?# Web Optimizer (options|path).*?# Web Optimizer (path )?end\r?\n?@is", "", $content_saved);
 		return $content_saved;
 	}
