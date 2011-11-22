@@ -1437,6 +1437,7 @@ class admin {
 		if (!empty($before) && !empty($after)) {
 			$grade_before = round(preg_replace("!.*score\":\s*([0-9]+),.*!s", "$1", $before));
 			$grade_after = round(preg_replace("!.*score\":\s*([0-9]+),.*!s", "$1", $after));
+			$grade_after = $grade_after < $grade_before ? $grade_before : $grade_after;
 			$size11 = round(preg_replace("!.*htmlResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
 			$size12 = round(preg_replace("!.*cssResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
 			$size13 = round(preg_replace("!.*imageResponseBytes\":\s*([0-9]+),.*!", "$1", $before));
