@@ -479,7 +479,7 @@ class webo_cache_files extends webo_cache_engine
 		$length = strlen($str);
 		$i = 0;
 		$written = 0;
-		$tmp = '.tmp.' . time() . microtime();
+		$tmp = '.tmp.' . (time()+microtime());
 		@file_put_contents($webo_files_list_var . $tmp, '<?php ?>');
 		while (($i < 3) && ($written != $length)) {
 			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
@@ -501,9 +501,6 @@ class webo_cache_files extends webo_cache_engine
 			return;
 		}
 		$path = $this->__get_path($key);
-		$this->__get_files_list();
-		$this->all_files[$path] = array(strlen($value), $time);
-		$this->__put_files_list();
 		if (!@is_dir(dirname($path))) {
 			$this->__make_path($path);
 		}
@@ -511,6 +508,9 @@ class webo_cache_files extends webo_cache_engine
 		@rename($path . '.tmp', $path);
 		@touch($path);
 		@chmod($path, octdec("0644"));
+		$this->__get_files_list();
+		$this->all_files[$path] = array(strlen($value), $time);
+		$this->__put_files_list();
 	}
 
 	/* Get cache entry by key. Expects key string. */
@@ -642,7 +642,7 @@ class webo_cache_files extends webo_cache_engine
 		} else {
 			$key = $set_host . '/' . $key;
 		}
-		return preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key));
+		return preg_replace("!/+!", "/", preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key)));
 	}
 	
 	/* Creates directory structure to store the file */
