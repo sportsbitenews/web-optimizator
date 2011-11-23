@@ -504,6 +504,7 @@ class webo_cache_files extends webo_cache_engine
 		if (!@is_dir(dirname($path))) {
 			$this->__make_path($path);
 		}
+		$path .= @is_dir($path) ? '/index.html' : '';
 		@file_put_contents($path . '.tmp', $value);
 		@rename($path . '.tmp', $path);
 		@touch($path);
@@ -642,7 +643,11 @@ class webo_cache_files extends webo_cache_engine
 		} else {
 			$key = $set_host . '/' . $key;
 		}
-		return preg_replace("!/+!", "/", preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key)));
+		$key = preg_replace("!/+!", "/", preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key)));
+		while (@is_dir($key)) {
+			$key .= '/index.html';
+		}
+		return $key;
 	}
 	
 	/* Creates directory structure to store the file */
@@ -654,7 +659,8 @@ class webo_cache_files extends webo_cache_engine
 			if (!empty($dir)) {
 				$cur_dir .= $dir . '/';
 				if (!@is_dir($cur_dir)) {
-					@mkdir($cur_dir, 0755);
+					@unlink($cur_dir);
+					@mkdir($cur_dir, octdec("0755"));
 				}
 			}
 		}
