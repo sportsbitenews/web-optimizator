@@ -645,6 +645,7 @@ class webo_cache_files extends webo_cache_engine
 		}
 		$key = preg_replace("!/+!", "/", preg_replace('/\\.+\\/+/','',$this->cache_dir . str_replace(array('+',"'",'^','%','"','<','>','$'), array('/','','','','','','',''), $key)));
 		while (@is_dir($key)) {
+			@chmod($key, octdec("0755"));
 			$key .= '/index.html';
 		}
 		return $key;
@@ -659,7 +660,6 @@ class webo_cache_files extends webo_cache_engine
 			if (!empty($dir)) {
 				$cur_dir .= $dir . '/';
 				if (!@is_dir($cur_dir)) {
-					@unlink($cur_dir);
 					@mkdir($cur_dir, octdec("0755"));
 				}
 			}
