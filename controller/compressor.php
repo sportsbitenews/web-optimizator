@@ -1047,10 +1047,13 @@ class web_optimizer {
 			$chunk = $this->domready_include2;
 		}
 		if ($chunk) {
+			$chunk = ($this->premium > 1 ? '<!--noindex-->' : '').
+				'<script type="text/javascript">' . $chunk . '</script>' .
+				($this->premium > 1 ? '<!--/noindex-->' : '');
 			if (preg_match("!</body>!i", $this->content)) {
-				$this->content = preg_replace("!(</body>)!is", '<script type="text/javascript">'. $chunk . "</script>$1", $this->content);
+				$this->content = preg_replace("!(</body>)!is", $chunk . "$1", $this->content);
 			} else {
-				$this->content .= '<script type="text/javascript">'. $chunk . '</script>';
+				$this->content .= $chunk;
 			}
 		}
 /* check if we need to store cached page */
@@ -1485,13 +1488,15 @@ class web_optimizer {
 				if (!$this->options['css']['data_uris_domloaded']) {
 					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $newfile , $source);
 				} else {
-					$inc = '<script type="text/javascript">' .
+					$inc = ($this->premium > 1 ? '<!--noindex-->' : '') .
+						'<script type="text/javascript">' .
 						$this->domready_include .
 						'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="' .
 						$href .
 						'";d.getElementsByTagName("head")[0].appendChild(l);' .
 						$this->domready_include2 .
-						'</script>@@@WSSREADY@@@';
+						'</script>@@@WSSREADY@@@' .
+						($this->premium > 1 ? '<!--/noindex-->' : '');
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
 						$source = substr_replace($source, $inc, $bodypos, 0);
