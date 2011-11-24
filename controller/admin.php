@@ -195,6 +195,7 @@ class admin {
 			$this->validate();
 		}
 		$this->iis = !empty($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
+		$this->time = time();
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
@@ -2467,7 +2468,6 @@ class admin {
 /* prevent PHP timeout on folders parsing */
 			$limit = @ini_get("max_execution_time");
 			@set_time_limit($limit * 10);
-			$this->time = time();
 			$results = $this->get_directory_files($directory,
 				'\\.(jpe?g|png|gif|tiff|bmp|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|txt|xml|css|js|ico|ttf|otf|eot|svg)$',
 				$recursive, 'FTP', array(),
