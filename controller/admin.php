@@ -17,6 +17,7 @@ class admin {
 			$this->$key = $value;
 		}
 		$this->skip_render = empty($this->skip_render) ? 0 : $this->skip_render;
+		$this->time = time();
 		if (!$this->skip_render) {
 /* Fixes time zone for future usage */
 			if (function_exists('date_default_timezone_set')) {
@@ -195,7 +196,7 @@ class admin {
 			$this->validate();
 		}
 		$this->iis = !empty($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') !== false;
-		$this->time = time();
+
 /* show page */
 		if (!empty($this->input) &&
 			!empty($this->page_functions[$this->input['wss_page']]) &&
