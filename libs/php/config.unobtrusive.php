@@ -16,6 +16,10 @@ $unobtrusive_items = array(
 		), 'af' => array(
 			'marker' => 'affiz.net/tracking',
 			'regexp' => "<script[^>]+>[^\da-zA-Z]*var rdads.*?affiz.net/tracking/ads_display.php.*?</script>"
+/* AdVaction */
+		), 'av' => array(
+			'marker' => 'advaction.ru/js/advertiser.js',
+			'regexp' => "<script[^>]+advaction.ru/js/advertiser.js[^>]*></script>"
 /* BlogBang */
 		), 'bb' => array(
 			'marker' => 'blogbang.com/d.php',
@@ -112,6 +116,12 @@ $unobtrusive_items = array(
 			'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\">[\r\n\s\t]*</script>[\r\n\s\t]*<script type=\"text/javascript\">(//\s*<!\[CDATA\[)?[\r\n\s\t]*google\.load\(['\"]search.*?</script>",
 			'onload_before' => '.*?google.load\(\s*[\'"]search[\'"](.*?)\);(.*?)google.setOnLoadCallback[\r\n\s\t]*\(function\(\)\{(.*?)\},\strue\);(.*?)</script>',
 			'onload_after' => 'document.write(\'\x3cscript src="//www.google.com/jsapi" type="text/javascript">\x3c/script>\');setTimeout(function(){if(typeof google!=="undefined"&&typeof google.load!=="undefined"){google.load("search"$1);setTimeout(function(){if(typeof google.search!=="undefined"&&typeof google.search.CustomSearchControl!=="undefined"){$2$3$4;setTimeout(function(){var a=document.forms,b=0,c;while(c=a[b++]){if(c.className=="gsc-search-box"){wss_onload_ready=1}}if(!wss_onload_ready){setTimeout(arguments.callee,20)}},20)}else{setTimeout(arguments.callee,10)}},10)}else{setTimeout(arguments.callee,10)}},10);'
+/* Google Plus */
+		), 'gp' => array(
+			'marker' => 'plusone.js',
+			'regexp' => "<script[^>]+apis.google.com/js/plusone.js[^>]*>[^<]*</script>",
+			'onload_before' => '<script[^>]+src="(https?://apis.google.com/js/plusone.js.+?)"></script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
 /* Google Translate */
 		), 'gt' => array(
 			'marker' => 'translate.google.com',
@@ -127,6 +137,18 @@ $unobtrusive_items = array(
 		), 're' => array(
 			'marker' => 'reformal.ru',
 			'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+/* Vkontakte API */
+		), 'va' => array(
+			'marker' => 'vkontakte.ru/js/common.js',
+			'regexp' => "<script[^>]+vkontakte.ru/js/common.js.*?</script>",
+			'onload_before' => '<script[^>]+src="(https?://vkontakte.ru/js/common.js.+?)"></script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
+/* Vkontakte */
+		), 'vk' => array(
+			'marker' => 'api/share.js',
+			'regexp' => "<script[^>]+vkontakte.ru/js/api/share.js.*?</script>[\t\s\r\n]*<script[^>]+userapi.com/js/api/openapi.js.*?</script>",
+			'onload_before' => '<script[^>]+src="(https?://vkontakte.ru/js/api/share.js.+?)"></script>[\t\s\r\n]*<script[^>]+src="(https?://userapi.com/js/api/openapi.js.+?)"></script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');document.write(\'\x3cscript type="text/javascript" src="$2">\x3c/script>\');wss_onload_ready=1;'
 /* Verisign */
 		), 'vs' => array(
 			'marker' => 'seal.verisign.com',
