@@ -120,8 +120,8 @@ $unobtrusive_items = array(
 		), 'gp' => array(
 			'marker' => 'plusone.js',
 			'regexp' => "<script[^>]+apis.google.com/js/plusone.js[^>]*>[^<]*</script>",
-			'onload_before' => '<script[^>]+src="(https?://apis.google.com/js/plusone.js.+?)"></script>',
-			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
+			'onload_before' => '<script[^>]+src="(https?://apis.google.com/js/plusone.js.*)">(.*?)</script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');$2;wss_onload_ready=1;'
 /* Google Translate */
 		), 'gt' => array(
 			'marker' => 'translate.google.com',
