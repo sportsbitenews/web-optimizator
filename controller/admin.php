@@ -6438,6 +6438,7 @@ require valid-user';
 				break;
 /* VaM Shop */
 			case 'VaM':
+			case 'osCommerce':
 				$files = array(
 					array(
 						'file' => 'includes/application_top.php',
@@ -6613,7 +6614,7 @@ require valid-user';
 		if ($licensed) {
 			$files = array();
 			foreach (glob('*config.webo.php') as $file) {
-				$files[] = substr($file, 0, strlen($file) - 15);
+				$files[] = substr($file, 0, strlen($file) - 16);
 			}
 			$str = '<?php $wss_configs = array(\'' . implode($files, "','") . '\'); ?>';
 		}
