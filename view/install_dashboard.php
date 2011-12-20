@@ -67,6 +67,7 @@
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li></ul><?php
 	}
+	if (!$limited || !empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
 ?><div class="wssN"><div class="wssN4"><div class="wssN5 wssN11"><div class="wssN2"><h2 class="wssB"><a href="<?php
 	echo _WEBO_DASHBOARD_ORDER;
 ?>" class="wssN3"><?php
@@ -260,7 +261,9 @@
 	}
 ?></div></div><?php
 	}
-?></div><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?></div><?php
+	}
+?><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div><script type="text/javascript">wss_fee=<?php
 	echo round($fee);

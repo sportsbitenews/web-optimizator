@@ -2182,7 +2182,8 @@ class admin {
 			"fee" => $this->compress_options['fee'],
 			"custom" => !@function_exists('curl_init') || @is_file($this->basepath . 'custom'),
 			"ready" => @is_file($this->basepath . 'ready'),
-			"days" => $this->days
+			"days" => $this->days,
+			"limited" => $is_file($this->basepath . 'limited')
 		);
 		$this->view->render("admin_container", $page_variables);
 	}
