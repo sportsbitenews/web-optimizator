@@ -192,6 +192,7 @@ class admin {
 		$this->language = in_array($this->language, array('en', 'de', 'es', 'ru', 'ua', 'fr', 'ur', 'it', 'da')) ? $this->language : 'en';
 /* calculate configuration files for Extended and Corporate Editions */
 		$this->find_configs($this->premium > 1 && $this->premium < 10);
+		$this->days = 365;
 		if ($this->compress_options['active']) {
 			$this->validate();
 		}
@@ -1218,6 +1219,7 @@ class admin {
 			$this->compress_options['document_root'], "/",
 			$this->compress_options['website_root']));
 		$this->save_option("['active']", $this->compress_options['active']);
+		$this->validate();
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
 		$this->install_system();
@@ -1237,6 +1239,7 @@ class admin {
 			$this->compress_options['document_root'], "/" ,
 			$this->compress_options['website_root']));
 		$this->save_option("['active']", $this->compress_options['active']);
+		$this->validate();
 		$this->save_option("['performance']['cache_version']",
 			$this->compress_options['performance']['cache_version']);
 		$this->install_dashboard();
@@ -1270,6 +1273,7 @@ class admin {
 				$this->view->download($this->webo_grade,
 					$this->basepath . $this->index_after, 2);
 			}
+			$this->validate();
 		} else {
 			$this->input = array(
 				'wss_htaccess_enabled' => $this->compress_options['htaccess']['enabled'],
