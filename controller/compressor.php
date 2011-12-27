@@ -2312,7 +2312,7 @@ class web_optimizer {
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
 /* exclude niftyCorners duplicate */
-				if (strpos($value['file'], 'niftyCorners.css')) {
+				if (!empty($value['file']) && strpos($value['file'], 'niftyCorners.css')) {
 					if ($niftyUsed) {
 						unset($this->initial_files[$key]);
 					} else {
@@ -2377,9 +2377,8 @@ class web_optimizer {
 				}
 			}
 /* skip mining files' content if don't check MTIME */
-			if (empty($this->options['javascript']['dont_check_file_mtime']) ||
-				strlen($this->lc) != 29) {
-					$this->get_script_content();
+			if (!$this->options['javascript']['dont_check_file_mtime']) {
+				$this->get_script_content();
 			}
 		}
 	}
@@ -3335,7 +3334,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			}
 		}
 		if (empty($this->options['uniform_cache'])) {
-			if ($this->options['plain_string']) {
+			if (!empty($this->options['plain_string'])) {
 				while (($a = strpos($source, '<!--[if')) !== false && ($b = strpos($source, '[endif]-->')) !== false) {
 					$source = substr($source, 0, $a) . substr($source, $b+10);
 				}
