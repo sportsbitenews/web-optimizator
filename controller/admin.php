@@ -3369,6 +3369,13 @@ class admin {
 					'type' => 'text',
 					'hidden' => 1
 				),
+				'performance_scale' => array(
+					'value' => $this->compress_options['performance']['scale'],
+					'type' => 'checkbox',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 3,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
+				),
 			),
 			'data_uri' => array(
 				'data_uris_on' => array(
@@ -3982,6 +3989,7 @@ class admin {
 			'wss_performance_uniform_cache',
 			'wss_performance_restore_properties',
 			'wss_performance_https',
+			'wss_performance_scale',
 			'wss_minify_page',
 			'wss_minify_html_comments',
 			'wss_minify_html_one_string',
