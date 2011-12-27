@@ -1139,4 +1139,5 @@ define('_WEBO_LICENSE_DAYS_DAYS', 'дней осталось');
 define('_WEBO_LICENSE_DAYS_DAYS2', 'дня осталось');
 define('_WEBO_LICENSE_DAYS_DAY', 'день остался');
 define('_WEBO_LICENSE_DAYS_DAY2', '. Пожалуйста, приобретите полную версию продукта!');
+define('_WEBO_LICENSE_EXPIRED', 'Срок действия демо-версии WEBO Site SpeedUp истек. Пожалуйста, приобретите полную версию продукта!');
 ?>
