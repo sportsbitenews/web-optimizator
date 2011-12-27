@@ -633,9 +633,9 @@ wss_error2="<?php
 ?>";
 wss_error6=wss_error67="<?php
 	echo _WEBO_CDN_NOACCESS;
-?>";<?php if (!$premium && $days) { ?>
+?>";<?php if (!$premium && $days && $days != 365) { ?>
 alert("<?php
-	echo _WEBO_LICENSE_DAYS . $days . ' ' . ($days > 5 ? _WEBO_LICENSE_DAYS_DAYS : ($days > 1 ? _WEBO_LICENSE_DAYS2 : _WEBO_LICENSE_DAY)) . _WEBO_LICENSE_DAYS2;
+	echo _WEBO_LICENSE_DAYS . $days . ' ' . ($days > 5 ? _WEBO_LICENSE_DAYS_DAYS : ($days > 1 ? _WEBO_LICENSE_DAYS_DAYS2 : _WEBO_LICENSE_DAYS_DAY)) . _WEBO_LICENSE_DAYS2;
 ?>");
 <?php } elseif (!$premium) { ?>
 alert("<?php echo _WEBO_LICENSE_EXPIRED ?>");
