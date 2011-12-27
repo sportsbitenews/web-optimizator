@@ -34,6 +34,7 @@ $compress_options['performance']['delete_old']="0";
 $compress_options['performance']['cache_engine']="0";
 $compress_options['performance']['cache_engine_options']="127.0.0.1:11211";
 $compress_options['performance']['https']="0";
+$compress_options['performance']['scale']="1";
 $compress_options['minify']['javascript']="1";
 $compress_options['minify']['javascript_body']="0";
 $compress_options['minify']['with_jsmin']="0";

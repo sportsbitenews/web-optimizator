@@ -394,6 +394,10 @@ define('_WEBO_performance_cache_engine5', 'Zend Platform');
 define('_WEBO_performance_cache_engine6', 'Semaphores');
 define('_WEBO_performance_cache_engine_options', 'Yderligere indstillinger');
 define('_WEBO_performance_cache_engine_options_HELP', 'Angiv venligst server og port for Memcached i formatet server:port');
+define('_WEBO_performance_scale', 'Scale HTML images');
+define('_WEBO_performance_scale_HELP', 'All HTML images will be resized to smaller dimensions if latter are used in HTML code.');
+define('_WEBO_performance_scale_HELP_DISABLED', 'Der er ingen komplet GD library understøttelse på din hjemmeside, så oprettelse af CSS Sprites er ikke muligt.');
+define('_WEBO_performance_scale_EFFECT', 'Website speedup by 5-40%');
 
 define('_WEBO_footer_text', 'Tilføj et link til WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link er påkrævet i gratis versionen, men kan fjernes i købe versionerne.');

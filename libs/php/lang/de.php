@@ -396,6 +396,10 @@ define('_WEBO_performance_cache_engine5', 'Zend Platform');
 define('_WEBO_performance_cache_engine6', 'Semaphores');
 define('_WEBO_performance_cache_engine_options', 'Additional options');
 define('_WEBO_performance_cache_engine_options_HELP', 'Please set server and port for Memcached in format server:port');
+define('_WEBO_performance_scale', 'Scale HTML images');
+define('_WEBO_performance_scale_HELP', 'All HTML images will be resized to smaller dimensions if latter are used in HTML code.');
+define('_WEBO_performance_scale_HELP_DISABLED', 'There is no complete GD library support on your website, so HTML images scaling is impossible.');
+define('_WEBO_performance_scale_EFFECT', 'Website speedup by 5-40%');
 
 define('_WEBO_footer_text', 'Link auf WEBO Site SpeedUp hinzuf&uuml;gen');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link is required in Free Edition and can be removed in any paid edition.');

@@ -396,6 +396,10 @@ define('_WEBO_performance_cache_engine5', 'Zend Platform');
 define('_WEBO_performance_cache_engine6', 'Семафоры');
 define('_WEBO_performance_cache_engine_options', 'Дополнительные настройки');
 define('_WEBO_performance_cache_engine_options_HELP', 'Укажите сервер и порт для Memcached в формате сервер:порт');
+define('_WEBO_performance_scale', 'Масштабировать HTML-изображения');
+define('_WEBO_performance_scale_HELP', 'Все HTML-изображения на страницах сайта будут приведены к фактически используемым размерам, это может значительно сократить размер данных при загрузке сайта.');
+define('_WEBO_performance_scale_HELP_DISABLED', 'Текущее серверное окружение не полностью поддерживает библиотеку GD, поэтому масштабирование HTML-изображений невозможно.');
+define('_WEBO_performance_scale_EFFECT', 'Ускорение сайта на 5-40%');
 
 define('_WEBO_data_uris_on', 'Использовать <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Фоновые изображения будут преобразовываться в формат base64 и подставляться в CSS-файлы для всех браузеров, поддерживающих технологию data:URI.');

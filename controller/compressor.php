@@ -544,7 +544,8 @@ class web_optimizer {
 					$this->premium > 1,
 				"dimensions_limited" => $this->premium ? round($this->options['css_sprites']['html_limit']) : 0,
 				"per_page" => $this->premium && $this->options['css_sprites']['html_page'],
-				"https_separate" => $this->premium > 1 ? $this->options['performance']['https'] : 0
+				"https_separate" => $this->premium > 1 ? $this->options['performance']['https'] : 0,
+				"scale_images" => $this->premium > 1 ? $this->options['performance']['scale'] : 0,
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
@@ -751,6 +752,7 @@ class web_optimizer {
 							!empty($option['cache']) ||
 							!empty($option['sprites']) ||
 							!empty($option['counter']) ||
+							!empty($option['scale_images']) ||
 							!empty($option['ab']) ||
 							!empty($this->domready_include)) {
 								if (!empty($this->web_optimizer_stage)) {
@@ -958,7 +960,8 @@ class web_optimizer {
 			!empty($options['unobtrusive_all']) ||
 			!empty($this->options['page']['far_future_expires_rewrite']) ||
 			!empty($this->options['page']['far_future_expires_external']) ||
-			!empty($this->options['page']['sprites'])) {
+			!empty($this->options['page']['sprites']) ||
+			!empty($this->options['page']['scale'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab']) || !empty($this->options['page']['parallel'])) {
@@ -1202,22 +1205,36 @@ class web_optimizer {
 				$imgs[] = array(substr($_content, $pos, $len));
 				$_content = substr_replace($_content, '', $pos, $len);
 			}
-		} elseif (empty($this->options['page']['html_tidy']) || $IMG) {
+		} elseif (!$this->options['page']['html_tidy'] || $IMG) {
 			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
-		if (!empty($this->options['page']['sprites']) && !empty($imgs)) {
+		$t = time()+microtime();
+		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
 			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
 			$html_sprites = new html_sprites($imgs, $this->options, $this);
-			$content = $html_sprites->process($content);
+			if ($this->options['page']['scale_images']) {
+				$content = $html_sprites->scale($content);
+			}
+			if ($this->options['page']['sprites']) {
+				$content = $html_sprites->process($content);
+			}
 		}
+		echo time()+microtime() - $t;
 		if (!empty($imgs)) {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
 			$request_file = empty($this->basehref) ? $_SERVER['REQUEST_URI'] : $this->basehref;
+			if ($this->options['page']['scale']) {
+				if (!$this->options['page']['sprites']) {
+					@include($this->options['page']['cachedir'] . 'wo.img.cache.php');
+				}
+				@include($this->options['page']['cache_dir'] . 'wo.scaled.php');
+				$images_scaled_source = array_keys($images_scaled);
+			}
 			foreach ($imgs as $image) {
-				if (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], ' src="'))) {
+				if ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], ' src="'))) {
 					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), '"'));
-				} elseif (!empty($this->options['page']['html_tidy']) && ($pos=strpos($image[0], " src='"))) {
+				} elseif ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], " src='"))) {
 					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), "'"));
 				} else {
 					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*[\"'\s]src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
@@ -1228,9 +1245,9 @@ class web_optimizer {
 				$absolute_src = $this->convert_path_to_absolute($old_src,
 					array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
-					if (!empty($this->options['page']['sprites']) &&
-						((!in_array($img, $ignore_sprites) && empty($this->options['css']['css_sprites_ignore'])) ||
-						(in_array($img, $ignore_sprites) && !empty($this->options['css']['css_sprites_ignore']))) &&
+					if ($this->options['page']['sprites'] &&
+						((!in_array($img, $ignore_sprites) && !$this->options['css']['css_sprites_ignore']) ||
+						(in_array($img, $ignore_sprites) && $this->options['css']['css_sprites_ignore'])) &&
 						!empty($html_sprites->css_images[$absolute_src]) && !empty($html_sprites->css_images[$absolute_src][2]) &&
 						(empty($this->ua_mod) || $this->ua_mod != '.ie6' || empty($this->options['css']['no_ie6']))) {
 							$class = substr($html_sprites->css_images[$absolute_src][8], 1);

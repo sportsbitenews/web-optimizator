@@ -55,9 +55,96 @@ class html_sprites {
 		));
 /* calculate all dimensions for images */
 		$this->images = $this->get_images_dimensions($imgs);
+		$this->imgs = $imgs;
 		ksort($this->images);
 		$this->css = array(42 => array());
 		$this->css_images = array();
+	}
+
+	/**
+	/* Scale HTML images to real sizes
+	/*
+	**/
+	function scale ($content) {
+		global $webo_images_scale_var, $webo_images_scale_ok;
+		$webo_scaled_images = array();
+		$webo_images_scale_var = $this->options['page']['cachedir'] . 'wo.img.scale.php';
+		register_shutdown_function('webo_images_scale_handler');
+		$webo_images_scale_ok = 0;
+		@include($webo_images_scale_var);
+		$need_save = 0;
+/* get dimensions in HTML */
+		if (!empty($this->imgs)) {
+			foreach ($this->imgs as $key => $image) {
+				$i = $image[0];
+				$image_to = empty($webo_scaled_images[$i]) ? '' : $webo_scaled_images[$i];
+				if (empty($image_to)) {
+					$need_save = 1;
+					$src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $i));
+					$absolute_src = $this->main->convert_path_to_absolute($src, array('file' => $_SERVER['REQUEST_URI']));
+					$width = preg_replace("!.*width\s*=\s*['\"]([0-9]+).*!is", "$1", $i);
+					$height = preg_replace("!.*height\s*=\s*['\"]([0-9]+).*!is", "$1", $i);
+					$img = $this->images[$absolute_src];
+					if (($width && $img[0] > $width) || ($height && $img[1] > $height)) {
+						$scaled_src = $this->options['page']['cachedir'] . md5($absolute_src) . '.scaled.';
+						if ($width > $img[0]) {
+							$height = round($height * $img[0] / $width);
+							$width = $img[0];
+						}
+						if ($height > $img[1]) {
+							$width = round($width * $img[1] / $height);
+							$height = $img[1];
+						}
+						$ext = strtolower(preg_replace("!.*\.([^\.]+)$!is", "$1", $src));
+						switch ($ext) {
+							case 'gif':
+								$im = @imagecreatefromgif($this->options['document_root'] . $absolute_src);
+								break;
+							case 'png':
+								$im = @imagecreatefrompng($this->options['document_root'] . $absolute_src);
+								break;
+							case 'jpg':
+							case 'jpeg':
+								$im = @imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
+								break;
+							case 'bmp':
+								$im = @imagecreatefromwbmp($this->options['document_root'] . $absolute_src);
+								break;
+							default:
+								$im = @imagecreatefromxbm($this->options['document_root'] . $absolute_src);
+								break;
+						}
+						if ($im) {
+							$image_raw = @imagecreatetruecolor($width, $height);
+							@imagealphablending($image_raw, false);
+							@imagesavealpha($image_raw, true);
+							$background = @imagecolorallocatealpha($image_raw, 255, 255, 255, 127);
+							@imagefilledrectangle($image_raw, 0, 0, $width-1, $height-1, $background);
+							@imagecolortransparent($image_raw, $background);
+							@imagecopyresized($image_raw, $im, 0, 0, 0, 0, $width, $height, $img[0], $img[1]);
+							if (in_array($ext, array('png', 'gif'))) {
+								$scaled_src .= 'png';
+								@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
+							} else {
+								$scaled_src .= 'jpg';
+								@imagejpeg($image_raw, $scaled_src, 80);
+							}
+							$image_to = preg_replace("!(height\s*=\s*['\"])[0-9]+!is", "$1$2" . $img[1], preg_replace("!(width\s*=\s*['\"])[0-9]+!is", "$1$2" . $img[0], str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i)));
+						}
+					}
+				}
+				if ($image_to) {
+					$replace_from[] = $i;
+					$replace_to[] = $image_to;
+				}
+				$webo_scaled_images[$i] = $image_to;
+			}
+		}
+		$content = str_replace($replace_from, $replace_to, $content);
+		$this->main->write_file($webo_images_scale_var, $this->form_php_file($webo_scaled_images, 1));
+		@include($webo_images_scale_var);
+		$webo_images_scale_ok = 1;
+		return $content;
 	}
 
 	/**
@@ -140,13 +227,7 @@ class html_sprites {
 				}
 /* cache styles to file */
 				$this->images[$this->sprite . $https] = array(0, 0, $styles);
-				$str = '<?php';
-				foreach ($this->images as $k => $i) {
-					$str .= "\n" . '$images[\'' . $k .
-						"'] = array(" . $i[0] . "," . $i[1] . ",'" . $i[2] . "');";
-				}
-				$str .= "\n?>";
-				$this->main->write_file($webo_images_list_var, $str);
+				$this->main->write_file($webo_images_list_var, $this->form_php_file($this->images));
 				@include($webo_images_list_var);
 			}
 			$content = $this->add_styles($content, $styles);
@@ -212,16 +293,7 @@ class html_sprites {
 		$images_return = $images;
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
-			$str = '<?php';
-			foreach ($images as $k => $i) {
-				$str .= "\n" . '$images[\'' . str_replace('//', '/', $k) .
-					"'] = array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "');";
-				if (empty($this->options['page']['per_page'])) {
-					$images[$k][3] = 1;
-				}
-			}
-			$str .= "\n?>";
-			$this->main->write_file($webo_images_list_var, $str);
+			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
 			@include($webo_images_list_var);
 /* or just mark all images as active */
 		} elseif (empty($this->options['page']['per_page'])) {
@@ -293,6 +365,33 @@ class html_sprites {
 		return $content;
 	}
 
+	/**
+	* Return ready to insert string of PHP code
+	*
+	**/
+	function form_php_file ($images, $mode = 0) {
+		$str = '<?php';
+		foreach ($images as $k => $i) {
+			$str .= "\n" . '$' .
+				($mode ? 'webo_scaled_images' : 'images') .
+				'[\'' . str_replace('//', '/', $k) . "'] = ";
+			switch ($mode) {
+				case 1:
+					$str .= "'" . str_replace("'", "\'", $i) . "'";
+					break;
+				case 0:
+					$str .= "array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "')";
+					if (empty($this->options['page']['per_page'])) {
+						$images[$k][3] = 1;
+					}
+					break;
+			}
+			$str .= ";";
+		}
+		$str .= "\n?>";
+		return $str;
+	}
+
 }
 
 /* Clean content of wo.img.cache.php in case of failed store to this file. */
@@ -301,6 +400,15 @@ function webo_images_list_handler () {
 	global $webo_images_list_var, $webo_images_list_ok;
 	if (empty($webo_images_list_ok)) {
 		@file_put_contents($webo_images_list_var, '<?php ?>');
+	}
+}
+
+/* Clean content of wo.img.scale.php in case of failed store to this file. */
+
+function webo_images_scale_handler () {
+	global $webo_images_scale_var, $webo_images_scale_ok;
+	if (empty($webo_images_scale_ok)) {
+		@file_put_contents($webo_images_scale_var, '<?php ?>');
 	}
 }
 
