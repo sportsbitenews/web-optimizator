@@ -1208,7 +1208,6 @@ class web_optimizer {
 		} elseif (!$this->options['page']['html_tidy'] || $IMG) {
 			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
-		$t = time()+microtime();
 		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
 			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
 			$html_sprites = new html_sprites($imgs, $this->options, $this);
@@ -1219,7 +1218,6 @@ class web_optimizer {
 				$content = $html_sprites->process($content);
 			}
 		}
-		echo time()+microtime() - $t;
 		if (!empty($imgs)) {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
