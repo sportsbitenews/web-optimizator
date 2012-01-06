@@ -961,7 +961,7 @@ class web_optimizer {
 			!empty($this->options['page']['far_future_expires_rewrite']) ||
 			!empty($this->options['page']['far_future_expires_external']) ||
 			!empty($this->options['page']['sprites']) ||
-			!empty($this->options['page']['scale'])) {
+			!empty($this->options['page']['scale_images'])) {
 				$this->content = $this->trimwhitespace($this->content);
 		}
 		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab']) || !empty($this->options['page']['parallel'])) {
@@ -2763,7 +2763,8 @@ class web_optimizer {
 		if ((!empty($this->options['page']['parallel']) &&
 				!empty($this->options['page']['parallel_hosts'])) ||
 			!empty($this->options['page']['far_future_expires_rewrite']) ||
-			!empty($this->options['page']['sprites'])) {
+			!empty($this->options['page']['sprites']) ||
+			!empty($this->options['page']['scale_images'])) {
 				$source = $this->add_multiple_hosts($source,
 					explode(" ", $this->options['page']['parallel_hosts']),
 					explode(" ", $this->options['page']['parallel_satellites']),
