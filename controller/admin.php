@@ -160,7 +160,7 @@ class admin {
 					$this->compress_options['host'] .
 					str_replace($this->compress_options['document_root'], '/',
 						$this->compress_options['website_root']) .
-					'&email=' . $this->compress_options['email']);
+					'&email=' . $this->compress_options['email'], 10);
 			}
 		}
 /* define constants for stats */
