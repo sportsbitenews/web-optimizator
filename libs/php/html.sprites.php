@@ -82,8 +82,8 @@ class html_sprites {
 					$need_save = 1;
 					$src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $i));
 					$absolute_src = $this->main->convert_path_to_absolute($src, array('file' => $_SERVER['REQUEST_URI']));
-					$width = preg_replace("!.*width\s*=\s*['\"]([0-9]+).*!is", "$1", $i);
-					$height = preg_replace("!.*height\s*=\s*['\"]([0-9]+).*!is", "$1", $i);
+					$width = round(preg_replace("!.*width\s*=\s*['\"]([0-9]+).*!is", "$1", $i));
+					$height = round(preg_replace("!.*height\s*=\s*['\"]([0-9]+).*!is", "$1", $i));
 					$img = $this->images[$absolute_src];
 					if (($width && $img[0] > $width) || ($height && $img[1] > $height)) {
 						$scaled_src = $this->options['page']['cachedir'] . md5($absolute_src) . '.scaled.';
@@ -124,12 +124,34 @@ class html_sprites {
 							@imagecopyresized($image_raw, $im, 0, 0, 0, 0, $width, $height, $img[0], $img[1]);
 							if (in_array($ext, array('png', 'gif'))) {
 								$scaled_src .= 'png';
-								@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
+								try {
+									@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
+								} catch (Exception $e) {
+									try {
+										@imagepng($image_raw, $scaled_src, 9);
+									} catch (Exception $e) {
+										try {
+											@imagepng($image_raw, $scaled_src);
+										} catch (Exception $e) {
+											$scaled_src = '';
+										}
+									}
+								}
 							} else {
 								$scaled_src .= 'jpg';
-								@imagejpeg($image_raw, $scaled_src, 80);
+								try {
+									@imagejpeg($image_raw, $scaled_src, 80);
+								} catch (Exception $e) {
+									try {
+										@imagejpeg($image_raw, $scaled_src);
+									} catch (Exception $e) {
+										$scaled_src = '';
+									}
+								}
 							}
-							$image_to = preg_replace("!(height\s*=\s*['\"])[0-9]+!is", "$1$2" . $img[1], preg_replace("!(width\s*=\s*['\"])[0-9]+!is", "$1$2" . $img[0], str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i)));
+							if ($scaled_src) {
+								$image_to = str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i);
+							}
 						}
 					}
 				}
