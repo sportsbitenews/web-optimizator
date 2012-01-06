@@ -868,8 +868,8 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества'
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1799 руб.');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '6999 руб.');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1999 руб.');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '7999 руб.');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'месяцев');
 define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Срок действия лицензии');
