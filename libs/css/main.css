@@ -178,13 +178,13 @@ a.wssD12:hover,a.wssD12:focus,a.wssD12:visited{color:#808080}
 .wssD20 .wssF1{background:#e5e5e5}
 .wssD21{display:none;font-weight:700;padding-top:5px}
 
-.wssE{color:#000;display:block;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 3px}
+.wssE{color:#000;display:block;float:none!important;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;padding:0 0 3px}
 .wssC6 .wssE{line-height:23px}
 .wssC8 .wssE{margin-top:-23px;padding:2px 4px}
 .wssH16 .wssE{float:left;width:100px}
 .wssE1{display:block;width:220px}
 
-.wssF{border:1px solid #ccc;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:19px;line-height:19px;margin:0 0 1px;padding:2px 5px;width:215px}
+.wssF{border:1px solid #ccc;float:none!important;font:13px/15px "Trebuchet MS",Arial,Tahoma,Sans-serif;height:19px;line-height:19px;margin:0 0 1px;padding:2px 5px;width:215px}
 .wssC4 .wssF{width:130%}
 .wssD8 .wssF{border-color:#ff7f7f}
 .wssN0 .wssF{border-color:#e5e5e5;width:94%}
