@@ -156,11 +156,14 @@ class admin {
 			if (!is_file($this->basepath . 'web-optimizer-counter')) {
 				$this->view->download('http://web-optimizator.googlecode.com/files/web-optimizer-counter',
 					$this->basepath . 'web-optimizer-counter', 10);
+			}
+/* download WPT evaluation */
+			if (!is_file($this->basepath . 'web-optimizer-wpt') && !empty($this->compress_options['host'])) {
 				$this->view->download('http://webo.name/check/wpt.php?url=http://' .
 					$this->compress_options['host'] .
 					str_replace($this->compress_options['document_root'], '/',
 						$this->compress_options['website_root']) .
-					'&email=' . $this->compress_options['email'], 10);
+					'&email=' . $this->compress_options['email'], $this->basepath . 'web-optimizer-wpt');
 			}
 		}
 /* define constants for stats */
@@ -1269,7 +1272,7 @@ class admin {
 			}
 			$this->set_options();
 			$this->write_htaccess();
-			if (!@is_file($this->basepath . $this->index_after) && $this->premium > 1) {
+			if (!@is_file($this->basepath . $this->index_after) && $this->premium > 1 && !empty($this->compress_options['host'])) {
 				$this->view->download($this->webo_grade,
 					$this->basepath . $this->index_after, 2);
 			}
@@ -2109,7 +2112,7 @@ class admin {
 		$a = $this->file_get_contents($this->basepath . $this->index_after);
 		$a = strpos($a, 'responseCode": 200') === false ? '' : $a;
 		$after = strlen($a);
-		if ($this->premium > 1) {
+		if ($this->premium > 1 && !empty($this->compress_options['website_root'])) {
 /* re-check if there was 503 error */
 			if (!empty($this->compress_options['active']) && 
 				strpos($a, 'code": 503')) {
@@ -4130,7 +4133,7 @@ class admin {
 /* Save the options	to work config */
 				$this->save_options(1);
 /* re-check grade if application is active */
-				if (!empty($this->compress_options['active']) && $this->premium > 1) {
+				if (!empty($this->compress_options['active']) && $this->premium > 1 && !empty($this->compress_options['website_root'])) {
 					@unlink($this->basepath . $this->index_after);
 					$this->view->download($this->webo_grade, $this->basepath . $this->index_after, 1);
 				}
