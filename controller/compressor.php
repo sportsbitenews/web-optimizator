@@ -148,7 +148,7 @@ class web_optimizer {
   - disable cache in case of negative A/B test.
 */
 		$this->cache_me = !empty($this->options['page']['cache']) &&
-			(empty($this->options['page']['cache_ignore']) ||
+			((empty($this->options['page']['cache_ignore']) && !$this->options['page']['ignore_include']) ||
 				(!$this->options['page']['ignore_include'] && 
 				(!$excluded_html_pages || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI'])) &&
 				(strpos($this->options['page']['cache_ignore'], '#') === false || !$homepage)) ||
