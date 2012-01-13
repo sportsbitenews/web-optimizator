@@ -2831,8 +2831,10 @@ class admin {
 	**/
 	function cleanup_file ($file, $return = false) {
 		if (@is_file($file)) {
+			$content = $this->file_get_contents($file);
 /* clean content from Web Optimizer calls */
-			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/", "", $this->file_get_contents($file));
+			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/is", "", $content);
+			$content = preg_replace("!/<\?php \* WEBO Site SpeedUp.*?\?>!is", "", $content);
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -5339,7 +5341,7 @@ Options +FollowSymLinks";
 /* add require block */
 					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} else {
-					$content_saved = "<?php require('" . $this->basepath . "web.optimizer.php'); ?>" . $content_saved;
+					$content_saved = "<?php /* WEBO Site SpeedUp */\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');function weboptimizer_shutdown(\\\$content){if(!empty(\\\$content)){\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');if(!empty(\\\$web_optimizer)){\\\$weboptimizer_content=\\\$web_optimizer->finish(\\\$content);}if(!empty(\\\$weboptimizer_content)){\\\$content=\\\$weboptimizer_content;}return \\\$content;}}ob_start('weboptimizer_shutdown'); ?>" . $content_saved;
 				}
 /* fix for DataLife Engine */
 				if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
