@@ -5339,9 +5339,17 @@ Options +FollowSymLinks";
 					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?$1$2require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
+					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(' .
+						$this->basepath  .
+						'.\'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(' .
+						$this->basepath .
+						'\'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?><?php' . "\n", $content_saved);
 				} else {
-					$content_saved = "<?php /* WEBO Site SpeedUp */\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');function weboptimizer_shutdown(\\\$content){if(!empty(\\\$content)){\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');if(!empty(\\\$web_optimizer)){\\\$weboptimizer_content=\\\$web_optimizer->finish(\\\$content);}if(!empty(\\\$weboptimizer_content)){\\\$content=\\\$weboptimizer_content;}return \\\$content;}}ob_start('weboptimizer_shutdown'); ?>" . $content_saved;
+					$content_saved = '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(' .
+						$this->basepath  .
+						'.\'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(' .
+						$this->basepath .
+						'\'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>' . $content_saved;
 				}
 /* fix for DataLife Engine */
 				if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
