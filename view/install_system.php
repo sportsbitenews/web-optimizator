@@ -410,16 +410,20 @@
 ?></p><ol class="wssO7"><?php
 		foreach ($files_to_change as $file) {
 ?><li class="wssO8"><?php
-				if ($file['mode'] == 'start' && empty($file['location'])) {
+				if (strpos($file['mode'], 'start') !== false && empty($file['location'])) {
 ?><p class="wssI"><?php
 					echo _WEBO_SPLASH3_TOFILE2;
 ?> <code><?php
 					echo preg_replace("/\\\/", "/", $document_root) . $file['file'];
-?></code>:</p><textarea cols="80" rows="2" class="wssF wssF1">&lt;?php
-require('<?php
+?></code>:</p><textarea cols="80" rows="2" class="wssF wssF1">&lt;?php<?php
+					if ($file['mode'] == 'start') {
+?>require('<?php
 					echo preg_replace("/\\\/", "/", $current_directory);
-?>web.optimizer.php');
-?&gt;</textarea><?php
+?>web.optimizer.php');<?php
+					} else {
+						echo "/* WEBO Site SpeedUp */\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');function weboptimizer_shutdown(\\\$content){if(!empty(\\\$content)){\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');if(!empty(\\\$web_optimizer)){\\\$weboptimizer_content=\\\$web_optimizer->finish(\\\$content);}if(!empty(\\\$weboptimizer_content)){\\\$content=\\\$weboptimizer_content;}return \\\$content;}}ob_start('weboptimizer_shutdown');";
+					}
+?>?&gt;</textarea><?php
 				} elseif ($file['mode'] == 'finish' && $file['location'] == 'end') {
 ?><p><?php
 					echo _WEBO_SPLASH3_TOFILE3;
