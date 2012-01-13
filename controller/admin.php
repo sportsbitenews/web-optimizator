@@ -6397,17 +6397,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'index.php',
-						'mode' => 'start'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => '$output->PrintPage();'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => 'exit;}'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6444,12 +6434,7 @@ require valid-user';
 					$files = array(
 						array(
 							'file' => 'index.php',
-							'mode' => 'start'
-						),
-						array(
-							'file' => 'index.php',
-							'mode' => 'finish',
-							'location' => 'end'
+							'mode' => 'start_shutdown'
 						)
 					);
 				}
@@ -6460,12 +6445,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'includes/application_top.php',
-						'mode' => 'start'
-					),
-					array(
-						'file' => 'includes/application_bottom.php',
-						'mode' => 'finish',
-						'location' => 'end'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6489,12 +6469,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'header.php',
-						'mode' => 'start'
-					),
-					array(
-						'file' => 'footer.php',
-						'mode' => 'finish',
-						'location' => '$smarty->display(\'$page.tpl\');'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6503,13 +6478,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'include/func/func.core.php',
-						'mode' => 'start',
-						'location' => '$templater->assign("is_https_zone", $HTTPS);'
-					),
-					array(
-						'file' => 'include/func/func.core.php',
-						'mode' => 'finish',
-						'location' => '$templater->display($tpl);'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6518,20 +6487,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'index.php',
-						'mode' => 'start',
-						'location' => 'define("BASEDIR", dirname(__FILE__));'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => '$gz_content = ob_get_clean();',
-						'text' => '$gz_content = $web_optimizer->finish($gz_content)'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => '$content = ob_get_clean();',
-						'text' => '$content = $web_optimizer->finish($content);'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6540,18 +6496,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'index.php',
-						'mode' => 'start'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => '$strBuffer = str_replace(array(\'[{]\', \'[}]\'), array(\'{{\', \'}}\'), $strBuffer);',
-						'text' => 'global $web_optimizer;$strBuffer = $web_optimizer->finish($strBuffer);'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => '$objIndex->run();'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;
@@ -6560,12 +6505,7 @@ require valid-user';
 				$files = array(
 					array(
 						'file' => 'index.php',
-						'mode' => 'start'
-					),
-					array(
-						'file' => 'index.php',
-						'mode' => 'finish',
-						'location' => 'end'
+						'mode' => 'start_shutdown'
 					)
 				);
 				break;

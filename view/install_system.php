@@ -451,6 +451,8 @@ require('<?php
 ?>require('<?php
 						echo preg_replace("/\\\/", "/", $current_directory);
 ?>web.optimizer.php');<?php
+					} elseif ($file['mode'] == 'start_shutdown') {
+						echo "/* WEBO Site SpeedUp */\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');function weboptimizer_shutdown(\\\$content){if(!empty(\\\$content)){\\\$not_buffered=1;require(dirname(__FILE__).'/web-optimizer/web.optimizer.php');if(!empty(\\\$web_optimizer)){\\\$weboptimizer_content=\\\$web_optimizer->finish(\\\$content);}if(!empty(\\\$weboptimizer_content)){\\\$content=\\\$weboptimizer_content;}return \\\$content;}}ob_start('weboptimizer_shutdown');";
 					} else {
 						if (empty($file['text'])) {
 ?>$web_optimizer->finish();<?php
