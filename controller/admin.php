@@ -2834,7 +2834,7 @@ class admin {
 			$content = $this->file_get_contents($file);
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/is", "", $content);
-			$content = preg_replace("!/<\?php \* WEBO Site SpeedUp.*?\?>!is", "", $content);
+			$content = preg_replace("!<\?php \* WEBO Site SpeedUp.*?\?>!is", "", $content);
 			$this->write_file($file, $content, $return);
 		}
 	}
