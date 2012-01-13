@@ -2833,8 +2833,8 @@ class admin {
 		if (@is_file($file)) {
 			$content = $this->file_get_contents($file);
 /* clean content from Web Optimizer calls */
+			$content = preg_replace("!<\?php /\* WEBO Site SpeedUp.*?\?>!is", "", $content);
 			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/is", "", $content);
-			$content = preg_replace("!<\?php \* WEBO Site SpeedUp.*?\?>!is", "", $content);
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -5339,17 +5339,17 @@ Options +FollowSymLinks";
 					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(' .
+					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(\'' .
 						$this->basepath  .
-						'.\'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(' .
+						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(\'' .
 						$this->basepath .
-						'\'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?><?php' . "\n", $content_saved);
+						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?><?php' . "\n", $content_saved);
 				} else {
-					$content_saved = '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(' .
+					$content_saved = '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(\'' .
 						$this->basepath  .
-						'.\'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(' .
+						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(\'' .
 						$this->basepath .
-						'\'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>' . $content_saved;
+						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>' . $content_saved;
 				}
 /* fix for DataLife Engine */
 				if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
