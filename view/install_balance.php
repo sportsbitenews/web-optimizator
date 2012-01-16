@@ -75,7 +75,7 @@
 	foreach ($options as $key => $group) {
 		if (is_array($group)) {
 			foreach ($group as $option => $value) {
-				if (!empty($value['value'])) {
+				if (!empty($value['value']) && !empty($value['price'])) {
 					if ($price = is_array($value['price']) ? $value['price'][$value['value']] : $value['price']) {
 						$daily += empty($value['value']) ? 0 : $price;
 						$saas .= '<tr class="wssT8"><td class="wssT9">' .
