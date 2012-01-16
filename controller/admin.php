@@ -6111,7 +6111,7 @@ require valid-user';
 			$this->compress_options['active'] = 0;
 		}
 		$this->days = ceil((@filemtime($tmp) + 2592000 - $this->time)/86400) + 1;
-		$this->days = $this->days > 20 || $this->days < 1 ? 0 : $this->days;
+		$this->days = $this->days > 20 ? 365 : ($this->days < 1 ? 0 : $this->days);
 		$image = $this->compress_options['footer']['image'];
 /* check cache integrity */
 		if (!empty($image) &&
