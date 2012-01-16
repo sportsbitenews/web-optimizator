@@ -1253,7 +1253,7 @@ class admin {
 	*
 	**/
 	function install_status () {
-		if (empty($this->compress_options['active']) && $this->premium > -1) {
+		if (empty($this->compress_options['active']) && round($this->premium) > -1) {
 			$this->chained_load(str_replace(
 				$this->compress_options['document_root'], "/" ,
 				$this->compress_options['website_root']));
