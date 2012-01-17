@@ -1138,4 +1138,6 @@ define('_WEBO_LICENSE_DAYS_DAYS2', 'dage');
 define('_WEBO_LICENSE_DAYS_DAY', 'dag');
 define('_WEBO_LICENSE_DAYS2', ' tilbage af WEBO Site SpeedUp prøve versionen. Køb venligst en fuld version!');
 define('_WEBO_LICENSE_EXPIRED', 'WEBO Site SpeedUp prøve versionen er udløbet. Køb venligst en fuld version!');
+
+define('_WEBO_WELCOME_LETTER', '');
 ?>

@@ -2314,6 +2314,19 @@ class admin {
 	}
 
 	/**
+	* Sends welcome letter to user
+	* 
+	**/	
+	function send_welcome_letter ($compress_options) {
+		$headers = 'From: ' . $compress_options['email'] . "\r\n" . 'Reply-To: support@webo.name' . "\r\n";
+		$headers .= 'Content-Type: text/plain; charset=utf-8';
+		@mail($compress_options['email'],
+			"=?latin-1?B?" . base64_encode('WEBO Site SpeedUp welcome letter for ' . $compress_options['host']) . "?=",
+			str_replace('###FOLDER###', str_replace($this->basepath, "/", $compress_options['host']), str_replace('###WEBSITE###', $compress_options['host'], _WEBO_WELCOME_LETTER)),
+			$headers);
+	}
+
+	/**
 	* Clean up cache
 	* 
 	**/	

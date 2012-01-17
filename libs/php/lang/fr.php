@@ -1140,4 +1140,6 @@ define('_WEBO_LICENSE_DAYS_DAYS2', 'days');
 define('_WEBO_LICENSE_DAYS_DAY', 'day');
 define('_WEBO_LICENSE_DAYS2', ' remained for WEBO Site SpeedUp Trial Edition. Please purchase full version!');
 define('_WEBO_LICENSE_EXPIRED', 'WEBO Site SpeedUp Trial Edition has expired. Please purchase full version!');
+
+define('_WEBO_WELCOME_LETTER', '');
 ?>
