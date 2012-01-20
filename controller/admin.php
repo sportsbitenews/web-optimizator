@@ -4073,6 +4073,16 @@ class admin {
 			$hosts = explode(" ", $this->input['wss_parallel_allowed_list']);
 			$this->input['wss_parallel_allowed_list'] = $this->check_hosts($hosts);
 		}
+/* exclude original host from distribution */
+		if (!empty($this->input['wss_parallel_allowed_list'])) {
+			$arr = explode(" ", $this->input['wss_parallel_allowed_list']);
+			foreach ($arr as $k => $a) {
+				if (empty($a) || $a == $this->compress_options['host']) {
+					unset($arr[$k]);
+				}
+			}
+			$this->input['wss_parallel_allowed_list'] = implode(" ", $arr);
+		}
 /* map CSS merge options to real one */
 		switch ($this->input['wss_combine_css']) {
 			case 3:
