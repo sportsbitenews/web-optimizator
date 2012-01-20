@@ -9,8 +9,8 @@
 define('_WEBO_CHARSET', 'utf-8');
 define('_WEBO_GENERAL_TITLE', 'Настройка WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Быстрее молнии!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=451782&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Расширенная версия">Купить</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=451781&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Стандартная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Расширенная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Стандартная версия">Купить</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
@@ -1177,7 +1177,7 @@ WEBO Site SpeedUp является лишь инструментом. Резул
 * Откройте страницу Персональные данные модуля WEBO Site SpeedUp и введите ваш лицензионный ключ. Вы можете настроить программу и в режиме демо-версии, но по истечению бесплатного периода работа продукта будет приостановлена.
 
 3. Настройте WEBO Site SpeedUp
-(!): После каждого шага на этапе настройки сохраняйте конфигурацию и проверяйте работу сайта на всех ключевых страницах (проблемы верстки, ошибки JavaScipt, работоспособность ключевых функций), включая модуль или используя режим отладки, т.е. открывая сайт с параметром web_optimizer_debug=1, например: http://###WEBSITE###/?web_optimizer_disabled=1.
+(!): После каждого шага на этапе настройки сохраняйте конфигурацию и проверяйте работу сайта на всех ключевых страницах (проблемы верстки, ошибки JavaScipt, работоспособность ключевых функций), включая модуль или используя режим отладки, т.е. открывая сайт с параметром web_optimizer_debug=1, например: http://###WEBSITE###/?web_optimizer_debug=1.
 Заметьте, что в режиме отладки не изменяются файлы сайта, в том числе файл .htaccess, а также не выполняется HTML-кэширование, поэтому некоторые изменения (gzip-сжатие, клиентское и серверное кэширование) будут видны только после включения модуля.
 
 * На странице Настройка создайте новую конфигурацию, сохраните ее, сделайте ее активной, но пока не включайте модуль.

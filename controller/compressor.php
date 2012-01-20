@@ -3775,8 +3775,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					'webOS');
 				$j = 0;
 /* strpos here is 2.5x faster than stristr and 6x faster than regexp */
-				while (strpos($this->ua, $mobiles[$j++]) === false &&
-					!empty($mobiles[$j])) {}
+				while (!empty($mobiles[$j]) && strpos($this->ua, $mobiles[$j++]) === false) {}
 				if ($j != count($mobiles)) {
 					$this->ua_mod = '.ma';
 				}
