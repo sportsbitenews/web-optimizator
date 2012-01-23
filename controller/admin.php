@@ -4082,6 +4082,9 @@ class admin {
 				}
 			}
 			$this->input['wss_parallel_allowed_list'] = implode(" ", $arr);
+			if (empty($this->input['wss_parallel_allowed_list'])) {
+				$this->input['wss_parallel_enabled'] = 0;
+			}
 		}
 /* map CSS merge options to real one */
 		switch ($this->input['wss_combine_css']) {
