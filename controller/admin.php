@@ -878,26 +878,28 @@ class admin {
 					$this->save_option("['css_sprites']['html_limit']", 16);
 					$this->save_option("['css_sprites']['html_page']", 1);
 					break;
-/* enable HTML Sprites restriction */
-				case 41:
-					$this->save_option("['css_sprites']['html_sprites']", 1);
-					$this->save_option("['css_sprites']['html_limit']", round($wizard_options));
-					$this->save_option("['css_sprites']['html_page']", 1);
-					break;
 /* disable HTML Sprites */
-				case 42:
+				case 41:
 					$this->save_option("['css_sprites']['html_sprites']", 0);
 					break;
-/* move JS to /body */
+/* enable HTML images scaling */
+				case 42:
+					$this->save_option("['performance']['scale']", 1);
+					break;
+/* disable HTML images scaling */
 				case 43:
+					$this->save_option("['performance']['scale']", 0);
+					break;
+/* move JS to /body */
+				case 44:
 					$this->save_option("['unobtrusive']['body']", 1);
 					break;
 /* move JS to /head */
-				case 44:
+				case 45:
 					$this->save_option("['unobtrusive']['body']", 0);
 					break;
 /* enable unobtrusive JavaScript  */
-				case 45:
+				case 46:
 					$wizard_options = round($wizard_options);
 					$this->save_option("['unobtrusive']['informers']", ($wizard_options & 1) ? 1 : 0);
 					$this->save_option("['unobtrusive']['counters']", ($wizard_options & 2) ? 1 : 0);
@@ -905,11 +907,14 @@ class admin {
 					$this->save_option("['unobtrusive']['iframes']", ($wizard_options & 8) ? 1 : 0);
 					break;
 /* disable unobtrusive JavaScript */
-				case 46:
+				case 47:
 					$this->save_option("['unobtrusive']['informers']", 0);
 					$this->save_option("['unobtrusive']['counters']", 0);
 					$this->save_option("['unobtrusive']['ads']", 0);
 					$this->save_option("['unobtrusive']['iframes']", 0);
+					break;
+/* switch to manual mode */
+				case 48:
 					break;
 				case 49:
 /* enable or disable server side caching */
