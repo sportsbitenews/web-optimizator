@@ -2106,7 +2106,7 @@ class web_optimizer {
 						$this->view->paths['full']['current_directory'] = preg_replace("/[^\/]+$/", "", $file);
 /* start recursion */
 						if (!$previous || $remote != $previous) {
-							$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src, 0, $remote), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src)))), $content);
+							$content = str_replace($import[0], $this->convert_paths_to_absolute($this->resolve_css_imports($src, 0, $remote), array('file' => str_replace($this->options['document_root'], "/", $this->get_file_name($src))), 0, 1), $content);
 						}
 /* return remembed directory */
 						$this->view->paths['full']['current_directory'] = $saved_directory;
@@ -2465,7 +2465,7 @@ class web_optimizer {
 									$this->resolve_css_imports($value['file']) .
 								(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
-							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']));
+							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
 						} else {
 							$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
 						}
@@ -2505,7 +2505,7 @@ class web_optimizer {
 									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
 								$value['content'] = $this->convert_paths_to_absolute($value['content'],
-									array('file' => $this->options['document_root_relative']));
+									array('file' => $this->options['document_root_relative']), 0, 1);
 							} else {
 /* fix to merge dynamic Shadowbox files */
 								if (!empty($this->shadowbox_base) && preg_match("@players:\s*\[@is", $value['content'])) {
@@ -3349,7 +3349,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	* Converts sinlge path to the absolute one
 	*
 	**/
-	function convert_path_to_absolute ($file, $path, $leave_querystring = false) {
+	function convert_path_to_absolute ($file, $path, $leave_querystring = false, $css_images = false) {
 		$endfile = '';
 		$root = $this->options['document_root'];
 		if (!empty($path['file'])) {
@@ -3375,7 +3375,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* Not absolute or external */
 			if (substr($file, 0, 1) != '/' && !preg_match("!^https?://!", $file)) {
 /* add base */
-				if (!empty($this->basehref)) {
+				if (!empty($this->basehref) && !$css_images) {
 					$absolute_path = $this->view->unify_dir_separator($this->basehref . $file);
 				} else {	
 /* add relative directory */
@@ -3404,14 +3404,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	* Finds background images in the CSS and converts their paths to absolute
 	*
 	**/
-	function convert_paths_to_absolute ($content, $path, $leave_querystring = false) {
+	function convert_paths_to_absolute ($content, $path, $leave_querystring = false, $css_images = false) {
 		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
 		if(count($matches[1]) > 0) {
 			foreach($matches[1] as $key => $file) {
 				if (strpos($file, '.eot?') || strpos($file, '.svg#')) {
 					$leave_querystring = true;
 				}
-				$absolute_path = $this->convert_path_to_absolute($file, $path, $leave_querystring);
+				$absolute_path = $this->convert_path_to_absolute($file, $path, $leave_querystring, $css_images);
 				if (!empty($absolute_path)) {
 /* add quotes if there is not plain URL */
 					if (strpos($absolute_path, ' ')) {
