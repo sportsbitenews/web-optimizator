@@ -1162,11 +1162,11 @@ A brief product guide
 * Prepare tools for web applications debugging. We recommend that to use for this purpose with the Firefox browser add-ons:
 	o Firebug http://getfirebug.com/
 	o YSlow http://developer.yahoo.com/yslow/
-	o PageSpeed ​​http://code.google.com/speed/page-speed/docs/extension.html
+	o PageSpeed http://code.google.com/speed/page-speed/docs/extension.html
 * Make a list of all the key pages and site features. It is necessary to achieve maximum performance of these pages, of course without any damage to their functionality.
 * Collect information about existing problems (problems of layout, JavaScript errors, etc.). If after the website acceleration with WEBO Site SpeedUp will have these problems, you will know their source.
 * Check the key pages using the service http://www.webpagetest.org/ retaining links to reports, so that you can return to them later. Check is necessary to simulate typical visitors to the website from its key location, so please perform the first and repeat page load, and make the set of 5-10 tests to obtain a representative sample. The most important parameters that need your attention are: server response time, start render time, rendering time, complete load time, and the webpage size.
-* With the help of YSlow or PageSpeed ​​identify the main problems with the download speed. Most often the problems are related to the lack of compression of text files, absense of caching, large number of files. All these problems can be easily solved with WEBO Site SpeedUp.
+* With the help of YSlow or PageSpeed identify the main problems with the download speed. Most often the problems are related to the lack of compression of text files, absence of caching, large number of files. All these problems can be easily solved with WEBO Site SpeedUp.
 
 2. Install WEBO Site SpeedUp
 * Before installing and setting up please disable any 3rd-party solutions which improve your website performance (the files combine, caching, CDN files distribution and so on). Such 3rd-party solutions can cause malfunction of WEBO Site SpeedUp product.
@@ -1179,25 +1179,25 @@ A brief product guide
 * Open the Personal Data Module WEBO Site SpeedUp and enter your license key. You can configure the program in demo mode, but after the free period of the product will be suspended.
 
 3. Tune WEBO Site SpeedUp
-NB: After each step please save your configuration settings and check the website work on all the key pages (layout problems, JavaScipt errors, key functions performance), by enabling the product or by using the debug mode, i.e. opening the website with the GET parameter web_optimizer_debug=1, for example: http://###WEBSITE###/?web_optimizer_debug=1.
+NB: After each step please save your configuration settings and check the website work on all the key pages (layout problems, JavaScript errors, key functions performance), by enabling the product or by using the debug mode, i.e. opening the website with the GET parameter web_optimizer_debug=1, for example: http://###WEBSITE###/?web_optimizer_debug=1.
 Note that in debug mode the product does not change website files, including .htaccess file, as well there is  no HTML-caching, so some changes (gzip compression, client and server caching) will be visible only after the product is enabled.
 
 * On the Settings page, create a new configuration, save it, make it active, but do not enable the product.
-* On the tab .htaccess check that there are all available Apache modules included. The use of these modules simplifies setting up the product and makes it easy to achieve optimum speed of the site. If some modules are missing, please contact your hosting with a request to add the absent module(s). Note that if a website run any other web servers besides Apache, these changes may not have any effect.
+* On the tab .htaccess check that there are all available Apache modules included. The use of these modules simplifies setting up the product and makes it easy to achieve optimum speed of the site. If some modules are missing, please contact your hosting with a request to add the absent module(s). Note that if a website runs any other web servers besides Apache, these changes may not have any effect.
 * On the tab client side caching if caching of static files on the website has not yet done, turn on the flags for the required file types. Note that the caching of HTML files and external files can lead to malfunction of the website, if these files are changed dynamically (for example, if the website has a back-end or some pages are displayed differently for different users).
 * On the tab Gzip include the types of files that are not yet compressed.
 * On the tab Combine CSS files select the appropriate way to merge your website CSS files. In most cases the best is to combine all your CSS code inside the head tag including inline code and external files. Combined files are displayed by default on the page on the website instead of the first part of the code which is included in the merged file.
-* On the tab Combine JavaScript tab select the proper JS merging options. JS code in merged file corresponds exactly to the original order on the page, so the best option - to merge all the code in the head tag. But note that if the JavaScript code contains unique values ​​for different users, such code regions should be excluded from the union to WEBO Site SpeedUp not create a unique integrated cache files for each new user the site. Usually, this only slows down the loading. Use the option to exclude files or embedded code from merging, as well as the ability to move the combined file to the end of the head. For a better understanding of the product behavior you can compare the HTML source code in case of different set of options. Be sure to check that no violation of code due to JavaScript code merging and there are no new JavaScript bugs.
+* On the tab Combine JavaScript tab select the proper JS merging options. JS code in merged file corresponds exactly to the original order on the page, so the best option - to merge all the code in the head tag. But note that if the JavaScript code contains unique values for different users, such code regions should be excluded from the union to WEBO Site SpeedUp not create a unique integrated cache files for each new user the site. Usually, this only slows down the loading. Use the option to exclude files or embedded code from merging, as well as the ability to move the combined file to the end of the head. For a better understanding of the product behavior you can compare the HTML source code in case of different set of options. Be sure to check that no violation of code due to JavaScript code merging and there are no new JavaScript bugs.
 * On the tab Minify configure options to remove redundant code (comments, line breaks, etc.). The most stable option is to minimize the CSS by using regular expressions, JavaScript with simple minimization (JSMin) and HTML. If you have any issues with this you can simply disable the minimization. Enabled gzip is sufficient to reduce the size of text files, so minify is only an additional tool to perform this.
 * On the tab data:URI enable the option data:URI (the substitution of images in the CSS code to reduce the number of requests to the server). The optimal maximum size for these images is 1000-3000 bytes. Make sure that the size of CSS files with the contained images did not increase by more than 20-50%, otherwise the start of page rendering can increase significantly.
 * On the tab CSS Sprites select the most optimal scheme of combining images produced by the CSS and HTML code. Combining a large number of images may require large memory and lead to unusable website. Exclude large images from CSS Sprites merging by size or by file name, or select only the images you want by specifying their file names.
 * On the tab Server side cache set the cache lifetime and enable caching. Use this feature with caution and be sure to check the operation of dynamic pages, if necessary exclude them from the server\'s cache. Otherwise, the site might not work properly.
 * If you purchased a CDN subscription or have your own servers to distribute static content, set the CDN on the eponymous tab.
-* If the website contains advertising blocks or counters, or some other 3rd party JavaScript code, which blocks web pages loading, include the necessary functions on the tab Unobtrusive JavaScipt.
+* If the website contains advertising blocks or counters, or some other 3rd party JavaScript code, which blocks web pages loading, include the necessary functions on the tab Unobtrusive JavaScript.
 * Do not forget to check the website after each step of this job. With the use of YSlow or PageSpeed make sure that enabled options yield the desired effect. If you have problems so it will be easier to determine what settings are chosen wrong and lead to the malfunction of the website.
 
 4. Check the result
-* Enable WEBO Site SpeedUp product and perform the final check of all the key pages and website features in several major browsers (IE8, Firefox, Safari).
+* Enable WEBO Site SpeedUp product and perform the final check of all the key pages and website features in several major browsers (IE8, Firefox, and Safari).
 * Re-check the page in the service http://www.webpagetest.org/, compare the results with the results of the first tests.
 * Re-check the page using YSlow and PageSpeed.
 * If there are any problems associated with the speed of the site or with WEBO Site SpeedUp still not resolved, go back to configure the product.
@@ -1210,11 +1210,11 @@ To apply the changes please add an arbitrary parameter for such files (for examp
 To refresh the cache on the server, open the Control Panel WEBO Site SpeedUp and click Refresh cache. In this case, you seem to manually update the cache in the browser (in most browsers this is done using CTRL + F5).
 
 2. We introduce a new design and new features on the website and CSS and JavaScript code is being updated frequently. Constantly drop cache is very inconvenient. What should I do?
-Disable the product on the Control Panel of WEBO Site SpeedUp for the upgrade period, or use a GET-parameter web_optimizer_disabled = 1 for the test page with a disabled product, for example:
+Disable the product on the Control Panel of WEBO Site SpeedUp for the upgrade period, or use a GET-parameter web_optimizer_disabled=1 for the test page with a disabled product, for example:
 http://###WEBSITE###/?web_optimizer_disabled=1
 
 3. What if we want to make sure that the new design and new features will be compatible with WEBO Site SpeedUp?
-Disable the product on the Control Panel of WEBO Site SpeedUp and use GET-parameter web_optimizer_debug = 1 for testing with the product in debug mode.
+Disable the product on the Control Panel of WEBO Site SpeedUp and use GET-parameter web_optimizer_debug=1 for testing with the product in debug mode.
 
 4. We changed the text of pages, but do not see the changes on the website.
 It is likely server side caching is enabled. Open the Control Panel of WEBO Site SpeedUp and click Refresh cache.
