@@ -831,7 +831,6 @@ class admin {
 					$this->save_option("['data_uris']['on']", 1);
 					$this->save_option("['data_uris']['separate']", 1);
 					$this->save_option("['unobtrusive']['background']", 1);
-					$this->save_option("['data_uris']['mhtml']", 1);
 					break;
 /* disable separation data:URI */
 				case 33:
@@ -843,7 +842,6 @@ class admin {
 					$this->save_option("['data_uris']['on']", 0);
 					$this->save_option("['data_uris']['separate']", 0);
 					$this->save_option("['unobtrusive']['background']", 0);
-					$this->save_option("['data_uris']['mhtml']", 0);
 					break;
 /* set JS host */
 				case 35:
