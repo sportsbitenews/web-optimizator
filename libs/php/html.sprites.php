@@ -188,14 +188,14 @@ class html_sprites {
 							if ($scaled_src) {
 								$image_to = str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i);
 							} else {
-								$image_to = 'SKIPPED';
+								$image_to = '';
 							}
 						}
 					} else {
-						$image_to = 'SKIPPED';
+						$image_to = '';
 					}
 				}
-				if ($image_to) {
+				if ($image_to && $image_to != 'SKIPPED') {
 					$replace_from[] = str_replace("###", "'", $i);
 					$replace_to[] = $image_to;
 				}
