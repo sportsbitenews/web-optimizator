@@ -76,16 +76,18 @@ class html_sprites {
 /* get dimensions in HTML */
 		if (!empty($this->imgs)) {
 			foreach ($this->imgs as $key => $image) {
-				$i = $image[0];
+				$i = str_replace("'", "###", $image[0]);
 				$image_to = empty($webo_scaled_images[$i]) ? '' : $webo_scaled_images[$i];
-				if (empty($image_to)) {
+				if (empty($image_to) && $i != 'SKIPPED') {
 					$need_save = 1;
-					$src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $i));
+					$src = preg_replace("!^['\"\s]*(.*?)['\"\s]*(/?>)?$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $i));
 					$absolute_src = $this->main->convert_path_to_absolute($src, array('file' => $_SERVER['REQUEST_URI']));
-					$width = round(preg_replace("!.*width\s*=\s*['\"]([0-9]+).*!is", "$1", $i));
-					$height = round(preg_replace("!.*height\s*=\s*['\"]([0-9]+).*!is", "$1", $i));
+					$width = round(preg_replace("!.*width\s*:\s*([0-9]+)px.*!is", "$1", $i));
+					$width = $width ? $width : round(preg_replace("!.*width\s*=\s*['\"]?([0-9]+).*!is", "$1", $i));
+					$height = round(preg_replace("!.*height\s*:\s*([0-9]+)px.*!is", "$1", $i));
+					$height = $height ? $height : round(preg_replace("!.*height\s*=\s*['\"]?([0-9]+).*!is", "$1", $i));
 					$img = $this->images[$absolute_src];
-					if (($width && $img[0] > $width) || ($height && $img[1] > $height)) {
+					if ($absolute_src && (($width && $img[0] > $width) || ($height && $img[1] > $height))) {
 						$scaled_src = $this->options['page']['cachedir'] . md5($absolute_src) . '.scaled.';
 						if ($width > $img[0]) {
 							$height = round($height * $img[0] / $width);
@@ -105,7 +107,7 @@ class html_sprites {
 								break;
 							case 'jpg':
 							case 'jpeg':
-								$im = @imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
+								$im = imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
 								break;
 							case 'bmp':
 								$im = @imagecreatefromwbmp($this->options['document_root'] . $absolute_src);
@@ -137,6 +139,21 @@ class html_sprites {
 										}
 									}
 								}
+								if (!@is_file($scaled_src)) {
+									$scaled_src = preg_replace("!\.png$!", '.jpg', $scaled_src);
+									try {
+										@imagejpeg($image_raw, $scaled_src, 80);
+									} catch (Exception $e) {
+										try {
+											@imagejpeg($image_raw, $scaled_src);
+										} catch (Exception $e) {
+											$scaled_src = '';
+										}
+									}
+									if (!@is_file(realpath($scaled_src))) {
+										$scaled_src = '';
+									}
+								}
 							} else {
 								$scaled_src .= 'jpg';
 								try {
@@ -148,22 +165,50 @@ class html_sprites {
 										$scaled_src = '';
 									}
 								}
+								if (!@is_file($scaled_src)) {
+									$scaled_src = preg_replace("!\.jpg$!", '.png', $scaled_src);
+									try {
+										@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
+									} catch (Exception $e) {
+										try {
+											@imagepng($image_raw, $scaled_src, 9);
+										} catch (Exception $e) {
+											try {
+												@imagepng($image_raw, $scaled_src);
+											} catch (Exception $e) {
+												$scaled_src = '';
+											}
+										}
+									}
+									if (!@is_file(realpath($scaled_src))) {
+										$scaled_src = '';
+									}
+								}
 							}
 							if ($scaled_src) {
 								$image_to = str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i);
+							} else {
+								$image_to = 'SKIPPED';
 							}
 						}
+					} else {
+						$image_to = 'SKIPPED';
 					}
 				}
 				if ($image_to) {
-					$replace_from[] = $i;
+					$replace_from[] = str_replace("###", "'", $i);
 					$replace_to[] = $image_to;
 				}
-				$webo_scaled_images[$i] = $image_to;
+				if (empty($webo_scaled_images[$i])) {
+					$need_rewrite = 1;
+				}
+				$webo_scaled_images[$i] = $image_to ? $image_to : 'SKIPPED';
 			}
 		}
 		$content = str_replace($replace_from, $replace_to, $content);
-		$this->main->write_file($webo_images_scale_var, $this->form_php_file($webo_scaled_images, 1));
+		if (!empty($need_rewrite)) {
+			$this->main->write_file($webo_images_scale_var, $this->form_php_file($webo_scaled_images, 1));
+		}
 		@include($webo_images_scale_var);
 		$webo_images_scale_ok = 1;
 		return $content;
@@ -289,8 +334,8 @@ class html_sprites {
 				$filename = explode("/", $absolute_src);
 				$filename = array_pop($filename);
 				$absolute_src = str_replace("'", "\'", $absolute_src);
-/* fetch only non-cached images */
-				if (!empty($absolute_src) && (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list))) {
+/* fetch only non-cached images, or only included, or all - if scale */
+				if (!empty($absolute_src) && (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list) || !empty($this->options['page']['scale_images']))) {
 					if (empty($images[$absolute_src]))  {
 						$need_refresh = 1;
 						$width = $height = 0;
@@ -313,6 +358,7 @@ class html_sprites {
 			}
 		}
 		$images_return = $images;
+		print_r($images);
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
 			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
