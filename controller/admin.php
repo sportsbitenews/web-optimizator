@@ -5063,7 +5063,7 @@ Options +FollowSymLinks";
 			$this->write_file($this->htaccess, $content . "\n" . $content_saved . $content2, 1);
 			$test_file = $this->compress_options['html_cachedir'] . 'htaccess.test';
 /* load home page, text .htaccess possibility */
-			$this->view->download('http://' . $_SERVER['HTTP_HOST'] '/', $test_file);
+			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/', $test_file);
 			if (!@is_file($test_file)) {
 				$this->write_file($this->htaccess, $content_saved, 1);
 			}
