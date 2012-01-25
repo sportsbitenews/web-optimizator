@@ -2408,6 +2408,11 @@ class web_optimizer {
 			array(
 				'regexp' => 'mootools(_release)?([xv0-9\.\-_])*(core-yc|core|yui-compressed|comp|min)?\.(js|php)(\.gz)?',
 				'exists' => 0
+			),
+/* OpenAPI */
+			array(
+				'regexp' => 'openapi.js?',
+				'exists' => 0
 			)
 		);
 		if (is_array($this->initial_files)) {
@@ -3031,6 +3036,17 @@ class web_optimizer {
 						}
 					}
 				}
+			}
+		}
+/* convert vKontakte to async load */
+		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
+			preg_match_all("!VK\.([^\)]+)\);?!is", $this->content, $matches, PREG_SET_ORDER);
+			$vk = '';
+			foreach ($matches as $match) {
+				$vk .= $match[0];
+			}
+			if ($vk) {
+				$before_body_onload .= '<script type="text/javascript">window.vkAsyncInit=function(){' . $vk . '}</script>';
 			}
 		}
 		$before_body .= $before_body_onload;
