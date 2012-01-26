@@ -225,7 +225,7 @@ $unobtrusive_items = array(
 /* Yandex.Metrica */
 		), 'ym' => array(
 			'marker' => 'metrica',
-			'regexp' => "<script[^>]+/watch(_visor).js.*?/noscript>",
+			'regexp' => "<script[^>]+/watch(_visor)?.js.*?/noscript>",
 			'inline' => true
 		)
 	)
