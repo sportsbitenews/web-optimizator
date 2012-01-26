@@ -3023,11 +3023,14 @@ class web_optimizer {
 		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
 			preg_match_all("!VK\.([^\)]+)\);?!is", $this->content, $matches, PREG_SET_ORDER);
 			$vk = '';
+			$replace_from = array();
 			foreach ($matches as $match) {
 				$vk .= $match[0];
+				$replace_from[] = $match[0];
 			}
 			if ($vk) {
 				$before_body .= '<script type="text/javascript">window.vkAsyncInit=function(){' . $vk . '}</script>';
+				$this->content = str_replace($replace_from, '', $this->content);
 			}
 		}
 		foreach ($unobtrusive_items as $group => $items) {

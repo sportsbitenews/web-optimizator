@@ -121,7 +121,8 @@ $unobtrusive_items = array(
 			'marker' => 'plusone.js',
 			'regexp' => "<script[^>]+apis.google.com/js/plusone.js[^>]*>[^<]*</script>",
 			'onload_before' => '<script[^>]+src="(https?://apis.google.com/js/plusone.js.*)">(.*?)</script>',
-			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');$2;wss_onload_ready=1;'
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');$2;wss_onload_ready=1;',
+			'inline' => true
 /* Google Translate */
 		), 'gt' => array(
 			'marker' => 'translate.google.com',
@@ -223,8 +224,8 @@ $unobtrusive_items = array(
 			'inline' => true
 /* Yandex.Metrica */
 		), 'ym' => array(
-			'marker' => 'watch.js',
-			'regexp' => "<script[^>]+/watch.js.*?/noscript>",
+			'marker' => 'metrica',
+			'regexp' => "<script[^>]+/watch(_visor).js.*?/noscript>",
 			'inline' => true
 		)
 	)
