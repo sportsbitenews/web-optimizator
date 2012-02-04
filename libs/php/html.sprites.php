@@ -70,7 +70,6 @@ class html_sprites {
 		$webo_scaled_images = array();
 		$webo_images_scale_var = $this->options['page']['cachedir'] . 'wo.img.scale.php';
 		register_shutdown_function('webo_images_scale_handler');
-		$webo_images_scale_ok = 0;
 		@include($webo_images_scale_var);
 		$need_save = 0;
 /* get dimensions in HTML */
@@ -98,75 +97,42 @@ class html_sprites {
 							$height = $img[1];
 						}
 						$ext = strtolower(preg_replace("!.*\.([^\.]+)$!is", "$1", $src));
-						switch ($ext) {
-							case 'gif':
-								$im = @imagecreatefromgif($this->options['document_root'] . $absolute_src);
-								break;
-							case 'png':
-								$im = @imagecreatefrompng($this->options['document_root'] . $absolute_src);
-								break;
-							case 'jpg':
-							case 'jpeg':
-								$im = imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
-								break;
-							case 'bmp':
-								$im = @imagecreatefromwbmp($this->options['document_root'] . $absolute_src);
-								break;
-							default:
-								$im = @imagecreatefromxbm($this->options['document_root'] . $absolute_src);
-								break;
+						if (in_array($ext, array('png', 'gif'))) {
+							$PNG = 1;
+							$scaled_src .= 'png';
+						} else {
+							$PNG = 0;
+							$scaled_src .= 'jpg';
 						}
-						if ($im) {
-							$image_raw = @imagecreatetruecolor($width, $height);
-							@imagealphablending($image_raw, false);
-							@imagesavealpha($image_raw, true);
-							$background = @imagecolorallocatealpha($image_raw, 255, 255, 255, 127);
-							@imagefilledrectangle($image_raw, 0, 0, $width-1, $height-1, $background);
-							@imagecolortransparent($image_raw, $background);
-							@imagecopyresized($image_raw, $im, 0, 0, 0, 0, $width, $height, $img[0], $img[1]);
-							if (in_array($ext, array('png', 'gif'))) {
-								$scaled_src .= 'png';
-								try {
-									@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
-								} catch (Exception $e) {
-									try {
-										@imagepng($image_raw, $scaled_src, 9);
-									} catch (Exception $e) {
-										try {
-											@imagepng($image_raw, $scaled_src);
-										} catch (Exception $e) {
-											$scaled_src = '';
-										}
-									}
-								}
-								if (!@is_file($scaled_src)) {
-									$scaled_src = preg_replace("!\.png$!", '.jpg', $scaled_src);
-									try {
-										@imagejpeg($image_raw, $scaled_src, 80);
-									} catch (Exception $e) {
-										try {
-											@imagejpeg($image_raw, $scaled_src);
-										} catch (Exception $e) {
-											$scaled_src = '';
-										}
-									}
-									if (!@is_file(realpath($scaled_src))) {
-										$scaled_src = '';
-									}
-								}
-							} else {
-								$scaled_src .= 'jpg';
-								try {
-									@imagejpeg($image_raw, $scaled_src, 80);
-								} catch (Exception $e) {
-									try {
-										@imagejpeg($image_raw, $scaled_src);
-									} catch (Exception $e) {
-										$scaled_src = '';
-									}
-								}
-								if (!@is_file($scaled_src)) {
-									$scaled_src = preg_replace("!\.jpg$!", '.png', $scaled_src);
+/* create new file if required */
+						if (!@is_file($scaled_src)) {
+							switch ($ext) {
+								case 'gif':
+									$im = @imagecreatefromgif($this->options['document_root'] . $absolute_src);
+									break;
+								case 'png':
+									$im = @imagecreatefrompng($this->options['document_root'] . $absolute_src);
+									break;
+								case 'jpg':
+								case 'jpeg':
+									$im = imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
+									break;
+								case 'bmp':
+									$im = @imagecreatefromwbmp($this->options['document_root'] . $absolute_src);
+									break;
+								default:
+									$im = @imagecreatefromxbm($this->options['document_root'] . $absolute_src);
+									break;
+							}
+							if ($im) {
+								$image_raw = @imagecreatetruecolor($width, $height);
+								@imagealphablending($image_raw, false);
+								@imagesavealpha($image_raw, true);
+								$background = @imagecolorallocatealpha($image_raw, 255, 255, 255, 127);
+								@imagefilledrectangle($image_raw, 0, 0, $width-1, $height-1, $background);
+								@imagecolortransparent($image_raw, $background);
+								@imagecopyresized($image_raw, $im, 0, 0, 0, 0, $width, $height, $img[0], $img[1]);
+								if ($PNG) {
 									try {
 										@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
 									} catch (Exception $e) {
@@ -180,16 +146,57 @@ class html_sprites {
 											}
 										}
 									}
-									if (!@is_file(realpath($scaled_src))) {
-										$scaled_src = '';
+									if (!@is_file($scaled_src)) {
+										$scaled_src = preg_replace("!\.png$!", '.jpg', $scaled_src);
+										try {
+											@imagejpeg($image_raw, $scaled_src, 80);
+										} catch (Exception $e) {
+											try {
+												@imagejpeg($image_raw, $scaled_src);
+											} catch (Exception $e) {
+												$scaled_src = '';
+											}
+										}
+										if (!@is_file(realpath($scaled_src))) {
+											$scaled_src = '';
+										}
+									}
+								} else {
+									try {
+										@imagejpeg($image_raw, $scaled_src, 80);
+									} catch (Exception $e) {
+										try {
+											@imagejpeg($image_raw, $scaled_src);
+										} catch (Exception $e) {
+											$scaled_src = '';
+										}
+									}
+									if (!@is_file($scaled_src)) {
+										$scaled_src = preg_replace("!\.jpg$!", '.png', $scaled_src);
+										try {
+											@imagepng($image_raw, $scaled_src, 9, PNG_ALL_FILTERS);
+										} catch (Exception $e) {
+											try {
+												@imagepng($image_raw, $scaled_src, 9);
+											} catch (Exception $e) {
+												try {
+													@imagepng($image_raw, $scaled_src);
+												} catch (Exception $e) {
+													$scaled_src = '';
+												}
+											}
+										}
+										if (!@is_file(realpath($scaled_src))) {
+											$scaled_src = '';
+										}
 									}
 								}
 							}
-							if ($scaled_src) {
-								$image_to = str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i);
-							} else {
-								$image_to = '';
-							}
+						}
+						if ($scaled_src) {
+							$image_to = str_replace($src, str_replace($this->options['document_root'], '/', $scaled_src), $i);
+						} else {
+							$image_to = '';
 						}
 					} else {
 						$image_to = '';
@@ -209,8 +216,6 @@ class html_sprites {
 		if (!empty($need_rewrite)) {
 			$this->main->write_file($webo_images_scale_var, $this->form_php_file($webo_scaled_images, 1));
 		}
-		@include($webo_images_scale_var);
-		$webo_images_scale_ok = 1;
 		return $content;
 	}
 
@@ -222,7 +227,6 @@ class html_sprites {
 		global $webo_images_list_var, $webo_images_list_ok;
 		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
 		register_shutdown_function('webo_images_list_handler');
-		$webo_images_list_ok = 0;
 		$str = '';
 		$equal = 1;
 		$exclude_list = explode(" ", $this->options['css']['css_sprites_exclude']);
@@ -295,13 +299,11 @@ class html_sprites {
 /* cache styles to file */
 				$this->images[$this->sprite . $https] = array(0, 0, $styles);
 				$this->main->write_file($webo_images_list_var, $this->form_php_file($this->images));
-				@include($webo_images_list_var);
 			}
 			$content = $this->add_styles($content, $styles);
 		} else {
 			unset($this->css_images);
 		}
-		$webo_images_list_ok = 1;
 		return $content;
 	}
 
@@ -313,7 +315,6 @@ class html_sprites {
 		global $webo_images_list_var, $webo_images_list_ok;
 		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
 		register_shutdown_function('webo_images_list_handler');
-		$webo_images_list_ok = 0;
 		$images = array();
 /* load cached images' dimensions */
 		@include($webo_images_list_var);
@@ -362,14 +363,12 @@ class html_sprites {
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
 			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
-			@include($webo_images_list_var);
 /* or just mark all images as active */
 		} elseif (empty($this->options['page']['per_page'])) {
 			foreach ($images as $k => $i) {
 				$images[$k][3] = 1;
 			}
 		}
-		$webo_images_list_ok = 1;
 		return $images_return;
 	}
 
@@ -462,18 +461,38 @@ class html_sprites {
 
 }
 
-/* Clean content of wo.img.cache.php in case of failed store to this file. */
+/* Test failed store to this file. 2 steps: check and clean content if not valid */
 
 function webo_images_list_handler () {
+	global $webo_images_list_var, $webo_images_list_ok;
+	$webo_images_list_ok = 0;
+	register_shutdown_function('webo_images_list_handler_cleaner');
+	@include($webo_images_list_var);
+	$webo_images_list_ok = 1;
+}
+
+/* Clean content of wo.img.cache.php */
+
+function webo_images_list_handler_cleaner () {
 	global $webo_images_list_var, $webo_images_list_ok;
 	if (empty($webo_images_list_ok)) {
 		@file_put_contents($webo_images_list_var, '<?php ?>');
 	}
 }
 
-/* Clean content of wo.img.scale.php in case of failed store to this file. */
+/* Test failed store to this file. 2 steps: check and clean content if not valid */
 
 function webo_images_scale_handler () {
+	global $webo_images_scale_var, $webo_images_scale_ok;
+	register_shutdown_function('webo_images_scale_handler_cleaner');
+	$webo_images_scale_ok = 0;
+	@include($webo_images_scale_var);
+	$webo_images_scale_ok = 1;
+}
+
+/* Clean content of wo.img.scale.php in case of failed store to this file. */
+
+function webo_images_scale_handler_cleaner () {
 	global $webo_images_scale_var, $webo_images_scale_ok;
 	if (empty($webo_images_scale_ok)) {
 		@file_put_contents($webo_images_scale_var, '<?php ?>');
