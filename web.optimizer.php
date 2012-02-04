@@ -3,12 +3,50 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.5.0
-// @copyright  Copyright &copy; 2009-2011 WEBO Software. All Rights Reserved
+// @version    1.5.2
+// @copyright  Copyright &copy; 2009-2012 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
-if (!function_exists('finish_webositespeedup'))
-{
+/* Test failed store to this file. 2 steps: check and clean content if not valid */
+if (!function_exists('webo_integrity_handler')) {
+
+	function webo_integrity_handler () {
+		global $webo_options, $webo_images_scale_ok, $webo_images_list_ok, $webo_files_list_ok;
+		register_shutdown_function('webo_integrity_handler_cleaner');
+		$webo_images_list_ok = !$webo_options['css_sprites']['html_sprites'];
+		$webo_images_scale_ok = !($webo_options['performance']['scale'] && $webo_options['css_sprites']['html_sprites']);
+		$webo_files_list_ok = !$webo_options['html_cache']['enabled'];
+		if ($webo_options['performance']['scale'] && $webo_options['css_sprites']['html_sprites']) {
+			@include($webo_options['html_cachedir'] . 'wo.img.scale.php');
+			$webo_images_scale_ok = 1;
+		}
+		if ($webo_options['css_sprites']['html_sprites']) {
+			@include($webo_options['html_cachedir'] . 'wo.img.cache.php');
+			$webo_images_list_ok = 1;
+		}
+		if ($webo_options['html_cache']['enabled']) {
+			@include($webo_options['html_cachedir'] . 'wo.files.php');
+			$webo_files_list_ok = 1;
+		}
+	}
+
+	function webo_integrity_handler_cleaner () {
+		global $webo_options, $webo_images_scale_ok, $webo_images_list_ok, $webo_files_list_ok;
+		if (empty($webo_images_list_ok)) {
+			@file_put_contents($webo_options['html_cachedir'] . 'wo.img.cache.php', '<?php');
+		}
+		if (empty($webo_images_scale_ok)) {
+			@file_put_contents($webo_options['html_cachedir'] . 'wo.img.scale.php', '<?php');
+		}
+		if (empty($webo_files_list_ok)) {
+			@file_put_contents($webo_options['html_cachedir'] . 'wo.files.php', '<?php');
+		}
+	}
+	global $webo_options;
+	register_shutdown_function('webo_integrity_handler');
+}
+
+if (!function_exists('finish_webositespeedup')) {
     function finish_webositespeedup ($content) {
         if ($content) {
             $not_buffered = 1;
@@ -100,5 +138,7 @@ if (!empty($webo_not_buffered)) {
 		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip,
 		'uri' => empty($webo_uri) ? '' : $webo_uri)
 	);
+	$webo_options = $compress_options;
 }
+
 ?>

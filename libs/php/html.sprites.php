@@ -66,10 +66,8 @@ class html_sprites {
 	/*
 	**/
 	function scale ($content) {
-		global $webo_images_scale_var, $webo_images_scale_ok;
 		$webo_scaled_images = array();
 		$webo_images_scale_var = $this->options['page']['cachedir'] . 'wo.img.scale.php';
-		register_shutdown_function('webo_images_scale_handler');
 		@include($webo_images_scale_var);
 		$need_save = 0;
 /* get dimensions in HTML */
@@ -224,9 +222,7 @@ class html_sprites {
 	/*
 	**/
 	function process ($content) {
-		global $webo_images_list_var, $webo_images_list_ok;
 		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
-		register_shutdown_function('webo_images_list_handler');
 		$str = '';
 		$equal = 1;
 		$exclude_list = explode(" ", $this->options['css']['css_sprites_exclude']);
@@ -312,9 +308,7 @@ class html_sprites {
 	*
 	**/
 	function get_images_dimensions ($imgs) {
-		global $webo_images_list_var, $webo_images_list_ok;
 		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
-		register_shutdown_function('webo_images_list_handler');
 		$images = array();
 /* load cached images' dimensions */
 		@include($webo_images_list_var);
@@ -459,44 +453,6 @@ class html_sprites {
 		return $str;
 	}
 
-}
-
-/* Test failed store to this file. 2 steps: check and clean content if not valid */
-
-function webo_images_list_handler () {
-	global $webo_images_list_var, $webo_images_list_ok;
-	$webo_images_list_ok = 0;
-	register_shutdown_function('webo_images_list_handler_cleaner');
-	@include($webo_images_list_var);
-	$webo_images_list_ok = 1;
-}
-
-/* Clean content of wo.img.cache.php */
-
-function webo_images_list_handler_cleaner () {
-	global $webo_images_list_var, $webo_images_list_ok;
-	if (empty($webo_images_list_ok)) {
-		@file_put_contents($webo_images_list_var, '<?php ?>');
-	}
-}
-
-/* Test failed store to this file. 2 steps: check and clean content if not valid */
-
-function webo_images_scale_handler () {
-	global $webo_images_scale_var, $webo_images_scale_ok;
-	register_shutdown_function('webo_images_scale_handler_cleaner');
-	$webo_images_scale_ok = 0;
-	@include($webo_images_scale_var);
-	$webo_images_scale_ok = 1;
-}
-
-/* Clean content of wo.img.scale.php in case of failed store to this file. */
-
-function webo_images_scale_handler_cleaner () {
-	global $webo_images_scale_var, $webo_images_scale_ok;
-	if (empty($webo_images_scale_ok)) {
-		@file_put_contents($webo_images_scale_var, '<?php ?>');
-	}
 }
 
 ?>

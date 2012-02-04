@@ -445,21 +445,14 @@ class webo_cache_files extends webo_cache_engine
 		global $webo_files_list_var, $webo_files_list_ok;
 		$webo_files_list_var = $this->cache_dir . 'wo.files.php';
 		if ($this->all_files === false) {
-			if (@is_file($webo_files_list_var)) {
-				register_shutdown_function('webo_files_list_handler');
-				$webo_files_list_ok = 0;
-				@include($webo_files_list_var);
-				$webo_files_list_ok = 1;
-				if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
-					$this->all_files = $webo_cache_files_list;
-				} else {
-					$this->all_files = array();
-				}
-				if (!defined('WSS_CACHE_FILE')) {
-					$this->__put_files_list();
-				}
+			@include($webo_files_list_var);
+			if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
+				$this->all_files = $webo_cache_files_list;
 			} else {
 				$this->all_files = array();
+			}
+			if (!defined('WSS_CACHE_FILE')) {
+				$this->__put_files_list();
 			}
 		}
 	}
@@ -487,11 +480,6 @@ class webo_cache_files extends webo_cache_engine
 		}
 		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
 		@unlink($webo_files_list_var . $tmp);
-/* failover callback */
-		register_shutdown_function('webo_files_list_handler');
-		$webo_files_list_ok = 0;
-		@include($webo_files_list_var);
-		$webo_files_list_ok = 1;
 	}
 
 	/* Adds or updates entry. Expects key string and value to cache. */
@@ -1304,15 +1292,6 @@ class webo_cache_files extends webo_cache_engine
 		} else {
 			return array($size, $count);
 		}
-	}
-}
-
-/* Clean content of wo.files.php in case of failed store to this file. */
-
-function webo_files_list_handler () {
-	global $webo_files_list_var, $webo_files_list_ok;
-	if (empty($webo_files_list_ok)) {
-		@file_put_contents($webo_files_list_var, "<?php\ndefine('WSS_CACHE_FILE','1');\n ?>");
 	}
 }
 
