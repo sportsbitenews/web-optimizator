@@ -353,7 +353,6 @@ class html_sprites {
 			}
 		}
 		$images_return = $images;
-		print_r($images);
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
 			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
