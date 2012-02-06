@@ -3819,12 +3819,12 @@ class admin {
 /* fix CSS Sprites options in case of GD lib failure */
 		$gd = function_exists('gd_info') ? gd_info() : array();
 		if (!(in_array('gd', $loaded_modules) &&
-			function_exists('imagecreatetruecolor') &&
-			!empty($gd['GIF Read Support']) &&
+			function_exists('imagecreatetruecolor') ||
+			(!empty($gd['GIF Read Support']) &&
 			!empty($gd['GIF Create Support']) &&
 			(!empty($gd['JPEG Support']) || !empty($gd['JPG Support'])) &&
 			!empty($gd['PNG Support']) &&
-			!empty($gd['WBMP Support']))) {
+			!empty($gd['WBMP Support'])))) {
 				$this->restrictions['wss_css_sprites_enabled'] = 1;
 		}
 /* Disable CSS Sprites if no CSS Tidy is used */
