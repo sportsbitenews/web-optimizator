@@ -1967,7 +1967,16 @@ class web_optimizer {
 	*
 	*/
 	function _remove_scripts ($external_array, $source, $mark = false) {
-		$replacement = $mark ? $mark > 1 ? '@@@WSSSTYLES@@@' : '@@@WSSSCRIPT@@@' : '';
+		$replacement = '';
+		switch ($mark) {
+			case 2:
+				$replacement = '@@@WSSSTYLES@@@';
+				$source .= $replacement;
+				break;
+			case 1:
+				$replacement = '@@@WSSSCRIPT@@@';
+				break;
+		}
 		if (is_array($external_array)) {
 			foreach ($external_array as $key => $value) {
 /* Remove script, replace the first one with the mark to insert merged script */

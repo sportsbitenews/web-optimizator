@@ -358,8 +358,8 @@ class html_sprites {
 			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
 /* or just mark all images as active */
 		} elseif (empty($this->options['page']['per_page'])) {
-			foreach ($images as $k => $i) {
-				$images[$k][3] = 1;
+			foreach ($images_return as $k => $i) {
+				$images_return[$k][3] = 1;
 			}
 		}
 		return $images_return;
