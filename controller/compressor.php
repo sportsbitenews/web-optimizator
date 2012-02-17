@@ -2197,6 +2197,7 @@ class web_optimizer {
 								if (!empty($file['file']) && strpos($file['file'], 'niftycube.js')) {
 									$niftycube_base = preg_replace("@^(https?://" .
 										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
+									$source = '<link type="text/css" rel="stylesheet" href="' . $niftycube_base . 'niftyCorners.css">';
 									$this->initial_files[] = array(
 										'tag' => 'link',
 										'source' => '<link type="text/css" rel="stylesheet" href="' .
