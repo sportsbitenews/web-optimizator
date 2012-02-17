@@ -5352,9 +5352,9 @@ Options +FollowSymLinks";
 				$content_saved = '';
 /* generic code to include */
 				$web_optimizer_handler = '$not_buffered=1;$webo_request_uri=$_SERVER[\'REQUEST_URI\'];require(\'' .
-						$this->basepath  .
-						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_request_uri;$_SERVER[\'REQUEST_URI\']=$webo_request_uri;$not_buffered=1;require(\'' .
-						$this->basepath .
+					$this->basepath  .
+					'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_request_uri;$_SERVER[\'REQUEST_URI\']=$webo_request_uri;$not_buffered=1;require(\'' .
+					$this->basepath .
 						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\');';
 				while ($index_string = fgets($fp)) {
 					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
@@ -5416,7 +5416,7 @@ Options +FollowSymLinks";
 				} elseif (substr($this->cms_version, 0, 6) == 'Contao') {
 					$content_saved = preg_replace("/echo \\\$strBuffer/", "global \\\$web_optimizer;echo \\\$web_optimizer->finish(\\\$strBuffer)", $content_saved);
 					$content_saved = preg_replace("/(\\\$objIndex->run\(\);\r?\n)/", "$1" . '$web_optimizer->finish();' . "\r\n", $content_saved);
-				} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved)) {
+				} elseif (preg_match("/\?>[\r\n\s]*$/", $content_saved) && substr($this->cms_version, 0, 11) != 'Shop-Script') {
 /* small fix for Joostina */
 					if (substr($this->cms_version, 0, 8) == 'Joostina') {
 						$content_saved = preg_replace("/(exit\s*\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
