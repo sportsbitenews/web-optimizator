@@ -2718,7 +2718,7 @@ class admin {
 			} elseif ($this->cms_version == 'Invision Power Board') {			
 				$index = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
 /* fix for NetCat */
-			| elseif ($this->cms_version == 'NetCat') {
+			} elseif ($this->cms_version == 'NetCat') {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 /* fix for PHP Fusion */
 			} elseif ($this->cms_version == 'PHP Fusion') {
@@ -2850,6 +2850,7 @@ class admin {
 /* clean content from Web Optimizer calls */
 			$content = preg_replace("!<\?php /\* WEBO Site SpeedUp.*?\?>!is", "", $content);
 			$content = preg_replace("/(global \\\$web_optimizer|\\\$web_optimizer,|\\\$[^\s]+\s*=\s*\\\$web_optimizer->finish\([^\)]+\);|\\\$web_optimizer->finish\(\)|require\('[^\']+\/web.optimizer.php'\));?\r?\n?/is", "", $content);
+			$content = preg_replace("/\\\$not_buffered\s*=\s*.*?ob_start('weboptimizer_shutdown');/is", "", $content);
 			$this->write_file($file, $content, $return);
 		}
 	}
@@ -5350,11 +5351,11 @@ Options +FollowSymLinks";
 			if ($fp) {
 				$content_saved = '';
 /* generic code to include */
-				$web_optimizer_handler = '<?php /* WEBO Site SpeedUp */$not_buffered=1;$webo_request_uri=$_SERVER[\'REQUEST_URI\'];require(\'' .
+				$web_optimizer_handler = '$not_buffered=1;$webo_request_uri=$_SERVER[\'REQUEST_URI\'];require(\'' .
 						$this->basepath  .
 						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_request_uri;$_SERVER[\'REQUEST_URI\']=$webo_request_uri;$not_buffered=1;require(\'' .
 						$this->basepath .
-						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>';
+						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\');';
 				while ($index_string = fgets($fp)) {
 					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
 				}
@@ -5380,11 +5381,14 @@ Options +FollowSymLinks";
 /* fix for PHP Fusion */							
 				} elseif ($this->cms_version == 'PHP Fusion') {
 					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
+/* fix for Shop-Script */							
+				} elseif (substr($this->cms_version, 0, 11) == 'Shop-Script') {
+					$content_saved = preg_replace("!(include_once\(DIR_CFG\s*.\s*'/connect.inc.wa.php'\);\r?\n)!is", "$1" . $web_optimizer_handler, $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", $web_optimizer_handler . '<?php' . "\n", $content_saved);
+					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?php /* WEBO Site SpeedUp */' . $web_optimizer_handler . '?><?php' . "\n", $content_saved);
 				} else {
-					$content_saved = $web_optimizer_handler . $content_saved;
+					$content_saved = '<?php /* WEBO Site SpeedUp */' . $web_optimizer_handler . '?>' . $content_saved;
 				}
 /* fix for DataLife Engine */
 				if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
@@ -5977,6 +5981,11 @@ require valid-user';
 /* Magento */
 			} elseif (@is_file($root . '/app/Mage.php')) {
 				return 'Magento';
+/* Shop-Script */
+			} elseif (@is_file($root . 'published/SC/updates/versions.php')) {
+				@require($root . 'published/SC/updates/versions.php');
+				$version = array_pop(array_keys($_VERSIONS));
+				return 'Shop-Script ' . floor($version/100) . '.' . ($version%100);
 			}
 /* Typo 3 */
 		} elseif (@is_dir($root . 'typo3conf')) {
@@ -6089,7 +6098,7 @@ require valid-user';
 		} elseif (@is_file($root . 'include/version.php')) {
 			@require($root . 'include/version.php');
 /* SocialEngine 3.19 */
-			if (@is_file($root . '/include/database_config.php')) {
+			if (@is_file($root . 'include/database_config.php')) {
 				return 'Social Engine' . (empty($version) ? '' : ' ' . $version);
 			} else {
 				return defined(XOOPS_VERSION) ? XOOPS_VERSION : 'XOOPS';
@@ -6103,22 +6112,17 @@ require valid-user';
 			require($root . 'config/config_global.php');
 			return 'Open Slaed' . (empty($conf['version']) ? '' : ' ' . $conf['version']);
 /* Geeklog 1.6.1 */
-		} elseif (@is_file($root . '/images/icons/geeklog.gif')) {
+		} elseif (@is_file($root . 'images/icons/geeklog.gif')) {
 			return 'Geeklog';
 /* PrestaShop 1.2.5 */
-		} elseif (@is_file($root . '/modules/paypal/prestashop_paypal.png')) {
+		} elseif (@is_file($root . 'modules/paypal/prestashop_paypal.png')) {
 			return 'PrestaShop';
 /* Koobi CMS */
-		} elseif (@is_file($root . '/class/tpl/Koobi.class.php')) {
+		} elseif (@is_file($root . 'class/tpl/Koobi.class.php')) {
 			return 'Koobi CMS';
 /* Contao */
-		} elseif (@is_dir($root . '/contao/')) {
+		} elseif (@is_dir($root . 'contao/')) {
 			return 'Contao';
-/* Shop-Script */
-		} elseif (@is_dir($root . '/published/SC/updates/versions.php')) {
-			@require($root . '/published/SC/updates/versions.php');
-			$version = array_pop($versions);
-			return 'Shop-Script ' . $version{0} . '.' . $version{1} . $version{2};
 		}
 		return 'CMS 42';
 	}
