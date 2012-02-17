@@ -1967,16 +1967,7 @@ class web_optimizer {
 	*
 	*/
 	function _remove_scripts ($external_array, $source, $mark = false) {
-		$replacement = '';
-		switch ($mark) {
-			case 2:
-				$replacement = '@@@WSSSTYLES@@@';
-				$source .= $replacement;
-				break;
-			case 1:
-				$replacement = '@@@WSSSCRIPT@@@';
-				break;
-		}
+		$replacement = $mark ? $mark > 1 ? '@@@WSSSTYLES@@@' : '@@@WSSSCRIPT@@@' : '';
 		if (is_array($external_array)) {
 			foreach ($external_array as $key => $value) {
 /* Remove script, replace the first one with the mark to insert merged script */
@@ -2213,6 +2204,7 @@ class web_optimizer {
 										'file' => $niftycube_base . 'niftyCorners.css',
 										'file_raw' => $niftycube_base . 'niftyCorners.css'
 									);
+									$this->content = str_replace($file['source'], $source . $file['source'], $this->content);
 								}
 					}
 				}
