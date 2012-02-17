@@ -2714,22 +2714,21 @@ class admin {
 /* fix for phpBB and vBulletin */
 			if ($this->cms_version == 'phpBB' || substr($this->cms_version, 0, 9) == 'vBulletin') {
 				$index = $this->view->paths['absolute']['document_root'] . 'includes/functions.php';
-			}
 /* fix for IPB */
-			if ($this->cms_version == 'Invision Power Board') {
+			} elseif ($this->cms_version == 'Invision Power Board') {			
 				$index = $this->view->paths['absolute']['document_root'] . 'sources/classes/class_display.php';
-			}
 /* fix for NetCat */
-			if ($this->cms_version == 'NetCat') {
+			| elseif ($this->cms_version == 'NetCat') {
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
-			}
 /* fix for PHP Fusion */
-			if ($this->cms_version == 'PHP Fusion') {
+			} elseif ($this->cms_version == 'PHP Fusion') {
 				$index = $this->view->paths['absolute']['document_root'] . 'themes/templates/footer.php';
-			}
 /* fix for PHP Fusion */
-			if ($this->cms_version == 'X-Cart') {
+			} elseif ($this->cms_version == 'X-Cart') {
 				$index = $this->view->paths['absolute']['document_root'] . 'include/func/func.core.php';
+/* fix for Shop-Script */
+			} elseif (substr($this->cms_version, 0, 11) == 'Shop-Script') {
+				$index = $this->view->paths['absolute']['document_root'] . 'published/SC/html/scripts/index.php';
 			}
 			$this->cleanup_file($index, $return);
 /* additional change of cache plugins */
@@ -5344,10 +5343,18 @@ Options +FollowSymLinks";
 				$index = $this->view->paths['absolute']['document_root'] . 'netcat/require/e404.php';
 			} elseif ($this->cms_version == 'PHP Fusion') {
 				$index = $this->view->paths['absolute']['document_root'] . 'themes/templates/footer.php';
+			} elseif (substr($this->cms_version, 0, 11) == 'Shop-Script') {
+				$index = $this->view->paths['absolute']['document_root'] . 'published/SC/html/scripts/index.php';
 			}
 			$fp = @fopen($index, "r");
 			if ($fp) {
 				$content_saved = '';
+/* generic code to include */
+				$web_optimizer_handler = '<?php /* WEBO Site SpeedUp */$not_buffered=1;$webo_request_uri=$_SERVER[\'REQUEST_URI\'];require(\'' .
+						$this->basepath  .
+						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_request_uri;$_SERVER[\'REQUEST_URI\']=$webo_request_uri;$not_buffered=1;require(\'' .
+						$this->basepath .
+						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>';
 				while ($index_string = fgets($fp)) {
 					$content_saved .= preg_replace("/(require\('[^\']+\/web.optimizer.php'\)|\\\$web_optimizer->finish\(\));\r?\n?/i", "", $index_string);
 				}
@@ -5375,17 +5382,9 @@ Options +FollowSymLinks";
 					$content_saved = preg_replace("/(require_once INCLUDES.\"footer_includes.php\";\r?\n)/", "$1" . 'require(\'' . $this->basepath . 'web.optimizer.php\');' . "\n", $content_saved);
 				} elseif (substr($content_saved, 0, 2) == '<?') {
 /* add require block */
-					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(\'' .
-						$this->basepath  .
-						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(\'' .
-						$this->basepath .
-						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?><?php' . "\n", $content_saved);
+					$content_saved = preg_replace("/^<\?(php)?(\s|\r?\n)/i", $web_optimizer_handler . '<?php' . "\n", $content_saved);
 				} else {
-					$content_saved = '<?php /* WEBO Site SpeedUp */$not_buffered=1;require(\'' .
-						$this->basepath  .
-						'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){$not_buffered=1;require(\'' .
-						$this->basepath .
-						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\'); ?>' . $content_saved;
+					$content_saved = $web_optimizer_handler . $content_saved;
 				}
 /* fix for DataLife Engine */
 				if (substr($this->cms_version, 0, 15) == 'DataLife Engine') {
@@ -5421,7 +5420,7 @@ Options +FollowSymLinks";
 /* add finish block */
 						$content_saved = preg_replace("/ ?\?>[\r\n\s]*$/", '\$web_optimizer->finish(); ?>', $content_saved);
 					}
-				} else {
+				} elseif (substr($this->cms_version, 0, 11) != 'Shop-Script') {
 /* fix for Drupal / Joomla / others on not-closed ?> */
 					$content_saved .= '$web_optimizer->finish();';
 				}
@@ -6088,7 +6087,7 @@ require valid-user';
 			return 'X-Cart';
 /* XOOPS 2.3.3 */
 		} elseif (@is_file($root . 'include/version.php')) {
-			require($root . 'include/version.php');
+			@require($root . 'include/version.php');
 /* SocialEngine 3.19 */
 			if (@is_file($root . '/include/database_config.php')) {
 				return 'Social Engine' . (empty($version) ? '' : ' ' . $version);
@@ -6115,6 +6114,11 @@ require valid-user';
 /* Contao */
 		} elseif (@is_dir($root . '/contao/')) {
 			return 'Contao';
+/* Shop-Script */
+		} elseif (@is_dir($root . '/published/SC/updates/versions.php')) {
+			@require($root . '/published/SC/updates/versions.php');
+			$version = array_pop($versions);
+			return 'Shop-Script ' . $version{0} . '.' . $version{1} . $version{2};
 		}
 		return 'CMS 42';
 	}
@@ -6541,6 +6545,16 @@ require valid-user';
 					array(
 						'file' => 'index.php',
 						'mode' => 'start_shutdown'
+					)
+				);
+				break;
+/* Contao */
+			case 'Shop-Script':
+				$files = array(
+					array(
+						'file' => 'published/SC/html/scripts/index.php',
+						'mode' => 'start_shutdown',
+						'location' => 'include_once(DIR_CFG.\'/connect.inc.wa.php\');'
 					)
 				);
 				break;
