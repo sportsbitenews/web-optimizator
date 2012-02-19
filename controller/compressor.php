@@ -1158,9 +1158,9 @@ class web_optimizer {
 	**/
 	function write_file ($file, $content, $upload = 0, $mime = '') {
 		if (@function_exists('file_put_contents')) {
-			@file_put_contents($file, $content);
+			@file_put_contents($file, $content, LOCK_EX);
 		} else {
-			$fp = @fopen($file, "a");
+			$fp = @fopen($file, "a+");
 			if ($fp) {
 /* block file from writing */
 				@flock($fp, LOCK_EX);
