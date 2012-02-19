@@ -1158,7 +1158,8 @@ class web_optimizer {
 	**/
 	function write_file ($file, $content, $upload = 0, $mime = '') {
 		if (@function_exists('file_put_contents')) {
-			@file_put_contents($file, $content, LOCK_EX);
+			@file_put_contents($file . '.tmp', $content, LOCK_EX);
+			@rename($file . '.tmp', $file);
 		} else {
 			$fp = @fopen($file, "a+");
 			if ($fp) {
