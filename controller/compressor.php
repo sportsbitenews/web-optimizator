@@ -2198,7 +2198,7 @@ class web_optimizer {
 								if (!empty($file['file']) && strpos($file['file'], 'niftycube.js')) {
 									$niftycube_base = preg_replace("@^(https?://" .
 										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
-									$source = '<link type="text/css" rel="stylesheet" href="' . $niftycube_base . 'niftyCorners.css">';
+									$source = '<link type="text/css" rel="stylesheet" href="' . $niftycube_base . 'niftyCorners.css"' . ($this->xhtml ? '/' : '') . '>';
 									$this->initial_files[] = array(
 										'tag' => 'link',
 										'source' => '<link type="text/css" rel="stylesheet" href="' .
@@ -2262,9 +2262,9 @@ class web_optimizer {
 			}
 /* find all CSS links from head and inine styles */
 			if (empty($this->options['css']['inline_scripts']) && $this->options['page']['html_tidy'] && !strpos($toparse, '<style') && !strpos($toparse, '<STYLE')) {
-				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>)!is";
+				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>(</link>)?)!is";
 			} else {
-				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>|<style[^>]*>.*?</style>)!is";
+				$regex = "!(<link[^>]+rel\\s*=\\s*(\"stylesheet\"|'stylesheet'|stylesheet)[^>]*>(</link>)?|<style[^>]*>.*?</style>)!is";
 			}
 			preg_match_all($regex, $toparse, $matches, PREG_SET_ORDER);
 			if (!empty($matches)) {
