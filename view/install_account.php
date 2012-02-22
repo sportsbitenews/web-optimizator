@@ -84,7 +84,7 @@
 ?></a> <?php
 		}
 		if ($premium) {
-			switch (round($premium)) {
+			switch (round($premium - 0.1)) {
 				case 10:
 					echo _WEBO_SPLASH2_COMPARISON_SAAS;
 					break;
@@ -96,6 +96,9 @@
 					break;
 				case 1:
 					echo _WEBO_SPLASH2_COMPARISON_LITE;
+					break;
+				case 0:
+					echo _WEBO_SPLASH2_COMPARISON_ZERO;
 					break;
 			}
 			echo ' ' ._WEBO_SPLASH2_COMPARISON_VERSION;

@@ -832,6 +832,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'بنیادی سیٹنگز کا مج�
 /* ورژن موازنہ */
 define('_WEBO_SPLASH2_COMPARISON', 'Purchase website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'خصوصیات اور ٹیکنالوجی');
+define('_WEBO_SPLASH2_COMPARISON_ZERO', 'Zero');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Trial');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Fast website');
@@ -1115,12 +1116,7 @@ define('_WEBO_WIZARD_NEXT', 'Next');
 define('_WEBO_WIZARD_SAVE', 'Enable WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration');
 
-define('_WEBO_LICENSE_DAYS', 'You have ');
-define('_WEBO_LICENSE_DAYS_DAYS', 'days');
-define('_WEBO_LICENSE_DAYS_DAYS2', 'days');
-define('_WEBO_LICENSE_DAYS_DAY', 'day');
-define('_WEBO_LICENSE_DAYS2', ' remained for WEBO Site SpeedUp Trial Edition. Please purchase full version!');
-define('_WEBO_LICENSE_EXPIRED', 'WEBO Site SpeedUp Trial Edition has expired. Please purchase full version!');
+define('_WEBO_LICENSE_EXPIRED', 'Please purchase full version!');
 
 define('_WEBO_WELCOME_LETTER', 'Good day,
 

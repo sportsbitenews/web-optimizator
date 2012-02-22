@@ -133,6 +133,12 @@ if (!$ajax) {
 ?>"><?php
 		echo _WEBO_SPLASH2_COMPARISON_DEMO . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?> </span><span class="wss_w2<?php
+		if ($premium == 0.1) {
+?> wss_w0<?php
+		}
+?>"> <?php
+		echo _WEBO_SPLASH2_COMPARISON_ZERO . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
+?> </span><span class="wss_w2<?php
 		if ($premium == 1) {
 ?> wss_w0<?php
 		}
@@ -218,6 +224,12 @@ if (!$ajax) {
 ?></a></p></div></div></div></div><?php
 	}
 ?></div><script type="text/javascript"><?php
+	if (!$premium) {
+?>alert('<?php
+		echo _WEBO_LICENSE_EXPIRED;
+?>');<?php
+	}
+?><?php
 	if ($premium == 10) {
 ?>setTimeout(function(){if(typeof _!=='undefined'){var a=document,b=a.createElement('script');b.type='text/javascript';b.src='http://webo.name/license/?key=<?php
 		echo $license;

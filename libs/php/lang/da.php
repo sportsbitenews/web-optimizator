@@ -848,6 +848,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_basic', 'Basis, komplekse ændringer som give
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Køb website speedup');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Funktioner');
+define('_WEBO_SPLASH2_COMPARISON_ZERO', 'Zero');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Gratis');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Standard');
 define('_WEBO_SPLASH2_COMPARISON_FULL', 'Udvidet');
@@ -1132,12 +1133,7 @@ define('_WEBO_WIZARD_NEXT', 'Næste');
 define('_WEBO_WIZARD_SAVE', 'Aktiver WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp konfiguration');
 
-define('_WEBO_LICENSE_DAYS', 'Du har ');
-define('_WEBO_LICENSE_DAYS_DAYS', 'dage');
-define('_WEBO_LICENSE_DAYS_DAYS2', 'dage');
-define('_WEBO_LICENSE_DAYS_DAY', 'dag');
-define('_WEBO_LICENSE_DAYS2', ' tilbage af WEBO Site SpeedUp prøve versionen. Køb venligst en fuld version!');
-define('_WEBO_LICENSE_EXPIRED', 'WEBO Site SpeedUp prøve versionen er udløbet. Køb venligst en fuld version!');
+define('_WEBO_LICENSE_EXPIRED', 'Køb venligst en fuld version!');
 
 define('_WEBO_WELCOME_LETTER', 'Good day,
 

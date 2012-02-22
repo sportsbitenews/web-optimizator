@@ -847,6 +847,7 @@ define('_WEBO_OPTIONS_DESCRIPTIONS_user', 'Пользовательские на
 /* Version comparison */
 define('_WEBO_SPLASH2_COMPARISON', 'Купить ускорение сайта');
 define('_WEBO_SPLASH2_COMPARISON_TITLE', 'Характеристики');
+define('_WEBO_SPLASH2_COMPARISON_ZERO', 'Начальная');
 define('_WEBO_SPLASH2_COMPARISON_DEMO', 'Демонстрационная');
 define('_WEBO_SPLASH2_COMPARISON_LITE', 'Стандартная');
 define('_WEBO_SPLASH2_COMPARISON_FASTWEBSITE', 'Быстрый сайт');
@@ -1131,12 +1132,7 @@ define('_WEBO_WIZARD_NEXT', 'Дальше');
 define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'http://redsoft.ru/support/speedup-joomla');
 
-define('_WEBO_LICENSE_DAYS', 'Заканчивается срок действия демо-версии WEBO Site SpeedUp, ');
-define('_WEBO_LICENSE_DAYS_DAYS', 'дней осталось');
-define('_WEBO_LICENSE_DAYS_DAYS2', 'дня осталось');
-define('_WEBO_LICENSE_DAYS_DAY', 'день остался');
-define('_WEBO_LICENSE_DAYS2', '. Пожалуйста, приобретите полную версию продукта!');
-define('_WEBO_LICENSE_EXPIRED', 'Срок действия демо-версии WEBO Site SpeedUp истек. Пожалуйста, приобретите полную версию продукта!');
+define('_WEBO_LICENSE_EXPIRED', 'Пожалуйста, приобретите полную версию продукта!');
 
 define('_WEBO_WELCOME_LETTER', 'Добрый день,
 

@@ -208,10 +208,11 @@ class compressor_view {
 			while (strlen($l) > 4+(++$i)) {
 				$c3 += pow(31, $i) * strpos($table, substr($l, 4 + $i, 1));
 			}
+			$t0 = !($c1%941 - $c2);
 			$t1 = !($c3%941 - $c1) && !($c1%941 - $c2);
 			$t2 = !($c3*$c3 - floor($c3*$c3/941)*941 - $c1) && !($c1*$c1 - floor($c1*$c1/941)*941 - $c2);
 			$t3 = !(pow($c3, 3) - floor(pow($c3, 3)/941)*941 - $c1) && !(pow($c1, 3) - floor(pow($c1, 3)/941)*941 - $c2);
-			if ($t1 || $t2 || $t3) {
+			if ($t0 || $t1 || $t2 || $t3) {
 				if ($cachedir) {
 					$wof = $cachedir . 'wo';
 					$wo = $this->file_get_contents($wof);
@@ -228,7 +229,7 @@ class compressor_view {
 						@touch($wof);
 					}
 				}
-				return $t1 ? 1 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2));
+				return $t0 ? 0.5 : ($t1 ? 1 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2)));
 			}
 		}
 		return false;
