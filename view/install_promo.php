@@ -50,7 +50,9 @@
 	echo _WEBO_SPLASH2_COMPARISON_FULLPRICE;
 ?></span><?php
 	echo _WEBO_GENERAL_BUYNOW;
-?></th></tr></thead><tfoot><tr><th class="wssT7"> </th><th class="wssT7"> </th><td class="wssT7"><?php
+?></th></tr></thead><tfoot><tr><th class="wssT7"> </th><td class="wssT7"><?php
+	echo _WEBO_GENERAL_BUYNOWZERO;
+?></th><td class="wssT7"><?php
 	echo _WEBO_GENERAL_BUYNOWLITE;
 ?></td><td class="wssT7"><?php
 	echo _WEBO_GENERAL_BUYNOW;
