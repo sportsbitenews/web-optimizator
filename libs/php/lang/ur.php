@@ -11,6 +11,7 @@ define('_WEBO_GENERAL_TITLE', 'ویبو سائٹ اسپیڈ اپ کنفیگری�
 define('_WEBO_GENERAL_FOOTER', 'بجلی سے زیادہ تیز!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="ویبو سائٹ اسپیڈ اپ پریمیم ایڈیشن">Buy Now</a>');
 define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="ویبو سائٹ اسپیڈ اپ لائٹ ایڈیشن">ابھی خریدیں</a>');
+define('_WEBO_GENERAL_BUYNOWZERO', '<a href="https://www.softkey.net/catalog/basket.php?id=582711&amp;act=buy&amp;from=1722979" class="wssJ" title="ویبو سائٹ اسپیڈ اپ لائٹ ایڈیشن">ابھی خریدیں</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="ویبو سائٹ اسپیڈ اپ" title="ویبو سائٹ اسپیڈ اپ" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'ابھی خریدیں');
 define('_WEBO_GENERAL_PREMIUM', 'پریمیم');
@@ -866,6 +867,7 @@ define('_WEBO_SPLASH2_COMPARISON_NOTINCLUDED', 'شامل نہیں');
 define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'تمام فوائد');
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'قیمت');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'مفت');
+define('_WEBO_SPLASH2_COMPARISON_ZEROPRICE', '24،99 $');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '99،99 $');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '399 $');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'تازہ ترین');

@@ -11,6 +11,7 @@ define('_WEBO_GENERAL_TITLE', 'Настройка WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Быстрее молнии!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=451782&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Расширенная версия">Купить</a>');
 define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=451781&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Стандартная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWZERO', '<a href="http://www.softkey.ru/catalog/basket.php?id=582705&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Начальная версия">Купить</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
@@ -882,6 +883,7 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества'
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
+define('_WEBO_SPLASH2_COMPARISON_ZEROPRICE', '499 руб.');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1999 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '7999 руб.');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
