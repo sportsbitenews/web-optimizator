@@ -4,8 +4,8 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.5.0
-// @copyright  Copyright &copy; 2009-2011 WEBO Software, All Rights Reserved
+// @version    1.5.2
+// @copyright  Copyright &copy; 2009-2012 WEBO Software, All Rights Reserved
 // ==============================================================================================
 // To install WEBO Site SpeedUp please copy this file to the document root, make document root
 // writable for your web server (or create writable web-optimizer directory) and go
@@ -87,17 +87,29 @@
 /* get list of files */
 				download('files', $install_directory);
 				if (is_file($install_directory . '/files')) {
-					if (get_magic_quotes_runtime())
-					{
+					if (get_magic_quotes_runtime()) {
 						$files = explode("\r?\n", stripslashes(file_get_contents($install_directory . '/files')));
-					}
-					else
-					{
+					} else {
 						$files = explode("\r?\n", file_get_contents($install_directory . '/files'));
 					}
 					foreach ($files as $file) {
-						if (!empty($file) && !is_file($install_directory . '/' . $file)) {
-							download($file, $install_directory);
+						if (!empty($file) {
+							$file = explode(":", $file);
+							if (!@is_file($install_directory . $file[0])) {
+								if ($file[1]) {
+									$recursion = 0;
+									while (@filesize($install_directory . $file[0]) != $file[1] && $recursion < 10) {
+										web_optimizer_download($file[0], $install_directory);
+										$recursion++;
+									}
+									if (@filesize($install_directory . $file[0]) != $file[1]) {
+										$error = $messages['connection_error'];
+									}
+									break;
+								} else {
+									web_optimizer_download($file[0], $install_directory);
+								}
+							}
 						}
 					}
 /* check if download was succsessful */
