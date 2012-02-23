@@ -93,7 +93,7 @@
 						$files = explode("\r?\n", file_get_contents($install_directory . '/files'));
 					}
 					foreach ($files as $file) {
-						if (!empty($file) {
+						if (!empty($file)) {
 							$file = explode(":", $file);
 							if (!@is_file($install_directory . $file[0])) {
 								if ($file[1]) {
@@ -104,8 +104,8 @@
 									}
 									if (@filesize($install_directory . $file[0]) != $file[1]) {
 										$error = $messages['connection_error'];
+										break;
 									}
-									break;
 								} else {
 									web_optimizer_download($file[0], $install_directory);
 								}

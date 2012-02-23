@@ -2623,18 +2623,29 @@ class admin {
 		$this->view->download($svn . $file, $file);
 		$i = 1;
 		if (@is_file($file)) {
-			$files = preg_split("/\r?\n/", $this->file_get_contents($file));
+			$files = preg_split("!\r?\n!", $this->file_get_contents($file));
 			$total = count($files);
 			foreach ($files as $file) {
 				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total, 1);
-				$tmp = $file . '.tmp';
-				$this->view->download($svn . $file, $tmp);
-				if (@is_file($tmp)) {
-					@copy($tmp, $file);
-					@unlink($tmp);
+				if (!empty($file)) {
+					$file = explode(":", $file);
+					if ($file[1]) {
+						$recursion = 0;
+						$tmp = $file[0] . '.tmp';
+						while (@filesize($tmp) != $file[1] && $recursion < 10) {
+							$this->view->download($svn . $file[0], $tmp);
+							$recursion++;
+						}
+						if (@filesize($tmp) != $file[1]) {
+							$this->error[6] = 1;
+						}
+					} else {
+						$this->view->download($svn . $file[0], $tmp);
+					}
+					@rename($tmp, $file);
 /* remove old gzipped version */
 					@unlink($file . '.gz');
-					if ($file == 'config.webo.php') {
+					if ($file[0] == 'config.webo.php') {
 						$this->options_file = 'config.webo.php';
 						$this->save_options();
 					}
