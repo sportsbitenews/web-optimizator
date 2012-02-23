@@ -5776,7 +5776,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 			$option_value = str_replace('$', '#', $option_value);
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
 		} else {
-			$option_value = preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value))));
+			$option_value = str_replace('$', '\\\$', preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)))));
 		}
 /* See if file exists */
 		$option_file = $this->basepath . $this->options_file;
