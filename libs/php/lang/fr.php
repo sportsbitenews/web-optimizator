@@ -1215,13 +1215,19 @@ http://###WEBSITE###/?web_optimizer_disabled=1
 3. What if we want to make sure that the new design and new features will be compatible with WEBO Site SpeedUp?
 Disable the product on the Control Panel of WEBO Site SpeedUp and use GET-parameter web_optimizer_debug=1 for testing with the product in debug mode.
 
-4. We changed the text of pages, but do not see the changes on the website.
+4. Some of the pages of the accelerated website is slower than the others (though faster than before the WEBO Site SpeedUp installation). Why not?
+Likely server side caching is enabled, which greatly increases the speed web pages appearance on the screen, but in some situations it may not work. Possible reasons for this:
+* Page has never been opened since the last WEBO Site SpeedUp cache clean-up. In this case, the reopening of the page happens faster.
+* The page was opened, and automatically cached, but the cache has expired. Usually, this period ranges from several hours to several days. In this case, the reopening of the page happens faster.
+* There are obstacles to cache pages, such as you are logged on the site are on the cart page or the checkout page, etc. When the pages that are on the same address should be given a different content for different users, server caching for a number of CMS can not work.
+
+5. We changed the text of pages, but do not see the changes on the website.
 It is likely server side caching is enabled. Open the Control Panel of WEBO Site SpeedUp and click Refresh cache.
 
-5. We found the problem on site and we think that the reason may be WEBO Site SpeedUp.
+6. We found the problem on site and we think that the reason may be WEBO Site SpeedUp.
 Disable the product and try to reproduce the problem. If the problem is not reproduced (with disabled product), please report the problem to us at support@webo.name.
 
-6. After turning WEBO Site SpeedUp on website was unavailable? What should I do?
+7. After turning WEBO Site SpeedUp on website was unavailable? What should I do?
 You should disable WEBO Site SpeedUp. All optimization options are automatically canceled. If disabling the product via the control panel is not possible, follow these two steps:
 Open the file ###FOLDER###config.webo.php and change the $compress_options[\'active\'] with "1" to "0".
 Restore the original .htaccess file in the root directory of your website from a file .htaccess.backup.
