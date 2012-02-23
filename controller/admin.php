@@ -1735,13 +1735,15 @@ class admin {
 		} else {
 			$wp_cache_enabled = true;
 		}
+/* remember current number of files in cache */
+		$cache_files = count(scandir($css_cachedir)) + count(scandir($javascript_cachedir));
 /* check CPU usage for the website */
 		$tmp_file = $this->compress_options['html_cachedir'] . 'index.tmp';
 		$time = time() + microtime();
 		$results = $this->view->download("http://" .
 			$this->compress_options['host'] .
 			str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
-			'?web_optimizer_disabled=1', $tmp_file);
+			'?web_optimizer_disabled=1', $tmp_file, 60, $_SERVER['HTTP_HOST'], $this->compress_options['external_scripts']['user'], $this->compress_options['external_scripts']['pass']);
 		$standard_delay = time() + microtime() - $time;
 		$time = time() + microtime();
 		$this->view->download("http://" .
@@ -1760,6 +1762,8 @@ class admin {
 /* check activity for the website */
 		$spot = strpos($this->file_get_contents($tmp_file), '<!--WSS-->') || !@filesize($tmp_file);
 		@unlink($tmp_file);
+/* get new number of files in cache */
+		$cache_files_new = count(scandir($css_cachedir)) + count(scandir($javascript_cachedir));
 		$errors = array(
 			'javascript_writable' => @is_writable($javascript_cachedir),
 			'css_writable' => @is_writable($css_cachedir),
@@ -1787,7 +1791,8 @@ class admin {
 					!empty($gd['PNG Support']) &&
 					!empty($gd['WBMP Support'])),
 			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
-			'wordpress_cache_enabled' => $wp_cache_enabled
+			'wordpress_cache_enabled' => $wp_cache_enabled,
+			'too_many_files' => $cache_files == $cache_files_new
 		);
 		$infos = array(
 			'htaccess_writable' => !$htaccess_available ||
@@ -1833,7 +1838,7 @@ class admin {
 				!$this->compress_options['css_sprites']['enabled'] &&
 				!$this->compress_options['css_sprites']['html_sprites']),
 			'large_delay' => $standard_delay < 1,
-			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 300,
+			'large_wss_delay' => $wss_delay / $standard_delay < 2 || $wss_delay < 0.3,
 			'apc_enabled' => !@function_exists('apc_store') || strpos(@ini_get('apc.filters'), 'config') !== false
 		);
 		$e = $w = $i = 0;
