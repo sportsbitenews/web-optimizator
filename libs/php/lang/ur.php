@@ -576,7 +576,7 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS3', '@wboptimizer - #ویبو سائٹ اس
 define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'ٹریفک کا');
 define('_WEBO_DASHBOARD_CRITICAL', 'ایک اہم مسئلہ ہے');
 define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'ویبو سائٹ اسپیڈ اپ خود کار تنصیب میں ناکام رہا');
-define('_WEBO_DASHBOARD_CRITICAL_DO', 'براہ مہربانی مندرجہ ذیل کام کریں');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Please be sure that you are <strong>not used local environment</strong> and do the following');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'اپنی ویب سائٹ کی سورس فائلز کو FTP یا SSH کی مدد سے کھولیں');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'اپنے ویبو سائٹ اسپیڈ اپ انسٹالیشن فولڈر میں <code>config.webo.php</code> فائل کو ڈھونڈیں');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'اس فائل کو کھولیں اور ان <code>$compress_options[\'website_root\']</code> اور <code>$compress_options[\'document_root\']</code> کی درست قیمت درج کریں۔ (یعنی آپ کی ویب سائٹ اور ڈاکومنٹ روٹ کی صحیح لوکیشن). اگر آپ کو کوئی آئیڈیا نہیں ہے کہ ان کی درست ویلیو کیا ہے تو برائے مہربانی اپنے ہوسٹنگ مہیا کرنے والوں سے رابطہ فرمائیں۔');

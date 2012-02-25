@@ -597,7 +597,7 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'трафика');
 /* Dashboard error */
 define('_WEBO_DASHBOARD_CRITICAL', 'Возникла критическая ошибка');
 define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'Автоматическая установка WEBO Site SpeedUp провалилась');
-define('_WEBO_DASHBOARD_CRITICAL_DO', 'Пожалуйста, выполните следующие шаги');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Пожалуйста, удостоверьтесь, что вы <strong>не используете локальное веб-окружение</strong>, и выполните следующие шаги');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Откройте исходные файлы вашего сайта по FTP или SSH.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Найдите файл <code>config.webo.php</code> в установочной директории WEBO Site SpeedUp');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Откройте этот файл и измените значения констант <code>$compress_options[\'website_root\']</code> и <code>$compress_options[\'document_root\']</code> на правильные (фактическое расположение вашего сайта и DOCUMENT_ROOT). Если вы не представляете, что нужно изменить, проконсультирутесь со своим хостинг-провайдером.');

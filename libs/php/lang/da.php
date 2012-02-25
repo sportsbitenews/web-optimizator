@@ -591,7 +591,7 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'trafik');
 /* Dashboard error */
 define('_WEBO_DASHBOARD_CRITICAL', 'Dette er et kritisk problem');
 define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'WEBO Site SpeedUp automatiske installation fejlede');
-define('_WEBO_DASHBOARD_CRITICAL_DO', 'Gør venligst følgende');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Please be sure that you are <strong>not used local environment</strong> and do the following');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Åben FTP klient via FTP eller SSH.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Find filen <code>config.webo.php</code> i WEBO Site SpeedUp installationsmappen');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Åben denne file og ændre værdien af <code>$compress_options[\'website_root\']</code> og <code>$compress_options[\'document_root\']</code> til det korrekte (korrekt placering af din hjemmeside og din dokument rodmappe). Hvis du ikke har nogen ide om, hvor det skulle være, så kontakt venligst din hjemmeside udbyder.');
