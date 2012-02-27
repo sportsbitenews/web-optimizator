@@ -269,7 +269,7 @@
 	echo htmlspecialchars($charset);
 ?>" name="wss_encoding" id="wss_encoding" class="wssF"/></dd><?php
 	if ($premium > 1) {
-?><dt class="wssD5"><label class="wssE" for="wss_currency"><?php
+?><dt class="wssD1"><label class="wssE" for="wss_currency"><?php
 		echo _WEBO_currency;
 ?> <a class="wssJ9" href="#" title="<?php
 		echo _WEBO_currency_HELP;
