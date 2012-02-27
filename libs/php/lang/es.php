@@ -149,6 +149,8 @@ define('_WEBO_host', 'Dirección del Website');
 define('_WEBO_host_HELP', 'Nombre del dominio o dirección IP de su website. For ejemplo: mysite.com');
 define('_WEBO_charset', 'Website charset');
 define('_WEBO_charset_HELP', 'Website content charset, is required for correct server-side caching. Example: utf-8');
+define('_WEBO_currency', 'Website currency');
+define('_WEBO_currency_HELP', 'Website default currency code (for less cache size). Example: RUR, EUR, USD');
 define('_WEBO_external_scripts_user', 'Nombre de usuario (para acceder via autorización HTTP Basic)');
 define('_WEBO_external_scripts_user_HELP', 'Si su website está protegido via autorización HTTP Basic necesitará declarar su nombre de usuario y su contraseña para que WEBO Site SpeedUp pueda procesar todos los recursos requeridos de su website.');
 define('_WEBO_external_scripts_pass', 'Clave (para acceder via autorización HTTP Basic)');

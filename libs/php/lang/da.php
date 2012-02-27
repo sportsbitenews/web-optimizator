@@ -149,6 +149,8 @@ define('_WEBO_host', 'Hjemmesideadresse');
 define('_WEBO_host_HELP', 'Domænenavn eller IP adresse for din hjemmeside. Foreksempel: minside.dk');
 define('_WEBO_charset', 'Hjemmeside tegnsæt');
 define('_WEBO_charset_HELP', 'Tegnsæt af indholdet på din hjemmeside, er påkrævet for korrekt server-side caching. Foreksempel: utf-8');
+define('_WEBO_currency', 'Website currency');
+define('_WEBO_currency_HELP', 'Website default currency code (for less cache size). Example: RUR, EUR, USD');
 define('_WEBO_external_scripts_user', 'Brugernavn (til adgang via HTTP Basic Authorization)');
 define('_WEBO_external_scripts_user_HELP', 'Hvis din hjemmeside er beskyttet via HTTP Basic Authorization, skal du angive brugernavn og adgangskode, så WEBO Site SpeedUp kan udføre alle handlingerne på hjemmesiden.');
 define('_WEBO_external_scripts_pass', 'Adgangskode (til adgang via HTTP Basic Authorization)');

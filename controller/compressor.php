@@ -559,6 +559,7 @@ class web_optimizer {
 				$this->premium > 1 ? explode(" ", $this->options['plugins']) : '',
 			"days_to_delete" => $this->premium > 1 ? round($this->options['performance']['delete_old']) : 0,
 			"charset" => $this->options['charset'],
+			"currency" => $this->premium > 1 ? $this->options['currency'] : '',
 			'host' => $this->options['host'],
 			"clean_html_cache" => $this->options['html_cache']['cleanup'] &&
 				$this->premium > 1 ? $this->options['html_cache']['timeout'] : 0

@@ -1890,6 +1890,8 @@ class admin {
 				$this->compress_options['host'] : $this->input['wss_host'];
 			$this->compress_options['charset'] = empty($this->input['wss_encoding']) ?
 				$this->compress_options['charset'] : $this->input['wss_encoding'];
+			$this->compress_options['currency'] = empty($this->input['wss_currency']) ?
+				$this->compress_options['currency'] : $this->input['wss_currency'];
 			$this->compress_options['website_root'] = empty($this->input['wss_website_root']) ?
 				$this->compress_options['website_root'] : $this->input['wss_website_root'];
 			$this->compress_options['document_root'] = empty($this->input['wss_document_root']) ?
@@ -1961,6 +1963,7 @@ class admin {
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
 				$this->save_option("['charset']", $this->compress_options['charset']);
+				$this->save_option("['currency']", $this->compress_options['currency']);
 				$this->save_option("['website_root']", $this->compress_options['website_root']);
 				$this->save_option("['document_root']", $this->compress_options['document_root']);
 				$this->save_option("['css_cachedir']", $this->compress_options['css_cachedir']);
@@ -2068,6 +2071,7 @@ class admin {
 			"/", $this->compress_options['javascript_cachedir']);
 		$page_variables['host'] = $this->compress_options['host'];
 		$page_variables['charset'] = $this->compress_options['charset'];
+		$page_variables['currency'] = $this->compress_options['currency'];
 		$page_variables['website_root'] = $this->compress_options['website_root'];
 		$page_variables['document_root'] = $this->compress_options['document_root'];
 		$page_variables['css_cachedir'] = $this->compress_options['css_cachedir'];

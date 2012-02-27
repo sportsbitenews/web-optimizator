@@ -269,6 +269,13 @@
 	echo htmlspecialchars($charset);
 ?>" name="wss_encoding" id="wss_encoding" class="wssF"/></dd><?php
 	if ($premium > 1) {
+?><dt class="wssD5"><label class="wssE" for="wss_currency"><?php
+		echo _WEBO_currency;
+?> <a class="wssJ9" href="#" title="<?php
+		echo _WEBO_currency_HELP;
+?>">?</a></label></dt><dd class="wssD6"><input value="<?php
+		echo htmlspecialchars($currency);
+?>" name="wss_currency" id="wss_currency" class="wssF"/></dd><?php
 		if (!$internal) {
 ?><dt class="wssD5"><label class="wssE" for="wss_htaccess_access"><?php
 			echo _WEBO_htaccess_access;

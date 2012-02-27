@@ -150,6 +150,8 @@ define('_WEBO_host', 'Indirizzo Website');
 define('_WEBO_host_HELP', 'Dominio o indirizzo IP del tuo sito. Per esempio: downloadtaky.info');
 define('_WEBO_charset', 'Website charset');
 define('_WEBO_charset_HELP', 'Website content charset, is required for correct server-side caching. Example: utf-8');
+define('_WEBO_currency', 'Website currency');
+define('_WEBO_currency_HELP', 'Website default currency code (for less cache size). Example: RUR, EUR, USD');
 define('_WEBO_external_scripts_user', 'Username (Per accedere con autorizzazione HTTP di base)');
 define('_WEBO_external_scripts_user_HELP', 'Se il tuo sito è protetto attraverso HTTP Basic Autorizzation dovrai dichiarare username e password così WEBO Site SpeedUp potrà processare tutte le richieste necessarie all\'ottimizzazione del sito.');
 define('_WEBO_external_scripts_pass', 'Password (per aceddere via HTTP Basic Autorization)');

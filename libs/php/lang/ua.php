@@ -151,6 +151,8 @@ define('_WEBO_host', 'Адрес сайта');
 define('_WEBO_host_HELP', 'Доменное имя или IP-адрес оптимизируемого сайта. Пример: mysite.ru.');
 define('_WEBO_charset', 'Кодировка сайта');
 define('_WEBO_charset_HELP', 'Кодировка содержания сайта, необходимо для правильного серверного кэширования. Пример: utf-8');
+define('_WEBO_currency', 'Валюта сайта');
+define('_WEBO_currency_HELP', 'Код валюты сайта по умолчанию (для сокращения объема кэша HTML-страниц). Например: RUR, EUR, USD');
 define('_WEBO_external_scripts_user', 'Логин для доступа по HTTP Basic Authorization');
 define('_WEBO_external_scripts_user_HELP', 'В случае, если доступ на сайт, где используется WEBO Site SpeedUp, ограничен посредством HTTP Basic Authorization, необходимо указать логин и пароль, чтобы WEBO Site SpeedUp мог обрабатывать необходимые ресурсы с сайта.');
 define('_WEBO_external_scripts_pass', 'Пароль для доступа по HTTP Basic Authorization');

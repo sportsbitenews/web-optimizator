@@ -283,6 +283,8 @@ $compress_options['htaccess']['local'] = "1";
 $compress_options['htaccess']['access'] = "0";
 ## Restricted for logic website parts
 $compress_options['restricted'] = "captcha";
+## Default website currency
+$compress_options['currency'] = "";
 ## Punypng api key
 $compress_options['punypng'] = "";
 ## List of enabled plugins for server side performance
