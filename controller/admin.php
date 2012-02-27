@@ -1792,7 +1792,7 @@ class admin {
 					!empty($gd['WBMP Support'])),
 			'memory_limit' => round($memory_limit) > 32 || round($memory_limit) < 15,
 			'wordpress_cache_enabled' => $wp_cache_enabled,
-			'too_many_files' => $cache_files == $cache_files_new
+			'too_many_files' => $cache_files >= $cache_files_new
 		);
 		$infos = array(
 			'htaccess_writable' => !$htaccess_available ||
