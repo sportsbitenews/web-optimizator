@@ -239,7 +239,7 @@ class compressor_view {
 	* Generic download function to get external files
 	*
 	**/
-	function download ($remote_file, $local_file, $timeout = 60, $host = false, $user = false, $pass = false) {
+	function download ($remote_file, $local_file, $timeout = 60, $host = false, $user = false, $pass = false, $recursion = 0) {
 		if (!$host) {
 			$host = $_SERVER['HTTP_HOST'];
 		}
@@ -256,8 +256,8 @@ class compressor_view {
 			$local_file_headers = $local_file . ".headers";
 /* start curl */
 			$ch = @curl_init($remote_file);
-			$fp = @fopen($local_file, "w");
-			$fph = @fopen($local_file_headers, "w");
+			$fp = @fopen($local_file, "w+");
+			$fph = @fopen($local_file_headers, "w+");
 			if ($fp && $ch) {
 				@curl_setopt($ch, CURLOPT_FILE, $fp);
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -296,6 +296,10 @@ class compressor_view {
 			if ($code == 403 || $code == 404) {
 				$fp = @fopen($local_file, "w");
 				@fclose($fp);
+			}
+/* Fix non-supported 301/302 redirect */
+			if (strpos($headers, 'Location:') && $recursion < 10) {
+				$this->download(preg_match("!.*Location:\s*([^\n])\r?.*!is", "$1", $headers), $local_file, $timeout, $host, $user, $pass, $recursion++);
 			}
 		}
 		return array($gzip, $code, $headers);
