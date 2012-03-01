@@ -14,8 +14,9 @@ class web_optimizer {
 	* Sets the options and defines the gzip headers
 	**/
 	function web_optimizer ($options = false) {
+		$currency = empty($_COOKIE['WSS_CURRENCY']) ? $options['options']['currency'] : $_COOKIE['WSS_CURRENCY'];
 		$homepage = empty($options['options']['html_cache']['ignore_list']) && empty($options['options']['restricted']) ? '' :
-			in_array($_SERVER['REQUEST_URI'], array('/', '/index.php', '/index.html'));
+			in_array($_SERVER['REQUEST_URI'], array('/', '/index.php', '/index.html', '/#' . $currency));
 /* skip processing if disabled or restricted */
 		if (!empty($_GET['web_optimizer_disabled']) || (!empty($options['options']['restricted']) &&
 			(preg_match("@" . preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $options['options']['restricted'])) . "@", $_SERVER['REQUEST_URI']))) ||
@@ -3025,7 +3026,7 @@ class web_optimizer {
 		require($options['installdir'] . 'libs/php/config.unobtrusive.php');
 /* convert vKontakte to async load */
 		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
-			preg_match_all("!VK\.([^\)]+)\);?!is", $this->content, $matches, PREG_SET_ORDER);
+			preg_match_all("!VK\.([^\)]+)\);!is", $this->content, $matches, PREG_SET_ORDER);
 			$vk = '';
 			$replace_from = array();
 			foreach ($matches as $match) {
