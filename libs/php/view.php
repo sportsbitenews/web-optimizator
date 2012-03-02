@@ -229,7 +229,7 @@ class compressor_view {
 						@touch($wof);
 					}
 				}
-				return $t0 ? 0.5 : ($t1 ? 1 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2)));
+				return $t1 ? 1 : ($t0 ? 0.5 : (strpos($license, 'EBOS') ? 10 : ($t3 ? 3 : 2)));
 			}
 		}
 		return false;
@@ -412,17 +412,12 @@ class compressor_view {
 		}
 	}
 
-	function file_get_contents ($file)
-	{
-		if (get_magic_quotes_runtime())
-		{
+	function file_get_contents ($file) {
+		if (get_magic_quotes_runtime()) {
 			return stripslashes(@file_get_contents($file));
-		}
-		else
-		{
+		} else {
 			return @file_get_contents($file);
 		}
 	}
 
 }
-?>
