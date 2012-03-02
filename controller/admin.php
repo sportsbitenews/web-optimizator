@@ -2647,7 +2647,7 @@ class admin {
 					} else {
 						$this->view->download($svn . $file[0], $tmp);
 					}
-					@rename($tmp, $file);
+					@rename($tmp, $file[0]);
 /* remove old gzipped version */
 					@unlink($file . '.gz');
 					if ($file[0] == 'config.webo.php') {
