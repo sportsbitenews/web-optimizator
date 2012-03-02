@@ -2634,9 +2634,9 @@ class admin {
 				$this->write_progress(round(100 * $i / $total) . "," . $i . "," . $total, 1);
 				if (!empty($file)) {
 					$file = explode(":", $file);
+					$tmp = $file[0] . '.tmp';
 					if ($file[1]) {
 						$recursion = 0;
-						$tmp = $file[0] . '.tmp';
 						while (@filesize($tmp) != $file[1] && $recursion < 10) {
 							$this->view->download($svn . $file[0], $tmp);
 							$recursion++;
