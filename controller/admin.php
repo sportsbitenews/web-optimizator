@@ -5800,7 +5800,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 				$options = array($option_name => $option_value);
 			}
 /* bunch save for options */
-			foreach ($option as $option_name => $option_value) {
+			foreach ($options as $option_name => $option_value) {
 /* make password salt safe */
 				if ($option_name == "['htpasswd']") {
 					$option_value = str_replace('$', '#', $option_value);
