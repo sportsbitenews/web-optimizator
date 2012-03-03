@@ -1008,19 +1008,19 @@ define('_WEBO_HELP_FEATURES_BLOG', 'Blog ufficiale');
 define('_WEBO_HELP_HELP', 'Aiuto Veloce');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'Hai raggiunto alcuni risultati durante l\'accelerazione del sito e ricevuto un premio da WEBO Site SpeedUp. Puoi raggiungere maggiori performance se seguendo i consigli sull\'ottimizzazione che troverai nel sito. Puoi sempre controllare i tuoi miglioramenti con il servizio<a href="http://webo.name/my/" class="wssJ">webo.name</a> (veloce registrazione richiesta).');
+define('_WEBO_AWARDS_INTRO', 'Hai raggiunto alcuni risultati durante l\'accelerazione del sito e ricevuto un premio da WEBO Site SpeedUp. Puoi raggiungere maggiori performance se seguendo i consigli sull\'ottimizzazione che troverai nel sito. Puoi sempre controllare i tuoi miglioramenti con il servizio<a href="http://webopulsar.com/" class="wssJ">WEBO Pulsar</a> (veloce registrazione richiesta).');
 define('_WEBO_AWARDS_TOP', 'Combinazione di YSlow + Page<br/>Speed + WEBO grade');
 define('_WEBO_AWARDS_TOP_INFO', '<a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a>, e <a href="http://webo.in/about/" class="wssJ">WEBO</a> grades sono valutazioni di velocità indipendenti. Un più alto grado indica maggiori performance.');
 define('_WEBO_AWARDS_TOP_01', 'Per migliorare questo grado sistema le opzioni nei gruppi ');
 define('_WEBO_AWARDS_TOP_12', 'Per migliorare questo grado sistema le opzioni nei gruppi ');
 define('_WEBO_AWARDS_TOP_23', 'Per migliorare questo grado segui i consigli di YSlow, Page Speed, o WEBO o migliora le tue scelte nelle optzioni');
 define('_WEBO_AWARDS_MIDDLE', 'Decremento relativo della<br/> Dimensione del sito');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'Un sito più leggero si carica più velocemente indipendentemente dalla velocità di connessione. La diminuzione della dimensione del sito è stata calcolata con il servizio offerto da <a href="http://webo.name/">webo.name</a>.');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'Un sito più leggero si carica più velocemente indipendentemente dalla velocità di connessione. La diminuzione della dimensione del sito è stata calcolata con il servizio offerto da <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
 define('_WEBO_AWARDS_MIDDLE_01', 'Per ridurre la dimensione del sito necessiti di abilitare le opzioni nei gruppi ');
 define('_WEBO_AWARDS_MIDDLE_12', 'Per ridurre la dimensione del sito necessiti di abilitare le opzioni nei gruppi ');
 define('_WEBO_AWARDS_MIDDLE_23', 'Per ridurre la dimensione del sito necessiti di abilitare le opzioni nei gruppi ');
 define('_WEBO_AWARDS_BOTTOM', 'Velocizzazione relativa<br/>del sito');
-define('_WEBO_AWARDS_BOTTOM_INFO', 'La velocità di caricamento di un sito è uno degli elementi principali per avere utenti fedeli. La velocizzazione del sito è stata calcolata con il servizio <a href="http://webo.name/">webo.name</a>.');
+define('_WEBO_AWARDS_BOTTOM_INFO', 'La velocità di caricamento di un sito è uno degli elementi principali per avere utenti fedeli. La velocizzazione del sito è stata calcolata con il servizio <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
 define('_WEBO_AWARDS_BOTTOM_01', 'Per velocizzare il tuo website necessiti di abilitare le opzioni nei gruppi ');
 define('_WEBO_AWARDS_BOTTOM_12', 'Per un\'addizionale velocizzazione del tuo website necessiti di abilitare le opzioni nei gruppi ');
 define('_WEBO_AWARDS_BOTTOM_23', 'Per un\'addizionale velocizzazione del  tuo website necessiti di abilitare le opzioni nei gruppi ');

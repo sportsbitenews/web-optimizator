@@ -1007,19 +1007,19 @@ define('_WEBO_HELP_FEATURES_BLOG', 'Officiel blog');
 define('_WEBO_HELP_HELP', 'Hurtig hjælp');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'Du har opnået en bedre indlæsningshastighed og har fået en optimeringsklasificering af WEBO Site SpeedUp. Du kan opnå en endnu bedre indlæsningshastighed, ved at følge alle vores råd. Du kan altid afklare hastigheden for din hjemmeside, med servicen på <a href="http://webo.name/my/" class="wssJ">webo.name</a> (hurtig registrering er påkrævet).');
+define('_WEBO_AWARDS_INTRO', 'Du har opnået en bedre indlæsningshastighed og har fået en optimeringsklasificering af WEBO Site SpeedUp. Du kan opnå en endnu bedre indlæsningshastighed, ved at følge alle vores råd. Du kan altid afklare hastigheden for din hjemmeside, med servicen på <a href="http://webopulsar.com/" class="wssJ">WEBO Pulsar</a> (hurtig registrering er påkrævet).');
 define('_WEBO_AWARDS_TOP', 'Sammenflettet YSlow + Side<br/>Hastighed + WEBO klasificering');
 define('_WEBO_AWARDS_TOP_INFO', '<a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a>, og <a href="http://webo.in/about/" class="wssJ">WEBO</a> klasificering er uafhængige af hinanden. En højere klasificering, indikerer en højere hjemmeside ydelse.');
 define('_WEBO_AWARDS_TOP_01', 'For at øge denne klasificering, prøv da venligst at justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_TOP_12', 'For at øge denne klasificering, prøv da venligst at justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_TOP_23', 'For at øge denne klasificering, prøv da venligst at følge YSlow, Page Speed, eller WEBO rådene eller justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_MIDDLE', 'Relative fald<br/>i hjemmeside størrelsen');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'En mindre hjemmeside, henter hurtigere indhold for alle brugere, uanset deres internetforbindelse. Faldet af hjemmesidestørrelsen er udregnet med servicen fra <a href="http://webo.name/">webo.name</a>.');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'En mindre hjemmeside, henter hurtigere indhold for alle brugere, uanset deres internetforbindelse. Faldet af hjemmesidestørrelsen er udregnet med servicen fra <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
 define('_WEBO_AWARDS_MIDDLE_01', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_MIDDLE_12', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_MIDDLE_23', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_BOTTOM', 'Relative hjemmeside<br/>hastighed');
-define('_WEBO_AWARDS_BOTTOM_INFO', 'Indlæsningstiden af siden er en af de vigtigste faktorer for at fastholde besøgende. Hastigheden på hjemmesiden er udregnet med servicen fra <a href="http://webo.name/">webo.name</a>.');
+define('_WEBO_AWARDS_BOTTOM_INFO', 'Indlæsningstiden af siden er en af de vigtigste faktorer for at fastholde besøgende. Hastigheden på hjemmesiden er udregnet med servicen fra <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
 define('_WEBO_AWARDS_BOTTOM_01', 'For at øge hastigheden på din hjemmeside, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_BOTTOM_12', 'For yderligere at øge din hastighed på din hjemmeside, skal du aktivere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_BOTTOM_23', 'For yderligere at øge din hastighed på din hjemmeside, skal du aktivere indstillingerne i grupperne ');

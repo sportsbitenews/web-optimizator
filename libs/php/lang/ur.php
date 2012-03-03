@@ -1,4 +1,4 @@
-<?php
+w<?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Contains all UR localization constants
@@ -992,19 +992,19 @@ define('_WEBO_HELP_FEATURES_BLOG', 'سرکاری بلاگ');
 define('_WEBO_HELP_HELP', 'فوری مدد');
 
 /* ایوارڈ صفحہ */
-define('_WEBO_AWARDS_INTRO', 'آپ نے ویب سائٹ کی رفتار بڑھانے کے عمل کے دوران کچھ نتائج حاصل کئے ہیں اور ویبو سائٹ اسپیڈ اپ کی جانب سے اپٹمائزیشن ایوارڈ حاصل کیا ہے۔ آپ اس سے بھی زیادہ رفتار حاصل کر سکتے ہیں اگر ویب سائٹ اپٹمائزیشن کیلئے کی گئی ہدایات پر عمل کریں۔ آپ اپنی ویب سائٹ رفتار کو جانچنے کیلئے <a href="http://webo.name/my/" class="wssJ">webo.name</a> سروس سے استفادہ حاصل کر سکتے ہیں (فوری ہو جانے والی رجسٹریشن درکار ہوگی)۔');
+define('_WEBO_AWARDS_INTRO', 'آپ نے ویب سائٹ کی رفتار بڑھانے کے عمل کے دوران کچھ نتائج حاصل کئے ہیں اور ویبو سائٹ اسپیڈ اپ کی جانب سے اپٹمائزیشن ایوارڈ حاصل کیا ہے۔ آپ اس سے بھی زیادہ رفتار حاصل کر سکتے ہیں اگر ویب سائٹ اپٹمائزیشن کیلئے کی گئی ہدایات پر عمل کریں۔ آپ اپنی ویب سائٹ رفتار کو جانچنے کیلئے <a href="http://webopulsar.com/" class="wssJ">WEBO Pulsar</a> سروس سے استفادہ حاصل کر سکتے ہیں (فوری ہو جانے والی رجسٹریشن درکار ہوگی)۔');
 define('_WEBO_AWARDS_TOP', 'YSlow + Page <br/> Speed + Webo Grade کو یکجا کریں۔');
 define('_WEBO_AWARDS_TOP_INFO', '<a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a>, اور <a href="http://webo.in/about/" class="wssJ">WEBO</a> گریڈز تمام الگ ویب سائٹس ہیں جو کہ ویب سائٹ کی لوڈ اسپیڈ کا جائزہ لیتے ہیں۔ زیادہ گریڈز کا مطلب ہے کہ ویب سائٹ کارکردگی زیادہ بہتر ہے۔');
 define('_WEBO_AWARDS_TOP_01', 'اس گریڈ میں اضافہ کیلئے ، گروپس میں موجود آپشنز کو ٹیون کریں۔');
 define('_WEBO_AWARDS_TOP_12', 'اس گریڈ میں اضافہ کیلئے ، گروپس میں موجود آپشنز کو ٹیون کریں۔');
 define('_WEBO_AWARDS_TOP_23', 'اس گریڈ میں اضافہ کیلئے YSlow, Page Speed یا Webo کی ہدایات پر عمل کریں یا گروپس میں موجود آپشنز کو ٹیون کریں۔');
 define('_WEBO_AWARDS_MIDDLE', 'ویب سائٹ سائز میں <br/> کمی');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'ہلکی ویب سائٹس تمام یوزرز کیلئے تیزی سے لوڈ ہوتی ہیں، بغیر اس کے کہ انٹرنیٹ کنکشن کیسا ہے۔ ویب سائٹ سائز میں کمی کو <a href="http://webo.name/">webo.name</a> سروس کے ذریعے جانچا جاتا ہے۔');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'ہلکی ویب سائٹس تمام یوزرز کیلئے تیزی سے لوڈ ہوتی ہیں، بغیر اس کے کہ انٹرنیٹ کنکشن کیسا ہے۔ ویب سائٹ سائز میں کمی کو <a href="http://webopulsar.com/">WEBO Pulsar</a> سروس کے ذریعے جانچا جاتا ہے۔');
 define('_WEBO_AWARDS_MIDDLE_01', 'ویب سائٹ کا سائز کم کرنے کیلئے آپ کو گروپس میں آپشن کو فعال کرنا ہوگا۔');
 define('_WEBO_AWARDS_MIDDLE_12', 'ویب سائٹ کا سائز کم کرنے کیلئے آپ کو گروپس میں آپشن کو فعال کرنا ہوگا۔');
 define('_WEBO_AWARDS_MIDDLE_23', 'ویب سائٹ کا سائز کم کرنے کیلئے آپ کو گروپس میں آپشن کو فعال کرنا ہوگا۔');
 define('_WEBO_AWARDS_BOTTOM', 'ویب سائٹ رفتار میں <br/>اضافہ');
-define('_WEBO_AWARDS_BOTTOM_INFO', 'ویب سائٹ لوڈ اسپیڈ ویب سائٹ وزٹرز کو قائم رکھنے کے اہم ذرائع میں سب سے اہم ذریعہ ہے۔ ویب سائٹ کی رفتار میں اضافہ کو <a href="http://webo.name/">webo.name</a> سروس کے ذریعے جانچا جاتا ہے۔');
+define('_WEBO_AWARDS_BOTTOM_INFO', 'ویب سائٹ لوڈ اسپیڈ ویب سائٹ وزٹرز کو قائم رکھنے کے اہم ذرائع میں سب سے اہم ذریعہ ہے۔ ویب سائٹ کی رفتار میں اضافہ کو <a href="http://webopulsar.com/">WEBO Pulsar</a> سروس کے ذریعے جانچا جاتا ہے۔');
 define('_WEBO_AWARDS_BOTTOM_01', 'اپنی ویب سائٹ کی رفتار میں اضافہ کیلئے آپ کو گروپس میں آپشنز کو فعال کرنا ہوگا۔');
 define('_WEBO_AWARDS_BOTTOM_12', 'اپنی ویب سائٹ کی رفتار میں مزید اضافہ کیلئے آپ کو گروپس میں آپشنز کو فعال کرنا ہوگا۔');
 define('_WEBO_AWARDS_BOTTOM_23', 'اپنی ویب سائٹ کی رفتار میں مزید اضافہ کیلئے آپ کو گروپس میں آپشنز کو فعال کرنا ہوگا۔');

@@ -1007,19 +1007,19 @@ define('_WEBO_HELP_FEATURES_BLOG', 'Official blog');
 define('_WEBO_HELP_HELP', 'Quick Help');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'You have achieved some results during website acceleration and have received an optimization award from WEBO Site SpeedUp. You can achieve greater if you follow website performance optimization advices. You can always clarify your website acceleration with <a href="http://webo.name/my/" class="wssJ">webo.name</a> service (quick registration is required).');
+define('_WEBO_AWARDS_INTRO', 'You have achieved some results during website acceleration and have received an optimization award from WEBO Site SpeedUp. You can achieve greater if you follow website performance optimization advices. You can always clarify your website acceleration with <a href="http://webopulsar.com/" class="wssJ">WEBO Pulsar</a> service (quick registration is required).');
 define('_WEBO_AWARDS_TOP', 'Combined YSlow + Page<br/>Speed + WEBO grade');
 define('_WEBO_AWARDS_TOP_INFO', '<a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a>, and <a href="http://webo.in/about/" class="wssJ">WEBO</a> grades are independent website load speed evaluations. Higher grade indicates higher website performance.');
 define('_WEBO_AWARDS_TOP_01', 'To increase this grade try to tune options in groups ');
 define('_WEBO_AWARDS_TOP_12', 'To increase this grade try to tune options in groups ');
 define('_WEBO_AWARDS_TOP_23', 'To increase this grade try follow YSlow, Page Speed, or WEBO advices or tune options in groups ');
 define('_WEBO_AWARDS_MIDDLE', 'Relative decrease<br/>in website size');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'Lighter website loads faster for all users, regardless their Internet connection. Website decrease in size is calculated with <a href="http://webo.name/">webo.name</a> service.');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'Lighter website loads faster for all users, regardless their Internet connection. Website decrease in size is calculated with <a href="http://webopulsar.com/">WEBO Pulsar</a> service.');
 define('_WEBO_AWARDS_MIDDLE_01', 'To reduce website size you need to enable options in groups ');
 define('_WEBO_AWARDS_MIDDLE_12', 'To reduce website size you need to enable options in groups ');
 define('_WEBO_AWARDS_MIDDLE_23', 'To reduce website size you need to enable options in groups ');
 define('_WEBO_AWARDS_BOTTOM', 'Relative website<br/>speedup');
-define('_WEBO_AWARDS_BOTTOM_INFO', 'Website load speed is one of the most important factors holding website visitors. Website speedup os calculated with <a href="http://webo.name/">webo.name</a> service.');
+define('_WEBO_AWARDS_BOTTOM_INFO', 'Website load speed is one of the most important factors holding website visitors. Website speedup os calculated with <a href="http://webopulsar.com/">WEBO Pulsar</a> service.');
 define('_WEBO_AWARDS_BOTTOM_01', 'To speed your website up you need to enable options in groups ');
 define('_WEBO_AWARDS_BOTTOM_12', 'To additionally speed your website up you need to enable options in groups ');
 define('_WEBO_AWARDS_BOTTOM_23', 'To additionally speed your website up you need to enable options in groups ');
