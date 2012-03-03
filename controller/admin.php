@@ -5746,24 +5746,24 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 	* 
 	**/
 	function save_options ($mode = 0) {
-		$options = array();
 		switch ($mode) {
 			case 1:
 				foreach($this->compress_options as $key => $option) {
 					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
 							if (isset($this->input['wss_' . strtolower($key) . '_' . strtolower($option_name)])) {
-								$options["['" .
+								$this->save_option("['" .
 									strtolower($key) . "']['" .
-									strtolower($option_name) . "']"] = $this->input['wss_' .
+									strtolower($option_name) . "']",
+									$this->input['wss_' .
 									strtolower($key) . '_' .
-									strtolower($option_name)];
+									strtolower($option_name)]);
 							}
 						}
 					} else {
 						if (isset($this->input['wss_' . strtolower($key)])) {
-							$options["['" . strtolower($key)
-								. "']"] = $this->input['wss_' . strtolower($key)];
+							$this->save_option("['" . strtolower($key)
+								. "']", $this->input['wss_' . strtolower($key)]);
 						}
 					}
 				}
@@ -5772,22 +5772,28 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 				foreach($this->compress_options as $key => $option) {
 					if (is_array($option)) {
 						foreach($option as $option_name => $option_value) {
-							$options["['" . strtolower($key) . "']['" . strtolower($option_name) . "']"] = $option_value;
+							$this->save_option("['" . strtolower($key) . "']['" . strtolower($option_name) . "']", $option_value);
 						}
 					} else {
-						$options["['" . strtolower($key) . "']"] = $option;
+						$this->save_option("['" . strtolower($key) . "']", $option);
 					}
 				}
 				break;
 		}
-		$this->save_option('', '', $options);
 	}
 
 	/**
 	* Saves an admin option
 	* 
 	**/
-	function save_option ($option_name, $option_value, $options = array()) {
+	function save_option ($option_name, $option_value) {
+/* make password salt safe */
+		if ($option_name == "['htpasswd']") {
+			$option_value = str_replace('$', '#', $option_value);
+/* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
+		} else {
+			$option_value = str_replace('$', '\\\$', preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)))));
+		}
 /* See if file exists */
 		$option_file = $this->basepath . $this->options_file;
 		if (!@is_file($option_file)) {
@@ -5796,20 +5802,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 		}
 		$content = $this->file_get_contents($option_file);
 		if ($content) {
-			if (!count($options)) {
-				$options = array($option_name => $option_value);
-			}
-/* bunch save for options */
-			foreach ($options as $option_name => $option_value) {
-/* make password salt safe */
-				if ($option_name == "['htpasswd']") {
-					$option_value = str_replace('$', '#', $option_value);
-/* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
-				} else {
-					$option_value = str_replace('$', '\\\$', preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)))));
-				}
-				$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-			}
+			$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 			if (!$this->write_file($option_file, $content, 1)) {
 				$this->error[0] = 1;
 			}
