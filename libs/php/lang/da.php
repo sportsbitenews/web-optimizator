@@ -11,7 +11,7 @@ define('_WEBO_GENERAL_TITLE', 'WEBO Site SpeedUp indstillinger');
 define('_WEBO_GENERAL_FOOTER', 'Hurtigere end lynet!');
 define('_WEBO_GENERAL_BUYNOW', '<a href="https://www.softkey.net/catalog/basket.php?id=350446&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp udvidet version">Køb nu</a>');
 define('_WEBO_GENERAL_BUYNOWLITE', '<a href="https://www.softkey.net/catalog/basket.php?id=350449&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp standard version">Køb nu</a>');
-define('_WEBO_GENERAL_BUYNOWZERO', '<a href="https://www.softkey.net/catalog/basket.php?id=582711&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp zero version">Køb nu</a>');
+define('_WEBO_GENERAL_BUYNOWZERO', '<a href="https://www.softkey.net/catalog/basket.php?id=582711&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Zero version">Køb nu</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="WEBO Site SpeedUp" title="WEBO Site SpeedUp" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Køb nu');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
@@ -149,8 +149,8 @@ define('_WEBO_host', 'Hjemmesideadresse');
 define('_WEBO_host_HELP', 'Domænenavn eller IP adresse for din hjemmeside. Foreksempel: minside.dk');
 define('_WEBO_charset', 'Hjemmeside tegnsæt');
 define('_WEBO_charset_HELP', 'Tegnsæt af indholdet på din hjemmeside, er påkrævet for korrekt server-side caching. Foreksempel: utf-8');
-define('_WEBO_currency', 'Website currency');
-define('_WEBO_currency_HELP', 'Website default currency code (for less cache size). Example: RUR, EUR, USD');
+define('_WEBO_currency', 'Hjemmeside valuta');
+define('_WEBO_currency_HELP', 'Standard hjemmeside valuta kode (for mindre cache størrelse). Eksempel: DKK, EUR, USD');
 define('_WEBO_external_scripts_user', 'Brugernavn (til adgang via HTTP Basic Authorization)');
 define('_WEBO_external_scripts_user_HELP', 'Hvis din hjemmeside er beskyttet via HTTP Basic Authorization, skal du angive brugernavn og adgangskode, så WEBO Site SpeedUp kan udføre alle handlingerne på hjemmesiden.');
 define('_WEBO_external_scripts_pass', 'Adgangskode (til adgang via HTTP Basic Authorization)');
@@ -593,7 +593,7 @@ define('_WEBO_DASHBOARD_SHARE_RESULTS_TRAFFIC', 'trafik');
 /* Dashboard error */
 define('_WEBO_DASHBOARD_CRITICAL', 'Dette er et kritisk problem');
 define('_WEBO_DASHBOARD_CRITICAL_FAILED', 'WEBO Site SpeedUp automatiske installation fejlede');
-define('_WEBO_DASHBOARD_CRITICAL_DO', 'Please be sure that you are <strong>not used local environment</strong> and do the following');
+define('_WEBO_DASHBOARD_CRITICAL_DO', 'Gør venligst følgende');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_1', 'Åben FTP klient via FTP eller SSH.');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_2', 'Find filen <code>config.webo.php</code> i WEBO Site SpeedUp installationsmappen');
 define('_WEBO_DASHBOARD_CRITICAL_STEP1_3' , 'Åben denne file og ændre værdien af <code>$compress_options[\'website_root\']</code> og <code>$compress_options[\'document_root\']</code> til det korrekte (korrekt placering af din hjemmeside og din dokument rodmappe). Hvis du ikke har nogen ide om, hvor det skulle være, så kontakt venligst din hjemmeside udbyder.');
@@ -708,8 +708,8 @@ define('_WEBO_SYSTEM_gd_possibility', '<code>gd</code> er ikke tilgængelig');
 define('_WEBO_SYSTEM_gd_possibility_HELP', 'Der er ingen gd PHP udvidelse på din server. Den bruges til at forberede CSS Sprites. For at installere gd, kontakt venligst din udbyder eller systemadministrator. Normalt er det nok at geninstallere PHP, med denne udvidelse aktiveret. [http://php.net/manual/en/book.image.php Information om gd på php.net] og [http://php.net/manual/en/install.windows.extensions.php information om gd udvidelsen på Windows baserede miljøer].');
 define('_WEBO_SYSTEM_wordpress_cache_enabled', 'Cache i WordPress er deaktiveret');
 define('_WEBO_SYSTEM_wordpress_cache_enabled_HELP', 'For at bruge server caching, skal du angive (\'WP_CACHE\', true); til wp-config.php filen, efter strengen med define(\'WPLANG\', ...) eller gøre det muligt at skrive til filen og derefter deaktivere og aktivere WEBO Site SpeedUp.');
-define('_WEBO_SYSTEM_too_many_files', 'Cache is growing');
-define('_WEBO_SYSTEM_too_many_files_HELP', 'You may have some unique code on your website which prevents efficient cache creation. If this issue is repeatedly shown - please re-configure WEBO Site SpeedUp to exclude unique code from caching.');
+define('_WEBO_SYSTEM_too_many_files', 'Cache stiger');
+define('_WEBO_SYSTEM_too_many_files_HELP', 'Du har noget unikt kode på din hjemmeside, som forhindre en effektiv cache oprettelse. Hvis dette problem viser sig igen - så konfigurer venligst WEBO Site SpeedUp til at ekskludere unik kode i at cache.');
 define('_WEBO_SYSTEM_gd_full_support', '<code>gd</code> er tildels tilgængelig');
 define('_WEBO_SYSTEM_gd_full_support_HELP', 'Der er gd PHP udvidelse på din server, men med begrænsede funktioner. Dette kan føre til at oprettelsen af CSS Sprites ikke udføres korrekt. For at installere gd med understøttelse af komplette funktioner, kontakt da venligst din udbyder eller din systemadministrator. Normalt er det nok bare at geninstallere PHP, med denne udvidelse aktiveret. Se også [http://php.net/manual/en/book.image.php Information om gd på php.net] og [http://php.net/manual/en/install.windows.extensions.php information om gd udvidelse på et Windows baseret miljø].');
 define('_WEBO_SYSTEM_yui_possibility', 'YUI Compressor er ikke tilgængelig');
@@ -889,7 +889,7 @@ define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Pris');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Gratis');
 define('_WEBO_SPLASH2_COMPARISON_ZEROPRICE', '$24.99');
 define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '$99.99');
-define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '$399');
+define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', 'fra $399');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Gratis opdateringer');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Uger');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Måneder');
@@ -1007,19 +1007,19 @@ define('_WEBO_HELP_FEATURES_BLOG', 'Officiel blog');
 define('_WEBO_HELP_HELP', 'Hurtig hjælp');
 
 /* Awards page */
-define('_WEBO_AWARDS_INTRO', 'Du har opnået en bedre indlæsningshastighed og har fået en optimeringsklasificering af WEBO Site SpeedUp. Du kan opnå en endnu bedre indlæsningshastighed, ved at følge alle vores råd. Du kan altid afklare hastigheden for din hjemmeside, med servicen på <a href="http://webopulsar.com/" class="wssJ">WEBO Pulsar</a> (hurtig registrering er påkrævet).');
+define('_WEBO_AWARDS_INTRO', 'Du har opnået en bedre indlæsningshastighed og har fået en optimeringsklasificering af WEBO Site SpeedUp. Du kan opnå en endnu bedre indlæsningshastighed, ved at følge alle vores råd. Du kan altid afklare hastigheden for din hjemmeside, med servicen på <a href="http://webo.name/my/" class="wssJ">webo.name</a> (hurtig registrering er påkrævet).');
 define('_WEBO_AWARDS_TOP', 'Sammenflettet YSlow + Side<br/>Hastighed + WEBO klasificering');
 define('_WEBO_AWARDS_TOP_INFO', '<a href="http://developer.yahoo.com/yslow/" class="wssJ" rel="nofollow">YSlow</a>, <a href="http://code.google.com/speed/page-speed/" class="wssJ" rel="nofollow">Page Speed</a>, og <a href="http://webo.in/about/" class="wssJ">WEBO</a> klasificering er uafhængige af hinanden. En højere klasificering, indikerer en højere hjemmeside ydelse.');
 define('_WEBO_AWARDS_TOP_01', 'For at øge denne klasificering, prøv da venligst at justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_TOP_12', 'For at øge denne klasificering, prøv da venligst at justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_TOP_23', 'For at øge denne klasificering, prøv da venligst at følge YSlow, Page Speed, eller WEBO rådene eller justere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_MIDDLE', 'Relative fald<br/>i hjemmeside størrelsen');
-define('_WEBO_AWARDS_MIDDLE_INFO', 'En mindre hjemmeside, henter hurtigere indhold for alle brugere, uanset deres internetforbindelse. Faldet af hjemmesidestørrelsen er udregnet med servicen fra <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
+define('_WEBO_AWARDS_MIDDLE_INFO', 'En mindre hjemmeside, henter hurtigere indhold for alle brugere, uanset deres internetforbindelse. Faldet af hjemmesidestørrelsen er udregnet med servicen fra <a href="http://webo.name/">webo.name</a>.');
 define('_WEBO_AWARDS_MIDDLE_01', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_MIDDLE_12', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_MIDDLE_23', 'For at reducere størrelsen på hjemmesiden, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_BOTTOM', 'Relative hjemmeside<br/>hastighed');
-define('_WEBO_AWARDS_BOTTOM_INFO', 'Indlæsningstiden af siden er en af de vigtigste faktorer for at fastholde besøgende. Hastigheden på hjemmesiden er udregnet med servicen fra <a href="http://webopulsar.ru/">WEBO Pulsar</a>.');
+define('_WEBO_AWARDS_BOTTOM_INFO', 'Indlæsningstiden af siden er en af de vigtigste faktorer for at fastholde besøgende. Hastigheden på hjemmesiden er udregnet med servicen fra <a href="http://webo.name/">webo.name</a>.');
 define('_WEBO_AWARDS_BOTTOM_01', 'For at øge hastigheden på din hjemmeside, skal du aktivere indstillinger i grupperne ');
 define('_WEBO_AWARDS_BOTTOM_12', 'For yderligere at øge din hastighed på din hjemmeside, skal du aktivere indstillingerne i grupperne ');
 define('_WEBO_AWARDS_BOTTOM_23', 'For yderligere at øge din hastighed på din hjemmeside, skal du aktivere indstillingerne i grupperne ');
@@ -1139,99 +1139,100 @@ define('_WEBO_WIZARD_NEXT', 'Næste');
 define('_WEBO_WIZARD_SAVE', 'Aktiver WEBO Site SpeedUp');
 define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp konfiguration');
 
-define('_WEBO_LICENSE_EXPIRED', 'Køb venligst en fuld version!');
+define('_WEBO_LICENSE_EXPIRED', 'Køb venligst den fulde version!');
 
-define('_WEBO_WELCOME_LETTER', 'Good day,
+define('_WEBO_WELCOME_LETTER', 'God dag,
 
-Thank you for installing WEBO Site SpeedUp on the website ###WEBSITE###. We are glad that you are aware of the influence of website speed to your business, and that you do care about customers\' expectations about your website performance.
+Tak fordi du installerede Webo websted SpeedUp på din hjemmeside ###WEBSITE###. Vi er glade for at du er bevidst om hvad Webo SpeedUp kan gøre ved hastigheden på din hjemmeside, og at du gør noget ved oplevelsen for dine kunder\'s forventninger til en hjemmeside præstation.
 
-But must warn you in case of misconfiguration WEBO Site SpeedUp website may stop working.
+Vi skal advare dig om, at en forkert opsætning af WEBO Site SpeedUp kan medføre at din hjemmeside stopper med at virke efter hensigten.
 
-If you have website broken after misconfiguration, please do not worry, WEBO Site SpeedUp does not change the source code of your website and does not alter the database. Even if the backend of the site is unavailable, the product can be disabled very easy:
+Hvis du får en ødelagt hjemmeside efter forkert opsætning, skal du ikke blive urolig, for WEBO Site SpeedUp ændre IKKE på kildekoden af din hjemmeside og ændrer ikke din database. Selvom administrator siden ikke kan tilgåes, kan du nemt deaktivere WEBO Site SpeedUp på følgende måde:
 
-* Restore .htaccess file in the root directory of your website, or just delete all the statements between comments # Web Optimizer from it. The backup file is located in the same directory and it is called .htaccess.backup.
-* Open the file ###FOLDER###config.webo.php and change the $compress_options[\'active\'] with "1" to "0".
+* Gendan din .htaccess fil i roden af din hjemmeside, eller slet alle linjerne i den, fra kommentarene # Web Optimizer. Backup af filen er placeret i samme mappe og hedder .htaccess.backup.
+* Åben filen ###FOLDER###config.webo.php og ændre $compress_options[\'active\'] fra "1" til "0".
 
-WEBO Site SpeedUp is just a tool. The result depends on how it is configured. Different server environments require different settings. CSS and JavaScript features also impose restrictions on the methods for speeding your website up.
+WEBO Site SpeedUp er kun et værktøj. Resultatet afhænger af opsætningen. Forskellige servermiljøet kræver forskellige indstillinger. CSS og JavaScript funktioner kræver også forskellige opsætninger for at gøre din hjemmeside hurtigere.
 
-A brief product guide
+En kort produkt guide
 
-1. Prepare for work.
-* Back up your website and make sure that during website acceleration there won\'t be any other work. So if something goes wrong, you can always go back to the stable version of the website.
-* Prepare tools for web applications debugging. We recommend that to use for this purpose with the Firefox browser add-ons:
+1. Forbered arbejdet.
+* Tag backup af din hjemmeside og sørg for at der bliver lavet andet på din hjemmeside mens du arbejder på den. Og hvis noget går galt, kan du altid gå tilbage til den stabile version af hjemmesiden.
+* Forbered værktøjer til program fejlfinding. Vi anbefaler dig til dette at bruge browseren Firefox add-ons:
 	o Firebug http://getfirebug.com/
 	o YSlow http://developer.yahoo.com/yslow/
-	o PageSpeed http://code.google.com/speed/page-speed/docs/extension.html
-* Make a list of all the key pages and site features. It is necessary to achieve maximum performance of these pages, of course without any damage to their functionality.
-* Collect information about existing problems (problems of layout, JavaScript errors, etc.). If after the website acceleration with WEBO Site SpeedUp will have these problems, you will know their source.
-* Check the key pages using the service http://www.webpagetest.org/ retaining links to reports, so that you can return to them later. Check is necessary to simulate typical visitors to the website from its key location, so please perform the first and repeat page load, and make the set of 5-10 tests to obtain a representative sample. The most important parameters that need your attention are: server response time, start render time, rendering time, complete load time, and the webpage size.
-* With the help of YSlow or PageSpeed identify the main problems with the download speed. Most often the problems are related to the lack of compression of text files, absence of caching, large number of files. All these problems can be easily solved with WEBO Site SpeedUp.
+	o PageSpeed ​​http://code.google.com/speed/page-speed/docs/extension.html
+* Lav en liste over alle de vigtigste sider og side funktioner. Det er nødvendigt at opnå maksimal ydeevne af disse sider, naturligvis uden at det skader deres funktionalitet.
+* Indsamle oplysninger om eksisterende problemer (problemer med layout, JavaScript fejl, osv.). Hvis der efter acceleration af hjemmesiden med Webo stedet SpeedUp opleves disse problemer, vil du vide det var der i forvejen.
+* Kontroller de vigtigste sider ved hjælp af tjenesten http://www.webpagetest.org/ og fastholde links til rapporter, så du kan vende tilbage til dem senere. Tjek er nødvendigt for at simulere typiske besøgende på hjemmesiden fra sin centrale beliggenhed, så du bør udføre gentagende side belastninger, og gøre det i sæt af 5-10 prøver for at få et repræsentativt udsnit. De vigtigste parametre, der kræver din opmærksomhed, er: server svartid, start render tid, rendering tid, komplet hente tid og hjemmeside størrelsen.
+* Ved hjælp af YSlow eller PageSpeed ​kan du ​identificere de største problemer med overførselshastighed. Oftest er problemerne relateret til den manglende komprimering af tekstfiler, fravær af caching og stort antal filer. Alle disse problemer kan let løses med Webo stedet SpeedUp.
 
-2. Install WEBO Site SpeedUp
-* Before installing and setting up please disable any 3rd-party solutions which improve your website performance (the files combine, caching, CDN files distribution and so on). Such 3rd-party solutions can cause malfunction of WEBO Site SpeedUp product.
-* Install instructions. The most frequently encountered problems during the installation are described in these relevant sections of the manual.
+2. Installer Webo site SpeedUp
+* Før installation og opsætningen skal du deaktivere eventuelle 3.parts løsninger, der forbedrer din hjemmeside ydelse (fil kombinering, caching, CDN fil distribution osv). Sådanne 3.parts løsninger kan forårsage fejlfunktion af Webo stedet SpeedUp produktet.
+* Installeringsanvisninger. De hyppigst opståede problemer under installationen er beskrevet i disse relevante afsnit af manualen.
 	o http://www.webogroup.com/home/site-speedup/installation/
 	o http://code.google.com/p/web-optimizator/wiki/IntegrationWithWebsite?wl=en
-* If you are aware of the problems in the current version of WEBO Site SpeedUp, try to upgrade to the latest beta version on the System Status tab in the product admin interface.
-* After a successful installation go to the product admin interface, open the System Status tab and check that there is no error messages. Also pay attention to info and warnings. They can be useful when configuring the module.
-* After installation the product (in disabled mode) does not affect the performance of the website and website admin panel.
-* Open the Personal Data Module WEBO Site SpeedUp and enter your license key. You can configure the program in demo mode, but after the free period of the product will be suspended.
+* Hvis du er opmærksom på problemerne i den aktuelle version af Webo site SpeedUp, så prøv at opgradere til den nyeste beta version i fanen System Status i WEBO admin interface.
+* Efter en vellykket installation, gå til WEBO admin interface, her åbner du fanen System Status, og kontrollerer at der ikke er nogen fejlmeddelelser. Være også opmærksomme på info og advarsler. De kan være nyttige når du konfigurerer modulet.
+* Efter installationen af ​​produktet (i deaktiveret tilstand) påvirkes udførelsen af ​​hjemmesiden og hjemmesiden admin panel ikke.
+* Åbn det personlige modul Webo site SpeedUp og indtast din licens nøgle. Du kan konfigurere programmet i demo-tilstand, men efter udløb af gratis perioden, vil programmet blive deaktiveret.
 
-3. Tune WEBO Site SpeedUp
-NB: After each step please save your configuration settings and check the website work on all the key pages (layout problems, JavaScript errors, key functions performance), by enabling the product or by using the debug mode, i.e. opening the website with the GET parameter web_optimizer_debug=1, for example: http://###WEBSITE###/?web_optimizer_debug=1.
-Note that in debug mode the product does not change website files, including .htaccess file, as well there is  no HTML-caching, so some changes (gzip compression, client and server caching) will be visible only after the product is enabled.
+3. Justér Webo site SpeedUp
+NB: Efter hvert trin kan du gemme dine konfigurationsindstillinger og tjekke hjemmesiden og din opsætning og ydelse på alle de vigtigste sider (layout problemer, JavaScript fejl, centrale funktion ydeevne), ved at aktivere produktet eller ved at bruge fejlfindingstilstanden, dvs åbne hjemmesiden med GET parameter web_optimizer_debug=1, for eksempel: http://###WEBSITE###/?web_optimizer_debug=1.
+Bemærk, at i fejlfindingstilstanden ændres hjemmeside filer, Htaccess filen ikke, samt der ikke udføres ikke HTML cache, så nogle ændringer (gzip kompression, klient og server cache), vil først blive synlige efter at produktet er aktiveret.
 
-* On the Settings page, create a new configuration, save it, make it active, but do not enable the product.
-* On the tab .htaccess check that there are all available Apache modules included. The use of these modules simplifies setting up the product and makes it easy to achieve optimum speed of the site. If some modules are missing, please contact your hosting with a request to add the absent module(s). Note that if a website runs any other web servers besides Apache, these changes may not have any effect.
-* On the tab client side caching if caching of static files on the website has not yet done, turn on the flags for the required file types. Note that the caching of HTML files and external files can lead to malfunction of the website, if these files are changed dynamically (for example, if the website has a back-end or some pages are displayed differently for different users).
-* On the tab Gzip include the types of files that are not yet compressed.
-* On the tab Combine CSS files select the appropriate way to merge your website CSS files. In most cases the best is to combine all your CSS code inside the head tag including inline code and external files. Combined files are displayed by default on the page on the website instead of the first part of the code which is included in the merged file.
-* On the tab Combine JavaScript tab select the proper JS merging options. JS code in merged file corresponds exactly to the original order on the page, so the best option - to merge all the code in the head tag. But note that if the JavaScript code contains unique values for different users, such code regions should be excluded from the union to WEBO Site SpeedUp not create a unique integrated cache files for each new user the site. Usually, this only slows down the loading. Use the option to exclude files or embedded code from merging, as well as the ability to move the combined file to the end of the head. For a better understanding of the product behavior you can compare the HTML source code in case of different set of options. Be sure to check that no violation of code due to JavaScript code merging and there are no new JavaScript bugs.
-* On the tab Minify configure options to remove redundant code (comments, line breaks, etc.). The most stable option is to minimize the CSS by using regular expressions, JavaScript with simple minimization (JSMin) and HTML. If you have any issues with this you can simply disable the minimization. Enabled gzip is sufficient to reduce the size of text files, so minify is only an additional tool to perform this.
-* On the tab data:URI enable the option data:URI (the substitution of images in the CSS code to reduce the number of requests to the server). The optimal maximum size for these images is 1000-3000 bytes. Make sure that the size of CSS files with the contained images did not increase by more than 20-50%, otherwise the start of page rendering can increase significantly.
-* On the tab CSS Sprites select the most optimal scheme of combining images produced by the CSS and HTML code. Combining a large number of images may require large memory and lead to unusable website. Exclude large images from CSS Sprites merging by size or by file name, or select only the images you want by specifying their file names.
-* On the tab Server side cache set the cache lifetime and enable caching. Use this feature with caution and be sure to check the operation of dynamic pages, if necessary exclude them from the server\'s cache. Otherwise, the site might not work properly.
-* If you purchased a CDN subscription or have your own servers to distribute static content, set the CDN on the eponymous tab.
-* If the website contains advertising blocks or counters, or some other 3rd party JavaScript code, which blocks web pages loading, include the necessary functions on the tab Unobtrusive JavaScript.
-* Do not forget to check the website after each step of this job. With the use of YSlow or PageSpeed make sure that enabled options yield the desired effect. If you have problems so it will be easier to determine what settings are chosen wrong and lead to the malfunction of the website.
+* På siden Indstillinger: Opret en ny konfiguration, gem den og gør den aktiv, men aktivér ikke produktet.
+* På fanen Htaccess: Kontrollér at alle tilgængelige Apache indgår i modulet. Anvendelsen af ​​disse moduler forenkler opsætningen af produktet og gør det nemt at opnå optimal hastighed på hjemmesiden. Hvis nogle moduler mangler, bedes du kontakte din hosting udbyder, med en anmodning om at tilføje de(t) manglende modul(er). Bemærk, at hvis en hjemmeside kører med andre webservere udover Apache, kan disse ændringer ikke have nogen effekt.
+* På fanen Klientside cache: Hvis caching af statiske filer på hjemmesiden endnu ikke er gjort, skal du slå de krævede filtyper til. Bemærk at caching af HTML-filer og eksterne filer kan føre til fejlfunktion af hjemmesiden, hvis disse filer ændres dynamisk (for eksempel, hvis hjemmesiden har en backend eller nogle sider vises forskelligt for forskellige brugere).
+* På fanen Gzip: Omfatter de typer af filer der endnu ikke er komprimeret.
+* På fanen Kombiner CSS filer: Skal du vælge den rette måde at flette dinine hjemmeside CSS filer. I de fleste tilfælde er det bedste er at kombinere al din CSS kode inde i HEAD taget, herunder indlejre koden og eksterne filer. Kombinerede filer vises som standard på siden på hjemmesiden i stedet for den første del af koden, der indgår i den sammenflettede fil.
+* På fanen Kombinér JavaScript: Vælges de rigtige JS sammenlægningsmuligheder. JS kode i sammenflettede filer, svarer nøjagtig til den oprindelige del på siden, så den bedste løsning - er at sammenflette al koden i HEAD tag. Men bemærk at hvis JavaScript koden indeholder unikke værdier for forskellige brugere, bør sådanne kode sektioner udelukkes Webo site SpeedUp så de ikke skaber en unik integreret cache file for hver ny bruger af hjemmesiden. Sædvanligvis vil dette kun forsinke belastningen. Brug muligheden for at udelukke filer eller indlejret kode fra sammenlægning, såvel som evnen til at flytte den kombinerede fil til slutningen af HEAD. For en bedre forståelse af produktet og adfærden, kan du kan sammenligne HTML kildekoden med dine indstillinger på de nye filer. Sørg for at kontrollere om der er nogen ødelæggelse af koden på grund af JavaScript kode sammenlægningen, og at der ikke er nye JavaScript fejl.
+* På fanen Minify: Kan du konfigurere indstillinger for at fjerne overflødig kode (kommentarer, linjeskift osv.). Den mest stabile løsning er at minimere CSS ved hjælp af regulære udtryk, JavaScript med simpel minimering (JSMin) og HTML. Hvis du har problemer med dette, kan du blot deaktivere minimering. Aktiveret gzip er tilstrækkelig til at reducere størrelsen af ​​tekstfiler, så minify er kun et ekstra redskab til at udføre dette.
+* På fanen Data: URI aktiverer indstillingen data: URI (udskiftning af billeder i CSS koden for at reducere antallet af anmodninger til serveren). Den optimale maksimale størrelse for disse billeder er 1000-3000 bytes. Sørg for at størrelsen af ​​CSS filer med de indeholdte billederne ikke stiger med mere end 20-50%, ellers vil starten af ​​sidepræsentation stiger markant.
+* På fanen CSS Sprites: Vælges den mest optimale ordning for at kombinere billeder, produceret af CSS og HTML kode. Kombinering af et stort antal billeder kan kræve stor hukommelse og føre til ubrugeligt hjemmeside. Udeluk store billeder fra CSS Sprites sammenlagt efter størrelse eller efter filnavn, eller vælg kun de billeder, du vil ved at angive deres filnavne.
+* På fanen Server side cache: Indstilles cache levetiden og gøre det muligt med caching. Brug denne funktion med forsigtighed og vær sikker på at kontrollere driften af ​​dynamiske sider, og om det er nødvendigt at udelukke dem fra serveren\'s cache. Ellers fungerer hjemmesiden ikke ordentligt.
+* Hvis du har købt et CDN abonnement eller får dine egne servere til at distribuere statisk indhold, indstilles CDN på Eponymous fanen.
+* Hvis hjemmesiden indeholder reklameblokke eller tællere, eller en anden 3. parts JavaScript kode, som blokerer for hjemmeside hentningen, findes de nødvendige funktioner i fanen Diskret JavaScript.
+* Glem ikke at tjekke hjemmesiden efter hvert trin i dette job. Med anvendelse af YSlow eller PageSpeed ​, for at sikre at de aktiverede funktioner giver den ønskede virkning. Hvis du har problemer så er det lettere at afgøre, hvilke indstillinger der er valgt forkert og som fører til fejlfunktion af hjemmesiden.
 
-4. Check the result
-* Enable WEBO Site SpeedUp product and perform the final check of all the key pages and website features in several major browsers (IE8, Firefox, and Safari).
-* Re-check the page in the service http://www.webpagetest.org/, compare the results with the results of the first tests.
-* Re-check the page using YSlow and PageSpeed.
-* If there are any problems associated with the speed of the site or with WEBO Site SpeedUp still not resolved, go back to configure the product.
-* Read the memo on working with WEBO Site SpeedUp.
+4. Se resultatet
+* Aktivér Webo site SpeedUp produktet og udfør den endelige kontrol af alle de vigtigste sider og hjemmeside funktioner i flere forskellige browsere (IE9, Firefox, Chrome og Safari).
+* Tjek nu igen siden i tjenesten http://www.webpagetest.org/, og sammenlign resultaterne med resultaterne af de første tests.
+* Tjek nu igen siden ved hjælp af YSlow og PageSpeed.
+* Hvis der er nogen problemer forbundet med hastigheden på hjemmesiden eller med Webo site SpeedUp der stadig ikke er løst, så gå tilbage for at konfigurere produktet igen.
+* Læs notatet om at arbejde med Webo stedet SpeedUp.
 
-Frequently asked questions
-1. We have changed the CSS code or JavaScript code into the source files, but do not see the changes on the site. Why?
-Typically, the optimized CSS and JavaScript files in cache are not automatically updated when the content of the source files is changed in order to save server resources.
-To apply the changes please add an arbitrary parameter for such files (for example, today\'s date or a version of the file, i.e. to replace the file a.css with a.css?v=12), in this case the code is automatically updated in the cache on the server and the client browser, which has already visited the site.
-To refresh the cache on the server, open the Control Panel WEBO Site SpeedUp and click Refresh cache. In this case, you seem to manually update the cache in the browser (in most browsers this is done using CTRL + F5).
+Ofte stillede spørgsmål
+1. Vi har ændret CSS kode eller JavaScript kode i kildefilerne, men ser ikke ændringerne på hjemmeiden. Hvorfor?
+Typisk er de optimerede CSS og JavaScript filer i cachen ikke opdateret automatisk, når indholdet af kildefilerne ændres for at spare server ressourcer.
+For at anvende sådanne ændringer skal du tilføje en vilkårlig parameter for sådanne filer (for eksempel, dags dato eller en version af filen, dvs erstatte filen a.css med a.css?V=12), i dette tilfælde opdateres koden automatisk i cachen på serveren og klient browseren, som allerede har besøgt hjemmesiden.
+For at opdatere cachen på serveren skal du åbne Kontrolpanelet i Webo site SpeedUp og klikke på Opdatér cache. I dette tilfælde skal du manuelt opdatere cachen i browseren (i de fleste browsere gøres dette ved hjælp af CTRL + F5).
 
-2. We introduce a new design and new features on the website and CSS and JavaScript code is being updated frequently. Constantly drop cache is very inconvenient. What should I do?
-Disable the product on the Control Panel of WEBO Site SpeedUp for the upgrade period, or use a GET-parameter web_optimizer_disabled=1 for the test page with a disabled product, for example:
+2. Vi introducerer et nyt design og nye funktioner på hjemmesiden og CSS og JavaScript kode bliver opdateret jævnligt. Konstant slet af cache er meget ubelejligt. Hvad skal jeg gøre?
+Deaktivér produktet på kontrolpanelet i Webo site SpeedUp til i er færdige med opgraderingen, eller brug en GET-parameter web_optimizer_disabled=1 for test af siderne med deaktiveret produkt, for eksempel:
 http://###WEBSITE###/?web_optimizer_disabled=1
 
-3. What if we want to make sure that the new design and new features will be compatible with WEBO Site SpeedUp?
-Disable the product on the Control Panel of WEBO Site SpeedUp and use GET-parameter web_optimizer_debug=1 for testing with the product in debug mode.
+3. Hvad nu hvis vi ønsker at sikre os at det nye design og de nye funktioner er forenelig med Webo site SpeedUp?
+Deaktivér produktet på kontrolpanelet i Webo site SpeedUp og brug GET-parameter web_optimizer_debug=1 for at teste produktet i fejlfindingstilstand.
 
-4. Some of the pages of the accelerated website is slower than the others (though faster than before the WEBO Site SpeedUp installation). Why not?
-Likely server side caching is enabled, which greatly increases the speed web pages appearance on the screen, but in some situations it may not work. Possible reasons for this:
-* Page has never been opened since the last WEBO Site SpeedUp cache clean-up. In this case, the reopening of the page happens faster.
-* The page was opened, and automatically cached, but the cache has expired. Usually, this period ranges from several hours to several days. In this case, the reopening of the page happens faster.
-* There are obstacles to cache pages, such as you are logged on the site are on the cart page or the checkout page, etc. When the pages that are on the same address should be given a different content for different users, server caching for a number of CMS can not work.
+4. Nogle af siderne på den hurtige hjemmesiden er langsommere end de andre (dog hurtigere end før Webo site SpeedUp installationen). Hvorfor?
+Sandsynlig er server side cache aktiveret, hvilket øger hastigheden af udseendet på skærmen, men i nogle situationer kan det ikke fungere. Mulige årsager til dette:
+* Siden har aldrig været besøgt siden sidste Webo Site SpeedUp cache oprydning. I dette tilfælde sker genåbningen af ​​siden hurtigere.
+* Siden blev åbnet og automatisk cachet, men cachen er udløbet. Nprmalt, denne periode i området fra adskillige timer til adskillige dage. I dette tilfælde sker genåbningen af ​​siden hurtigere.
+* Der er hindringer for cache sider, som hvis du er logget på hjemmesiden, er i indkøbsvognen eller kassen osv. Når der på de sider, der ligger på samme adresse, skal gives forskelligt indhold til forskellige brugere, kan server cache for en lang række CMS ikke virke.
 
-5. We changed the text of pages, but do not see the changes on the website.
-It is likely server side caching is enabled. Open the Control Panel of WEBO Site SpeedUp and click Refresh cache.
+5. Vi har ændret teksten af ​​sider, men ændringerne vises ikke på hjemmesiden.
+Det er sandsynligt at server side cache er aktiveret. Åbn Kontrolpanel i Webo site SpeedUp og klik på Opdatér cache.
 
-6. We found the problem on site and we think that the reason may be WEBO Site SpeedUp.
-Disable the product and try to reproduce the problem. If the problem is not reproduced (with disabled product), please report the problem to us at support@webo.name.
+6. Vi fandt problemer på hjemmesiden, og vi tror ​​årsagen kan være Webo site SpeedUp.
+Deaktivér produktet og forsøg at genskabe problemet. Hvis problemet ikke kan genskabes (med deaktiveret produkt), bedes du venligst rapportere problemet til os på support@webo.name.
 
-7. After turning WEBO Site SpeedUp on website was unavailable? What should I do?
-You should disable WEBO Site SpeedUp. All optimization options are automatically canceled. If disabling the product via the control panel is not possible, follow these two steps:
-Open the file ###FOLDER###config.webo.php and change the $compress_options[\'active\'] with "1" to "0".
-Restore the original .htaccess file in the root directory of your website from a file .htaccess.backup.
+7. Efter at Webo site SpeedUp er aktiveret på hjemmesiden, kan den ikke tilgåes? Hvad skal jeg gøre?
+Du bør deaktivere Webo site SpeedUp. Alle optimeringer bliver automatisk annulleret. Hvis deaktivering af produktet via kontrolpanelet ikke er muligt, skal du følge disse to trin:
+Åbn filen ###FOLDER### config.webo.php og ændre $ compress_options [\'aktiv\'] fra "1" til "0".
+Gendan den oprindelige .Htaccess fil i rodmappen på din hjemmeside fra filen .Htaccess.backup.
 
-Technical support
-If you want a guaranteed result, write to sales@webo.name and we will send a detailed report on the possible acceleration and calculate the cost of the work.');
+Teknisk support
+Hvis du ønsker et garanteret resultat, kan du skrive til sales@webo.name, og vi vil sende en detaljeret rapport om mulige acceleration og beregnings omkostningerne i forbindelse med arbejdet.');
+
 ?>
