@@ -2660,11 +2660,22 @@ class admin {
 		}
 		$config_file = 'config.' . $this->compress_options['config'] . '.php';
 		@include($this->basepath . $config_file);
-		$title = $compress_options['title'];
-		$description = $compress_options['description'];
-/* make a fix to create new user config file if older config exists */
-		if (!@is_file($this->basepath . $config_file)) {
-			@copy($this->basepath . 'config.safe.php', $this->basepath . $config_file);
+		$compress_options_backup = $this->compress_options;
+/* rewrite user/auto configs */
+		@chdir($this->basepath);
+		$configs = glob("config.*.php");
+		if (is_array($configs)) {
+			foreach ($configs as $file) {
+				if (@is_file($this->basepath . $file) && !in_array($file, array('config.safe.php', 'config.basic.php', 'config.optimal.php', 'config.extreme.php'))) {
+					include($this->basepath . $file);
+					$this->compress_options = $compress_options;
+					$this->options_file_backup = $this->options_file;
+					$this->options_file = $file;
+					@copy($this->basepath . 'config.safe.php', $this->basepath . $file);
+					$this->save_options();
+					$this->options_file = $this->options_file_backup;
+				}
+			}
 		}
 		if (@is_file($this->basepath . $config_file) && !in_array($this->compress_options['config'], array('safe', 'basic', 'optimal', 'extreme'))) {
 			$this->save_option("['config']", $this->compress_options['config']);
@@ -2677,8 +2688,6 @@ class admin {
 			$this->save_option("['config']", $this->compress_options['config']);
 		}
 /* rewrite current hosts'/URLs configs with new options */
-		$compress_options_backup = $this->compress_options;
-		@chdir($this->basepath);
 		$configs = glob("*.config.webo.php");
 		if (is_array($configs)) {
 			foreach ($configs as $file) {
