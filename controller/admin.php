@@ -6594,13 +6594,15 @@ require valid-user';
 			'2' => '',
 			'3' => ''
 			);
-		if (!empty($cache_engines[round($this->compress_options['performance']['cache_engine'])])) {
-			$engine_num = $this->compress_options['performance']['cache_engine'];
-			$engine_name = 'webo_cache_' . $cache_engines[$this->compress_options['performance']['cache_engine']];
-		} else {
-			$engine_num = 0;
-			$engine_name = 'webo_cache_' . $cache_engines[0];
+		$engine_num = round($this->compress_options['performance']['cache_engine']);
+/* check for caching extensions */
+		if ((!@class_exists('Memcached') && !@class_exists('Memcache') && $engine_num == 1) ||
+			(!@function_exists('apc_store') && $engine_num == 2) ||
+			(!@function_exists('xcache_set') && $engine_num == 3) ||
+			empty($cache_engines[$engine_num])) {
+				$engine_num = 0;
 		}
+		$engine_name = 'webo_cache_' . $cache_engines[$engine_num];
 		include_once($this->basepath . 'libs/php/cache_engine.php');
 		$this->cache_engine = new $engine_name ($cache_engines_options[$engine_num]);
 	}
