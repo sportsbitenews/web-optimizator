@@ -2666,7 +2666,7 @@ class admin {
 		$configs = glob("config.*.php");
 		if (is_array($configs)) {
 			foreach ($configs as $file) {
-				if (@is_file($this->basepath . $file) && !in_array($file, array('config.safe.php', 'config.basic.php', 'config.optimal.php', 'config.extreme.php'))) {
+				if (@is_file($this->basepath . $file) && !in_array($file, array('config.safe.php', 'config.basic.php', 'config.optimal.php', 'config.extreme.php', 'config.webo.php'))) {
 					include($this->basepath . $file);
 					$this->compress_options = $compress_options;
 					$this->options_file_backup = $this->options_file;
