@@ -1203,14 +1203,17 @@ class web_optimizer {
 		$IMG = strpos($content, '<IMG');
 		if (!empty($this->options['page']['html_tidy']) && !$IMG) {
 			$_content = $content;
-			while ($pos = strpos($_content, '<img')) {
+			while (($pos = strpos($_content, '<img')) || ($pos1 = strpos($_content, '<input'))) {
+				$pos = $pos1 < $pos ? $pos1 : $pos;
 				$len = strpos(substr($_content, $pos), '>');
+				if (strpos($_content, 'src') < $pos) {
 /* gets image tag w/o the closing >, it's OK */
-				$imgs[] = array(substr($_content, $pos, $len));
-				$_content = substr_replace($_content, '', $pos, $len);
+					$imgs[] = array(substr($_content, $pos, $len));
+				}
+				$_content = substr_replace($_content, '', 0, $pos+$len);
 			}
 		} elseif (!$this->options['page']['html_tidy'] || $IMG) {
-			preg_match_all("!<img[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
+			preg_match_all("!<(img|input)[^>]+src[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
 			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
