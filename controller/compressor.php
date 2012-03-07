@@ -1203,14 +1203,16 @@ class web_optimizer {
 		$IMG = strpos($content, '<IMG');
 		if (!empty($this->options['page']['html_tidy']) && !$IMG) {
 			$_content = $content;
-			while (($pos = strpos($_content, '<img')) || ($pos1 = strpos($_content, '<input'))) {
-				$pos = $pos1 < $pos ? $pos1 : $pos;
+			$pos = $pos1 = false;
+			while (($pos = strpos($_content, '<img')) !== false || ($pos1 = strpos($_content, '<input')) !== false) {
+				$pos = $pos1 !== false && $pos1 < $pos ? $pos1 : $pos;
 				$len = strpos(substr($_content, $pos), '>');
-				if (strpos($_content, 'src') < $pos) {
+				if (strpos($_content, 'src') > $pos && strpos($_content, 'src') < $pos + $len) {
 /* gets image tag w/o the closing >, it's OK */
 					$imgs[] = array(substr($_content, $pos, $len));
 				}
-				$_content = substr_replace($_content, '', 0, $pos+$len);
+				$_content = substr_replace($_content, '', 0, $pos + $len + 1);
+				$pos = $pos1 = false;
 			}
 		} elseif (!$this->options['page']['html_tidy'] || $IMG) {
 			preg_match_all("!<(img|input)[^>]+src[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
