@@ -1991,14 +1991,15 @@ class web_optimizer {
 	*
 	**/
 	function get_new_file ($options, $cache_file, $timestamp = false, $add = false) {
+		$nofollow = empty($this->ua_mod) && $options['ext'] == 'php' && !$this->options['uniform_cache'];
 		$newfile = '<' . $options['tag'] .
 			' type="' . $options['type'] . '" ' .
 			$options['src'] . '="' . $this->get_new_file_name($options, $cache_file, $timestamp, $add) . '"'.
 /* IE7- don't understand stylesheet nofollow in rel */
-			((empty($this->ua_mod) && $options['ext'] == 'php') || !empty($options['rel']) ? ' rel="' .
+			($nofollow || !empty($options['rel']) ? ' rel="' .
 				(empty($options['rel']) ? '' : $options['rel']) .
-				(!empty($options['rel']) && $options['ext'] == 'php' && empty($this->ua_mod) ? ' ' : '') .
-				(empty($this->ua_mod) && $options['ext'] == 'php' ? 'nofollow' : '') . '"' : '') . 
+				(!empty($options['rel']) && $nofollow ? ' ' : '') .
+				($nofollow ? 'nofollow' : '') . '"' : '') . 
 			(empty($options['self_close']) ? '></' . $options['tag'] . '>' : (empty($this->xhtml) ? '>' : '/>'));
 		return $newfile;
 	}
