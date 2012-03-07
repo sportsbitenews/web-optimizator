@@ -3246,71 +3246,74 @@ class web_optimizer {
 					(empty($this->options['page']['counter']) ? '__WSS=(new Date()).getTime();' : '') .
 					"window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
 			}
-			if (!empty($this->options['page']['footer']) || !empty($this->options['page']['counter'])) {
-				$stamp = '';
+			$stamp = '';
+			if (!empty($this->options['page']['sprites']) && empty($this->options['css']['minify']) && empty($this->options['javascript']['minify'])) {
+				$stamp .= '@@@WSSREADY@@@';
+			}
 /* add WEBO Site SpeedUp stamp */
-				if (!empty($this->options['page']['footer'])) {
-					$style = empty($this->options['page']['footer_style']) ? '' :
-						' style="' . $this->options['page']['footer_style'] . '"';
-					$title = empty($this->options['page']['footer_text']) ? '' :
-						' title="' . $this->options['page']['footer_text'] . '"';
-					$text = empty($this->options['page']['footer_text']) ||
-						!empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
+			if (!empty($this->options['page']['footer'])) {
+				$style = empty($this->options['page']['footer_style']) ? '' :
+					' style="' . $this->options['page']['footer_style'] . '"';
+				$title = empty($this->options['page']['footer_text']) ? '' :
+					' title="' . $this->options['page']['footer_text'] . '"';
+				$text = empty($this->options['page']['footer_text']) ||
+					!empty($this->options['page']['footer_image']) ? '' : $this->options['page']['footer_text'];
 /* place or not image? */
-					if (empty($this->options['page']['footer_image'])) {
-						$background_image = $background_style = '';
+				if (empty($this->options['page']['footer_image'])) {
+					$background_image = $background_style = '';
+				} else {
+					$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
+					$image_style =
+						'display:block;text-decoration:none;width:100px;height:100px;';
+					if (in_array($this->ua_mod, $this->ies)) {
+						$background_style = $image_style . 
+							'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
+								$background_image .
+							',sizingMethod=\'scale\')';
 					} else {
-						$background_image = $this->options['css']['cachedir_relative'] . $this->options['page']['footer_image'];
-						$image_style =
-							'display:block;text-decoration:none;width:100px;height:100px;';
-						if (in_array($this->ua_mod, $this->ies)) {
-							$background_style = $image_style . 
-								'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' .
-									$background_image .
-								',sizingMethod=\'scale\')';
-						} else {
-							$background_style = $image_style . 
-								'background:url(' .
-									$background_image .
-								')';
-						}
-						$background_style = ' style="' . $background_style . '"';
+						$background_style = $image_style . 
+							'background:url(' .
+								$background_image .
+							')';
 					}
-/* choose between link or span */
-					if (empty($text)) {
-						$el = 'a href="http://www.webogroup.com/" rel="nofollow"';
-						$el_close = 'a';
-					} else {
-						$el = $el_close = 'span';
-					}
-/* finally from stamp */
-					$stamp .= '<div' .
-							$style .
-						'><' .
-							$el .
-							$title .
-							$background_style .
-						'>'.
-							$text .
-						'</' .
-							$el_close .
-						'></div>';
+					$background_style = ' style="' . $background_style . '"';
 				}
+/* choose between link or span */
+				if (empty($text)) {
+					$el = 'a href="http://www.webogroup.com/" rel="nofollow"';
+					$el_close = 'a';
+				} else {
+					$el = $el_close = 'span';
+				}
+/* finally from stamp */
+				$stamp .= '<div' .
+						$style .
+					'><' .
+						$el .
+						$title .
+						$background_style .
+					'>'.
+						$text .
+					'</' .
+						$el_close .
+					'></div>';
+			}
 /* add WEBO Site SpeedUp page load counter, ideas from
 http://www.optimisationbeacon.com/analytics/track-page-load-times-with-google-analytics-asynchronous-script/
 http://www.panalysis.com/tracking-webpage-load-times.php
  */
-				if (!empty($this->options['page']['counter'])) {
-					$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,c=document.location;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
-						$this->options['page']['counter'] .
-						'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker();a._setAccount("'.
-						$this->options['page']['counter'] .
-						'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("Page Load Time (WEBO)",50*Math.round(b/50)+"ms",c.pathname+c.search,b)}},false)})()</script>';
-				}
+			if (!empty($this->options['page']['counter'])) {
+				$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,c=document.location;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
+					$this->options['page']['counter'] .
+					'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker();a._setAccount("'.
+					$this->options['page']['counter'] .
+					'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("Page Load Time (WEBO)",50*Math.round(b/50)+"ms",c.pathname+c.search,b)}},false)})()</script>';
+			}
 /* Add script to check gzip possibility */
-				if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-					$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'index.php"></script>';
-				}
+			if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+				$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'index.php"></script>';
+			}
+			if ($stamp) {
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
 						$this->content = substr_replace($this->content,
