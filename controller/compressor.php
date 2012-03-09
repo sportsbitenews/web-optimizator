@@ -3367,14 +3367,20 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					}
 				}
 			}
-		}
-		if (empty($this->options['uniform_cache'])) {
 			if (!empty($this->options['plain_string'])) {
 				while (($a = strpos($source, '<!--[if')) !== false && ($b = strpos($source, '[endif]-->')) !== false) {
 					$source = substr($source, 0, $a) . substr($source, $b+10);
 				}
 			} else {
 				$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
+			}
+		} else {
+			if (!empty($this->options['plain_string'])) {
+				while (($a = strpos($source, '<!--[if IE')) !== false && ($b = strpos($source, '[endif]-->')) !== false) {
+					$source = substr($source, 0, $a) . substr($source, $b+10);
+				}
+			} else {
+				$source = preg_replace("@<!--\[if IE.*?\[endif\]-->@s", "", $source);
 			}
 		}
 		return $source;
