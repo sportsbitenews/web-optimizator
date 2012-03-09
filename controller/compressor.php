@@ -614,6 +614,7 @@ class web_optimizer {
 		if (empty($this->options['active'])) {
 			return $content;
 		}
+		@ini_set("max_execution_time", 600);
 		if ($content === false) {
 			$this->content = @ob_get_clean();
 /* clear all other buffers */
@@ -3610,7 +3611,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$next = !$mhtml && !$options['data_uris'];
 			if ($mhtml) {
 				if (@filesize($css_image) < $options['mhtml_size'] &&
-					!in_array($filename, $mhtml_exclude) && !empty($encoded)) {
+					!in_array($filename, $mhtml_uri_exclude) && !empty($encoded)) {
 						$mhtml_code .= "\n\n--_\nContent-Location:" .
 							$location .
 							"\nContent-Transfer-Encoding:base64\n\n" .
