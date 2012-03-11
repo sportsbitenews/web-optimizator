@@ -1239,11 +1239,11 @@ class web_optimizer {
 			$ignore_list = explode(" ", $this->options['page']['parallel_ignore']);
 			$ignore_sprites = explode(" ", $this->options['css']['css_sprites_exclude']);
 			$request_file = empty($this->basehref) ? $_SERVER['REQUEST_URI'] : $this->basehref;
-			if ($this->options['page']['scale']) {
+			if ($this->options['page']['scale_images']) {
 				if (!$this->options['page']['sprites']) {
-					@include($this->options['page']['cachedir'] . 'wo.img.cache.php');
+					@include($html_sprites->convert_file_name('cache'));
 				}
-				@include($this->options['page']['cache_dir'] . 'wo.scaled.php');
+				@include($html_sprites->convert_file_name('scale'));
 				$images_scaled_source = array_keys($images_scaled);
 			}
 			foreach ($imgs as $image) {

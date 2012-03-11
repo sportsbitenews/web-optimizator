@@ -67,7 +67,7 @@ class html_sprites {
 	**/
 	function scale ($content) {
 		$webo_scaled_images = array();
-		$webo_images_scale_var = $this->options['page']['cachedir'] . 'wo.img.scale.php';
+		$webo_images_scale_var = $this->convert_file_name('scale');
 		@include($webo_images_scale_var);
 		$need_save = 0;
 /* get dimensions in HTML */
@@ -222,7 +222,7 @@ class html_sprites {
 	/*
 	**/
 	function process ($content) {
-		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
+		$webo_images_list_var = $this->convert_file_name('cache');
 		$str = '';
 		$equal = 1;
 		$exclude_list = explode(" ", $this->options['css']['css_sprites_exclude']);
@@ -308,7 +308,7 @@ class html_sprites {
 	*
 	**/
 	function get_images_dimensions ($imgs) {
-		$webo_images_list_var = $this->options['page']['cachedir'] . 'wo.img.cache.php';
+		$webo_images_list_var = $this->convert_file_name('cache');
 		$images = array();
 /* load cached images' dimensions */
 		@include($webo_images_list_var);
@@ -450,6 +450,23 @@ class html_sprites {
 		}
 		$str .= "\n?>";
 		return $str;
+	}
+	
+	function convert_file_name ($str) {
+		if (!@is_dir($this->options['page']['cachedir']) . '/img') {
+			@mkdir($this->options['page']['cachedir']) . '/img');
+			@chmod($this->options['page']['cachedir']) . '/img', octdec('0755'));
+		}
+		if ($this->options['page']['per_page'] && !@is_dir($this->options['page']['cachedir']) . '/img/cache') {
+			@mkdir($this->options['page']['cachedir']) . '/img/cache');
+			@chmod($this->options['page']['cachedir']) . '/img/cache', octdec('0755'));
+			@mkdir($this->options['page']['cachedir']) . '/img/scale');
+			@chmod($this->options['page']['cachedir']) . '/img/scale', octdec('0755'));
+		}
+		return $this->options['page']['cachedir'] . '/img/' . $str . '/' .
+			($this->options['page']['per_page'] ? 
+				str_replace(array('+',"'",'^','%','"','<','>','$','/','?','&'), array('','','','','','','','','-','-','-'), $this->main->uri) . '.' : '') .
+			'wo.img.php';
 	}
 
 }
