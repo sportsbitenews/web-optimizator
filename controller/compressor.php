@@ -378,10 +378,15 @@ class web_optimizer {
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
-				"far_future_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] ||
+				"far_future_expires_rewrite" => ((!($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled']) &&
-					$this->options['far_future_expires']['javascript'],
+					$this->options['far_future_expires']['javascript']) || 
+					((!($this->options['htaccess']['mod_rewrite'] ||
+						$this->options['htaccess']['mod_deflate'] ||
+						$this->options['htaccess']['mod_gzip']) ||
+					!$this->options['htaccess']['enabled']) &&
+					$this->options['gzip']['javascript']),
 				"unobtrusive_body" => $this->premium && $this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'],
 				"external_scripts" => $this->options['external_scripts']['on'] &&

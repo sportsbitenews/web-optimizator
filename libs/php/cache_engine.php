@@ -11,9 +11,7 @@
  class webo_cache_engine {
  
 	/* Class constructor. Expects options array. */
-	
-	function webo_cache_engine($options)
-	{
+	function webo_cache_engine($options) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
 			exit();
@@ -21,9 +19,7 @@
 	}
 
 	/* Adds or updates entry. Expects key string and value to cache. */
-	
-	function put_entry($key, $value, $time)
-	{
+	function put_entry($key, $value, $time) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
 			exit();
@@ -31,9 +27,7 @@
 	}
 
 	/* Get cache entry by key. Expects key string. */
-	
-	function get_entry($key)
-	{
+	function get_entry($key) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
 			exit();
@@ -41,7 +35,6 @@
 	}
 
 	/* Clean cache entries by timestamp. Expects timestamp and time interval (in minutes). */
-	
 	function delete_entries_by_time ($time, $interval) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
@@ -50,7 +43,6 @@
 	}
 	
 	/* Clean cache entries by pattern(s). Expects pattern or array of patterns. */
-	
 	function delete_entries($patterns) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
@@ -59,7 +51,6 @@
 	}
 
 	/* Gets creation time of cache entry. Expects key string. */
-	
 	function get_mtime($key) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
@@ -68,17 +59,14 @@
 	}
 
 	/* Sets creation time of cache entry. Expects key string and time to set. */
-	
-	function set_mtime($key, $time)
-	{
+	function set_mtime($key, $time) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
 			exit();
 		}
 	}
  
-	function get_cache_size($mask, $number = false)
-	{
+	function get_cache_size($mask, $number = false) {
 		if(strtolower(__CLASS__)=='baseclass'){
 			trigger_error('This class is abstract!',E_USER_ERROR);
 			exit();
