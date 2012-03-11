@@ -3680,12 +3680,12 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
 		$exclude = trim($this->options['page']['cache_params']);
-		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+';
+		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+ _openstat';
 		$uri = preg_replace("@(" . str_replace(" ", "|", $exclude) . ")=[^&\?]+[\?&]?@", "", $uri);
 /* replace /, ?, & with - */
 		$uri = str_replace(
-			array('/?', '/', '?', '&'),
-			array('+', '+', '+', '+'),
+			array('/?', '/', '?', '&', "'", '^', '%', '"', '<', '>', '$'),
+			array('+', '+', '+', '+', '', '', '', '', '', '', ''),
 			$uri);
 		return $uri;
 	}

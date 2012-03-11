@@ -2379,10 +2379,8 @@ class admin {
 /* if cache stored on filesystem we need to preserve several files */
 		if (($dir = @opendir($this->compress_options['html_cachedir'])) && (@$this->compress_options['performance']['cache_engine'] == 0)) {
 			while (($file = @readdir($dir)) !== false) {
-				if (!in_array($file, $restricted))
-				{
-					if(@is_file($this->compress_options['html_cachedir'] . $file))
-					{
+				if (!in_array($file, $restricted)) {
+					if(@is_file($this->compress_options['html_cachedir'] . $file)) {
 						if (!@unlink($this->compress_options['html_cachedir'] . $file)) {
 							$deleted_html = false;
 						}
@@ -2391,9 +2389,32 @@ class admin {
 			}
 			$success = true;
 		}
+		if ($dir = @opendir($this->compress_options['html_cachedir'] . 'img/cache')) {
+			while (($file = @readdir($dir)) !== false) {
+				if (!in_array($file, $restricted)) {
+					if(@is_file($this->compress_options['html_cachedir'] . 'img/cache/' . $file)) {
+						if (!@unlink($this->compress_options['html_cachedir'] . 'img/cache/' . $file)) {
+							$deleted_html = false;
+						}
+					}
+				}
+			}
+			$success = true;
+		}
+		if ($dir = @opendir($this->compress_options['html_cachedir'] . 'img/scale')) {
+			while (($file = @readdir($dir)) !== false) {
+				if (!in_array($file, $restricted)) {
+					if(@is_file($this->compress_options['html_cachedir'] . 'img/scale/' . $file)) {
+						if (!@unlink($this->compress_options['html_cachedir'] . 'img/scale/' . $file)) {
+							$deleted_html = false;
+						}
+					}
+				}
+			}
+			$success = true;
+		}
 		$this->cache_engine->delete_entries('*');
-		if (!$this->cache_engine->clear_sql_cache())
-		{
+		if (!$this->cache_engine->clear_sql_cache()) {
 			$deleted_sql = false;
 		}
 		if ($auth = $this->compress_options['parallel']['ftp']) {

@@ -456,8 +456,6 @@ class html_sprites {
 		if (!@is_dir($this->options['page']['cachedir'] . 'img')) {
 			@mkdir($this->options['page']['cachedir'] . 'img');
 			@chmod($this->options['page']['cachedir'] . 'img', octdec('0755'));
-		}
-		if ($this->options['page']['per_page'] && !@is_dir($this->options['page']['cachedir'] . 'img/cache')) {
 			@mkdir($this->options['page']['cachedir'] . 'img/cache');
 			@chmod($this->options['page']['cachedir'] . 'img/cache', octdec('0755'));
 			@mkdir($this->options['page']['cachedir'] . 'img/scale');
@@ -465,7 +463,7 @@ class html_sprites {
 		}
 		return $this->options['page']['cachedir'] . 'img/' . $str . '/' .
 			($this->options['page']['per_page'] ? 
-				str_replace(array('+',"'",'^','%','"','<','>','$','/','?','&'), array('','','','','','','','','-','-','-'), $this->main->uri) . '.' : '') .
+				$this->main->convert_request_uri() . '.' : '') .
 			'wo.img.php';
 	}
 
