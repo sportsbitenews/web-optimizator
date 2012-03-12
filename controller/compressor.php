@@ -378,7 +378,10 @@ class web_optimizer {
 				"far_future_expires" => $this->options['far_future_expires']['javascript'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['javascript'],
-				"far_future_expires_rewrite" => ((!($this->options['htaccess']['mod_rewrite'] ||
+				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
+					$this->options['htaccess']['enabled'] &&
+					$this->options['far_future_expires']['javascript'],
+				"far_future_expires_static" => ((!($this->options['htaccess']['mod_rewrite'] ||
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['javascript']) || 
@@ -3032,7 +3035,7 @@ class web_optimizer {
 			'' : (empty($this->options['page']['unobtrusive_inline']) ?
 				'<script type="text/javascript" src="' .
 				 (empty($host) ? '' : '//' . $host) .
-				(empty($this->options['javascript']['far_future_expires_rewrite']) ?
+				(empty($this->options['javascript']['far_future_expires_static']) ?
 				'' : $this->options['page']['cachedir_relative'] . 'wo.static.php?') .
 				$this->options['javascript']['cachedir_relative'] .
 				'yass.loader.js"></script>' :
