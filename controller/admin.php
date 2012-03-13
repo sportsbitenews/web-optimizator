@@ -1390,6 +1390,11 @@ class admin {
 					$php += $this->dashboard_cache_size($mask);
 				}
 			}
+/* get HTML Sprites size */
+			@chdir($this->compress_options['html_cachedir'] . 'img/scale');
+			foreach ($this->cache_types['sprites'] as $mask) {
+				$sprites += $this->dashboard_cache_size($mask);
+			}
 		}
 /* get size of HTML files */
 		if (!empty($this->compress_options['html_cachedir'])) {
@@ -1404,6 +1409,11 @@ class admin {
 				foreach ($this->cache_types['scripts'] as $mask) {
 					$php += $this->dashboard_cache_size($mask);
 				}
+			}
+/* get size of HTML Sprites cache */
+			@chdir($this->compress_options['html_cachedir'] . 'img/cache');
+			foreach ($this->cache_types['scripts'] as $mask) {
+				$css_php += $this->dashboard_cache_size($mask);
 			}
 		}
 /* distribute general PHP files between CSS and JS */
@@ -2389,30 +2399,7 @@ class admin {
 			}
 			$success = true;
 		}
-		if ($dir = @opendir($this->compress_options['html_cachedir'] . 'img/cache')) {
-			while (($file = @readdir($dir)) !== false) {
-				if (!in_array($file, $restricted)) {
-					if(@is_file($this->compress_options['html_cachedir'] . 'img/cache/' . $file)) {
-						if (!@unlink($this->compress_options['html_cachedir'] . 'img/cache/' . $file)) {
-							$deleted_html = false;
-						}
-					}
-				}
-			}
-			$success = true;
-		}
-		if ($dir = @opendir($this->compress_options['html_cachedir'] . 'img/scale')) {
-			while (($file = @readdir($dir)) !== false) {
-				if (!in_array($file, $restricted)) {
-					if(@is_file($this->compress_options['html_cachedir'] . 'img/scale/' . $file)) {
-						if (!@unlink($this->compress_options['html_cachedir'] . 'img/scale/' . $file)) {
-							$deleted_html = false;
-						}
-					}
-				}
-			}
-			$success = true;
-		}
+		$this->__rmdir($this->compress_options['html_cachedir'] . 'img');
 		$this->cache_engine->delete_entries('*');
 		if (!$this->cache_engine->clear_sql_cache()) {
 			$deleted_sql = false;
@@ -6662,7 +6649,7 @@ require valid-user';
 	/**
 	* Finds all active configuration and writes info about them to web.optimizer.php
 	* 
-	**/		
+	**/
 	function find_configs ($licensed) {
 		@chdir($this->basepath);
 		$str = '';
@@ -6674,6 +6661,27 @@ require valid-user';
 			$str = '<?php $wss_configs = array(\'' . implode($files, "','") . '\'); ?>';
 		}
 		$this->write_file($this->basepath . 'web.optimizer.configs.php', $str);
+	}
+
+	/**
+	* Removes directory recursively
+	* 
+	**/
+	function __rmdir ($dir) { 
+		if (is_dir($dir)) { 
+			$objects = scandir($dir); 
+			foreach ($objects as $object) { 
+				if ($object != "." && $object != "..") { 
+					if (@is_dir($dir . "/" . $object)) {
+						$this->__rmdir($dir . "/" . $object);
+					} else {
+						@unlink($dir . "/" . $object);
+					}
+				}
+			} 
+			@reset($objects);
+			@rmdir($dir);
+		}
 	}
 
 }

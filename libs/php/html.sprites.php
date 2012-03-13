@@ -85,7 +85,24 @@ class html_sprites {
 					$height = $height ? $height : round(preg_replace("!.*height\s*=\s*['\"]?([0-9]+).*!is", "$1", $i));
 					$img = $this->images[$absolute_src];
 					if ($absolute_src && (($width && $img[0] > $width) || ($height && $img[1] > $height))) {
-						$scaled_src = $this->options['page']['cachedir'] . md5($absolute_src) . '.scaled.';
+						$md5 = md5($absolute_src);
+						$scaled_src = $this->options['page']['cachedir'] . 'img/scale/' . $md5{0} . '/';
+						if (!@is_dir($scaled_src)) {
+							$this->__mkdir($scaled_src);
+						}
+						$scaled_src .= $md5{1} . '/';
+						if (!@is_dir($scaled_src)) {
+							$this->__mkdir($scaled_src);
+						}
+						$scaled_src .= $md5{2} . '/';
+						if (!@is_dir($scaled_src)) {
+							$this->__mkdir($scaled_src);
+						}
+						$scaled_src .= $md5{3} . '/';
+						if (!@is_dir($scaled_src)) {
+							$this->__mkdir($scaled_src);
+						}
+						$scaled_src .= substr($md5, 4) . '.';
 						if ($width > $img[0]) {
 							$height = round($height * $img[0] / $width);
 							$width = $img[0];
@@ -454,17 +471,30 @@ class html_sprites {
 	
 	function convert_file_name ($str) {
 		if (!@is_dir($this->options['page']['cachedir'] . 'img')) {
-			@mkdir($this->options['page']['cachedir'] . 'img');
-			@chmod($this->options['page']['cachedir'] . 'img', octdec('0755'));
-			@mkdir($this->options['page']['cachedir'] . 'img/cache');
-			@chmod($this->options['page']['cachedir'] . 'img/cache', octdec('0755'));
-			@mkdir($this->options['page']['cachedir'] . 'img/scale');
-			@chmod($this->options['page']['cachedir'] . 'img/scale', octdec('0755'));
+			$this->__mkdir($this->options['page']['cachedir'] . 'img');
+			$this->__mkdir($this->options['page']['cachedir'] . 'img/cache');
+			$this->__mkdir($this->options['page']['cachedir'] . 'img/scale');
+		}
+		if ($this->options['page']['per_page']) {
+			$uri = $this->main->convert_request_uri();
+			$uris = explode("+", $uri);
+			array_pop($uris);
+			$ur = $this->options['page']['cachedir'] . 'img/' . $str . '/';
+			foreach ($uris as $u) {
+				$ur .= $u . '/';
+				if (!@is_dir($ur)) {
+					$this->__mkdir($ur);
+				}
+			}
 		}
 		return $this->options['page']['cachedir'] . 'img/' . $str . '/' .
-			($this->options['page']['per_page'] ? 
-				$this->main->convert_request_uri() . '.' : '') .
+			($this->options['page']['per_page'] ? str_replace('+', '/', $uri) . '.' : '') .
 			'wo.img.php';
+	}
+	
+	function __mkdir ($dir) {
+		@mkdir($dir);
+		@chmod($dir, octdec('0755'));
 	}
 
 }
