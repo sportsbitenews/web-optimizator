@@ -133,7 +133,7 @@ if (!$ajax) {
 ?>"><?php
 		echo _WEBO_SPLASH2_COMPARISON_DEMO . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?> </span><span class="wss_w2<?php
-		if ($premium == 0.1) {
+		if ($premium == 0.5) {
 ?> wss_w0<?php
 		}
 ?>"> <?php
