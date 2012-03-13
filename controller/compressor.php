@@ -1475,9 +1475,13 @@ class web_optimizer {
 					$script1 = strpos($source, "<script");
 					$script2 = strpos($source, "<SCRIPT");
 					if ($script1 !== false && $script1 < $styles) {
-						$source = substr_replace($source, $newfile, $script1, 0);
+						$source = substr_replace($source, $newfile . '@@@WSSSTL@@@', $script1, 0);
+						$source = str_replace('@@@WSSSTYLES@@@', '', $source);
+						$source = str_replace('@@@WSSSTL@@@', '@@@WSSSTYLES@@@', $source);
 					} elseif ($script2 !== false && $script2 < $styles) {
-						$source = substr_replace($source, $newfile, $script2, 0);
+						$source = substr_replace($source, $newfile . '@@@WSSSTL@@@', $script2, 0);
+						$source = str_replace('@@@WSSSTYLES@@@', '', $source);
+						$source = str_replace('@@@WSSSTL@@@', '@@@WSSSTYLES@@@', $source);
 					} else {
 						$source = substr_replace($source, $newfile, $styles, 0);
 					}
@@ -3683,7 +3687,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	function convert_request_uri ($uri = false) {
 		$uri = $uri ? $uri : preg_replace("@index\.php$@", "", $_SERVER['REQUEST_URI']);
 		$exclude = trim($this->options['page']['cache_params']);
-		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+ _openstat';
+		$exclude = ($exclude ? $exclude . ' ' : '') . 'utm_[^=]+ _openstat gclid';
 		$uri = preg_replace("@(" . str_replace(" ", "|", $exclude) . ")=[^&\?]+[\?&]?@", "", $uri);
 /* replace /, ?, & with - */
 		$uri = str_replace(
