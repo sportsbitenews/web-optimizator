@@ -433,7 +433,9 @@ class webo_cache_files extends webo_cache_engine
 		global $webo_files_list_var, $webo_files_list_ok;
 		$webo_files_list_var = $this->cache_dir . 'wo.files.php';
 		if ($this->all_files === false) {
-			@include($webo_files_list_var);
+			try {
+				@include($webo_files_list_var);
+			} catch (Exception $e) {}
 			if (isset($webo_cache_files_list) && is_array($webo_cache_files_list)) {
 				$this->all_files = $webo_cache_files_list;
 			} else {
