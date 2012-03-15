@@ -1246,6 +1246,7 @@ class web_optimizer {
 				if (!$this->options['page']['sprites']) {
 					@include($html_sprites->convert_file_name('cache'));
 				}
+				$images_scaled = array();
 				@include($html_sprites->convert_file_name('scale'));
 				$images_scaled_source = array_keys($images_scaled);
 			}
