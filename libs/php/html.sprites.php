@@ -103,13 +103,11 @@ class html_sprites {
 							$this->__mkdir($scaled_src);
 						}
 						$scaled_src .= substr($md5, 4) . '.';
-						if ($width > $img[0]) {
-							$height = round($height * $img[0] / $width);
-							$width = $img[0];
+						if ($width && $img[0] > $width) {
+							$height = round($img[1] * $width / $img[0]);
 						}
-						if ($height > $img[1]) {
-							$width = round($width * $img[1] / $height);
-							$height = $img[1];
+						if ($height && $img[1] > $height) {
+							$width = round($img[0] * $height / $img[1]);
 						}
 						$ext = strtolower(preg_replace("!.*\.([^\.]+)$!is", "$1", $src));
 						if (in_array($ext, array('png', 'gif'))) {
@@ -130,7 +128,7 @@ class html_sprites {
 									break;
 								case 'jpg':
 								case 'jpeg':
-									$im = imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
+									$im = @imagecreatefromjpeg($this->options['document_root'] . $absolute_src);
 									break;
 								case 'bmp':
 									$im = @imagecreatefromwbmp($this->options['document_root'] . $absolute_src);
