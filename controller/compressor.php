@@ -221,8 +221,8 @@ class web_optimizer {
 					(isset($_SERVER['HTTP_IF_MATCH']) &&
 					stripslashes($_SERVER['HTTP_IF_MATCH']) == '"' . $hash . '"')) {
 /* return visit and no modifications, so do not send anything */
-					header ("HTTP/1.0 304 Not Modified");
-					header ("Content-Length: 0");
+					@header ("HTTP/1.0 304 Not Modified");
+					@header ("Content-Length: 0");
 					while (@ob_end_clean());
 					die();
 				}
@@ -239,27 +239,27 @@ class web_optimizer {
 					}
 				}
 /* set ETag, thx to merzmarkus */
-				header("ETag: \"" . $hash . "\"");
+				@header("ETag: \"" . $hash . "\"");
 				if ($this->encoding || empty($this->gzip_set)) {
-					header("Content-Length: " . strlen($content));
+					@header("Content-Length: " . strlen($content));
 				}
 /* set content-type */
 				if (!empty($this->options['charset'])) {
-					header("Content-Type: text/html; charset=" . $this->options['charset']);
+					@header("Content-Type: text/html; charset=" . $this->options['charset']);
 				}
 				if (empty($this->web_optimizer_stage) &&
 					$this->options['page']['clientside_cache']) {
 /* not really GMT but is valid locally */
 					$ExpStr = date("D, d M Y H:i:s",
 						$this->time + $this->options['page']['clientside_timeout']) . " GMT";
-					header("Cache-Control: " .
+					@header("Cache-Control: " .
 						($this->options['page']['gzip'] ? 'private' : 'public') .
 						", max-age=" .
 						$this->options['page']['clientside_timeout']);
-					header("Expires: " . $ExpStr);
+					@header("Expires: " . $ExpStr);
 				}
 				while (@ob_end_clean());
-				header('WEBO: cache hit');
+				@header('WEBO: cache hit');
 				echo $content;
 /* content is a head part, flush it after */
 				if ($this->options['page']['flush']) {
@@ -269,10 +269,10 @@ class web_optimizer {
 					die();
 				}
 			} else {
-				header('WEBO: cache miss');
+				@header('WEBO: cache miss');
 			}
 		} elseif (!empty($this->options['page']['cache'])) {
-			header('WEBO: cache miss');
+			@header('WEBO: cache miss');
 		}
 /* remember Joomla! caching (VirtueMart) */
 		$this->joomla_cache = $this->options['page']['cache'] && class_exists('JUtility', false);
@@ -786,12 +786,12 @@ class web_optimizer {
 				if ($this->web_optimizer_stage > 85) {
 					if ($this->chained_redirect === 'optimizing.php') {
 						$this->write_progress(97);
-						header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password=' .
+						@header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password=' .
 							$this->password);
 					}
 /* else redirect to the next stage */
 				} else {
-					header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
+					@header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
 						$this->web_optimizer_stage .
 						'&password=' .
 						$this->password .
@@ -808,7 +808,7 @@ class web_optimizer {
 		} else {
 /* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
 			if ($this->encoding || empty($this->gzip_set)) {
-				header('Content-Length: ' . strlen($this->content));
+				@header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
 /* It's obvious to send anything right after gzipped content */
@@ -961,9 +961,9 @@ class web_optimizer {
 /* not really GMT but is valid locally */
 			$ExpStr = date("D, d M Y H:i:s",
 				$this->time + $this->options['page']['clientside_timeout']) . " GMT";
-			header("Cache-Control: private, max-age=" .
+			@header("Cache-Control: private, max-age=" .
 				$this->options['page']['clientside_timeout']);
-			header("Expires: " . $ExpStr);
+			@header("Expires: " . $ExpStr);
 		}
 /* move informers, counters, ads, and iframes before </body> */
 		$this->replace_informers($options);
@@ -1100,7 +1100,7 @@ class web_optimizer {
 			$content = $this->cache_engine->get_entry($cache_key);
 /* set ETag, thx to merzmarkus */
 			if (empty($options['flush'])) {
-				header("ETag: \"" .
+				@header("ETag: \"" .
 					crc32($this->content) .
 					(empty($this->encoding) && empty($this->gzip_set) ? '' : '-' .
 						(empty($this->gzip_set) ? str_replace("x-", "", $this->encoding) : 'gzip')) .
@@ -1430,8 +1430,8 @@ class web_optimizer {
 	**/
 	function set_gzip_header () {
 		if(!empty($this->encoding) && empty($this->gzip_set)) {
-			header("Vary: Accept-Encoding,User-Agent");
-			header("Content-Encoding: " . $this->encoding);
+			@header("Vary: Accept-Encoding,User-Agent");
+			@header("Content-Encoding: " . $this->encoding);
 /* try to use zlib instead of raw PHP */
 			if ($this->options['page']['zlib'] && strlen(@ini_get('zlib.output_compression_level'))) {
 				@ini_set('zlib.output_compression', 'On');
@@ -1754,7 +1754,7 @@ class web_optimizer {
 				if (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 13)%15) && $this->web_optimizer_stage < 85) {
 /* skip 2 minor stages if we not in the first major stage */
 					$delta = $this->web_optimizer_stage > 20 ? 6 : 0;
-					header('Location: ' . $this->chained_redirect .
+					@header('Location: ' . $this->chained_redirect .
 						'?web_optimizer_stage=' . 
 							($this->web_optimizer_stage + $delta) .
 						'&username=' .
@@ -1772,7 +1772,7 @@ class web_optimizer {
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 16)%15) && $this->web_optimizer_stage < 85) {
 					$options['css_sprites_partly'] = 1;
 					$this->convert_css_sprites($contents, $options, $external_file);
-					header('Location: ' . $this->chained_redirect .
+					@header('Location: ' . $this->chained_redirect .
 						'?web_optimizer_stage=' . 
 							$this->web_optimizer_stage .
 						'&username=' .
@@ -1790,7 +1790,7 @@ class web_optimizer {
 /* Create CSS Sprites in CSS dir */
 					$this->convert_css_sprites($contents, $options, $external_file);
 /* start new PHP process to create data:URI */
-					header('Location: ' . $this->chained_redirect .
+					@header('Location: ' . $this->chained_redirect .
 						'?web_optimizer_stage=' . 
 							($this->web_optimizer_stage + 1) .
 						'&username=' .
@@ -2632,7 +2632,7 @@ class web_optimizer {
 			// Determine used compression method
 			$encoding = empty($gzip) ? (empty($xgzip) ? (empty($deflate) ? (empty($xdeflate) ? "none" : "x-deflate") : "deflate") : "x-gzip") : "gzip";
 			$hash = "' . $this->time .  '-" . str_replace("x-", "", $encoding);
-			header ("Etag: \"" . $hash . "\"");
+			@header ("Etag: \"" . $hash . "\"");
 ?>';
 /* Send 304? */
 			$this->gzip_header[$type] .= '<?php
@@ -2642,8 +2642,8 @@ class web_optimizer {
 				(isset($_SERVER["HTTP_IF_MATCH"]) &&
 				stripslashes($_SERVER["HTTP_IF_MATCH"]) == "\"" . $hash . "\"")) {
 				// Return visit and no modifications, so do not send anything
-				header ("HTTP/1.0 304 Not Modified");
-				header ("Content-Length: 0");
+				@header ("HTTP/1.0 304 Not Modified");
+				@header ("Content-Length: 0");
 				exit();
 			}
 
@@ -2707,10 +2707,10 @@ class web_optimizer {
 							}
 						}
 						if ($gzipped || $zlib) {
-							header ("Content-Encoding: " . $encoding);
+							@header ("Content-Encoding: " . $encoding);
 						}
 						if ($gzipped && !$zlib) {
-							header ("Content-Length: " . strlen($contents));
+							@header ("Content-Length: " . strlen($contents));
 						}
 					}
 
@@ -2722,13 +2722,13 @@ class web_optimizer {
 
 			if (!empty($this->options[$type]['far_future_expires_php'])) {
 				$this->gzip_header[$type] .= '<?php
-				header("Cache-Control: private, max-age=315360000");
-				header("' . $ExpStr . '");
+				@header("Cache-Control: private, max-age=315360000");
+				@header("' . $ExpStr . '");
 ?>';
 			}
 
 			$this->gzip_header[$type] .= '<?php
-				header("Content-type: text/' . $type . '; charset: ' . $this->options['charset'] . '");
+				@header("Content-type: text/' . $type . '; charset: ' . $this->options['charset'] . '");
 ?>';
 
 		} // end FE

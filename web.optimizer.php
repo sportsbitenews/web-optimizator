@@ -15,16 +15,16 @@ if (!function_exists('webo_integrity_handler')) {
 
 	function webo_integrity_handler () {
 		global $webo_options, $webo_images_scale_ok, $webo_images_list_ok, $webo_files_list_ok;
-		register_shutdown_function('webo_integrity_handler_cleaner');
+		ob_start('webo_integrity_handler_cleaner');
 		$webo_images_list_ok = !$webo_options['css_sprites']['html_sprites'];
 		$webo_images_scale_ok = !($webo_options['performance']['scale'] && $webo_options['css_sprites']['html_sprites']);
 		$webo_files_list_ok = !$webo_options['html_cache']['enabled'];
 		if ($webo_options['performance']['scale'] && $webo_options['css_sprites']['html_sprites']) {
-			@include($webo_options['html_cachedir'] . 'wo.img.scale.php');
+			@include($webo_options['html_cachedir'] . 'img/scale/wo.img.php');
 			$webo_images_scale_ok = 1;
 		}
 		if ($webo_options['css_sprites']['html_sprites']) {
-			@include($webo_options['html_cachedir'] . 'wo.img.cache.php');
+			@include($webo_options['html_cachedir'] . 'img/cache/wo.img.cphp');
 			$webo_images_list_ok = 1;
 		}
 		if ($webo_options['html_cache']['enabled']) {
@@ -33,17 +33,18 @@ if (!function_exists('webo_integrity_handler')) {
 		}
 	}
 
-	function webo_integrity_handler_cleaner () {
+	function webo_integrity_handler_cleaner ($c) {
 		global $webo_options, $webo_images_scale_ok, $webo_images_list_ok, $webo_files_list_ok;
 		if (empty($webo_images_list_ok)) {
-			@file_put_contents($webo_options['html_cachedir'] . 'wo.img.cache.php', '<?php');
+			@file_put_contents($webo_options['html_cachedir'] . 'img/cache/wo.img.php', '<?php ?>');
 		}
 		if (empty($webo_images_scale_ok)) {
-			@file_put_contents($webo_options['html_cachedir'] . 'wo.img.scale.php', '<?php');
+			@file_put_contents($webo_options['html_cachedir'] . 'img/scale/wo.img.php', '<?php ?>');
 		}
 		if (empty($webo_files_list_ok)) {
-			@file_put_contents($webo_options['html_cachedir'] . 'wo.files.php', '<?php');
+			@file_put_contents($webo_options['html_cachedir'] . 'wo.files.php', '<?php define("WSS_CACHE_FILE","1"); ?>');
 		}
+		return '';
 	}
 	global $webo_options;
 	register_shutdown_function('webo_integrity_handler');
