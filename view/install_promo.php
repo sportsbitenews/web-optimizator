@@ -62,7 +62,7 @@
 	echo _WEBO_SPLASH2_COMPARISON_UPTO;
 ?> 300%</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_CPU;
-?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT13">-</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
+?></th><td class="wssT9 wssT14">-</td><td class="wssT9 wssT14">-</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_BASIC;
 ?></th><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td><td class="wssT9 wssT13">+</td></tr><tr class="wssT8"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_ADVANCED;
