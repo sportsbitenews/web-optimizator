@@ -896,6 +896,9 @@ define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'месяцев');
 define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Срок действия лицензии');
 define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Не ограничен');
+define('_WEBO_SPLASH2_COMPARISON', 'Купить ускорение сайта');
+define('_WEBO_SPLASH2_COMPARISON_MORE', 'Для профессионального ускорения сайта больше подойдет');
+define('_WEBO_SPLASH2_COMPARISON_LIVE', 'Рабочий режим');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'О WEBO Site SpeedUp');

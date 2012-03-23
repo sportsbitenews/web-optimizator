@@ -898,6 +898,8 @@ define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'Weeks');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'Months');
 define('_WEBO_SPLASH2_COMPARISON_LICENSING', 'Licensing period');
 define('_WEBO_SPLASH2_COMPARISON_UNLIMITED', 'Unlimited');
+define('_WEBO_SPLASH2_COMPARISON_MORE', 'For professional website speedup it\'s better to use');
+define('_WEBO_SPLASH2_COMPARISON_LIVE', 'Live mode');
 
 /* About */
 define('_WEBO_ABOUT_TITLE', 'About WEBO Site SpeedUp');
