@@ -3189,7 +3189,7 @@ class web_optimizer {
 		$onload_func .= empty($this->options['page']['postload_frames']) ? '' : 'var a=0,b,c,d=["' .
 			str_replace(" ", '","', $this->options['page']['postload_frames']) .
 			'"],f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;c=f.createElement("iframe");c.style.display="none";c.src=b;f.body.appendChild(c)};';
-		$onload_func = $this->options['css']['rocket'] || $this->options['javascript']['rocket'] ? 'document.cookie="WSS_ROCKET=1;path=/;expires="+(new Date(new Date().getTime()+31536000).toGMTString());' : '';
+		$onload_func .= $this->options['css']['rocket'] || $this->options['javascript']['rocket'] ? 'document.cookie="WSS_ROCKET=1;path=/;expires="+(new Date(new Date().getTime()+31536000).toGMTString());' : '';
 		if ($onload) {
 			$before_body .= '<script type="text/javascript">'. $onload . $onload_func . '},false)</script>';
 		}
