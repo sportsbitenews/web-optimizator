@@ -2443,7 +2443,7 @@ class web_optimizer {
 								($value['tag'] == 'link' ? '</style>' : '</script>');
 							if (!empty($value['file'])) {
 								if ($proxy && $value['tag'] == 'script') {
-									$files_postload[] = $this->options['host'] . $rewrite_to;
+									$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
 								} else {
 									$files_postload[] = $this->options['host'] . $value['file'];
 								}

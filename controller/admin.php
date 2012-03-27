@@ -2657,7 +2657,7 @@ class admin {
 					}
 					@rename($tmp, $file[0]);
 /* remove old gzipped version */
-					@unlink($file . '.gz');
+					@unlink($file[0] . '.gz');
 					if ($file[0] == 'config.webo.php') {
 						$this->options_file = 'config.webo.php';
 						$this->save_options();
