@@ -2430,7 +2430,7 @@ class web_optimizer {
 					($value['tag'] == 'script' && $this->options['javascript']['rocket']))) {
 						$matched = 0;
 						$replace_from[] = $value['source'];
-						$files = array('mootools-more.js', 'mootools-core.js');
+						$files = array('mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
 						foreach ($files as $f) {
 							if (strpos($value['file'], $f) !== false) {
 								$matched = 1;
@@ -2510,6 +2510,11 @@ class web_optimizer {
 /* OpenAPI */
 			array(
 				'regexp' => 'openapi.js?',
+				'exists' => 0
+			),
+/* SWFobject */
+			array(
+				'regexp' => 'swfobject.js',
 				'exists' => 0
 			)
 		);

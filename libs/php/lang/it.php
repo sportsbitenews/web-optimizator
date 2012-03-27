@@ -132,6 +132,7 @@ define('_WEBO_serverside', 'Cache lato Server');
 define('_WEBO_sqlcache', 'Cache DB');
 define('_WEBO_unobtrusive', 'JavaScript non intrusivo');
 define('_WEBO_multiple_hosts', 'CDN');
+define('_WEBO_rocket', 'Rocket');
 define('_WEBO_saas', 'Costo giornaliero');
 define('_WEBO_saas2', '');
 define('_WEBO_plugins', 'Plugins API');
@@ -564,6 +565,12 @@ define('_WEBO_iis_mod_headers', 'Usa <code>HEADERS</code>');
 define('_WEBO_iis_mod_setenvif', 'Usa <code>SETENVIF</code>');
 define('_WEBO_iis_mod_mime', 'Usa <code>MIME</code>');
 define('_WEBO_iis_mod_rewrite', 'Usa <code>rewrite</code>');
+define('_WEBO_rocket_css', 'Enable WEBO Rocket for CSS');
+define('_WEBO_rocket_css_HELP', 'This will include all of your CSS files directly into HTML plus add all files to post-load with caching. The whole technique helps to improve both first and repeat view page load time.');
+define('_WEBO_rocket_css_EFFECT', 'Overall load time will be reduced by 20-30%.');
+define('_WEBO_rocket_javascript', 'Enable WEBO Rocket for JavaScript');
+define('_WEBO_rocket_javascript_HELP', 'This will include most of your JavaScript files (except heavy libraries) directly into HTML plus add all files to post-load with caching. The whole technique helps to improve both first and repeat view page load time.');
+define('_WEBO_rocket_javascript_EFFECT', 'Overall load time will be reduced by 25-40%.');
 
 /* Dashboard */
 define('_WEBO_DASHBOARD_LOADING', 'Caricamento...');

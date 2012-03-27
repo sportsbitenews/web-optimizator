@@ -3785,6 +3785,18 @@ class admin {
 					'type' => 'text',
 					'price' => 5
 				),
+			),
+			'rocket' => array(
+				'rocket_css' => array(
+					'value' => $this->compress_options['rocket']['css'],
+					'type' => 'checkbox',
+					'price' => 3
+				),
+				'rocket_javascript' => array(
+					'value' => $this->compress_options['rocket']['javascript'],
+					'type' => 'checkbox',
+					'price' => 3
+				),
 			)
 		);
 		if (empty($options['title'])) {
@@ -4098,7 +4110,9 @@ class admin {
 			'wss_htaccess_mod_setenvif',
 			'wss_htaccess_mod_rewrite',
 			'wss_htaccess_mod_mime',
-			'wss_htaccess_local') as $val) {
+			'wss_htaccess_local',
+			'wss_rocket_css',
+			'wss_rocket_javascript') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : 1;
 		}
 		$this->check_options();
