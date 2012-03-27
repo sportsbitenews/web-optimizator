@@ -2416,6 +2416,7 @@ class web_optimizer {
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file']);
+				$rewrite_to = $value['file'];
 				if ($proxy) {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
@@ -2430,7 +2431,7 @@ class web_optimizer {
 					($value['tag'] == 'script' && $this->options['javascript']['rocket']))) {
 						$matched = 0;
 						$replace_from[] = $value['source'];
-						$files = array('mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
+						$files = array('mootools.js', 'mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery.js', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
 						foreach ($files as $f) {
 							if (strpos($value['file'], $f) !== false) {
 								$matched = 1;
@@ -2442,15 +2443,11 @@ class web_optimizer {
 								$value['content'] .
 								($value['tag'] == 'link' ? '</style>' : '</script>');
 							if (!empty($value['file'])) {
-								if ($proxy && $value['tag'] == 'script') {
-									$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
-								} else {
-									$files_postload[] = $this->options['host'] . $value['file'];
-								}
+								$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
 							}
 								
 						} elseif (!empty($value['file']) && $proxy) {
-							$replace_to[] = str_replace($value['file'], $rewrite_to, $value['source']);
+							$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
 						} else {
 							array_pop($replace_from);
 						}
@@ -2458,8 +2455,8 @@ class web_optimizer {
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				if ($proxy) {
-					$new_script = str_replace($value['file'], $rewrite_to, $value['file_raw']);
-					$this->content = str_replace($value['file_raw'], $new_script, $this->content);
+					$new_script = str_replace($value['file_raw'], $rewrite_to, $value['source']);
+					$this->content = str_replace($value['source'], $new_script, $this->content);
 				}
 			}
 			if (!empty($replace_from)) {

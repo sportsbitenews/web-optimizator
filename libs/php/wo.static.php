@@ -105,6 +105,11 @@ switch ($extension) {
 	case 'png':
 		$extension = 'image/' . $extension;
 		break;
+	case 'cur':
+		$extension = 'image/vnd.microsoft.icon';
+		$gzip = 1;
+		$gzip_level = $gzip_level_css;
+		break;
 	case 'ico':
 		$extension = 'image/x-icon';
 		$gzip = 1;

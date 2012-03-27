@@ -4521,6 +4521,7 @@ class admin {
 	mod_gzip_item_include mime ^application/xhtml+xml$
 	mod_gzip_item_include mime ^application/json$
 	mod_gzip_item_include mime ^image/x-icon$
+	mod_gzip_item_include mime ^image/vnd.microsoft.icon$
 	mod_gzip_item_include mime ^text/richtext$
 	mod_gzip_item_include mime ^text/xsd$
 	mod_gzip_item_include mime ^text/xsl$
@@ -4590,7 +4591,7 @@ class admin {
 <IfModule mod_deflate.c>";
 				if (!empty($this->input['wss_gzip_page'])) {
 					$content .= "
-	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon text/richtext text/xsd text/xsl text/xml application/json";
+	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon image/vnd.microsoft.icon text/richtext text/xsd text/xsl text/xml application/json";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
 					$content .= "
@@ -4633,6 +4634,9 @@ Options +FollowSymLinks";
 	</FilesMatch>
 	<FilesMatch \.ico\.gz$>
 		ForceType image/x-icon
+	</FilesMatch>
+	<FilesMatch \.cur\.gz$>
+		ForceType image/vnd.microsoft.icon
 	</FilesMatch>
 	<FilesMatch \.css\.gz$>
 		ForceType text/css
@@ -4688,6 +4692,7 @@ Options +FollowSymLinks";
 	AddType image/bmp bmp
 	AddType image/gif gif
 	AddType image/x-icon ico
+	AddType image/vnd.microsoft.icon ico
 	AddType image/jpeg jpg jpeg jpe
 	AddType image/png png
 	AddType image/tiff tif tiff
@@ -4743,6 +4748,10 @@ Options +FollowSymLinks";
 					}
 					if (!empty($this->input['wss_gzip_page'])) {
 						$content .= "
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.cur$ $1.cur.gz [QSA,L]
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
@@ -4876,6 +4885,7 @@ Options +FollowSymLinks";
 	ExpiresByType image/jpg A315360000
 	ExpiresByType image/jpeg A315360000
 	ExpiresByType image/x-icon A315360000
+	ExpiresByType image/vnd.microsoft.icon A315360000
 	ExpiresByType image/bmp A315360000";
 				}
 				if (!empty($this->input['wss_far_future_expires_fonts'])) {
@@ -5008,7 +5018,7 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
 							$content2 .= "
-	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
+	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico|cur)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_video'])) {
 						$content2 .= "
