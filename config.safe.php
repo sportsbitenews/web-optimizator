@@ -134,3 +134,6 @@ $compress_options['htaccess']['mod_setenvif']="1";
 $compress_options['htaccess']['mod_rewrite']="1";
 $compress_options['htaccess']['mod_mime']="1";
 $compress_options['htaccess']['local']="1";
+$compress_options['rocket']['css']="1";
+$compress_options['rocket']['javascript']="1";
+$compress_options['rocket']['javascript_external']="0";

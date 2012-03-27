@@ -281,6 +281,12 @@ $compress_options['htaccess']['mod_mime'] = "1";
 $compress_options['htaccess']['local'] = "1";
 ## Security options
 $compress_options['htaccess']['access'] = "0";
+## Include CSS directly
+$compress_options['rocket']['css'] = "1";
+## Include JavaScript directly
+$compress_options['rocket']['javascript'] = "1";
+## Include JavaScript External directly
+$compress_options['rocket']['javascript_external'] = "0";
 ## Restricted for logic website parts
 $compress_options['restricted'] = "captcha";
 ## Default website currency

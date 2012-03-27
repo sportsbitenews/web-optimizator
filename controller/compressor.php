@@ -120,6 +120,7 @@ class web_optimizer {
 			if (!empty($this->options['page']['exclude_cookies'])) {
 				$cookies = explode(" ", $this->options['page']['exclude_cookies']);
 				foreach ($cookies as $cookie) {
+
 					if ($e = strpos($cookie, '=')) {
 						$c = substr($cookie, 0, $e);
 						$e = substr($cookie, $e+1);
@@ -404,7 +405,9 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"file" => $this->premium > 1 ? $this->options['minify']['javascript_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
-				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
+				"rocket" => $this->options['rocket']['javascript'],
+				"rocket_external" => $this->options['rocket']['javascript_external']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -467,7 +470,8 @@ class web_optimizer {
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"file" => $this->premium > 1 ? $this->options['minify']['css_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
-				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : ''
+				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
+				"rocket" => $this->options['rocket']['css']
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -872,7 +876,9 @@ class web_optimizer {
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
 					'file' => $options['file'],
-					'https' => $options['https']
+					'https' => $options['https'],
+					'rocket' => $options['rocket'],
+					'rocket_external' => $options['rocket_external'],
 				),
 				$this->content,
 				$script_files
@@ -944,7 +950,9 @@ class web_optimizer {
 					'include_code' => $options['include_code'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
 					'file' => $options['file'],
-					'https' => $options['https']
+					'https' => $options['https'],
+					'rocket' => $options['rocket'],
+					'rocket_external' => $options['rocket'],
 				),
 				$this->content,
 				$link_files
@@ -1163,6 +1171,18 @@ class web_optimizer {
 				$this->content = $content;
 			}
 		}
+	}
+
+	/**
+	* Write array to content
+	* 
+	**/
+	function write_file_array ($file, $arr, $name) {
+		$str = "<?php\n";
+		foreach ($arr as $key => $value) {
+			$str .= '$' . $name . "['" . $key . "']='" . str_replace("'", "\'", $value) . "';\n";
+		}
+		return $this->write_file($file, $str);
 	}
 
 	/**
@@ -2154,11 +2174,12 @@ class web_optimizer {
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
 		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
-		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript']) {
+		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket']) {
 			if (empty($this->options['javascript']['minify_body']) || empty($this->options['javascript']['inline_scripts_body'])) {
 				$toparse = $this->head;
 			} else {
 				$toparse = $this->body;
+				$parsing_body = 1;
 			}
 /* find all scripts from head */
 			$regex = "!(<script[^>]*>)(.*?</script>)!is";
@@ -2279,11 +2300,12 @@ class web_optimizer {
 				}
 			}
 		}
-		if ($this->options['css']['minify'] || $this->options['css']['gzip'] || $this->options['page']['parallel_css']) {
+		if ($this->options['css']['minify'] || $this->options['css']['gzip'] || $this->options['page']['parallel_css'] || $this->options['css']['rocket']) {
 			if (empty($this->options['css']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
 				$toparse = $this->body;
+				$parsing_body = 1;
 			}
 /* find all CSS links from head and inine styles */
 			if (empty($this->options['css']['inline_scripts']) && $this->options['page']['html_tidy'] && !strpos($toparse, '<style') && !strpos($toparse, '<STYLE')) {
@@ -2330,6 +2352,10 @@ class web_optimizer {
 			}
 		}
 		if (is_array($this->initial_files)) {
+/* get files' content if Rocket */
+			if ($this->options['javascript']['rocket'] || $this->options['css']['rocket']) {
+				$this->get_script_content();
+			}
 /* enable caching / gzipping proxy? */
 			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['css']['gzip']);
@@ -2385,26 +2411,70 @@ class web_optimizer {
 								$new_script, $this->content);
 							$use_proxy = 0;
 					}
-/* rewrite skipped file with caching proxy, skip dynamic files */
 				}
-				if ($use_proxy && !empty($value['file']) &&
+				$proxy = $use_proxy &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
-					!preg_match("!\.php$!", $value['file'])) {
-						$value['file'] = preg_replace("@https?://(www\.)?" .
-							$this->host_escaped . "/+@", "/", $value['file']);
-						$new_src =
-							$this->options['page']['cachedir_relative'] . 
-							'wo.static.php?' . $this->convert_path_to_absolute($value['file'],
-							array('file' => $_SERVER['REQUEST_URI']));
-						$new_script = str_replace($value['file'],
-							$new_src, $value['file_raw']);
-						$this->content = str_replace($value['file_raw'],
-							$new_script, $this->content);
+					!preg_match("!\.php$!", $value['file']);
+				if ($proxy) {
+					$value['file'] = preg_replace("@https?://(www\.)?" .
+						$this->host_escaped . "/+@", "/", $value['file']);
+					$rewrite_to = str_replace($value['file'],
+						$this->options['page']['cachedir_relative'] . 
+						'wo.static.php?' . $this->convert_path_to_absolute($value['file'],
+						array('file' => $_SERVER['REQUEST_URI'])), $value['file']);
+				}
+/* rewrite skipped file with caching proxy, skip dynamic files */
+				if (empty($_COOKIE['WSS_ROCKET']) &&
+					(($value['tag'] == 'link' && $this->options['css']['rocket']) ||
+					($value['tag'] == 'script' && $this->options['javascript']['rocket']))) {
+						$matched = 0;
+						$replace_from[] = $value['source'];
+						$files = array('mootools-more.js', 'mootools-core.js');
+						foreach ($files as $f) {
+							if (strpos($value['file'], $f) !== false) {
+								$matched = 1;
+							}
+						}
+						if (empty($matched)) {
+							$replace_to[] = ($value['tag'] == 'link' ? '<style type="text/css"' .
+								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : '<script type="text/javascript">') .
+								$value['content'] .
+								($value['tag'] == 'link' ? '</style>' : '</script>');
+							if (!empty($value['file'])) {
+								if ($proxy && $value['tag'] == 'script') {
+									$files_postload[] = $this->options['host'] . $rewrite_to;
+								} else {
+									$files_postload[] = $this->options['host'] . $value['file'];
+								}
+							}
+								
+						} elseif (!empty($value['file']) && $proxy) {
+							$replace_to[] = str_replace($value['file'], $rewrite_to, $value['source']);
+						} else {
+							array_pop($replace_from);
+						}
+						$use_proxy = $proxy = 0;
+				}
+/* rewrite skipped file with caching proxy, skip dynamic files */
+				if ($proxy) {
+					$new_script = str_replace($value['file'], $rewrite_to, $value['file_raw']);
+					$this->content = str_replace($value['file_raw'], $new_script, $this->content);
+				}
+			}
+			if (!empty($replace_from)) {
+				if (empty($parsing_body)) {
+					$to = str_replace($replace_from, $replace_to, $this->head);
+					$this->content = str_replace($this->headin, $to, $this->content);
+				} else {
+					$this->content = str_replace($replace_from, $replace_to, $this->content);
+				}
+				if (!empty($files_postload)) {
+					$this->options['page']['postload'] = (empty($this->options['page']['postload']) ? '' : ' ') . implode(" ", $files_postload); 
 				}
 			}
 /* skip mining files' content if don't check MTIME */
-			if (!$this->options['javascript']['dont_check_file_mtime']) {
+			if (!$this->options['javascript']['dont_check_file_mtime'] && !$this->options['javascript']['rocket'] && !$this->options['css']['rocket']) {
 				$this->get_script_content();
 			}
 		}
@@ -2444,156 +2514,180 @@ class web_optimizer {
 			)
 		);
 		if (is_array($this->initial_files)) {
+			if ($this->options['css']['rocket'] || $this->options['javascript']['rocket']) {
+				@include($this->options['page']['cachedir'] . 'wo.content.php');
+			}
 			foreach($this->initial_files as $key => $value) {
+				$k = md5($value['file']);
+				if (!empty($webo_scripts[$k])) {
+					$this->initial_files[$key]['content'] = $webo_scripts[$k];
+				} else {
 /* don't touch all files -- just only requested ones */
-				if (!$tag || $value['tag'] == $tag) {
-					if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
+					if (!$tag || $value['tag'] == $tag) {
+						if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
 /* exclude files from the same host */
-						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
+							if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
-								if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+									if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
-								if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+									if (!preg_match("/\.(css|js)$/is", $value['file'])) {
 /* dynamic file */
-									$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
+										$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
 /* static file */
+									} else {
+										$file = $this->get_remote_file($value['file'], $value['tag']);
+									}
+									if (!empty($file)) {
+										$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
+									} else {
+										unset($this->initial_files[$key]);
+									}
 								} else {
-									$file = $this->get_remote_file($value['file'], $value['tag']);
-								}
-								if (!empty($file)) {
-									$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
-								} else {
-									unset($this->initial_files[$key]);
-								}
-							} else {
-								if (empty($value['content'])) {
-									unset($this->initial_files[$key]);
-								}
-							}
-						} else {
-							$value['file'] = preg_replace("!https?://(www\.)?".
-								$this->host_escaped . "/+!s", "/", $value['file']);
-						}
-					}
-					$content_from_file = '';
-					if (!empty($value['file'])) {
-						$value['file'] = preg_replace("@^/?(\.\./)+@", "", $value['file']);
-/* convert dynamic files to static ones */
-						if (!preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php/')) {
-							$dynamic_file = $value['file_raw'];
-/* touch only non-external scripts */
-							if (!strpos($dynamic_file, "://")) {
-								$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']), true);
-							}
-							$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file($this->resolve_amps($dynamic_file), $value['tag']);
-							if (@is_file($static_file)) {
-								$value['file'] = str_replace($this->options['document_root'], "/", $static_file);
-							} else {
-								unset($value['file']);
-							}
-						}
-						if ($value['tag'] == 'link') {
-/* recursively resolve @import in files */
-							$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-									$this->resolve_css_imports($value['file']) .
-								(empty($value['media']) ? "" : "}");
-/* convert CSS images' paths to absolute */
-							$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
-						} else {
-							$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
-						}
-/* detect Shadowbox variables */
-						if (strpos($value['file'], 'shadowbox.js') !== false) {
-							$this->shadowbox_sizzle = preg_match("@useSizzle:\s*true@is", $content_from_file);
-							$this->shadowbox_language = preg_replace("@.*language:\s*['\"]([^'\"]+)['\"].*@is", "$1", $content_from_file);
-						}
-/* fix niftycube loader */
-						if (strpos($value['file'], 'niftycube.js') !== false) {
-							$content_from_file = preg_replace("!function AddCss()\{.*?\}!is", "function AddCss(){niftyCss=true}", $content_from_file);
-						}
-/* remove duplicates */
-						if ($value['tag'] == 'script' &&
-							$this->options['javascript']['remove_duplicates']) {
-								foreach ($duplicates as $k => $duplicate) {
-									if (preg_match("@" . $duplicate['regexp'] . "$@is", $value['file'])) {
-										if ($duplicate['exists']) {
-											$content_from_file = '';
-										} else {
-											$duplicates[$k]['exists'] = 1;
-										}
+									if (empty($value['content'])) {
+										unset($this->initial_files[$key]);
 									}
 								}
+							} else {
+								$value['file'] = preg_replace("!https?://(www\.)?".
+									$this->host_escaped . "/+!s", "/", $value['file']);
+							}
 						}
-					}
-/* remove BOM */
-					$content_from_file = str_replace('﻿', '', $content_from_file);
-/* don't delete any detected scripts from array -- we need to clean up HTML page from them */
-					if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
-/* glue inline and external content */
-						if (($this->options['javascript']['inline_scripts'] && $value['tag'] == 'script') || ($this->options['css']['inline_scripts'] && $value['tag'] == 'link')) {
-/* resolve @import from inline styles */
+						$content_from_file = '';
+						if (!empty($value['file'])) {
+							$value['file'] = preg_replace("@^/?(\.\./)+@", "", $value['file']);
+/* convert dynamic files to static ones */
+							if (!preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php/')) {
+								$dynamic_file = $value['file_raw'];
+/* touch only non-external scripts */
+								if (!strpos($dynamic_file, "://")) {
+									$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']), true);
+								}
+								$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file($this->resolve_amps($dynamic_file), $value['tag']);
+								if (@is_file($static_file)) {
+									$value['file'] = str_replace($this->options['document_root'], "/", $static_file);
+								} else {
+									unset($value['file']);
+								}
+							}
 							if ($value['tag'] == 'link') {
-								$value['content'] = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-										$this->resolve_css_imports($value['content'], true) . 
+/* recursively resolve @import in files */
+								$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+										$this->resolve_css_imports($value['file']) .
 									(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
-								$value['content'] = $this->convert_paths_to_absolute($value['content'],
-									array('file' => $this->options['document_root_relative']), 0, 1);
+								$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
 							} else {
-/* fix to merge dynamic Shadowbox files */
-								if (!empty($this->shadowbox_base) && preg_match("@players:\s*\[@is", $value['content'])) {
-									$players = preg_replace("@.*players:\s*\[([^\]]+)]\s*,\r?\n?.*@is", "$1", $value['content']);
-									$value['content'] = str_replace($players, '', $value['content']);
-									$players = str_replace(array(" ", "'", '"'), '', $players);
-									$players = explode(',', $players);
-									$d = $this->options['document_root'] . $this->shadowbox_base_raw;
-									$c = '';
-									if (!empty($this->shadowbox_sizzle)) {
-										$c .= $this->file_get_contents($d . 'libraries/sizzle/sizzle.js');
-									}
-									if (!empty($this->shadowbox_language)) {
-										$c .= $this->file_get_contents($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js');
-									}
-									foreach ($players as $player) {
-										if ($player == 'swf' || $player == 'flv') {
-											$c .= $this->file_get_contents($d . 'libraries/swfobject/swfobject.js');
+								$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
+							}
+/* detect Shadowbox variables */
+							if (strpos($value['file'], 'shadowbox.js') !== false) {
+								$this->shadowbox_sizzle = preg_match("@useSizzle:\s*true@is", $content_from_file);
+								$this->shadowbox_language = preg_replace("@.*language:\s*['\"]([^'\"]+)['\"].*@is", "$1", $content_from_file);
+							}
+/* fix niftycube loader */
+							if (strpos($value['file'], 'niftycube.js') !== false) {
+								$content_from_file = preg_replace("!function AddCss()\{.*?\}!is", "function AddCss(){niftyCss=true}", $content_from_file);
+							}
+/* remove duplicates */
+							if ($value['tag'] == 'script' &&
+								$this->options['javascript']['remove_duplicates']) {
+									foreach ($duplicates as $k => $duplicate) {
+										if (preg_match("@" . $duplicate['regexp'] . "$@is", $value['file'])) {
+											if ($duplicate['exists']) {
+												$content_from_file = '';
+											} else {
+												$duplicates[$k]['exists'] = 1;
+											}
 										}
-										$c .= $this->file_get_contents($d . 'players/shadowbox-' . $player . '.js');
 									}
-									$value['content'] = $c . $value['content'];
+							}
+						}
+/* remove BOM */
+						$content_from_file = str_replace('﻿', '', $content_from_file);
+/* don't delete any detected scripts from array -- we need to clean up HTML page from them */
+						if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
+/* glue inline and external content */
+							if (($this->options['javascript']['inline_scripts'] && $value['tag'] == 'script') || ($this->options['css']['inline_scripts'] && $value['tag'] == 'link')) {
+/* resolve @import from inline styles */
+								if ($value['tag'] == 'link') {
+									$value['content'] = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+											$this->resolve_css_imports($value['content'], true) . 
+										(empty($value['media']) ? "" : "}");
+/* convert CSS images' paths to absolute */
+									$value['content'] = $this->convert_paths_to_absolute($value['content'],
+										array('file' => $this->options['document_root_relative']), 0, 1);
+								} else {
+/* fix to merge dynamic Shadowbox files */
+									if (!empty($this->shadowbox_base) && preg_match("@players:\s*\[@is", $value['content'])) {
+										$players = preg_replace("@.*players:\s*\[([^\]]+)]\s*,\r?\n?.*@is", "$1", $value['content']);
+										$value['content'] = str_replace($players, '', $value['content']);
+										$players = str_replace(array(" ", "'", '"'), '', $players);
+										$players = explode(',', $players);
+										$d = $this->options['document_root'] . $this->shadowbox_base_raw;
+										$c = '';
+										if (!empty($this->shadowbox_sizzle)) {
+											$c .= $this->file_get_contents($d . 'libraries/sizzle/sizzle.js');
+										}
+										if (!empty($this->shadowbox_language)) {
+											$c .= $this->file_get_contents($d . 'languages/shadowbox-' . $this->shadowbox_language . '.js');
+										}
+										foreach ($players as $player) {
+											if ($player == 'swf' || $player == 'flv') {
+												$c .= $this->file_get_contents($d . 'libraries/swfobject/swfobject.js');
+											}
+											$c .= $this->file_get_contents($d . 'players/shadowbox-' . $player . '.js');
+										}
+										$value['content'] = $c . $value['content'];
+									}
 								}
-							}
-							$text = (empty($value['content']) ? '' : "\n" . $value['content']);
+								$text = (empty($value['content']) ? '' : "\n" . $value['content']);
 /* if we can't add to existing tag -- store for the future */
-							if (empty($last_key[$value['tag']])) {
-								$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
-								$last_key_flushed[$value['tag']] = $key;
-							} else {
-								$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
-							}
+								if (empty($last_key[$value['tag']])) {
+									$stored[$value['tag']] = empty($stored[$value['tag']]) ? $text : $stored[$value['tag']] . $text;
+									$last_key_flushed[$value['tag']] = $key;
+								} else {
+									$this->initial_files[$last_key[$value['tag']]]['content'] .= $text;
+								}
 /* null content not to include anywhere, we still have source code in 'source' */
-							$this->initial_files[$key]['content'] = '';
-						}
-					} elseif (!empty($content_from_file)) {
-/* don't rewrite existing content inside script tags */
-						$this->initial_files[$key]['content'] = $content_from_file . (empty($value['content']) ? '' : "\n" . $value['content']);
-/* add stored content before, but leave styles stored */
-						if (!empty($stored[$value['tag']])) {
-/* preserve order of merged content */
-							if ($last_key_flushed[$value['tag']] < $key) {
-								$this->initial_files[$key]['content'] = $stored[$value['tag']] . "\n" . $this->initial_files[$key]['content'];
-							} else {
-								$this->initial_files[$key]['content'] .= "\n" . $stored[$value['tag']];
+								$this->initial_files[$key]['content'] = '';
 							}
-							$stored[$value['tag']] = '';
+						} elseif (!empty($content_from_file)) {
+/* don't rewrite existing content inside script tags */
+							$this->initial_files[$key]['content'] = $content_from_file . (empty($value['content']) ? '' : "\n" . $value['content']);
+/* add stored content before, but leave styles stored */
+							if (!empty($stored[$value['tag']])) {
+/* preserve order of merged content */
+								if ($last_key_flushed[$value['tag']] < $key) {
+									$this->initial_files[$key]['content'] = $stored[$value['tag']] . "\n" . $this->initial_files[$key]['content'];
+								} else {
+									$this->initial_files[$key]['content'] .= "\n" . $stored[$value['tag']];
+								}
+								$stored[$value['tag']] = '';
+							}
+							$last_key[$value['tag']] = $key;
 						}
-						$last_key[$value['tag']] = $key;
 					}
+					$need_rewrite = 1;
 				}
 			}
 /* check for stored content and flush it */
 			foreach ($stored as $tag => $stored_content) {
 				$this->initial_files[$last_key_flushed[$tag]]['content'] = $stored_content;
+			}
+			if ((($this->options['css']['rocket'] && $value['tag'] == 'link') ||
+				($this->options['javascript']['rocket'] && $value['tag'] == 'script')) && !empty($need_rewrite)) {
+					$webo_scripts = array();
+					foreach ($this->libraries as $klass => $library) {
+						if (!class_exists($klass, false)) {
+							require($this->options['css']['installdir'] . 'libs/php/' . $library);
+						}
+					}
+					foreach ($this->initial_files as $key => $value) {
+						$webo_scripts[md5($value['file'])] = $value['tag'] == 'link' ?
+							$this->minify_text($value['content'], $this->options['css']) :
+							$this->minify_javascript($value['content'], $this->options['javascript']);
+					}
+					$this->write_file_array($this->options['page']['cachedir'] . 'wo.content.php', $webo_scripts, 'webo_scripts');
 			}
 		}
 	}
@@ -3090,6 +3184,7 @@ class web_optimizer {
 		$onload_func .= empty($this->options['page']['postload_frames']) ? '' : 'var a=0,b,c,d=["' .
 			str_replace(" ", '","', $this->options['page']['postload_frames']) .
 			'"],f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;c=f.createElement("iframe");c.style.display="none";c.src=b;f.body.appendChild(c)};';
+		$onload_func = $this->options['css']['rocket'] || $this->options['javascript']['rocket'] ? 'document.cookie="WSS_ROCKET=1;path=/;expires="+(new Date(new Date().getTime()+31536000).toGMTString());' : '';
 		if ($onload) {
 			$before_body .= '<script type="text/javascript">'. $onload . $onload_func . '},false)</script>';
 		}
@@ -3136,6 +3231,9 @@ class web_optimizer {
 		if ($dest !== $source) {
 /* replace current content with updated version */
 			$this->content = str_replace($source, $dest, $this->content);
+		}
+		if ($this->options['javascript']['rocket'] || $this->options['css']['rocket']) {
+			$this->headin = $dest;
 		}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 		while ($compos = strpos($dest, '<!--')) {
@@ -3241,7 +3339,7 @@ class web_optimizer {
 					if (!empty($head)) {
 						$this->head = $this->prepare_html($head);
 					}
-			}
+			}		
 /* get head+body if required */
 			if ($this->options['javascript']['minify_body'] + $this->options['css']['minify_body'] + $this->options['javascript']['inline_scripts_body']) {
 				preg_match("!<head.*!is", $this->content, $matches);
@@ -3391,7 +3489,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			}
 		} else {
 			if (!empty($this->options['plain_string'])) {
-				while (($a = strpos($source, '<!--[if IE')) !== false && ($b = strpos($source, '[endif]-->')) !== false) {
+				while ((($a = strpos($source, '<!--[if IE')) !== false || ($a = strpos($source, '<!--[if lt')) !== false || ($a = strpos($source, '<!--[if gt')) !== false) && ($b = strpos($source, '[endif]-->')) !== false) {
 					$source = substr($source, 0, $a) . substr($source, $b+10);
 				}
 			} else {
