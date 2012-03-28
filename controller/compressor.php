@@ -2431,7 +2431,7 @@ class web_optimizer {
 					($value['tag'] == 'script' && $this->options['javascript']['rocket']))) {
 						$matched = 0;
 						$replace_from[] = $value['source'];
-						$files = array('mootools.js', 'mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery.js', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
+						$files = array('mootools.js', 'mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery-ui', 'jquery.js', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
 						foreach ($files as $f) {
 							if (strpos($value['file'], $f) !== false) {
 								$matched = 1;

@@ -5020,26 +5020,6 @@ Options +FollowSymLinks";
 							$content2 .= "
 	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico|cur)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
 					}
-					if (!empty($this->input['wss_far_future_expires_video'])) {
-						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f";
-							if (!empty($this->input['wss_footer_ab'])) {
-								$content2 .= "
-	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
-							}
-							$content2 .= "
-	RewriteRule ^(.*)\.(flv|wmv|asf|asx|wma|wax|wmx|wm|ogg|mp4|mp3|midi?|wav|m4v|webm|divx|mov|qt|mpe?g|mpe|m4a|ra|ram)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-					}
-					if (!empty($this->input['wss_far_future_expires_static'])) {
-						$content2 .= "
-	RewriteCond %{REQUEST_FILENAME} -f";
-							if (!empty($this->input['wss_footer_ab'])) {
-								$content2 .= "
-	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
-							}
-							$content2 .= "
-	RewriteRule ^(.*)\.(swf|pdf|docx?|rtf|xls|ppt|class|exe|g?zip|tar|mdb|mpp|pot|pps|ppt|pptx|wri|xla|xlsx?|xlt|xlw|odb|odc|odf|odg|odp|ods|odt)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
-					}
 					if (!empty($this->input['wss_far_future_expires_fonts'])) {
 						$content2 .= "
 	RewriteCond %{REQUEST_FILENAME} -f";
