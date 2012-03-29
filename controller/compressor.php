@@ -2386,6 +2386,7 @@ class web_optimizer {
 				}
 				$use_proxy = (!$this->options['javascript']['minify'] && $value['tag'] == 'script') ||
 					(!$this->options['css']['minify'] && $value['tag'] == 'link');
+				$replaces_set = 0;
 /* but keep CSS/JS w/o src to merge into unobtrusive loader, also exclude files from ignore_list */
 				if (($value['tag'] == 'script' && ((empty($value['file']) &&
 					!$this->options['javascript']['inline_scripts']) ||
@@ -2464,17 +2465,24 @@ class web_optimizer {
 							$replace_to[] = $value['source'];
 						}
 						$use_proxy = $proxy = 0;
+						$replaces_set = 1;
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				if ($proxy) {
 					$replace_from[] = $value['source'];
 					$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
+					$replaces_set = 1;
 				}
 				if ($this->options['javascript']['reorder']) {
+					if (!$replaces_set) {
+						$replace_from[] = $replace_to[] = $value['source'];
+					}
 					$i = $value['position'];
 					$i = ($i < 1000000 ? '0' : '') . ($i < 100000 ? '0' : '') . ($i < 10000 ? '0' : '') . ($i < 1000 ? '0' : '') . ($i < 100 ? '0' : '') . ($i < 10 ? '0' : '') . $i;
-					$replace_position_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . $i . (count($replace_to) - 1);
-					$replace_position[] = $i . (count($replace_to) - 1);
+					$j = count($replace_to) - 1;
+					$j = ($j < 1000 ? '0' : '') . ($j < 100 ? '0' : '') . ($j < 10 ? '0' : '') . $j;
+					$replace_position_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . $i . $j;
+					$replace_position[] = $i . $j;
 				}
 			}
 /* reorder scripts/styles */
@@ -2482,13 +2490,13 @@ class web_optimizer {
 				sort($replace_position_type);
 				$rto = array();
 				foreach ($replace_position_type as $value) {
-					$rto[] = $replace_to[substr($value, 8)];
+					$rto[] = $replace_to[round(substr($value, 8))];
 				}
 				$replace_to = $rto;
 				sort($replace_position);
 				$rfrom = array();
 				foreach ($replace_position as $value) {
-					$rfrom[] = $replace_from[substr($value, 7)];
+					$rfrom[] = $replace_from[round(substr($value, 7))];
 				}
 				$replace_from = $rfrom;
 			}
