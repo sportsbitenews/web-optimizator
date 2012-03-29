@@ -3789,13 +3789,15 @@ class admin {
 			'rocket' => array(
 				'rocket_css' => array(
 					'value' => $this->compress_options['rocket']['css'],
-					'type' => 'checkbox',
-					'price' => 3
+					'type' => 'checkbox'
 				),
 				'rocket_javascript' => array(
 					'value' => $this->compress_options['rocket']['javascript'],
-					'type' => 'checkbox',
-					'price' => 3
+					'type' => 'checkbox'
+				),
+				'rocket_reorder' => array(
+					'value' => $this->compress_options['rocket']['reorder'],
+					'type' => 'checkbox'
 				),
 			)
 		);
@@ -4112,7 +4114,8 @@ class admin {
 			'wss_htaccess_mod_mime',
 			'wss_htaccess_local',
 			'wss_rocket_css',
-			'wss_rocket_javascript') as $val) {
+			'wss_rocket_javascript',
+			'wss_rocket_reorder') as $val) {
 				$this->input[$val] = empty($this->input[$val]) ? 0 : 1;
 		}
 		$this->check_options();

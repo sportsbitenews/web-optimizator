@@ -572,6 +572,9 @@ define('_WEBO_rocket_css_EFFECT', 'Overall load time will be reduced by 20-30%.'
 define('_WEBO_rocket_javascript', 'Enable WEBO Rocket for JavaScript');
 define('_WEBO_rocket_javascript_HELP', 'This will include most of your JavaScript files (except heavy libraries) directly into HTML plus add all files to post-load with caching. The whole technique helps to improve both first and repeat view page load time.');
 define('_WEBO_rocket_javascript_EFFECT', 'Overall load time will be reduced by 25-40%.');
+define('_WEBO_rocket_reorder', 'Put styles first');
+define('_WEBO_rocket_reorder_HELP', 'All style tags will be placed before all script tags (according to CSS/JavaScript merging options).');
+define('_WEBO_rocket_reorder_EFFECT', 'Possible first render speedup - 25-40%.');
 
 /* Dashboard */
 define('_WEBO_DASHBOARD_LOADING', 'Loading...');

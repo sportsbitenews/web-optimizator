@@ -136,4 +136,5 @@ $compress_options['htaccess']['mod_mime']="1";
 $compress_options['htaccess']['local']="1";
 $compress_options['rocket']['css']="0";
 $compress_options['rocket']['javascript']="0";
+$compress_options['rocket']['reorder'] = "1";
 $compress_options['rocket']['javascript_external']="0";

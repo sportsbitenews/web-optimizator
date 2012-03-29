@@ -269,7 +269,7 @@ $compress_options['parallel']['ftp'] = "";
 ## SSL secure host to use for all CDN assets
 $compress_options['parallel']['https'] = "";
 ## Should be gzip / cache settings written via .htaccess?
-$compress_options['htaccess']['enabled'] = "0";
+$compress_options['htaccess']['enabled'] = "1";
 $compress_options['htaccess']['mod_deflate'] = "1";
 $compress_options['htaccess']['mod_gzip'] = "1";
 $compress_options['htaccess']['mod_expires'] = "1";
@@ -285,6 +285,8 @@ $compress_options['htaccess']['access'] = "0";
 $compress_options['rocket']['css'] = "1";
 ## Include JavaScript directly
 $compress_options['rocket']['javascript'] = "1";
+## Put styles first
+$compress_options['rocket']['reorder'] = "1";
 ## Include JavaScript External directly
 $compress_options['rocket']['javascript_external'] = "0";
 ## Restricted for logic website parts

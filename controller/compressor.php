@@ -407,7 +407,8 @@ class web_optimizer {
 				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
 				"rocket" => $this->options['rocket']['javascript'],
-				"rocket_external" => $this->options['rocket']['javascript_external']
+				"rocket_external" => $this->options['rocket']['javascript_external'],
+				"reorder" => $this->options['rocket']['reorder']
 			),
 			"css" => array(
 				"cachedir" => $this->options['css_cachedir'],
@@ -471,7 +472,8 @@ class web_optimizer {
 				"file" => $this->premium > 1 ? $this->options['minify']['css_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
-				"rocket" => $this->options['rocket']['css']
+				"rocket" => $this->options['rocket']['css'],
+				"reorder" => $this->options['rocket']['reorder']
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
@@ -879,6 +881,7 @@ class web_optimizer {
 					'https' => $options['https'],
 					'rocket' => $options['rocket'],
 					'rocket_external' => $options['rocket_external'],
+					'reorder' => $options['reorder']
 				),
 				$this->content,
 				$script_files
@@ -953,6 +956,7 @@ class web_optimizer {
 					'https' => $options['https'],
 					'rocket' => $options['rocket'],
 					'rocket_external' => $options['rocket'],
+					'reorder' => $options['reorder']
 				),
 				$this->content,
 				$link_files
@@ -2174,7 +2178,7 @@ class web_optimizer {
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
 		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
-		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket']) {
+		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket'] || $this->options['javascript']['reorder']) {
 			if (empty($this->options['javascript']['minify_body']) || empty($this->options['javascript']['inline_scripts_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -2299,7 +2303,7 @@ class web_optimizer {
 				}
 			}
 		}
-		if ($this->options['css']['minify'] || $this->options['css']['gzip'] || $this->options['page']['parallel_css'] || $this->options['css']['rocket']) {
+		if ($this->options['css']['minify'] || $this->options['css']['gzip'] || $this->options['page']['parallel_css'] || $this->options['css']['rocket'] || $this->options['css']['reorder']) {
 			if (empty($this->options['css']['minify_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -2360,6 +2364,7 @@ class web_optimizer {
 			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['javascript']['gzip']);
 			$niftyUsed = 0;
+			$replace_from = $replace_to = $replace_type = array();
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
 /* exclude niftyCorners duplicate */
@@ -2429,6 +2434,7 @@ class web_optimizer {
 					($value['tag'] == 'script' && $this->options['javascript']['rocket']))) {
 						$matched = 0;
 						$replace_from[] = $value['source'];
+						$replace_type[] = $value['tag'];
 						$files = array('mootools.js', 'mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery-ui', 'jquery.js', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
 						foreach ($files as $f) {
 							if (strpos($value['file'], $f) !== false) {
@@ -2453,11 +2459,20 @@ class web_optimizer {
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				if ($proxy) {
-					$new_script = str_replace($value['file_raw'], $rewrite_to, $value['source']);
-					$this->content = str_replace($value['source'], $new_script, $this->content);
+					$replace_from[] = $value['source'];
+					$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
+					$replace_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . (count($replace_to) - 1);
 				}
 			}
-			if (!empty($replace_from)) {
+			if ($this->options['javascript']['reorder']) {
+				sort($replace_type);
+				$rto = array();
+				foreach ($replace_type as $value) {
+					$rto[] = $replace_to[substr($value, 1)];
+				}
+				$replace_to = $rto;
+			}
+			if (count($replace_from)) {
 				$this->content = str_replace($replace_from, $replace_to, $this->content);
 				if (!empty($files_postload)) {
 					$this->options['page']['postload'] = (empty($this->options['page']['postload']) ? '' : ' ') . implode(" ", $files_postload); 

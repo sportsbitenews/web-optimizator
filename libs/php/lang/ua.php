@@ -520,6 +520,9 @@ define('_WEBO_rocket_css_EFFECT', 'Общее время загрузки сай
 define('_WEBO_rocket_javascript', 'Использовать WEBO Rocket для JavaScript');
 define('_WEBO_rocket_javascript_HELP', 'Содержимое большинства ваших JavaScript-файлов (за исключнием тяжелых клиентскх библиотек) будет включено напрямую в HTML-код, а сами файлы запрошены после загрузки всей страницы. Это позволит существенно сократить время загрузки для как первоначальных, так и повторных просмотров страниц сайта.');
 define('_WEBO_rocket_javascript_EFFECT', 'Общее время загрузки сайта будет уменьшено на 25-40%.');
+define('_WEBO_rocket_reorder', 'Перенести стили вперед');
+define('_WEBO_rocket_reorder_HELP', 'Все стили будут помещены перед всеми скриптами (в соответствии с настройками объединения CSS/JavaScript).');
+define('_WEBO_rocket_reorder_EFFECT', 'Возможное ускорение отрисовки страницы - 25-40%.');
 define('_WEBO_parallel_enabled', 'Распределять изображения');
 define('_WEBO_parallel_enabled_HELP', 'Все файлы изображений, вызываемые на веб-страницах будут автоматически распределяться по нескольким хостам. Так, например, вызовы файлов http://site.ru/i/logo.png и /i/bg.jpg могут быть заменены вызовами http://i1.site.ru/i/logo.png и http://i2.site.ru/i/bg.jpg, при условии, что хосты i1 и i2 доступны и указаны в поле &laquo;Использовать хосты&raquo;.');
 define('_WEBO_parallel_enabled_EFFECT', 'Увеличение скорости загрузки сайта на 15-25%');
