@@ -396,9 +396,9 @@ class web_optimizer {
 				"external_scripts" => $this->options['external_scripts']['on'] &&
 					$this->options['minify']['javascript'],
 				"inline_scripts" => $this->options['external_scripts']['inline'] &&
-					$this->options['minify']['javascript'],
+					($this->options['minify']['javascript'] || $this->options['rocket']['reorder']),
 				"inline_scripts_body" => $this->options['external_scripts']['inline_body'] &&
-					$this->options['minify']['javascript'],
+					($this->options['minify']['javascript'] || $this->options['rocket']['reorder']),
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"external_scripts_mask" => $this->premium > 1 ? $this->options['external_scripts']['include_mask'] : '',
@@ -2458,11 +2458,10 @@ class web_optimizer {
 							if (!empty($value['file'])) {
 								$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
 							}
-								
 						} elseif (!empty($value['file']) && $proxy) {
 							$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
 						} else {
-							array_pop($replace_from);
+							$replace_to[] = $value['source'];
 						}
 						$use_proxy = $proxy = 0;
 				}
@@ -2470,12 +2469,12 @@ class web_optimizer {
 				if ($proxy) {
 					$replace_from[] = $value['source'];
 					$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
-					if ($this->options['javascript']['reorder']) {
-						$i = $value['position'];
-						$i = ($i < 1000000 ? '0' : '') . ($i < 100000 ? '0' : '') . ($i < 10000 ? '0' : '') . ($i < 1000 ? '0' : '') . ($i < 100 ? '0' : '') . ($i < 10 ? '0' : '') . $i;
-						$replace_position_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . $i . (count($replace_to) - 1);
-						$replace_position[] = $i . (count($replace_to) - 1);
-					}
+				}
+				if ($this->options['javascript']['reorder']) {
+					$i = $value['position'];
+					$i = ($i < 1000000 ? '0' : '') . ($i < 100000 ? '0' : '') . ($i < 10000 ? '0' : '') . ($i < 1000 ? '0' : '') . ($i < 100 ? '0' : '') . ($i < 10 ? '0' : '') . $i;
+					$replace_position_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . $i . (count($replace_to) - 1);
+					$replace_position[] = $i . (count($replace_to) - 1);
 				}
 			}
 /* reorder scripts/styles */
