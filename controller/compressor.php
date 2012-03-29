@@ -2502,17 +2502,12 @@ class web_optimizer {
 							unset($replace_to[$key]);
 						}
 					}
-					foreach ($replace_to as $key => $value) {
 /* make safe replacement a->b, b->a */
-						if (($k = array_search($value, $replace_from)) !== false) {
-							$this->content = str_replace($replace_from[$k], '@@@WSS_REPLACEMENT@@@', $this->content);
-							$this->content = str_replace($replace_from[$key], $value, $this->content);
-							$this->content = str_replace('@@@WSS_REPLACEMENT@@@', $replace_to[$k], $this->content);
-							unset($replace_to[$k]);
-							unset($replace_from[$k]);
-						} else {
-							$this->content = str_replace($replace_from[$key], $value, $this->content);
-						}
+					foreach ($replace_from as $key => $value) {
+							$this->content = str_replace($value, '@@@WSS_REPLACEMENT' . $key . '@@@', $this->content);
+					}
+					foreach ($replace_to as $key => $value) {
+							$this->content = str_replace('@@@WSS_REPLACEMENT' . $key . '@@@', $value, $this->content);
 					}
 				} else {
 					$this->content = str_replace($replace_from, $replace_to, $this->content);
