@@ -2179,7 +2179,6 @@ class web_optimizer {
 				$toparse = $this->head;
 			} else {
 				$toparse = $this->body;
-				$parsing_body = 1;
 			}
 /* find all scripts from head */
 			$regex = "!(<script[^>]*>)(.*?</script>)!is";
@@ -2305,7 +2304,6 @@ class web_optimizer {
 				$toparse = $this->head;
 			} else {
 				$toparse = $this->body;
-				$parsing_body = 1;
 			}
 /* find all CSS links from head and inine styles */
 			if (empty($this->options['css']['inline_scripts']) && $this->options['page']['html_tidy'] && !strpos($toparse, '<style') && !strpos($toparse, '<STYLE')) {
@@ -2460,12 +2458,7 @@ class web_optimizer {
 				}
 			}
 			if (!empty($replace_from)) {
-				if (empty($parsing_body)) {
-					$to = str_replace($replace_from, $replace_to, $this->head);
-					$this->content = str_replace($this->headin, $to, $this->content);
-				} else {
-					$this->content = str_replace($replace_from, $replace_to, $this->content);
-				}
+				$this->content = str_replace($replace_from, $replace_to, $this->content);
 				if (!empty($files_postload)) {
 					$this->options['page']['postload'] = (empty($this->options['page']['postload']) ? '' : ' ') . implode(" ", $files_postload); 
 				}
@@ -3234,9 +3227,6 @@ class web_optimizer {
 /* replace current content with updated version */
 			$this->content = str_replace($source, $dest, $this->content);
 		}
-		if ($this->options['javascript']['rocket'] || $this->options['css']['rocket']) {
-			$this->headin = $dest;
-		}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
 		while ($compos = strpos($dest, '<!--')) {
 			$end = strpos(substr($dest, $compos), '-->');
@@ -3463,7 +3453,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			}
 			for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 /* detect */
-				if ($this->ua_mod == ".ie" . $version || ($version == 7 && $this->ua_mod == '.ie7')) {
+				if ($this->ua_mod == ".ie" . $version) {
 /* detect equality */
 					if (strpos($source, 'IE ' . $version . ']>') !== false) {
 						$source = preg_replace("@<!--\[if ((gte|lte) )?\(?IE " . $version . "[^\]]*\)?\]>(.*?)<!\[endif\]-->@s", "$3", $source);
@@ -3495,7 +3485,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					$source = substr($source, 0, $a) . substr($source, $b+10);
 				}
 			} else {
-				$source = preg_replace("@<!--\[if IE.*?\[endif\]-->@s", "", $source);
+				$source = preg_replace("@<!--\[if ((lte|gte) )?IE.*?\[endif\]-->@s", "", $source);
 			}
 		}
 		return $source;
