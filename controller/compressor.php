@@ -108,7 +108,7 @@ class web_optimizer {
 		if (!empty($this->options['page']['cache'])) {
 			$this->start_cache_engine();
 			if (!empty($this->clear_cache_key)) {
-			    $this->clear_html_cache($this->clear_cache_key);
+				$this->clear_html_cache($this->clear_cache_key);
 			}
 /* HTML cache ? */
 			if (!empty($this->options['page']['cache_ignore'])) {
@@ -2195,6 +2195,9 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0])
 					);
+					if ($this->options['css']['reorder']) {
+						$file['position'] = strpos($toparse, $file['source']);
+					}
 					preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))@is", $match[1], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach ($variants as $variant_type) {
@@ -2271,6 +2274,9 @@ class web_optimizer {
 							'source' => $match[0],
 							'content' => preg_replace("@(<script[^>]*>|</script>)@is", "", $match[0])
 						);
+						if ($this->options['javascript']['reorder']) {
+							$file['position'] = strpos($toparse, $file['source']);
+						}
 						preg_match_all("@src\s*=\s*(?:\"([^\"]+)\"|'([^']+)'|([\S]+))@is", $match[1], $variants, PREG_SET_ORDER);
 						if (is_array($variants)) {
 							foreach ($variants as $variant_type) {
@@ -2323,6 +2329,9 @@ class web_optimizer {
 						'source' => $match[0],
 						'content' => preg_replace("@(<link[^>]+>|<style[^>]*>|<\/style>)@is", "", $match[0]),
 					);
+					if ($this->options['javascript']['reorder']) {
+						$file['position'] = strpos($toparse, $file['source']);
+					}
 					preg_match_all("@(media|href)\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]*))@is", $match[0], $variants, PREG_SET_ORDER);
 					if (is_array($variants)) {
 						foreach($variants as $variant_type) {
@@ -2364,7 +2373,7 @@ class web_optimizer {
 			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
 				$this->options['javascript']['gzip']);
 			$niftyUsed = 0;
-			$replace_from = $replace_to = $replace_type = array();
+			$replace_from = $replace_to = $replace_position_type = $replace_position = array();
 /* Remove empty sources and any externally linked files */
 			foreach ($this->initial_files as $key => $value) {
 /* exclude niftyCorners duplicate */
@@ -2419,7 +2428,7 @@ class web_optimizer {
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file']);
-				$rewrite_to = $value['file'];
+				$rewrite_to = $value['file_raw'];
 				if ($proxy) {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
@@ -2461,19 +2470,54 @@ class web_optimizer {
 				if ($proxy) {
 					$replace_from[] = $value['source'];
 					$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
-					$replace_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . (count($replace_to) - 1);
+					if ($this->options['javascript']['reorder']) {
+						$i = $value['position'];
+						$i = ($i < 1000000 ? '0' : '') . ($i < 100000 ? '0' : '') . ($i < 10000 ? '0' : '') . ($i < 1000 ? '0' : '') . ($i < 100 ? '0' : '') . ($i < 10 ? '0' : '') . $i;
+						$replace_position_type[] = ($value['tag'] == 'link' ? 'a' : 'b') . $i . (count($replace_to) - 1);
+						$replace_position[] = $i . (count($replace_to) - 1);
+					}
 				}
 			}
+/* reorder scripts/styles */
 			if ($this->options['javascript']['reorder']) {
-				sort($replace_type);
+				sort($replace_position_type);
 				$rto = array();
-				foreach ($replace_type as $value) {
-					$rto[] = $replace_to[substr($value, 1)];
+				foreach ($replace_position_type as $value) {
+					$rto[] = $replace_to[substr($value, 8)];
 				}
 				$replace_to = $rto;
+				sort($replace_position);
+				$rfrom = array();
+				foreach ($replace_position as $value) {
+					$rfrom[] = $replace_from[substr($value, 7)];
+				}
+				$replace_from = $rfrom;
 			}
+/* rewrite scripts and styles */
 			if (count($replace_from)) {
-				$this->content = str_replace($replace_from, $replace_to, $this->content);
+				if ($this->options['javascript']['reorder']) {
+/* remove duplicates */
+					foreach ($replace_from as $key => $value) {
+						if ($replace_to[$key] == $value) {
+							unset($replace_from[$key]);
+							unset($replace_to[$key]);
+						}
+					}
+					foreach ($replace_to as $key => $value) {
+/* make safe replacement a->b, b->a */
+						if (($k = array_search($value, $replace_from)) !== false) {
+							$this->content = str_replace($replace_from[$k], '@@@WSS_REPLACEMENT@@@', $this->content);
+							$this->content = str_replace($replace_from[$key], $value, $this->content);
+							$this->content = str_replace('@@@WSS_REPLACEMENT@@@', $replace_to[$k], $this->content);
+							unset($replace_to[$k]);
+							unset($replace_from[$k]);
+						} else {
+							$this->content = str_replace($replace_from[$key], $value, $this->content);
+						}
+					}
+				} else {
+					$this->content = str_replace($replace_from, $replace_to, $this->content);
+				}
 				if (!empty($files_postload)) {
 					$this->options['page']['postload'] = (empty($this->options['page']['postload']) ? '' : ' ') . implode(" ", $files_postload); 
 				}
