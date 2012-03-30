@@ -2429,7 +2429,7 @@ class web_optimizer {
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
 					!preg_match("!\.php$!", $value['file']);
-				$rewrite_to = $value['file_raw'];
+				$rewrite_to = empty($value['file_raw']) ? '' : $value['file_raw'];
 				if ($proxy) {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
@@ -2574,7 +2574,7 @@ class web_optimizer {
 				@include($this->options['page']['cachedir'] . 'wo.content.php');
 			}
 			foreach($this->initial_files as $key => $value) {
-				$k = md5($value['file']);
+				$k = md5($value['source']);
 				if (!empty($webo_scripts[$k])) {
 					$this->initial_files[$key]['content'] = $webo_scripts[$k];
 				} else {
@@ -2739,7 +2739,7 @@ class web_optimizer {
 						}
 					}
 					foreach ($this->initial_files as $key => $value) {
-						$webo_scripts[md5($value['file'])] = $value['tag'] == 'link' ?
+						$webo_scripts[md5($value['source'])] = $value['tag'] == 'link' ?
 							$this->minify_text($value['content'], $this->options['css']) :
 							$this->minify_javascript($value['content'], $this->options['javascript']);
 					}
@@ -3540,13 +3540,13 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			} else {
 				$source = preg_replace("@<!--\[if.*?\[endif\]-->@s", "", $source);
 			}
-		} else {
+		} elseif (!$this->options['uniform_cache']) {
 			if (!empty($this->options['plain_string'])) {
 				while ((($a = strpos($source, '<!--[if IE')) !== false || ($a = strpos($source, '<!--[if lt')) !== false || ($a = strpos($source, '<!--[if gt')) !== false) && ($b = strpos($source, '[endif]-->')) !== false) {
 					$source = substr($source, 0, $a) . substr($source, $b+10);
 				}
 			} else {
-				$source = preg_replace("@<!--\[if ((lte|gte) )?IE.*?\[endif\]-->@s", "", $source);
+				$source = preg_replace("@<!--\[if ((lt|gt)e? )?IE.*?\[endif\]-->@s", "", $source);
 			}
 		}
 		return $source;
