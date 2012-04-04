@@ -2220,9 +2220,8 @@ class web_optimizer {
 									$this->options['javascript']['external_scripts_mask']{$i} == 'x') {
 									$this->initial_files[] = $file;
 								}
-								if (!empty($file['file']) &&
-									isset($this->options['javascript']['external_scripts_mask']) &&
-									!in_array(preg_replace("@.*/@", "", $file['file']), $excluded_scripts_js)) {
+								if (isset($this->options['javascript']['external_scripts_mask']) &&
+									(empty($file['file']) || !in_array(preg_replace("@.*/@", "", $file['file']), $excluded_scripts_js))) {
 									$i++;
 								}
 /* fix shadowbox loader */
