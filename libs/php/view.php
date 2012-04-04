@@ -421,3 +421,4 @@ class compressor_view {
 	}
 
 }
+?>
