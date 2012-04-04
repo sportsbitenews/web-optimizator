@@ -1184,7 +1184,7 @@ class web_optimizer {
 	function write_file_array ($file, $arr, $name) {
 		$str = "<?php\n";
 		foreach ($arr as $key => $value) {
-			$str .= '$' . $name . "['" . $key . "']='" . str_replace(array("'", "\\"), array("\'", "\\\\"), $value) . "';\n";
+			$str .= '$' . $name . "['" . $key . "']='" . str_replace(array("\\", "'"), array("\\\\", "\'"), $value) . "';\n";
 		}
 		$str .= "?>";
 		return $this->write_file($file, $str);
@@ -2571,8 +2571,12 @@ class web_optimizer {
 			)
 		);
 		if (is_array($this->initial_files)) {
+			$rocket_file = $this->options['page']['cachedir'] . 'wo.content.php';
+			if (!is_file($rocket_file)) {
+				$this->write_file($rocket_file, '<?php ?>');
+			}
 			if ($this->options['css']['rocket'] || $this->options['javascript']['rocket']) {
-				@include($this->options['page']['cachedir'] . 'wo.content.php');
+				@include($rocket_file);
 			}
 			foreach($this->initial_files as $key => $value) {
 				$k = md5($value['source']);
@@ -2744,7 +2748,7 @@ class web_optimizer {
 							$this->minify_text($value['content'], $this->options['css']) :
 							$this->minify_javascript($value['content'], $this->options['javascript']);
 					}
-					$this->write_file_array($this->options['page']['cachedir'] . 'wo.content.php', $webo_scripts, 'webo_scripts');
+					$this->write_file_array($rocket_file, $webo_scripts, 'webo_scripts');
 			}
 		}
 	}

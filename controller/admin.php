@@ -65,7 +65,8 @@ class admin {
 				'install_system',
 				'install_update',
 				'install_beta',
-				'install_stable'))) {
+				'install_stable',
+				'install_rollback'))) {
 			$this->view->download($this->svn . 'version', $version_new_file, 5);
 		}
 		$this->version_new = $this->version . '+';
@@ -78,7 +79,8 @@ class admin {
 		if (in_array($this->input['wss_page'],
 			array('install_system',
 				'install_beta',
-				'install_stable'))) {
+				'install_stable',
+				'install_rollback'))) {
 			$this->view->download($this->svn_beta . 'version', $version_new_file, 5);
 			if (@is_file($version_new_file)) {
 				$this->version_beta = $this->file_get_contents($version_new_file);
@@ -109,40 +111,7 @@ class admin {
 /* default multiple hosts */
 			$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
-			$this->page_functions = array(
-				'install_set_password' => 1,
-				'install_enter_password' => 1,
-				'install_dashboard' => 1,
-				'install_install' => 1,
-				'install_uninstall' => 1,
-				'install_promo' => 1,
-				'install_about' => 1,
-				'install_gzip' => 1,
-				'install_image' => 1,
-				'install_cdn' => 1,
-				'install_status' => 1,
-				'install_account' => 1,
-				'install_refresh' => 1,
-				'install_renew' => 1,
-				'install_options' => 1,
-				'install_system' => 1,
-				'install_update' => 1,
-				'install_stable' => 1,
-				'install_beta' => 1,
-				'install_awards' => 1,
-				'install_balance' => 1,
-				'install_wizard' => 1,
-				'dashboard_cache' => 1,
-				'dashboard_system' => 1,
-				'dashboard_options' => 1,
-				'dashboard_speed' => 1,
-				'dashboard_awards' => 1,
-				'compress_gzip' => 1,
-				'compress_image' => 1,
-				'compress_cdn' => 1,
-				'options_configuration' => 1,
-				'options_delete' => 1
-			);
+			$this->page_functions = array('install_set_password', 'install_enter_password', 'install_dashboard', 'install_install', 'install_uninstall', 'install_promo', 'install_about', 'install_gzip', 'install_image', 'install_cdn', 'install_status', 'install_account', 'install_refresh', 'install_renew', 'install_options', 'install_system', 'install_update', 'install_stable', 'install_rollback', 'install_beta', 'install_awards', 'install_balance', 'install_wizard', 'dashboard_cache', 'dashboard_system', 'dashboard_options', 'dashboard_speed', 'dashboard_awards', 'compress_gzip', 'compress_image', 'compress_cdn', 'options_configuration', 'options_delete');
 /* inializa stage for chained optimization */
 			$this->web_optimizer_stage =
 				round(empty($this->input['web_optimizer_stage']) ? 0 :
@@ -202,7 +171,7 @@ class admin {
 
 /* show page */
 		if (!empty($this->input) &&
-			!empty($this->page_functions[$this->input['wss_page']]) &&
+			in_array($this->input['wss_page'], $this->page_functions) &&
 			method_exists($this, $this->input['wss_page']) &&
 			($this->input['wss_page'] != 'install_set_password' ||
 			empty($this->internal))) {
@@ -2602,6 +2571,15 @@ class admin {
 	**/
 	function install_beta () {
 		$this->install_update_generic(0);
+		$this->install_system();
+	}
+
+	/**
+	* Update from System Status (rollback)
+	*
+	**/
+	function install_rollback () {
+		$this->install_update_generic();
 		$this->install_system();
 	}
 
