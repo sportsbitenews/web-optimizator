@@ -385,7 +385,7 @@
 ?>).</p><?php
 		}
 		if (count($versions)) {
-?><p class="wssI"><a href="#wss_stable" class="wssJ5" onclick="_.a(this)"><?php
+?><p class="wssI"><a href="#wss_rollback" class="wssJ5" onclick="_.a(this)"><?php
 			echo _WEBO_SYSTEM_ROLLBACK;
 ?><span class="wssJ6"></span></a> <select name="wss_version_stable" id="wss_version_stable"><?php
 			foreach ($versions as $version_stable) {
