@@ -3616,9 +3616,9 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	*
 	**/
 	function convert_paths_to_absolute ($content, $path, $leave_querystring = false, $css_images = false) {
-		preg_match_all( "/url\s*\(\s*['\"]?(.*?)['\"]?\s*\)/is", $content, $matches);
+		preg_match_all("!url\s*\(\s*['\"]?(.*?)['\"]?\s*\)!is", $content, $matches);
 		if(count($matches[1]) > 0) {
-			foreach($matches[1] as $key => $file) {
+			foreach($matches[1] as $file) {
 				if (strpos($file, '.eot?') || strpos($file, '.svg#')) {
 					$leave_querystring = true;
 				}
@@ -3632,6 +3632,16 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					$content = preg_replace("@url\s*\(\s*['\"]?" .
 						str_replace("?", "\?", $file) .
 						"['\"]?\s*\)@is", "url(" . $absolute_path . ")", $content);
+				}
+			}
+		}
+/* AlphaImageLoader */
+		if (strpos($content, 'src=') !== false) {
+			preg_match_all("!src=['\"](.*?)['\"],!is", $content, $matches);
+			foreach($matches[1] as $file) {
+				$absolute_path = $this->convert_path_to_absolute($file, $path, $leave_querystring, $css_images);
+				if (!empty($absolute_path)) {
+					$content = preg_replace("!src=['\"]" . $file . "['\"]!", "src='" . $absolute_path . "'", $content);
 				}
 			}
 		}
