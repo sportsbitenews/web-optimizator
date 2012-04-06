@@ -6641,7 +6641,9 @@ require valid-user';
 		if ($licensed) {
 			$files = array();
 			foreach (glob('*config.webo.php') as $file) {
-				$files[] = substr($file, 0, strlen($file) - 15);
+				if ($file != 'config.webo.php') {
+					$files[] = substr($file, 0, strlen($file) - 16);
+				}
 			}
 			$str = '<?php $wss_configs = array(\'' . implode($files, "','") . '\'); ?>';
 		}
