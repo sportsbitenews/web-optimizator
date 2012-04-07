@@ -2479,7 +2479,7 @@ class admin {
 			$limit = @ini_get("max_execution_time");
 			@set_time_limit($limit * 10);
 			$results = $this->get_directory_files($directory,
-				'\\.(jpe?g|png|gif|tiff|bmp|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|txt|xml|css|js|ico|ttf|otf|eot|svg)$',
+				'\\.(jpe?g|png|gif|tiff|bmp|flv|wmv|asf|asx|wma|wax|wmx|wm|swf|pdf|doc|rtf|xls|ppt|txt|xml|css|js|ico|cur|ttf|otf|eot|svg)$',
 				$recursive, 'FTP', array(),
 				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
 		}
@@ -2550,7 +2550,7 @@ class admin {
 			@set_time_limit($limit * 10);
 			$this->time = time();
 			$results = $this->get_directory_files($directory,
-				'\\.(txt|xml|css|js|ico|ttf|otf|eot|svg)$',
+				'\\.(txt|xml|css|js|ico|cur|ttf|otf|eot|svg)$',
 				$recursive, 'gz', array(),
 				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
 		}
@@ -4858,7 +4858,7 @@ Options +FollowSymLinks";
 				}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 					$content2 .= "
-	<FilesMatch \.(bmp|png|gif|jpe?g|ico)$>
+	<FilesMatch \.(bmp|png|gif|jpe?g|ico|cur)$>
 		ExpiresDefault \"access plus 10 years\"
 	</FilesMatch>
 	ExpiresByType image/gif A315360000
