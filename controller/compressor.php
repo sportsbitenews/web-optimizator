@@ -2179,7 +2179,7 @@ class web_optimizer {
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
 		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
-		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket'] || $this->options['javascript']['reorder']) {
+		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket'] || $this->options['javascript']['reorder']) {	
 			if (empty($this->options['javascript']['minify_body']) || empty($this->options['javascript']['inline_scripts_body'])) {
 				$toparse = $this->head;
 			} else {
@@ -3293,10 +3293,7 @@ class web_optimizer {
 			$this->content = str_replace($source, $dest, $this->content);
 		}
 /* and now remove all comments and parse result code -- to avoid IE code mixing with other browsers */
-		while ($compos = strpos($dest, '<!--')) {
-			$end = strpos(substr($dest, $compos), '-->');
-			$dest = substr_replace($dest, '', $compos, $end + 3);
-		}
+		$dest = preg_replace("@<!--.*?-->@is", '', $dest);
 		return $dest;
 	}
 
@@ -3350,11 +3347,7 @@ class web_optimizer {
 					$i++;
 				}
 				$this->content = str_replace($to_store, $stubs, $this->content);
-/* remove nonIE content at first */
-				if (!empty($this->ua_mod)) {
-					$this->content = preg_replace("@<!--\[if !IE.*?-->@is", '', $this->content);
-				}
-				$this->content = preg_replace("@<!--[^\[].*?-->@is", '', $this->content);
+				$this->content = preg_replace("@<!--.*?-->@is", '', $this->content);
 				$this->content = str_replace($stubs, $to_store, $this->content);
 			}
 /* fix Shadowbox inclusions */
