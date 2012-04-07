@@ -2944,7 +2944,13 @@ class web_optimizer {
 				} else {
 					preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
 					$_script_blocks = $match[0];
-					$source = preg_replace("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", '@@@WBO:TRIM:SCRIPT@@@', $source);
+					array_unique($_script_blocks);
+					$_script_blocks_to = array();
+					$c = count($_script_blocks);
+					for ($i = 0; $i < $c; $i++) {
+						$_script_blocks_to[] = '@@@WBO:TRIM:SCRIPT' . $i . '@@@';
+					}
+					$source = str_replace($_script_blocks, $_script_blocks_to, $source);
 				}
 		}
 /* add multiple hosts or redirects for static images */
@@ -2989,9 +2995,12 @@ class web_optimizer {
 						}
 					}
 				} else {
-					$before_body =
-						$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT@@@",
-							$_script_blocks, $source);
+					if (!empty($this->options['page']['unobtrusive_all'])) {
+						$before_body = implode('', $_script_blocks);
+						$source = str_replace($_script_blocks_to, array(), $source);
+					} else {
+						$source = str_replace($_script_blocks_to, $_script_blocks, $source);
+					}
 				}
 /* move all scripts to </body> */
 				if (!empty($before_body)) {
