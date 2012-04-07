@@ -137,6 +137,14 @@ class html_sprites {
 									$im = @imagecreatefromxbm($this->options['document_root'] . $absolute_src);
 									break;
 							}
+							if (!$im) {
+								$functions = array('imagecreatefromgif', 'imagecreatefrompng', 'imagecreatefromjpeg', 'imagecreatefromwbmp', 'imagecreatefromxbm');
+								foreach ($functions as $func) {
+									if (!$im) {
+										$im = @$func($this->options['document_root'] . $absolute_src);
+									}
+								}
+							}
 							if ($im) {
 								$image_raw = @imagecreatetruecolor($width, $height);
 								@imagealphablending($image_raw, false);
@@ -204,6 +212,8 @@ class html_sprites {
 										}
 									}
 								}
+							} else {
+								$scaled_src = '';
 							}
 						}
 						if ($scaled_src) {
