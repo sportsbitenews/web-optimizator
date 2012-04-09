@@ -3749,14 +3749,17 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							'}';
 					}
 					if ($this->options['uniform_cache']) {
-						$sel = 'html ' .
-							$image[1] .
-							'{' .
-							$image[2] .
-							':' .
-							$image[4] .
-							'}';
-						$content .= '* ' . $sel . '*+' . $sel;
+						$s = explode(",", $image[1]);
+						foreach ($s as $sel) {
+							$sel = 'html ' .
+								$sel .
+								'{' .
+								$image[2] .
+								':' .
+								$image[4] .
+								'}';
+							$content .= '* ' . $sel . '*+' . $sel;
+						}
 					}
 				}
 			}
