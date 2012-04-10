@@ -4447,6 +4447,8 @@ class admin {
 							'MSIE 6' => '.ie6',
 							'MSIE 7' => '.ie7',
 							'MSIE 8' => '.ie8',
+							'MSIE 9' => '.ie9',
+							'MSIE 10' => '.ie10',
 							'Android|BlackBerry|HTC|iPhone|iPod|LG|MOT|Mobile|NetFront|Nokia|Opera Mini|Palm|PPC|SAMSUNG|Smartphone|SonyEricsson|Symbian|UP.Browser|webOS' => '.ma') : array();
 					$browsers[] = '';
 					$encodings = (empty($this->input['wss_gzip_page']) ||
