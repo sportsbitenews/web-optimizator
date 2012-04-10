@@ -3708,9 +3708,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
+			$replaced_base64 = array();
 			$mhtml = in_array($this->ua_mod, $this->ies) && $options['mhtml'];
 			$mhtml_code = "/*\nContent-Type:multipart/related;boundary=\"_\"";
 			$location = 0;
+			$sels = '';
 			$data_uri_exclude = explode(" ", $options['data_uris_exclude']);
 			$mhtml_exclude = explode(" ", $options['mhtml_exclude']);
 			foreach ($imgs as $image) {
@@ -3738,8 +3740,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							$base64 = '';
 						}
 						$replaced[$image_saved] = $css_image;
-						$content = str_replace($image[4], str_replace($image_saved, $css_image, $image[4]), $content);
+						$replaced_base64[$image_saved] = $base64;
+					} else {
+						$base64 = $replaced_base64[$image_saved];
 					}
+					$content = str_replace($image[4], str_replace($image_saved, $replaced[$image_saved], $image[4]), $content);
 					if (!$mhtml && $base64) {
 						$compressed .= $image[1] .
 							'{' .
@@ -3748,27 +3753,26 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							str_replace($image_saved, $base64, $image[4]) .
 							'}';
 					}
+/* * html matches Chrome, using body* for IE7- */
 					if ($this->options['uniform_cache']) {
-						$s = explode(",", $image[1]);
-						foreach ($s as $sel) {
-							$sel = 'html ' .
-								$sel .
-								'{' .
-								$image[2] .
-								':' .
-								$image[4] .
-								'}';
-							$content .= '* ' . $sel . '*+' . $sel;
-						}
+						$sels .= 'body*' . str_replace(",", ",body*", $image[1]) .
+							'{' .
+							$image[2] .
+							':' .
+							$image[4] .
+							'}';
 					}
 				}
 			}
 			if ($mhtml && !empty($mhtml_code)) {
 				$compressed .= $mhtml_code . "\n\n--_--\n*/";
 			}
+/* add IE6/7 selectors */
+			$content .= $sels;
 /* clear content from junk */
 			$content = preg_replace("@(background(-image)?:)?url\(\)([;\}])@is", "$3", $content);
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$1$4", $content);
+			$content = preg_replace("@[^\{\}]+\{\}@is", "", $content);
 		}
 		return array($content, $compressed);
 	}
