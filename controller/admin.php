@@ -1729,7 +1729,7 @@ class admin {
 		$this->view->download("http://" .
 			$this->compress_options['host'] .
 			str_replace($this->compress_options['document_root'], "/", $this->compress_options['website_root']) .
-			'?web_optimizer_debug=1', $tmp_file, 60, $_SERVER['HTTP_HOST'], $this->compress_options['external_scripts']['user'], $this->compress_options['external_scripts']['pass']);
+			'?web_optimizer_debug=' . rand(), $tmp_file, 60, $_SERVER['HTTP_HOST'], $this->compress_options['external_scripts']['user'], $this->compress_options['external_scripts']['pass']);
 		$wss_delay = time() + microtime() - $time;
 /* save default encoding */
 		if (empty($this->compress_options['charset']) && !empty($results[2])) {
@@ -5702,7 +5702,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/' .
 				str_replace($this->compress_options['document_root'], '',
 					$this->compress_options['html_cachedir']) .
-				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=1',
+				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=' . rand(),
 				$this->compress_options['html_cachedir'] . 'chained.load', 25);
 			@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
@@ -5736,7 +5736,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 							$this->input['user']['auto_rewrite']['enabled'] .
 						'&cache_version=' .
 							$this->cache_version .
-						'&web_optimizer_debug=1');
+						'&web_optimizer_debug=' . rand());
 					die();
 				}
 			}
