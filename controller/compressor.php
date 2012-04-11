@@ -3705,7 +3705,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image)?\s*):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$replaced_base64 = array();
@@ -3718,7 +3718,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			foreach ($imgs as $image) {
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false || strpos(strtolower($image[4]), "URL") !== false) {
-					$css_image = preg_replace("@^.*((url\([^\)]+\)(,\s*)?)+).*$@is", "$1", $image[4]);
+/* strip all after ) - to get URL */
+					$rule = preg_replace("@\)[^\)]*$@is", ")", $image[4]);
+/* add rules after ) but before ; */
+					$tale = preg_replace("@;.*$@is", "", str_replace($rule, '', $image[4]));
+/* add rules to URL */
+					$rule .= $tale;
+					$rule_initial = str_replace(str_replace($rule, '', $image[4]), '', $image[0]);
+					$css_image = preg_replace("@^.*((url\([^\)]+\)(,\s*)?)+).*$@is", "$1", $rule);
 					$image_saved = $css_image;
 					if (empty($replaced[$image_saved])) {
 						$css_image = explode(',', str_replace('base64,', '###', $css_image));
@@ -3744,13 +3751,13 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					} else {
 						$base64 = $replaced_base64[$image_saved];
 					}
-					$content = str_replace($image[4], str_replace($image_saved, $replaced[$image_saved], $image[4]), $content);
+					$content = str_replace($rule, str_replace($image_saved, $replaced[$image_saved], $rule), $content);
 					if (!$mhtml && $base64) {
 						$compressed .= $image[1] .
 							'{' .
 							$image[2] .
 							':' .
-							str_replace($image_saved, $base64, $image[4]) .
+							str_replace($image_saved, $base64, $rule) .
 							'}';
 					}
 /* * html matches Chrome, using body* for IE7- */
@@ -3763,12 +3770,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							'}';
 					}
 				} else {
-					$content = str_replace($image[4], '', $content);
+					$rule = preg_replace("@;.*@is", "", $image[4]);
+					$rule_initial = str_replace(str_replace($rule, '', $image[4]), '', $image[0]);
+					$content = str_replace($rule_initial, str_replace($image[2] . ':' . $rule, '', $rule_initial), $content);
 					$compressed .= $image[1] .
 						'{' .
 						$image[2] .
 						':' .
-						$image[4] .
+						$rule .
 						'}';
 				}
 			}
