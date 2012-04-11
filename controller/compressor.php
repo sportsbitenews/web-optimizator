@@ -3762,6 +3762,14 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							$image[4] .
 							'}';
 					}
+				} else {
+					$content = str_replace($image[4], '', $content);
+					$compressed .= $image[1] .
+						'{' .
+						$image[2] .
+						':' .
+						$image[4] .
+						'}';
 				}
 			}
 			if ($mhtml && !empty($mhtml_code)) {
