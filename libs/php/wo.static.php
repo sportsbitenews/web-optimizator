@@ -176,9 +176,15 @@ switch ($extension) {
 /* handle cases with relative document root and redirect via .htaccess */
 if ($_SERVER['QUERY_STRING']{0} === '/') {
 	if ($_SERVER['QUERY_STRING']{1} === '/') {
-		$_SERVER['QUERY_STRING'] = 'http' .
-			(empty($_SERVER['HTTPS']) ? '' : 's') .
-			':' . $_SERVER['QUERY_STRING'];
+		$parts = explode("/", $_SERVER['QUERY_STRING']);
+		if (strpos($parts, ".") !== false) {
+			$_SERVER['QUERY_STRING'] = 'http' .
+				(empty($_SERVER['HTTPS']) ? '' : 's') .
+				':' . $_SERVER['QUERY_STRING'];
+		} else {
+			$filename = str_replace("\\", "/",
+				realpath($document_root . substr($_SERVER['QUERY_STRING'], 1)));
+		}
 	} else {
 		$filename = str_replace("\\", "/",
 			realpath($document_root . $_SERVER['QUERY_STRING']));
