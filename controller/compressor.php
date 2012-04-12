@@ -2371,6 +2371,37 @@ class web_optimizer {
 			}
 		}
 		if (is_array($this->initial_files)) {
+/* get remote files */
+			foreach ($this->initial_files as $key => $value) {
+				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
+/* exclude files from the same host */
+					if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
+/* don't get actual files' content if option isn't enabled */
+						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+/* get an external file */
+							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+/* dynamic file */
+								$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
+/* static file */
+							} else {
+								$file = $this->get_remote_file($value['file'], $value['tag']);
+							}
+							if (!empty($file)) {
+								$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
+							} else {
+								unset($this->initial_files[$key]);
+							}
+						} else {
+							if (empty($value['content'])) {
+								unset($this->initial_files[$key]);
+							}
+						}
+					} else {
+						$value['file'] = preg_replace("!https?://(www\.)?".
+							$this->host_escaped . "/+!s", "/", $value['file']);
+					}
+				}
+			}
 /* get files' content if Rocket */
 			if ($this->options['javascript']['rocket'] || $this->options['css']['rocket']) {
 				$this->get_script_content();
@@ -2433,35 +2464,6 @@ class web_optimizer {
 							$use_proxy = 0;
 					}
 				}
-/* get remote files */
-				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
-/* exclude files from the same host */
-					if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
-/* don't get actual files' content if option isn't enabled */
-						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
-/* get an external file */
-							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
-/* dynamic file */
-								$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
-/* static file */
-							} else {
-								$file = $this->get_remote_file($value['file'], $value['tag']);
-							}
-							if (!empty($file)) {
-								$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
-							} else {
-								unset($this->initial_files[$key]);
-							}
-						} else {
-							if (empty($value['content'])) {
-								unset($this->initial_files[$key]);
-							}
-						}
-					} else {
-						$value['file'] = preg_replace("!https?://(www\.)?".
-							$this->host_escaped . "/+!s", "/", $value['file']);
-					}
-				}
 				$proxy = $use_proxy &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
@@ -2471,7 +2473,7 @@ class web_optimizer {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
 					if ($f = $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']))) {
-						$rewrite_to = str_replace($value['file'],
+						$rewrite_to = '//' . $this->host . str_replace($value['file'],
 							$this->options['page']['cachedir_relative'] . 
 							(($value['tag'] == 'link' && $this->options['css']['gzip']) ||
 								($value['tag'] == 'script' && $this->options['javascript']['gzip']) ?
@@ -2486,12 +2488,7 @@ class web_optimizer {
 						$matched = 0;
 						$replace_from[] = $value['source'];
 						$replace_type[] = $value['tag'];
-						$files = array('mootools.js', 'mootools-more', 'mootools-core', 'mootools_release', 'mootools.x', 'mootools.v', 'jquery-ui', 'jquery.js', 'jquery.1', 'jquery-1', 'jquery.v', 'prototype.min', 'prototype.js', 'prototype.rev');
-						foreach ($files as $f) {
-							if (strpos($value['file'], $f) !== false) {
-								$matched = 1;
-							}
-						}
+						$matched = preg_match("!(mootools(\.js|-more|-core|_release|\.x|\.v|\.min)|[^\.-]jquery(-ui|.min|\.js|\.1|-1|\.v)|prototype(\.min|\.js|\.rev))!is", $value['file_raw']);
 						if (empty($matched)) {
 							$replace_to[] = ($value['tag'] == 'link' ? '<style type="text/css"' .
 								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : '<script type="text/javascript">') .
