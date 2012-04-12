@@ -432,6 +432,15 @@ class web_optimizer {
 				"far_future_expires_rewrite" => $this->options['htaccess']['mod_rewrite'] &&
 					$this->options['htaccess']['enabled'] &&
 					$this->options['far_future_expires']['css'],
+				"far_future_expires_static" => ((!($this->options['htaccess']['mod_rewrite'] ||
+						$this->options['htaccess']['mod_expires']) ||
+					!$this->options['htaccess']['enabled']) &&
+					$this->options['far_future_expires']['css']) || 
+					((!($this->options['htaccess']['mod_rewrite'] ||
+						$this->options['htaccess']['mod_deflate'] ||
+						$this->options['htaccess']['mod_gzip']) ||
+					!$this->options['htaccess']['enabled']) &&
+					$this->options['gzip']['css']),
 				"data_uris" => $this->options['data_uris']['on'],
 /* disable mhtml for IE7- under HTTPS */
 				"data_uris_mhtml" => $this->options['data_uris']['mhtml'] && !$this->https,
@@ -2368,9 +2377,9 @@ class web_optimizer {
 				$this->get_script_content();
 			}
 /* enable caching / gzipping proxy? */
-			$rewrite_css = ($this->options['css']['far_future_expires_external'] ||
+			$rewrite_css = ($this->options['css']['far_future_expires_static'] ||
 				$this->options['css']['gzip']);
-			$rewrite_js = ($this->options['javascript']['far_future_expires_external'] ||
+			$rewrite_js = ($this->options['javascript']['far_future_expires_static'] ||
 				$this->options['javascript']['gzip']);
 			$niftyUsed = 0;
 			$replace_from = $replace_to = $replace_position_type = $replace_position = array();
