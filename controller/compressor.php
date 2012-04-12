@@ -2368,9 +2368,9 @@ class web_optimizer {
 				$this->get_script_content();
 			}
 /* enable caching / gzipping proxy? */
-			$rewrite_css = ($this->options['page']['far_future_expires_external'] ||
+			$rewrite_css = ($this->options['css']['far_future_expires_external'] ||
 				$this->options['css']['gzip']);
-			$rewrite_js = ($this->options['page']['far_future_expires_external'] ||
+			$rewrite_js = ($this->options['javascript']['far_future_expires_external'] ||
 				$this->options['javascript']['gzip']);
 			$niftyUsed = 0;
 			$replace_from = $replace_to = $replace_position_type = $replace_position = array();
