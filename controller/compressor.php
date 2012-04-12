@@ -3340,6 +3340,8 @@ class web_optimizer {
 				$this->basehref = preg_replace("@^.*?<base\s+href\s*=\s*['\"](.*?)['\"].*$@is", "$1", $this->content);
 			}
 			if (!empty($this->basehref)) {
+				$this->basehref_url = preg_replace("@^((https?:)?//[^/]+).*$@is", "$1", $this->basehref);
+				$this->basehref_url = preg_replace("@https?://(www\.)?" . $this->host . "@", "", $this->basehref_url);
 				$this->basehref = preg_replace("@https?://(www\.)?" . $this->host . "@", "", $this->basehref);
 			}
 /* change all links on the page according to DEBUG mode */
@@ -4094,7 +4096,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		if (!empty($this->basehref) &&
 /* convert only non-external URI */
 			strpos($uri, '//') !== 0 && !strpos($uri, '://')) {
-				return $this->basehref . $uri;
+				if ($uri{0} == '/') {
+					return $this->basehref_url . $uri;
+				} else {
+					return $this->basehref . $uri;
+				}
 		} else {
 			return $uri;
 		}
