@@ -2442,13 +2442,14 @@ class web_optimizer {
 				if ($proxy && !empty($value['file'])) {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
-					$rewrite_to = str_replace($value['file'],
-						$this->options['page']['cachedir_relative'] . 
-						(($value['tag'] == 'link' && $this->options['css']['gzip']) ||
-							($value['tag'] == 'script' && $this->options['javascript']['gzip']) ?
-							'wo.gzip.php' : 'wo.static.php') .
-						'?' . $this->convert_path_to_absolute($value['file'],
-						array('file' => $_SERVER['REQUEST_URI'])), $value['file']);
+					if ($f = $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']))) {
+						$rewrite_to = str_replace($value['file'],
+							$this->options['page']['cachedir_relative'] . 
+							(($value['tag'] == 'link' && $this->options['css']['gzip']) ||
+								($value['tag'] == 'script' && $this->options['javascript']['gzip']) ?
+								'wo.gzip.php' : 'wo.static.php') .
+							'?' . $f, $value['file']);
+					}
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
 				if (empty($_COOKIE['WSS_ROCKET']) &&
