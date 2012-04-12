@@ -1692,7 +1692,7 @@ class web_optimizer {
 			$files = glob('*.' . $options['ext']);
 			if (!empty($files)) {
 				foreach ($files as $file) {
-					if (!in_array($file, array('index.php', 'wo.static.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
+					if (!in_array($file, array('index.php', 'wo.static.php', 'wo.gzip.php', 'yass.loader.js', 'webo-site-speedup.php')) &&
 						$this->time - filemtime($file) >
 						$this->options['days_to_delete'] * 86400) {
 							@unlink($file);
@@ -2435,7 +2435,10 @@ class web_optimizer {
 						$this->host_escaped . "/+@", "/", $value['file']);
 					$rewrite_to = str_replace($value['file'],
 						$this->options['page']['cachedir_relative'] . 
-						'wo.static.php?' . $this->convert_path_to_absolute($value['file'],
+						(($value['tag'] == 'link' && $this->options['css']['gzip']) ||
+							($value['tag'] == 'script' && $this->options['javascript']['gzip']) ?
+							'wo.gzip.php' : 'wo.static.php') .
+						'?' . $this->convert_path_to_absolute($value['file'],
 						array('file' => $_SERVER['REQUEST_URI'])), $value['file']);
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
