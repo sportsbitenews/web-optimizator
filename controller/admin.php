@@ -2624,7 +2624,7 @@ class admin {
 				if (!empty($file)) {
 					$file = explode(":", $file);
 					$tmp = $file[0] . '.tmp';
-					if ($file[1]) {
+					if (!empty($file[1])) {
 						$recursion = 0;
 						while (@filesize($tmp) != $file[1] && $recursion < 10) {
 							$this->view->download($svn . $file[0], $tmp);
