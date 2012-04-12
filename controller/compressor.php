@@ -393,8 +393,7 @@ class web_optimizer {
 					$this->options['gzip']['javascript']),
 				"unobtrusive_body" => $this->premium && $this->options['unobtrusive']['body'] &&
 					!$this->options['unobtrusive']['all'],
-				"external_scripts" => $this->options['external_scripts']['on'] &&
-					$this->options['minify']['javascript'],
+				"external_scripts" => $this->options['external_scripts']['on'],
 				"inline_scripts" => $this->options['external_scripts']['inline'] &&
 					($this->options['minify']['javascript'] || $this->options['rocket']['reorder']),
 				"inline_scripts_body" => $this->options['external_scripts']['inline_body'] &&
@@ -3720,7 +3719,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	function convert_data_uri ($content, $options, $css_url) {
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}]+)\{[^\}]*(background(-image|-position|-color|-repeat)?\s*):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}@]+)\{[^\}]*(background(-image|-position|-color|-repeat)?\s*):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$replaced_base64 = array();
