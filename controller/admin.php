@@ -1938,6 +1938,9 @@ class admin {
 				@copy($this->basepath . 'libs/php/wo.static.php',
 					$this->compress_options['css_cachedir'] . 'wo.static.php');
 				@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
+				@copy($this->basepath . 'libs/php/wo.gzip.php',
+					$this->compress_options['css_cachedir'] . 'wo.gzip.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
 				@copy($this->basepath . 'libs/php/0.gif',
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
@@ -2329,7 +2332,7 @@ class admin {
 		$deleted_js = true;
 		$deleted_html = true;
 		$deleted_sql = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo.gzip.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while (($file = @readdir($dir)) !== false) {
@@ -4747,7 +4750,7 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
 	RewriteRule ^(.*)\.txt$ $1.txt.gz [QSA,L]";
-				}
+					}
 					if (!empty($this->input['wss_gzip_css'])) {
 						$content .= "
 	RewriteCond %{HTTP:Accept-encoding} gzip
@@ -4774,20 +4777,20 @@ Options +FollowSymLinks";
 					if (!empty($this->input['wss_htaccess_mod_expires']) &&
 						empty($this->input['wss_htaccess_mod_gzip']) &&
 						empty($this->input['wss_htaccess_mod_deflate']) &&
-						@is_file($this->compress_options['css_cachedir'] . 'wo.static.php') &&
+						@is_file($this->compress_options['css_cachedir'] . 'wo.gzip.php') &&
 						!empty($this->premium)) {
-							@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
+							@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
 							$cachedir = str_replace($this->compress_options['document_root'],
 								"/", $this->compress_options['css_cachedir']);
 							if (!empty($this->input['wss_gzip_css'])) {
 								$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
-	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
+	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.gzip.php?" . $base . "$1.css [L]";
 							}
 							if (!empty($this->input['wss_gzip_javascript'])) {
 								$content .= "
 	RewriteCond %{REQUEST_FILENAME} -f
-	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
+	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.gzip.php?" . $base . "$1.js [L]";
 							}
 					}
 					$content .= "
@@ -4959,8 +4962,10 @@ Options +FollowSymLinks";
 # Web Optimizer end";
 /* add Expires headers via PHP script if we don't have mod_expires */
 			} elseif (!empty($this->input['wss_htaccess_mod_rewrite']) &&
-				@is_file($this->compress_options['css_cachedir'] . 'wo.static.php')) {
+				@is_file($this->compress_options['css_cachedir'] . 'wo.static.php') &&
+				@is_file($this->compress_options['css_cachedir'] . 'wo.gzip.php')) {
 					@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
+					@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
 					$cachedir = str_replace($this->compress_options['document_root'],
 						"/", $this->compress_options['css_cachedir']);
 					$content2 .= "
@@ -4981,7 +4986,7 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
 							$content2 .= "
-	RewriteRule ^(.*)\.css$ " . $cachedir . "wo.static.php?" . $base . "$1.css [L]";
+	RewriteRule ^(.*)\.css$ " . $cachedir . (empty($this->input['wss_gzip_css']) ? "wo.static.php" : "wo.gzip.php") . "?" . $base . "$1.css [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_javascript'])) {
 						$content2 .= "
@@ -4991,7 +4996,7 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
 							$content2 .= "
-	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.static.php?" . $base . "$1.js [L]";
+	RewriteRule ^(.*)\.js$ " . $cachedir . (empty($this->input['wss_gzip_javascript']) ? "wo.static.php" : "wo.gzip.php") . "?" . $base . "$1.js [L]";
 					}
 				if (!empty($this->input['wss_far_future_expires_images'])) {
 						$content2 .= "
@@ -5001,7 +5006,7 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP:Cookie} !^WSS_DISABLED";						
 							}
 							$content2 .= "
-	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico|cur)$ " . $cachedir . "wo.static.php?" . $base . "$1.$2 [L]";
+	RewriteRule ^(.*)\.(bmp|gif|png|jpe?g|ico|cur)$ " . $cachedir . (empty($this->input['wss_gzip_page']) ? "wo.static.php" : "wo.gzip.php") . "?" . $base . "$1.$2 [L]";
 					}
 					if (!empty($this->input['wss_far_future_expires_fonts'])) {
 						$content2 .= "
@@ -5154,6 +5159,9 @@ Options +FollowSymLinks";
 		@copy($this->basepath . 'libs/php/wo.static.php',
 			$this->compress_options['css_cachedir'] . 'wo.static.php');
 		@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
+		@copy($this->basepath . 'libs/php/wo.gzip.php',
+			$this->compress_options['css_cachedir'] . 'wo.gzip.php');
+		@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
 		@copy($this->basepath . 'libs/php/0.gif',
 			$this->compress_options['css_cachedir'] . '0.gif');
 /* dirty hack for PHP-Nuke */
@@ -6186,6 +6194,12 @@ require valid-user';
 				@copy($this->basepath . 'libs/php/wo.static.php',
 				$this->compress_options['css_cachedir'] . 'wo.static.php');
 				@chmod($this->compress_options['css_cachedir'] . 'wo.static.php', octdec("0755"));
+		}
+		if (@filemtime($this->basepath . 'libs/php/wo.gzip.php') >
+			@filemtime($this->compress_options['css_cachedir'] . 'wo.gzip.php')) {
+				@copy($this->basepath . 'libs/php/wo.gzip.php',
+				$this->compress_options['css_cachedir'] . 'wo.gzip.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
 		}
 		if (@filemtime($this->basepath . 'libs/php/0.gif') >
 			@filemtime($this->compress_options['css_cachedir'] . '0.gif')) {
