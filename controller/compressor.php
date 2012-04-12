@@ -307,7 +307,7 @@ class web_optimizer {
 	*
 	**/
 	function write_progress ($progress) {
-		$this->write_file($this->options['javascript']['cachedir'] . 'progress.html', $progress);
+		$this->write_file($this->options['javascript']['cachedir'] . 'progress.php', $progress);
 	}
 
 	/**

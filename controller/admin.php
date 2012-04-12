@@ -2092,7 +2092,7 @@ class admin {
 		$file = (empty($this->compress_options['javascript_cachedir']) ?
 			($this->view->paths['full']['current_directory'] . 'cache/') :
 				$this->compress_options['javascript_cachedir']) .
-					'progress.html';
+					'progress.php';
 		return $this->write_file($file, $progress, 1);
 	}
 
@@ -2161,7 +2161,7 @@ class admin {
 	* 
 	**/		
 	function install_dashboard() {
-		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
+		@unlink($this->compress_options['javascript_cachedir'] . 'progress.php');
 		$page_variables = array(
 			"title" => _WEBO_SPLASH2_CONTROLPANEL,
 			"page" => 'install_dashboard',
@@ -2332,7 +2332,7 @@ class admin {
 		$deleted_js = true;
 		$deleted_html = true;
 		$deleted_sql = true;
-		$restricted = array('.', '..', 'yass.loader.js', 'progress.html', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo.gzip.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
+		$restricted = array('.', '..', 'yass.loader.js', 'progress.php', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo.gzip.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while (($file = @readdir($dir)) !== false) {
@@ -2690,7 +2690,7 @@ class admin {
 			}
 		}
 		$this->compress_options = $compress_options_backup;
-		@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
+		@unlink($this->compress_options['javascript_cachedir'] . 'progress.php');
 	}
 
 	/**
@@ -5714,7 +5714,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 					$this->compress_options['html_cachedir']) .
 				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=' . rand(),
 				$this->compress_options['html_cachedir'] . 'chained.load', 25);
-			@unlink($this->compress_options['javascript_cachedir'] . 'progress.html');
+			@unlink($this->compress_options['javascript_cachedir'] . 'progress.php');
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			@unlink($this->compress_options['html_cachedir'] . 'optimizing.php');
 /* or via cached HTML */
