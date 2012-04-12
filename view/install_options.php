@@ -103,23 +103,11 @@ if ($submit) {
 ?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
 ?></a></li><li class="wssU11<?php
-	if ($config == 'basic') {
-?> wssU12 wssU17<?php
-	}
-?>"><a class="wssJ" href="javascript:_.f('basic');void(0)" rel="basic"><?php
-	echo _WEBO_OPTIONS_BASIC;
-?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
 ?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
-?></a></li><li class="wssU11<?php
-	if ($config == 'extreme') {
-?> wssU12 wssU17<?php
-	}
-?>"><a class="wssJ" href="javascript:_.f('extreme');void(0)" rel="extreme"><?php
-	echo _WEBO_OPTIONS_EXTREME;
 ?></a></li><?php
 	if (count($configs)) {
 		foreach ($configs as $c) {
