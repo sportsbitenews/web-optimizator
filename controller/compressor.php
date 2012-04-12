@@ -2434,6 +2434,35 @@ class web_optimizer {
 							$use_proxy = 0;
 					}
 				}
+/* get remote files */
+				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
+/* exclude files from the same host */
+					if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
+/* don't get actual files' content if option isn't enabled */
+						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+/* get an external file */
+							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+/* dynamic file */
+								$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
+/* static file */
+							} else {
+								$file = $this->get_remote_file($value['file'], $value['tag']);
+							}
+							if (!empty($file)) {
+								$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
+							} else {
+								unset($this->initial_files[$key]);
+							}
+						} else {
+							if (empty($value['content'])) {
+								unset($this->initial_files[$key]);
+							}
+						}
+					} else {
+						$value['file'] = preg_replace("!https?://(www\.)?".
+							$this->host_escaped . "/+!s", "/", $value['file']);
+					}
+				}
 				$proxy = $use_proxy &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
@@ -2597,34 +2626,6 @@ class web_optimizer {
 				} else {
 /* don't touch all files -- just only requested ones */
 					if (!$tag || $value['tag'] == $tag) {
-						if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
-/* exclude files from the same host */
-							if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
-/* don't get actual files' content if option isn't enabled */
-									if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
-/* get an external file */
-									if (!preg_match("/\.(css|js)$/is", $value['file'])) {
-/* dynamic file */
-										$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
-/* static file */
-									} else {
-										$file = $this->get_remote_file($value['file'], $value['tag']);
-									}
-									if (!empty($file)) {
-										$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
-									} else {
-										unset($this->initial_files[$key]);
-									}
-								} else {
-									if (empty($value['content'])) {
-										unset($this->initial_files[$key]);
-									}
-								}
-							} else {
-								$value['file'] = preg_replace("!https?://(www\.)?".
-									$this->host_escaped . "/+!s", "/", $value['file']);
-							}
-						}
 						$content_from_file = '';
 						if (!empty($value['file'])) {
 							$value['file'] = preg_replace("@^/?(\.\./)+@", "", $value['file']);
