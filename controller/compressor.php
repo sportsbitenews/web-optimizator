@@ -2492,7 +2492,7 @@ class web_optimizer {
 						if (empty($matched)) {
 							$replace_to[] = ($value['tag'] == 'link' ? '<style type="text/css"' .
 								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : '<script type="text/javascript">') .
-								$value['content'] .
+								str_replace('</', '\x3C/', $value['content']) .
 								($value['tag'] == 'link' ? '</style>' : '</script>');
 							if (!empty($value['file'])) {
 								$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
