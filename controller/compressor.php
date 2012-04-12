@@ -1750,7 +1750,7 @@ class web_optimizer {
 							$contents .= 'try{';
 						}
 						$contents .= $file_contents .
-							($options['header'] == 'javascript' && substr($file_contents, strlen($file_contents) - 1) != ';' && !empty($external_array[$key+1]) ? ';' : '');
+							($options['header'] == 'javascript' && !empty($external_array[$key+1]) ? "\n" : '');
 						if (!empty($options['minify_try'])) {
 							$contents .= '}catch(e){';
 							if (!empty($info['file'])) {
@@ -1913,7 +1913,7 @@ class web_optimizer {
 							$content = $this->minify_javascript($content, $options);
 					}
 					$contents .= $content .
-						($options['header'] == 'javascript' && substr($content, strlen($content) - 1) != ';' && !empty($external_array[$key+1]) ? ';' : '');
+						($options['header'] == 'javascript' && !empty($external_array[$key+1]) ? "\n" : '');
 				}
 			}
 		}
