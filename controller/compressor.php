@@ -405,8 +405,8 @@ class web_optimizer {
 				"file" => $this->premium > 1 ? $this->options['minify']['javascript_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
-				"rocket" => $this->options['rocket']['javascript'],
-				"rocket_external" => $this->options['rocket']['javascript_external'],
+				"rocket" => $this->options['rocket']['javascript'] && !$this->options['minify']['javascript'],
+				"rocket_external" => $this->options['rocket']['javascript_external'] && !$this->options['minify']['javascript'],
 				"reorder" => $this->options['rocket']['reorder']
 			),
 			"css" => array(
@@ -480,7 +480,7 @@ class web_optimizer {
 				"file" => $this->premium > 1 ? $this->options['minify']['css_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
 				"https" => $this->premium > 1 ? $this->options['parallel']['https'] : '',
-				"rocket" => $this->options['rocket']['css'],
+				"rocket" => $this->options['rocket']['css'] && !$this->options['minify']['css'],
 				"reorder" => $this->options['rocket']['reorder']
 			),
 			"page" => array(
@@ -2488,7 +2488,7 @@ class web_optimizer {
 						$matched = 0;
 						$replace_from[] = $value['source'];
 						$replace_type[] = $value['tag'];
-						$matched = preg_match("!(mootools(\.js|-more|-core|_release|\.x|\.v|\.min)|[^\.-]jquery(-ui|.min|\.js|\.1|-1|\.v)|prototype(\.min|\.js|\.rev))!is", $value['file_raw']);
+						$matched = preg_match("!(mootools(\.js|-more|-core|_release|\.x|\.v|\.min)|[^\.-]jquery(-ui|.min|\.js|\.1|-1|\.v|\.core|\.pack)|prototype(\.min|\.js|\.rev))!is", $value['file_raw']);
 						if (empty($matched)) {
 							$replace_to[] = ($value['tag'] == 'link' ? '<style type="text/css"' .
 								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : '<script type="text/javascript">') .
