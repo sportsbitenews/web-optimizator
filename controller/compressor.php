@@ -2187,7 +2187,7 @@ class web_optimizer {
 /* strange thing: array is filled even if string is empty */
 		$excluded_scripts_css = explode(" ", $this->options['css']['external_scripts_exclude']);
 		$excluded_scripts_js = explode(" ", $this->options['javascript']['external_scripts_exclude']);
-		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket'] || $this->options['javascript']['reorder']) {	
+		if ($this->options['javascript']['minify'] || $this->options['javascript']['gzip'] || $this->options['page']['parallel_javascript'] || $this->options['javascript']['rocket'] || $this->options['javascript']['reorder'] || $this->options['javascript']['external_scripts']) {
 			if (empty($this->options['javascript']['minify_body']) || empty($this->options['javascript']['inline_scripts_body'])) {
 				$toparse = $this->head;
 			} else {
