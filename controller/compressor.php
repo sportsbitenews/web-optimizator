@@ -4096,9 +4096,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* check if BASE URI is given */
 		if (!empty($this->basehref) &&
 /* convert only non-external URI */
-			strpos($uri, '//') !== 0 && !strpos($uri, '://') &&
-/* convert relative URL */
-			substr($uri, 0, 1) != '/') {
+			strpos($uri, '//') !== 0 && !strpos($uri, '://')) {
 				return $this->basehref . $uri;
 		} else {
 			return $uri;
