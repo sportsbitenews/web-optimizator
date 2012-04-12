@@ -81,8 +81,6 @@ view/install_system.php
 view/install_uninstall.php
 view/install_wizard.php
 view/options_configuration.php
-config.basic.php
-config.extreme.php
 config.optimal.php
 config.safe.php
 config.webo.php

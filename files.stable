@@ -56,8 +56,6 @@ plugins/
 view/admin_container.php
 view/external_awards.php
 view/install_dashboard.php
-config.basic.php
-config.extreme.php
 config.optimal.php
 config.safe.php
 config.webo.php
