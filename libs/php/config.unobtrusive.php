@@ -32,6 +32,13 @@ $unobtrusive_items = array(
 		), 'cp' => array(
 			'marker' => 'media.yesmessenger.com',
 			'regexp' => "<script[^>]+>[^\da-zA-Z]*var yesmsng_flash_banner.*?media.yesmessenger.com/flashbanner/[^>]+></script>"
+/* DirectAdvert */
+		), 'da' => array(
+			'marker' => 'directadvert.ru/show.cgi',
+			'regexp' => "<script[^>]+directadvert.ru/show\.cgi.*?/script>",
+			'onload_before' => '<script[^>]+src=[\'"](.*?)[\'"][^>]*></script>',
+			'onload_after' => 'var b=document,a=b.createElement("script");a.type="text/javascript";a.src="$1";wss_parentNode.appendChild(a);wss_onload_ready=1',
+			'inline' => true
 /* eBuzzing */
 		), 'eb' => array(
 			'marker' => 'ebuzzing.com/player',
@@ -50,6 +57,10 @@ $unobtrusive_items = array(
 			'regexp' => "<script[^>]+>[^<\da-zA-Z]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
 			'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
 			'onload_after' => '$1;document.write(\'\x3cscript type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js">\x3c/script>\');setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+/* Luxup */
+		), 'lx' => array(
+			'marker' => 'luxup.ru',
+			'regexp' => "<script[^>]+>[^>]+luxup\.ru.*?/script>",
 /* Novoteka */
 		), 'nn' => array(
 			'marker' => 'novoteka.ru',
@@ -187,6 +198,12 @@ $unobtrusive_items = array(
 			'marker' => 'hit.ua',
 			'regexp' => "<!--\shit\.ua\sinvisible.*?hit\.ua\sinvisible\spart\s-->",
 			'inline' => true
+/* InetLog */
+		), 'il' => array(
+			'marker' => 'inetlog.ru/',
+			'regexp' => "<script[^>]*>[^>]+inetlog\.ru/.*?/script>",
+			'height' => 1,
+			'inline' => true
 /* I.UA counter */
 		), 'iu' => array(
 			'marker' => 'I.UA',
@@ -221,6 +238,13 @@ $unobtrusive_items = array(
 			'marker' => 'SpyLOG',
 			'regexp' => "<!--\sSpyLOG.*?SpyLOG\s-->",
 			'height' => 31,
+			'inline' => true
+/* Teaser.cc */
+		), 'ti' => array(
+			'marker' => 'teaser.cc/statistics',
+			'regexp' => "<script[^>]+>[^>]+teaser\.cc/statistics.*?/script>",
+			'onload_before' => '<script[^>]+>(.*?)</script>',
+			'onload_after' => '$1;wss_onload_ready=1;',
 			'inline' => true
 /* Yandex.Metrica */
 		), 'ym' => array(
