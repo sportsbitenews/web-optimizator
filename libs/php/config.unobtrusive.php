@@ -82,7 +82,7 @@ $unobtrusive_items = array(
 /* Yandex.Direct */
 		), 'yd' => array(
 			'marker' => 'yandex_partner_id',
-			'regexp' => "<script[^>]+><!--[^\da-zA-Z]*yandex_partner_id.*?</script>"
+			'regexp' => "<script[^>]+>(<!--|[^\da-zA-Z]*//<!\[CDATA\[)[^\da-zA-Z]*yandex_partner_id.*?</script>"
 /* Unruly Media */
 		), 'um' => array(
 			'marker' => 'video.unrulymedia.com',
