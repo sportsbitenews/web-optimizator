@@ -57,10 +57,6 @@ $unobtrusive_items = array(
 			'regexp' => "<script[^>]+>[^<\da-zA-Z]*<!--[\s\t\r\n]*google_ad_client.*?show_ads.js\">[\r\n\s\t]*</script>",
 			'onload_before' => '<script type="text/javascript">[\r\n\s\t]*<!--(.*?)//-->[\r\n\s\t]*</script>.*?</script>',
 			'onload_after' => '$1;var b=document,a=b.createElement("script");a.type="text/javascript";a.src="//pagead2.googlesyndication.com/pagead/show_ads.js";wss_parentNode.appendChild(a);setTimeout(function(){if(document.getElementById("gw_dst_###WSS###").getElementsByTagName("iframe")[0]){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
-/* Luxup */
-		), 'lx' => array(
-			'marker' => 'luxup.ru',
-			'regexp' => "<script[^>]+>[^>]+luxup\.ru.*?/script>",
 /* Novoteka */
 		), 'nn' => array(
 			'marker' => 'novoteka.ru',
