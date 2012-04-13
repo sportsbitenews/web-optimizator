@@ -84,6 +84,14 @@ switch ($extension) {
 	case 'css':
 		$extension = 'text/css';
 		break;
+	case 'jpg':
+		$extension = 'jpeg';
+	case 'jpeg':
+	case 'bmp':
+	case 'gif':
+	case 'png':
+		$extension = 'image/' . $extension;
+		break;
 	case 'cur':
 		$extension = 'image/vnd.microsoft.icon';
 		break;
