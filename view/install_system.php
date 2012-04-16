@@ -126,7 +126,7 @@
 ?><span class="wssJ6"></span></a></li><?php
 	}
 ?><li class="wssO4"><a href="#wssinfo" class="wssJ"><?php
-	echo _WEBO_SYSTEM_INFO;
+	echo _WEBO_SYSTEM_PHPINFO;
 ?><span class="wssJ6"></span></a></li></ul><fieldset id="wssstatus" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_STATUS;
 ?></h2><p class="wssI">WEBO Site SpeedUp <?php
@@ -487,6 +487,6 @@
 	}
 ?><fieldset id="wssinfo" class="wssD9 wssA0"><div class="wssD10"><?php
 	echo phpinfo();
-?></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?></div></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div>
