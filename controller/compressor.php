@@ -1957,7 +1957,9 @@ class web_optimizer {
 			}
 /* Allow for gzipping and headers */
 			if ($options['gzip'] || $options['far_future_expires']) {
-				$contents = $this->gzip_header[$options['header']] . $contents;
+				$contents = $this->gzip_header[$options['header']] .
+/* fix <?xml includes into JS code not to break PHP file */
+					(in_array($options['ext'], array('css', 'js')) || $options['header'] == 'css' ? $contents : str_replace("<?", "\x3c?", $contents));
 			}
 			if (!empty($contents)) {
 /* Write to cache and display */
@@ -2816,7 +2818,7 @@ class web_optimizer {
 			if (!empty($this->options[$type]['gzip'])) {
 				$this->gzip_header[$type] .= '<?php
 				$zlib = 0;
-				if (strtolower("' . $this->options['page']['zlib'] . '") == "on" && strlen(@ini_get("zlib.output_compression_level"))) {
+				if (' . $this->options['page']['zlib'] . ' && strlen(@ini_get("zlib.output_compression_level"))) {
 					@ini_set("zlib.output_compression", "On");
 					@ini_set("zlib.output_compression_level", ' . $this->options['page']['gzip_level'] . ');
 					$zlib = 1;
