@@ -268,6 +268,9 @@ define('_WEBO_unobtrusive_postload_EFFECT', 'Faster next page views');
 define('_WEBO_unobtrusive_frames', 'Pre-load pages');
 define('_WEBO_unobtrusive_frames_HELP', 'All resources on these pages will be loaded on window.onload event (iframes) to speed the next page view up.');
 define('_WEBO_unobtrusive_frames_EFFECT', 'Faster next page views');
+define('_WEBO_unobtrusive_configuration', 'Unobtrusive configuration');
+define('_WEBO_unobtrusive_configuration_HELP', 'Setup what unobtrusive chunks must be excluded from delayed loading - i.e. you need to show some adverts first, other - after window onload. Syntax: {id1}:{amount_to_skip} {id2}:{amount_to_skip}. Complete list of ids is located in libs/php/config.unobtrusive.php as keys of all arrays.');
+define('_WEBO_unobtrusive_configuration_EFFECT', 'Agile page load process management');
 
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_css_HELP', 'All CSS files will be compressed via gzip.');

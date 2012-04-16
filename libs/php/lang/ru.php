@@ -269,6 +269,9 @@ define('_WEBO_unobtrusive_postload_EFFECT', 'Ускорение просмотр
 define('_WEBO_unobtrusive_frames', 'Предзагружать страницы');
 define('_WEBO_unobtrusive_frames_HELP', 'Все ресурсы на указанных URL будут загружены по событию window.onload во фреймах, чтобы ускорить просмотр следующих страниц сайта.');
 define('_WEBO_unobtrusive_frames_EFFECT', 'Ускорение просмотра следующих страниц сайта');
+define('_WEBO_unobtrusive_configuration', 'Конфигурация отложенной загрузки');
+define('_WEBO_unobtrusive_configuration_HELP', 'Здесь можно указать, сколько скриптов будет пропущено при обработке логики отложенной загрузки. Например, требуется загрузить сначала несколько объявлений, а все остальные отложить на событие window.onload. Синтаксис: {id1}:{количество_для_пропуска} {id2}:{количество_для_пропуска}. Полный список обрабатываемых идентификаторов находится в файле libs/php/config.unobtrusive.php как ключи всех массивов.');
+define('_WEBO_unobtrusive_configuration_EFFECT', 'Гибкий процесс управления загрузкой страниц сайта');
 
 define('_WEBO_gzip_css', 'Применить <code>gzip</code> для CSS');
 define('_WEBO_gzip_css_HELP', 'Все CSS-файлы будут передаваться в сжатом виде.');

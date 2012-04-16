@@ -3694,6 +3694,12 @@ class admin {
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				),
+				'unobtrusive_configuration' => array(
+					'value' => $this->compress_options['unobtrusive']['configuration'],
+					'type' => 'smalltext',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5
+				),
 				'unobtrusive_postload' => array(
 					'value' => $this->compress_options['unobtrusive']['postload'],
 					'type' => 'textarea',
@@ -3943,6 +3949,7 @@ class admin {
 		foreach (array(
 			'wss_unobtrusive_postload',
 			'wss_unobtrusive_frames',
+			'wss_unobtrusive_configuration',
 			'wss_minify_css_file',
 			'wss_minify_css_host',
 			'wss_minify_javascript_file',

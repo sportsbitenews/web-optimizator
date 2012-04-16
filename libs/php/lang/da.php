@@ -268,6 +268,9 @@ define('_WEBO_unobtrusive_postload_EFFECT', 'Hurtigere næste sidevisninger');
 define('_WEBO_unobtrusive_frames', 'Før hent sider');
 define('_WEBO_unobtrusive_frames_HELP', 'Alle resourcer på disse sider vil hentes ved window.onload (iframes) for at forøge hastigheden på næste sidevisninger.');
 define('_WEBO_unobtrusive_frames_EFFECT', 'Hurtigere næste sidevisninger');
+define('_WEBO_unobtrusive_configuration', 'Unobtrusive configuration');
+define('_WEBO_unobtrusive_configuration_HELP', 'Setup what unobtrusive chunks must be excluded from delayed loading - i.e. you need to show some adverts first, other - after window onload. Syntax: {id1}:{amount_to_skip} {id2}:{amount_to_skip}. Complete list of ids is located in libs/php/config.unobtrusive.php as keys of all arrays.');
+define('_WEBO_unobtrusive_configuration_EFFECT', 'Agile page load process management');
 
 define('_WEBO_gzip_css', 'Gzip CSS');
 define('_WEBO_gzip_css_HELP', 'Alle CSS filer vil blive komprimeret med gzip.');

@@ -12,6 +12,7 @@ $compress_options['unobtrusive']['iframes']="1";
 $compress_options['unobtrusive']['background']="0";
 $compress_options['unobtrusive']['postload']="";
 $compress_options['unobtrusive']['frames']="";
+$compress_options['unobtrusive']['configuration']="";
 $compress_options['external_scripts']['on']="1";
 $compress_options['external_scripts']['inline']="1";
 $compress_options['external_scripts']['inline_body']="0";

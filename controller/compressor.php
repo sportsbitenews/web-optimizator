@@ -551,6 +551,7 @@ class web_optimizer {
 					($this->premium > 1),
 				"unobtrusive_inline" => $this->options['unobtrusive']['on'] == 2 &&
 					($this->premium > 1),
+				"unobtrusive_configuration" => $this->premium > 1 ? explode(" ", $this->options['unobtrusive']['configuration']) : array(),
 				"postload" => $this->premium > 1 ? $this->options['unobtrusive']['postload'] : '',
 				"postload_frames" => $this->premium > 1 ? $this->options['unobtrusive']['frames'] : '',
 				"footer" => $this->options['footer']['text'],
@@ -3116,86 +3117,96 @@ class web_optimizer {
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
-				$height = $initial_height;
-				if (empty($height)) {
-/* try to calculate height for AdWords */
-					switch ($stuff) {
-						case 'gw':
-							$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
-							break;
-						case 'aa':
-							$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
-							break;
-						case 'cp':
-							$pos = strpos($value[0], 'thumb_size:') + 11;
-							$posend = strpos($value[0], ',', $pos);
-							$dims = explode('x', str_replace(array("'", " ", '"'), array(), substr($value[0], $pos, $posend)));
-							$height = round($dims[1]);
-							break;
-						case 'if':
-						case 'IF':
-							if (preg_match("@height\s*=@is", $value[0])) {
-								$height = round(preg_replace("@.*height\s*=[\s'\"](.*)[\s'\"]@", "$1", $value[0]));
-							}
-							break;
+/* skip marked unobtrusive items */
+				if (count($this->options['page']['unobtrusive_configuration'])) {
+					foreach ($this->options['page']['unobtrusive_configuration'] as $skip) {
+						if ($stuff == $skip[0] && $key < $skip[1]) {
+							$break = 1;
+						}
 					}
 				}
+				if (empty($break)) {
+					$height = $initial_height;
+					if (empty($height)) {
+/* try to calculate height for AdWords */
+						switch ($stuff) {
+							case 'gw':
+								$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
+								break;
+							case 'aa':
+								$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
+								break;
+							case 'cp':
+								$pos = strpos($value[0], 'thumb_size:') + 11;
+								$posend = strpos($value[0], ',', $pos);
+								$dims = explode('x', str_replace(array("'", " ", '"'), array(), substr($value[0], $pos, $posend)));
+								$height = round($dims[1]);
+								break;
+							case 'if':
+							case 'IF':
+								if (preg_match("@height\s*=@is", $value[0])) {
+									$height = round(preg_replace("@.*height\s*=[\s'\"](.*)[\s'\"]@", "$1", $value[0]));
+								}
+								break;
+						}
+					}
 /* count param for str_replace available only in PHP5 */
-				$pos = strpos($this->content, $value[0]);
-				$len = strlen($value[0]);
-				$tag = $inline ? 'span' : 'div';
-				$this->content = substr_replace($this->content,
-					($stuff == 'fc' ? '<?xml:namespace prefix="fb"/>' : '') .
-					'<' .
-						$tag .
-					' id="' .
-						$stuff .
-					'_dst_' .
-						$key .
-					'"' .
-						($height && $inline ? ' style="'.
-						($onload ? 'position:relative;' : '') .
-						'height:' .
-							$height .
-						'px;display:inline-block"' : '') .
-						($height && !$inline ? ' style="'.
-						($onload ? 'position:relative;' : '') .
-						'height:' .
-							$height .
-						'px"' : '') .
-					'></' .
-						$tag .
-					'>', $pos, $len);
-				if (!$onload) {
-					$return .= '<' .
-						$tag .
-					' id="'.
-						$stuff .'_src_' . $key . 
-					'">' .
-						$value[0] .
-					'</' .
-						$tag .
-					'><script type="text/javascript">(function(){var a=document,b=a.getElementById("' .
-						$stuff . '_dst_' . $key . '"),c=b.parentNode,d=a.getElementById("' .
-						$stuff . '_src_' . $key . '");if(c===a.body){c.insertBefore(d,b);c.removeChild(b)}else{c.innerHTML=c.innerHTML.replace(/\x3c' .
-						$tag .
-					'[^>]+id="?' .
-						$stuff .
-					'_dst_' .
-						$key .
-					'["\s>].*?\x3c\/' . 
-						$tag .
-					'>/i,d.innerHTML);b=a.getElementById("' .
-						$stuff . '_src_' . $key . '");b.parentNode.removeChild(b)}}())</script>';
-				} else {
-					$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
-						$stuff . '_dst_' . $key
-					.'\');' .
-						str_replace(array("\n", "\r", '###WSS###', '<div', '</div', '// ]]>'),
-							array(' ', '', $key, '\x3cdiv', '\x3c/div', ''),
-							preg_replace("@(<!--.*?-->|/\*.*?\*/)@is", "", preg_replace("@" . $onload_mask . "@is",
-							$onload_result, $value[0]))) .
-						'}</script>';
+					$pos = strpos($this->content, $value[0]);
+					$len = strlen($value[0]);
+					$tag = $inline ? 'span' : 'div';
+					$this->content = substr_replace($this->content,
+						($stuff == 'fc' ? '<?xml:namespace prefix="fb"/>' : '') .
+						'<' .
+							$tag .
+						' id="' .
+							$stuff .
+						'_dst_' .
+							$key .
+						'"' .
+							($height && $inline ? ' style="'.
+							($onload ? 'position:relative;' : '') .
+							'height:' .
+								$height .
+							'px;display:inline-block"' : '') .
+							($height && !$inline ? ' style="'.
+							($onload ? 'position:relative;' : '') .
+							'height:' .
+								$height .
+							'px"' : '') .
+						'></' .
+							$tag .
+						'>', $pos, $len);
+					if (!$onload) {
+						$return .= '<' .
+							$tag .
+						' id="'.
+							$stuff .'_src_' . $key . 
+						'">' .
+							$value[0] .
+						'</' .
+							$tag .
+						'><script type="text/javascript">(function(){var a=document,b=a.getElementById("' .
+							$stuff . '_dst_' . $key . '"),c=b.parentNode,d=a.getElementById("' .
+							$stuff . '_src_' . $key . '");if(c===a.body){c.insertBefore(d,b);c.removeChild(b)}else{c.innerHTML=c.innerHTML.replace(/\x3c' .
+							$tag .
+						'[^>]+id="?' .
+							$stuff .
+						'_dst_' .
+							$key .
+						'["\s>].*?\x3c\/' . 
+							$tag .
+						'>/i,d.innerHTML);b=a.getElementById("' .
+							$stuff . '_src_' . $key . '");b.parentNode.removeChild(b)}}())</script>';
+					} else {
+						$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
+							$stuff . '_dst_' . $key
+						.'\');' .
+							str_replace(array("\n", "\r", '###WSS###', '<div', '</div', '// ]]>'),
+								array(' ', '', $key, '\x3cdiv', '\x3c/div', ''),
+								preg_replace("@(<!--.*?-->|/\*.*?\*/)@is", "", preg_replace("@" . $onload_mask . "@is",
+								$onload_result, $value[0]))) .
+							'}</script>';
+					}
 				}
 			}
 		}
@@ -3209,6 +3220,11 @@ class web_optimizer {
 	*
 	**/
 	function replace_informers ($options) {
+		if (count($this->options['page']['unobtrusive_configuration'])) {
+			foreach ($this->options['page']['unobtrusive_configuration'] as $k => $skip) {
+				$this->options['page']['unobtrusive_configuration'][$k] = explode(":", $skip);
+			}
+		}
 		$before_body = '';
 		$host = (empty($this->options['javascript']['host']) ?
 			$this->options['page']['host'] :

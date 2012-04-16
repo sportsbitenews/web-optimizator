@@ -46,6 +46,8 @@ $compress_options['unobtrusive']['background'] = "0";
 $compress_options['unobtrusive']['postload'] = "";
 ## Load frames on onload
 $compress_options['unobtrusive']['frames'] = "";
+## Agile configuration of delayed loading
+$compress_options['unobtrusive']['configuration'] = "";
 ## Merge external JavaScript files
 $compress_options['external_scripts']['on'] = "1";
 ## Merge inline scripts in head
