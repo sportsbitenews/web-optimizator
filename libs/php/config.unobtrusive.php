@@ -78,7 +78,9 @@ $unobtrusive_items = array(
 /* Yandex.Direct */
 		), 'yd' => array(
 			'marker' => 'yandex_partner_id',
-			'regexp' => "<script[^>]+>(<!--|[^\da-zA-Z]*//<!\[CDATA\[)[^\da-zA-Z]*yandex_partner_id.*?</script>"
+			'regexp' => "<script[^>]+>(<!--|[^\da-zA-Z]*//<!\[CDATA\[)[^\da-zA-Z]*yandex_partner_id.*?</script>",
+			'onload_before' => '<script[^>]*>.*?CDATA\[(.*?)//\]\].*',
+			'onload_after' => '$1;var b=document,a=b.createElement("script");a.type="text/javascript";a.src="//an.yandex.ru/system/context.js";wss_parentNode.appendChild(a);setTimeout(function(){if(document.getElementById("y5_direct"+(###WSS###+1))){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Unruly Media */
 		), 'um' => array(
 			'marker' => 'video.unrulymedia.com',
