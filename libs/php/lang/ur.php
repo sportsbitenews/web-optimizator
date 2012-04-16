@@ -748,6 +748,7 @@ define('_WEBO_SYSTEM_UPDATES', 'تازہ ترین');
 define('_WEBO_SYSTEM_NOUPDATES', 'آپ ویبو سائٹ اسپیڈ اپ کا تازہ ترین ورژن استعمال کر رہے ہیں۔');
 define('_WEBO_SYSTEM_ROLLBACK', 'واپس ورژن پر جائیں');
 define('_WEBO_SYSTEM_INSTALL', 'انسٹال اور ان انسٹال');
+define('_WEBO_SYSTEM_INFO', 'PHP info');
 define('_WEBO_SYSTEM_STATUS_TITLE', 'ایپلیکیشن اسٹیٹس');
 define('_WEBO_SYSTEM_ISSUES', 'سرور کا اسٹیٹس');
 define('_WEBO_SYSTEM_SETTINGS_TITLE', 'ایپلیکیشن کی ترتیبات');

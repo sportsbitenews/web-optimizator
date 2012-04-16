@@ -1716,7 +1716,7 @@ class admin {
 			$wp_cache_enabled = true;
 		}
 /* remember current number of files in cache */
-		$cache_files = count(scandir($css_cachedir)) + count(scandir($javascript_cachedir));
+		$cache_files = count(@scandir($css_cachedir)) + count(@scandir($javascript_cachedir));
 /* check CPU usage for the website */
 		$tmp_file = $this->compress_options['html_cachedir'] . 'index.tmp';
 		$time = time() + microtime();
@@ -1743,7 +1743,7 @@ class admin {
 		$spot = strpos($this->file_get_contents($tmp_file), '<!--WSS-->') || !@filesize($tmp_file);
 		@unlink($tmp_file);
 /* get new number of files in cache */
-		$cache_files_new = count(scandir($css_cachedir)) + count(scandir($javascript_cachedir));
+		$cache_files_new = count(@scandir($css_cachedir)) + count(@scandir($javascript_cachedir));
 		$errors = array(
 			'javascript_writable' => @is_writable($javascript_cachedir),
 			'css_writable' => @is_writable($css_cachedir),
@@ -6670,9 +6670,9 @@ require valid-user';
 	* Removes directory recursively
 	* 
 	**/
-	function __rmdir ($dir) { 
+	function __rmdir ($dir) {
 		if (is_dir($dir)) { 
-			$objects = scandir($dir); 
+			$objects = @scandir($dir); 
 			foreach ($objects as $object) { 
 				if ($object != "." && $object != "..") { 
 					if (@is_dir($dir . "/" . $object)) {

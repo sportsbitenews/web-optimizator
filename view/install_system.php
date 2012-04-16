@@ -108,11 +108,11 @@
 				break;
 		}
 	}
-?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7"><ul class="wssO3"><li class="wssO4 wssO5"><a href="#status" class="wssJ"><?php
+?><form method="post" enctype="multipart/form-data" action="#wss_system" class="wssC6 wssC7"><ul class="wssO3"><li class="wssO4 wssO5"><a href="#wssstatus" class="wssJ"><?php
 	echo _WEBO_SYSTEM_STATUS;
-?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#settings" class="wssJ"><?php
+?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#wsssettings" class="wssJ"><?php
 	echo _WEBO_SYSTEM_SETTINGS;
-?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#cache" class="wssJ"><?php
+?><span class="wssJ6"></span></a></li><li class="wssO4"><a href="#wsscache" class="wssJ"><?php
 	echo _WEBO_DASHBOARD_CACHE;
 ?><span class="wssJ6"></span></a></li><?php
 	if (!$custom) {
@@ -121,11 +121,13 @@
 ?><span class="wssJ6"></span></a></li><?php
 	}
 	if (!$internal) {
-?><li class="wssO4"><a href="#install" class="wssJ"><?php
+?><li class="wssO4"><a href="#wssinstall" class="wssJ"><?php
 		echo _WEBO_SYSTEM_INSTALL;
 ?><span class="wssJ6"></span></a></li><?php
 	}
-?></ul><fieldset id="status" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
+?><li class="wssO4"><a href="#wssinfo" class="wssJ"><?php
+	echo _WEBO_SYSTEM_INFO;
+?><span class="wssJ6"></span></a></li></ul><fieldset id="wssstatus" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_STATUS;
 ?></h2><p class="wssI">WEBO Site SpeedUp <?php
 	echo _WEBO_DASHBOARD_STATUS_IS;
@@ -203,7 +205,7 @@
 		echo _WEBO_SYSTEM_NOPROBLEMS;
 ?></p><?php
 	}
-?></div></fieldset><fieldset id="settings" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
+?></div></fieldset><fieldset id="wsssettings" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_SYSTEM_SETTINGS_TITLE;
 ?></h2><dl><dt class="wssD1"><label class="wssE" for="wss_host"><?php
 	echo _WEBO_host;
@@ -326,7 +328,7 @@
 ?></textarea></dd></dl><p class="wssI"><a href="javascript:var a=_('.wssC6')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
-<fieldset id="cache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php
+<fieldset id="wsscache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_CACHE;
 ?></h2><table class="wssT wssT0"><col width="38%"/><col width="18%"/><col width="17%"/><col width="10%"/><col width="16%"/><thead class="wssT5"><tr class="wssT6"><th class="wssT7"><?php
 	echo _WEBO_CACHE_TYPE;
@@ -406,7 +408,7 @@
 ?>"></div></div></fieldset><?php
 	}
 	if (!$internal) {
-?><fieldset id="install" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
+?><fieldset id="wssinstall" class="wssD9 wssA0"><div class="wssD10"><h2 class="wssB"><?php
 		echo _WEBO_SYSTEM_INSTALL_TITLE;
 ?></h2><p class="wssI"><?php
 		echo _WEBO_SYSTEM_INSTALLED;
@@ -483,6 +485,8 @@
 		echo _WEBO_SPLASH1_UNINSTALL;
 ?><span class="wssJ6"></span></a></p></div></fieldset><?php
 	}
-?></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?><fieldset id="wssinfo" class="wssD9 wssA0"><div class="wssD10"><?php
+	echo phpinfo();
+?></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div>

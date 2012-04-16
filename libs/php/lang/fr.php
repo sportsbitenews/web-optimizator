@@ -767,6 +767,7 @@ define('_WEBO_SYSTEM_UPDATES', 'Mises à jour');
 define('_WEBO_SYSTEM_NOUPDATES', 'Vous utilisez la dernière version de WEBO Site SpeedUp.');
 define('_WEBO_SYSTEM_ROLLBACK', 'Rollback to version');
 define('_WEBO_SYSTEM_INSTALL', 'Installer &amp; désinstaller');
+define('_WEBO_SYSTEM_INFO', 'PHP info');
 define('_WEBO_SYSTEM_STATUS_TITLE', 'Statut de l\'Application ');
 define('_WEBO_SYSTEM_ISSUES', 'Statut du serveur');
 define('_WEBO_SYSTEM_SETTINGS_TITLE', 'Réglages de l\'Application');
