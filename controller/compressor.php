@@ -3118,14 +3118,9 @@ class web_optimizer {
 		if (!empty($matches)) {
 			foreach ($matches as $key => $value) {
 /* skip marked unobtrusive items */
-				if (count($this->options['page']['unobtrusive_configuration'])) {
-					foreach ($this->options['page']['unobtrusive_configuration'] as $skip) {
-						if ($stuff == $skip[0] && $key < $skip[1]) {
-							$break = 1;
-						}
-					}
-				}
-				if (empty($break)) {
+				if (!count($this->options['page']['unobtrusive_configuration']) ||
+					empty($this->options['page']['unobtrusive_configuration'][$stuff]) ||
+					$key >= $this->options['page']['unobtrusive_configuration'][$stuff]) {
 					$height = $initial_height;
 					if (empty($height)) {
 /* try to calculate height for AdWords */
@@ -3220,10 +3215,14 @@ class web_optimizer {
 	*
 	**/
 	function replace_informers ($options) {
-		if (count($this->options['page']['unobtrusive_configuration'])) {
-			foreach ($this->options['page']['unobtrusive_configuration'] as $k => $skip) {
-				$this->options['page']['unobtrusive_configuration'][$k] = explode(":", $skip);
+		if ($this->options['page']['unobtrusive_configuration'] && !is_array($this->options['page']['unobtrusive_configuration'])) {
+			$b = explode(" ", $this->options['page']['unobtrusive_configuration']);
+			$conf = array();
+			foreach ($b as $skip) {
+				$a = explode(":", $skip);
+				$conf[$a[0]] = $a[1];
 			}
+			$this->options['page']['unobtrusive_configuration'] = $conf;
 		}
 		$before_body = '';
 		$host = (empty($this->options['javascript']['host']) ?
