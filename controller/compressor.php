@@ -3289,6 +3289,7 @@ class web_optimizer {
 			$before_body .= '<script type="text/javascript">'. $onload . $onload_func . '},false)</script>';
 		}
 		if (!empty($before_body)) {
+			$before_body = '<!--noindex-->' . $before_body . '<!--/noindex-->';
 			if (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</body>'))) {
 				$this->content = substr_replace($this->content, $before_body, $bodypos, 0);
 			 } elseif (!empty($options['html_tidy']) && ($bodypos = strpos($this->content, '</BODY>'))) {
@@ -3521,6 +3522,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				$stamp .= '<script type="text/javascript" src="' . $options['cachedir_relative'] . 'index.php"></script>';
 			}
 			if ($stamp) {
+				$stamp = '<!--noindex-->' . $stamp . '<!--/noindex-->';
 				if ($this->options['page']['html_tidy'] &&
 					($bodypos = strpos($this->content, '</body>'))) {
 						$this->content = substr_replace($this->content,
