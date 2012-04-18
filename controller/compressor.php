@@ -2375,6 +2375,28 @@ class web_optimizer {
 			}
 		}
 		if (is_array($this->initial_files)) {
+/* remove duplicates of styles/scripts from head */
+			if ($this->options['javascript']['remove_duplicates'] && !$this->options['javascript']['minify_body']) {
+				$e = count($this->initial_files);
+				$to_remove = array();
+				for ($i=0; $i<$e-2; $i++) {
+					if (!empty($this->initial_files[$i])) {
+						$value = $this->initial_files[$i];
+						for ($j=$i+1; $j<$e; $j++) {
+							if (!empty($this->initial_files[$j])) {
+								$v = $this->initial_files[$j];
+								if ($value['source'] == $v['source']) {
+									unset($this->initial_files[$i]);
+//									$to_remove[] = "!" . preg_quote($v['source']) . "!is";
+								}
+							}
+						}
+					}
+				}
+/*				if (count($to_remove)) {
+					$this->content = preg_replace($to_remove, '', $this->content, 1);
+				}*/
+			}
 /* get remote files */
 			foreach ($this->initial_files as $key => $value) {
 				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
