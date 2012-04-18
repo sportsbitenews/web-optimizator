@@ -3832,15 +3832,15 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							'}';
 					}
 				} else {
-					$rule = preg_replace("@;.*@is", "", $image[4]);
-					$rule_initial = str_replace(str_replace($rule, '', $image[4]), '', $image[0]);
-					$content = str_replace($rule_initial, str_replace($image[2] . ':' . $rule, '', $rule_initial), $content);
-					$compressed .= $image[1] .
-						'{' .
-						$image[2] .
-						':' .
-						$rule .
-						'}';
+/* get all background rules w/o URL and apply them */
+					preg_match_all("@(background(-image|-position|-color|-repeat)?\s*):([^\}]+?)[;\}]@is", $image[0], $backs, PREG_SET_ORDER);
+					if (is_array($backs)) {
+						$b = '';
+						foreach ($backs as $back) {
+							$b .= $back[1] . ':' . $back[3] . ';';
+						}
+						$compressed .= $image[1] . '{' . $b  . '}';
+					}
 				}
 			}
 			if ($mhtml && !empty($mhtml_code)) {
