@@ -3781,13 +3781,13 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				$base64 = '';
 				if (strpos(strtolower($image[4]), "url") !== false || strpos(strtolower($image[4]), "URL") !== false) {
 /* strip all after ) - to get URL */
-					$rule = preg_replace("@\)[^\)]*$@is", ")", $image[4]);
+					$rule = preg_replace("@((url\([^\)]+\)(,\s*)?)+).*$@is", "$1", $image[4]);
+					$css_image = preg_replace("@^.*((url\([^\)]+\)(,\s*)?)+)@is", "$1", $rule);
 /* add rules after ) but before ; */
 					$tale = preg_replace("@;.*$@is", "", str_replace($rule, '', $image[4]));
 /* add rules to URL */
 					$rule .= $tale;
 					$rule_initial = str_replace(str_replace($rule, '', $image[4]), '', $image[0]);
-					$css_image = preg_replace("@^.*((url\([^\)]+\)(,\s*)?)+).*$@is", "$1", $rule);
 					$image_saved = $css_image;
 					if (empty($replaced[$image_saved])) {
 						$css_image = explode(',', str_replace('base64,', '###', $css_image));
