@@ -1192,8 +1192,9 @@ class web_optimizer {
 	**/
 	function write_file_array ($file, $arr, $name) {
 		$str = "<?php\n";
+		$mq = get_magic_quotes_runtime();
 		foreach ($arr as $key => $value) {
-			$str .= '$' . $name . "['" . $key . "']='" . str_replace(array("\\", "'"), array("\\\\", "\'"), $value) . "';\n";
+			$str .= '$' . $name . "['" . $key . "']='" . ($mq ? $value : str_replace(array("\\", "'"), array("\\\\", "\\'"), $value)) . "';\n";
 		}
 		$str .= "?>";
 		return $this->write_file($file, $str);
