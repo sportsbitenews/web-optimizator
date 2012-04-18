@@ -3826,10 +3826,10 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							str_replace($image_saved, $base64, $rule) .
 							'}';
 					}
-/* * html matches Chrome, using body* for IE7- */
+/* * html, body* matches Chrome, using *property for IE7- */
 					if ($this->options['uniform_cache']) {
-						$sels .= 'body*' . str_replace(",", ",body*", $image[1]) .
-							'{' .
+						$sels .= $image[1] .
+							'{*' .
 							$image[2] .
 							':' .
 							$image[4] .
