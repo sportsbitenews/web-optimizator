@@ -2399,32 +2399,36 @@ class web_optimizer {
 			}
 /* get remote files */
 			foreach ($this->initial_files as $key => $value) {
-				if (!empty($value['file']) && strlen($value['file']) > 7 && strpos($value['file'], "://")) {
+				if (!empty($value['file'])) {
+					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']);
+					$external = strlen($value['file']) > 7 && strpos($value['file'], "://");
+					if ($dynamic || $external) {
 /* exclude files from the same host */
-					if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
+						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
 /* don't get actual files' content if option isn't enabled */
-						if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
+							if ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['external_scripts']) {
 /* get an external file */
-							if (!preg_match("/\.(css|js)$/is", $value['file'])) {
+								if ($dynamic) {
 /* dynamic file */
-								$file = $this->get_remote_file($this->convert_basehref($this->resolve_amps($value['file_raw'])), $value['tag']);
+									$file = $this->get_remote_file(($external ? '' : 'http://' . $this->host) . $this->resolve_amps($value['file_raw']), $value['tag']);
 /* static file */
+								} else {
+									$file = $this->get_remote_file($value['file'], $value['tag']);
+								}
+								if (!empty($file)) {
+									$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
+								} else {
+									unset($this->initial_files[$key]);
+								}
 							} else {
-								$file = $this->get_remote_file($value['file'], $value['tag']);
-							}
-							if (!empty($file)) {
-								$value['file'] = $this->initial_files[$key]['file'] = $this->options['javascript']['cachedir_relative'] . $file;
-							} else {
-								unset($this->initial_files[$key]);
+								if (empty($value['content'])) {
+									unset($this->initial_files[$key]);
+								}
 							}
 						} else {
-							if (empty($value['content'])) {
-								unset($this->initial_files[$key]);
-							}
+							$value['file'] = preg_replace("!https?://(www\.)?".
+								$this->host_escaped . "/+!s", "/", $value['file']);
 						}
-					} else {
-						$value['file'] = preg_replace("!https?://(www\.)?".
-							$this->host_escaped . "/+!s", "/", $value['file']);
 					}
 				}
 			}
