@@ -485,10 +485,8 @@ class web_optimizer {
 			),
 			"page" => array(
 				"cachedir" => $this->options['html_cachedir'],
-				"cache_engine" => $this->options['performance']['cache_engine'] &&
-					$this->premium,
-				"cache_engine_options" => $this->options['performance']['cache_engine_options'] &&
-					$this->premium,
+				"cache_engine" => $this->premium ? $this->options['performance']['cache_engine'] : 0,
+				"cache_engine_options" => $this->premium ? $this->options['performance']['cache_engine_options'] : '',
 				"cachedir_relative" => str_replace($this->options['document_root'], "/", $this->options['html_cachedir']),
 				"installdir" => $webo_cachedir,
 				"host" => $this->options['host'],
