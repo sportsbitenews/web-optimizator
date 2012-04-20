@@ -727,7 +727,7 @@ class web_optimizer {
 				if ($this->options['page']['sprites_domloaded']) {
 					$this->domready_include .= '_webo_hsprites();';
 				}
-				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
+				if ($this->options['page']['cache']) {
 					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
 					$this->domready_include .= 'var g,x=document,f,h,j;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
 					$cart_class .
@@ -744,7 +744,7 @@ class web_optimizer {
 					$this->domready_include .= 'if(/WebK/i.test(navigator.userAgent)){var wssload=setInterval(function(){if(/loaded|complete/.test(document.readyState)){clearInterval(wssload);if(typeof _weboptimizer_load!=="undefined"){_weboptimizer_load()}}},10)}';
 				}
 				$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
-				if ($this->joomla_cache || $this->wp_cache || $this->generic_cache) {
+				if ($this->options['page']['cache']) {
 					$this->domready_include2 .= '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
 					$cart_class .
 					'")[0];y=x.getElementsByClassName("wss_cart_qty")[0];z=x.getElementsByClassName("wss_cart2")[0];r=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
@@ -1076,10 +1076,11 @@ class web_optimizer {
 					'var a=document.cookie.split(";"),b,c=0,d,e;while(b=a[c++]){if(b.indexOf("comment_author_")!=-1){d=b.split("=");e=document.getElementById(d[0].replace(/(_?[a-f0-9]{32,}|\s?comment_author_)/g,"")||"author");if(e){e.value=unescape(d[1].replace(/\+/g," "))}}}}());';
 			}
 /* Add on-fly caching for Cart in Joomla! and WP, and others */
-			if (($this->wp_cache || $this->joomla_cache || $this->generic_cache) && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+			if ($this->options['page']['cache'] && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
-		} elseif($this->generic_cache && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+/* Add client-side cache flush on pages excluded from caching */
+		} elseif($this->options['page']['cache'] && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
 			$chunk = $this->domready_include2;
 		}
 		if ($chunk) {
