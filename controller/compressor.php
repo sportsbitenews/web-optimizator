@@ -1245,7 +1245,7 @@ class web_optimizer {
 		$count_satellites = count($satellites_hosts);
 		$replaced = array();
 		$IMG = strpos($content, '<IMG');
-		if (!empty($this->options['page']['html_tidy']) && !$IMG) {
+		if ($this->options['page']['html_tidy'] && !$IMG) {
 			$_content = $content;
 			$pos = $pos1 = false;
 			while (($pos = strpos($_content, '<img')) !== false || ($pos1 = strpos($_content, '<input')) !== false) {
@@ -1253,12 +1253,12 @@ class web_optimizer {
 				$len = strpos(substr($_content, $pos), '>');
 				if (strpos($_content, 'src') > $pos && strpos($_content, 'src') < $pos + $len) {
 /* gets image tag w/o the closing >, it's OK */
-					$imgs[] = array(substr($_content, $pos, $len));
+					$imgs[] = array(substr($_content, $pos, $len), $pos1 ? 'input' : 'img');
 				}
 				$_content = substr_replace($_content, '', 0, $pos + $len + 1);
 				$pos = $pos1 = false;
 			}
-		} elseif (!$this->options['page']['html_tidy'] || $IMG) {
+		} else {
 			preg_match_all("!<(img|input)[^>]+src[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
