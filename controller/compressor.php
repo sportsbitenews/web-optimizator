@@ -721,7 +721,7 @@ class web_optimizer {
 /* define gzip headers at the end */
 			$this->set_gzip_header();
 /* create DOMready chunk of JavaScript code, is required for different tasks */
-			$this->domready_include = $this->domready_include2 = '';
+			$this->domready_include = $this->domready_include2 = $this->domready_include2 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 				$this->domready_include = '__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
 				if ($this->options['page']['sprites_domloaded']) {
@@ -756,6 +756,9 @@ class web_optimizer {
 					').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&y.innerHTML*1)||(z&&r&&r.innerHTML*1))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
+					$this->domready_include3 = '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;document.cookie="WSS_CART=0;path=/;expires="+(new Date(new Date().getTime()+' .
+					($this->options['page']['cart_timeout'] * 1000) .
+					').toGMTString())},false)})();';
 				}
 			}
 /* find all files in head to process */
@@ -1081,7 +1084,12 @@ class web_optimizer {
 			}
 /* Add client-side cache flush on pages excluded from caching */
 		} elseif($this->options['page']['cache'] && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
-			$chunk = $this->domready_include2;
+/* need to refresh localStorage Cache */
+			if (@class_exists('JFactory') && ($user = &JFactory::getUser()) && ($user->get('aid') || $user->get('id'))) {
+				$chunk = $this->domready_include3;
+			} else {
+				$chunk = $this->domready_include2;
+			}
 		}
 		if ($chunk) {
 			$chunk = ($this->premium > 1 ? '<!--noindex-->' : '').
