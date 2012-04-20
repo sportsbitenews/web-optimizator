@@ -1322,8 +1322,9 @@ class web_optimizer {
 								$new_image = preg_replace("!(.*['\"\s]class\s*=\s*)([^\s]+)\s!is", "$1\"$2 " .
 									$class . "\" ", $image[0]);
 							} else {
-								$new_image = substr($image[0], 0, 4) . ' class="' .
-									$class . '"' . substr($image[0], 4);
+								$s = strlen($image[1]);
+								$new_image = substr($image[0], 0, $s + 1) . ' class="' .
+									$class . '"' . substr($image[0], $s + 1);
 							}
 /* add transparent GIF or data:URI chunk */
 							$new_src = (empty($this->ua_mod) ||
