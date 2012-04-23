@@ -1137,7 +1137,7 @@ define('_WEBO_WIZARD_TO', 'до');
 define('_WEBO_WIZARD_STEP31_LIST', 'Не удалось настроить следующие параметры:');
 define('_WEBO_WIZARD_NEXT', 'Дальше');
 define('_WEBO_WIZARD_SAVE', 'Включить WEBO Site SpeedUp');
-define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp Configuration');
+define('_WEBO_WIZARD_ORDER', 'http://www.webogroup.com/ru/promo/improve-website-speed/?utm_source=product&utm_medium=internal&utm_campaign=wss.promo');
 
 define('_WEBO_LICENSE_EXPIRED', 'Пожалуйста, приобретите полную версию продукта!');
 

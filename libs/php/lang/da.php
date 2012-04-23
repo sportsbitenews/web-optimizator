@@ -1153,7 +1153,7 @@ define('_WEBO_WIZARD_TO', 'til');
 define('_WEBO_WIZARD_STEP31_LIST', 'Kan ikke justere de følgende metoder:');
 define('_WEBO_WIZARD_NEXT', 'Næste');
 define('_WEBO_WIZARD_SAVE', 'Aktiver WEBO Site SpeedUp');
-define('_WEBO_WIZARD_ORDER', 'mailto:sales@webo.name?Subject=WEBO Site SpeedUp konfiguration');
+define('_WEBO_WIZARD_ORDER', 'http://www.webogroup.com/promo/improve-website-speed/?utm_source=product&utm_medium=internal&utm_campaign=wss.promo');
 
 define('_WEBO_LICENSE_EXPIRED', 'Køb venligst den fulde version!');
 
