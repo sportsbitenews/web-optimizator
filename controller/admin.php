@@ -1802,12 +1802,14 @@ class admin {
 				!$this->compress_options['minify']['javascript_body'] &&
 				!$this->compress_options['minify']['css_body'] &&
 				!$this->compress_options['minify']['with_yui'] &&
+				!$this->compress_options['minify']['with_google'] &&
 				!$this->compress_options['minify']['html_one_string']),
 			'heavy_optimization2' => !$this->compress_options['active'] ||
 				!$this->compress_options['performance']['mtime'] ||
 				$this->compress_options['minify']['javascript_body'] ||
 				$this->compress_options['minify']['css_body'] ||
 				$this->compress_options['minify']['with_yui'] ||
+				$this->compress_options['minify']['with_google'] ||
 				$this->compress_options['minify']['html_one_string'] ||
 				($this->compress_options['performance']['plain_string'] &&
 				!$this->compress_options['unobtrusive']['all'] &&
