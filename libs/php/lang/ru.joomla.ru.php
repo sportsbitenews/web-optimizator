@@ -999,6 +999,8 @@ define('_WEBO_CDN_STATUS', 'Результат');
 define('_WEBO_CDN_NOACCESS0', 'Неверные реквизиты доступа к CDN');
 define('_WEBO_CDN_NOACCESS', 'Неверные реквизиты FTP-доступа, не удается загрузить файл ');
 
+
+
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Добро пожаловать в WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Свернуть');

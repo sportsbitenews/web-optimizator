@@ -138,6 +138,8 @@
 		echo _WEBO_TOOLS_IMAGE;
 ?></a></li><li class="wssO4"><a href="#wss_cdn" class="wssJ"><?php
 		echo _WEBO_TOOLS_CDN;
+?></a></li><li class="wssO4"><a href="#wss_minify" class="wssJ"><?php
+		echo _WEBO_TOOLS_MINIFY;
 ?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_tools')" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php

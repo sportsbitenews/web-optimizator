@@ -1001,6 +1001,10 @@ define('_WEBO_CDN_STATUS', 'Resultat');
 define('_WEBO_CDN_NOACCESS0', 'Ugyldige CDN adgangsstreng');
 define('_WEBO_CDN_NOACCESS', 'Ugyldige FTP informationer, kan ikke oploade filen ');
 
+/* Minify for CSS / JavaScript files */
+define('_WEBO_TOOLS_MINIFY', 'CSS/JavaScript minify');
+define('_WEBO_MINIFY_INSTALLED', 'With this tool you can minify your CSS (with CSS Minify or CSS Tidy) or JavaScript (with JSMin, Packer, YUI Compressor, or Google Compiler) files according to global CSS / JavaScript minify options (from the active configuration). <strong>Minify is potentially dangerous!</strong> Backup versions of files will be stored with <code>.backup</code> extension.');
+
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Velkommen til WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Minimer');

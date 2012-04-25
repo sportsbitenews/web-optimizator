@@ -137,6 +137,9 @@ class compressor_view {
 			case 'install_cdn':
 				include($folder . 'install_cdn.php');
 				break;
+			case 'install_minify':
+				include($folder . 'install_minify.php');
+				break;
 			case 'install_gzip':
 				include($folder . 'install_gzip.php');
 				break;

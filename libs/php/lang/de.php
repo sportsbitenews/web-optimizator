@@ -994,6 +994,10 @@ define('_WEBO_GZIP_NOSUCCESS', 'Failed');
 define('_WEBO_IMAGE_INSTALLED', 'Using this tool you can decrease size of images without quality loss in any specified directory on your website. For each optimized file <code>.backup</code> version will be created during optimization process. GIF files are replaced with PNG ones if latter are smaller.');
 define('_WEBO_IMAGE_INSTALLED2', 'One of the following services can be used for images optimization: <a href="http://smush.it/" rel="nofollow" class="wssJ">smush.it</a> (<a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html" rel="nofollow" class="wssJ">terms of service</a>), or <a href="http://www.gracepointafterfive.com/punypng/" rel="nofollow" class="wssJ">punypng</a> (<a href="http://www.gracepointafterfive.com/punypng/about/tos" rel="nofollow" class="wssJ">terms of service</a>), or WEBO Nimblizer.');
 
+/* Minify for CSS / JavaScript files */
+define('_WEBO_TOOLS_MINIFY', 'CSS/JavaScript minify');
+define('_WEBO_MINIFY_INSTALLED', 'With this tool you can minify your CSS (with CSS Minify or CSS Tidy) or JavaScript (with JSMin, Packer, YUI Compressor, or Google Compiler) files according to global CSS / JavaScript minify options (from the active configuration). <strong>Minify is potentially dangerous!</strong> Backup versions of files will be stored with <code>.backup</code> extension.');
+
 /* CDN Sync */
 define('_WEBO_TOOLS_CDN', 'CDN synchronization');
 define('_WEBO_CDN_INFO' , 'This tool can sync static files on your website with their copies on your CDN. Enter directory to sync, get its files, select required files and start synchronization. You can set FTP credentials on <a href="#wss_options#multiple_hosts">CDN settings</a> tab on Options page.');

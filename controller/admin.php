@@ -111,7 +111,7 @@ class admin {
 /* default multiple hosts */
 			$this->default_hosts = array('img', 'img1', 'img2', 'img3', 'img4', 'i', 'i1', 'i2', 'i3', 'i4', 'image', 'images', 'assets', 'static', 'css', 'js');
 /* Set page functions for the installation and admin, makes sure nothing else can be run */
-			$this->page_functions = array('install_set_password', 'install_enter_password', 'install_dashboard', 'install_install', 'install_uninstall', 'install_promo', 'install_about', 'install_gzip', 'install_image', 'install_cdn', 'install_status', 'install_account', 'install_refresh', 'install_renew', 'install_options', 'install_system', 'install_update', 'install_stable', 'install_rollback', 'install_beta', 'install_awards', 'install_balance', 'install_wizard', 'dashboard_cache', 'dashboard_system', 'dashboard_options', 'dashboard_speed', 'dashboard_awards', 'compress_gzip', 'compress_image', 'compress_cdn', 'options_configuration', 'options_delete');
+			$this->page_functions = array('install_set_password', 'install_enter_password', 'install_dashboard', 'install_install', 'install_uninstall', 'install_promo', 'install_about', 'install_minify', 'install_gzip', 'install_image', 'install_cdn', 'install_status', 'install_account', 'install_refresh', 'install_renew', 'install_options', 'install_system', 'install_update', 'install_stable', 'install_rollback', 'install_beta', 'install_awards', 'install_balance', 'install_wizard', 'dashboard_cache', 'dashboard_system', 'dashboard_options', 'dashboard_speed', 'dashboard_awards', 'compress_gzip', 'compress_image', 'compress_cdn', 'compress_minify', 'options_configuration', 'options_delete');
 /* inializa stage for chained optimization */
 			$this->web_optimizer_stage =
 				round(empty($this->input['web_optimizer_stage']) ? 0 :
@@ -277,6 +277,78 @@ class admin {
 			"file" => $file,
 			"size" => $size,
 			"compressed" => $compressed_size,
+			"success" => $success,
+			"error" => $error,
+			"skip_render" => $this->skip_render
+		);
+		$this->view->render("compress_gzip", $page_variables);
+	}
+
+	/*
+	* Return size of specific (minified) files
+	*
+	**/
+	function compress_minify () {
+		$file = realpath($this->input['wss_file']);
+		$size = @filesize($file);
+		$chunks = explode(".", $file);
+		$extension = array_pop($chunks);
+		$gzipped = implode(".", $chunks) . '.min' . $extension;
+		$gzipped_size = $size;
+		$success = 0;
+		$error = 0;
+		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
+			if (!@is_file($gzipped) || !@filesize($gzipped)) {
+				$content = '';
+				$c = $this->file_get_contents($file);
+				require(dirname(__FILE__) . '/compressor.php');
+				$not_buffered = 1;
+				$compressor = new web_optimizer();
+				switch (strtolower($extension)) {
+					case 'css':
+						switch ($this->compress_options['minify']['css_min']) {
+							case 1:
+								$content = $compressor->minify_text($c);
+								break;
+							case 2:
+								$c = preg_replace("!/\*.*?\*/!is", "", $c);
+								require(dirname(__FILE__) . '/../libs/php/class.csstidy.php');
+								$csstidy = new csstidy();
+								$csstidy->load_template(dirname(__FILE__) . '/../libs/php/css.template.tpl');
+								$csstidy->parse($c);
+								$content = $csstidy->print->plain()
+								break;
+						}
+						break;
+					case 'js':
+						$content = $compressor->minify_javascript($c);
+						break;
+				}
+				if (strlen($content)) {
+					@copy($file, $file . '.backup');
+					$success = $this->write_file($gzipped, $content);
+/* can't overwrite targeted file */
+					if (!$success) {
+						$error = 1;
+					}
+				} else {
+					$success = 0;
+/* cam't gzip file */
+					$error = 2;
+				}
+				if ($success) {
+					@touch($gzipped, @filemtime($file));
+					$gzipped_size = @filesize($gzipped);
+				}
+			} else {
+				$success = 1;
+				$gzipped_size = @filesize($gzipped);
+			}
+		}
+		$page_variables = array(
+			"file" => $file,
+			"size" => $size,
+			"compressed" => $gzipped_size,
 			"success" => $success,
 			"error" => $error,
 			"skip_render" => $this->skip_render
@@ -2534,6 +2606,40 @@ class admin {
 			"skip_render" => $this->skip_render
 		);
 		$this->view->render("install_image", $this->page_variables);
+	}
+
+	/**
+	* Minify page
+	*
+	**/	 
+	function install_gzip() {
+		$directory = empty($this->input['wss_directory']) ?
+			(empty($this->compress_options['website_root']) ?
+				$this->view->paths['absolute']['document_root'] :
+					$this->compress_options['website_root']) :
+			$this->input['wss_directory'];
+		$recursive = empty($this->input['wss_recursive']) ? 0 : 1;
+		$submit = empty($this->input['wss_Submit']) ? 0 : 1;
+		$results = array();
+		if ($submit) {
+/* prevent PHP timeout on folders parsing */
+			$limit = @ini_get("max_execution_time");
+			@set_time_limit($limit * 10);
+			$this->time = time();
+			$results = $this->get_directory_files($directory,
+				'\\.(css|js)$',
+				$recursive, 'backup', array(),
+				@ini_get("max_execution_time") == $limit ? $limit - 5 : 0);
+		}
+		$this->page_variables = array(
+			"results" => $results,
+			"directory" => $directory,
+			"premium" => $this->premium,
+			"recursive" => $recursive,
+			"submit" => $submit,
+			"skip_render" => $this->skip_render
+		);
+		$this->view->render("install_gzip", $this->page_variables);
 	}
 
 	/**

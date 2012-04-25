@@ -75,6 +75,7 @@ view/install_dashboard.php
 view/install_enter_password.php
 view/install_gzip.php
 view/install_image.php
+view/install_minify.php
 view/install_options.php
 view/install_promo.php
 view/install_set_password.php

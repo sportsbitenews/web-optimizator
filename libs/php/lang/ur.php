@@ -985,6 +985,9 @@ define('_WEBO_CDN_STATUS', 'نتائج');
 define('_WEBO_CDN_NOACCESS0', 'Incorrect CDN access string');
 define('_WEBO_CDN_NOACCESS', 'ایف ٹی پی کی غلط معلومات داخل کی گئی ہیں۔ فائل اپ لوڈ نہیں کی جا سکتی۔ ');
 
+/* Minify for CSS / JavaScript files */
+define('_WEBO_TOOLS_MINIFY', 'CSS/JavaScript minify');
+define('_WEBO_MINIFY_INSTALLED', 'With this tool you can minify your CSS (with CSS Minify or CSS Tidy) or JavaScript (with JSMin, Packer, YUI Compressor, or Google Compiler) files according to global CSS / JavaScript minify options (from the active configuration). <strong>Minify is potentially dangerous!</strong> Backup versions of files will be stored with <code>.backup</code> extension.');
 
 /* مدد اسکرین */
 define('_WEBO_HELP_WELCOME', 'ویبو سائٹ اسپیڈ اپ پر خوش آمدید');

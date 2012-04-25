@@ -1001,6 +1001,10 @@ define('_WEBO_CDN_STATUS', 'Результат');
 define('_WEBO_CDN_NOACCESS0', 'Неверные реквизиты доступа к CDN');
 define('_WEBO_CDN_NOACCESS', 'Неверные реквизиты FTP-доступа, не удается загрузить файл ');
 
+/* Minify for CSS / JavaScript files */
+define('_WEBO_TOOLS_MINIFY', 'Минимизация CSS/JavaScript');
+define('_WEBO_MINIFY_INSTALLED', 'При помощи этого инструмента вы можете уменьшить ваши CSS (через CSS Minify или CSS Tidy) или JavaScript (через JSMin, Packer, YUI Compressor или Google Compiler) файлы в соответствии с глобальными настройками минимизации CSS / JavaScript файлов (из активной конфигурации продукта). <strong>Минимизация потенциально опасна!</strong> Резервные версии файлов будут сохранены с расширением <code>.backup</code>.');
+
 /* Help screen */
 define('_WEBO_HELP_WELCOME', 'Добро пожаловать в WEBO Site SpeedUp');
 define('_WEBO_HELP_MINIMIZE', 'Свернуть');

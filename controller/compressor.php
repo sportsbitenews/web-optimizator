@@ -2022,9 +2022,9 @@ class web_optimizer {
 		}
 		if (empty($options['minify_with']) || empty($minified_code)) {
 /* Remove comments // */
-			$minified_code = preg_replace("!^[\s\t]*//.*\r?\n!i", "", $code);
+			$minified_code = preg_replace("!//.*?\r?\n!is", "\n", $code);
 /* Remove comments /**, leave conditional compilation */
-			$minified_code = preg_replace("!(^/\n)/\*[^@].*?\*/!is", "", $minified_code);
+			$minified_code = preg_replace("!(^|[\r\n\t\s]+)/\*[^@].*?\*/!is", "", $minified_code);
 		}
 		if (!empty($minified_code)) {
 			$code = preg_replace("!^[\r\n\t\s]*!s", "", $minified_code);
