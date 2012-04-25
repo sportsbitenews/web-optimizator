@@ -30,13 +30,13 @@
 	echo _WEBO_TOOLS_MINIFY;
 ?></h1><p class="wssI"><?php
 	echo _WEBO_MINIFY_INSTALLED;
-?></p><form action="#wss_gzip" class="wssC wssC4" method="post" enctype="multipart/form-data"><?php
+?></p><form action="#wss_minify" class="wssC wssC4" method="post" enctype="multipart/form-data"><?php
 	if ($submit) {
-?><p class="wssI"><a href="#wss_gzip" class="wssJ7" onclick="_.g()"><?php
+?><p class="wssI"><a href="#wss_minify" class="wssJ7" onclick="_.g(3)"><?php
 		echo _WEBO_GZIP_COMPRESS;
 ?><span class="wssJ6"></span></a></p><?php
 	}
-?><p class="wssI"><a href="#wss_gzip" class="wssJ5" onclick="_('.wssI3')[0].style.display='block';var a=_('.wssC4')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}"><?php
+?><p class="wssI"><a href="#wss_minify" class="wssJ5" onclick="_('.wssI3')[0].style.display='block';var a=_('.wssC4')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}"><?php
 	echo _WEBO_GZIP_FIND;
 ?><span class="wssJ6"></span></a></p><dl class="wssD"><dd class="wssD1"><label for="wss_directory" class="wssE"><?php
 	echo _WEBO_GZIP_DIRECTORY;

@@ -316,7 +316,7 @@ class admin {
 								$csstidy = new csstidy();
 								$csstidy->load_template(dirname(__FILE__) . '/../libs/php/css.template.tpl');
 								$csstidy->parse($c);
-								$content = $csstidy->print->plain()
+								$content = $csstidy->print->plain();
 								break;
 						}
 						break;
@@ -2493,7 +2493,7 @@ class admin {
 								$mask, $recursive, $backup, $return, $limit);
 						}
 /* check for mask */
-					} elseif (preg_match("@" . $mask . "@", $absolute_file)) {
+					} elseif (preg_match("@" . $mask . "@is", $absolute_file)) {
 /* get info about synced file from FTP */
 						if ($backup == 'FTP' &&
 							!empty($this->compress_options['parallel']['ftp']) &&
@@ -2612,7 +2612,7 @@ class admin {
 	* Minify page
 	*
 	**/	 
-	function install_gzip() {
+	function install_minify() {
 		$directory = empty($this->input['wss_directory']) ?
 			(empty($this->compress_options['website_root']) ?
 				$this->view->paths['absolute']['document_root'] :
@@ -2639,7 +2639,7 @@ class admin {
 			"submit" => $submit,
 			"skip_render" => $this->skip_render
 		);
-		$this->view->render("install_gzip", $this->page_variables);
+		$this->view->render("install_minify", $this->page_variables);
 	}
 
 	/**
