@@ -293,55 +293,50 @@ class admin {
 		$size = @filesize($file);
 		$chunks = explode(".", $file);
 		$extension = array_pop($chunks);
-		$gzipped = implode(".", $chunks) . '.min' . $extension;
+		$gzipped = $file;
 		$gzipped_size = $size;
 		$success = 0;
 		$error = 0;
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false) {
-			if (!@is_file($gzipped) || !@filesize($gzipped)) {
-				$content = '';
-				$c = $this->file_get_contents($file);
-				require(dirname(__FILE__) . '/compressor.php');
-				$not_buffered = 1;
-				$compressor = new web_optimizer();
-				switch (strtolower($extension)) {
-					case 'css':
-						switch ($this->compress_options['minify']['css_min']) {
-							case 1:
-								$content = $compressor->minify_text($c);
-								break;
-							case 2:
-								$c = preg_replace("!/\*.*?\*/!is", "", $c);
-								require(dirname(__FILE__) . '/../libs/php/class.csstidy.php');
-								$csstidy = new csstidy();
-								$csstidy->load_template(dirname(__FILE__) . '/../libs/php/css.template.tpl');
-								$csstidy->parse($c);
-								$content = $csstidy->print->plain();
-								break;
-						}
-						break;
-					case 'js':
-						$content = $compressor->minify_javascript($c);
-						break;
-				}
-				if (strlen($content)) {
-					@copy($file, $file . '.backup');
-					$success = $this->write_file($gzipped, $content);
-/* can't overwrite targeted file */
-					if (!$success) {
-						$error = 1;
+			$content = '';
+			$c = $this->file_get_contents($file);
+			$not_buffered = 1;
+			require(dirname(__FILE__) . '/../web.optimizer.php');
+			$not_buffered = 1;
+			switch (strtolower($extension)) {
+				case 'css':
+					switch ($this->compress_options['minify']['css_min']) {
+						case 1:
+							$content = $web_optimizer->minify_text($c);
+							break;
+						case 2:
+							$c = preg_replace("!/\*.*?\*/!is", "", $c);
+							require(dirname(__FILE__) . '/../libs/php/class.csstidy.php');
+							$csstidy = new csstidy();
+							$csstidy->load_template(dirname(__FILE__) . '/../libs/php/css.template.tpl');
+							$csstidy->parse($c);
+							$content = $csstidy->print->plain();
+							break;
 					}
-				} else {
-					$success = 0;
-/* cam't gzip file */
-					$error = 2;
-				}
-				if ($success) {
-					@touch($gzipped, @filemtime($file));
-					$gzipped_size = @filesize($gzipped);
+					break;
+				case 'js':
+					$content = $web_optimizer->minify_javascript($c);
+					break;
+			}
+			if (strlen($content)) {
+				@copy($file, $file . '.backup');
+				$success = $this->write_file($gzipped, $content);
+/* can't overwrite targeted file */
+				if (!$success) {
+					$error = 1;
 				}
 			} else {
-				$success = 1;
+				$success = 0;
+/* cam't gzip file */
+				$error = 2;
+			}
+			if ($success) {
+				@touch($gzipped, @filemtime($file));
 				$gzipped_size = @filesize($gzipped);
 			}
 		}
