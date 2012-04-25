@@ -2149,6 +2149,7 @@ class admin {
 		$page_variables['size'] = $size;
 		$page_variables['files'] = $files;
 		$page_variables['custom'] = !@function_exists('curl_init') || @is_file($this->basepath . 'custom');
+		$page_variables['apc'] = @function_exists('apc_cache_info') ? @apc_cache_info('user') : 0;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}

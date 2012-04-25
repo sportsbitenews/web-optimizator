@@ -784,6 +784,12 @@ define('_WEBO_SYSTEM_USERNAME', 'Per favore inserisci username per restringere l
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Per favore inserisci username e password per avere l\'accesso nel website usando HTTP Basic Autorizzation.');
 define('_WEBO_showbeta', 'Mostra le informazioni a riguardo delle versioni beta');
 define('_WEBO_showbeta_HELP', 'Solo gli aggiornamenti stabili di WEBO Site SpeedUp sono mostrati di default. Puoi abilitare questa opzione come protezione per versioni beta instabili.');
+define('_WEBO_SYSTEM_APC', 'APC cache');
+define('_WEBO_SYSTEM_APC_ENTRIES', 'Number of cached variables');
+define('_WEBO_SYSTEM_APC_SIZE', 'Size of cached variables');
+define('_WEBO_SYSTEM_APC_HITS', 'Cache hits');
+define('_WEBO_SYSTEM_APC_MISSES', 'Cache misses');
+define('_WEBO_SYSTEM_APC_FULL', 'Expunges count');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Disabilitato');

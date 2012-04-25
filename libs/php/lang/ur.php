@@ -765,6 +765,12 @@ define('_WEBO_SYSTEM_USERNAME', '.htaccess استعمال کرتے ہوئے وی
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'HTTP بنیادی Authorization کے استعمال سے ویب سائٹ تک رسائی کیلئے صارف نام اور خفیہ لفظ داخل کریں۔');
 define('_WEBO_showbeta', 'بیٹا ورژن کے بارے میں معلومات دکھائیں');
 define('_WEBO_showbeta_HELP', 'ڈیفالٹ طور پر ویبو سائٹ اسپیڈ اپ کی صرف مستحکم اپ ڈیٹس ہی دکھائی جاتی ہیں۔ آپ اس آپشن کو فعال کر کے غیر مستحکم بیٹا ورژن کی دستیابی بھی دیکھ سکتے ہیں۔');
+define('_WEBO_SYSTEM_APC', 'APC cache');
+define('_WEBO_SYSTEM_APC_ENTRIES', 'Number of cached variables');
+define('_WEBO_SYSTEM_APC_SIZE', 'Size of cached variables');
+define('_WEBO_SYSTEM_APC_HITS', 'Cache hits');
+define('_WEBO_SYSTEM_APC_MISSES', 'Cache misses');
+define('_WEBO_SYSTEM_APC_FULL', 'Expunges count');
 
 /* ڈیش بورڈ آپشنز بلاک */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'غیر فعال');

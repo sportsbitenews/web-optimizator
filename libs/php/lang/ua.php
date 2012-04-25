@@ -766,7 +766,13 @@ define('_WEBO_SYSTEM_large_wss_delay', 'Низкая скорость оптим
 define('_WEBO_SYSTEM_large_wss_delay_HELP', 'Время создания страниц при помощи WEBO Site SpeedUp превышает обычное время создания страниц в два раза. Следует изменить настройки WEBO Site SpeedUp, чтобы снизить этого показатель. Подробнее об [http://code.google.com/p/web-optimizator/wiki/ServerSideIssues оптимизации использования серверных ресурсов]');
 define('_WEBO_SYSTEM_apc_enabled', 'Включен APC');
 define('_WEBO_SYSTEM_apc_enabled_HELP', 'Сохранение конфигурации WEBO Site SpeedUp может происходить некорректно. Следует добавить строку apc.filters="-/(.*)config(.*)\.php" в конфигурационный файл PHP. [http://www.php.net/manual/en/apc.configuration.php#ini.apc.filters Подробная информация]');
-define('_WEBO_SYSTEM_PHPINFO', 'PHP info');
+define('_WEBO_SYSTEM_PHPINFO', 'Информация о PHP');
+define('_WEBO_SYSTEM_APC', 'Кэш APC');
+define('_WEBO_SYSTEM_APC_ENTRIES', 'Число переменных в кэше');
+define('_WEBO_SYSTEM_APC_SIZE', 'Размер кэша');
+define('_WEBO_SYSTEM_APC_HITS', 'Попаданий в кэш');
+define('_WEBO_SYSTEM_APC_MISSES', 'Промахов мимо кэша');
+define('_WEBO_SYSTEM_APC_FULL', 'Число переполнений кэша');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Отключен');
