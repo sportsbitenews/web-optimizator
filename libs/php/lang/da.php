@@ -683,6 +683,7 @@ define('_WEBO_DASHBOARD_CACHE_SCRIPTS', 'PHP scripts');
 define('_WEBO_DASHBOARD_CACHE_SIZE', 'Total størrelse');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Antal');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Opdater cache');
+define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', 'Server Status');
@@ -783,12 +784,6 @@ define('_WEBO_SYSTEM_USERNAME', 'Angiv venligst brugernavn for at beskytte adgan
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Angiv venligst brugernavn og adgangskode for at få adgang til hjemmesiden ved brug af HTTP Basic Authorization.');
 define('_WEBO_showbeta', 'Vis information om beta versioner');
 define('_WEBO_showbeta_HELP', 'Kun stabile WEBO Site SpeedUp opdateringer er vist ved standard. Du kan aktivere denne indstilling, hvis du også vil tjekke for mulige beta versioner.');
-define('_WEBO_SYSTEM_APC', 'APC cache');
-define('_WEBO_SYSTEM_APC_ENTRIES', 'Number of cached variables');
-define('_WEBO_SYSTEM_APC_SIZE', 'Size of cached variables');
-define('_WEBO_SYSTEM_APC_HITS', 'Cache hits');
-define('_WEBO_SYSTEM_APC_MISSES', 'Cache misses');
-define('_WEBO_SYSTEM_APC_FULL', 'Expunges count');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Deaktiveret');

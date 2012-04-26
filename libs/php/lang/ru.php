@@ -686,6 +686,7 @@ define('_WEBO_DASHBOARD_CACHE_SCRIPTS', 'PHP-скрипты');
 define('_WEBO_DASHBOARD_CACHE_SIZE', 'Общий размер');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Количество');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Обновить кэш');
+define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', 'Конфигурация сервера');
@@ -783,12 +784,6 @@ define('_WEBO_SYSTEM_INSTALLINFO2', 'Вы в любое время можете 
 define('_WEBO_SYSTEM_SUCCESS', 'Все изменения исходных файлов успешно проведены.');
 define('_WEBO_SYSTEM_USERNAME', 'Пожалуйста, введите логин для ограничения доступа к WEBO Site SpeedUp по .htaccess.');
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Пожалуйста, введите логин и пароль для доступа к сайту через HTTP Basic Authorization.');
-define('_WEBO_SYSTEM_APC', 'Кэш APC');
-define('_WEBO_SYSTEM_APC_ENTRIES', 'Число переменных в кэше');
-define('_WEBO_SYSTEM_APC_SIZE', 'Размер кэша');
-define('_WEBO_SYSTEM_APC_HITS', 'Попаданий в кэш');
-define('_WEBO_SYSTEM_APC_MISSES', 'Промахов мимо кэша');
-define('_WEBO_SYSTEM_APC_FULL', 'Число переполнений кэша');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Отключен');

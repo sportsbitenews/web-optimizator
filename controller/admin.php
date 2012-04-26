@@ -2097,6 +2097,10 @@ class admin {
 				}
 			}
 		}
+		if (@function_exists('apc_cache_info')) {
+			$cache = @apc_cache_info('user');
+			$files['APC'] = array('.php' => array($cache['mem_size'], $cache['num_entries']));
+		}
 		$total = $size = 0;
 		foreach ($files as $group) {
 			foreach ($group as $file) {
@@ -2149,7 +2153,6 @@ class admin {
 		$page_variables['size'] = $size;
 		$page_variables['files'] = $files;
 		$page_variables['custom'] = !@function_exists('curl_init') || @is_file($this->basepath . 'custom');
-		$page_variables['apc'] = @function_exists('apc_cache_info') ? @apc_cache_info('user') : 0;
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}

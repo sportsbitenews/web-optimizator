@@ -684,6 +684,7 @@ define('_WEBO_DASHBOARD_CACHE_SCRIPTS', 'PHP scripts');
 define('_WEBO_DASHBOARD_CACHE_SIZE', 'Taille totale');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Number');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Rafraîchir le cache');
+define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', 'Statut du Serveur');
@@ -784,12 +785,6 @@ define('_WEBO_SYSTEM_USERNAME', 'Entrer le nom d\'utilisateur afin de restreindr
 define('_WEBO_SYSTEM_EXTERNAL_HTACCESS', 'Veuillez entrer votre nom d\'utilisateur et mot de passe afin d\'avoir accès au site web en  utilisant  HTTP Basic Authorization.');
 define('_WEBO_showbeta', 'Montrer l\'information sur les versions beta ');
 define('_WEBO_showbeta_HELP', 'Uniquement les mises à jour stable de WEBO Site SpeedUp sont montrées par défaut. Vous pouvez activer cette option afin de vérifier également les versions potentiellement instables.');
-define('_WEBO_SYSTEM_APC', 'APC cache');
-define('_WEBO_SYSTEM_APC_ENTRIES', 'Number of cached variables');
-define('_WEBO_SYSTEM_APC_SIZE', 'Size of cached variables');
-define('_WEBO_SYSTEM_APC_HITS', 'Cache hits');
-define('_WEBO_SYSTEM_APC_MISSES', 'Cache misses');
-define('_WEBO_SYSTEM_APC_FULL', 'Expunges count');
 
 /* Dashboard options block */
 define('_WEBO_DASHBOARD_OPTIONS_DISABLED', 'Désactivez');

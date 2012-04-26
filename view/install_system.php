@@ -127,13 +127,7 @@
 	}
 ?><li class="wssO4"><a href="#wssinfo" class="wssJ"><?php
 	echo _WEBO_SYSTEM_PHPINFO;
-?><span class="wssJ6"></span></a></li><?php
-	if (!$apc) {
-?><li class="wssO4"><a href="#wssapc" class="wssJ"><?php
-		echo _WEBO_SYSTEM_APC;
-?><span class="wssJ6"></span></a></li><?php
-	}
-?></ul><fieldset id="wssstatus" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
+?><span class="wssJ6"></span></a></li></ul><fieldset id="wssstatus" class="wssD9"><div class="wssD10"><h2 class="wssB"><?php
 	echo _WEBO_DASHBOARD_STATUS;
 ?></h2><p class="wssI">WEBO Site SpeedUp <?php
 	echo _WEBO_DASHBOARD_STATUS_IS;
@@ -493,30 +487,6 @@
 	}
 ?><fieldset id="wssinfo" class="wssD9 wssA0"><div class="wssD10"><?php
 	echo phpinfo();
-?></div></fieldset><?php
-	if ($apc) {
-?><fieldset id="wssapc" class="wssD9 wssA0"><div class="wssD10"><dl><dt class="wssD5"><?php
-		echo _WEBO_SYSTEM_APC_ENTRIES;
-?></dt><dd class="wssD6"><?php
-		echo $apc['num_entries'];
-?></dd><dt class="wssD5"><?php
-		echo _WEBO_SYSTEM_APC_SIZE;
-?></dt><dd class="wssD6"><?php
-		echo preg_replace("@([0-9])([0-9][0-9][0-9])$@", "$1 $2", round($apc['mem_size']/1024)) . ' ' . _WEBO_LOGIN_EFFICIENCY_KB
-?></dd><dt class="wssD5"><?php
-		echo _WEBO_SYSTEM_APC_HITS;
-?></dt><dd class="wssD6"><?php
-		echo $apc['num_hits'];
-?></dd><dt class="wssD5"><?php
-		echo _WEBO_SYSTEM_APC_MISSES;
-?></dt><dd class="wssD6"><?php
-		echo $apc['num_misses'];
-?></dd><dt class="wssD5"><?php
-		echo _WEBO_SYSTEM_APC_FULL;
-?></dt><dd class="wssD6"><?php
-		echo $apc['expunges'];
-?></dd></dl></div></fieldset><?php
-	}
-?></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?></div></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div>
