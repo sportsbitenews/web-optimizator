@@ -4096,6 +4096,20 @@ class admin {
 				$this->input[$val] = trim(str_replace(array("\r\n", "\n", '/"', '"'), array(" ", " ", "&quot;", "&quot;"),
 					!isset($this->input[$val]) ? '' : $this->input[$val]));
 		}
+/* leave only 1 value (before space) */
+		foreach (array(
+			'wss_minify_css_file',
+			'wss_minify_css_host',
+			'wss_minify_javascript_file',
+			'wss_minify_javascript_host',
+			'wss_footer_counter',
+			'wss_parallel_ftp',
+			'wss_parallel_https',
+			'wss_config') as $val) {
+				if ($this->input[$val]) {
+					$this->input[$val] = preg_replace("![\s\t\r\n].*!is", "", trim($this->input[$val]));
+				}
+		}
 /* make numeric options save */
 		foreach (array(
 			'wss_combine_css',
