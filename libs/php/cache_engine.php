@@ -425,6 +425,10 @@ class webo_cache_files extends webo_cache_engine
 			$this->enabled = false;
 		}
 		$this->all_files = false;
+/* large files list can cause 500 error */
+		if (round(str_replace("M", "000000", str_replace("K", "000", $memory_limit))) < 128000000) {
+			@ini_set('memory_limit', '128M');
+		}
 	}
 	
 	/* Read wo.files.php to all_files array */
