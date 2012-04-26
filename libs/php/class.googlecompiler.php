@@ -49,7 +49,7 @@ class GoogleCompiler {
 				$locate = @shell_exec('whereis java');
 			} catch (Expression $e) {}
 		}
-		if (isset($locate)) {
+		if (isset($locate) && strpos($locate, '/lib')) {
 			return true;
 		} else {
 			return false;

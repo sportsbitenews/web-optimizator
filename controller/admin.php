@@ -320,7 +320,12 @@ class admin {
 					}
 					break;
 				case 'js':
-					$content = $web_optimizer->minify_javascript($c);
+					foreach ($web_optimizer->libraries as $klass => $library) {
+						if (!class_exists($klass, false)) {
+							require($web_optimizer->options['css']['installdir'] . 'libs/php/' . $library);
+						}
+					}
+					$content = $web_optimizer->minify_javascript($c, $web_optimizer->options['javascript']);
 					break;
 			}
 			if (strlen($content)) {
@@ -4000,7 +4005,7 @@ class admin {
 			$this->restrictions['wss_minify_js2'] = 1;
 		}
 		if (!$Google_checked) {
-			$this->restrictions['wss_minify_js5'] = 1;
+			$this->restrictions['wss_minify_js4'] = 1;
 		}
 /* check for curl existence */
 		if (empty($loaded_modules) ||
