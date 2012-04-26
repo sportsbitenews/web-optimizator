@@ -174,7 +174,7 @@ $compress_options['html_cache']['flush_size'] = "1024";
 ## Ignore - 0, or include - 1, URL for HTML cache
 $compress_options['html_cache']['ignore'] = "0";
 ## Parts of ignore URL for HTML cache, separated by space
-$compress_options['html_cache']['ignore_list'] = "";
+$compress_options['html_cache']['ignore_list'] = "auth.login_form";
 ## Parts of user agents to output cached HTML, separated by space
 $compress_options['html_cache']['allowed_list'] = "office data msfrontpage yahoo googlebot yandex yadirect dyatel msnbot twiceler";
 ## Cookies to skip HTML caching
