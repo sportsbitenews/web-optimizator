@@ -2021,8 +2021,8 @@ class web_optimizer {
 				} catch (Exception $e) {}
 		}
 		if (empty($options['minify_with']) || empty($minified_code)) {
-/* Remove comments // */
-			$minified_code = preg_replace("!//.*?\r?\n!is", "\n", $code);
+/* Remove comments //, can't handle easily in-string case */
+			$minified_code = preg_replace("!^//.*?\r?\n!is", "\n", $code);
 /* Remove comments /**, leave conditional compilation */
 			$minified_code = preg_replace("!(^|[\r\n\t\s]+)/\*[^@].*?\*/!is", "", $minified_code);
 		}
