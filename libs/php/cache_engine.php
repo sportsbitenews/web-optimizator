@@ -467,11 +467,13 @@ class webo_cache_files extends webo_cache_engine
 		$i = 0;
 		$written = 0;
 		$tmp = '.tmp.' . (time()+microtime());
-		@file_put_contents($webo_files_list_var . $tmp, '<?php ?>');
+		@file_put_contents($webo_files_list_var . $tmp, "<?php\ndefine('WSS_CACHE_FILE','1');\n?>");
 		while (($i < 3) && ($written != $length)) {
 			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
 			$i++;
 		}
+/* need for APS.NET environments, why? */
+		@unlink($webo_files_list_var);
 		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
 		@unlink($webo_files_list_var . $tmp);
 	}
