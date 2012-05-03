@@ -721,13 +721,13 @@ class web_optimizer {
 /* define gzip headers at the end */
 			$this->set_gzip_header();
 /* create DOMready chunk of JavaScript code, is required for different tasks */
-			$this->domready_include = $this->domready_include2 = $this->domready_include2 = '';
+			$this->domready_include = $this->domready_include2 = $this->domready_include3 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache || $this->wp_cache || $this->generic_cache) {
 				$this->domready_include = '__WSSLOADED=0;function _weboptimizer_load(){if(__WSSLOADED){return}';
 				if ($this->options['page']['sprites_domloaded']) {
 					$this->domready_include .= '_webo_hsprites();';
 				}
-				if ($this->options['page']['cache']) {
+				if ($this->options['page']['cache'] && $this->cache_me) {
 					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
 					$this->domready_include .= 'var g,x=document,f,h,j;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
 					$cart_class .
@@ -1579,6 +1579,7 @@ class web_optimizer {
 						$href .
 						'";d.getElementsByTagName("head")[0].appendChild(l);' .
 						$this->domready_include2 .
+						(@class_exists('JFactory') && ($user = &JFactory::getUser()) && ($user->get('aid') || $user->get('id')) ? $this->domready_include3 : '') .
 						'</script>@@@WSSREADY@@@' .
 						($this->premium > 1 ? '<!--/noindex-->' : '');
 /* separate scripts for 2 parts, the second move to the end of the document */
