@@ -727,8 +727,8 @@ class web_optimizer {
 				if ($this->options['page']['sprites_domloaded']) {
 					$this->domready_include .= '_webo_hsprites();';
 				}
+				$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
 				if ($this->options['page']['cache'] && $this->cache_me) {
-					$cart_class = $this->generic_cache ? 'wss_cart' : ($this->joomla_cache ? 'vmCartModule' : 'widget_wp_digi_cart');
 					$this->domready_include .= 'var g,x=document,f,h,j;if(typeof x.getElementsByClassName!="undefined"){g=x.getElementsByClassName("' . 
 					$cart_class .
 					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0];h=x.getElementsByClassName("wss_cart2")[0];j=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
