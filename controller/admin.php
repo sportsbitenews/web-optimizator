@@ -53,7 +53,7 @@ class admin {
 		$this->svn_generic = 'http://web-optimizator.googlecode.com/svn/';
 		$this->svn = $this->svn_generic . 'trunk-stable/';
 		$this->svn_beta = $this->svn_generic . 'trunk/';
-		$this->version = str_replace("\r\n", "", $this->file_get_contents($this->basepath . 'version'));
+		$this->version = str_replace(array("\r", "\n"), "", $this->file_get_contents($this->basepath . 'version'));
 		$this->version_stable = preg_replace("[^0-9\.]", "", empty($this->input['wss_version_stable']) ? '' : $this->input['wss_version_stable']);
 /* get the latest version */
 		$version_new_file = $this->compress_options['html_cachedir'] . 'version.new';
@@ -71,7 +71,7 @@ class admin {
 		}
 		$this->version_new = $this->version . '+';
 		if (@is_file($version_new_file)) {
-			$this->version_new = $this->file_get_contents($version_new_file);
+			$this->version_new = str_replace(array("\r", "\n"), "", $this->file_get_contents($version_new_file));
 			@unlink($version_new_file);
 		}
 		$this->version_beta = $this->version;
@@ -83,7 +83,7 @@ class admin {
 				'install_rollback'))) {
 			$this->view->download($this->svn_beta . 'version', $version_new_file, 5);
 			if (@is_file($version_new_file)) {
-				$this->version_beta = $this->file_get_contents($version_new_file);
+				$this->version_beta = str_replace(array("\r", "\n"), "", $this->file_get_contents($version_new_file));
 				@unlink($version_new_file);
 			}
 		}
