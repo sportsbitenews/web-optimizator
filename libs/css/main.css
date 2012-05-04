@@ -717,3 +717,12 @@ a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background
 #wss_website{border:1px solid #000;height:400px;width:100%;overflow:auto}
 #wss_website_initial{border:1px solid #fff;height:400px;width:100%;overflow:auto;margin-top:-402px;visibility:hidden}
 #wss_version_stable{font-size:14px}
+
+[dir="rtl"] .wssN4{float:left;margin-left:0;margin-right:2%}
+[dir="rtl"] .wssO3 .wssO4,[dir="rtl"] .wssO7 .wssO8{margin:0 12px 0 0}
+[dir="rtl"] .wssH{float:left}
+[dir="rtl"] .wssH11,[dir="rtl"] .wssH12,[dir="rtl"] .wssC9 .wssI,[dir="rtl"] .wssC9{float:right}
+[dir="rtl"] .wssJ8{float:left;margin-right:0;margin-left:10%}
+[dir="rtl"] .wssC6 .wssO3{float:right;margin:10px -5px 0 2px}
+[dir="rtl"] .wssC4 .wssI{float:left;padding:28px 0 0 8px}
+[dir="rtl"] .wssM5{float:left;margin-left:-6px;margin-right:0}
