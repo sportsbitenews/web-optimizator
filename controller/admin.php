@@ -5684,32 +5684,33 @@ Options +FollowSymLinks";
 	function get_modules () {
 /* check for Apache installation, only if curl is disabled */
 		if (function_exists('apache_get_modules')) {
-			$apache_modules = apache_get_modules();
+			$amodules = apache_get_modules();
 		} else {
 /* if PHP installed as CGI module -- we don't need .htaccess */	
-			$apache_modules = array();
+			$amodules = array();
 		}
 		$this->apache_modules = array();
-		if (in_array('mod_expires', $apache_modules)) {
-			$this->apache_modules[] = 'mod_expires';
+		$apache_modules = array();
+		if (in_array('mod_expires', $amodules)) {
+			$apache_modules[] = 'mod_expires';
 		}
-		if (in_array('mod_gzip', $apache_modules)) {
-			$this->apache_modules[] = 'mod_gzip';
+		if (in_array('mod_gzip', $amodules)) {
+			$apache_modules[] = 'mod_gzip';
 		}
-		if (in_array('mod_deflate', $apache_modules) && (in_array('mod_filter', $apache_modules) || in_array('mod_ext_filter', $apache_modules))) {
-			$this->apache_modules[] = 'mod_deflate';
+		if (in_array('mod_deflate', $amodules) && (in_array('mod_filter', $amodules) || in_array('mod_ext_filter', $amodules))) {
+			$apache_modules[] = 'mod_deflate';
 		}
-		if (in_array('mod_headers', $apache_modules)) {
-			$this->apache_modules[] = 'mod_headers';
+		if (in_array('mod_headers', $amodules)) {
+			$apache_modules[] = 'mod_headers';
 		}
-		if (in_array('mod_setenvif', $apache_modules)) {
-			$this->apache_modules[] = 'mod_setenvif';
+		if (in_array('mod_setenvif', $amodules)) {
+			$apache_modules[] = 'mod_setenvif';
 		}
-		if (in_array('mod_mime', $apache_modules)) {
-			$this->apache_modules[] = 'mod_mime';
+		if (in_array('mod_mime', $amodules)) {
+			$apache_modules[] = 'mod_mime';
 		}
-		if (in_array('mod_rewrite', $apache_modules)) {
-			$this->apache_modules[] = 'mod_rewrite';
+		if (in_array('mod_rewrite', $amodules)) {
+			$apache_modules[] = 'mod_rewrite';
 		}
 		$cachedir = empty($this->compress_options['javascript_cachedir']) ?
 			$this->view->paths['full']['current_directory'] . 'cache/' :
@@ -5731,36 +5732,42 @@ Options +FollowSymLinks";
 		$this->view->download(str_replace($root, "http://" . $_SERVER['HTTP_HOST'] . "/", $this->basepath) . 'libs/php/css.sprites.php', $cachedir . 'htaccess.test');
 		if (@is_file($cachedir . 'htaccess.test') && !@filesize($cachedir . 'htaccess.test')) {
 			$this->apache_modules = array(); */
-		if (count($this->apache_modules) < 2) {
-			$modules = array(
-				'mod_gzip' => 'mod_gzip_on Yes',
-				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
-				'mod_headers' => 'Header append Cache-Control public',
-				'mod_expires' => 'ExpiresActive On',
-				'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
-				'mod_mime' => '<FilesMatch \.otf\.gz$>
+		$modules = array(
+			'mod_gzip' => 'mod_gzip_on Yes
+mod_gzip_can_negotiate Yes
+mod_gzip_keep_workfiles No
+mod_gzip_minimum_file_size 500
+mod_gzip_maximum_file_size 5000000
+mod_gzip_maximum_inmem_size 60000
+mod_gzip_min_http 1000
+mod_gzip_handle_methods GET POST
+mod_gzip_item_exclude reqheader \"User-agent: Mozilla/4.0[678]\"
+mod_gzip_dechunk No',
+			'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
+			'mod_headers' => 'Header append Cache-Control public',
+			'mod_expires' => 'ExpiresActive On',
+			'mod_setenvif' => 'BrowserMatch SV1; !no_gzip',
+			'mod_mime' => '<FilesMatch \.otf\.gz$>
 ForceType font/otf
 </FilesMatch>',
-				'mod_rewrite' => "RewriteEngine On
+			'mod_rewrite' => "RewriteEngine On
 RewriteRule index\.php$ " .
 str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 "/../libs/js/yass.loader.js"
-			);
-			if (@function_exists('curl_init')) {
+		);
+/* test only existent modules or all if Apache doens't exist */
+		$test_all = count($apache_modules) ? 0 : 1;
+		if (@function_exists('curl_init')) {
 /* detect modules one by one, it can be CGI environment */
-				foreach ($modules as $key => $value) {
-					if (!in_array('mod_deflate', $this->apache_modules) || $key != 'mod_gzip') {
-						if ($this->check_apache_module($value, $root, $cachedir, $key)) {
-							$this->apache_modules[] = $key;
-						}
+			foreach ($modules as $key => $value) {
+				if ((!in_array('mod_deflate', $apache_modules) || $key != 'mod_gzip') && ($test_all || in_array($key, $apache_modules))) {
+					if ($this->check_apache_module($value, $root, $cachedir, $key)) {
+						$this->apache_modules[] = $key;
 					}
 				}
-/* just fill all Apache modules - we can't check their existence */
-			} else {
-				foreach ($modules as $key => $value) {
-					$this->apache_modules[] = $key;
-				}
 			}
+		} else {
+			$this->apache_modules = $apache_modules;
 		}
 		@unlink($cachedir . 'htaccess.test');
 	}
@@ -5770,8 +5777,8 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 	*
 	**/
 	function check_apache_module ($rule, $root, $cachedir, $module) {
-		$gzip = strpos($rule, 'DEFLATE') || strpos($rule, 'mod_gzip');
-		if ($module == 'mod_symlinks') {
+		$gzip = strpos($rule, 'DEFLATE') !== false || strpos($rule, 'mod_gzip') !== false;
+		if ($module == 'mod_symlinks' || $module == 'mod_gzip') {
 			$testfile = 'libs/js/index.php';
 			$curlfile = 'libs/js/index.php';
 			$size = 131;
