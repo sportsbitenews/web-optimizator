@@ -302,7 +302,7 @@ class compressor_view {
 			}
 /* Fix non-supported 301/302 redirect */
 			if (strpos($headers, 'Location:') && $recursion < 10) {
-				$this->download(preg_match("!.*Location:\s*([^\n])\r?.*!is", "$1", $headers), $local_file, $timeout, $host, $user, $pass, $recursion++);
+				$this->download(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $local_file, $timeout, $host, $user, $pass, $recursion++);
 			}
 		}
 		return array($gzip, $code, $headers);

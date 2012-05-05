@@ -5733,6 +5733,7 @@ Options +FollowSymLinks";
 			$this->apache_modules = array(); */
 		if (count($this->apache_modules) < 2) {
 			$modules = array(
+				'mod_gzip' => 'mod_gzip_on Yes',
 				'mod_deflate' => 'AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript text/x-js text/ecmascript application/ecmascript text/vbscript text/fluffscript',
 				'mod_headers' => 'Header append Cache-Control public',
 				'mod_expires' => 'ExpiresActive On',
@@ -5845,8 +5846,8 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 			$this->view->download('http://' . $_SERVER['HTTP_HOST'] . '/' .
 				str_replace($this->compress_options['document_root'], '',
 					$this->compress_options['html_cachedir']) .
-				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=' . rand(),
-				$this->compress_options['html_cachedir'] . 'chained.load', 25);
+				'optimizing.php?web_optimizer_stage=10&web_optimizer_debug=' . rand() . '&password=' . $this->compress_options['password'],
+				$this->compress_options['html_cachedir'] . 'chained.load', 60);
 			@unlink($this->compress_options['javascript_cachedir'] . 'progress.php');
 			@unlink($this->compress_options['html_cachedir'] . 'chained.load');
 			@unlink($this->compress_options['html_cachedir'] . 'optimizing.php');
