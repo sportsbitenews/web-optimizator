@@ -639,6 +639,7 @@ a.wssN3:hover,a.wssN3:focus,a.wssN3:active{color:#0002bf!important}
 a#wss_bal:hover .wssN2,a#wss_bal:active .wssN2,a#wss_bal:focus .wssN2{background-position:100% -157px}
 #wss_bal .wssJ{color:#808080!important;text-decoration:underline}
 #wss_balance{background-position:100% 4px;font-size:18px;padding:0 18px 0 3px;cursor:hand}
+#wss_balance_add{display:inline}
 
 .wssJ5,.wssJ6,.wssJ7{background-image:url(buttons.png)!important}
 #wss_balance,.wssH11 .wssO15,.wssU21 .wssO15,.wssO4 .wssO15,.wssT20 .wssO15,#wss_bal .wssN2,.wssE .wssO15{background-image:url(webos.png);background-repeat:no-repeat}
