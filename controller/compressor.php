@@ -4031,6 +4031,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				@fclose($fph);
 /* check if we deal with 404 error, remove result */
 				$headers = $this->file_get_contents($return_filename_headers);
+/* Fix non-supported 301/302 redirect */
+				if (strpos($headers, 'Location:') && $recursion < 10) {
+					@unlink($return_filename);
+					return $this->get_remote_file(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $tag);
+				}
 				if (empty($contents) ||
 					strpos($headers, 'HTTP/1.1 404') !== false ||
 					strpos($headers, 'HTTP/1.0 404') !== false ||
