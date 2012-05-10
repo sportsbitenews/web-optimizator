@@ -3968,7 +3968,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	 * Downloads remote files to include
 	 *
 	 **/
-	function get_remote_file ($file, $tag = "link") {
+	function get_remote_file ($file, $tag = "link", $recursion = 0) {
 /* check if we already have this file */
 		if (preg_match("/\/wo[abcdef0-9]+$/", $file)) {
 			return preg_replace("/.*(wo[abcdef0-9]+$)/", "$1", $file);
@@ -4034,7 +4034,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* Fix non-supported 301/302 redirect */
 				if (strpos($headers, 'Location:') && $recursion < 10) {
 					@unlink($return_filename);
-					return $this->get_remote_file(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $tag);
+					return $this->get_remote_file(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $tag, $recursion++);
 				}
 				if (empty($contents) ||
 					strpos($headers, 'HTTP/1.1 404') !== false ||
