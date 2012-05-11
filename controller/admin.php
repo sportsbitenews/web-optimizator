@@ -232,10 +232,10 @@ class admin {
 						break;
 				}
 				$error = $this->view->upload_cdn($file,
-					$this->compress_options['document_root'],
-					$this->compress_options['page']['parallel_ftp'],
+					$this->compress_options['html_cachedir'],
+					$this->compress_options['parallel']['ftp'],
 					$mime,
-					$this->compress_options['page']['host']);
+					$this->compress_options['host']);
 				if (strpos($error, 'Error:') !== false) {
 					$success = 0;
 				}

@@ -375,6 +375,9 @@ class compressor_view {
 					@fclose($fp);
 				}
 				@fclose($fph);
+/* reset buffers */
+				$fph = @fopen($file_headers, "r");
+				@fclose($fph);
 				$headers = $error ? 'Error: ' . $error : $this->file_get_contents($file_headers);
 				@unlink($file_headers);
 			}
