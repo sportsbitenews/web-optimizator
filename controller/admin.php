@@ -4420,12 +4420,16 @@ class admin {
 				$headers = $this->view->upload(preg_replace("@.*X-CDN-Management-Url: (.*?)\r?\n.*@is", "$1", $headers) . '/wo',
 					'', $this->options['html_cachedir'],
 					array('X-Auth-Token: ' . $token, 'X-Referrer-ACL: 259200'), 'HEAD');
-				$cdn = preg_replace("@.*X-CDN-URI: https?://(.*?)\r?\n.*@is", "$1", $headers);
-				if (!$this->input['wss_minify_css_host']) {
-					$this->input['wss_minify_css_host'] = $cdn;
-				}
-				if (!$this->input['wss_minify_javascript_host']) {
-					$this->input['wss_minify_javascript_host'] = $cdn;
+				if (strpos($headers, 'Error: ') === false) {
+					$cdn = preg_replace("@.*X-CDN-URI: https?://(.*?)\r?\n.*@is", "$1", $headers);
+					if (!$this->input['wss_minify_css_host']) {
+						$this->input['wss_minify_css_host'] = $cdn;
+					}
+					if (!$this->input['wss_minify_javascript_host']) {
+						$this->input['wss_minify_javascript_host'] = $cdn;
+					}
+				} else {
+					$this->error[11] = 1;
 				}
 			} else {
 				$this->error[11] = 1;
