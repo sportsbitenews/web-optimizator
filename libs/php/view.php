@@ -326,7 +326,7 @@ class compressor_view {
 						if ($local_file) {
 							$fp = @fopen($local_file, "r");
 							@curl_setopt($ch, CURLOPT_INFILE, $fp);
-							@curl_setopt($ch, CURLOPT_UPLOAD, true);
+							@curl_setopt($ch, CURLOPT_UPLOAD, 1);
 							@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($local_file));
 							@curl_setopt($ch, CURLOPT_PUT, 1);
 /* enter active mode for EdgeCast */
@@ -397,7 +397,7 @@ class compressor_view {
 				'', $cachedir,
 				array('X-Auth-User: ' . $user, 'X-Auth-Key: ' . $key), 'GET');
 /* upload file to storage */
-			$this->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) .
+			return $this->upload(preg_replace("@.*X-Storage-Url: (.*?)\r?\n.*@is", "$1", $headers) .
 				'/wo' . str_replace($cachedir, "/", $file),
 				$file, $cachedir,
 				array('X-Auth-Token: ' . preg_replace("@.*X-Auth-Token: (.*?)\r?\n.*@is", "$1", $headers),
@@ -407,7 +407,7 @@ class compressor_view {
 				'X-Referrer-ACL: ' . $host), 'PUT');
 /* common FTP */
 		} else {
-			$this->upload('ftp://' .
+			return $this->upload('ftp://' .
 				preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $auth) .
 				str_replace($cachedir, "/", $file),
 				$file, $cachedir, array(), 'PUT', 

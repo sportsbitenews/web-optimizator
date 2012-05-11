@@ -192,20 +192,51 @@ class admin {
 		if (strpos($file, $this->view->paths['full']['document_root']) !== false &&
 			!empty($this->compress_options['parallel']['ftp']) &&
 			@function_exists('curl_init')) {
-				$ch = @curl_init('ftp://' .
-					preg_replace("!^([^@]+)@([^:]+):([^@]+)@!", "$1:$3@", $this->compress_options['parallel']['ftp']) .
-					str_replace($this->compress_options['document_root'], "/", $file));
-				$fp = @fopen($file, 'r');
-				@curl_setopt($ch, CURLOPT_USERPWD, preg_replace("!(.*)@.*!", "$1", $this->compress_options['parallel']['ftp']));
-				@curl_setopt($ch, CURLOPT_FTP_CREATE_MISSING_DIRS, 1);
-				@curl_setopt($ch, CURLOPT_UPLOAD, 1);
-				@curl_setopt($ch, CURLOPT_INFILE, $fp);
-				@curl_setopt($ch, CURLOPT_INFILESIZE, @filesize($file));
-				@curl_exec($ch);
-				$error = curl_errno($ch);
-				@curl_close($ch);
-				@fclose($fp);
-				if ($error) {
+				$mime = '';
+/* calculate MIME type */
+				switch (strtolower(preg_replace("!.*\.!is", "", $file))) {
+					case 'js':
+						$mime = 'application/x-javascript';
+						break;
+					case 'css':
+						$mime = 'text/css';
+						break;
+					case 'jpg':
+						$mime = 'jpeg';
+					case 'jpeg':
+					case 'bmp':
+					case 'gif':
+					case 'png':
+						$mime = 'image/' . $mime;
+						break;
+					case 'cur':
+						$mime = 'image/vnd.microsoft.icon';
+						break;
+					case 'ico':
+						$mime = 'image/x-icon';
+						break;
+					case 'otf':
+						$mime = 'application/x-font-opentype';
+						break;
+					case 'ttf':
+						$mime = 'application/x-font-truetype';
+						break;
+					case 'svg':
+						$mime = 'image/svg+xml';
+						break;
+					case 'eot':
+						$mime = 'application/vnd.ms-fontobject';
+						break;
+					case 'woff':
+						$mime = 'font/woff';
+						break;
+				}
+				$error = $this->view->upload_cdn($file,
+					$this->compress_options['document_root'],
+					$this->compress_options['page']['parallel_ftp'],
+					$mime,
+					$this->compress_options['page']['host']);
+				if (strpos($error, 'Error:') !== false) {
 					$success = 0;
 				}
 		}
@@ -5879,7 +5910,10 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 							$this->input['user']['auto_rewrite'];
 					$this->input['user']['auto_rewrite']['enabled'] =
 						empty($this->input['user']['auto_rewrite']['enabled']) ? 0 : 1;
-					header('Location: cache/optimizing.php?web_optimizer_stage=10&password=' .
+					header('Location: ' .
+						str_replace($this->compress_options['document_root'], '',
+							$this->compress_options['html_cachedir']) .
+						'optimizing.php?web_optimizer_stage=10&password=' .
 							$this->input['user']['password'] .
 						'&username=' .
 							$this->input['user']['username'] .

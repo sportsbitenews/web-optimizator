@@ -37,6 +37,10 @@ class web_optimizer {
 /* initialize chained optimization */
 		$this->web_optimizer_stage = round(empty($_GET['web_optimizer_stage']) ? 0 : $_GET['web_optimizer_stage']);
 		$this->debug_mode = empty($_GET['web_optimizer_debug']) && empty($_COOKIE['web_optimizer_debug']) ? 0 : 1;
+/* allow merging of other classes with this one */
+		foreach ($options as $key => $value) {
+			$this->$key = $value;
+		}
 /* get chained optimization params */
 		if (!empty($this->web_optimizer_stage)) {
 			$this->username = htmlspecialchars(empty($_GET['username']) ? '' :
@@ -45,7 +49,10 @@ class web_optimizer {
 				$_GET['password']);
 			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' :
 				$_GET['auto_rewrite']);
-			$this->chained_redirect = 'optimizing.php';
+			$this->chained_redirect = 'http://' .
+				$this->host .
+				str_replace($this->options['document_root'], '/', $this->options['html_cachedir']) .
+				'optimizing.php';
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
 				$_GET['cache_version']);
 /* get major stage number, all stages:
@@ -68,10 +75,6 @@ class web_optimizer {
  80-84	- CSS file generation + page parsing, 5th major stage
 */
 			$this->cache_stage = floor(($this->web_optimizer_stage - 10) / 15);
-		}
-/* allow merging of other classes with this one */
-		foreach ($options as $key => $value) {
-			$this->$key = $value;
 		}
 		$this->options['active'] = $this->debug_mode ? 1 : $this->options['active'];
 /* disable any actions if not active */
@@ -800,11 +803,12 @@ class web_optimizer {
 				$this->write_progress($this->web_optimizer_stage);
 /* redirect to installation page if chained optimization if finished */
 				if ($this->web_optimizer_stage > 85) {
-					if ($this->chained_redirect === 'optimizing.php') {
-						$this->write_progress(97);
-						@header('Location: ../index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password=' .
-							$this->password);
-					}
+					$this->write_progress(97);
+					@header('Location: http://' .
+						$this->host .
+						str_replace($this->options['document_root'], '/', realpath(dirname(__FILE__) . '/../')) .
+						'/index.php?page=install_stage_3&Submit=1&web_optimizer_stage=97&wss__password=' .
+						$this->password);
 /* else redirect to the next stage */
 				} else {
 					@header('Location: ' . $this->chained_redirect . '?web_optimizer_stage=' . 
