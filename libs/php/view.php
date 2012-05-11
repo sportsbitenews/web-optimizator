@@ -279,6 +279,7 @@ class compressor_view {
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 /* resolve 301/302 redirects */
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				@curl_setopt($ch, CURLOPT_MAXREDIRS, 30);
 /* skip SSL verification */
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -301,7 +302,7 @@ class compressor_view {
 				@fclose($fp);
 			}
 /* Fix non-supported 301/302 redirect */
-			if (strpos($headers, 'Location:') && $recursion < 10) {
+			if (strpos($headers, 'Location:') && $recursion < 30) {
 				$this->download(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $local_file, $timeout, $host, $user, $pass, $recursion++);
 			}
 		}
