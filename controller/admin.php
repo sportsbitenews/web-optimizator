@@ -1765,9 +1765,9 @@ class admin {
 	**/
 	function dashboard_system ($return = false) {
 /* get available Apache modules */
-		$this->get_modules();
+		$this->check_options();
 /* get PHP extensions */
-		$extensions = @get_loaded_extensions();
+		$extensions = $this->loaded_modules;
 /* get GDlib info */
 		$gd = function_exists('gd_info') ? gd_info() : array();
 /* set default paths */
@@ -1778,14 +1778,6 @@ class admin {
 		$html_cachedir = empty($this->compress_options['html_cachedir']) ? $this->view->paths['full']['current_directory'] . 'cache/' : $this->compress_options['html_cachedir'];
 		$website_root = empty($this->compress_options['website_root']) ? $this->view->paths['absolute']['document_root'] : $this->compress_options['website_root'];
 		$document_root = empty($this->compress_options['document_root']) ? $this->view->paths['full']['document_root'] : $this->compress_options['document_root'];
-/* check for YUI */
-		$YUI_available = 0;
-		if ((empty($_SERVER['SERVER_SOFTWARE']) || !strpos($_SERVER['SERVER_SOFTWARE'], 'IIS')) &&
-			is_file($this->basepath . 'libs/php/class.yuicompressor.php')) {
-				require_once($this->basepath . 'libs/php/class.yuicompressor.php');
-				$YUI = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
-				$YUI_checked = $YUI->check();
-		}
 /* check if .htaccess is avaiable */
 		$htaccess_available = count($this->apache_modules) ? 1 : 0;
 /* check for multiple hosts */
@@ -1894,7 +1886,8 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx || $this->iis,
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx || $this->iis,
 			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx || $this->iis,
-			'yui_possibility' => !empty($YUI_checked),
+			'yui_possibility' => !$this->restrictions['wss_minify_js2'],
+			'google_possibility' => !$this->restrictions['wss_minify_js4'],
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
 				$this->compress_options['htaccess']['access']) ||
@@ -3995,10 +3988,10 @@ class admin {
 			unset($this->restrictions['wss_htaccess_mod_expires']);
 			unset($this->restrictions['wss_htaccess_mod_rewrite']);
 		}
-		$loaded_modules = @get_loaded_extensions();
+		$this->loaded_modules = @get_loaded_extensions();
 /* fix CSS Sprites options in case of GD lib failure */
 		$gd = function_exists('gd_info') ? gd_info() : array();
-		if (!(in_array('gd', $loaded_modules) &&
+		if (!(in_array('gd', $this->loaded_modules) &&
 			function_exists('imagecreatetruecolor') ||
 			(!empty($gd['GIF Read Support']) &&
 			!empty($gd['GIF Create Support']) &&
@@ -4039,8 +4032,8 @@ class admin {
 			$this->restrictions['wss_minify_js4'] = 1;
 		}
 /* check for curl existence */
-		if (empty($loaded_modules) ||
-			!in_array('curl', $loaded_modules) ||
+		if (empty($this->loaded_modules) ||
+			!in_array('curl', $this->loaded_modules) ||
 			!function_exists('curl_init')) {
 				$this->restrictions['wss_external_scripts_on'] = 1;
 				$this->restrictions['wss_external_scripts_css'] = 1;
@@ -5832,7 +5825,7 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 				$curl = $this->view->download(str_replace(realpath($root),
 					'http' . (empty($_SERVER['HTTPS']) ? '' : 's') . '://' . $_SERVER['HTTP_HOST'],
 					realpath($this->basepath)) . '/' .
-					$curlfile, $cachedir . 'module.test', 1, 0,
+					$curlfile . '?' . rand(), $cachedir . 'module.test', 1, 0,
 					$this->compress_options['external_scripts']['user'],
 					$this->compress_options['external_scripts']['pass']);
 				if (round($curl[1]) == 301) {
