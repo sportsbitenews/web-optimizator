@@ -64,7 +64,7 @@ class YuiCompressor {
 				$locate = @shell_exec('whereis java');
 			} catch (Expression $e) {}
 		}
-		if (isset($locate) && strpos($locate, '/lib')) {
+		if (isset($locate) && strpos($locate, '/bin')) {
 			return true;
 		} else {
 			return false;

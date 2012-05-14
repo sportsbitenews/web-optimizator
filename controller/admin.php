@@ -4021,7 +4021,7 @@ class admin {
 			}
 			if (@is_file($this->basepath . 'libs/php/class.googlecompiler.php')) {
 				require_once($this->basepath . 'libs/php/class.googlecompiler.php');
-				$Google = new YuiCompressor($this->compress_options['javascript_cachedir'], $this->basepath);
+				$Google = new GoogleCompiler($this->compress_options['javascript_cachedir'], $this->basepath);
 				$Google_checked = $Google->check();
 			}
 		}
