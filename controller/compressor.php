@@ -2504,6 +2504,10 @@ class web_optimizer {
 								$new_src, $value['file_raw']);
 							$this->content = str_replace($value['file_raw'],
 								$new_script, $this->content);
+							if ($this->options['javascript']['reorder']) {
+								$value['source'] = str_replace($value['file_raw'], $new_script, $value['source']);
+								$value['file_raw'] = $new_script;
+							}
 							$use_proxy = 0;
 					}
 				}
