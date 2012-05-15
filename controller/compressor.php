@@ -680,8 +680,8 @@ class web_optimizer {
 				if (strpos($header, 'content-base') !== false) {
 					$this->basehref = substr($head, 14);
 				}
-				if (strpos($header, 'x-ua-compatible') !== false && strpos($this->ua, 'MSIE') !== false) {
-					$this->ua_mod = substr($head, 20);
+				if ($this->ua_mod && strpos($header, 'x-ua-compatible') !== false) {
+					$this->ua_mod = '.ie' . substr($head, 20);
 				}
 			}
 		}
