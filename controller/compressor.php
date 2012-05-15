@@ -680,6 +680,9 @@ class web_optimizer {
 				if (strpos($header, 'content-base') !== false) {
 					$this->basehref = substr($head, 14);
 				}
+				if (strpos($header, 'x-ua-compatible') !== false && strpos($this->ua, 'MSIE') !== false) {
+					$this->ua_mod = substr($head, 20);
+				}
 			}
 		}
 /* also skip AJAX requests with X-Requested-With: XMLHttpRequest */
@@ -4082,11 +4085,15 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* min. supported IE version */
 			$this->min_ie_version = 5;
 /* max. supported IE version */
-			$this->max_ie_version = 11;
+			$this->max_ie_version = 12;
 			if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
-				for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
-					if (strpos($this->ua, 'MSIE ' . $version)) {
-						$this->ua_mod = '.ie' . $version;
+				if (strpos($this->content, 'X-UA-Compatible')) {
+					$this->ua_mod = '.ie' . preg_replace("!.*<meta[^>]+content=['\"]?IE=([0-9]+).*!is", "$1", $this->content);
+				} else {
+					for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+						if (strpos($this->ua, 'MSIE ' . $version)) {
+							$this->ua_mod = '.ie' . $version;
+						}
 					}
 				}
 			}
