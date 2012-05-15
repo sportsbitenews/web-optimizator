@@ -726,6 +726,10 @@ class web_optimizer {
 		if (!$skip) {
 /* define gzip headers at the end */
 			$this->set_gzip_header();
+/* Add UA-Compatible support */
+			if ($this->ua_mod && strpos($this->content, 'X-UA-Compatible')) {
+				$this->ua_mod = '.ie' . preg_replace("!.*<meta[^>]+content=['\"]?IE=([0-9]+).*!is", "$1", $this->content);
+			}
 /* create DOMready chunk of JavaScript code, is required for different tasks */
 			$this->domready_include = $this->domready_include2 = $this->domready_include3 = '';
 			if ($this->options['css']['data_uris_separate'] || $this->options['page']['sprites_domloaded'] || $this->joomla_cache || $this->wp_cache || $this->generic_cache) {
@@ -4087,13 +4091,9 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* max. supported IE version */
 			$this->max_ie_version = 12;
 			if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
-				if (strpos($this->content, 'X-UA-Compatible')) {
-					$this->ua_mod = '.ie' . preg_replace("!.*<meta[^>]+content=['\"]?IE=([0-9]+).*!is", "$1", $this->content);
-				} else {
-					for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
-						if (strpos($this->ua, 'MSIE ' . $version)) {
-							$this->ua_mod = '.ie' . $version;
-						}
+				for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
+					if (strpos($this->ua, 'MSIE ' . $version)) {
+						$this->ua_mod = '.ie' . $version;
 					}
 				}
 			}
