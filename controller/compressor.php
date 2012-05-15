@@ -3744,6 +3744,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			@ini_set('memory_limit', '64M');
 		}
 		$content = preg_replace("!/\*.*?\*/!is", "", $content);
+		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$css_sprites = new css_sprites($content, array(
 			'root_dir' => $options['installdir'],
@@ -3779,6 +3780,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			'https_host' => $this->options['page']['parallel_https'],
 			'uniform_cache' => $this->options['uniform_cache']
 		));
+		@chdir($dir);
 		return $css_sprites->process();
 	}
 
@@ -3786,6 +3788,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	* Convert all background image to data:URI / mhtml / CDN
 	**/
 	function convert_data_uri ($content, $options, $css_url) {
+		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$compressed = '';
 		preg_match_all("!([^\{\}@]+)\{[^\}]*(background(-image|-position|-color|-repeat)?\s*):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
@@ -3874,6 +3877,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$content = preg_replace("@(background(-image)?:)?url\(\)(\s|;)?(\})?@is", "$1$4", $content);
 			$content = preg_replace("@[^\{\}]+\{\}@is", "", $content);
 		}
+		@chdir($dir);
 		return array($content, $compressed);
 	}
 
