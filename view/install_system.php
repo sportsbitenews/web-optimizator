@@ -485,8 +485,8 @@
 		echo _WEBO_SPLASH1_UNINSTALL;
 ?><span class="wssJ6"></span></a></p></div></fieldset><?php
 	}
-?><fieldset id="wssinfo" class="wssD9 wssA0"><div class="wssD10"><?php
-	echo phpinfo();
-?></div></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
+?><fieldset id="wssinfo" class="wssD9 wssA0"><iframe class="wssD11" src="data:text/html;base64,<?php
+	echo $phpinfo;
+?>"/></fieldset></form><div class="wss_h"><h4 class="wss_l"><span id="wss_prog">0</span>%<span class="wss_m"></span></h4><p id="wss_mess"></p><span id="wss_mess1" class="wssA0"><?php
 	echo _WEBO_UPGRADE_FILE;
 ?></span></div>

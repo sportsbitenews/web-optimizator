@@ -2182,6 +2182,11 @@ class admin {
 		$page_variables['size'] = $size;
 		$page_variables['files'] = $files;
 		$page_variables['custom'] = !@function_exists('curl_init') || @is_file($this->basepath . 'custom');
+		ob_start();
+		phpinfo();
+		$c = ob_get_contents();
+		ob_end_clean();
+		$page_variables['phpinfo'] = base64_encode($c);
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
