@@ -29,6 +29,7 @@ define('_WEBO_GENERAL_fr', 'Français');
 define('_WEBO_GENERAL_ur', 'اردو');
 define('_WEBO_GENERAL_it', 'Italiano');
 define('_WEBO_GENERAL_da', 'Dansk');
+define('_WEBO_GENERAL_bg', 'Български');
 
 /* ایرر لے آؤٹ */
 define('_WEBO_ERROR_TITLE', 'ہممم... کوئی خرابی ظاہر ہوئی ہے.');

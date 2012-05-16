@@ -58,10 +58,10 @@ if (!$ajax) {
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;
-	foreach (array('de', 'ru', 'es', 'ua', 'fr', 'it', 'ur', 'da') as $lang) {
+	foreach (array('de', 'ru', 'es', 'ua', 'fr', 'it', 'ur', 'da', 'bg') as $lang) {
 		if ($lang != $language && ($language != 'en' || $lang != 'ru')) {
 ?><li class="wss_e<?php
-			echo $i == 6 ? ' wss_e2' : '';
+			echo $i == 7 ? ' wss_e2' : '';
 ?>"><a class="wss_g" href="javascript:_.t('<?php
 			echo $lang;
 ?>')"><?php
