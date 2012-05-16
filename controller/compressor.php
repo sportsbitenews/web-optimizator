@@ -3747,8 +3747,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* try to get and increase memory limit */
 		$memory_limit = round(str_replace("G", "000000000", str_replace("M", "000000", str_replace("K", "000", @ini_get('memory_limit')))));
 /* 64M must enough for any operations with images. I hope... */
-		if ($memory_limit < 64000000) {
-			@ini_set('memory_limit', '64M');
+		if ($memory_limit < 128000000) {
+			@ini_set('memory_limit', '128M');
 		}
 		$content = preg_replace("!/\*.*?\*/!is", "", $content);
 		$dir = @getcwd();

@@ -5992,19 +5992,21 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 			if (!count($options)) {
 				$options = array($option_name => $option_value);
 			}
+			if (is_array($options)) {
 /* bunch save for options */
-			foreach ($options as $option_name => $option_value) {
+				foreach ($options as $option_name => $option_value) {
 /* make password salt safe */
-				if ($option_name == "['htpasswd']") {
-					$option_value = str_replace('$', '#', $option_value);
+					if ($option_name == "['htpasswd']") {
+						$option_value = str_replace('$', '#', $option_value);
 /* make paths uniform (Windows-Linux). Thx to dmiFedorenko */
-				} else {
-					$option_value = str_replace('$', '\\\$', preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)))));
+					} else {
+						$option_value = str_replace('$', '\\\$', preg_replace("!(https?|ftp):/!", "$1://", str_replace('\\\\\\', '', str_replace('//', '/', str_replace('\\', '/', $option_value)))));
+					}
+					$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
 				}
-				$content = preg_replace("@(" . preg_quote($option_name) . ")\s*=\s*\"(.*?)\"@is","$1 = \"" . $option_value . "\"", $content);
-			}
-			if (!$this->write_file($option_file, $content, 1)) {
-				$this->error[0] = 1;
+				if (!$this->write_file($option_file, $content, 1)) {
+					$this->error[0] = 1;
+				}
 			}
 		} else {
 			$this->error[0] = 1;
