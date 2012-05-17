@@ -3008,7 +3008,8 @@ class web_optimizer {
 					$this->trimwhitespace_find('<PRE', '</PRE>',
 						'@@@WBO:TRIM:SCRIPT5@@@', $source, $_script_blocks[5]);
 				} else {
-					preg_match_all("!(<script.*?</script>|<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
+/* get all scripts */
+					preg_match_all("!(<script.*?</script>)!is", $source, $match);
 					$_script_blocks = $match[0];
 					array_unique($_script_blocks);
 					$_script_blocks_to = array();
@@ -3017,6 +3018,15 @@ class web_optimizer {
 						$_script_blocks_to[] = '@@@WBO:TRIM:SCRIPT' . $i . '@@@';
 					}
 					$source = str_replace($_script_blocks, $_script_blocks_to, $source);
+/* get all textarea / pre */
+					preg_match_all("!(<textarea.*?</textarea>|<pre.*?</pre>)!is", $source, $match);
+					$_script_blocks_pre = $match[0];
+					$_script_blocks_to_pre = array();
+					$c1 = count($_script_blocks_pre);
+					for ($i = $c; $i < $c + $c1; $i++) {
+						$_script_blocks_to_pre[] = '@@@WBO:TRIM:SCRIPT' . $i . '@@@';
+					}
+					$source = str_replace($_script_blocks_pre, $_script_blocks_to_pre, $source);
 				}
 		}
 /* add multiple hosts or redirects for static images */
@@ -3056,20 +3066,25 @@ class web_optimizer {
 						$_block = $_script_blocks[$i];
 						if (count($_block)) {
 							$before_body .=
-								$this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" .
-									$i . "@@@", $_block, $source);
+								$i < 2 ? $this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" .
+									$i . "@@@", $_block, $source) : '';
 						}
 					}
 				} else {
 					if (!empty($this->options['page']['unobtrusive_all'])) {
-						$before_body = implode('', $_script_blocks);
+						$before_body .= implode('', $_script_blocks);
 						$source = str_replace($_script_blocks_to, array(), $source);
+						$source = str_replace($_script_blocks_to_pre, array(), $source);
 					} else {
 						$source = str_replace($_script_blocks_to, $_script_blocks, $source);
+						$source = str_replace($_script_blocks_to_pre, $_script_blocks_pre, $source);
 					}
 				}
 /* move all scripts to </body> */
 				if (!empty($before_body)) {
+					if ($this->premium > 1) {
+						$before_body = '<!--noindex-->' . $before_body . '<!--/noindex-->';
+					}
 					if (!empty($this->options['page']['html_tidy']) &&
 						($bodypos = strpos($source, "</body>"))) {
 							$source = substr_replace($source,
