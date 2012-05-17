@@ -3073,12 +3073,10 @@ class web_optimizer {
 				} else {
 					if (!empty($this->options['page']['unobtrusive_all'])) {
 						$before_body .= implode('', $_script_blocks);
-						$source = str_replace($_script_blocks_to, array(), $source);
-						$source = str_replace($_script_blocks_to_pre, array(), $source);
-					} else {
-						$source = str_replace($_script_blocks_to, $_script_blocks, $source);
-						$source = str_replace($_script_blocks_to_pre, $_script_blocks_pre, $source);
+						$_script_blocks = array();
 					}
+					$source = str_replace($_script_blocks_to, $_script_blocks, $source);
+					$source = str_replace($_script_blocks_to_pre, $_script_blocks_pre, $source);
 				}
 /* move all scripts to </body> */
 				if (!empty($before_body)) {
