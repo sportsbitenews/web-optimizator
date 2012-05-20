@@ -227,8 +227,7 @@ class web_optimizer {
 /* return visit and no modifications, so do not send anything */
 					@header ("HTTP/1.0 304 Not Modified");
 					@header ("Content-Length: 0");
-					while (@ob_end_clean());
-					die();
+					$this->di();
 				}
 /* define gzip headers */
 				$this->set_gzip_header();
@@ -270,7 +269,7 @@ class web_optimizer {
 					flush();
 					$this->flushed = true;
 				} else {
-					die();
+					this->di(1);
 				}
 			} else {
 				@header('WEBO: cache miss');
@@ -824,8 +823,7 @@ class web_optimizer {
 						$this->password .
 						'&web_optimizer_debug=1');
 				}
-				while (@ob_end_clean());
-				die();
+				$this->di();
 			}
 		}
 /* Return content to requestor */
@@ -840,8 +838,7 @@ class web_optimizer {
 			echo $this->content;
 /* It's obvious to send anything right after gzipped content */
 			if (!empty($this->encoding)) {
-				while (@ob_end_clean());
-				die();
+				$this->di();
 			}
 		}
 	}
@@ -1821,8 +1818,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
-					while (@ob_end_clean());
-					die();
+					$this->di();
 /* prepare first 4 Sprites */
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 16)%15) && $this->web_optimizer_stage < 85) {
 					$options['css_sprites_partly'] = 1;
@@ -1839,8 +1835,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
-					while (@ob_end_clean());
-					die();
+					$this->di();
 				} elseif (!empty($this->web_optimizer_stage) && !(($this->web_optimizer_stage - 19)%15) && $this->web_optimizer_stage < 85) {
 /* Create CSS Sprites in CSS dir */
 					$this->convert_css_sprites($contents, $options, $external_file);
@@ -1857,8 +1852,7 @@ class web_optimizer {
 						'&cache_version=' .
 							$this->cache_version .
 						'&web_optimizer_debug=1');
-					while (@ob_end_clean());
-					die();
+					$this->di();
 				} else {
 /* we created all Sprites -- ready for data:URI + mhtml */
 					$options['data_uris'] = $remembered_data_uri;
@@ -4064,9 +4058,9 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* check if we deal with 404 error, remove result */
 				$headers = $this->file_get_contents($return_filename_headers);
 /* Fix non-supported 301/302 redirect */
-				if (strpos($headers, 'Location:') && $recursion < 10) {
+				if (strpos($headers, 'Location:') && strpos($headers, "HTTP/1.1 200") === false && strpos($headers, "HTTP/1.0 200") === false && $recursion < 10) {
 					@unlink($return_filename);
-					return $this->get_remote_file(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $tag, $recursion++);
+					return $this->get_remote_file(preg_replace("!.*\nLocation:\s*([^\n]+).*!is", "$1", $headers), $tag, $recursion++);
 				}
 				if (empty($contents) ||
 					strpos($headers, 'HTTP/1.1 404') !== false ||
@@ -4223,6 +4217,20 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	**/
 	function clear_trash () {
 		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
+	}
+
+	/**
+	* Finishes all operations
+	*
+	**/
+	function di ($clean = 0) {
+		if (!$clean) {
+			while (@ob_end_clean());
+		}
+		if (function_exists('fastcgi_finish_request')) {
+			fastcgi_finish_request();
+		}
+		die();
 	}
 
 } // end class
