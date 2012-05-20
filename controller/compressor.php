@@ -269,7 +269,7 @@ class web_optimizer {
 					flush();
 					$this->flushed = true;
 				} else {
-					this->di(1);
+					$this->di(1);
 				}
 			} else {
 				@header('WEBO: cache miss');
