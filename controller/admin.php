@@ -2422,7 +2422,7 @@ class admin {
 		$headers .= 'Content-Type: text/plain; charset=utf-8';
 		@mail($compress_options['email'],
 			"=?latin-1?B?" . base64_encode('WEBO Site SpeedUp welcome letter for ' . $compress_options['host']) . "?=",
-			str_replace('###FOLDER###', str_replace($this->basepath, "/", $compress_options['host']), str_replace('###WEBSITE###', $compress_options['host'], _WEBO_WELCOME_LETTER)),
+			str_replace('###FOLDER###', str_replace($compress_options['document_root'], "/", $this->basepath), str_replace('###WEBSITE###', $compress_options['host'], _WEBO_WELCOME_LETTER)),
 			$headers);
 	}
 
