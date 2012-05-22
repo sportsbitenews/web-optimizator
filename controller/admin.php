@@ -1474,14 +1474,6 @@ class admin {
 			foreach ($this->cache_types['html'] as $mask) {
 				$html += $this->cache_engine->get_cache_size($mask);
 			}
-			if ($this->compress_options['html_cachedir'] !=
-				$this->compress_options['javascript_cachedir'] &&
-				$this->compress_options['html_cachedir'] !=
-				$this->compress_options['css_cachedir']) {
-				foreach ($this->cache_types['scripts'] as $mask) {
-					$php += $this->dashboard_cache_size($mask);
-				}
-			}
 /* get size of HTML Sprites cache */
 			@chdir($this->compress_options['html_cachedir'] . 'img/cache');
 			foreach ($this->cache_types['scripts'] as $mask) {
@@ -2129,6 +2121,9 @@ class admin {
 		if (@function_exists('apc_cache_info')) {
 			$cache = @apc_cache_info('user');
 			$files['APC'] = array('.php' => array($cache['mem_size'], $cache['num_entries']));
+		} elseif ($this->compress_options['peformance']['cache_engine']) {
+			$files[$this->compress_options['peformance']['cache_engine'] == 1 ? 'Memcached' : 'XCache'] =
+				array('.php' => array($this->cache_engine->get_cache_size(), count($this->cache_engine->get_entry('webo_files_list')));
 		}
 		$total = $size = 0;
 		foreach ($files as $group) {
