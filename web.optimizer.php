@@ -3,11 +3,11 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.5.2
+// @version    1.6.1
 // @copyright  Copyright &copy; 2009-2012 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
-$no_cache = isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
+$no_cache = isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
 $webo_request_uri = $_SERVER['REQUEST_URI'];
 
 /* Test failed store to this file. 2 steps: check and clean content if not valid */
