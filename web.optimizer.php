@@ -105,7 +105,7 @@ if (!empty($webo_not_buffered)) {
 		}
 	}
 /* We need to know the config, multi-configs supported */
-	if (in_array($host . $folder, $wss_configs)) {
+	if ($host && in_array($host . $folder, $wss_configs)) {
 		require($basepath . $host . $folder . ".config.webo.php");
 	} else {
 		require($basepath . "config.webo.php");

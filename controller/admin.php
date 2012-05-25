@@ -152,7 +152,8 @@ class admin {
 			'scripts' => array('*.php', '*.php.gz', '*.php.df')
 		);
 /* define if we can skip some info */
-		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app|engine@", $this->basepath);
+		$this->internal = preg_match("@wp-content|components|modules|administrator|addons|app|engine@",
+			str_replace($this->compress_options['document_root'], '/', $this->basepath));
 /* detect CS-Cart to */
 		$this->cscart = strpos($this->basepath, 'addons/webositespeedup');
 /* check for database driver , WordPress */
