@@ -3059,9 +3059,8 @@ class web_optimizer {
 					for ($i = 0; $i < 6; $i++) {
 						$_block = $_script_blocks[$i];
 						if (count($_block)) {
-							$before_body .=
-								$i < 2 ? $this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" .
-									$i . "@@@", $_block, $source) : '';
+							$a = $this->trimwhitespace_replace("@@@WBO:TRIM:SCRIPT" . $i . "@@@", $_block, $source);
+							$before_body .= $i < 2 ? $a : '';
 						}
 					}
 				} else {
