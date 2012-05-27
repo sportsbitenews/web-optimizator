@@ -1879,8 +1879,8 @@ class admin {
 			'mod_setenvif' => in_array('mod_setenvif', $this->apache_modules) || $nginx || $this->iis,
 			'mod_rewrite' => in_array('mod_rewrite', $this->apache_modules) || $nginx || $this->iis,
 			'mod_symlinks' => in_array('mod_symlinks', $this->apache_modules) || $nginx || $this->iis,
-			'yui_possibility' => !$this->restrictions['wss_minify_js2'],
-			'google_possibility' => !$this->restrictions['wss_minify_js4'],
+			'yui_possibility' => empty($this->restrictions['wss_minify_js2']),
+			'google_possibility' => empty($this->restrictions['wss_minify_js4']),
 			'hosts_possibility' => count($hosts) > 0 && !empty($hosts[0]),
 			'protected_mode' => (isset($_SERVER['PHP_AUTH_USER']) &&
 				$this->compress_options['htaccess']['access']) ||

@@ -193,7 +193,7 @@ if ($submit) {
 		}
 	}
 	foreach ($options as $key => $group) {
-		if (empty($group['premium']) && $key != 'fee') {
+		if (empty($group['premium']) && !in_array($key, array('fee', 'title', 'description'))) {
 ?><li class="wssO4<?php
 			echo $key == 'combinecss' ? ' wssO5' : '';
 ?>"><a href="#<?php

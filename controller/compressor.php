@@ -1279,7 +1279,7 @@ class web_optimizer {
 			preg_match_all("!<(img|input)[^>]+src[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
-			require($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
+			require_once($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
 			$html_sprites = new html_sprites($imgs, $this->options, $this);
 			if ($this->options['page']['scale_images']) {
 				$content = $html_sprites->scale($content);
@@ -1698,7 +1698,7 @@ class web_optimizer {
 				$this->get_new_file_name($options, $cache_file, $timestamp);
 		foreach ($this->libraries as $klass => $library) {
 			if (!class_exists($klass, false)) {
-				require($options['installdir'] . 'libs/php/' . $library);
+				require_once($options['installdir'] . 'libs/php/' . $library);
 			}
 		}
 /* If the file didn't exist, continue. Get files' content */
@@ -2797,7 +2797,7 @@ class web_optimizer {
 					$webo_scripts = array();
 					foreach ($this->libraries as $klass => $library) {
 						if (!class_exists($klass, false)) {
-							require($this->options['css']['installdir'] . 'libs/php/' . $library);
+							require_once($this->options['css']['installdir'] . 'libs/php/' . $library);
 						}
 					}
 					foreach ($this->initial_files as $key => $value) {
@@ -3296,7 +3296,7 @@ class web_optimizer {
 				'yass.loader.js"></script>' :
 				'<script type="text/javascript">(function(){function j(a){var b={};a=a.split(",");for(var g=0;g<a.length;g++)b[a[g]]=true;return b}var o=document,h;o.write=function(a){h=wss_parentNode||document.body;new x(a,{start:function(b,g,k){b=o.createElement(b);for(var d=0;d<g.length;d++)b.setAttribute(g[d].name,g[d].value.replace(/&gt;/g,">").replace(/&lt;g/,"<").replace(/&amp;/g,"&"));h.appendChild(b);k||(h=b)},end:function(){h=h.parentNode},chars:function(b){switch(h.nodeName.toLowerCase()){case"script":b&&eval(b);break;case"style":b&&h.appendChild(o.createTextNode(b));break;default:if(b){h.innerHTML+=b};break}},comment:function(b){h.appendChild(o.createComment(b))}})};var r=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>/,s=/^<\/(\w+)[^>]*>/,y=/(\w+)(?:\s*=\s*(?:(?:"((?:\\\\\\\\.|[^"])*)")|(?:\'((?:\\\\\\\\.|[^\'])*)\')|([^>\s]+)))?/g,z=j("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),A=j("address,applet,blockquote,center,dd,div,dl,dt,fieldset,form,frameset,hr,iframe,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),B=j("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),C=j("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),D=j("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),E=j("script,style"),x=function(a,b){function g(m,f,e,i){if(A[f])for(;c.last()&&B[c.last()];)k("",c.last());C[f]&&c.last()==f&&k("",f);(i=z[f]||!!i)||c.push(f);if(b.start){var t=[];e.replace(y,function(p,q,u,v,w){p=u?u:v?v:w?w:D[q]?q:"";t.push({name:q,value:p,escaped:p.replace(/(^|[^\\\\\\\\])"/g,\'$1\\\\\\\\"\')})});b.start&&b.start(f,t,i)}}function k(m,f){if(f)for(e=c.length-1;e>=0;e--){if(c[e]==f)break}else var e=0;if(e>=0){for(var i=c.length-1;i>=e;i--)b.end&&b.end(c[i]);c.length=e}}var d,n,l,c=[];c.last=function(){return this[this.length-1]};this.parse=function(m){for(last=a=m;a;){n=true;if(!c.last()||!E[c.last()]){if(a.indexOf("\\\\x3C!--")==0){d=a.indexOf("--\>");if(d>=0){b.comment&&b.comment(a.substring(4,d));a=a.substring(d+3);n=false}}else if(a.indexOf("</")==0){if(l=a.match(s)){a=a.substring(l[0].length);l[0].replace(s,k);n=false}}else if(a.indexOf("<")==0)if(l=a.match(r)){a=a.substring(l[0].length);l[0].replace(r,g);n=false}if(n){d=a.indexOf("<");m=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d);b.chars&&b.chars(m)}}else{a=a.replace(new RegExp("(.*)</"+c.last()+"[^>]*>"),function(f,e){e=e.replace(/\\\\x3C!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");b.chars&&b.chars(e);return""});k("",c.last())}if(a&&a==last)throw"Parse Error: "+a;last=a}};this.parse(a)}})();</script>') .
 				'<script type="text/javascript">wss_onload=[]</script>';
-		require($options['installdir'] . 'libs/php/config.unobtrusive.php');
+		require_once($options['installdir'] . 'libs/php/config.unobtrusive.php');
 /* convert vKontakte to async load */
 		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
 			preg_match_all("!VK\.([^\)]+)\);!is", $this->content, $matches, PREG_SET_ORDER);
