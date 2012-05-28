@@ -3311,20 +3311,22 @@ class web_optimizer {
 				$this->content = str_replace($replace_from, '', $this->content);
 			}
 		}
-		foreach ($unobtrusive_items as $group => $items) {
-			if (!empty($options[$group])) {
-				foreach ($items as $key => $item) {
-					if (strpos($this->content, $item['marker'])) {
-						$before = $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
-							$key, empty($item['height']) ? 0 : $item['height'],
-							empty($item['inline']) ? false : $item['inline'],
-							empty($item['onload_before']) ? false : $item['onload_before'],
-							empty($item['onload_after']) ? false : $item['onload_after']);
+		if (is_array($unobtrusive_items)) {
+			foreach ($unobtrusive_items as $group => $items) {
+				if (!empty($options[$group])) {
+					foreach ($items as $key => $item) {
+						if (strpos($this->content, $item['marker'])) {
+							$before = $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
+								$key, empty($item['height']) ? 0 : $item['height'],
+								empty($item['inline']) ? false : $item['inline'],
+								empty($item['onload_before']) ? false : $item['onload_before'],
+								empty($item['onload_after']) ? false : $item['onload_after']);
 /* switch between window.onload and onDOMready handlers */
-						if (!empty($item['onload_before']) && !empty($item['onload_after'])) {
-							$before_body_onload .= $before;
-						} else {
-							$before_body .= $before;
+							if (!empty($item['onload_before']) && !empty($item['onload_after'])) {
+								$before_body_onload .= $before;
+							} else {
+								$before_body .= $before;
+							}
 						}
 					}
 				}
