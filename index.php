@@ -4,7 +4,7 @@
  *
  **/
 
-$basepath = dirname(__FILE__) . '/';
+$basepath = isset($basepath) ? $basepath : dirname(__FILE__) . '/';
 
 /* We need these */
 require($basepath . "controller/admin.php");
