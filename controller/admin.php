@@ -3833,7 +3833,7 @@ class admin {
 				),
 				'unobtrusive_configuration' => array(
 					'value' => $this->compress_options['unobtrusive']['configuration'],
-					'type' => 'smalltext',
+					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
 				),
@@ -3855,6 +3855,12 @@ class admin {
 					'value' => $this->compress_options['parallel']['enabled'],
 					'type' => 'checkbox',
 					'price' => 3
+				),
+				'parallel_regexp' => array(
+					'value' => $this->compress_options['parallel']['regexp'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5
 				),
 				'parallel_check' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
@@ -4109,6 +4115,7 @@ class admin {
 			'wss_html_cache_additional_list',
 			'wss_html_cache_params',
 			'wss_sql_cache_tables_exclude',
+			'wss_parallel_regexp',
 			'wss_parallel_allowed_list',
 			'wss_parallel_additional',
 			'wss_parallel_additional_list',

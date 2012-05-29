@@ -499,6 +499,9 @@ define('_WEBO_css_sprites_html_page_HELP_DISABLED', 'There is no complete GD lib
 define('_WEBO_parallel_enabled', 'Distribute images');
 define('_WEBO_parallel_enabled_HELP', 'Tous les images appelées sur une page web seront automatiquement distribué via les hôtes multiple (miroirs). Par exemple  l\' URL http://www.site.com/i/logo.png or /i/bg.jpg peut être remplacé par  http://i1.site.com/i/logo.png et http://i2.site.com/i/bg.jpg dans le cas ou les deux hôtes  i1 and i2 sont disponibles et listé dans l\'option  &quot;Allowed hosts&quot;.');
 define('_WEBO_parallel_enabled_EFFECT', 'Website speedup by 15-25%');
+define('_WEBO_parallel_regexp', 'Regular expression');
+define('_WEBO_parallel_enabled_HELP', 'You can set your own regular expression to parse HTML pages for images for multiple hosts or CDN distribution. For example:  &lt;(img|input)[^&gt;]+(src)[^&gt;]+&gt;. First and second parameters are used for correct image source replacement.');
+define('_WEBO_parallel_enabled_EFFECT', 'Website speedup by 15-25%');
 define('_WEBO_parallel_check', 'Vérifier la disponibilité des hôtes automatiquement. ');
 define('_WEBO_parallel_check_HELP', 'Les hôtes seront vérifiés automatiquement pour l\'existence des images.');
 define('_WEBO_parallel_css', 'Distribute CSS files');

@@ -116,6 +116,7 @@ $compress_options['css_sprites']['html_sprites']="0";
 $compress_options['css_sprites']['html_limit']="150";
 $compress_options['css_sprites']['html_page']="1";
 $compress_options['parallel']['enabled']="1";
+$compress_options['parallel']['regexp']="";
 $compress_options['parallel']['check']="0";
 $compress_options['parallel']['allowed_list']="";
 $compress_options['parallel']['css']="0";

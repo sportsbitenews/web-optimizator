@@ -498,6 +498,9 @@ define('_WEBO_css_sprites_html_page_HELP_DISABLED', 'Der er ingen komplet GD lib
 define('_WEBO_parallel_enabled', 'Fordeling af billeder');
 define('_WEBO_parallel_enabled_HELP', 'Alle billeder indlæst fra hjemmesiden, vil automatisk blive fordelt på flere hosts (spejl). Foreksempel URL http://www.side.dk/i/logo.png eller /i/bg.jpg kan blive udskiftet med  http://i1.side.com/i/logo.png og http://i2.side.com/i/bg.jpg, hvis begge hosts i1 og i2 er tilgængelige og listet i indstillingen &quot;Tilladte hosts&quot;.');
 define('_WEBO_parallel_enabled_EFFECT', 'Hurtigere hjemmeside med 15-25%');
+define('_WEBO_parallel_regexp', 'Regular expression');
+define('_WEBO_parallel_enabled_HELP', 'You can set your own regular expression to parse HTML pages for images for multiple hosts or CDN distribution. For example:  &lt;(img|input)[^&gt;]+(src)[^&gt;]+&gt;. First and second parameters are used for correct image source replacement.');
+define('_WEBO_parallel_enabled_EFFECT', 'Hurtigere hjemmeside med 5-7%');
 define('_WEBO_parallel_check', 'Tjek hosts\' tilgængeligheden automatisk');
 define('_WEBO_parallel_check_HELP', 'Tilgængelige hosts vil blive tjekket automatisk for billede eksistens.');
 define('_WEBO_parallel_css', 'Fordeling af CSS filer');

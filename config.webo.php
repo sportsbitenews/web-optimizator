@@ -249,6 +249,8 @@ $compress_options['css_sprites']['html_limit'] = "100";
 $compress_options['css_sprites']['html_page'] = "0";
 ## Parallel downloads
 $compress_options['parallel']['enabled'] = "0";
+## Regular Expression to parse images
+$compress_options['parallel']['regexp'] = "";
 ## Check hosts availability or not?
 $compress_options['parallel']['check'] = "0";
 ## List of hosts for parallel downloads, i.e. img i1 i2

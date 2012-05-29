@@ -529,6 +529,7 @@ class web_optimizer {
 				"allowed_user_agents" => $this->premium > 1 ? $this->options['html_cache']['allowed_list'] : '',
 				"exclude_cookies" => $this->premium > 1 ? $this->options['html_cache']['additional_list'] : '',
 				"parallel" => $this->options['parallel']['enabled'],
+				"parallel_regexp" => $this->premium > 1 ? $this->options['parallel']['regexp'] : '',
 				"parallel_hosts" => $this->options['parallel']['allowed_list'],
 				"parallel_satellites" => $this->options['parallel']['additional'],
 				"parallel_satellites_hosts" => $this->options['parallel']['additional_list'],
@@ -1262,7 +1263,7 @@ class web_optimizer {
 		$count_satellites = count($satellites_hosts);
 		$replaced = array();
 		$IMG = strpos($content, '<IMG');
-		if ($this->options['page']['html_tidy'] && !$IMG) {
+		if ($this->options['page']['html_tidy'] && !$IMG && !$this->options['page']['parallel_regexp']) {
 			$_content = $content;
 			$pos = $pos1 = false;
 			while (($pos = strpos($_content, '<img')) !== false || ($pos1 = strpos($_content, '<input')) !== false) {
@@ -1276,7 +1277,8 @@ class web_optimizer {
 				$pos = $pos1 = false;
 			}
 		} else {
-			preg_match_all("!<(img|input)[^>]+src[^>]+>!is", $content, $imgs, PREG_SET_ORDER);
+			$regexp = $this->options['page']['parallel_regexp'] ? $this->options['page']['parallel_regexp'] : '<(img|input)[^>]+(src)[^>]+>';
+			preg_match_all("!" . $regexp . "!is", $content, $imgs, PREG_SET_ORDER);
 		}
 		if (($this->options['page']['sprites'] || $this->options['page']['scale_images']) && !empty($imgs)) {
 			require_once($this->options['css']['installdir'] . 'libs/php/html.sprites.php');
@@ -1301,12 +1303,13 @@ class web_optimizer {
 				$images_scaled_source = array_keys($images_scaled);
 			}
 			foreach ($imgs as $image) {
-				if ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], ' src="'))) {
-					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), '"'));
-				} elseif ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], " src='"))) {
-					$old_src = substr($image[0], $pos+6, strpos(substr($image[0], $pos+6), "'"));
+				$l = strlen($image[2]) + 3;
+				if ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], ' ' . $image[2] . '="'))) {
+					$old_src = substr($image[0], $pos + $l, strpos(substr($image[0], $pos + $l), '"'));
+				} elseif ($this->options['page']['html_tidy'] && ($pos=strpos($image[0], " " . $image[2] . "='"))) {
+					$old_src = substr($image[0], $pos + $l, strpos(substr($image[0], $pos + $l), "'"));
 				} else {
-					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*[\"'\s]src\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
+					$old_src = preg_replace("!^['\"\s]*(.*?)['\"\s]*$!is", "$1", preg_replace("!.*[\"'\s]" . $image[2] . "\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $image[0]));
 				}
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 /* image file name to check through ignore list */

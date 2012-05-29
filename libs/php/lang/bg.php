@@ -499,6 +499,9 @@ define('_WEBO_css_sprites_html_page_HELP_DISABLED', 'Няма пълна под�
 define('_WEBO_parallel_enabled', 'Разпределете изображенията');
 define('_WEBO_parallel_enabled_HELP', 'Всички изображения,, призовани в уеб-страницата, автоматично ще се разпространяват чрез множество хостове (огледала). Например URL http://www.site.com/i/logo.png or /i/bg.jpg може да бъдат заместени чрез http://i1.site.com/i/logo.png и http://i2.site.com/i/bg.jpg в случай че двата хоста i1 и i2 са достъпни и са изброени в опцията &quot;Позволени хостове&quot;.');
 define('_WEBO_parallel_enabled_EFFECT', 'Ускорение на уеб-сайта между 15-25%');
+define('_WEBO_parallel_regexp', 'Regular expression');
+define('_WEBO_parallel_enabled_HELP', 'You can set your own regular expression to parse HTML pages for images for multiple hosts or CDN distribution. For example:  &lt;(img|input)[^&gt;]+(src)[^&gt;]+&gt;. First and second parameters are used for correct image source replacement.');
+define('_WEBO_parallel_enabled_EFFECT', 'Ускорение на уеб-сайта между 5-7%');
 define('_WEBO_parallel_check', 'Проверете достъпността на хостовете автоматично');
 define('_WEBO_parallel_check_HELP', 'Наличните хостове ще бъдат проверени за съществуването на изображения автоматично');
 define('_WEBO_parallel_css', 'Разпределете CSS файловете');
