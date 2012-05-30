@@ -2122,8 +2122,8 @@ class admin {
 		if (@function_exists('apc_cache_info')) {
 			$cache = @apc_cache_info('user');
 			$files['APC'] = array('.php' => array($cache['mem_size'], $cache['num_entries']));
-		} elseif ($this->compress_options['peformance']['cache_engine']) {
-			$files[$this->compress_options['peformance']['cache_engine'] == 1 ? 'Memcached' : 'XCache'] =
+		} elseif ($this->compress_options['performance']['cache_engine']) {
+			$files[$this->compress_options['performance']['cache_engine'] == 1 ? 'Memcached' : 'XCache'] =
 				array('.php' => array($this->cache_engine->get_cache_size(), count($this->cache_engine->get_entry('webo_files_list'))));
 		}
 		$total = $size = 0;
