@@ -4067,10 +4067,8 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					return $this->get_remote_file(preg_replace("!.*\nLocation:\s*([^\n]+).*!is", "$1", $headers), $tag, $recursion++);
 				}
 				if (empty($contents) ||
-					strpos($headers, 'HTTP/1.1 404') !== false ||
-					strpos($headers, 'HTTP/1.0 404') !== false ||
-					strpos($headers, 'HTTP/0.1 404') !== false ||
-					strpos($headers, 'HTTP/0.9 404') !== false ||
+					in_array(substr($headers, 0, 12),
+						array('HTTP/1.1 404', 'HTTP/1.0 404', 'HTTP/0.1 404', 'HTTP/0.9 404', 'HTTP/1.1 502', 'HTTP/1.0 502', 'HTTP/0.1 502', 'HTTP/0.9 502', 'HTTP/1.1 500', 'HTTP/1.0 500', 'HTTP/0.1 500', 'HTTP/0.9 500')) ||
 					($tag == 'link' && preg_match("!<body!is", $contents))) {
 						@unlink($return_filename);
 						$return_filename = '';
