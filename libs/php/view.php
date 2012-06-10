@@ -277,7 +277,7 @@ class compressor_view {
 /* write headers - to get gzip info */
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				@curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-/* resolve 301/302 redirects */
+/* resolve 301/302/303 redirects */
 				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				@curl_setopt($ch, CURLOPT_MAXREDIRS, 30);
 /* skip SSL verification */
@@ -301,7 +301,7 @@ class compressor_view {
 				$fp = @fopen($local_file, "w");
 				@fclose($fp);
 			}
-/* Fix non-supported 301/302 redirect */
+/* Fix non-supported 301/302/303 redirect */
 			if (strpos($headers, 'Location:') && $recursion < 30) {
 				$this->download(preg_replace("!.*Location:\s*([^\n]+)\r?.*!is", "$1", $headers), $local_file, $timeout, $host, $user, $pass, $recursion++);
 			}

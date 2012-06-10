@@ -487,7 +487,7 @@ define('_WEBO_parallel_enabled', 'تصاویر کو بانٹ دیں');
 define('_WEBO_parallel_enabled_HELP', 'کسی ویب صفحہ پر کال کی گئی تمام تصاویر کو خود کار طور پر بہت سارے ہوسٹس (مررز) پر تقسیم کیا جائے گا۔ مثال کے طور پر URL http://www.site.com/i/logo.png or /i/bg.jpg کو http://i1.site.com/i/logo.png and http://i2.site.com/i/bg.jpg سے بدلا جا سکتا ہے لیکن ایسی صورت میں جبکہ دونوں ہوسٹس i1 اور i2 دستیاب ہوں اور &quot;اجازت شدہ ہوسٹس&quot; کی فہرست میں شامل بھی ہوں۔');
 define('_WEBO_parallel_enabled_EFFECT', 'ویب سائٹ کی رفتار میں 15-25% اضافہ');
 define('_WEBO_parallel_regexp', 'Regular expression');
-define('_WEBO_parallel_regexp_HELP', 'You can set your own regular expression to parse HTML pages for images for multiple hosts or CDN distribution. For example:  &lt;(img|input)[^&gt;]+(src)[^&gt;]+&gt;. First and second parameters are used for correct image source replacement.');
+define('_WEBO_parallel_regexp_HELP', 'You can set your own regular expression to parse HTML pages for images for multiple hosts or CDN distribution. For example:  &lt;(img|input)[^&gt;]+(src)[^&gt;]+&gt; or &lt;(img|input|div)[^&gt;]+(data-src|[^-]src|data-thumb)[^&gt;]+&gt;. First and second parameters are used for correct image source replacement.');
 define('_WEBO_parallel_regexp_EFFECT', 'ویب سائٹ کرفتار میں 5-7% اضافہ');
 define('_WEBO_parallel_check', 'خود کار طریقے سے ہوسٹ کی دستیابی کو چیک کریں۔');
 define('_WEBO_parallel_check_HELP', 'تصاویر کے وجود کیلئے دستیاب ہوسٹس کو خود کار طور پر چیک کیا جائے گا');
