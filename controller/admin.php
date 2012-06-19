@@ -5846,8 +5846,8 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 					}
 				}
 		}
-/* it it's possible to get file => module works */
-		if ($filesize == $size) {
+/* it it's possible to get file => module works, also fix for normal return on internal empty requests */
+		if ($filesize == $size || ($curl[1] == 200 && !$filesize)) {
 			$return = true;
 /* fix for LiteSpeed bug on .htaccess rights + mod_rewrite
    + one more LiteSpeed bug with delay with .htaccess application
