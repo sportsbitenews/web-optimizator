@@ -3735,7 +3735,7 @@ class admin {
 				'html_cache_params' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['params'],
-					'type' => 'textarea',
+					'type' => 'text',
 					'price' => 2
 				),
 				'html_cache_enhanced' => array(
