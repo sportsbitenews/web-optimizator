@@ -305,8 +305,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 /* check file's existence and its mtime */
 			if (!@is_file($compressed) || @filemtime($compressed) !== $mtime || !($contents = @file_get_contents($compressed))) {
 				$content = @file_get_contents($cached);
-				if (get_magic_quotes_runtime())
-				{
+				if (get_magic_quotes_runtime()) {
 					$content = stripslashes($content);
 				}
 				if (!empty($content)) {
@@ -339,7 +338,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 			if ($gzip) {
 				header('Content-Encoding: ' . $encoding);
 			}
-			header('Content-Length: ' . strlen($contents));
+			header('Content-Length: ' . filesize($compressed));
 		} else {
 			$contents = @file_get_contents($cached);
 			if (empty($contents) && $cached != $filename) {
