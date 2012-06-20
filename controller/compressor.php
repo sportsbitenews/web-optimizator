@@ -3809,7 +3809,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}@]+)\{[^\}]*(background(-image|-position|-color|-repeat)?\s*):([^\}]+)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}@]+)\{[^\}]*?(background(-image|-position|-color|-repeat)?\s*):([^\}]*url[^\}]+?)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
 		if (is_array($imgs)) {
 			$replaced = array();
 			$replaced_base64 = array();
