@@ -188,7 +188,7 @@ class web_optimizer {
 				empty($this->encoding_ext) ||
 				$gzip_me ? '' : $this->encoding_ext);
 			$timestamp_ajax = 0;
-			$cache_key_ajax = $cache_key . '.ajax';
+			$cache_key_ajax = $cache_plain_key . '.ajax';
 			if (defined('WSS_CACHE_MISS')) {
 				$timestamp = 0;
 			} else {
