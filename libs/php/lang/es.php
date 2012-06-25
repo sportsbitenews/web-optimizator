@@ -325,6 +325,9 @@ define('_WEBO_html_cache_timeout_HELP', 'Después de este tiempo todas las pági
 define('_WEBO_html_cache_timeout_cart', 'Time to cache cart in e-store (in seconds)');
 define('_WEBO_html_cache_timeout_cart_HELP', 'During this time all data about user\'s cart will be stored locally (in user\'s cookie or in localStorage).');
 define('_WEBO_html_cache_timeout_cart_EFFECT', 'Better website usability');
+define('_WEBO_html_cache_timeout_ajax', 'Time to cache AJAX requests (in seconds)');
+define('_WEBO_html_cache_timeout_ajax_HELP', 'During this time all AJAX requests will be cached on server.');
+define('_WEBO_html_cache_timeout_ajax_EFFECT', 'Better dynamic performanсe');
 define('_WEBO_html_cache_flush_only', 'Activar solo expulsi&oacute;n temprana de contenido');
 define('_WEBO_html_cache_flush_only_HELP', 'Cache de HTML contendrá no toda la página web pero los primeros bytes de el (seleccionado en opción &quot;Flush content size&raquo;). Y esta cantidad de datos será enviado al navegador antes que el resto del contenido de la página web. De esta manera el navegador recibirá llamados de requerimiento de recursos antes y no esperara al resto de la página que comience a cargar.');
 define('_WEBO_html_cache_flush_only_EFFECT', 'Website rendering speedup by 10-40%');

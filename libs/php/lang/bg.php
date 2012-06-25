@@ -326,6 +326,9 @@ define('_WEBO_html_cache_timeout_HELP', 'След този момент всич
 define('_WEBO_html_cache_timeout_cart', 'Време, за да се кешира пазарската количка (в секунди)');
 define('_WEBO_html_cache_timeout_cart_HELP', 'През това време цялата информация за потребителската количка ще бъде съхранена локално (в бисквитката на потребителя или в локално съхранение).');
 define('_WEBO_html_cache_timeout_cart_EFFECT', 'За по-добра сайт използваемост');
+define('_WEBO_html_cache_timeout_ajax', 'Time to cache AJAX requests (in seconds)');
+define('_WEBO_html_cache_timeout_ajax_HELP', 'During this time all AJAX requests will be cached on server.');
+define('_WEBO_html_cache_timeout_ajax_EFFECT', 'Better dynamic performanсe');
 define('_WEBO_html_cache_flush_only', 'Само кеширай първите n байта от съдържанието (рано изчиствай)');
 define('_WEBO_html_cache_flush_only_HELP', 'HTML кеша няма да съдържа цялата уеб-страница, само първите n байта от него (задайте това като опция от &quot;изчисти размера на съдържанието&quot;). И това количество от данни ще се изчисти от браузъра по-рано, отколкото от останалата  част от съдържанието на уеб-страницата. По този начин браузъра ще получи необходимите повиквания. По този начин браузъра ще получи повикванията от необходимите ресурси по-рано от останалата част, която трябва да се зареди от страницата, за да започне старта на зареждането й..');
 define('_WEBO_html_cache_flush_only_EFFECT', 'Уеб-сайт рендването ускорено между 10-40%');

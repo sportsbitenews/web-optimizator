@@ -317,6 +317,9 @@ define('_WEBO_html_cache_timeout_HELP', 'اس وقت کے بعد تمام کیش
 define('_WEBO_html_cache_timeout_cart', 'Time to cache cart in e-store (in seconds)');
 define('_WEBO_html_cache_timeout_cart_HELP', 'During this time all data about user\'s cart will be stored locally (in user\'s cookie or in localStorage).');
 define('_WEBO_html_cache_timeout_cart_EFFECT', 'Better website usability');
+define('_WEBO_html_cache_timeout_ajax', 'Time to cache AJAX requests (in seconds)');
+define('_WEBO_html_cache_timeout_ajax_HELP', 'During this time all AJAX requests will be cached on server.');
+define('_WEBO_html_cache_timeout_ajax_EFFECT', 'Better dynamic performane');
 define('_WEBO_html_cache_flush_only', 'مواد کے  صرف پہلے n بائٹس کو کیشے کریں۔ (جلدی فلش )');
 define('_WEBO_html_cache_flush_only_HELP', 'ایچ ٹی ایم ایل کیشے پورے ویب صفحہ کو نہیں شامل کرے گا بلکہ صرف پہلی n بائٹس کو شامل کرے گا۔ (&quot;فلش مواد سائز&quot; کے اختیار میں سیٹ کیا جاتا ہے) اور ڈیٹا کی یہ مقدار براؤزر کو بقیہ ویب صفحہ کے مواد سے پہلے بھیج دی جاتی ہے۔ لہٰذا براؤزر درکار ریسورسز کی کالز جلدی وصول کر لیتا ہے اور بقیہ صفحے کے لوڈ ہونے کا انتظار نہیں کرتا۔');
 define('_WEBO_html_cache_flush_only_EFFECT', 'ویب سائٹ رینڈرنگ کی رفتار میں 10-40% اضافہ');

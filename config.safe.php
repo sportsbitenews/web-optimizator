@@ -75,6 +75,7 @@ $compress_options['far_future_expires']['external']="0";
 $compress_options['html_cache']['enabled']="0";
 $compress_options['html_cache']['timeout']="600";
 $compress_options['html_cache']['timeout_cart']="86400";
+$compress_options['html_cache']['timeout_ajax']="0";
 $compress_options['html_cache']['flush_only']="0";
 $compress_options['html_cache']['flush_size']="1024";
 $compress_options['html_cache']['ignore']="0";

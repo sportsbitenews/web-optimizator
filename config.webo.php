@@ -167,6 +167,8 @@ $compress_options['html_cache']['enabled'] = "0";
 $compress_options['html_cache']['timeout'] = "600";
 ## Cache timeout for Cart in e-stores, in seconds
 $compress_options['html_cache']['timeout_cart'] = "86400";
+## Cache timeout for AJAX requests, in seconds
+$compress_options['html_cache']['timeout_ajax'] = "0";
 ## Flush head section with first N bytes of body?
 $compress_options['html_cache']['flush_only'] = "0";
 ## Flush size of HTML body

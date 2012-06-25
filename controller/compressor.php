@@ -187,22 +187,30 @@ class web_optimizer {
 				($this->options['page']['flush'] ||
 				empty($this->encoding_ext) ||
 				$gzip_me ? '' : $this->encoding_ext);
+			$timestamp_ajax = 0;
+			$cache_key_ajax = $cache_key . '.ajax';
 			if (defined('WSS_CACHE_MISS')) {
 				$timestamp = 0;
 			} else {
 				$timestamp = $this->cache_engine->get_mtime($cache_key);
+				if ($this->options['page']['ajax_timeout']) {
+					$timestamp_ajax = $this->cache_engine->get_mtime($cache_key_ajax);
+				}
 			}
 /* try to get from cache non-gzipped page if gzipped one doesn't exist */
 			if (!$timestamp && !$this->options['page']['flush'] && !empty($this->encoding_ext) && !$gzip_me) {
 				$timestamp = $this->cache_engine->get_mtime($cache_plain_key);
 				$gzip_me = 1;
 			}
-			if (!$timestamp) {
+			if (!$timestamp && !$timestamp_ajax) {
 				define('WSS_CACHE_MISS', 1);
 			}
-			if ($timestamp &&
+			if (($timestamp &&
 				$this->time - $timestamp < $this->options['page']['cache_timeout'] &&
-				($content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key))) {
+				($content = $this->cache_engine->get_entry($gzip_me ? $cache_plain_key : $cache_key))) ||
+				($timestamp_ajax &&
+				$this->time - $timestamp_ajax < $this->options['page']['ajax_timeout'] &&
+				($content = $this->cache_engine->get_entry($cache_key_ajax)))) {
 				if ($jutility) {
 					$token = JUtility::getToken();
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
@@ -520,6 +528,7 @@ class web_optimizer {
 					$this->premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
 				"cart_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_cart'] : 0,
+				"ajax_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_ajax'] : 0,
 				"flush" => $this->options['html_cache']['flush_only'] &&
 					$this->premium > 1,
 				"flush_size" => $this->options['html_cache']['flush_size'],
@@ -663,6 +672,7 @@ class web_optimizer {
 			}
 		}
 		$skip = 0;
+		$ajax = 0;
 		if (function_exists('headers_list')) {
 			$headers = headers_list();
 /* define if Content-Type is text/html and allow it */
@@ -676,6 +686,7 @@ class web_optimizer {
 				}
 				if (strpos($header, 'application/json')) {
 					$skip++;
+					$ajax = 1;
 				}
 				if (strpos($header, 'content-base') !== false) {
 					$this->basehref = substr($head, 14);
@@ -690,10 +701,12 @@ class web_optimizer {
 			!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
 			$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 				$skip = 1;
+				$ajax = 1;
 		}
-/* also skip some CMS-ralted parameters */
+/* also skip some CMS-related parameters */
 		if (!$skip && !empty($_GET['no_html'])) {
 			$skip = 1;
+			$ajax = 1;
 		}
 /* skip some extensions */
 		if (!$skip && !empty($_SERVER['QUERY_STRING'])) {
@@ -712,9 +725,12 @@ class web_optimizer {
 				strpos($spot, '<feed') !== false ||
 				strpos($spot, '<urlset') !== false ||
 				strpos($spot, '<smf') !== false ||
-				strpos($spot, '{') === 0 ||
 				strlen($this->content) < 200) {
 					$skip = 1;
+					
+			} elseif (strpos($spot, '{') === 0) {
+				$skip = 1;
+				$ajax = 1;
 			}
 		}
 /* enable A/B testing */
@@ -826,6 +842,10 @@ class web_optimizer {
 				}
 				$this->di();
 			}
+		}
+		if ($ajax && $this->options['page']['ajax_timeout']) {
+			$this->options['page']['cache_timeout'] = $this->options['page']['ajax_timeout'];
+			$this->cache_generic(1);
 		}
 /* Return content to requestor */
 		if ($content) {
@@ -1074,8 +1094,31 @@ class web_optimizer {
 		}
 		$this->clear_trash();
 		$chunk = '';
+		$this->cache_generic();
+/* strip from content flushed part */
+		if (!empty($this->flushed)) {
+			if (empty($options['flush_size'])) {
+				$options['flush_size'] = strlen($content_to_write);
+			}
+			$this->content = substr($this->content, $options['flush_size']);
+		}
+/* Gzip page itself */
+		if(!empty($options['gzip']) && !empty($this->encoding)) {
+			$content = $this->create_gz_compress($this->content,
+				in_array($this->encoding, array('gzip', 'x-gzip')));
+			if (!empty($content)) {
+				$this->content = $content;
+			}
+		}
+	}
+
+	/**
+	* Generic cache function
+	* 
+	**/	
+	function cache_generic ($ajax = false) {
 /* on-fly caching cart */
-		if (!empty($this->cache_me) || defined('WP_CACHE')) {
+		if ((!empty($this->cache_me) || defined('WP_CACHE')) && !$ajax) {
 /* add client side replacement for WordPress comment fields */
 			if (defined('WP_CACHE')) {
 				foreach ($_COOKIE as $key => $value) {
@@ -1092,7 +1135,7 @@ class web_optimizer {
 				$chunk .= $this->domready_include . $this->domready_include2;
 			}
 /* Add client-side cache flush on pages excluded from caching */
-		} elseif($this->options['page']['cache'] && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded']) {
+		} elseif ($this->options['page']['cache'] && !$this->options['css']['data_uris_separate'] && !$this->options['page']['sprites_domloaded'] && !$ajax) {
 /* need to refresh localStorage Cache */
 			if (@class_exists('JFactory') && ($user = &JFactory::getUser()) && ($user->get('aid') || $user->get('id'))) {
 				$chunk = $this->domready_include3;
@@ -1113,8 +1156,8 @@ class web_optimizer {
 /* check if we need to store cached page */
 		if (!empty($this->cache_me) && empty($_COOKIE['WSS_CART'])) {
 /* prepare flushed part of content */
-			if (!empty($options['flush']) && empty($this->encoding)) {
-				if (empty($options['flush_size'])) {
+			if (!empty($this->options['page']['flush']) && empty($this->encoding)) {
+				if (empty($this->options['page']['flush_size'])) {
 					if ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</head>'))) {
 						$content_to_write = substr($this->content, 0, $headpos + 7);
 					} elseif ($this->options['page']['html_tidy'] && ($headpos = strpos($source, '</HEAD>'))) {
@@ -1124,7 +1167,7 @@ class web_optimizer {
 					}
 				} else {
 					$content_to_write =
-						substr($this->content, 0, $options['flush_size']);
+						substr($this->content, 0, $this->options['page']['flush_size']);
 				}
 			}
 			$ordinary_cache_key = $this->view->ensure_trailing_slash($this->uri) .
@@ -1132,29 +1175,32 @@ class web_optimizer {
 				$this->ua_mod .
 				'.html' .
 				($this->options['page']['https_separate'] ? $this->https : '');
-			$cache_key = $ordinary_cache_key . (empty($this->encoding_ext) ? '' : $this->encoding_ext);
+			$cache_key = $ordinary_cache_key .
+				(empty($this->encoding_ext) ? '' : $this->encoding_ext) .
+				($ajax ? '.ajax' : '');
+			$ordinary_cache_key .= ($ajax ? '.ajax' : '');
 			$timestamp = $this->cache_engine->get_mtime($cache_key);
 			$content = $this->cache_engine->get_entry($cache_key);
 /* set ETag, thx to merzmarkus */
-			if (empty($options['flush'])) {
+			if (empty($this->options['page']['flush'])) {
 				@header("ETag: \"" .
 					crc32($this->content) .
 					(empty($this->encoding) && empty($this->gzip_set) ? '' : '-' .
 						(empty($this->gzip_set) ? str_replace("x-", "", $this->encoding) : 'gzip')) .
 					"\"");
 			}
-			if (empty($timestamp) || empty($content) || $this->time - $timestamp > $options['cache_timeout']) {
+			if (empty($timestamp) || empty($content) || $this->time - $timestamp > $this->options['page']['cache_timeout']) {
 				$c = $this->content;
 				$jutility = class_exists('JUtility', false);
 				if ($jutility) {
 					$token = JUtility::getToken();
 					$c = str_replace($token, '##WSS_JTOKEN_WSS##', $c);
 				}
-				if (!empty($options['gzip']) && !empty($this->encoding) && !$jutility) {
+				if (!empty($this->options['page']['gzip']) && !empty($this->encoding) && !$jutility) {
 					$content_to_write = $this->create_gz_compress($c,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* or just write full or non-gzipped content */
-				} elseif ((empty($options['flush']) || !empty($this->encoding))	&& !$jutility) {
+				} elseif ((empty($this->options['page']['flush']) || !empty($this->encoding))	&& !$jutility) {
 					$content_to_write = $c;
 				}
 /* don't create empty files */
@@ -1167,7 +1213,7 @@ class web_optimizer {
 				}
 /* clean expired entries */
 				if ($this->options['clean_html_cache']) {
-					$this->cache_engine->delete_entries_by_time($this->time, $options['cache_timeout']);
+					$this->cache_engine->delete_entries_by_time($this->time, $this->options['page']['cache_timeout']);
 				}
 			}
 		}
@@ -1183,21 +1229,6 @@ class web_optimizer {
 					$this->content =
 						$web_optimizer_plugin->onCache($this->content);
 				}
-			}
-		}
-/* strip from content flushed part */
-		if (!empty($this->flushed)) {
-			if (empty($options['flush_size'])) {
-				$options['flush_size'] = strlen($content_to_write);
-			}
-			$this->content = substr($this->content, $options['flush_size']);
-		}
-/* Gzip page itself */
-		if(!empty($options['gzip']) && !empty($this->encoding)) {
-			$content = $this->create_gz_compress($this->content,
-				in_array($this->encoding, array('gzip', 'x-gzip')));
-			if (!empty($content)) {
-				$this->content = $content;
 			}
 		}
 	}

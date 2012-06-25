@@ -3698,6 +3698,12 @@ class admin {
 					'type' => 'smalltext',
 					'price' => 2
 				),
+				'html_cache_timeout_ajax' => array(
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'value' => $this->compress_options['html_cache']['timeout_ajax'],
+					'type' => 'smalltext',
+					'price' => 2
+				),
 				'html_cache_flush_only' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'value' => $this->compress_options['html_cache']['flush_only'],
@@ -4154,6 +4160,7 @@ class admin {
 			'wss_far_future_expires_html_timeout',
 			'wss_html_cache_timeout',
 			'wss_html_cache_timeout_cart',
+			'wss_html_cache_timeout_ajax',
 			'wss_html_cache_flush_size',
 			'wss_html_cache_ignore',
 			'wss_sql_cache_time',
