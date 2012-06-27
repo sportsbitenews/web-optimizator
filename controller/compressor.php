@@ -719,16 +719,16 @@ class web_optimizer {
 /* skip some known cases of non-HTML content */
 		if (!$skip) {
 /* reduce amount of viewing content, accelerate 'fast check' by 1% */
-			$spot = substr($this->content, 0, 60);
+			$spot = substr($this->content, 0, 200);
 			if (strpos($spot, '<methodResponse') !== false ||
 				strpos($spot, '<rss') !== false ||
 				strpos($spot, '<feed') !== false ||
 				strpos($spot, '<urlset') !== false ||
 				strpos($spot, '<smf') !== false ||
-				strlen($this->content) < 200) {
+				strlen($spot) < 200) {
 					$skip = 1;
-					
-			} elseif (strpos($spot, '{') === 0) {
+/* mark AJAX requests */
+			} elseif (strpos($spot, '{') === 0 || !preg_match("!<html!is", $spot)) {
 				$skip = 1;
 				$ajax = 1;
 			}
