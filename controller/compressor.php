@@ -1093,7 +1093,6 @@ class web_optimizer {
 			$this->write_progress($this->web_optimizer_stage++);
 		}
 		$this->clear_trash();
-		$chunk = '';
 		$this->cache_generic();
 /* strip from content flushed part */
 		if (!empty($this->flushed)) {
@@ -1117,6 +1116,7 @@ class web_optimizer {
 	* 
 	**/	
 	function cache_generic ($ajax = false) {
+		$chunk = '';
 /* on-fly caching cart */
 		if ((!empty($this->cache_me) || defined('WP_CACHE')) && !$ajax) {
 /* add client side replacement for WordPress comment fields */
