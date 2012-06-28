@@ -3840,8 +3840,16 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}@]+)\{[^\}]*?(background(-image|-position|-color|-repeat)?\s*):([^\}]*url[^\}]+?)[;\}]!is", $content, $imgs, PREG_SET_ORDER);
-		if (is_array($imgs)) {
+		preg_match_all("!([^\{\}@]+)\{([^\}]*?background(-image|-position|-color|-repeat)?[^\}]+?)\}!is", $str, $ims, PREG_SET_ORDER);
+		$imgs = array();
+/* form correct array with background properties */
+		foreach ($ims as $im) {
+			preg_match_all("!(background(-image|-position|-color|-repeat)?):([^;]*?(url[^;]*?\([^\)]+\))?[^;]*);?!is", $im[2], $is, PREG_SET_ORDER);
+			foreach ($is as $i) {
+				$imgs[] = array($im[0], $im[1], $is[1], '', $is[3]);
+			}
+		}
+		if (count($imgs)) {
 			$replaced = array();
 			$replaced_base64 = array();
 			$mhtml = in_array($this->ua_mod, $this->ies) && $options['mhtml'];
