@@ -4528,7 +4528,9 @@ class admin {
 		$content .= "
 		<!-- Web Optimizer end -->
 	</system.webServer>";
-		$this->write_file($this->htaccess, str_replace("</system.webServer>", $content, $content_saved), 1);
+		if ($content_saved) {
+			$this->write_file($this->htaccess, str_replace("</system.webServer>", $content, $content_saved), 1);
+		}
 	}
 
 	/**
