@@ -2518,7 +2518,9 @@ class web_optimizer {
 						!empty($value['file']) &&
 						(in_array(preg_replace("@.*/@", "", $value['file']), $excluded_scripts_css) ||
 						in_array($value['file'], $excluded_scripts_css))) ||
-						(!$this->options['css']['minify'] && $this->options['page']['parallel_css'])))) {
+						(!$this->options['css']['minify'] && $this->options['page']['parallel_css']))) ||
+/* skip optimization if WEBONOTOPTIMIZE flag is used */
+					(!empty($value['content']) && strpos($value['content'], 'WEBONOTOPTIMIZE') !== false && $this->premium > 1)) {
 /* just skip them */
 					unset($this->initial_files[$key]);
 					$use_proxy = 1;
