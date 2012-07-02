@@ -728,7 +728,7 @@ class web_optimizer {
 				strlen($spot) < 200) {
 					$skip = 1;
 /* mark AJAX requests */
-			} elseif (strpos($spot, '{') === 0 || !preg_match("!<html!is", $spot)) {
+			} elseif (strpos($spot, '{') === 0 || !preg_match("!<h(tml|ead)!is", $spot)) {
 				$skip = 1;
 				$ajax = 1;
 			}
