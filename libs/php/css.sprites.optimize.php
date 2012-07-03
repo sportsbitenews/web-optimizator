@@ -886,12 +886,12 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 					if (!$file_exists) {
 /* try to add right and bottom Sprites to the main one */
 						if ($type == 4) {
-							if (is_file($sprite_right)) {
-								$im = @imagecreatefrompng($sprite_right);
+							if (@is_file($this->current_dir . $sprite_right)) {
+								$im = @imagecreatefrompng($this->current_dir . $sprite_right);
 								$this->imagecopymerge_alpha($sprite_raw, $im, $this->css_images[$sprite]['x'] - $this->css_images[$sprite_right]['x'], 0, 0, 0, $this->css_images[$sprite_right]['x'], $this->css_images[$sprite_right]['y']);
 							}
-							if (is_file($sprite_bottom)) {
-								$im = @imagecreatefrompng($sprite_bottom);
+							if (@is_file($this->current_dir . $sprite_bottom)) {
+								$im = @imagecreatefrompng($this->current_dir . $sprite_bottom);
 								$this->imagecopymerge_alpha($sprite_raw, $im, 0, $this->css_images[$sprite]['y'] - $this->css_images[$sprite_bottom]['y'], 0, 0, $this->css_images[$sprite_bottom]['x'], $this->css_images[$sprite_bottom]['y']);
 							}
 						}
@@ -899,19 +899,19 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						if ($this->truecolor_in_jpeg) {
 							$sprite = preg_replace("/png$/", "jpg", $sprite);
 							try {
-								@imagejpeg($sprite_raw, $sprite, 80);
+								@imagejpeg($sprite_raw, $this->current_dir . $sprite, 80);
 							} catch (Exception $e) {
 								$failed = 1;
 							}
 						} else {
 							try {
-								@imagepng($sprite_raw, $sprite, 9, PNG_ALL_FILTERS);
+								@imagepng($sprite_raw, $this->current_dir . $sprite, 9, PNG_ALL_FILTERS);
 							} catch (Exception $e) {
 								try {
-									@imagepng($sprite_raw, $sprite, 9);
+									@imagepng($sprite_raw, $this->current_dir . $sprite, 9);
 								} catch (Exception $e) {
 									try {
-										@imagepng($sprite_raw, $sprite);
+										@imagepng($sprite_raw, $this->current_dir . $sprite);
 									} catch (Exception $e) {
 										$failed = 1;
 									}
@@ -920,7 +920,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						}
 						@imagedestroy($sprite_raw);
 /* additional optimization via smush.it */
-						if (@is_file($sprite)) {
+						if (@is_file($this->current_dir . $sprite)) {
 							$this->smushit($this->current_dir . $sprite);
 /* upload file to CDN */
 							if (!empty($this->ftp_access)) {
@@ -933,7 +933,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 						}
 					}
 /* don't touch webor / webob Sprites -- they will be included into the main one */
-					if (@is_file($sprite)) {
+					if (@is_file($this->current_dir . $sprite)) {
 /* add selector with final sprite */
 						foreach ($merged_selector as $import => $keys) {
 							$this->css->css[$import][$keys]['background-image'] = 'url('.
@@ -950,7 +950,7 @@ This increases (in comparison to raw array[x][y] call) execution time by ~2x.
 							$import = empty($image[7]) ? '' : $image[7];
 							$key = empty($image[8]) ? '' : $image[8];
 /* delete initial CSS rules only on success */
-							if (is_file($sprite)) {
+							if (@is_file($this->current_dir . $sprite)) {
 								unset($this->css->css[$import][$key]['background-color'], $this->css->css[$import][$key]['background-repeat'], $this->css->css[$import][$key]['background-attachement'], $this->css->css[$import][$key]['background-position']);
 /* otherwise restore background-image */
 							} else {
