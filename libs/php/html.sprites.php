@@ -370,8 +370,7 @@ class html_sprites {
 						}
 						$images[$absolute_src] = array($width, $height, $class);
 					}
-					$images[$absolute_src][3] =
-						!empty($this->options['page']['per_page']) ? 1 : 0;
+					$images[$absolute_src][3] = !empty($this->options['page']['per_page']) ? 1 : 0;
 				}
 /* remember src for calculated images */
 				$imgs[$key] = $absolute_src;
@@ -381,10 +380,15 @@ class html_sprites {
 		if (!empty($need_refresh)) {
 /* cache images' dimensions to file */
 			$this->main->write_file($webo_images_list_var, $this->form_php_file($images));
-/* or just mark all images as active */
-		} elseif (empty($this->options['page']['per_page'])) {
+		}
+/* mark all required images as active */
+		if (empty($this->options['page']['per_page'])) {
 			foreach ($images_return as $k => $i) {
-				$images_return[$k][3] = 1;
+				$filename = explode("/", $k);
+				$filename = array_pop($filename);
+				if (!$this->optimizer->ignore || in_array($filename, $this->optimizer->ignore_list)) {
+					$images_return[$k][3] = 1;
+				}
 			}
 		}
 		return $images_return;
@@ -466,9 +470,6 @@ class html_sprites {
 					break;
 				case 0:
 					$str .= "array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "')";
-					if (empty($this->options['page']['per_page'])) {
-						$images[$k][3] = 1;
-					}
 					break;
 			}
 			$str .= ";";
