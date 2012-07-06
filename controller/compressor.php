@@ -2182,7 +2182,7 @@ class web_optimizer {
 			if (!preg_match("!\.css$!is", $file)) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
-				if (!strpos($dynamic_file, "://") || strpos($dynamic_file, '//') === 0) {
+				if (!strpos($dynamic_file, "://")) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($file, array('file' => $_SERVER['REQUEST_URI']), true);
 				}
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
@@ -2208,9 +2208,9 @@ class web_optimizer {
 						$src = trim($src, '\'" ');
 					}
 					$remote = '';
-					if (strpos($src, "//") && !preg_match('@//(www\.)?' . $this->host_escaped . '/@', $src)) {
+					if (strpos($src, "//") !== false && !preg_match('@//(www\.)?' . $this->host_escaped . '/@', $src)) {
 						$remote = $src;
-						$src = $this->get_remote_file($src);
+						$src = $this->get_remote_file((strpos($src, '//') === 0 ? 'http:' : '') . $src);
 					}
 					if ($src) {
 						$saved_directory = $this->view->paths['full']['current_directory'];
@@ -2449,7 +2449,7 @@ class web_optimizer {
 			foreach ($this->initial_files as $key => $value) {
 				if (!empty($value['file'])) {
 					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']);
-					$external = strlen($value['file']) > 7 && strpos($value['file'], "://");
+					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') == false);
 					if ($dynamic || $external) {
 /* exclude files from the same host */
 						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
@@ -4083,7 +4083,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			}
 			$return_filename_headers = $return_filename . '.headers';
 /* try to download remote file */
-			$ch = @curl_init($file);
+			$ch = @curl_init((strpos($file, '//') == 0 ? 'http' . $this->https . ':' : '') . $file);
 			$fph = @fopen($return_filename_headers, "w");
 			if ($ch) {
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
