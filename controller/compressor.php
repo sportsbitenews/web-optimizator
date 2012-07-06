@@ -2449,7 +2449,7 @@ class web_optimizer {
 			foreach ($this->initial_files as $key => $value) {
 				if (!empty($value['file'])) {
 					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']);
-					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') === false);
+					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') === 0);
 					if ($dynamic || $external) {
 /* exclude files from the same host */
 						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
