@@ -1,4 +1,4 @@
-w<?php
+<?php
 /**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Contains all UR localization constants
@@ -401,6 +401,10 @@ define('_WEBO_performance_scale', 'Scale HTML images');
 define('_WEBO_performance_scale_HELP', 'All HTML images will be resized to smaller dimensions if latter are used in HTML code.');
 define('_WEBO_performance_scale_HELP_DISABLED', 'آپ کی ویب سائٹ پر GD لائبریری کی مکمل سپورٹ موجود نہیں ہے۔ لہٰذا سی ایس ایس sprites کی تخلیق ناممکن ہے۔');
 define('_WEBO_performance_scale_EFFECT', 'Website speedup by 5-40%');
+define('_WEBO_performance_scale_restriction', 'Folder for HTML images scaling');
+define('_WEBO_performance_scale_restriction_HELP', 'HTML images will be scaled only within given folder. This will help to reduce CPU usage on large (10k+) array of website images. For example: /images/mainimage/m/');
+define('_WEBO_performance_scale_restriction_HELP_DISABLED', 'آپ کی ویب سائٹ پر GD لائبریری کی مکمل سپورٹ موجود نہیں ہے۔ لہٰذا سی ایس ایس sprites کی تخلیق ناممکن ہے۔');
+define('_WEBO_performance_scale_restriction_EFFECT', 'Website speedup by 3-5%');
 define('_WEBO_footer_text', 'ویبو سائٹ اسپیڈ اپ کا لنک داخل کریں');
 define('_WEBO_footer_text_HELP', 'ویبو سائٹ اسپیڈ اپ کا لنک کمیونٹی ایڈیشن میں ضروری ہے اور قیمت والے ورژن میں اسے ہٹایا جا سکتا ہے۔');
 define('_WEBO_footer_image', 'ویبو سائٹ اسپیڈ اپ تصویر داخل کریں۔');

@@ -409,6 +409,10 @@ define('_WEBO_performance_scale', 'Skalér HTML billeder');
 define('_WEBO_performance_scale_HELP', 'Alle HTML billeder vil blive skaleret til en mindre størrelse hvis latter er brugt i HTML koden.');
 define('_WEBO_performance_scale_HELP_DISABLED', 'Der er ingen GD bibliotek understøttelse på din hjemmeside, så skalering af HTML billeder er ikke muligt.');
 define('_WEBO_performance_scale_EFFECT', 'Hastighed forøgelse med 5-40%');
+define('_WEBO_performance_scale_restriction', 'Folder for HTML images scaling');
+define('_WEBO_performance_scale_restriction_HELP', 'HTML images will be scaled only within given folder. This will help to reduce CPU usage on large (10k+) array of website images. For example: /images/mainimage/m/');
+define('_WEBO_performance_scale_restriction_HELP_DISABLED', 'Der er ingen GD bibliotek understøttelse på din hjemmeside, så skalering af HTML billeder er ikke muligt.');
+define('_WEBO_performance_scale_restriction_EFFECT', 'Hastighed forøgelse med 3-5%');
 
 define('_WEBO_footer_text', 'Tilføj et link til WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'WEBO Site SpeedUp link er påkrævet i gratis versionen, men kan fjernes i købe versionerne.');

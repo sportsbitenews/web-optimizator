@@ -410,6 +410,10 @@ define('_WEBO_performance_scale', 'Мащабирайте HTML изображе�
 define('_WEBO_performance_scale_HELP', 'Всички HTML изображения ще бъдат оразмерени в по-малки размери ако последните се използват в HTML кода.');
 define('_WEBO_performance_scale_HELP_DISABLED', 'Няма пълна поддръжка на GD библиотеката на сайта Ви така, че мащабирането на HTML изображенията няма да е възможно.');
 define('_WEBO_performance_scale_EFFECT', 'Уеб-сайт ускоререние между 5-40%');
+define('_WEBO_performance_scale_restriction', 'Folder for HTML images scaling');
+define('_WEBO_performance_scale_restriction_HELP', 'HTML images will be scaled only within given folder. This will help to reduce CPU usage on large (10k+) array of website images. For example: /images/mainimage/m/');
+define('_WEBO_performance_scale_restriction_HELP_DISABLED', 'Няма пълна поддръжка на GD библиотеката на сайта Ви така, че мащабирането на HTML изображенията няма да е възможно.');
+define('_WEBO_performance_scale_restriction_EFFECT', 'Уеб-сайт ускоререние между 2-3%');
 
 define('_WEBO_footer_text', 'Добавете линк към WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'Линкът е нужен в WEBO Site SpeedUp безплатната версия и може да бъде премахнат, в която и да е платена версия.');

@@ -75,7 +75,9 @@ class html_sprites {
 			foreach ($this->imgs as $key => $image) {
 				$i = str_replace("'", "###", $image[0]);
 				$image_to = empty($webo_scaled_images[$i]) ? '' : $webo_scaled_images[$i];
-				if (empty($image_to) && $i != 'SKIPPED') {
+/* limit HTML scaling to one website folder */
+				$restriction = !$this->options['page']['scale_restriction'] || strpos($image[0], $this->options['page']['scale_restriction']) !== false;
+				if (empty($image_to) && $i != 'SKIPPED' && $restriction) {
 					$need_save = 1;
 					$src = preg_replace("!^['\"\s]*(.*?)['\"\s]*(/?>)?$!is", "$1", preg_replace("!.*\ssrc\s*=\s*(\"[^\"]+\"|'[^']+'|[\S]+).*!is", "$1", $i));
 					$absolute_src = $this->main->convert_path_to_absolute($src, array('file' => $_SERVER['REQUEST_URI']));
@@ -225,11 +227,11 @@ class html_sprites {
 						$image_to = '';
 					}
 				}
-				if ($image_to && $image_to != 'SKIPPED') {
+				if ($image_to && $image_to != 'SKIPPED' && $restriction) {
 					$replace_from[] = str_replace("###", "'", $i);
 					$replace_to[] = $image_to;
 				}
-				if (empty($webo_scaled_images[$i])) {
+				if (empty($webo_scaled_images[$i]) && $restriction) {
 					$need_rewrite = 1;
 				}
 				$webo_scaled_images[$i] = $image_to ? $image_to : 'SKIPPED';

@@ -410,6 +410,10 @@ define('_WEBO_performance_scale', 'Scale HTML images');
 define('_WEBO_performance_scale_HELP', 'All HTML images will be resized to smaller dimensions if latter are used in HTML code.');
 define('_WEBO_performance_scale_HELP_DISABLED', 'There is no complete GD library support on your website, so HTML images scaling is impossible.');
 define('_WEBO_performance_scale_EFFECT', 'Website speedup by 5-40%');
+define('_WEBO_performance_scale_restriction', 'Folder for HTML images scaling');
+define('_WEBO_performance_scale_restriction_HELP', 'HTML images will be scaled only within given folder. This will help to reduce CPU usage on large (10k+) array of website images. For example: /images/mainimage/m/');
+define('_WEBO_performance_scale_restriction_HELP_DISABLED', 'There is no complete GD library support on your website, so HTML images scaling is impossible.');
+define('_WEBO_performance_scale_restriction_EFFECT', 'Website speedup by 3-5%');
 
 define('_WEBO_footer_text', 'Ajouter un lien à WEBO Site SpeedUp');
 define('_WEBO_footer_text_HELP', 'Le lien WEBO Site SpeedUp est obligatoire dans l\'édition Free et peut-être enlevé dans la version payante.');

@@ -97,6 +97,8 @@ $compress_options['performance']['cache_engine_options'] = "127.0.0.1:11211";
 $compress_options['performance']['https'] = "0";
 ## Scale HTML images to real size
 $compress_options['performance']['scale'] = "0";
+## Folder restirtion for HTML images sacling
+$compress_options['performance']['scale_restriction'] = "";
 ## Minify options, JS
 $compress_options['minify']['javascript'] = "0";
 ## Minify JS inside <body> tag. Please be carefull

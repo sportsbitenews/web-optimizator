@@ -3555,6 +3555,13 @@ class admin {
 					'price' => 3,
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
+				'performance_scale_restriction' => array(
+					'value' => $this->compress_options['performance']['scale_restriction'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 5,
+					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
+				),
 			),
 			'data_uri' => array(
 				'data_uris_on' => array(
@@ -4140,6 +4147,7 @@ class admin {
 			'wss_minify_css_host',
 			'wss_minify_javascript_file',
 			'wss_minify_javascript_host',
+			'wss_performance_scale_restriction',
 			'wss_footer_counter',
 			'wss_parallel_ftp',
 			'wss_parallel_https',

@@ -583,6 +583,7 @@ class web_optimizer {
 				"per_page" => $this->premium && $this->options['css_sprites']['html_page'],
 				"https_separate" => $this->premium > 1 ? $this->options['performance']['https'] : 0,
 				"scale_images" => $this->premium > 1 ? $this->options['performance']['scale'] : 0,
+				"scale_restriction" => $this->premium > 1 ? $this->options['performance']['scale_restriction'] : 0,
 			),
 			"document_root" => $this->options['document_root'],
 			"document_root_relative" => str_replace("//", "/", str_replace($this->options['document_root'], "/", $this->options['website_root'])),
