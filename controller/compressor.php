@@ -2182,7 +2182,7 @@ class web_optimizer {
 			if (!preg_match("!\.css$!is", $file)) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
-				if (!strpos($dynamic_file, "://")) {
+				if (!strpos($dynamic_file, "://") && strpos($dynamic_file, '//') !== 0) {
 					$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($file, array('file' => $_SERVER['REQUEST_URI']), true);
 				}
 				$file = $this->options['css']['cachedir'] . $this->get_remote_file($this->resolve_amps($dynamic_file), 'link');
@@ -2210,7 +2210,7 @@ class web_optimizer {
 					$remote = '';
 					if (strpos($src, "//") !== false && !preg_match('@//(www\.)?' . $this->host_escaped . '/@', $src)) {
 						$remote = $src;
-						$src = $this->get_remote_file((strpos($src, '//') === 0 ? 'http:' : '') . $src);
+						$src = $this->get_remote_file($src);
 					}
 					if ($src) {
 						$saved_directory = $this->view->paths['full']['current_directory'];
@@ -2449,7 +2449,7 @@ class web_optimizer {
 			foreach ($this->initial_files as $key => $value) {
 				if (!empty($value['file'])) {
 					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']);
-					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') == false);
+					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') === false);
 					if ($dynamic || $external) {
 /* exclude files from the same host */
 						if(!preg_match("@//(www\.)?". $this->host_escaped . "@s", $value['file'])) {
@@ -2713,7 +2713,7 @@ class web_optimizer {
 							if (!preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php/')) {
 								$dynamic_file = $value['file_raw'];
 /* touch only non-external scripts */
-								if (!strpos($dynamic_file, "://")) {
+								if (!strpos($dynamic_file, "://") && strpos($dynamic_file, '//') !== 0) {
 									$dynamic_file = "http://" . $_SERVER['HTTP_HOST'] . $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']), true);
 								}
 								$static_file = ($this->options[$value['tag'] == 'script' ? 'javascript' : 'css']['cachedir']) . $this->get_remote_file($this->resolve_amps($dynamic_file), $value['tag']);
