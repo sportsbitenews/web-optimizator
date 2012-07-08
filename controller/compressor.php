@@ -251,7 +251,7 @@ class web_optimizer {
 				}
 /* set ETag, thx to merzmarkus */
 				@header("ETag: \"" . $hash . "\"");
-				if ($this->encoding || empty($this->gzip_set)) {
+				if ($gzip_me && ($this->encoding || empty($this->gzip_set)) && (empty($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')) {
 					@header("Content-Length: " . strlen($content));
 				}
 /* set content-type */
@@ -853,8 +853,8 @@ class web_optimizer {
 			return $this->content;
 /* or echo content to the browser */
 		} else {
-/* HTTP/1.0 needs Content-Length sometimes. With PHP4 we can't check when exactly. */
-			if ($this->encoding || empty($this->gzip_set)) {
+/* HTTP/1.0 needs Content-Length */
+			if (($this->encoding || empty($this->gzip_set)) &&  && (empty($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')) {
 				@header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
@@ -2960,7 +2960,7 @@ class web_optimizer {
 						if ($gzipped || $zlib) {
 							@header ("Content-Encoding: " . $encoding);
 						}
-						if ($gzipped && !$zlib) {
+						if ($gzipped && !$zlib  && (empty($_SERVER["SERVER_PROTOCOL"]) || $_SERVER["SERVER_PROTOCOL"] == "HTTP/1.0")) {
 							@header ("Content-Length: " . strlen($contents));
 						}
 					}
@@ -4141,7 +4141,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 			$this->min_ie_version = 5;
 /* max. supported IE version */
 			$this->max_ie_version = 12;
-			if (strpos($this->ua, 'MSIE') && !strpos($this->ua, 'Opera')) {
+			if (strpos($this->ua, 'MSIE') && strpos($this->ua, 'Opera') === false) {
 				for ($version = $this->min_ie_version; $version < $this->max_ie_version; $version++) {
 					if (strpos($this->ua, 'MSIE ' . $version)) {
 						$this->ua_mod = '.ie' . $version;

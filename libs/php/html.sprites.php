@@ -465,10 +465,10 @@ class html_sprites {
 		foreach ($images as $k => $i) {
 			$str .= "\n" . '$' .
 				($mode ? 'webo_scaled_images' : 'images') .
-				'[\'' . str_replace(array("'", '//', "\\"), array("\'", '/', "\\\\"), $k) . "'] = ";
+				'[\'' . str_replace(array("\\", '//', "'"), array("\\\\", '/', "\\'"), str_replace(array("\\\\", "\\'"), array("\\", "'"), $k)) . "'] = ";
 			switch ($mode) {
 				case 1:
-					$str .= "'" . str_replace(array("'", "\\"), array("\'", "\\\\"), $i) . "'";
+					$str .= "'" . str_replace(array("\\", "'"), array("\\\\", "\\'"), str_replace(array("\\\\", "\\'"), array("\\", "'"), $i)) . "'";
 					break;
 				case 0:
 					$str .= "array(" . round($i[0]) . "," . round($i[1]) . ",'" . $i[2] . "')";

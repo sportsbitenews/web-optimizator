@@ -75,6 +75,12 @@ $unobtrusive_items = array(
 		), 'rb' => array(
 			'marker' => '/delivery/ajs.php',
 			'regexp' => "<script[^>]+><!--//<!\[CDATA\[[^\da-zA-Z]*var m3_u.*?</script>"
+/* Yandex.Direct.Async */
+		), 'ya' => array(
+			'marker' => 'Ya.Direct.insertInto',
+			'regexp' => "<script[^>]+>[^<]*?Ya\.Direct\.insertInto.*?</script>",
+			'onload_before' => '<script[^>]*>(.*?)</script>',
+			'onload_after' => '$1;setTimeout(function(){if(typeof Ya.Context!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Yandex.Direct */
 		), 'yd' => array(
 			'marker' => 'yandex_partner_id',
