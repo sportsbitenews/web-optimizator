@@ -2422,6 +2422,9 @@ class web_optimizer {
 					}
 				}
 			}
+/* add mark for HTML sprites styles */
+		} elseif ($this->options['page']['sprites']) {
+			$this->content = preg_replace("!(<head[^>]*>)!is", "$1@@@WSSSTYLES@@@", $this->content);
 		}
 		if (is_array($this->initial_files)) {
 /* remove duplicates of styles/scripts from head */
