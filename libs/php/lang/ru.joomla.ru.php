@@ -410,8 +410,8 @@ define('_WEBO_performance_scale_HELP_DISABLED', 'Текущее серверно
 define('_WEBO_performance_scale_EFFECT', 'Ускорение сайта на 5-40%');
 define('_WEBO_performance_scale_restriction', 'Папка на сайте для масштабирования изображения');
 define('_WEBO_performance_scale_restriction_HELP', 'Будут масштабироваться только HTML-изображения из заданной папки. Это поможем существенно сократить серверные издержки при больших (от 10 тысяч) объемах изображений на сайте. Пример: /images/mainimage/m/');
-define('_WEBO_performance_scale_HELP_DISABLED', 'Текущее серверное окружение не полностью поддерживает библиотеку GD, поэтому масштабирование HTML-изображений невозможно.');
-define('_WEBO_performance_scale_EFFECT', 'Ускорение сайта на 3-5%');
+define('_WEBO_performance_scale_restriction_HELP_DISABLED', 'Текущее серверное окружение не полностью поддерживает библиотеку GD, поэтому масштабирование HTML-изображений невозможно.');
+define('_WEBO_performance_scale_restriction_EFFECT', 'Ускорение сайта на 3-5%');
 
 define('_WEBO_data_uris_on', 'Использовать <code>data:URI</code>');
 define('_WEBO_data_uris_on_HELP', 'Фоновые изображения будут преобразовываться в формат base64 и подставляться в CSS-файлы для всех браузеров, поддерживающих технологию data:URI.');
