@@ -854,7 +854,7 @@ class web_optimizer {
 /* or echo content to the browser */
 		} else {
 /* HTTP/1.0 needs Content-Length */
-			if (($this->encoding || empty($this->gzip_set)) &&  && (empty($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')) {
+			if (($this->encoding || empty($this->gzip_set)) && (empty($_SERVER['SERVER_PROTOCOL']) || $_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')) {
 				@header('Content-Length: ' . strlen($this->content));
 			}
 			echo $this->content;
