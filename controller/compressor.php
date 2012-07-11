@@ -2438,7 +2438,7 @@ class web_optimizer {
 							if (!empty($this->initial_files[$j])) {
 								$v = $this->initial_files[$j];
 								if ($value['source'] == $v['source']) {
-									unset($this->initial_files[$i]);
+									unset($this->initial_files[$j]);
 //									$to_remove[] = "!" . preg_quote($v['source']) . "!is";
 								}
 							}
@@ -2755,6 +2755,7 @@ class web_optimizer {
 												$content_from_file = '';
 											} else {
 												$duplicates[$k]['exists'] = 1;
+												continue;
 											}
 										}
 									}
