@@ -1573,7 +1573,7 @@ class web_optimizer {
 						$source = substr_replace($source, $newfile, $styles, 0);
 					}
 				} else {
-					$source = str_replace('@@@WSSSTYLES@@@', $newfile . '@@@WSSSTYLES@@@', $source);
+					$source = preg_replace('!@@@WSSSTYLES@@@!', $newfile . '@@@WSSSTYLES@@@', $source, 1);
 				}
 				break;
 /* no unobtrusive but external scripts exist, avoid excluded scripts */
@@ -1592,7 +1592,7 @@ class web_optimizer {
 				break;
 /* inject merged script to the first <script> occurrence, replace WSSSCRIPT */
 			case 2:
-				$source = str_replace("@@@WSSSCRIPT@@@", $newfile, $source);
+				$source = preg_replace("!@@@WSSSCRIPT@@@!", $newfile, $source, 1);
 				break;
 /* add JavaScript calls before </body> */
 			case 3:
@@ -1613,7 +1613,7 @@ class web_optimizer {
 /* place second CSS call to onDOMready */
 			case 4:
 				if (!$this->options['css']['data_uris_domloaded']) {
-					$source = str_replace("@@@WSSSTYLES@@@", "@@@WSSSTYLES@@@" . $newfile , $source);
+					$source = preg_replace("!@@@WSSSTYLES@@@!", "@@@WSSSTYLES@@@" . $newfile , $source, 1);
 				} else {
 					$inc = ($this->premium > 1 ? '<!--noindex-->' : '') .
 						'<script type="text/javascript">' .
