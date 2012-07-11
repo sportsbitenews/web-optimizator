@@ -3464,6 +3464,7 @@ class web_optimizer {
 				$this->basehref_url = preg_replace("@^((https?:)?//[^/]+).*$@is", "$1", $this->basehref);
 				$this->basehref_url = preg_replace("@https?://(www\.)?" . $this->host . "@", "", $this->basehref_url);
 				$this->basehref = preg_replace("@https?://(www\.)?" . $this->host . "@", "", $this->basehref);
+				$this->basehref = $this->basehref ? $this->basehref : '/';
 			}
 /* change all links on the page according to DEBUG mode */
 			if ($this->debug_mode) {
