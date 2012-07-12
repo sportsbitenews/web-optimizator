@@ -107,6 +107,12 @@ $unobtrusive_items = array(
 			'marker' => 'AddThis',
 			'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 			'height' => 16
+/* Facebook Connect Async */
+		), 'fa' => array(
+			'marker' => 'connect.facebook.net',
+			'regexp' => "<script[^>]*>\(function\(d.*?connect.facebook.net.*?</script>",
+			'onload_before' => "<script[^>]*>(\(function\(d.*?connect.facebook.net.*?)</script>",
+			'onload_after' => '$1;setTimeout(function(){if(typeof window.FB!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* FetchBack */
 		), 'fb' => array(
 			'marker' => 'pixel.fetchback.com',
