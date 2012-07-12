@@ -3738,7 +3738,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					$full_path_to_image = preg_replace("@[^/\\\]+$@", "", $endfile);
 					$absolute_path = $this->view->unify_dir_separator($full_path_to_image . $file);
 				}
-			} elseif (substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
+			} elseif ($endfile && substr($endfile, 0, 1) != "/" && !preg_match("!^https?://!", $endfile)) {
 				$absolute_path = $this->view->unify_dir_separator(preg_replace("@[^/\\\]+$@", "", $file) . $endfile);
 			}
 		}
