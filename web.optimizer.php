@@ -44,7 +44,7 @@ if (!function_exists('webo_integrity_handler')) {
 			@file_put_contents($webo_options['html_cachedir'] . 'img/scale/wo.img.php', '<?php ?>');
 		}
 		if (empty($webo_files_list_ok)) {
-			@file_put_contents($webo_options['html_cachedir'] . 'wo.files.php', '<?php define("WSS_CACHE_FILE","1"); ?>');
+			@file_put_contents($webo_options['html_cachedir'] . 'wo.files.php', '<?php if(!defined("WSS_CACHE_FILE")){define("WSS_CACHE_FILE","1");} ?>');
 		}
 		return '';
 	}

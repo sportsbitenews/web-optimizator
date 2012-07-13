@@ -455,7 +455,7 @@ class webo_cache_files extends webo_cache_engine
 
 	function __put_files_list() {
 		global $webo_files_list_var, $webo_files_list_ok;
-		$str = "<?php\ndefine('WSS_CACHE_FILE','1');\n";
+		$str = "<?php\nif(!defined('WSS_CACHE_FILE')){define('WSS_CACHE_FILE','1');}\n";
 		foreach ($this->all_files as $k => $v) {
 			if (!is_array($v)) {
 				$v = array($v, time());
@@ -467,7 +467,7 @@ class webo_cache_files extends webo_cache_engine
 		$i = 0;
 		$written = 0;
 		$tmp = '.tmp.' . (time()+microtime());
-		@file_put_contents($webo_files_list_var . $tmp, "<?php\ndefine('WSS_CACHE_FILE','1');\n?>");
+		@file_put_contents($webo_files_list_var . $tmp, "<?php\nif(!defined('WSS_CACHE_FILE')){define('WSS_CACHE_FILE','1');}\n?>");
 		while (($i < 3) && ($written != $length)) {
 			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
 			$i++;
@@ -504,7 +504,7 @@ class webo_cache_files extends webo_cache_engine
 		if (!$this->enabled) {
 			return false;
 		}
-		$content = @file_get_contents($this->__get_path($key));
+		$content = @is_file($this->__get_path($key)) ? @file_get_contents($this->__get_path($key)) : '';
 		if (get_magic_quotes_runtime()) {
 			$content = stripslashes($content);
 		}
