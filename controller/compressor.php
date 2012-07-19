@@ -3047,6 +3047,11 @@ class web_optimizer {
 					preg_match_all("!(<script.*?</script>)!is", $source, $match);
 					$_script_blocks = $match[0];
 					array_unique($_script_blocks);
+					foreach ($_script_blocks as $k => $b) {
+						if (strpos($b, 'WEBONOTOPTIMIZE') !== false) {
+							unset($_script_blocks[$k]);
+						}
+					}
 					$_script_blocks_to = array();
 					$c = count($_script_blocks);
 					for ($i = 0; $i < $c; $i++) {
@@ -3194,7 +3199,9 @@ class web_optimizer {
 							$replace[$_i] = '';
 					}
 				}
-				$subject = substr_replace($subject, $replace[$_i], $_pos, $_len);
+				if (strpos($replace[$_i], 'WEBONOTOPTIMIZE') === false) {
+					$subject = substr_replace($subject, $replace[$_i], $_pos, $_len);
+				}
 			} else {
 				break;
 			}
