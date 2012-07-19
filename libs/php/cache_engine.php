@@ -475,7 +475,9 @@ class webo_cache_files extends webo_cache_engine
 /* need for APS.NET environments, why? */
 		@unlink($webo_files_list_var);
 		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
-		@unlink($webo_files_list_var . $tmp);
+		if (@is_file($webo_files_list_var . $tmp)) {
+			@unlink($webo_files_list_var . $tmp);
+		}
 	}
 
 	/* Adds or updates entry. Expects key string and value to cache. */
@@ -640,11 +642,23 @@ class webo_cache_files extends webo_cache_engine
 	function __make_path($path) {
 		$dirs = explode('/', dirname($path));
 		$cur_dir = $path{0} == '/' ? '/' : '';
+		$basedirs = explode(":", @ini_get('open_basedir'));
+		$no_basedirs = !count($basedirs);
 		foreach ($dirs as $dir) {
 			if (!empty($dir)) {
 				$cur_dir .= $dir . '/';
 				if (!@is_dir($cur_dir)) {
-					@mkdir($cur_dir, octdec("0755"));
+					if (!$no_basedirs) {
+						foreach ($basedirs as $basedir) {
+							if (strpos($basedir, $cur_dir) !== false) {
+								$create_dir = 1;
+								continue;
+							}
+						}
+					}
+					if ($no_basedirs || !empty($create_dir)) {
+						@mkdir($cur_dir, octdec("0755"));
+					}
 				}
 			}
 		}

@@ -202,7 +202,7 @@ class web_optimizer {
 				$timestamp = $this->cache_engine->get_mtime($cache_plain_key);
 				$gzip_me = 1;
 			}
-			if (!$timestamp && !$timestamp_ajax) {
+			if (!$timestamp && !$timestamp_ajax && !defined('WSS_CACHE_MISS')) {
 				define('WSS_CACHE_MISS', 1);
 			}
 			if (($timestamp &&
