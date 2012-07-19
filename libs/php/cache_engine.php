@@ -492,12 +492,16 @@ class webo_cache_files extends webo_cache_engine
 		}
 		$path .= @is_dir($path) ? '/index.html' : '';
 		@file_put_contents($path . '.tmp', $value);
-		@rename($path . '.tmp', $path);
-		@touch($path);
-		@chmod($path, octdec("0644"));
-		$this->__get_files_list();
-		$this->all_files[$path] = array(strlen($value), $time);
-		$this->__put_files_list();
+		if (!@is_dir($path)) {
+			@rename($path . '.tmp', $path);
+			@touch($path);
+			if (@is_writable($path)) {
+				@chmod($path, octdec("0644"));
+			}
+			$this->__get_files_list();
+			$this->all_files[$path] = array(strlen($value), $time);
+			$this->__put_files_list();
+		}
 	}
 
 	/* Get cache entry by key. Expects key string. */
@@ -574,7 +578,9 @@ class webo_cache_files extends webo_cache_engine
 					$entry = array($entry, @filemtime($path));
 				}
 				if ($entry[1] + $interval < $time) {
-					@unlink($path);
+					if (@is_file($path)) {
+						@unlink($path);
+					}
 					unset($this->all_files[$path]);
 					$changed = 1;
 				}

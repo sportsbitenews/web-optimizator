@@ -4102,8 +4102,10 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
-				@curl_setopt($ch, CURLOPT_REFERER, $host);
-				@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				@curl_setopt($ch, CURLOPT_REFERER, $this->host);
+				if (!@ini_set('open_basedir')) {
+					@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				}
 				@curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				@curl_setopt($ch, CURLOPT_WRITEHEADER, $fph);
 				if (!empty($this->options['page']['htaccess_username']) && !empty($this->options['page']['htaccess_password'])) {
