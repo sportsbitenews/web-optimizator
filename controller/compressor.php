@@ -679,7 +679,7 @@ class web_optimizer {
 /* define if Content-Type is text/html and allow it */
 			foreach ($headers as $head) {
 				$header = strtolower($head);
-				if (strpos($header, 'content-type:') !== false || strpos($header, 'location:') !== false) {
+				if (strpos($header, 'content-type:') !== false || (strpos($header, 'location:') !== false && strpos($header, '-location:') === false)) {
 					$skip++;
 				}
 				if (strpos($header, 'text/html') || strpos($header, 'application/xhtml+xml')) {
