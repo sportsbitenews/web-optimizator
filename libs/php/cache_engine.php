@@ -472,10 +472,12 @@ class webo_cache_files extends webo_cache_engine
 			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
 			$i++;
 		}
-/* need for APS.NET environments, why? */
-		@unlink($webo_files_list_var);
-		@rename($webo_files_list_var . $tmp, $webo_files_list_var);
 		if (@is_file($webo_files_list_var . $tmp)) {
+			if (@is_file($webo_files_list_var)) {
+/* need for APS.NET environments, why? */
+				@unlink($webo_files_list_var);
+			}
+			@rename($webo_files_list_var . $tmp, $webo_files_list_var);
 			@unlink($webo_files_list_var . $tmp);
 		}
 	}
