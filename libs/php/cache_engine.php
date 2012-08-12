@@ -651,7 +651,7 @@ class webo_cache_files extends webo_cache_engine
 		$dirs = explode('/', dirname($path));
 		$cur_dir = $path{0} == '/' ? '/' : '';
 		$basedirs = explode(":", @ini_get('open_basedir'));
-		$allow_basedirs = !count($basedirs);
+		$allow_basedirs = !count($basedirs) || empty($basedirs[0]);
 		if (!$allow_basedirs) {
 			foreach ($basedirs as $basedir) {
 				if (strpos($path, $basedir) === 0) {
@@ -664,11 +664,9 @@ class webo_cache_files extends webo_cache_engine
 		}
 		if ($allow_basedirs) {
 			foreach ($dirs as $dir) {
-				header('BaseDir'.$dir.':' . $cur_dir);
 				if (!empty($dir)) {
 					$cur_dir .= $dir . '/';
 					if (!@is_dir($cur_dir)) {
-						header('MakeDir' . $dir . ':' . $cur_dir);
 						@mkdir($cur_dir, octdec("0755"));
 					}
 				}
