@@ -3855,13 +3855,13 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}@]+)\{([^\}]*?background(-image|-position|-color|-repeat)?[^\}]+?)\}!is", $str, $ims, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}@]+)\{([^\}]*?background(-image|-position|-color|-repeat)?[^\}]+?)\}!is", $content, $ims, PREG_SET_ORDER);
 		$imgs = array();
 /* form correct array with background properties */
 		foreach ($ims as $im) {
 			preg_match_all("!(background(-image|-position|-color|-repeat)?):([^;]*?(url[^;]*?\([^\)]+\))?[^;]*);?!is", $im[2], $is, PREG_SET_ORDER);
 			foreach ($is as $i) {
-				$imgs[] = array($im[0], $im[1], $is[1], '', $is[3]);
+				$imgs[] = array($im[0], $im[1], $i[1], '', $i[3]);
 			}
 		}
 		if (count($imgs)) {
