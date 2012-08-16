@@ -4978,6 +4978,15 @@ Options +FollowSymLinks";
 	RewriteCond %{REQUEST_FILENAME} -f
 	RewriteRule ^(.*)\.js$ " . $cachedir . "wo.gzip.php?" . $base . "$1.js [L]";
 							}
+							if (!empty($this->input['wss_gzip_fonts'])) {
+								$content .= "
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)\.ttf$ " . $cachedir . "wo.gzip.php?" . $base . "$1.ttf [L]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)\.otf$ " . $cachedir . "wo.gzip.php?" . $base . "$1.otf [L]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)\.eot$ " . $cachedir . "wo.gzip.php?" . $base . "$1.eot [L]";
+							}
 					}
 					$content .= "
 </IfModule>";
