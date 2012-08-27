@@ -150,6 +150,12 @@ $unobtrusive_items = array(
 			'regexp' => "<script[^>]+src=\"https?://translate.google.com/[^\"]+\"[^>]*></script>",
 			'onload_before' => '<script[^>]+src=\"https?://translate.google.com/([^\"]+)\"[^>]*></script>',
 			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$1" type="text/javascript">\x3c/script>\');wss_onload_ready=1;'
+/* LinkedIn */
+		), 'ln' => array(
+			'marker' => 'platform.linkedin',
+			'regexp' => '<script[^>]*>[^>]*?platform\.linkedin[^>]*?</script>',
+			'onload_before' => '<script[^>]*>([^>]*?platform\.linkedin[^>]*?)</script>',
+			'onload_after' => '$1;setTimeout(function(){if(typeof window.IN!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Odnaknopka */
 		), 'ok' => array(
 			'marker' => 'odnaknopka.ru',
@@ -159,6 +165,12 @@ $unobtrusive_items = array(
 		), 're' => array(
 			'marker' => 'reformal.ru',
 			'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+/* Twitter */
+		), 'tw' => array(
+			'marker' => 'platform.twitter',
+			'regexp' => '<script>[^>]*?platform\.twitter[^>]*?</script>',
+			'onload_before' => '<script>([^>]*?platform\.twitter[^>]*?)</script>',
+			'onload_after' => '$1;setTimeout(function(){if(typeof window.__twttrlr!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Vkontakte API */
 		), 'va' => array(
 			'marker' => 'vkontakte.ru/js/common.js',
