@@ -591,7 +591,7 @@ __________________
 /* add rules for IE6/7 for data:URI background images */
 										if ($this->optimizer->uniform_cache && !empty($image)) {
 											$this->optimizer->css->css[$import][$tags]['*background-image'] =
-												"url(" . $this->optimizer->css_image . ")";
+												$value;
 										}
 									}
 								}
