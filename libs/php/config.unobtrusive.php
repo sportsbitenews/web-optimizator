@@ -156,6 +156,12 @@ $unobtrusive_items = array(
 			'regexp' => '<script[^>]*>[^>]*?platform\.linkedin[^>]*?</script>',
 			'onload_before' => '<script[^>]*>([^>]*?platform\.linkedin[^>]*?)</script>',
 			'onload_after' => '$1;setTimeout(function(){if(typeof window.IN!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+/* Livetex */
+		), 'lx' => array(
+			'marker' => 'liveTexID',
+			'regexp' => '<script[^>]*>[^>]*?liveTexID[^>]*?</script>',
+			'onload_before' => '<script[^>]*>([^>]*?liveTexID[^>]*?)</script>',
+			'onload_after' => '$1;setTimeout(function(){if(typeof window.__twttrlr!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Odnaknopka */
 		), 'ok' => array(
 			'marker' => 'odnaknopka.ru',
