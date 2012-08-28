@@ -10,7 +10,9 @@
 $no_cache = isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
 $webo_request_uri = $_SERVER['REQUEST_URI'];
 /* Add spot for worldwide stats */
-header('WEBO: inside');
+if (!function_exists('finish_webositespeedup')) {
+	header('WEBO: inside');
+}
 
 /* Test failed store to this file. 2 steps: check and clean content if not valid */
 if (!function_exists('webo_integrity_handler')) {
