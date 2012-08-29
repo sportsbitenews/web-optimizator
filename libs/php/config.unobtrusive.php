@@ -160,8 +160,9 @@ $unobtrusive_items = array(
 		), 'lx' => array(
 			'marker' => 'liveTexID',
 			'regexp' => '<script[^>]*>[^>]*?liveTexID[^>]*?</script>',
-			'onload_before' => '<script[^>]*>([^>]*?liveTexID[^>]*?)</script>',
-			'onload_after' => '$1;setTimeout(function(){if(typeof window.__twttrlr!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+			'onload_before' => '<script[^>]*>[^>]*?liveTex\s*=\s*([^,]+)[^>]*?liveTexID\s*=\s*([^,]+)[^>]*?liveTex_object\s*=\s*([^;]+);([^>]*?)</script>',
+			'onload_after' => 'window.liveTex=$1;window.liveTexID=$2;window.liveTex_object=$3;$4;setTimeout(function(){if(typeof window.ltAPI!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+
 /* Odnaknopka */
 		), 'ok' => array(
 			'marker' => 'odnaknopka.ru',
