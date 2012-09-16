@@ -64,7 +64,7 @@ class compressor_view {
 	 *
 	 **/	
 	 function ensure_trailing_slash ($path) {
-	 	if ($path{strlen($path) - 1} !== '/') {
+	 	if (!empty($path) && $path{strlen($path) - 1} !== '/') {
 			$path .= '/';
 		}
 	 	return $path; 
