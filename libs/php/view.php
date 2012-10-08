@@ -23,17 +23,16 @@ class compressor_view {
 	 *
 	 **/
 	function set_paths ($document_root = null) {
-		if (empty($document_root)) {
+     $document_root = empty($document_root) ? $_SERVER['DOCUMENT_ROOT'] : $document_root;
 /* Save doc root, fix for PHP as CGI */
-			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator($_SERVER['DOCUMENT_ROOT']));
-		} else {
-			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator($document_root));
-		}
+		  $this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator($document_root));
 /* Avoiding problems with Denwer */
 		if (empty($this->paths['full']['document_root']) || !@is_dir($this->paths['full']['document_root']) || !@is_file($this->paths['full']['document_root'] . getenv("SCRIPT_NAME"))) {
 			$name = str_replace("//", "/", $this->unify_dir_separator(@getenv("SCRIPT_NAME")));
 			$filename = str_replace("//", "/", $this->unify_dir_separator(@getenv("SCRIPT_FILENAME")));
-			$this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr($filename, 0, strpos($filename, $name))));
+      if ($name) {
+        $this->paths['full']['document_root'] = $this->ensure_trailing_slash($this->unify_dir_separator(substr($filename, 0, strpos($filename, $name))));
+      }
 		}
 		$this->paths['full']['document_root'] = str_replace("//", "/", $this->unify_dir_separator(realpath($this->paths['full']['document_root'])) . '/');
 /* Get the view directory */
@@ -75,7 +74,7 @@ class compressor_view {
 	 * 
 	 **/	
 	 function prevent_trailing_slash ($path) {
-	 	if ($path{strlen($path) - 1} === '/') {
+	 	if (!empty($path) && $path{strlen($path) - 1} === '/') {
 			$path = substr($path, 0, -1);
 		}
 	 	return $path;
