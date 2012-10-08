@@ -15,11 +15,12 @@ class web_optimizer {
 	**/
 	function web_optimizer ($options = false) {
 		$currency = empty($_COOKIE['WSS_CURRENCY']) ? $options['options']['currency'] : $_COOKIE['WSS_CURRENCY'];
+    $rurl = empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'];
 		$homepage = empty($options['options']['html_cache']['ignore_list']) && empty($options['options']['restricted']) ? '' :
-			in_array($_SERVER['REQUEST_URI'], array('/', '/index.php', '/index.html', '/#' . $currency));
+			in_array($rurl, array('/', '/index.php', '/index.html', '/#' . $currency));
 /* skip processing if disabled or restricted */
 		if (!empty($_GET['web_optimizer_disabled']) || (!empty($options['options']['restricted']) &&
-			(preg_match("@" . preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $options['options']['restricted'])) . "@", $_SERVER['REQUEST_URI']))) ||
+			(preg_match("@" . preg_replace("/ /", "|", preg_replace("/([\?!\^\$\|\(\)\[\]\{\}])/", "\\\\$1", $options['options']['restricted'])) . "@", $rurl))) ||
 			(strpos($options['options']['restricted'], '#') !== false && $homepage)) {
 				$this->options['active'] = 0;
 				return;
