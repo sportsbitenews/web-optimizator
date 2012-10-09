@@ -2195,7 +2195,6 @@ class web_optimizer {
 		} else {
 			$content = $src;
 		}
-/* remove BOM */
 		$content = $this->resolve_amps($content);
 		if (@is_file($file) || $inline) {
 /* remove commented @import. First of all glue CSS files, optimiza only secondly */
@@ -2763,7 +2762,7 @@ class web_optimizer {
 							}
 						}
 /* remove BOM */
-						$content_from_file = str_replace(' ', '', $content_from_file);
+						$content_from_file = str_replace('﻿', '', $content_from_file);
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 						if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
@@ -3489,7 +3488,7 @@ class web_optimizer {
 			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
-				$added = $this->premium > 1 ? '' : '|(<\!--/?noindex-->)';
+				$added = $this->premium > 1 ? '' : '|(<!--/?noindex-->)';
 /* skip removing escaped JavaScript code, thx to smart */
 				preg_match_all("!((<script[^>]*>.*?</script>)|(<style[^>]*>.*?</style>)|(<\!--\[.*?<\!\[endif\]-->)" . $added . ")!is", $this->content, $matches, PREG_SET_ORDER);
 				$i = 0;
@@ -4200,7 +4199,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	*
 	*/
 	function resolve_amps ($str) {
-		return str_replace(array('&amp;', '&#38;', '&#038;', ' '), array('&', '&', '&', ''), $str);
+		return str_replace(array('&amp;', '&#38;', '&#038;', '﻿'), array('&', '&', '&', ''), $str);
 	}
 	
 	/**
@@ -4275,7 +4274,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 	*
 	**/
 	function clear_trash () {
-		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", " "), "", $this->content);
+		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
 	}
 
 	/**
