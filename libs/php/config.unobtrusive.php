@@ -166,7 +166,7 @@ $unobtrusive_items = array(
 		), 'mr' => array(
 			'marker' => 'marva',
 			'regexp' => '<script[^>]*>//<!\[CDATA\[[^>]*?marva[^>]*?//\]\]></script>',
-			'onload_before' => '<script[^>]*>//<!\[CDATA\[([^>]*?marva[^>]*?)//\]\]></script>',
+			'onload_before' => '<script[^>]*>[\r\n]?//<!\[CDATA\[([^>]*?marva[^>]*?)//\]\]>[\r\n]?</script>',
 			'onload_after' => '$1;setTimeout(function(){if(typeof window.marva!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
 /* Odnaknopka */
 		), 'ok' => array(
