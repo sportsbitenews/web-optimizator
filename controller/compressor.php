@@ -3355,7 +3355,7 @@ class web_optimizer {
 				$replace_from[] = $match[0];
 			}
 			if ($vk) {
-				$before_body .= '<script type="text/javascript">window.vkAsyncInit=function(){' . $vk . '}</script>';
+				$before_body .= '<script type="text/javascript">window.vkAsyncInit=function(){' . $vk . '};window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",vkAsyncInit,false)</script>';
 				$this->content = str_replace($replace_from, '', $this->content);
 			}
 		}
