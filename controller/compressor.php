@@ -3855,7 +3855,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 		$dir = @getcwd();
 		@chdir($options['cachedir']);
 		$compressed = '';
-		preg_match_all("!([^\{\}@]+)\{([^\}]*?background(-image|-position|-color|-repeat)?[^\}]+?)\}!is", $content, $ims, PREG_SET_ORDER);
+		preg_match_all("!([^\{\}@]+)\{([^\}]*?background(-image|-position|-color|-repeat)?[^\}]+?)\}!is", preg_replace("!@media print\{.*?\}\}!", "", $content), $ims, PREG_SET_ORDER);
 		$imgs = array();
 /* form correct array with background properties */
 		foreach ($ims as $im) {
