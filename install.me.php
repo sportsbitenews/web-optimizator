@@ -4,7 +4,7 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.5.2
+// @version    1.6.3
 // @copyright  Copyright &copy; 2009-2012 WEBO Software, All Rights Reserved
 // ==============================================================================================
 // To install WEBO Site SpeedUp please copy this file to the document root, make document root
@@ -99,7 +99,7 @@
 								if ($file[1]) {
 									$recursion = 0;
 									while (@filesize($install_directory . $file[0]) != $file[1] && $recursion < 10) {
-										web_optimizer_download($file[0], $install_directory);
+										download($file[0], $install_directory);
 										$recursion++;
 									}
 									if (@filesize($install_directory . $file[0]) != $file[1]) {
@@ -107,7 +107,7 @@
 										break;
 									}
 								} else {
-									web_optimizer_download($file[0], $install_directory);
+									download($file[0], $install_directory);
 								}
 							}
 						}
