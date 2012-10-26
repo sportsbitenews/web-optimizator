@@ -761,7 +761,7 @@ class web_optimizer {
 					$cart_class .
 					'")[0];f=x.getElementsByClassName("wss_cart_qty")[0];h=x.getElementsByClassName("wss_cart2")[0];j=x.getElementsByClassName("wss_cart2_qty")[0]}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
 					$cart_class .
-					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){h=c}if(/(^|\s)wss_cart2_qty(\s|$)/.test(c.className)){j=c}}}}if(g&&!(f&&(f.innerHTML*1))&&!(j&&(j.innerHTML*1))){var a,a1;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";a1=window.localStorage.wss_cart2||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"];delete window.localStorage["wss_cart2"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}e=c.indexOf("wss_cart2=");if(!e||e==1){a1=c.substr(e+11).replace(/@#/g,";")}}}if(x.cookie.indexOf("WSS_CART=1")!==-1'.
+					'(\s|$)/.test(c.className)){g=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){f=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){h=c}if(/(^|\s)wss_cart2_qty(\s|$)/.test(c.className)){j=c}}}}if(g&&!(f&&(parseInt(f.innerHTML)))&&!(j&&(parseInt(j.innerHTML)))){var a,a1;if(typeof window.localStorage!="undefined"){a=window.localStorage.wss_cart||"";a1=window.localStorage.wss_cart2||"";if(x.cookie.indexOf("WSS_CART=0")!==-1){delete window.localStorage["wss_cart"];delete window.localStorage["wss_cart2"]}}else{var b=x.cookie.split(";"),c,d=0,e;while(c=b[d++]){e=c.indexOf("wss_cart=");if(!e||e==1){a=c.substr(e+11).replace(/@#/g,";")}e=c.indexOf("wss_cart2=");if(!e||e==1){a1=c.substr(e+11).replace(/@#/g,";")}}}if(x.cookie.indexOf("WSS_CART=1")!==-1'.
 					($this->wp_cache ? '&&x.location.pathname!="/cart/"' : '') .
 					'){if(a&&a!="undefined"){WSS_CART=g.innerHTML=a}if(a1&&a1!="undefined"){WSS_CART2=h.innerHTML=a1}}}';
 				}
@@ -781,7 +781,7 @@ class web_optimizer {
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&y.innerHTML*1)||(z&&r&&r.innerHTML*1))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+					').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&parseInt(y.innerHTML))||(z&&r&&parseInt(r.innerHTML)))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
 					($this->options['page']['cart_timeout'] * 1000) .
 					').toGMTString())}},false)})();';
 					$this->domready_include3 = '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;document.cookie="WSS_CART=0;path=/;expires="+(new Date(new Date().getTime()+' .
