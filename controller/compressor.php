@@ -1304,7 +1304,7 @@ class web_optimizer {
 				$len = strpos(substr($_content, $pos), '>');
 				if (strpos($_content, 'src') > $pos && strpos($_content, 'src') < $pos + $len) {
 /* gets image tag w/o the closing >, it's OK */
-					$imgs[] = array(substr($_content, $pos, $len), $pos1 ? 'input' : 'img');
+					$imgs[] = array(substr($_content, $pos, $len), $pos1 ? 'input' : 'img', 'src');
 				}
 				$_content = substr_replace($_content, '', 0, $pos + $len + 1);
 				$pos = $pos1 = false;
