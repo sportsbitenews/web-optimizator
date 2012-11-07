@@ -405,7 +405,7 @@ class html_sprites {
 		if (!empty($this->options['page']['parallel'])) {
 			$hosts = explode(" ", trim($this->options['page']['parallel_hosts']));
 			if (count($hosts)) {
-				$host = strpos($hosts[0], ".") !== false ? $hosts[0] : $hosts[0] . '.' preg_replace("!^www\.!", ".", $this->options['host']);
+				$host = strpos($hosts[0], ".") !== false ? $hosts[0] : $hosts[0] . '.' . preg_replace("!^www\.!", ".", $this->options['host']);
 			}
 			if (!empty($_SERVER['HTTPS']) && !empty($this->options['page']['parallel_https'])) {
 				$host = $this->options['page']['parallel_https'];
