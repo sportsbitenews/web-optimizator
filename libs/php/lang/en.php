@@ -159,6 +159,12 @@ define('_WEBO_external_scripts_pass', 'Password (to access via HTTP Basic Author
 define('_WEBO_external_scripts_pass_HELP', 'If your website is protected via HTTP Basic Authorization you need to declare username and password so WEBO Site SpeedUp can process all required resources from the website.');
 define('_WEBO_restricted', 'Exclude URL from optimization');
 define('_WEBO_restricted_HELP', 'Sometimes it\'s required to exclude some parts of website from WEBO Site SpeedUp logic. In this case you need to set meaningful parts (masks) for such sections / URL, separated by space.');
+define('_WEBO_external_scripts_remove_list', 'Remove JavaScript file(s)');
+define('_WEBO_external_scripts_remove_list_HELP', 'These JavaScript files will be completely removed from HTML output. Example: mootools.js');
+define('_WEBO_external_scripts_remove_list_EFFECT', '2-5% less traffic and requests');
+define('_WEBO_external_scripts_remove_list_css', 'Remove CSS file(s)');
+define('_WEBO_external_scripts_remove_list_css_HELP', 'These CSS files will be completely removed from HTML output. Example: jcomments.css');
+define('_WEBO_external_scripts_remove_list_css_EFFECT', '2-5% less traffic and requests');
 
 define('_WEBO_combine_css', 'Combine CSS files');
 define('_WEBO_combine_css_HELP', 'Depending on this option CSS won\'t be combined, or there will be combined only CSS in &lt;head&gt; tag, or there will be combined the whole CSS on the page. All combined CSS code will be minified.');

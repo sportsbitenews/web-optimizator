@@ -159,6 +159,12 @@ define('_WEBO_external_scripts_pass', 'Adgangskode (til adgang via HTTP Basic Au
 define('_WEBO_external_scripts_pass_HELP', 'Hvis din hjemmeside er beskyttet via HTTP Basic Authorization, skal du angive brugernavn og adgangskode, så WEBO Site SpeedUp kan udføre alle handlingerne på hjemmesiden.');
 define('_WEBO_restricted', 'Eksluder URL fra optimering');
 define('_WEBO_restricted_HELP', 'Nogen gange kan det være nødvendigt, at udelukke dele af hjemmesiden fra WEBO Site SpeedUp. Dette kan gøres her, ved at angive sektioner/adresser, adskilt med et mellemrum.');
+define('_WEBO_external_scripts_remove_list', 'Remove JavaScript file(s)');
+define('_WEBO_external_scripts_remove_list_HELP', 'These JavaScript files will be completely removed from HTML output. Example: mootools.js');
+define('_WEBO_external_scripts_remove_list_EFFECT', '2-5% less traffic and requests');
+define('_WEBO_external_scripts_remove_list_css', 'Remove CSS file(s)');
+define('_WEBO_external_scripts_remove_list_css_HELP', 'These CSS files will be completely removed from HTML output. Example: jcomments.css');
+define('_WEBO_external_scripts_remove_list_css_EFFECT', '2-5% less traffic and requests');
 
 define('_WEBO_combine_css', 'Sammenflet CSS filer');
 define('_WEBO_combine_css_HELP', 'Afhængig af denne funktion, vil CSS filer ikke sammenflettes, eller kun CSS i &lt;head&gt; vil sammenflettes, eller CSS filer på hele siden sammenflettes. Alt sammenflettet CSS vil blive komprimeret.');

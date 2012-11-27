@@ -160,6 +160,12 @@ define('_WEBO_external_scripts_pass', 'Парола (за достъп чрез 
 define('_WEBO_external_scripts_pass_HELP', 'Ако Вашият уеб-сайт е защитен чрез HTTP Basic Authorization е необходимо да декларирате Вашето потребителско име и парола така че WEBO Site SpeedUp може да обработва всички необходими ресурси от уеб-сайта.');
 define('_WEBO_restricted', 'Изключи URL адреса от оптимизацията');
 define('_WEBO_restricted_HELP', 'Понякога се налага да се изключват някои части от уеб-сайта и от логиката на WEBO Site SpeedUp. В този случай трябва да настройте смислени части за такива участъци / URL (маски), разделени с разстояние.');
+define('_WEBO_external_scripts_remove_list', 'Remove JavaScript file(s)');
+define('_WEBO_external_scripts_remove_list_HELP', 'These JavaScript files will be completely removed from HTML output. Example: mootools.js');
+define('_WEBO_external_scripts_remove_list_EFFECT', '2-5% less traffic and requests');
+define('_WEBO_external_scripts_remove_list_css', 'Remove CSS file(s)');
+define('_WEBO_external_scripts_remove_list_css_HELP', 'These CSS files will be completely removed from HTML output. Example: jcomments.css');
+define('_WEBO_external_scripts_remove_list_css_EFFECT', '2-5% less traffic and requests');
 
 define('_WEBO_combine_css', 'Обединяване на CSS файлове');
 define('_WEBO_combine_css_HELP', 'В зависимост от тази опция CSS може въобще да не бъде обединен или само &lt;head&gt; тага, или ще бъде обединен целият такъв CSS файл на страницата. Всички обединени CSS кодове ще бъдат минимализирани.');

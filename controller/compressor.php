@@ -412,6 +412,7 @@ class web_optimizer {
 				"external_scripts_head_end" => $this->options['external_scripts']['head_end'],
 				"external_scripts_exclude" => $this->options['external_scripts']['ignore_list'],
 				"external_scripts_mask" => $this->premium > 1 ? $this->options['external_scripts']['include_mask'] : '',
+				"remove_list" => $this->premium > 1 ? $this->options['external_scripts']['remove_list'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"file" => $this->premium > 1 ? $this->options['minify']['javascript_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['javascript_host'] : '',
@@ -487,6 +488,7 @@ class web_optimizer {
 				"inline_scripts" => $this->options['external_scripts']['css_inline'],
 				"external_scripts_exclude" => $this->options['external_scripts']['additional_list'],
 				"include_code" => $this->options['external_scripts']['include_code'],
+				"remove_list" => $this->premium > 1 ? $this->options['external_scripts']['remove_list_css'] : '',
 				"dont_check_file_mtime" => $this->options['performance']['mtime'],
 				"file" => $this->premium > 1 ? $this->options['minify']['css_file'] : '',
 				"host" => $this->premium ? $this->options['minify']['css_host'] : '',
@@ -917,6 +919,7 @@ class web_optimizer {
 					'inline_scripts_body' => $options['inline_scripts_body'],
 					'external_scripts_head_end' => $options['external_scripts_head_end'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
+					'remove_list' => $options['remove_list'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
 					'file' => $options['file'],
 					'https' => $options['https'],
@@ -992,6 +995,7 @@ class web_optimizer {
 					'inline_scripts' => $options['inline_scripts'],
 					'external_scripts_exclude' => $options['external_scripts_exclude'],
 					'include_code' => $options['include_code'],
+					'remove_list' => $options['remove_list'],
 					'dont_check_file_mtime' => $options['dont_check_file_mtime'],
 					'file' => $options['file'],
 					'https' => $options['https'],
@@ -2703,6 +2707,10 @@ class web_optimizer {
 			if ($this->options['css']['rocket'] || $this->options['javascript']['rocket']) {
 				@include($rocket_file);
 			}
+			$remove_list = array(
+				'css' => explode(" ", $this->options['css']['remove_list']),
+				'script' => explode(" ", $this->options['javascript']['remove_list']),
+			);
 			foreach($this->initial_files as $key => $value) {
 				$k = md5($value['source']);
 				if (!empty($webo_scripts[$k])) {
@@ -2727,15 +2735,18 @@ class web_optimizer {
 									unset($value['file']);
 								}
 							}
-							if ($value['tag'] == 'link') {
+/* remove some files from pages at all */
+							if (empty($remove_list[$value['tag']]) || (!in_array(preg_replace("!^.*/!", "", $value['file']), $remove_list[$value['tag']]))) {
+								if ($value['tag'] == 'link') {
 /* recursively resolve @import in files */
-								$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
+									$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
 										$this->resolve_css_imports($value['file']) .
-									(empty($value['media']) ? "" : "}");
+										(empty($value['media']) ? "" : "}");
 /* convert CSS images' paths to absolute */
-								$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
-							} else {
-								$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
+									$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
+								} else {
+									$content_from_file = $this->file_get_contents($this->get_file_name($value['file']));
+								}
 							}
 /* detect Shadowbox variables */
 							if (strpos($value['file'], 'shadowbox.js') !== false) {

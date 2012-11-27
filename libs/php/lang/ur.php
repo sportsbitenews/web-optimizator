@@ -190,6 +190,12 @@ define('_WEBO_external_scripts_inline_body_HELP', 'There will be combined inline
 define('_WEBO_external_scripts_on', 'بیرونی جاوا اسکرپٹ merging کو فعال کریں');
 define('_WEBO_external_scripts_on_HELP', 'تمام ہوسٹس پر مشترکہ فائلز ہوں گی۔ یا پھر ویبو سائٹ اسپیڈ اپ صرف ابتدائی ویب صفحہ کے ہوسٹ پر موجود فائلز کو  ہی یکجا کرے گا');
 define('_WEBO_external_scripts_on_HELP_DISABLED', 'موجودہ سرور میں curl لائبریری کی سپورٹ موجود نہیں ہے لہٰذا dynamic اور External Files Merging ناممکن ہے۔');
+define('_WEBO_external_scripts_remove_list', 'Remove JavaScript file(s)');
+define('_WEBO_external_scripts_remove_list_HELP', 'These JavaScript files will be completely removed from HTML output. Example: mootools.js');
+define('_WEBO_external_scripts_remove_list_EFFECT', '2-5% less traffic and requests');
+define('_WEBO_external_scripts_remove_list_css', 'Remove CSS file(s)');
+define('_WEBO_external_scripts_remove_list_css_HELP', 'These CSS files will be completely removed from HTML output. Example: jcomments.css');
+define('_WEBO_external_scripts_remove_list_css_EFFECT', '2-5% less traffic and requests');
 define('_WEBO_minify_javascript_file', 'مرکب جاوا سکرپٹ فائل کا نام');
 define('_WEBO_minify_javascript_file_HELP', 'اس اختیار کو اس یقین دہانی کیلئے استعمال کریں کہ تمام ویب پیجز پر ایک ہی مشترکہ سی ایس ایس فائل لوڈ ہو۔ اس اختیار کو اسی صورت میں استعمال کریں جب آپ کی ویب سائٹ پر ہر جگہ لوڈ ہونے والی سی ایس ایس فائلز یکساں ہوں۔ صفحات جن پر سی ایس ایس فائلز کا کوئی دوسرا سیٹ استعمال کیا گیا ہوگا، وہ بھی پہلے سے بنائی گئی مشترکہ سی ایس ایس فائلز ہی کو استعمال کریں گے۔ مشترکہ سی ایس ایس فائل static ہوگی اور صرف تب ہی اپ ڈیٹ ہوگی جب آپ مینولی کیشے کو ریفریش کریں گے۔ فائل کے نام میں صرف حروف، نمبرز، ہائی فن، انڈرلائن یا ڈاٹس آ سکتے ہیں۔ تمام دوسری علامات نکال دی جائیں گی۔ فائل کا نام خودکار طور پر پھیلایا بھی جا سکتا ہے تاکہ کلائنٹ سائڈ پر براؤزرز کیشے کا انتظام کیا جا سکے۔');
 define('_WEBO_minify_javascript_file_EFFECT', 'سرچ انجن کیشے میں بہتر ویب سائٹ نظارہ');

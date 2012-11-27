@@ -160,6 +160,12 @@ define('_WEBO_external_scripts_pass', 'Mot de passe (pour accéder via HTTP Basi
 define('_WEBO_external_scripts_pass_HELP', 'Si votre site web est protégé via HTTP Basic Authorization vous devez indiquer votre nom d\'utilisateur et mot de passe pour que WEBO Site SpeedUp puisse traiter toutes les ressources requises depuis le site web.');
 define('_WEBO_restricted', 'Exclude URL from optimization');
 define('_WEBO_restricted_HELP', 'Sometimes it\'s required to exclude some parts of website from WEBO Site SpeedUp logic. In this case you need to set meaningful parts (masks) for such sections / URL, separated by space.');
+define('_WEBO_external_scripts_remove_list', 'Remove JavaScript file(s)');
+define('_WEBO_external_scripts_remove_list_HELP', 'These JavaScript files will be completely removed from HTML output. Example: mootools.js');
+define('_WEBO_external_scripts_remove_list_EFFECT', '2-5% less traffic and requests');
+define('_WEBO_external_scripts_remove_list_css', 'Remove CSS file(s)');
+define('_WEBO_external_scripts_remove_list_css_HELP', 'These CSS files will be completely removed from HTML output. Example: jcomments.css');
+define('_WEBO_external_scripts_remove_list_css_EFFECT', '2-5% less traffic and requests');
 
 define('_WEBO_combine_css', 'Combiner les fichiers CSS');
 define('_WEBO_combine_css_HELP', 'Selon cette option le CSS ne sera pas combiné ou il sera combiné seulement dans le balise &lt;head&gt;, ou tout le CSS de la page. Tout les fichiers CSS seront minifié');

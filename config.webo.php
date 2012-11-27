@@ -66,6 +66,10 @@ $compress_options['external_scripts']['ignore_list'] = "joomla.javascript.js top
 $compress_options['external_scripts']['additional_list'] = "";
 ## Include CSS code to all generated files
 $compress_options['external_scripts']['include_code'] = "";
+## Remove JS files from website at all
+$compress_options['external_scripts']['remove_list'] = "";
+## Remove CSS files from website at all
+$compress_options['external_scripts']['remove_list_css'] = "";
 ## Include try-catch construction to merged JS file
 $compress_options['external_scripts']['include_try'] = "1";
 ## Remove duplicates of common libraries

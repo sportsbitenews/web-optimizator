@@ -3207,7 +3207,13 @@ class admin {
 					'value' => $this->compress_options['config'],
 					'type' => 'text',
 					'hidden' => 1
-				)
+				),
+				'exrernal_scripts_remove_list' => array(
+					'value' => $this->compress_options['external_scripts']['remove_list_css'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 3
+				),
 			),
 			'combine_js' => array(
 				'minify_javascript' => array(
@@ -3265,6 +3271,12 @@ class admin {
 					'value' => $this->compress_options['external_scripts']['include_mask'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0
+				),
+				'exrernal_scripts_remove_list' => array(
+					'value' => $this->compress_options['external_scripts']['remove_list'],
+					'type' => 'text',
+					'hidden' => $this->premium < 2 ? 1 : 0,
+					'price' => 3
 				),
 			),
 			'minify' => array(
@@ -4149,6 +4161,8 @@ class admin {
 			'wss_minify_css_host',
 			'wss_minify_javascript_file',
 			'wss_minify_javascript_host',
+			'wss_external_script_remove_list',
+			'wss_external_script_remove_list_css',
 			'wss_performance_scale_restriction',
 			'wss_footer_counter',
 			'wss_parallel_ftp',
