@@ -3488,7 +3488,7 @@ class web_optimizer {
 			}
 /* Remove comments ?*/
 			if (!empty($this->options['page']['remove_comments'])) {
-				$added = $this->premium > 1 ? '' : '|(<!--/?noindex-->)';
+				$added = $this->premium > 1 ? '' : '|(<\!--/?noindex-->)';
 /* skip removing escaped JavaScript code, thx to smart */
 				preg_match_all("!((<script[^>]*>.*?</script>)|(<style[^>]*>.*?</style>)|(<\!--\[.*?<\!\[endif\]-->)" . $added . ")!is", $this->content, $matches, PREG_SET_ORDER);
 				$i = 0;
