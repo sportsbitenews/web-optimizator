@@ -3358,7 +3358,7 @@ class web_optimizer {
 		require($options['installdir'] . 'libs/php/config.unobtrusive.php');
 /* convert vKontakte to async load */
 		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
-			preg_match_all("!VK\.([^\)]+)\);!is", $this->content, $matches, PREG_SET_ORDER);
+			preg_match_all("!VK\.[^\)]+\);!s", $this->content, $matches, PREG_SET_ORDER);
 			$vk = '';
 			$replace_from = array();
 			foreach ($matches as $match) {
