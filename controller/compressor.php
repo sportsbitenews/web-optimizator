@@ -2583,9 +2583,9 @@ class web_optimizer {
 						$matched = preg_match("!(mootools(\.js|-more|-core|_release|\.x|\.v|\.min)|[^\.-]jquery(-ui|.min|\.js|\.1|-1|\.v|\.core|\.pack)|prototype(\.min|\.js|\.rev))!is", $value['file_raw']);
 						if (empty($matched)) {
 							$replace_to[] = ($value['tag'] == 'link' ? '<style type="text/css"' .
-								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : '<script type="text/javascript">') .
+								(empty($value['media']) ? '' : ' media="' . $value['media'] . '"') . '>' : "<script type='text/javascript'>//<![CDATA[\n") .
 								str_replace(array('</', '<!--'), array('\x3C/', '\x3C!--'), $value['content']) .
-								($value['tag'] == 'link' ? '</style>' : '</script>');
+								($value['tag'] == 'link' ? '</style>' : "\n//]]></script>");
 							if (!empty($value['file'])) {
 								$files_postload[] = (strpos($rewrite_to, '//') !== false ? '' : $this->options['host']) . $rewrite_to;
 							}
