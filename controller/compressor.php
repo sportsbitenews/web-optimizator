@@ -1151,7 +1151,7 @@ class web_optimizer {
 		}
 		if ($chunk) {
 			$chunk = ($this->premium > 1 ? '<!--noindex-->' : '').
-				'<script type="text/javascript">' . $chunk . '</script>' .
+				"<script type='text/javascript'>//<![CDATA[\n" . $chunk . "\n//]]></script>" .
 				($this->premium > 1 ? '<!--/noindex-->' : '');
 			if (preg_match("!</body>!i", $this->content)) {
 				$this->content = preg_replace("!(</body>)!is", $chunk . "$1", $this->content);
