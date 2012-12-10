@@ -4501,6 +4501,7 @@ class admin {
 				<add mimeType=\"message/*\" enabled=\"true\" />
 				<add mimeType=\"application/json\" enabled=\"true\" />
 				<add mimeType=\"application/xhtml+xml\" enabled=\"true\" />
+				<add mimeType=\"text/x-component\" enabled=\"true\" />
 				<add mimeType=\"image/x-icon\" enabled=\"true\" />";
 			}
 			if (!empty($this->input['wss_gzip_css'])) {
@@ -4713,6 +4714,7 @@ class admin {
 	mod_gzip_item_include mime ^text/richtext$
 	mod_gzip_item_include mime ^text/xsd$
 	mod_gzip_item_include mime ^text/xsl$
+	mod_gzip_item_include mime ^text/x-component$
 	mod_gzip_item_include mime ^httpd/unix-directory$";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
@@ -4779,7 +4781,7 @@ class admin {
 <IfModule mod_deflate.c>";
 				if (!empty($this->input['wss_gzip_page'])) {
 					$content .= "
-	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon image/vnd.microsoft.icon text/richtext text/xsd text/xsl text/xml application/json";
+	AddOutputFilterByType DEFLATE text/plain text/html text/xml application/xhtml+xml image/x-icon image/vnd.microsoft.icon text/richtext text/xsd text/xsl text/xml application/json text/x-component";
 				}
 				if (!empty($this->input['wss_gzip_css'])) {
 					$content .= "
@@ -4853,6 +4855,9 @@ Options +FollowSymLinks";
 	<FilesMatch \.xsl\.gz$>
 		ForceType text/xsl
 	</FilesMatch>
+	<FilesMatch \.htc\.gz$>
+		ForceType text/x-component
+	</FilesMatch>
 	AddType text/css css
 	AddType application/x-javascript js
 	AddType text/html html htm
@@ -4862,6 +4867,7 @@ Options +FollowSymLinks";
 	AddType text/xsl xsl
 	AddType text/xml xml
 	AddType text/cache-manifest manifest
+	AddType text/x-component htc
 	AddType video/asf asf asx wax wmv wmx
 	AddType video/avi avi
 	AddType video/ogg ogg ogv
@@ -4951,7 +4957,11 @@ Options +FollowSymLinks";
 	RewriteCond %{HTTP:Accept-encoding} gzip
 	RewriteCond %{HTTP_USER_AGENT} !Konqueror
 	RewriteCond %{REQUEST_FILENAME}.gz -f
-	RewriteRule ^(.*)\.txt$ $1.txt.gz [QSA,L]";
+	RewriteRule ^(.*)\.txt$ $1.txt.gz [QSA,L]
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{HTTP_USER_AGENT} !Konqueror
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)\.htc$ $1.htc.gz [QSA,L]";
 					}
 					if (!empty($this->input['wss_gzip_css'])) {
 						$content .= "
@@ -5049,6 +5059,7 @@ Options +FollowSymLinks";
 	ExpiresByType text/richtext A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/xsd A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType text/xsl A" . $this->input['wss_far_future_expires_html_timeout'] . "
+	ExpiresByType text/htc A" . $this->input['wss_far_future_expires_html_timeout'] . "
 	ExpiresByType application/rss+xml A" . $this->input['wss_far_future_expires_html_timeout'];
 				}
 				if (!empty($this->input['wss_far_future_expires_css'])) {
