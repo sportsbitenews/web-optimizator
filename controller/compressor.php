@@ -217,7 +217,7 @@ class web_optimizer {
 					$token = JUtility::getToken();
 				}
 				if ($jsession) {
-					$token - JSession::getFormToken();
+					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
@@ -1209,7 +1209,7 @@ class web_optimizer {
 					$token = JUtility::getToken();
 				}
 				if ($jsession) {
-					$token - JSession::getFormToken();
+					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
 					$c = str_replace('##WSS_JTOKEN_WSS##', $token, $c);
