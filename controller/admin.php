@@ -3208,7 +3208,7 @@ class admin {
 					'type' => 'text',
 					'hidden' => 1
 				),
-				'exrernal_scripts_remove_list' => array(
+				'external_scripts_remove_list' => array(
 					'value' => $this->compress_options['external_scripts']['remove_list_css'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
@@ -3272,7 +3272,7 @@ class admin {
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
-				'exrernal_scripts_remove_list' => array(
+				'external_scripts_remove_list' => array(
 					'value' => $this->compress_options['external_scripts']['remove_list'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
