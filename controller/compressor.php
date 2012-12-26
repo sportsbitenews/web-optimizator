@@ -293,7 +293,7 @@ class web_optimizer {
 			@header('WEBO: cache miss');
 		}
 /* remember Joomla! caching (VirtueMart) */
-		$this->joomla_cache = $this->options['page']['cache'] && class_exists('JUtility', false);
+		$this->joomla_cache = $this->options['page']['cache'] && (class_exists('JUtility', false) || class_exists('JSession', false));
 /* remember WordPress caching (WP Digi Cart) */
 		$this->wp_cache = defined('WP_CACHE') && @is_dir($this->options['document_root'] . 'wp-content/plugins/wp-cart-for-digital-products/');
 /* remember Generic caching for other carts */
