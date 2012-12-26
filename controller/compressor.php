@@ -177,8 +177,9 @@ class web_optimizer {
 		if (!empty($this->cache_me)) {
 			$this->uri = $this->convert_request_uri(empty($this->uri) ? '' : $this->uri);
 			$jutility = class_exists('JUtility', false);
+			$jsession = class_exists('JSession', false);
 /* gzip cached content before output? (plugins have onCache), JUtility must parse content */
-			$gzip_me = is_array($this->options['plugins']) || $jutility;
+			$gzip_me = is_array($this->options['plugins']) || $jutility || $jsession;
 			$cache_plain_key = $this->view->ensure_trailing_slash($this->uri) .
 				'index' .
 				$this->ua_mod .
@@ -214,6 +215,11 @@ class web_optimizer {
 				($content = $this->cache_engine->get_entry($cache_key_ajax)))) {
 				if ($jutility) {
 					$token = JUtility::getToken();
+				}
+				if ($jsession) {
+					$token - JSession::getFormToken();
+				}
+				if (!empty($token)) {
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
 				}
 /* execute plugin-specific logic */
@@ -1198,15 +1204,21 @@ class web_optimizer {
 			if (empty($timestamp) || empty($content) || $this->time - $timestamp > $this->options['page']['cache_timeout']) {
 				$c = $this->content;
 				$jutility = class_exists('JUtility', false);
+				$jsession = class_exists('JSession', false);
 				if ($jutility) {
 					$token = JUtility::getToken();
-					$c = str_replace($token, '##WSS_JTOKEN_WSS##', $c);
 				}
-				if (!empty($this->options['page']['gzip']) && !empty($this->encoding) && !$jutility) {
+				if ($jsession) {
+					$token - JSession::getFormToken();
+				}
+				if (!empty($token)) {
+					$c = str_replace('##WSS_JTOKEN_WSS##', $token, $c);
+				}
+				if (!empty($this->options['page']['gzip']) && !empty($this->encoding) && !$jutility && !$jsession) {
 					$content_to_write = $this->create_gz_compress($c,
 						in_array($this->encoding, array('gzip', 'x-gzip')));
 /* or just write full or non-gzipped content */
-				} elseif ((empty($this->options['page']['flush']) || !empty($this->encoding))	&& !$jutility) {
+				} elseif ((empty($this->options['page']['flush']) || !empty($this->encoding)) && !$jutility && !$jsession) {
 					$content_to_write = $c;
 				}
 /* don't create empty files */
