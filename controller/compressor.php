@@ -216,7 +216,7 @@ class web_optimizer {
 				if ($jutility) {
 					$token = JUtility::getToken();
 				}
-				if ($jsession) {
+				elseif ($jsession) {
 					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
@@ -1208,7 +1208,7 @@ class web_optimizer {
 				if ($jutility) {
 					$token = JUtility::getToken();
 				}
-				if ($jsession) {
+				elseif ($jsession) {
 					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
@@ -3006,7 +3006,7 @@ class web_optimizer {
 			}
 
 			$this->gzip_header[$type] .= '<?php
-				@header("Content-type: text/' . $type . '; charset: ' . $this->options['charset'] . '");
+				@header("Content-type: text/' . $type . '; charset= ' . $this->options['charset'] . '");
 ?>';
 
 		} // end FE
