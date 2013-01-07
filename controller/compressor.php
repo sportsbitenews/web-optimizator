@@ -536,8 +536,8 @@ class web_optimizer {
 				"cache" => $this->options['html_cache']['enabled'] &&
 					$this->premium,
 				"cache_timeout" => $this->options['html_cache']['timeout'],
-				"cart_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_cart'] : 0,
-				"ajax_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_ajax'] : 0,
+				"cart_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_cart'] : $this->options['html_cache']['timeout'],
+				"ajax_timeout" => $this->premium > 1 ? $this->options['html_cache']['timeout_ajax'] : $this->options['html_cache']['timeout'],
 				"flush" => $this->options['html_cache']['flush_only'] &&
 					$this->premium > 1,
 				"flush_size" => $this->options['html_cache']['flush_size'],
