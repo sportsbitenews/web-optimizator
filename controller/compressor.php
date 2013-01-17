@@ -2304,7 +2304,7 @@ class web_optimizer {
 /* fix shadowbox loader */
 								if (!empty($file['file']) && strpos($file['file'], 'shadowbox.js')) {
 									$this->shadowbox_base_raw = preg_replace("@^(https?://" .
-										$this->host_escaped . ")?/(.*/)[^/]+$@", "$2", $file['file']);
+										$this->host_escaped . ")?/?(.*/)[^/]+$@", "$2", $file['file']);
 									$this->shadowbox_base = (empty($this->options['javascript']['host']) ?
 										'' : '//' . $this->options['javascript']['host']) .
 										'/' . $this->shadowbox_base_raw;
