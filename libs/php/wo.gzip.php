@@ -338,7 +338,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 			if ($gzip) {
 				header('Content-Encoding: ' . $encoding);
 			}
-			header('Content-Length: ' . filesize($compressed));
+			header('Content-Length: ' . strlen($contents));
 		} else {
 			$contents = @file_get_contents($cached);
 			if (empty($contents) && $cached != $filename) {
