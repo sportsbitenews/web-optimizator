@@ -1900,8 +1900,7 @@ class admin {
 				$this->compress_options['minify']['with_yui'] ||
 				$this->compress_options['minify']['with_google'] ||
 				$this->compress_options['minify']['html_one_string'] ||
-				($this->compress_options['performance']['plain_string'] &&
-				!$this->compress_options['unobtrusive']['all'] &&
+				(!$this->compress_options['unobtrusive']['all'] &&
 				!$this->compress_options['unobtrusive']['informers'] &&
 				!$this->compress_options['unobtrusive']['ads'] &&
 				!$this->compress_options['unobtrusive']['counters'] &&
