@@ -51,7 +51,7 @@ class web_optimizer {
 			$this->auto_rewrite = round(empty($_GET['auto_rewrite']) ? '' :
 				$_GET['auto_rewrite']);
 			$this->chained_redirect = 'http://' .
-				$this->host .
+				$this->options['host'] .
 				str_replace($this->options['document_root'], '/', $this->options['html_cachedir']) .
 				'optimizing.php';
 			$this->cache_version = round(empty($_GET['cache_version']) ? '' :
@@ -2577,7 +2577,7 @@ class web_optimizer {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
 						$this->host_escaped . "/+@", "/", $value['file']);
 					if ($f = $this->convert_path_to_absolute($value['file'], array('file' => $_SERVER['REQUEST_URI']))) {
-						$rewrite_to = '//' . $this->host . str_replace($value['file'],
+						$rewrite_to = '//' . $this->options['host'] . str_replace($value['file'],
 							$this->options['page']['cachedir_relative'] . 
 							(($value['tag'] == 'link' && $this->options['css']['gzip']) ||
 								($value['tag'] == 'script' && $this->options['javascript']['gzip']) ?
@@ -4125,7 +4125,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
-				@curl_setopt($ch, CURLOPT_REFERER, $this->host);
+				@curl_setopt($ch, CURLOPT_REFERER, $this->options['host']);
 				if (!@ini_set('open_basedir')) {
 					@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				}
