@@ -281,7 +281,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		header('Content-Disposition: inline;filename=' .
 				substr($filename, $slash + 1, strlen($filename) - $slash) .
 			';modification-date="' .
-				date("r", $mtime) .
+				@date("r", $mtime) .
 			'";');
 /* set ETag */
 		header('ETag: "' . $hash . '"');
@@ -296,7 +296,7 @@ if (strpos($filename, $document_root) !== false && !empty($extension)) {
 		$cached = $extension == 'text/css' ? dirname(__FILE__) . '/wss' . md5($filename) . '.css' : $filename;
 /* set Expires header */
 		header('Expires: ' .
-			gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
+			@gmdate('D, d M Y H:i:s', $_SERVER['REQUEST_TIME'] + $timeout). ' GMT');
 /* create gzipped file */
 		if ($gzip) {
 /* try to get gzipped content from file */
