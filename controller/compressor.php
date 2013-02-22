@@ -1074,7 +1074,7 @@ class web_optimizer {
 					$hosts_to_cache[] = '//' . $s;
 				}
 				$stamp .= '<script type="text/javascript">new Image().src="' .
-					implode($this->options['page']['cachedir_relative'] . '0.gif";new Image().src()="', $hosts_to_cache) .
+					implode($this->options['page']['cachedir_relative'] . '0.gif";new Image().src="', $hosts_to_cache) .
 					$this->options['page']['cachedir_relative'] . '0.gif"</script>';
 			}
 			if ($this->options['page']['html_tidy'] &&
