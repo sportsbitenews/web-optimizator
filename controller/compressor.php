@@ -1406,7 +1406,7 @@ class web_optimizer {
 /* are we operating with multiple hosts */
 					} elseif (!empty($this->options['page']['parallel']) &&
 						!empty($this->options['page']['parallel_hosts']) &&
-						(!count($ignore_list) || !in_array(str_replace($old_src_param, '', $img), $ignore_list))) {
+						(!count($ignore_list) || (!in_array(str_replace($old_src_param, '', $img), $ignore_list) && strpos($old_src, $ignore_list[0]) === false))) {
 /* skip images on different hosts */
 						if (preg_match("!//(www\.)?" . $this->host_escaped . "/+!i", $old_src) || ($absolute_src && strpos($absolute_src, '//') === false)) {
 /* using secure host */
