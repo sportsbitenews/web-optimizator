@@ -1061,16 +1061,21 @@ class web_optimizer {
 					($this->xhtml ? '/' : '') .
 					'>';
 				$hosts = explode(" ", $this->options['page']['parallel_hosts']);
+				$hosts_to_cache = array();
 				foreach ($hosts as $host) {
+					$s = $host . ((strpos($host, '.') === false) ? '.' . $this->host : '');
 					$stamp .= '<link rel="dns-prefetch" href="http' .
 						($this->https ? 's' : '') .
 						'://' .
-						$host .
-						((strpos($host, '.') === false) ? '.' . $this->host : '') .
+						$s .
 						'"' .
 						($this->xhtml ? '/' : '') .
 						'>';
+					$hosts_to_cache[] = '//' . $s;
 				}
+				$stamp .= '<script type="text/javascript">new Image().src="' .
+					implode($this->options['page']['cachedir_relative'] . '0.gif";new Image().src()="', $hosts_to_cache) .
+					$this->options['page']['cachedir_relative'] . '0.gif"</script>';
 			}
 			if ($this->options['page']['html_tidy'] &&
 				($headpos = strpos($this->content, '<head'))) {
