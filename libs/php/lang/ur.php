@@ -686,6 +686,8 @@ define('_WEBO_DASHBOARD_CACHE_SIZE', 'کل سائز');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'تعداد');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'ریفریش کیشے');
 define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
+define('_WEBO_DASHBOARD_CACHE_XCache', 'XCache');
+define('_WEBO_DASHBOARD_CACHE_Memcached', 'Memcached');
 
 /* ڈیش بورڈ سسٹم بلاک */
 define('_WEBO_SYSTEM_TITLE', 'سرور اسٹیٹس');

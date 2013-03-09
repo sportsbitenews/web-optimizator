@@ -706,6 +706,8 @@ define('_WEBO_DASHBOARD_CACHE_SIZE', 'Общий размер');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Количество');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Обновить кэш');
 define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
+define('_WEBO_DASHBOARD_CACHE_XCache', 'XCache');
+define('_WEBO_DASHBOARD_CACHE_Memcached', 'Memcached');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', 'Конфигурация сервера');

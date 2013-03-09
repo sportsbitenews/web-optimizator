@@ -701,6 +701,8 @@ define('_WEBO_DASHBOARD_CACHE_SIZE', 'Total size');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', 'Number');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', 'Refresh cache');
 define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
+define('_WEBO_DASHBOARD_CACHE_XCache', 'XCache');
+define('_WEBO_DASHBOARD_CACHE_Memcached', 'Memcached');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', 'Server Status');

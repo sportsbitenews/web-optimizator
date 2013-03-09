@@ -2125,7 +2125,7 @@ class admin {
 			}
 		} elseif ($this->compress_options['performance']['cache_engine']) {
 			$files[$this->compress_options['performance']['cache_engine'] == 1 ? 'Memcached' : 'XCache'] =
-				array('.php' => array($this->cache_engine->get_cache_size(), count($this->cache_engine->get_entry('webo_files_list'))));
+				array('.php' => array($this->cache_engine->get_cache_size('.html'), count($this->cache_engine->get_entry('webo_files_list'))));
 		}
 		$total = $size = 0;
 		foreach ($files as $group) {

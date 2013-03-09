@@ -619,6 +619,9 @@ define('_WEBO_DASHBOARD_CACHE_SCRIPTS', 'PHP 脚本');
 define('_WEBO_DASHBOARD_CACHE_SIZE', '总大小');
 define('_WEBO_DASHBOARD_CACHE_NUMBER', '数量');
 define('_WEBO_DASHBOARD_CACHE_REFRESH', '刷新缓存');
+define('_WEBO_DASHBOARD_CACHE_APC', 'APC');
+define('_WEBO_DASHBOARD_CACHE_XCache', 'XCache');
+define('_WEBO_DASHBOARD_CACHE_Memcached', 'Memcached');
 
 /* Dashboard system block */
 define('_WEBO_SYSTEM_TITLE', '服务器状态');
