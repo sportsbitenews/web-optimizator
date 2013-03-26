@@ -1274,7 +1274,7 @@ class web_optimizer {
 	* Write content to file
 	* 
 	**/
-	function write_file ($file, $content, $upload = 0, $mime = '') {
+	function write_file ($file, $content, $upload = 0, $mime = '', $recursion = 0) {
 		if (@function_exists('file_put_contents')) {
 			@file_put_contents($file . '.tmp', $content, LOCK_EX);
 			@rename($file . '.tmp', $file);
@@ -1289,6 +1289,9 @@ class web_optimizer {
 				@fwrite($fp, $content);
 				@fclose($fp);
 			}
+		}
+		if (!@is_file($file) && $recursion < 3) {
+			$this->write_file($file, $content, $upload, $mime, $recursion+1);
 		}
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));
@@ -3948,7 +3951,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 							'}';
 					}
 /* * html, body* matches Chrome, using *property for IE7- */
-					if ($this->options['uniform_cache']) {
+					if ($this->options['uniform_cache'] && !empty($base64) && $base64 != 'url()') {
 						$sels .= $image[1] .
 							'{*' .
 							$image[2] .
