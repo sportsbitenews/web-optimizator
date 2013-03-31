@@ -107,6 +107,13 @@ $unobtrusive_items = array(
 			'marker' => 'AddThis',
 			'regexp' => "<!--\sAddThis\sButton\sBEGIN.*?AddThis\sButton\sEND\s-->",
 			'height' => 16
+/* Bot Scanner */
+		), 'bs' => array(
+			'marker' => 'scan.botscanner.com',
+			'regexp' => "<script[^>]+src=['\"]https?://scan.botscanner.com[^>]+></script>",
+			'onload_before' => "<script[^>]+src=['\"](https?:)?(//scan.botscanner.com.*?)['\"][^>]*></script>",
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$2">\x3c/script>\');wss_onload_ready=1',
+			'inline' => true
 /* Facebook Connect Async */
 		), 'fa' => array(
 			'marker' => 'connect.facebook.net',
@@ -137,6 +144,12 @@ $unobtrusive_items = array(
 			'regexp' => "<script src=\"https?://www.google.com/jsapi\" type=\"text/javascript\">[\r\n\s\t]*</script>[\r\n\s\t]*<script type=\"text/javascript\">(//\s*<!\[CDATA\[)?[\r\n\s\t]*google\.load\(['\"]search.*?</script>",
 			'onload_before' => '.*?google.load\(\s*[\'"]search[\'"](.*?)\);(.*?)google.setOnLoadCallback[\r\n\s\t]*\([\r\n\s\t]*function\(\)[\r\n\s\t]*\{(.*?)\},\strue\);(.*?)</script>',
 			'onload_after' => 'document.write(\'\x3cscript src="//www.google.com/jsapi" type="text/javascript">\x3c/script>\');setTimeout(function(){if(typeof google!=="undefined"&&typeof google.load!=="undefined"){google.load("search"$1);setTimeout(function(){if(typeof google.search!=="undefined"&&typeof google.search.CustomSearchControl!=="undefined"){$2$3$4;setTimeout(function(){var a=document.forms,b=0,c;while(c=a[b++]){if(c.className=="gsc-search-box"){wss_onload_ready=1}}if(!wss_onload_ready){setTimeout(arguments.callee,20)}},20)}else{setTimeout(arguments.callee,10)}},10)}else{setTimeout(arguments.callee,10)}},10);'
+/* Google Search Engine */
+		), 'gse' => array(
+			'marker' => 'cse/cse',
+			'regexp' => "<script[^>]*>[^<]+cse/cse[^<]+</script>",
+			'onload_before' => "<script[^>]*>([^<]+cse/cse[^<]+)</script>",
+			'onload_after' => '$1;wss_onload_ready=1;'
 /* Google Plus */
 		), 'gp' => array(
 			'marker' => 'plusone.js',
@@ -147,9 +160,9 @@ $unobtrusive_items = array(
 /* Google Translate */
 		), 'gt' => array(
 			'marker' => 'translate.google.com',
-			'regexp' => "<script[^>]+src=\"https?://translate.google.com/[^\"]+\"[^>]*></script>",
-			'onload_before' => '<script[^>]+src=\"https?://translate.google.com/([^\"]+)\"[^>]*></script>',
-			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$1" type="text/javascript">\x3c/script>\');wss_onload_ready=1;'
+			'regexp' => "<script[^>]+src=\"(https?:)?//translate.google.com/[^\"]+\"[^>]*></script>",
+			'onload_before' => '<script[^>]+src=\"(https?:)?//translate.google.com/([^\"]+)\"[^>]*></script>',
+			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$2" type="text/javascript">\x3c/script>\');wss_onload_ready=1;'
 /* LinkedIn */
 		), 'ln' => array(
 			'marker' => 'platform.linkedin',
@@ -201,6 +214,20 @@ $unobtrusive_items = array(
 			'regexp' => "<script[^>]+src=\"https://seal.verisign.com/getseal.*?</script>",
 			'onload_before' => '<script[^>]+src="(https://seal.verisign.com/getseal.+?)"></script>',
 			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;'
+/* Yandex.Site */
+		), 'ys' => array(
+			'marker' => 'site.yandex.net',
+			'regexp' => "<script[^>]+>[^<]+site.yandex.net[^<]+</script>",
+			'onload_before' => '<script[^>]+>([^<]+site.yandex.net[^<]+)</script>',
+			'onload_after' => '$1;wss_onload_ready=1;',
+			'inline' => true
+/* Yandex.Site Script */
+		), 'yss' => array(
+			'marker' => 'site.yandex.net',
+			'regexp' => "<script[^>]+src=\"(https?://)?site.yandex.net[^>]+></script>",
+			'onload_before' => '<script[^>]+src=\"(https?://)?(site.yandex.net[^\"]+)"[^>]*></script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="//$2">\x3c/script>\');;wss_onload_ready=1;',
+			'inline' => true
 		)
 /* Counters */
 	), 'unobtrusive_counters' => array (
