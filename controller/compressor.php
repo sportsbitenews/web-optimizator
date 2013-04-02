@@ -1292,6 +1292,7 @@ class web_optimizer {
 		}
 		if (!@is_file($file) && $recursion < 3) {
 			$this->write_file($file, $content, $upload, $mime, $recursion+1);
+			return;
 		}
 		@touch($file, $this->time);
 		@chmod($file, octdec("0644"));

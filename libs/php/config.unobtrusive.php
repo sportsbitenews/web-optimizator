@@ -169,6 +169,12 @@ $unobtrusive_items = array(
 			'regexp' => '<script[^>]*>[^>]*?platform\.linkedin[^>]*?</script>',
 			'onload_before' => '<script[^>]*>([^>]*?platform\.linkedin[^>]*?)</script>',
 			'onload_after' => '$1;setTimeout(function(){if(typeof window.IN!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+/* Lentovod */
+		), 'lv' => array(
+			'marker' => 'lentovod.ru/rss',
+			'regexp' => '<embed[^>]+lentovod.ru/rss[^>]+>',
+			'onload_before' => '<(embed[^>]+lentovod.ru/rss[^>]+>)',
+			'onload_after' => 'document.write(\'\x3c$1\');wss_onload_ready=1;'
 /* Livetex */
 		), 'lx' => array(
 			'marker' => 'liveTexID',
