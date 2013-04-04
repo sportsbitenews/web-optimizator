@@ -6,7 +6,7 @@
  **/
 
 	foreach ($options as $key => $config) {
-?>_.config.<?php
+?>yass.config.<?php
 		echo htmlspecialchars($key);
 ?>=[<?php
 		foreach ($config as $group => $value) {

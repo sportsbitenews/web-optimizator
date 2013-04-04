@@ -88,7 +88,7 @@
 	echo _WEBO_DASHBOARD_AWARDS_CURRENT;
 ?></a></h2><div id="wss_awards"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_aw')" title="<?php
+?></p></div><a class="wssJ20" href="javascript:yass.hide('wss_aw')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	}
@@ -96,7 +96,7 @@
 	echo strpos($cookie, 'wss_buzz') !== false ? ' wssA0' : '';
 ?>" id="wss_buzz"><div class="wssN2"><h2 class="wssB"><a href="#wss_about" class="wssN3"><?php
 	echo _WEBO_DASHBOARD_BUZZ;
-?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/site-performance/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:_.hide('wss_buzz')" title="<?php
+?></a></h2><p class="wssI"><a href="http://extensions.joomla.org/extensions/site-management/site-performance/10152" rel="nofollow" class="wssJ wssJ13">Joomla! Extensions Directory</a></p><p class="wssI"><a href="http://twitter.com/wboptimizer" rel="nofollow" class="wssJ wssJ10">Twitter</a></p><p class="wssI"><a href="http://www.facebook.com/pages/Web-Optimizer/183974322020" rel="nofollow" class="wssJ wssJ11">Facebook</a></p><p class="wssI"><a href="http://blog.webogroup.com/" class="wssJ wssJ12">Blogger</a></p><a class="wssJ20" href="javascript:yass.hide('wss_buzz')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	if (!$ready) {
@@ -106,7 +106,7 @@
 	echo _WEBO_DASHBOARD_NEWS;
 ?></a></h2><div id="wss_feed"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_news')" title="<?php
+?></p></div><a class="wssJ20" href="javascript:yass.hide('wss_news')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	}
@@ -116,7 +116,7 @@
 	echo _WEBO_DASHBOARD_CACHE_TITLE;
 ?></a></h2><div id="wss_cache"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_che')" title="<?php
+?></p></div><a class="wssJ20" href="javascript:yass.hide('wss_che')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	if ($premium > 1 && !$ready) {
@@ -126,7 +126,7 @@
 		echo _WEBO_DASHBOARD_RESULTS;
 ?></span></h2><div id="wss_speed"><p class="wssI3"><?php 
 		echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_sp')" title="<?php
+?></p></div><a class="wssJ20" href="javascript:yass.hide('wss_sp')" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN5<?php
 		echo strpos($cookie, 'wss_tools') !== false ? ' wssA0' : '';
@@ -140,7 +140,7 @@
 		echo _WEBO_TOOLS_CDN;
 ?></a></li><li class="wssO4"><a href="#wss_minify" class="wssJ"><?php
 		echo _WEBO_TOOLS_MINIFY;
-?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_tools')" title="<?php
+?></a></li></ul><a class="wssJ20" href="javascript:yass.hide('wss_tools')" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	}
@@ -161,7 +161,7 @@
 			echo _WEBO_SYSTEM_NOUPDATES;
 ?></p><?php
 		}
-?><a class="wssJ20" href="javascript:_.hide('wss_updates')" title="<?php
+?><a class="wssJ20" href="javascript:yass.hide('wss_updates')" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	}
@@ -200,14 +200,14 @@
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
 ?></a>,</li><li class="wssO4"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
-?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400000)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+?><a href="javascript:yass.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400000)).toGMTString()+';path=/;domain='+yass.doc.domain+';';yass.doc.location.href='http://'+yass.doc.domain+'/'"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
 ?></a>.</li></ul><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING3;
 ?></p><p class="wssI"><a href="#wss_status" class="wssJ wssJ7"><?php
 		echo _WEBO_DASHBOARD_STATUS_ENABLE;
 	}
-?><span class="wssJ6"></span></a></p><a class="wssJ20" href="javascript:_.hide('wss_status')" title="<?php
+?><span class="wssJ6"></span></a></p><a class="wssJ20" href="javascript:yass.hide('wss_status')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><?php
 	if (!$ready) {
@@ -217,7 +217,7 @@
 	echo _WEBO_SYSTEM_TITLE;
 ?></a></h2><div id="wss_system"><p class="wssI3"><?php 
 	echo _WEBO_DASHBOARD_LOADING;
-?></p></div><a class="wssJ20" href="javascript:_.hide('wss_sys')" title="<?php
+?></p></div><a class="wssJ20" href="javascript:yass.hide('wss_sys')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN1<?php
 	echo strpos($cookie, 'wss_links') !== false ? ' wssA0' : '';
@@ -231,11 +231,11 @@
 	echo _WEBO_DASHBOARD_LINKS_ISSUES;
 ?></a></li><li class="wssO4"><a href="http://www.webogroup.com/home/support/?utm_source=product&amp;utm_medium=internal&amp;utm_campaign=web.optimizer" class="wssJ wssJ2"><?php
 	echo _WEBO_DASHBOARD_LINKS_SUPPORT;
-?></a></li></ul><a class="wssJ20" href="javascript:_.hide('wss_links')" title="<?php
+?></a></li></ul><a class="wssJ20" href="javascript:yass.hide('wss_links')" title="<?php
 	echo _WEBO_HELP_MINIMIZE;
 ?>"></a></div></div><div class="wssN1 wssN12"><div class="wssN2 wssN21"><h2 class="wssB"><span class="wssN3"><?php
 	echo _WEBO_DASHBOARD_ALL;
-?></span></h2><p class="wssI"><a href="javascript:_('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
+?></span></h2><p class="wssI"><a href="javascript:yass('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
 	echo _WEBO_HELP_HELP;
 ?></a></p><?php
 	foreach (array(
@@ -254,7 +254,7 @@
 				($premium > 1 || !in_array($key, array('wss_tools', 'wss_sp')))) {
 ?><p class="wssI <?php
 				echo $key;
-?>"><a href="javascript:_.show('<?php
+?>"><a href="javascript:yass.show('<?php
 				echo $key;
 ?>')" class="wssJ"><?php
 				echo constant($val);
@@ -636,7 +636,7 @@ wss_error2="<?php
 wss_error6=wss_error67="<?php
 	echo _WEBO_CDN_NOACCESS;
 ?>";setTimeout(function(){if(typeof _==='undefined'){setTimeout(arguments.callee,10)}else{
-var a=_.doc,b=a.createElement('script');b.type='text/javascript';
+var a=yass.doc,b=a.createElement('script');b.type='text/javascript';
 b.src='http://i.webo.in/wss/index.<?php
 	echo $language;
 	echo defined("LANG_CHARSET") && LANG_CHARSET != 'UTF-8' ? '.cp1251' : '';

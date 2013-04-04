@@ -64,7 +64,7 @@
 	echo _WEBO_SAAS_CODE;
 ?><a class="wssJ9" href="#" title="<?php
 	echo _WEBO_SAAS_CODE_HELP;
-?>">?</a><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ7" href="javascript:_.n()"><span class="wssH18"><?php
+?>">?</a><form class="wssH16" method="get"><p class="wssI"><input id="wss_balance_add" name="wss_balance_add" size="10" class="wssE"/><a class="wssJ7" href="javascript:yass.n()"><span class="wssH18"><?php
 	echo _WEBO_SAAS_ADD;
 ?></span><span class="wssJ6"></span></a><a class="wssJ5" href="http://www.webogroup.com/store/saas/"><?php
 	echo _WEBO_GENERAL_BUY;

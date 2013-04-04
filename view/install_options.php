@@ -100,13 +100,13 @@ if ($submit) {
 	if ($config == 'safe') {
 ?> wssU12 wssU17<?php
 	}
-?>"><a class="wssJ" href="javascript:_.f('safe');void(0)" rel="safe"><?php
+?>"><a class="wssJ" href="javascript:yass.f('safe');void(0)" rel="safe"><?php
 	echo _WEBO_OPTIONS_SAFE;
 ?></a></li><li class="wssU11<?php
 	if ($config == 'optimal') {
 ?> wssU12 wssU17<?php
 	}
-?>"><a class="wssJ" href="javascript:_.f('optimal');void(0)" rel="optimal"><?php
+?>"><a class="wssJ" href="javascript:yass.f('optimal');void(0)" rel="optimal"><?php
 	echo _WEBO_OPTIONS_OPTIMAL;
 ?></a></li><?php
 	if (count($configs)) {
@@ -115,11 +115,11 @@ if ($submit) {
 			if ($config == $c) {
 ?> wssU12 wssU17 wssU19<?php
 			}
-?>"><a class="wssJ" href="javascript:_.f('<?php
+?>"><a class="wssJ" href="javascript:yass.f('<?php
 			echo $c;
 ?>');void(0)" rel="<?php
 			echo $c;
-?>"><span class="wssU15" onclick="_.d('<?php
+?>"><span class="wssU15" onclick="yass.d('<?php
 			echo $c;
 ?>');return false" title="<?php
 			echo _WEBO_OPTIONS_DELETECONFIG;
@@ -138,15 +138,15 @@ if ($submit) {
 			}
 		}
 	}
-?><li class="wssU11 wssU20"><a class="wssJ" href="javascript:_.e('<?php
+?><li class="wssU11 wssU20"><a class="wssJ" href="javascript:yass.e('<?php
 	echo $new;
 ?>');void(0)" rel="<?php
 	echo $new;
 ?>"><?php
 	echo _WEBO_OPTIONS_CREATENEW;
-?></a></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div></dd></dl><p class="wssI wssU18"><a href="javascript:_.c();void(0)" class="wssJ7"><?php
+?></a></li></ul></div><div class="wssRB"><span class="wssRB5"><span class="wssRB6">&bull;</span></span><span class="wssRB7"><span class="wssRB8">&bull;</span></span></div></div></dd></dl><p class="wssI wssU18"><a href="javascript:yass.c();void(0)" class="wssJ7"><?php
 	echo _WEBO_OPTIONS_APPLY;
-?><span class="wssJ6"></span></a><a href="javascript:_.e();void(0)" class="wssJ5"><?php
+?><span class="wssJ6"></span></a><a href="javascript:yass.e();void(0)" class="wssJ5"><?php
 	echo _WEBO_OPTIONS_EDIT;
 ?><span class="wssJ6"></span></a></p><h3 class="wssB"><?php
 	echo _WEBO_OPTIONS_ATTENTION;
@@ -296,7 +296,7 @@ if ($submit) {
 								echo $option;
 ?>" class="wssF"<?php
 								if (!empty($value['price'])) {
-?> onblur="_.u(this)"<?php
+?> onblur="yass.u(this)"<?php
 								}
 								if (empty($value['hidden'])) {
 ?> title="<?php
@@ -318,7 +318,7 @@ if ($submit) {
 								echo $option;
 ?>" class="wssF wssF3"<?php
 								if (!empty($value['price'])) {
-?> onblur="_.u(this)"<?php
+?> onblur="yass.u(this)"<?php
 								}
 ?> title="<?php
 								echo constant('_WEBO_' . $option . '_HELP');
@@ -341,7 +341,7 @@ if ($submit) {
 								echo $option . $i;
 ?>" class="wssF"<?php
 								if (!empty($value['price'])) {
-?> onclick="_.u(this)"<?php
+?> onclick="yass.u(this)"<?php
 								}
 								if ($price) {
 ?> title="<?php
@@ -363,7 +363,7 @@ if ($submit) {
 								echo $option;
 ?>" class="wssF"<?php
 								if (!empty($value['price'])) {
-?> onclick="_.u(this)"<?php
+?> onclick="yass.u(this)"<?php
 								}
 ?> title="<?php
 								echo constant('_WEBO_' . $option . '_HELP');
@@ -389,7 +389,7 @@ if ($submit) {
 									echo $option;
 ?>"<?php
 								if (!empty($value['price'])) {
-?> onblur="_.u(this)"<?php
+?> onblur="yass.u(this)"<?php
 								}
 ?> title="<?php
 									echo constant('_WEBO_' . $option . '_HELP');
@@ -423,13 +423,13 @@ if ($submit) {
 		echo $saas;
 ?></tbody></table></div></fieldset><?php
 	}
-?><p class="wssI wssU18"><a href="javascript:_('.wssU')[0].style.display='block';_('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
+?><p class="wssI wssU18"><a href="javascript:yass('.wssU')[0].style.display='block';yass('.wssU0')[0].style.display='none';void(0)" class="wssJ8"><?php
 	echo _WEBO_SPLASH1_BACK;
-?></a> <span class="wss_butt1"><a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=0;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ5"><?php
+?></a> <span class="wss_butt1"><a href="javascript:var a=yass('.wssC6')[0];yass('#wss_apply')[0].value=0;if(yass.b.ie){yass[a.name]({target:a},yass.y)}else{a.onsubmit({target:a},yass.y)}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
-?><span class="wssJ6"></span></a> <a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=1;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ7"><?php
+?><span class="wssJ6"></span></a> <a href="javascript:var a=yass('.wssC6')[0];yass('#wss_apply')[0].value=1;if(yass.b.ie){yass[a.name]({target:a},yass.y)}else{a.onsubmit({target:a},yass.y)}void(0)" class="wssJ7"><?php
 	echo _WEBO_OPTIONS_APPLY;
-?><span class="wssJ6"></span></a></span><span class="wss_butt2"><a href="javascript:var a=_('.wssC6')[0];_('#wss_apply')[0].value=1;if(_.b.ie){_[a.name]({target:a},_.y)}else{a.onsubmit({target:a},_.y)}void(0)" class="wssJ7"><?php
+?><span class="wssJ6"></span></a></span><span class="wss_butt2"><a href="javascript:var a=yass('.wssC6')[0];yass('#wss_apply')[0].value=1;if(yass.b.ie){yass[a.name]({target:a},yass.y)}else{a.onsubmit({target:a},yass.y)}void(0)" class="wssJ7"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a></span><input type="hidden" name="wss_Submit" value="1"/></p></form><?php
 }

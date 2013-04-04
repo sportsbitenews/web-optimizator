@@ -79,7 +79,7 @@
 			echo _WEBO_ACCOUNT_EXPIRES . ' ' . date("Y-m-d", time() + $expires*86400);
 ?>, <?php
 		} elseif ((empty($expires) || $expires < 0) && !$premium) {
-?><a class="wssJ" href="javascript:(function(){var s=_.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+_('#wss_name')[0].value+'&amp;email='+_('#wss_email')[0].value;_('head')[0].appendChild(s)}())"><?php
+?><a class="wssJ" href="javascript:(function(){var s=yass.doc.createElement('script');s.type='text/javascript';s.src='http://webo.name/license/trial/?name='+yass('#wss_name')[0].value+'&amp;email='+yass('#wss_email')[0].value;yass('head')[0].appendChild(s)}())"><?php
 			echo _WEBO_LOGIN_TRIAL;
 ?></a> <?php
 		}

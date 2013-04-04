@@ -160,7 +160,7 @@
 		echo _WEBO_DASHBOARD_STATUS_TESTING4;
 ?></a>,</li><li class="wssO8"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE;
-?><a href="javascript:_.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+_.doc.domain+';';_.doc.location.href='http://'+_.doc.domain+'/'"><?php
+?><a href="javascript:yass.doc.cookie='web_optimizer_debug=1;expires='+(new Date(new Date().getTime()+86400)).toGMTString()+';path=/;domain='+yass.doc.domain+';';yass.doc.location.href='http://'+yass.doc.domain+'/'"><?php
 		echo _WEBO_DASHBOARD_STATUS_COOKIE2;
 ?></a>.</li></ul><p class="wssI"><?php
 		echo _WEBO_DASHBOARD_STATUS_TESTING3;
@@ -325,7 +325,7 @@
 		echo _WEBO_restricted_HELP;
 ?>">?</a></label></dt><dd class="wssD2"><textarea name="wss_restricted" id="wss_restricted" cols="80" rows="2" class="wssF wssF1"><?php
 		echo htmlspecialchars($restricted);
-?></textarea></dd></dl><p class="wssI"><a href="javascript:var a=_('.wssC6')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
+?></textarea></dd></dl><p class="wssI"><a href="javascript:var a=yass('.wssC6')[0];if(yass.b.ie){yass[a.name]({target:a})}else{a.onsubmit({target:a})}void(0)" class="wssJ5"><?php
 	echo _WEBO_SPLASH1_SAVE;
 ?><span class="wssJ6"></span></a><input type="hidden" name="wss_Submit" value="1"/></p></div></fieldset>
 <fieldset id="wsscache" class="wssD9 wssA0 wssC4"><div class="wssD10"><h2 class="wssB"><?php
@@ -374,7 +374,7 @@
 		echo $showbeta ? ' checked="checked"' : '';
 ?> name="wss_showbeta" id="wss_showbeta" title="<?php
 		echo $version;
-?>" class="wssF" onclick="_('#wss_beta')[0].style.display=this.checked?'block':'none'"/></dd></dl><?php
+?>" class="wssF" onclick="yass('#wss_beta')[0].style.display=this.checked?'block':'none'"/></dd></dl><?php
 		if (round(str_replace(".", "", $version_new)) > round(str_replace(".", "", $version))) {
 ?><div id="wss_upd" title="<?php
 			echo _WEBO_LOGIN_VERSION . ' ' . $version_new;
@@ -387,7 +387,7 @@
 ?>).</p><?php
 		}
 		if (count($versions)) {
-?><p class="wssI"><a href="#wss_rollback" class="wssJ5" onclick="_.a(this)"><?php
+?><p class="wssI"><a href="#wss_rollback" class="wssJ5" onclick="yass.a(this)"><?php
 			echo _WEBO_SYSTEM_ROLLBACK;
 ?><span class="wssJ6"></span></a> <select name="wss_version_stable" id="wss_version_stable"><?php
 			foreach ($versions as $version_stable) {

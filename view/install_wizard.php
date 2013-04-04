@@ -32,11 +32,11 @@ if ($wizard_mode) {
 	echo _WEBO_DASHBOARD_AWARDS_TITLE;
 ?></span></a></li></ul><h1 class="wssA wssA10"><?php
 	echo _WEBO_WIZARD_TITLE;
-?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9 wssO0"><a href="javascript:_.a({href:'#wss_wizard'});void(0)" class="wssJ"><span class="wssJ30">1</span> <?php
+?></h1><div class="wssC10"><div class="wssC9"><ul class="wssO7"><li class="wssO8 wssO9 wssO0"><a href="javascript:yass.a({href:'#wss_wizard'});void(0)" class="wssJ"><span class="wssJ30">1</span> <?php
 	echo _WEBO_WIZARD_STEP1;
-?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:_.wz=47;_.wizard()" class="wssJ"><span class="wssJ30">2</span> <?php
+?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:yass.wz=47;yass.wizard()" class="wssJ"><span class="wssJ30">2</span> <?php
 	echo _WEBO_WIZARD_STEP2;
-?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:_.wz=50;_.wizard()" class="wssJ"><span class="wssJ30">3</span> <?php
+?></a><span class="wssJ32"></span></li><li class="wssO8"><a href="javascript:yass.wz=50;yass.wizard()" class="wssJ"><span class="wssJ30">3</span> <?php
 	echo _WEBO_WIZARD_STEP3;
 ?></a></li></ul><p class="wssI"><?php
 	echo _WEBO_WIZARD_NOTE;
@@ -84,7 +84,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP212;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_manual" id="wss_manual2" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP212_HELP;
-?>" value="2"/></dd></dl><a href="javascript:_.wz=_.doc.getElementById('wss_manual1').checked?50:48;_.wizard()" class="wssJ5"><?php
+?>" value="2"/></dd></dl><a href="javascript:yass.wz=yass.doc.getElementById('wss_manual1').checked?50:48;yass.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><form class="wssC11 wssC13 wssA0 wssC6"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP22;
@@ -98,7 +98,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP222;
 ?></label></dt><dd class="wssD6"><input type="radio" name="wss_serverside" id="wss_serverside2" class="wssF" title="<?php
 	echo _WEBO_WIZARD_STEP222_HELP;
-?>" value="2"/></dd></dl><a href="javascript:_.wiz('49&web_optimizer_wizard_options='+(_.doc.getElementById('wss_serverside2').checked?2:1))" class="wssJ5"><?php
+?>" value="2"/></dd></dl><a href="javascript:yass.wiz('49&web_optimizer_wizard_options='+(yass.doc.getElementById('wss_serverside2').checked?2:1))" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></form><div class="wssC11 wssC13 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP23;
@@ -120,7 +120,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP15;
 ?></li><li class="wssO8 wssA0"><?php
 	echo _WEBO_WIZARD_STEP18;
-?></li></ul><a href="javascript:_.wz=50;_.wizard()" class="wssJ5"><?php
+?></li></ul><a href="javascript:yass.wz=50;yass.wizard()" class="wssJ5"><?php
 	echo _WEBO_WIZARD_NEXT;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><div class="wssC11 wssC14 wssA0"><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_STEP31;
@@ -146,7 +146,7 @@ if ($wizard_mode) {
 	echo _WEBO_WIZARD_STEP31_INFO3;
 ?></a>. <?php
 	echo _WEBO_WIZARD_STEP31_INFO4;
-?></p><a href="javascript:_.wiz(51)" class="wssJ7"><?php
+?></p><a href="javascript:yass.wiz(51)" class="wssJ7"><?php
 	echo _WEBO_WIZARD_SAVE;
 ?><span class="wssJ6"></span></a><span class="wssJ31"></span></div><h3 class="wssB3"><?php
 	echo _WEBO_WIZARD_PREVIEW;

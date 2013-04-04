@@ -40,11 +40,11 @@
 		echo _WEBO_CDN_INFO2;
 ?></p><form action="#wss_cdn" class="wssC wssC4" method="post" enctype="multipart/form-data"><?php
 		if ($submit) {
-?><p class="wssI"><a href="#wss_cdn" class="wssJ7" onclick="_.g(2)"><?php
+?><p class="wssI"><a href="#wss_cdn" class="wssJ7" onclick="yass.g(2)"><?php
 			echo _WEBO_CDN_SYNC;
 ?><span class="wssJ6"></span></a></p><?php
 		}
-?><p class="wssI"><a href="#wss_cdn" class="wssJ5" onclick="_('.wssI3')[0].style.display='block';var a=_('.wssC4')[0];if(_.b.ie){_[a.name]({target:a})}else{a.onsubmit({target:a})}"><?php
+?><p class="wssI"><a href="#wss_cdn" class="wssJ5" onclick="yass('.wssI3')[0].style.display='block';var a=yass('.wssC4')[0];if(yass.b.ie){yass[a.name]({target:a})}else{a.onsubmit({target:a})}"><?php
 		echo _WEBO_GZIP_FIND;
 ?><span class="wssJ6"></span></a></p><dl class="wssD"><dd class="wssD1"><label for="wss_directory" class="wssE"><?php
 		echo _WEBO_GZIP_DIRECTORY;
@@ -68,7 +68,7 @@
 			echo _WEBO_GZIP_SIZE;
 ?></th><th class="wssT7"><?php
 			echo _WEBO_GZIP_MTIME;
-?></th><th class="wssT7"><input type="checkbox" checked="checked" onclick="_.z()"/></th></tr></thead><tbody><?php
+?></th><th class="wssT7"><input type="checkbox" checked="checked" onclick="yass.z()"/></th></tr></thead><tbody><?php
 			$i = 0;
 			foreach ($results as $result) {
 ?><tr class="wssT8 wssT1<?php

@@ -44,17 +44,17 @@ if (!$ajax) {
 ?>"><?php
 	switch ($language) {
 		case 'en':
-?><li class="wss_e wss_e1"><a class="wss_g" href="javascript:_.t('ru')"><?php
+?><li class="wss_e wss_e1"><a class="wss_g" href="javascript:yass.t('ru')"><?php
 			echo _WEBO_GENERAL_ru;
 ?></a></li><?php
 			break;
 		default:
-?><li class="wss_e wss_e1"><a class="wss_g" href="javascript:_.t('en')"><?php
+?><li class="wss_e wss_e1"><a class="wss_g" href="javascript:yass.t('en')"><?php
 			echo _WEBO_GENERAL_en;
 ?></a></li><?php
 			break;
 	}
-?><li class="wss_e wss_f"><a class="wss_g" href="javascript:if(_.lang){_('.wss_d1')[0].className='wss_d';_.lang=0}else{_('.wss_d')[0].className='wss_d wss_d1';_.lang=1}void(0)"><?php
+?><li class="wss_e wss_f"><a class="wss_g" href="javascript:if(yasss.lang){yass('.wss_d1')[0].className='wss_d';yass.lang=0}else{yass('.wss_d')[0].className='wss_d wss_d1';yass.lang=1}void(0)"><?php
 	echo constant('_WEBO_GENERAL_' . $language);
 	?></a></li><?php
 	$i = 0;
@@ -62,7 +62,7 @@ if (!$ajax) {
 		if ($lang != $language && ($language != 'en' || $lang != 'ru')) {
 ?><li class="wss_e<?php
 			echo $i == 7 ? ' wss_e2' : '';
-?>"><a class="wss_g" href="javascript:_.t('<?php
+?>"><a class="wss_g" href="javascript:yass.t('<?php
 			echo $lang;
 ?>')"><?php
 			echo constant('_WEBO_GENERAL_' . $lang);
@@ -112,7 +112,7 @@ switch ($page) {
 if (!$ajax) {
 ?></div><p class="wss_y"><?php
 	if ((empty($page) || !in_array($page, array('install_enter_password','install_set_password'))) && empty($ready)) {
-?><a class="wss_z wss_z1" href="javascript:_('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
+?><a class="wss_z wss_z1" href="javascript:yass('.wss_a')[0].className='wss_a wss_a1';void(0)"><?php
 		echo _WEBO_HELP_HELP;
 ?></a><?php
 	}
@@ -167,7 +167,7 @@ if (!$ajax) {
 ?></p><?php
 	if ((empty($page) || !in_array($page, array('install_enter_password','install_set_password'))) && empty($ready)) {
 		$screens_lang = (in_array($language, array('ru', 'ua')) ? 'ru' : 'en');
-?><div id="wss_help"><div class="wss_r"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
+?><div id="wss_help"><div class="wss_r"><a href="javascript:yass('.wss_a')[0].className='wss_a';yass.v('wss_welcome=1');void(0)" class="wssJ20" title="<?php
 		echo _WEBO_HELP_MINIMIZE;
 ?>"></a><h1 class="wssB"><?php
 		echo _WEBO_HELP_WELCOME;
@@ -219,7 +219,7 @@ if (!$ajax) {
 		echo _WEBO_HELP_FEATURES_ALL;
 ?></a> / <a href="http://blog.webogroup.com/" class="wssJ"><?php
 		echo _WEBO_HELP_FEATURES_BLOG;
-?></a></p><p class="wssI"><a href="javascript:_('.wss_a')[0].className='wss_a';_.v('wss_welcome=1');void(0)" class="wssJ wssJ5"><span class="wssJ6"></span><?php
+?></a></p><p class="wssI"><a href="javascript:yass('.wss_a')[0].className='wss_a';yass.v('wss_welcome=1');void(0)" class="wssJ wssJ5"><span class="wssJ6"></span><?php
 		echo _WEBO_HELP_CLOSE;
 ?></a></p></div></div></div></div><?php
 	}
@@ -244,13 +244,13 @@ if (!$ajax) {
 			echo $version;
 		}
 ?>"></script><script type="text/javascript">
-if(_('#wss_feed')[0]&&typeof google!=='undefined'){(function(){
+if(yass('#wss_feed')[0]&&typeof google!=='undefined'){(function(){
 google.load("feeds","1");function a(){
 var f=new google.feeds.Feed("http://feeds.feedburner.com/WebOptimizerBlog");
-f.load(function(r){if(!r.error){_.feeds[0]=r.feed}})}google.setOnLoadCallback(a)}());
+f.load(function(r){if(!r.error){yass.feeds[0]=r.feed}})}google.setOnLoadCallback(a)}());
 (function(){google.load("feeds","1");function a(){
 var f=new google.feeds.Feed("http://sitespeedupupdates.blogspot.com/feeds/posts/default?alt=rss");
-f.load(function(r){if(!r.error){_.feeds[1]=r.feed}})};
+f.load(function(r){if(!r.error){yass.feeds[1]=r.feed}})};
 google.setOnLoadCallback(a)}())}</script></body></html><?php
 	}
 }
