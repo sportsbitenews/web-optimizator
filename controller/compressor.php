@@ -753,7 +753,7 @@ class web_optimizer {
 /* define gzip headers at the end */
 			$this->set_gzip_header();
 /* Add UA-Compatible support */
-			if ($this->ua_mod && strpos($this->content, 'X-UA-Compatible')) {
+			if ($this->ua_mod && strpos($this->content, 'X-UA-Compatible') && !strpos($this->content, 'IE=edge')) {
 				$this->ua_mod = '.ie' . preg_replace("!.*<meta[^>]+content=['\"]?IE=([0-9]+).*!is", "$1", $this->content);
 			}
 /* create DOMready chunk of JavaScript code, is required for different tasks */
