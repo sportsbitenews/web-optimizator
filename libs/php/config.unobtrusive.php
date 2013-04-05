@@ -196,6 +196,12 @@ $unobtrusive_items = array(
 		), 're' => array(
 			'marker' => 'reformal.ru',
 			'regexp' => "<script\stype=\"text/javascript\"\slanguage=\"JavaScript\"\ssrc=\"http://reformal\.ru.*?</script>"
+/* RedHelper */
+		), 'rh' => array(
+			'marker' => 'web.redhelper',
+			'regexp' => "<script[^>]+src=[\"'](https?:)?//web\.redhelper.*?</script>",
+			'onload_before' => '<script[^>]+src=["\'](https?:)?(//web\.redhelper\.[^\'"]+)[^>]*?></script>',
+			'onload_after' => 'document.write(\'\x3cscript id="rhlpscrtg" type="text/javascript" src="$2" async="true">\x3c/script>\');wss_onload_ready=1;'
 /* Twitter */
 		), 'tw' => array(
 			'marker' => 'platform.twitter',
