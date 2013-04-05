@@ -2032,13 +2032,43 @@ class web_optimizer {
 					$contents = preg_replace("@(url\(\s*['\"]?)/@is", "$1/" . $folder, $contents);
 				}
 			}
+			if (!empty($contents) && (!empty($this->ua_mod) || $this->options['page']['uniform_cache']) && $options['header'] == 'css') {
+				$selectors = explode("}", $contents);
+				if (count($selectors) > 4096) {
+					$contents_import = implode("}", array_slice($selectors, 4096));
+					$contents = implode("}", array_slice($selectors, 0, 4095)) .
+						'}@import (' . str_replace("." . $options['ext'], '-import.' . $options['ext'], $cache_file . ');';
+					$physical_file_import = str_replace("." . $options['ext'], '-import.' . $options['ext'], $physical_file);
+				}
+			}
 /* Allow for gzipping and headers */
 			if ($options['gzip'] || $options['far_future_expires']) {
 				$contents = $this->gzip_header[$options['header']] .
 /* fix <?xml includes into JS code not to break PHP file */
 					(in_array($options['ext'], array('css', 'js')) || $options['header'] == 'css' ? $contents : str_replace("<?", "\\x3C?", $contents));
+				if (!empty($contents_import)) {
+					$contents_import = $this->gzip_header[$options['header']] . $contents_import;
+				}
 			}
 			if (!empty($contents)) {
+/* write first 4096 selectors for IE */
+				if (!empty($contents_import)) {
+/* Write to cache and display */
+					$this->write_file($physical_file_import, $contents_import, in_array($options['ext'], array('css', 'js')), 'text/css');
+					if ($options['ext'] == 'css') {
+						$c = @gzencode($contents_import, $options['gzip_level'], FORCE_GZIP);
+						if (!empty($c)) {
+							$this->write_file($physical_file_import . '.gz', $c);
+						}
+					}
+				}
+/* create static gzipped versions for static gzip in nginx, Apache */
+				if ($options['ext'] == 'css' || $options['ext'] == 'js') {
+					$c = @gzencode($contents, $options['gzip_level'], FORCE_GZIP);
+					if (!empty($c)) {
+						$this->write_file($physical_file . '.gz', $c);
+					}
+				}
 /* Write to cache and display */
 				$this->write_file($physical_file, $contents, in_array($options['ext'], array('css', 'js')), $options['ext'] == 'js' ? 'application/javascript' : 'text/css');
 /* create static gzipped versions for static gzip in nginx, Apache */
