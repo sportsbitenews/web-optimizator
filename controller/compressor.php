@@ -2037,7 +2037,7 @@ class web_optimizer {
 				if (count($selectors) > 4096) {
 					$contents_import = implode("}", array_slice($selectors, 4096));
 					$contents = implode("}", array_slice($selectors, 0, 4095)) .
-						'}@import (' . str_replace("." . $options['ext'], '-import.' . $options['ext'], $cache_file . ');';
+						'}@import (' . str_replace("." . $options['ext'], '-import.' . $options['ext'], $cache_file) . ');';
 					$physical_file_import = str_replace("." . $options['ext'], '-import.' . $options['ext'], $physical_file);
 				}
 			}
