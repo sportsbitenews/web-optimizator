@@ -1457,8 +1457,8 @@ class web_optimizer {
 /* do not touch dynamic images / styles / scripts -- how we can handle them? */
 							if ($absolute_src &&
 								(preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $absolute_src) ||
-									(!empty($this->options['page']['far_future_expires_external'])) &&
-										$absolute_src{0} != '/' || $absolute_src{1} == '/')) {
+									(!empty($this->options['page']['far_future_expires_external']) &&
+										($absolute_src{0} != '/' || $absolute_src{1} == '/')))) {
 										$new_src =
 											$this->options['page']['cachedir_relative'] .
 											'wo.static.php?' . $absolute_src;
