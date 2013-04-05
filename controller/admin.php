@@ -2184,6 +2184,7 @@ class admin {
 		$c = ob_get_contents();
 		ob_end_clean();
 		$page_variables['phpinfo'] = base64_encode($c);
+		$this->view->paths['full']['view'] = $this->basepath . 'view/';
 /* Output data */
 		$this->view->render("install_system", $page_variables);
 	}
