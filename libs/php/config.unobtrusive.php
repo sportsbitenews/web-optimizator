@@ -163,6 +163,26 @@ $unobtrusive_items = array(
 			'regexp' => "<script[^>]+src=\"(https?:)?//translate.google.com/[^\"]+\"[^>]*></script>",
 			'onload_before' => '<script[^>]+src=\"(https?:)?//translate.google.com/([^\"]+)\"[^>]*></script>',
 			'onload_after' => 'document.write(\'\x3cscript src="//translate.google.com/$2" type="text/javascript">\x3c/script>\');wss_onload_ready=1;'
+/* IPB Recent Topics */
+		), 'ipb1' => array(
+			'marker' => 'ips.recentTopicsHook',
+			'regexp' => "<script[^>]+ips.recentTopicsHook[^>]+></script>",
+			'onload_before' => '<script[^>]+src=[\'\"]([^\'\"]+)[^>]+></script>',
+			'onload_after' => 'document.write(\'\x3cscript src="$1" type="text/javascript">\x3c/script>\');wss_onload_ready=1;',
+/* IPB Recent Topics Settings */
+		), 'ipb2' => array(
+			'marker' => 'ipb.recentTopics.updateInterval',
+			'regexp' => "<script[^>]+>[^<]*ipb.recentTopics.updateInterval[^<]+</script>",
+			'onload_before' => '<script[^>]+>([^<]+)</script>',
+			'onload_after' => '$1;wss_onload_ready=1;',
+			'inline' => true,
+/* IPB task */
+		), 'ipb3' => array(
+			'marker' => 'module=task',
+			'regexp' => "<img[^>]+module=task[^>]*?>",
+			'onload_before' => '<img[^>]+src=[\'\"]([^\'\"]+)[^>]*?>',
+			'onload_after' => 'new Image().src="$1";wss_onload_ready=1;',
+			'inline' => true,
 /* LinkedIn */
 		), 'ln' => array(
 			'marker' => 'platform.linkedin',
