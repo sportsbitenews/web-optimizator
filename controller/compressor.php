@@ -745,7 +745,8 @@ class web_optimizer {
 		}
 /* enable A/B testing */
 		if (!$skip && !empty($this->options['page']['ab']) && !empty($_COOKIE['WSS_DISABLED'])) {
-			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp","0"])</script>', $this->content);
+			$this->content = preg_replace("!(<head[^>]*>)!i", "$1" . '<script type="text/javascript">//<![CDATA[' .
+				"\n" . 'var _gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp","0"])' . "\n//]]></script>", $this->content);
 			$skip = 1;
 		}
 /* skip RSS, SMF xml format */
@@ -1044,7 +1045,7 @@ class web_optimizer {
 		if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab']) || !empty($this->options['page']['parallel'])) {
 			$stamp = '';
 			if (!empty($this->options['page']['counter']) || !empty($this->options['page']['sprites_domloaded']) || !empty($this->options['page']['ab'])) {
-				$stamp .= '<script type="text/javascript">';
+				$stamp .= '<script type="text/javascript">//<![CDATA[' . "\n";
 				if (!empty($this->options['page']['counter'])) {
 					$stamp .= '__WSS=(new Date()).getTime();';
 				}
@@ -1054,7 +1055,7 @@ class web_optimizer {
 				if (!empty($this->options['page']['ab'])) {
 					$stamp .= 'var _gaq=_gaq||[];_gaq.push(["_setCustomVar",1,"WEBOSiteSpeedUp","1"]);';
 				}
-				$stamp .= '</script>';
+				$stamp .= "\n//]]></script>";
 			}
 			if (!empty($this->options['page']['parallel_hosts'])) {
 				$stamp .= '<meta http-equiv="x-dns-prefetch-control" content="on"' .
@@ -1073,9 +1074,9 @@ class web_optimizer {
 						'>';
 					$hosts_to_cache[] = '//' . $s;
 				}
-				$stamp .= '<script type="text/javascript">new Image().src="' .
+				$stamp .= '<script type="text/javascript">//<![CDATA[' . "\n" . 'new Image().src="' .
 					implode($this->options['page']['cachedir_relative'] . '0.gif";new Image().src="', $hosts_to_cache) .
-					$this->options['page']['cachedir_relative'] . '0.gif"</script>';
+					$this->options['page']['cachedir_relative'] . '0.gif"' . "\n//]]></script>";
 			}
 			if ($this->options['page']['html_tidy'] &&
 				($headpos = strpos($this->content, '<head'))) {
@@ -1642,14 +1643,14 @@ class web_optimizer {
 					$source = preg_replace("!@@@WSSSTYLES@@@!", "@@@WSSSTYLES@@@" . $newfile , $source, 1);
 				} else {
 					$inc = ($this->premium > 1 ? '<!--noindex-->' : '') .
-						'<script type="text/javascript">' .
+						'<script type="text/javascript">//<![CDATA[' . "\n" .
 						$this->domready_include .
 						'var d=document,l=d.createElement("link");l.rel="stylesheet";l.type="text/css";l.href="' .
 						$href .
 						'";d.getElementsByTagName("head")[0].appendChild(l);' .
 						$this->domready_include2 .
 						(@class_exists('JFactory') && ($user = &JFactory::getUser()) && ($user->get('aid') || $user->get('id')) ? $this->domready_include3 : '') .
-						'</script>@@@WSSREADY@@@' .
+						"\n//]]></script>@@@WSSREADY@@@" .
 						($this->premium > 1 ? '<!--/noindex-->' : '');
 /* separate scripts for 2 parts, the second move to the end of the document */
 					if ($this->options['page']['html_tidy'] && ($bodypos = strpos($source, '</body>'))) {
@@ -1715,7 +1716,8 @@ class web_optimizer {
 		}
 /* add BackgroundImageCache for IE6 to prevent CSS Sprites blinking */
 		if (in_array($this->ua_mod, $this->ies) && !empty($options['css_sprites'])) {
-			$source = $this->include_bundle($source, '<script type="text/javascript">try{document.execCommand("BackgroundImageCache",false,true)}catch(e){}</script>', $handlers, $cachedir, 1);
+			$source = $this->include_bundle($source, '<script type="text/javascript">//<![CDATA[' . "\n" .
+				'try{document.execCommand("BackgroundImageCache",false,true)}catch(e){}' . "\n//]]></script>", $handlers, $cachedir, 1);
 		}
 /* Check if the cache file exists */
 		if ($timestamp) {
@@ -3347,7 +3349,7 @@ class web_optimizer {
 							$value[0] .
 						'</' .
 							$tag .
-						'><script type="text/javascript">(function(){var a=document,b=a.getElementById("' .
+						'><script type="text/javascript">//<![CDATA[' . "\n" . '(function(){var a=document,b=a.getElementById("' .
 							$stuff . '_dst_' . $key . '"),c=b.parentNode,d=a.getElementById("' .
 							$stuff . '_src_' . $key . '");if(c===a.body){c.insertBefore(d,b);c.removeChild(b)}else{c.innerHTML=c.innerHTML.replace(/\x3c' .
 							$tag .
@@ -3358,16 +3360,16 @@ class web_optimizer {
 						'["\s>].*?\x3c\/' . 
 							$tag .
 						'>/i,d.innerHTML);b=a.getElementById("' .
-							$stuff . '_src_' . $key . '");b.parentNode.removeChild(b)}}())</script>';
+							$stuff . '_src_' . $key . '");b.parentNode.removeChild(b)}}())' . "\n//]]></script>";
 					} else {
-						$return .= '<script type="text/javascript">wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
+						$return .= '<script type="text/javascript">//<![CDATA[' . "\n" . 'wss_onload[wss_onload.length]=function(){wss_parentNode=document.getElementById(\'' .
 							$stuff . '_dst_' . $key
 						.'\');' .
 							str_replace(array("\n", "\r", '###WSS###', '<div', '</div', '// ]]>'),
 								array(' ', '', $key, '\x3cdiv', '\x3c/div', ''),
 								preg_replace("@(<!--.*?-->|/\*.*?\*/)@is", "", preg_replace("@" . $onload_mask . "@is",
 								$onload_result, $value[0]))) .
-							'}</script>';
+							"}\n//]]></script>";
 					}
 				}
 			}
@@ -3404,8 +3406,8 @@ class web_optimizer {
 				'wo.' . ($this->options['javascript']['gzip'] ? 'gzip' : 'static') . '.php?') .
 				$this->options['javascript']['cachedir_relative'] .
 				'yass.loader.js"></script>' :
-				'<script type="text/javascript">(function(){function j(a){var b={};a=a.split(",");for(var g=0;g<a.length;g++)b[a[g]]=true;return b}var o=document,h;o.write=function(a){h=wss_parentNode||document.body;new x(a,{start:function(b,g,k){b=o.createElement(b);for(var d=0;d<g.length;d++)b.setAttribute(g[d].name,g[d].value.replace(/&gt;/g,">").replace(/&lt;g/,"<").replace(/&amp;/g,"&"));h.appendChild(b);k||(h=b)},end:function(){h=h.parentNode},chars:function(b){switch(h.nodeName.toLowerCase()){case"script":b&&eval(b);break;case"style":b&&h.appendChild(o.createTextNode(b));break;default:if(b){h.innerHTML+=b};break}},comment:function(b){h.appendChild(o.createComment(b))}})};var r=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>/,s=/^<\/(\w+)[^>]*>/,y=/(\w+)(?:\s*=\s*(?:(?:"((?:\\\\\\\\.|[^"])*)")|(?:\'((?:\\\\\\\\.|[^\'])*)\')|([^>\s]+)))?/g,z=j("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),A=j("address,applet,blockquote,center,dd,div,dl,dt,fieldset,form,frameset,hr,iframe,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),B=j("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),C=j("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),D=j("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),E=j("script,style"),x=function(a,b){function g(m,f,e,i){if(A[f])for(;c.last()&&B[c.last()];)k("",c.last());C[f]&&c.last()==f&&k("",f);(i=z[f]||!!i)||c.push(f);if(b.start){var t=[];e.replace(y,function(p,q,u,v,w){p=u?u:v?v:w?w:D[q]?q:"";t.push({name:q,value:p,escaped:p.replace(/(^|[^\\\\\\\\])"/g,\'$1\\\\\\\\"\')})});b.start&&b.start(f,t,i)}}function k(m,f){if(f)for(e=c.length-1;e>=0;e--){if(c[e]==f)break}else var e=0;if(e>=0){for(var i=c.length-1;i>=e;i--)b.end&&b.end(c[i]);c.length=e}}var d,n,l,c=[];c.last=function(){return this[this.length-1]};this.parse=function(m){for(last=a=m;a;){n=true;if(!c.last()||!E[c.last()]){if(a.indexOf("\\\\x3C!--")==0){d=a.indexOf("--\>");if(d>=0){b.comment&&b.comment(a.substring(4,d));a=a.substring(d+3);n=false}}else if(a.indexOf("</")==0){if(l=a.match(s)){a=a.substring(l[0].length);l[0].replace(s,k);n=false}}else if(a.indexOf("<")==0)if(l=a.match(r)){a=a.substring(l[0].length);l[0].replace(r,g);n=false}if(n){d=a.indexOf("<");m=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d);b.chars&&b.chars(m)}}else{a=a.replace(new RegExp("(.*)</"+c.last()+"[^>]*>"),function(f,e){e=e.replace(/\\\\x3C!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");b.chars&&b.chars(e);return""});k("",c.last())}if(a&&a==last)throw"Parse Error: "+a;last=a}};this.parse(a)}})();</script>') .
-				'<script type="text/javascript">wss_onload=[]</script>';
+				'<script type="text/javascript">//<![CDATA[' . "\n" . '(function(){function j(a){var b={};a=a.split(",");for(var g=0;g<a.length;g++)b[a[g]]=true;return b}var o=document,h;o.write=function(a){h=wss_parentNode||document.body;new x(a,{start:function(b,g,k){b=o.createElement(b);for(var d=0;d<g.length;d++)b.setAttribute(g[d].name,g[d].value.replace(/&gt;/g,">").replace(/&lt;g/,"<").replace(/&amp;/g,"&"));h.appendChild(b);k||(h=b)},end:function(){h=h.parentNode},chars:function(b){switch(h.nodeName.toLowerCase()){case"script":b&&eval(b);break;case"style":b&&h.appendChild(o.createTextNode(b));break;default:if(b){h.innerHTML+=b};break}},comment:function(b){h.appendChild(o.createComment(b))}})};var r=/^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:\'[^\']*\')|[^>\s]+))?)*)\s*(\/?)>/,s=/^<\/(\w+)[^>]*>/,y=/(\w+)(?:\s*=\s*(?:(?:"((?:\\\\\\\\.|[^"])*)")|(?:\'((?:\\\\\\\\.|[^\'])*)\')|([^>\s]+)))?/g,z=j("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed"),A=j("address,applet,blockquote,center,dd,div,dl,dt,fieldset,form,frameset,hr,iframe,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul"),B=j("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"),C=j("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr"),D=j("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"),E=j("script,style"),x=function(a,b){function g(m,f,e,i){if(A[f])for(;c.last()&&B[c.last()];)k("",c.last());C[f]&&c.last()==f&&k("",f);(i=z[f]||!!i)||c.push(f);if(b.start){var t=[];e.replace(y,function(p,q,u,v,w){p=u?u:v?v:w?w:D[q]?q:"";t.push({name:q,value:p,escaped:p.replace(/(^|[^\\\\\\\\])"/g,\'$1\\\\\\\\"\')})});b.start&&b.start(f,t,i)}}function k(m,f){if(f)for(e=c.length-1;e>=0;e--){if(c[e]==f)break}else var e=0;if(e>=0){for(var i=c.length-1;i>=e;i--)b.end&&b.end(c[i]);c.length=e}}var d,n,l,c=[];c.last=function(){return this[this.length-1]};this.parse=function(m){for(last=a=m;a;){n=true;if(!c.last()||!E[c.last()]){if(a.indexOf("\\\\x3C!--")==0){d=a.indexOf("--\>");if(d>=0){b.comment&&b.comment(a.substring(4,d));a=a.substring(d+3);n=false}}else if(a.indexOf("</")==0){if(l=a.match(s)){a=a.substring(l[0].length);l[0].replace(s,k);n=false}}else if(a.indexOf("<")==0)if(l=a.match(r)){a=a.substring(l[0].length);l[0].replace(r,g);n=false}if(n){d=a.indexOf("<");m=d<0?a:a.substring(0,d);a=d<0?"":a.substring(d);b.chars&&b.chars(m)}}else{a=a.replace(new RegExp("(.*)</"+c.last()+"[^>]*>"),function(f,e){e=e.replace(/\\\\x3C!--(.*?)--\>/g,"$1").replace(/<!\[CDATA\[(.*?)]]\>/g,"$1");b.chars&&b.chars(e);return""});k("",c.last())}if(a&&a==last)throw"Parse Error: "+a;last=a}};this.parse(a)}})();' . "\n//]]></script>") .
+				'<script type="text/javascript">//<![CDATA[' . "\n" . 'wss_onload=[]' . "\n//]]></script>";
 		require($options['installdir'] . 'libs/php/config.unobtrusive.php');
 /* convert vKontakte to async load */
 		if (!empty($options['unobtrusive_informers']) && strpos($this->content, 'vkAsyncInit') === false && strpos($this->content, 'VK.') !== false) {
@@ -3417,7 +3419,7 @@ class web_optimizer {
 				$replace_from[] = $match[0];
 			}
 			if ($vk) {
-				$before_body .= '<script type="text/javascript">window.vkAsyncInit=function(){' . $vk . '};window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",vkAsyncInit,false)</script>';
+				$before_body .= '<script type="text/javascript">//<![CDATA[' . "\n" . 'window.vkAsyncInit=function(){' . $vk . '};window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",vkAsyncInit,false)' . "\n//]]></script>";
 				$this->content = str_replace($replace_from, '', $this->content);
 			}
 		}
@@ -3454,7 +3456,7 @@ class web_optimizer {
 			'"],f=document;while(b=d[a++]){b=b.indexOf("//")==-1?"//"+b:b;c=f.createElement("iframe");c.style.display="none";c.src=b;f.body.appendChild(c)};';
 		$onload_func .= $this->options['css']['rocket'] || $this->options['javascript']['rocket'] ? 'document.cookie="WSS_ROCKET=1;path=/;expires="+(new Date(new Date().getTime()+31536000).toGMTString());' : '';
 		if ($onload) {
-			$before_body .= '<script type="text/javascript">'. $onload . $onload_func . '},false)</script>';
+			$before_body .= '<script type="text/javascript">//<![CDATA['. "\n" . $onload . $onload_func . "},false)\n//]]></script>";
 		}
 		if (!empty($before_body)) {
 			if ($this->premium > 1) {
@@ -3623,9 +3625,9 @@ class web_optimizer {
 /* add info about client side load speed */
 			if ($this->debug_mode) {
 				$this->content = preg_replace("@(<head[^>]*>)@is", "$1" .
-					"<script type=\"text/javascript\">" .
+					"<script type=\"text/javascript\">//<![CDATA[\n" .
 					(empty($this->options['page']['counter']) ? '__WSS=(new Date()).getTime();' : '') .
-					"window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}</script>", $this->content);
+					"window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}\n//]]></script>", $this->content);
 			}
 			$stamp = '';
 			if (!empty($this->options['page']['sprites']) && empty($this->options['css']['minify']) && empty($this->options['javascript']['minify'])) {
@@ -3684,11 +3686,11 @@ http://www.optimisationbeacon.com/analytics/track-page-load-times-with-google-an
 http://www.panalysis.com/tracking-webpage-load-times.php
  */
 			if (!empty($this->options['page']['counter'])) {
-				$stamp .= '<script type="text/javascript">(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,c=document.location;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
+				$stamp .= '<script type="text/javascript">//<![CDATA[' . "\n" . '(function(){window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",function(){var a=0,c=document.location;if(typeof _gat!=="undefined"){a=_gat._getTracker("'.
 					$this->options['page']['counter'] .
 					'")}if(typeof _gaq!=="undefined"){a=_gaq._getAsyncTracker();a._setAccount("'.
 					$this->options['page']['counter'] .
-					'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("Page Load Time (WEBO)",50*Math.round(b/50)+"ms",c.pathname+c.search,b)}},false)})()</script>';
+					'")}if(a){b=(new Date()).getTime()-__WSS;a._trackEvent("Page Load Time (WEBO)",50*Math.round(b/50)+"ms",c.pathname+c.search,b)}},false)})()' . "\n//]]></script>";
 			}
 /* Add script to check gzip possibility */
 			if (!empty($options['gzip_cookie']) && empty($_COOKIE['_wo_gzip_checked']) && empty($_SERVER['HTTP_ACCEPT_ENCODING'])) {
