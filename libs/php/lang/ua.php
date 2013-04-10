@@ -10,9 +10,9 @@
 define('_WEBO_CHARSET', "utf-8");
 define('_WEBO_GENERAL_TITLE', 'Конфігурація WEBO Site SpeedUp');
 define('_WEBO_GENERAL_FOOTER', 'Швидше блискавки!');
-define('_WEBO_GENERAL_BUYNOW', '<a href="http://www.softkey.ru/catalog/basket.php?id=320283&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Расширенная версия">Купить</a>');
-define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://www.softkey.ru/catalog/basket.php?id=334156&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Стандартная версия">Купить</a>');
-define('_WEBO_GENERAL_BUYNOWZERO', '<a href="http://www.softkey.ru/catalog/basket.php?id=582702&amp;act=buy&amp;from=1722979" class="wssJ" title="WEBO Site SpeedUp Начальная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOW', '<a href="http://webopulsar.ru/balance/?EMAIL=%%EMAIL%%&amp;sum=79990" class="wssJ" title="WEBO Site SpeedUp Расширенная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWLITE', '<a href="http://webopulsar.ru/balance/?EMAIL=%%EMAIL%%&amp;sum=19990" class="wssJ" title="WEBO Site SpeedUp Стандартная версия">Купить</a>');
+define('_WEBO_GENERAL_BUYNOWZERO', '<a href="http://webopulsar.ru/balance/?EMAIL=%%EMAIL%%&amp;sum=4990" class="wssJ" title="WEBO Site SpeedUp Начальная версия">Купить</a>');
 define('_WEBO_GENERAL_IMAGE', '<img src="http://web-optimizator.googlecode.com/svn/trunk/images/web.optimizer.logo.small.png" alt="Web Optimizer" title="Web Optimizer" width="151" height="150"/>');
 define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
@@ -908,8 +908,8 @@ define('_WEBO_SPLASH2_COMPARISON_ALLBENEFITS', 'Все преимущества'
 define('_WEBO_SPLASH2_COMPARISON_PRICE', 'Цена');
 define('_WEBO_SPLASH2_COMPARISON_FREE', 'Бесплатно');
 define('_WEBO_SPLASH2_COMPARISON_UPDATE', 'Бесплатное обновление продукта');
-define('_WEBO_SPLASH2_COMPARISON_ZEROPRICE', '499 руб.');
-define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '1999 руб.');
+define('_WEBO_SPLASH2_COMPARISON_ZEROPRICE', '748 руб.');
+define('_WEBO_SPLASH2_COMPARISON_LITEPRICE', '2374 руб.');
 define('_WEBO_SPLASH2_COMPARISON_FULLPRICE', '7999 руб.');
 define('_WEBO_SPLASH2_COMPARISON_WEEKS', 'недели');
 define('_WEBO_SPLASH2_COMPARISON_MONTHS', 'месяцев');

@@ -2256,7 +2256,8 @@ class admin {
 			"password" => $this->compress_options['password'],
 			"language" => $this->language,
 			"skip_render" => $this->skip_render,
-			"ready" => @is_file($this->basepath . 'ready')
+			"ready" => @is_file($this->basepath . 'ready'),
+			"email" => $this->compress_options['email']
 		);
 		$this->view->render("install_promo", $page_variables);
 	}

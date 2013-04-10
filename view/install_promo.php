@@ -41,17 +41,17 @@
 ?><span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_ZEROPRICE;
 ?></span><?php
-	echo _WEBO_GENERAL_BUYNOWZERO;
+	echo str_replace("%%EMAIL%%", $email, _WEBO_GENERAL_BUYNOWZERO);
 ?></th><th class="wssT7"><?php
 	echo _WEBO_SPLASH2_COMPARISON_LITE . ' ' . _WEBO_SPLASH2_COMPARISON_VERSION;
 ?><span class="wssI"><?php
 	echo _WEBO_SPLASH2_COMPARISON_LITEPRICE;
 ?></span><?php
-	echo _WEBO_GENERAL_BUYNOWLITE;
+	echo str_replace("%%EMAIL%%", $email, _WEBO_GENERAL_BUYNOWLITE);
 ?></th></tr></thead><tfoot><tr><th class="wssT7"> </th><th class="wssT7"> </th><td class="wssT7"><?php
-	echo _WEBO_GENERAL_BUYNOWZERO;
+	echo str_replace("%%EMAIL%%", $email, _WEBO_GENERAL_BUYNOWZERO);
 ?></th><td class="wssT7"><?php
-	echo _WEBO_GENERAL_BUYNOWLITE;
+	echostr_replace("%%EMAIL%%", $email,  _WEBO_GENERAL_BUYNOWLITE);
 ?></td></tr></tfoot><tbody><tr class="wssT8 wssT12"><th class="wssT9 wssT11"><?php
 	echo _WEBO_SPLASH2_COMPARISON_SPEEDUP;
 ?></th><td class="wssT9"><?php
