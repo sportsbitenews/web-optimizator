@@ -17,6 +17,7 @@ define('_WEBO_GENERAL_BUY', 'ابھی خریدیں');
 define('_WEBO_GENERAL_PREMIUM', 'پریمیم');
 define('_WEBO_GENERAL_EDITION', 'ایڈیشن');
 define('_WEBO_GENERAL_LOADING', 'لوڈنگ');
+define('_WEBO_GENERAL_PULSAR', 'http://webopulsar.com/license/');
 
 /* زبان مینو */
 define('_WEBO_GENERAL_LANGUAGE', 'زبان منتخب کریں');

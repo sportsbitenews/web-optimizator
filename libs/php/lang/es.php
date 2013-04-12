@@ -18,6 +18,7 @@ define('_WEBO_GENERAL_BUY', 'Comprar');
 define('_WEBO_GENERAL_PREMIUM', 'Premium');
 define('_WEBO_GENERAL_EDITION', 'Edici&oacute;n');
 define('_WEBO_GENERAL_LOADING', 'Cargando');
+define('_WEBO_GENERAL_PULSAR', 'http://webopulsar.com/license/');
 
 /* lang menu */
 define('_WEBO_GENERAL_LANGUAGE', 'Choose language');

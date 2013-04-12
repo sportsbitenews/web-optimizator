@@ -17,6 +17,7 @@ define('_WEBO_GENERAL_BUY', 'Купить');
 define('_WEBO_GENERAL_PREMIUM', 'полную');
 define('_WEBO_GENERAL_EDITION', 'версию');
 define('_WEBO_GENERAL_LOADING', 'Загружаю');
+define('_WEBO_GENERAL_PULSAR', 'http://webopulsar.ru/license/');
 
 /* lang menu */
 define('_WEBO_GENERAL_LANGUAGE', 'Выберите язык');
