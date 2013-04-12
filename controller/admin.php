@@ -2412,10 +2412,11 @@ class admin {
 		}
 /* get SaaS license - by website host */
 		if (empty($this->compress_options['license'])) {
-			$license_file = $this->compress_options['document_root'] . 'license';
+			$license_file = $this->compress_options['document_root'] . 'wss.license';
 			$this->view->download('http://webo.name/license/trial/?name=' . $this->compress_options['name'] .
 				'&email=' . $this->compress_options['email'], $license_file, 2);
-			$this->save_option("['license']", preg_replace("!.*'([A-Z09-\-]+)'.*!is", "$1", @file_get_contents($license_file)));
+			$this->save_option("['license']", preg_replace("!.*'([A-Z0-9\-]+)'.*!is", "$1", @file_get_contents($license_file)));
+			@unlink($license_file);
 		}
 	}
 
