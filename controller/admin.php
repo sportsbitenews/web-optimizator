@@ -2368,7 +2368,7 @@ class admin {
 	}
 
 	/**
-	* Detect and put favicon.ico to the website root
+	* Detect and put favicon.ico to the website root, get SaaS license key for the website
 	* 
 	**/		
 	function install_favicon () {
@@ -2410,6 +2410,11 @@ class admin {
 				}
 			}
 		}
+/* get SaaS license */
+		$license_file = $this->compress_options['document_root'] . 'license';
+		$this->view->download('http://webo.name/license/trial/?name=' . $this->compress_options['name'] .
+			'&email=' . $this->compress_options['email'], $license_file, 2);
+		$this->save_option("['license']", preg_replace("!.*'([A-Z09-\-]+)'.*!is", "$1", @file_get_contents($license_file)));
 	}
 
 	/**
