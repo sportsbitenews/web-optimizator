@@ -2410,11 +2410,13 @@ class admin {
 				}
 			}
 		}
-/* get SaaS license */
-		$license_file = $this->compress_options['document_root'] . 'license';
-		$this->view->download('http://webo.name/license/trial/?name=' . $this->compress_options['name'] .
-			'&email=' . $this->compress_options['email'], $license_file, 2);
-		$this->save_option("['license']", preg_replace("!.*'([A-Z09-\-]+)'.*!is", "$1", @file_get_contents($license_file)));
+/* get SaaS license - by website host */
+		if (empty($this->compress_options['license'])) {
+			$license_file = $this->compress_options['document_root'] . 'license';
+			$this->view->download('http://webo.name/license/trial/?name=' . $this->compress_options['name'] .
+				'&email=' . $this->compress_options['email'], $license_file, 2);
+			$this->save_option("['license']", preg_replace("!.*'([A-Z09-\-]+)'.*!is", "$1", @file_get_contents($license_file)));
+		}
 	}
 
 	/**
@@ -6068,6 +6070,14 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 				}
 				if (!$this->write_file($option_file, $content, 1)) {
 					$this->error[0] = 1;
+				} else {
+/* re-new values in current options' array */
+					$options = explode("']", $option_name);
+					if (count($options) == 2) {
+						$this->compress_options[str_replace("['", '', $options[0])] = $option_value;
+					} else {
+						$this->compress_options[str_replace("['", '', $options[0])][str_replace("['", '', $options[1])] = $option_value;
+					}
 				}
 			}
 		} else {
