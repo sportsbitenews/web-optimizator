@@ -15,7 +15,7 @@ class web_optimizer {
 	**/
 	function web_optimizer ($options = false) {
 		$currency = empty($_COOKIE['WSS_CURRENCY']) ? $options['options']['currency'] : $_COOKIE['WSS_CURRENCY'];
-    $rurl = empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'];
+		$rurl = empty($options['uri']) ? empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'] : $options['uri'];
 		$homepage = empty($options['options']['html_cache']['ignore_list']) && empty($options['options']['restricted']) ? '' :
 			in_array($rurl, array('/', '/index.php', '/index.html', '/#' . $currency));
 /* skip processing if disabled or restricted */
