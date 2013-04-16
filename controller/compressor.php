@@ -473,7 +473,7 @@ class web_optimizer {
 				"data_uris_exclude" => $this->options['data_uris']['ignore_list'],
 				"data_uris_exclude_mhtml" => $this->options['data_uris']['additional_list'],
 				"css_sprites" => $this->premium && $this->options['css_sprites']['enabled'],
-				"css_sprites_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] ||
+				"css_sprites_expires_rewrite" => (!($this->options['htaccess']['mod_rewrite'] &&
 						$this->options['htaccess']['mod_expires']) ||
 					!$this->options['htaccess']['enabled']) &&
 					$this->options['far_future_expires']['images'],
