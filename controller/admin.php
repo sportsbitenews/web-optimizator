@@ -5613,9 +5613,9 @@ Options +FollowSymLinks";
 			if ($fp) {
 				$content_saved = '';
 /* generic code to include */
-				$web_optimizer_handler = '$not_buffered=1;$webo_request_uri=$_SERVER[\'REQUEST_URI\'];require(\'' .
+				$web_optimizer_handler = '$not_buffered=1;require(\'' .
 					$this->basepath  .
-					'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_request_uri;$_SERVER[\'REQUEST_URI\']=$webo_request_uri;$not_buffered=1;require(\'' .
+					'web.optimizer.php\');function weboptimizer_shutdown($content){if(!empty($content)){global $webo_uri;$not_buffered=1;require(\'' .
 					$this->basepath .
 						'web.optimizer.php\');if(!empty($web_optimizer)){$weboptimizer_content=$web_optimizer->finish($content);}if(!empty($weboptimizer_content)){$content=$weboptimizer_content;}return $content;}}ob_start(\'weboptimizer_shutdown\');';
 				while ($index_string = fgets($fp)) {
