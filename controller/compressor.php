@@ -1373,8 +1373,7 @@ class web_optimizer {
 				$old_src_param = ($old_src_param_pos = strpos($old_src, '?')) ? substr($old_src, $old_src_param_pos) : '';
 /* image file name to check through ignore list */
 				$img = preg_replace("@.*/@", "", $old_src);
-				$absolute_src = $this->convert_path_to_absolute($old_src,
-					array('file' => $_SERVER['REQUEST_URI']));
+				$absolute_src = $this->convert_path_to_absolute($old_src, array('file' => $_SERVER['REQUEST_URI']));
 				if (empty($replaced[$image[0]])) {
 					if ($this->options['page']['sprites'] &&
 						((!in_array($img, $ignore_sprites) && !$this->options['css']['css_sprites_ignore']) ||
@@ -1458,8 +1457,9 @@ class web_optimizer {
 /* do not touch dynamic images / styles / scripts -- how we can handle them? */
 							if ($absolute_src &&
 								preg_match("@\.(bmp|gif|png|ico|jpe?g)$@is", $absolute_src) &&
-									!empty($this->options['page']['far_future_expires_external']) &&
-										($absolute_src{0} !== '/' || $absolute_src{1} === '/')) {
+									((!empty($this->options['page']['far_future_expires_external']) &&
+										($absolute_src{0} !== '/' || $absolute_src{1} === '/')) ||
+									!empty($this->options['page']['far_future_expires_rewrite']))) {
 										$new_src =
 											$this->options['page']['cachedir_relative'] .
 											'wo.static.php?' . $absolute_src;
