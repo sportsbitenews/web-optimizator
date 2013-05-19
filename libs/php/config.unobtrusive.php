@@ -207,6 +207,13 @@ $unobtrusive_items = array(
 			'regexp' => '<script[^>]*>[\r\n]*\/\/<!\[CDATA\[([^>]*?marva[^>]*?)\/\/\]\]>[\r\n]*</script>',
 			'onload_before' => '<script[^>]*>[\r\n]*\/\/<!\[CDATA\[([^>]*?marva[^>]*?)\/\/\]\]>[\r\n]*</script>',
 			'onload_after' => '$1;setTimeout(function(){if(typeof window.marva!=="undefined"){wss_onload_ready=1}else{setTimeout(arguments.callee,10)}},10)'
+/* NetroxSC */
+		), 'nx' => array(
+			'marker' => 'netroxsc',
+			'regexp' => '<script[^>]+src="((https?:)?//code.netroxsc.ru.*)"></script>',
+			'onload_before' => '<script[^>]+src="((https?:)?//code.netroxsc.ru.*)"></script>',
+			'onload_after' => 'document.write(\'\x3cscript type="text/javascript" src="$1">\x3c/script>\');wss_onload_ready=1;',
+			'inline' => true
 /* Odnaknopka */
 		), 'ok' => array(
 			'marker' => 'odnaknopka.ru',
