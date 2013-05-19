@@ -3,11 +3,17 @@
 // Licensed under the WEBO license (LICENSE.txt)
 // ==============================================================================================
 // @author     WEBO Software (http://www.webogroup.com/)
-// @version    1.6.3
+// @version    1.6.4
 // @copyright  Copyright &copy; 2009-2013 WEBO Software. All Rights Reserved
 // ==============================================================================================
 
 global $webo_uri;
+/* Host.CMS logged user detection, need to move to specific Host.CMS extension */
+if (class_exists('Admin', false)) {
+	$a = new Admin();
+	$no_cache = $a->UserSessionValid();
+	unset($a);
+}
 $no_cache = isset($_COOKIE['kuid']) || isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
 $webo_uri = empty($webo_uri) ? empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'] : $webo_uri;
 /* Add spot for worldwide stats */
