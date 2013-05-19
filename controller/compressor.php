@@ -156,10 +156,10 @@ class web_optimizer {
 		$this->cache_me = !empty($this->options['page']['cache']) &&
 			((empty($this->options['page']['cache_ignore']) && !$this->options['page']['ignore_include']) ||
 				(!$this->options['page']['ignore_include'] && 
-				(!$excluded_html_pages || !preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI'])) &&
+				(!$excluded_html_pages || !preg_match("!" . $excluded_html_pages . "!is", $this->uri)) &&
 				(strpos($this->options['page']['cache_ignore'], '#') === false || !$homepage)) ||
 				($this->options['page']['ignore_include'] &&
-				(($excluded_html_pages && preg_match("!" . $excluded_html_pages . "!is", $_SERVER['REQUEST_URI'])) ||
+				(($excluded_html_pages && preg_match("!" . $excluded_html_pages . "!is", $this->uri)) ||
 				(strpos($this->options['page']['cache_ignore'], '#') !== false && $homepage))) ||
 				!$this->ua ||
 				($included_user_agents && preg_match("!" . $included_user_agents . "!is", $this->ua))) &&
