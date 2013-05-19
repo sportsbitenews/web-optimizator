@@ -2612,7 +2612,7 @@ class web_optimizer {
 				$proxy = $use_proxy &&
 					(($value['tag'] == 'link' && $rewrite_css) ||
 					($value['tag'] == 'script' && $rewrite_js)) &&
-					!preg_match("!\.php$!", $value['file']);
+					!empty($value['file']) && !preg_match("!\.php$!", $value['file']);
 				$rewrite_to = empty($value['file_raw']) ? '' : $value['file_raw'];
 				if ($proxy && !empty($value['file'])) {
 					$value['file'] = preg_replace("@https?://(www\.)?" .
