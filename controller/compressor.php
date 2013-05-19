@@ -2651,7 +2651,7 @@ class web_optimizer {
 						$replaces_set = 1;
 				}
 /* rewrite skipped file with caching proxy, skip dynamic files */
-				if ($proxy && (!preg_match("!wo[0-9a-f]+!", $value['file']) || $this->options['page']['far_future_expires_external'])) {
+				if ($proxy && !empty($value['file']) && (!preg_match("!wo[0-9a-f]+!", $value['file']) || $this->options['page']['far_future_expires_external'])) {
 					$replace_from[] = $value['source'];
 					$replace_to[] = str_replace($value['file_raw'], $rewrite_to, $value['source']);
 					$replaces_set = 1;
