@@ -1,5 +1,7 @@
 <?php
 /**
+ * File from WEBO Site SpeedUp, WEBO Software (http://www.webogr<?php
+/**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Sends cache headers among the content of requested file.
  * Also adds GZip for known types of files (that can be gzipped).
@@ -172,6 +174,7 @@ switch ($extension) {
 		$extension = '';
 		break;
 }
+$_SERVER['QUERY_STRING'] = urldecode($_SERVER['QUERY_STRING']);
 /* handle cases with relative document root and redirect via .htaccess */
 if ($_SERVER['QUERY_STRING']{0} === '/') {
 	if ($_SERVER['QUERY_STRING']{1} === '/') {
@@ -189,10 +192,13 @@ if ($_SERVER['QUERY_STRING']{0} === '/') {
 			realpath($document_root . $_SERVER['QUERY_STRING']));
 	}
 } elseif (substr($_SERVER['QUERY_STRING'], 0, 4) !== 'http') {
+	if (substr($_SERVER['QUERY_STRING'], 0, 3) == '../') {
+		$_SERVER['QUERY_STRING'] = substr($_SERVER['QUERY_STRING'], 3);
+	}
 	$filename = str_replace("\\", "/",
 		realpath($website_root . '/' . $_SERVER['QUERY_STRING']));
 }
-$filename = urldecode($filename);
+
 /* get external files */
 if (substr($_SERVER['QUERY_STRING'], 0, 4) === 'http') {
 	$filename = substr(str_replace("\\", "/", dirname(__FILE__)) .
