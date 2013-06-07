@@ -2238,7 +2238,7 @@ class web_optimizer {
 		if (!$inline && $src) {
 			$file = $this->get_file_name($src);
 /* dynamic file */
-			if (!preg_match("!\.css$!is", $file)) {
+			if (!preg_match("!\.css$!is", $file) || strpos($file, 'index.php') !== false) {
 				$dynamic_file = $src;
 /* touch only non-external scripts */
 				if (!strpos($dynamic_file, "://") && strpos($dynamic_file, '//') !== 0) {
@@ -2509,7 +2509,7 @@ class web_optimizer {
 /* get remote files */
 			foreach ($this->initial_files as $key => $value) {
 				if (!empty($value['file'])) {
-					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']);
+					$dynamic = !preg_match("/\.(css|js)$/is", $value['file']) || strpos($value['file'], 'index.php') !== false;
 					$external = strlen($value['file']) > 7 && (strpos($value['file'], "://") || strpos($value['file'], '//') === 0);
 					if ($dynamic || $external) {
 /* exclude files from the same host */
@@ -3278,9 +3278,10 @@ class web_optimizer {
 	* Returns string to place before </body>
 	*
 	**/
-	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $inline = false, $onload_mask = false, $onload_result = false) {
+	function replace_unobtrusive_generic ($match_string, $stuff, $height = 0, $width = 0, $inline = false, $onload_mask = false, $onload_result = false) {
 		$return = '';
 		$initial_height = empty($height) ? 0 : $height;
+		$initial_width = empty($width) ? 0 : $width;
 		$onload = !empty($this->options['page']['unobtrusive_onload']) &&
 			$onload_mask && $onload_result;
 		preg_match_all($match_string, $this->content, $matches, PREG_SET_ORDER);
@@ -3291,25 +3292,32 @@ class web_optimizer {
 					empty($this->options['page']['unobtrusive_configuration'][$stuff]) ||
 					$key >= $this->options['page']['unobtrusive_configuration'][$stuff]) {
 					$height = $initial_height;
-					if (empty($height)) {
+					$width = $initial_height;
+					if (empty($height) || empty($width)) {
 /* try to calculate height for AdWords */
 						switch ($stuff) {
 							case 'gw':
 								$height = round(substr($value[0], strpos($value[0], 'google_ad_height =') + 18, 5));
+								$width = round(substr($value[0], strpos($value[0], 'google_ad_width =') + 18, 5));
 								break;
 							case 'aa':
 								$height = round(substr($value[0], strpos($value[0], 'amazon_ad_height = "') + 20, 5));
+								$width = round(substr($value[0], strpos($value[0], 'amazon_ad_width = "') + 20, 5));
 								break;
 							case 'cp':
 								$pos = strpos($value[0], 'thumb_size:') + 11;
 								$posend = strpos($value[0], ',', $pos);
 								$dims = explode('x', str_replace(array("'", " ", '"'), array(), substr($value[0], $pos, $posend)));
+								$width = round($dims[0]);
 								$height = round($dims[1]);
 								break;
 							case 'if':
 							case 'IF':
 								if (preg_match("@height\s*=@is", $value[0])) {
 									$height = round(preg_replace("@.*height\s*=[\s'\"](.*)[\s'\"]@", "$1", $value[0]));
+								}
+								if (preg_match("@width\s*=@is", $value[0])) {
+									$height = round(preg_replace("@.*width\s*=[\s'\"](.*)[\s'\"]@", "$1", $value[0]));
 								}
 								break;
 						}
@@ -3331,11 +3339,15 @@ class web_optimizer {
 							($onload ? 'position:relative;' : '') .
 							'height:' .
 								$height .
+							'px;width:' .
+								$width .
 							'px;display:inline-block"' : '') .
 							($height && !$inline ? ' style="'.
-							($onload ? 'position:relative;' : '') .
+							($onload ? 'position:relative;margin:0 auto;' : '') .
 							'height:' .
 								$height .
+							'px;width:' .
+								$width .
 							'px"' : '') .
 						'></' .
 							$tag .
@@ -3430,6 +3442,7 @@ class web_optimizer {
 						if (strpos($this->content, $item['marker'])) {
 							$before = $this->replace_unobtrusive_generic("@" . $item['regexp'] . "@is",
 								$key, empty($item['height']) ? 0 : $item['height'],
+								empty($item['width']) ? 0 : $item['width'],
 								empty($item['inline']) ? false : $item['inline'],
 								empty($item['onload_before']) ? false : $item['onload_before'],
 								empty($item['onload_after']) ? false : $item['onload_after']);
@@ -4163,11 +4176,11 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* try to download remote file */
 			$ch = @curl_init((strpos($file, '//') == 0 ? 'http' . $this->https . ':' : '') . $file);
 			$fph = @fopen($return_filename_headers, "w");
-			if ($ch) {
+if ($ch) {
 				@curl_setopt($ch, CURLOPT_HEADER, 0);
 				@curl_setopt($ch, CURLOPT_USERAGENT, empty($_SERVER['HTTP_USER_AGENT']) ? $ua : $_SERVER['HTTP_USER_AGENT']);
 				@curl_setopt($ch, CURLOPT_ENCODING, "deflate");
-				@curl_setopt($ch, CURLOPT_REFERER, $this->options['host']);
+				@curl_setopt($ch, CURLOPT_REFERER, 'http://' . $this->options['host']);
 				if (!@ini_set('open_basedir')) {
 					@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				}
@@ -4185,11 +4198,12 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 /* Fix non-supported 301/302/303 redirect */
 				if (strpos($headers, 'Location:') && strpos($headers, "HTTP/1.1 200") === false && strpos($headers, "HTTP/1.0 200") === false && $recursion < 10) {
 					@unlink($return_filename);
-					return $this->get_remote_file(preg_replace("!.*\nLocation:\s*([^\n]+).*!is", "$1", $headers), $tag, $recursion++);
+					@unlink($return_filename_headers);
+					return $this->get_remote_file(preg_replace("!.*\nLocation:\s*([^\r\n]+).*!is", "$1", $headers), $tag, $recursion++);
 				}
 				if (empty($contents) ||
 					in_array(substr($headers, 0, 12),
-						array('HTTP/1.1 404', 'HTTP/1.0 404', 'HTTP/0.1 404', 'HTTP/0.9 404', 'HTTP/1.1 502', 'HTTP/1.0 502', 'HTTP/0.1 502', 'HTTP/0.9 502', 'HTTP/1.1 500', 'HTTP/1.0 500', 'HTTP/0.1 500', 'HTTP/0.9 500')) ||
+						array('HTTP/1.1 400', 'HTTP/1.1 400', 'HTTP/1.1 404', 'HTTP/1.0 404', 'HTTP/0.1 404', 'HTTP/0.9 404', 'HTTP/1.1 502', 'HTTP/1.0 502', 'HTTP/0.1 502', 'HTTP/0.9 502', 'HTTP/1.1 500', 'HTTP/1.0 500', 'HTTP/0.1 500', 'HTTP/0.9 500')) ||
 					($tag == 'link' && preg_match("!<body!is", $contents))) {
 						@unlink($return_filename);
 						$return_filename = '';
