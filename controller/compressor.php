@@ -3396,8 +3396,8 @@ class web_optimizer {
 	*
 	**/
 	function replace_informers ($options) {
-		if ($this->options['page']['unobtrusive_configuration'] && !is_array($this->options['page']['unobtrusive_configuration'])) {
-			$b = explode(" ", $this->options['page']['unobtrusive_configuration']);
+		if (count($this->options['page']['unobtrusive_configuration'])) {
+			$b = $this->options['page']['unobtrusive_configuration'];
 			$conf = array();
 			foreach ($b as $skip) {
 				$a = explode(":", $skip);
