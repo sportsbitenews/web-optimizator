@@ -37,8 +37,7 @@ $unobtrusive_items = array(
 			'marker' => 'directadvert.ru/show.cgi',
 			'regexp' => "<script[^>]+directadvert.ru/show\.cgi.*?/script>",
 			'onload_before' => '<script[^>]+src=[\'"](.*?)[\'"][^>]*></script>',
-			'onload_after' => 'var b=document,a=b.createElement("script");a.type="text/javascript";a.src="$1";wss_parentNode.appendChild(a);wss_onload_ready=1',
-			'inline' => true
+			'onload_after' => 'var b=document,a=b.createElement("script");a.type="text/javascript";a.src="$1";wss_parentNode.appendChild(a);wss_onload_ready=1'
 /* eBuzzing */
 		), 'eb' => array(
 			'marker' => 'ebuzzing.com/player',

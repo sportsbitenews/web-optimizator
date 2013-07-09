@@ -17,6 +17,9 @@ if (class_exists('Admin', false)) {
 }
 $no_cache = isset($_COOKIE['kuid']) || isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
 $webo_uri = empty($webo_uri) ? empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'] : $webo_uri;
+if (!empty($WEBO_URL)) {
+	$webo_uri = $WEBO_URL;
+}
 /* Add spot for worldwide stats */
 if (!function_exists('finish_webositespeedup')) {
 	header('WEBO: inside');
