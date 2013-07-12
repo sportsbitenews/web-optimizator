@@ -218,7 +218,7 @@ foreach ($files as $file) {
 	}
 /* check if we inside document root */
 	if (strpos($filename, $document_root) !== false && !empty($extension)) {
-		$merged_content .= replace_urls($filename, $document_root);
+		$merged_content .= replace_urls($filename, $document_root) . "\n";
 	}
 }
 /* send merged content to browser */
