@@ -1,7 +1,5 @@
 <?php
 /**
- * File from WEBO Site SpeedUp, WEBO Software (http://www.webogr<?php
-/**
  * File from WEBO Site SpeedUp, WEBO Software (http://www.webogroup.com/)
  * Sends cache headers among the content of requested file.
  * Also adds GZip for known types of files (that can be gzipped).

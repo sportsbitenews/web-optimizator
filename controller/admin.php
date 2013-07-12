@@ -2031,6 +2031,9 @@ class admin {
 				@copy($this->basepath . 'libs/php/wo.gzip.php',
 					$this->compress_options['css_cachedir'] . 'wo.gzip.php');
 				@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
+				@copy($this->basepath . 'libs/php/wo.merge.php',
+					$this->compress_options['css_cachedir'] . 'wo.merge.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.merge.php', octdec("0755"));
 				@copy($this->basepath . 'libs/php/0.gif',
 					$this->compress_options['css_cachedir'] . '0.gif');
 				$this->save_option("['host']", $this->compress_options['host']);
@@ -2446,7 +2449,7 @@ class admin {
 		$deleted_js = true;
 		$deleted_html = true;
 		$deleted_sql = true;
-		$restricted = array('.', '..', 'last.chain', 'yass.loader.js', 'progress.php', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo.gzip.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
+		$restricted = array('.', '..', 'last.chain', 'yass.loader.js', 'progress.php', '.svn', 'index.php', 'web.optimizer.stamp.png', 'wo.static.php', 'wo.gzip.php', 'wo.merge.php', 'wo', '0.gif', 'webo-site-speedup.php', 'webo-site-speedup88.png', 'webo-site-speedup125.png', 'webo-site-speedup161.png', 'webo-site-speedup250.png', 'webo-site-speedup.css', 'webo-site-speedup.rocket.png', 'webo-site-speedup.back.jpg', 'webonautes.png', 'webonaut1-88.png', 'webonaut1-125.png', 'webonaut1-161.png', 'webonaut1-250.png', 'webonaut2-88.png', 'webonaut2-125.png', 'webonaut2-161.png', 'webonaut2-250.png', 'webonaut3-88.png', 'webonaut3-125.png', 'webonaut3-161.png', 'webonaut3-250.png', 'webonaut4-88.png', 'webonaut4-125.png', 'webonaut4-161.png', 'webonaut4-250.png', 'webonaut5-88.png', 'webonaut5-125.png', 'webonaut5-161.png', 'webonaut5-250.png');
 /* css cache */
 		if ($dir = @opendir($this->compress_options['css_cachedir'])) {
 			while (($file = @readdir($dir)) !== false) {
@@ -5393,6 +5396,9 @@ Options +FollowSymLinks";
 		@copy($this->basepath . 'libs/php/wo.gzip.php',
 			$this->compress_options['css_cachedir'] . 'wo.gzip.php');
 		@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
+		@copy($this->basepath . 'libs/php/wo.merge.php',
+			$this->compress_options['css_cachedir'] . 'wo.merge.php');
+		@chmod($this->compress_options['css_cachedir'] . 'wo.merge.php', octdec("0755"));
 		@copy($this->basepath . 'libs/php/0.gif',
 			$this->compress_options['css_cachedir'] . '0.gif');
 /* dirty hack for PHP-Nuke */
@@ -6456,6 +6462,12 @@ require valid-user';
 				@copy($this->basepath . 'libs/php/wo.gzip.php',
 				$this->compress_options['css_cachedir'] . 'wo.gzip.php');
 				@chmod($this->compress_options['css_cachedir'] . 'wo.gzip.php', octdec("0755"));
+		}
+		if (@filemtime($this->basepath . 'libs/php/wo.merge.php') >
+			@filemtime($this->compress_options['css_cachedir'] . 'wo.merge.php')) {
+				@copy($this->basepath . 'libs/php/wo.merge.php',
+				$this->compress_options['css_cachedir'] . 'wo.merge.php');
+				@chmod($this->compress_options['css_cachedir'] . 'wo.merge.php', octdec("0755"));
 		}
 		if (@filemtime($this->basepath . 'libs/php/0.gif') >
 			@filemtime($this->compress_options['css_cachedir'] . '0.gif')) {

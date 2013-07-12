@@ -55,6 +55,7 @@ libs/php/jsmin5.php
 libs/php/packer5.php
 libs/php/view.php
 libs/php/wo.gzip.php
+libs/php/wo.merge.php
 libs/php/wo.static.php
 libs/yuicompressor/
 libs/googlecompiler/
