@@ -156,8 +156,8 @@ if (!empty($webo_not_buffered)) {
 		'clear_cache_key' => empty($clear_cache_key) ? 0 : $clear_cache_key,
 		'host' => $host,
 		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip,
-		'uri' => empty($webo_uri) ? '' : $webo_uri),
-		'logged' => $is_logged
+		'uri' => empty($webo_uri) ? '' : $webo_uri,
+		'logged' => $is_logged)
 	);
 	$webo_options = $compress_options;
 }

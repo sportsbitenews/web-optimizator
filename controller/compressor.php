@@ -784,7 +784,7 @@ class web_optimizer {
 				if ($this->options['page']['cache']) {
 /* clean-up all localStorage values */
 					if ($this->logged) {
-						$this->domready_include2 .= 'if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart='';window.localStorage.wss_cart2=''}else{document.cookie="wss_cart=;path=/;expires="+(new Date(new Date().getTime()+' .
+						$this->domready_include2 .= 'if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart="";window.localStorage.wss_cart2=""}else{document.cookie="wss_cart=;path=/;expires="+(new Date(new Date().getTime()+' .
 						($this->options['page']['cart_timeout'] * 1000) .
 						').toGMTString());document.cookie="wss_cart2=;path=/;expires="+(new Date(new Date().getTime()+' .
 						($this->options['page']['cart_timeout'] * 1000) .
