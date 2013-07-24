@@ -782,20 +782,30 @@ class web_optimizer {
 				}
 				$this->domready_include .= 'window[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"load",_weboptimizer_load,false)}());';
 				if ($this->options['page']['cache']) {
-					$this->domready_include2 .= '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
-					$cart_class .
-					'")[0]||0;y=x.getElementsByClassName("wss_cart_qty")[0]||0;z=x.getElementsByClassName("wss_cart2")[0]||0;r=x.getElementsByClassName("wss_cart2_qty")[0]||0}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
-					$cart_class .
+/* clean-up all localStorage values */
+					if ($this->logged) {
+						$this->domready_include2 .= 'if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart='';window.localStorage.wss_cart2=''}else{document.cookie="wss_cart=;path=/;expires="+(new Date(new Date().getTime()+' .
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString());document.cookie="wss_cart2=;path=/;expires="+(new Date(new Date().getTime()+' .
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString())}';
+/* store user-specific values into localStorage */
+					} else {
+						$this->domready_include2 .= '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;if(typeof x.getElementsByClassName!="undefined"){a=x.getElementsByClassName("' .
+						$cart_class .
+						'")[0]||0;y=x.getElementsByClassName("wss_cart_qty")[0]||0;z=x.getElementsByClassName("wss_cart2")[0]||0;r=x.getElementsByClassName("wss_cart2_qty")[0]||0}else{var b=x.getElementsByTagName("*"),c,d=0;while(c=b[d++]){if(c.className){if(/(^|\s)' .
+						$cart_class .
 					'(\s|$)/.test(c.className)){a=c}if(/(^|\s)wss_cart_qty(\s|$)/.test(c.className)){y=c}if(/(^|\s)wss_cart2(\s|$)/.test(c.className)){z=c}if(/(^|\s)wss_cart2_qty(\s|$)/.test(c.className)){r=c}}}}y=y||a.getElementsByTagName("b")[0];if(a||z){if(a){a=a.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&")}if(z){z=z.innerHTML.replace(/[\r\n]/g," ").replace(/\s+/g," ").replace(/;">/g,"\">").replace(/&amp;/,"&")}if(typeof window.localStorage!="undefined"){window.localStorage.wss_cart=a;window.localStorage.wss_cart2=z}else{document.cookie="wss_cart="+a.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&parseInt(y.innerHTML))||(z&&r&&parseInt(r.innerHTML)))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())}},false)})();';
-					$this->domready_include3 = '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;document.cookie="WSS_CART=0;path=/;expires="+(new Date(new Date().getTime()+' .
-					($this->options['page']['cart_timeout'] * 1000) .
-					').toGMTString())},false)})();';
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString());document.cookie="wss_cart2="+z.replace(/;/g,"@#")+";path=/;expires="+(new Date(new Date().getTime()+' .
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString())}document.cookie="WSS_CART="+(((a&&y&&parseInt(y.innerHTML))||(z&&r&&parseInt(r.innerHTML)))?1:0)+";path=/;expires="+(new Date(new Date().getTime()+' .
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString())}},false)})();';
+						$this->domready_include3 = '(function(){var a=window;if(a.parent===a)a[/*@cc_on !@*/0?"attachEvent":"addEventListener"](/*@cc_on "on"+@*/"unload",function(){var a,x=document,y,z,r;document.cookie="WSS_CART=0;path=/;expires="+(new Date(new Date().getTime()+' .
+						($this->options['page']['cart_timeout'] * 1000) .
+						').toGMTString())},false)})();';
+					}
 				}
 			}
 /* find all files in head to process */

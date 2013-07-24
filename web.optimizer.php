@@ -15,7 +15,8 @@ if (class_exists('Admin', false)) {
 		return;
 	}
 }
-$no_cache = isset($_COOKIE['kuid']) || isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) || !empty($no_cache) ? 1 : 0;
+$is_logged = isset($_COOKIE['kuid']) || isset($is_logged) || isset($_SESSION['log']) || isset($_COOKIE['u-login']) ? 1 : 0;
+$no_cache = $is_logged || !empty($no_cache) ? 1 : 0;
 $webo_uri = empty($webo_uri) ? empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'] : $webo_uri;
 if (!empty($WEBO_URL)) {
 	$webo_uri = $WEBO_URL;
@@ -155,7 +156,8 @@ if (!empty($webo_not_buffered)) {
 		'clear_cache_key' => empty($clear_cache_key) ? 0 : $clear_cache_key,
 		'host' => $host,
 		'nogzip' => empty($webo_nogzip) ? 0 : $webo_nogzip,
-		'uri' => empty($webo_uri) ? '' : $webo_uri)
+		'uri' => empty($webo_uri) ? '' : $webo_uri),
+		'logged' => $is_logged
 	);
 	$webo_options = $compress_options;
 }
