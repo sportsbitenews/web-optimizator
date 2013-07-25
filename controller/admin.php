@@ -2488,6 +2488,11 @@ class admin {
 			}
 			$success = true;
 		}
+/* clean-up Joomla! cache */
+		if (@class_exists('JFactory', false)) {
+			@unlink($this->compress_options['html_cachedir'] . '../page/');
+			@unlink($this->compress_options['html_cachedir'] . '../content/');
+		}
 		$this->__rmdir($this->compress_options['html_cachedir'] . 'img');
 		$this->cache_engine->delete_entries('*');
 		if (!$this->cache_engine->clear_sql_cache()) {
