@@ -146,6 +146,8 @@ if (!empty($webo_not_buffered)) {
 	$libraries['YuiCompressor'] = 'class.yuicompressor.php';
 /* Google Compiler */
 	$libraries['GoogleCompiler'] = 'class.googlecompiler.php';
+/* CSSMin */
+	$libraries['CSSmin'] = 'class.cssmin.php';
 
 /* Con. the compression controller */
 	$web_optimizer = new web_optimizer(array(
