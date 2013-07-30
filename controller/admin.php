@@ -2489,9 +2489,19 @@ class admin {
 			$success = true;
 		}
 /* clean-up Joomla! cache */
-		if (@class_exists('JFactory', false)) {
-			@unlink($this->compress_options['html_cachedir'] . '../page/');
-			@unlink($this->compress_options['html_cachedir'] . '../content/');
+		if (str_replace(realpath(dirname(__FILE__) . '/../../../') . '/', '', realpath(dirname(__FILE__) . '/../../')) == 'com_webositespeedup') {
+			$dir = $this->compress_options['html_cachedir'] . '../page/';
+			if ($d = opendir($dir)) {
+				while (($file = @readdir($d)) !== false) {
+					@unlink($dir . $file);
+				}
+			}
+			$dir = $this->compress_options['html_cachedir'] . '../content/';
+			if ($d = opendir($dir)) {
+				while (($file = @readdir($d)) !== false) {
+					@unlink($dir . $file);
+				}
+			}
 		}
 		$this->__rmdir($this->compress_options['html_cachedir'] . 'img');
 		$this->cache_engine->delete_entries('*');
