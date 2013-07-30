@@ -223,6 +223,7 @@ define('_WEBO_minify_css_min_HELP', 'Tous les espaces, tabulations, retours à l
 define('_WEBO_minify_css_min1', 'Ne pas minifier le CSS');
 define('_WEBO_minify_css_min2', 'Minifier avec regular expressions');
 define('_WEBO_minify_css_min3', 'Minifier avec CSS Tidy');
+define('_WEBO_minify_css_min4', 'Minifier avec YUI CSS compressor');
 define('_WEBO_minify_js', 'Minifer les fichiers JavaScript');
 define('_WEBO_minify_js_HELP', 'Tous les espaces, tabulations, retours à la ligne et commentaires seront effacés des fichiers combinés. Le choix Bibliothèque affecte l\'algorithme et taux de compression. La compression maximale peut être obtenue avec n\'importe lequel des ces bibliothèques selon les conditions initiales.');
 define('_WEBO_minify_js_HELP_DISABLED', 'There is no support for java execution under PHP on your website, so minify with YUI Compressor is impossible.');

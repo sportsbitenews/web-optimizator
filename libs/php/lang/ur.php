@@ -218,6 +218,7 @@ define('_WEBO_minify_css_min_HELP', 'مرکب سی ایس ایس فائلز می
 define('_WEBO_minify_css_min1', 'Don\'t minify CSS');
 define('_WEBO_minify_css_min2', 'Minify with regular expressions');
 define('_WEBO_minify_css_min3', 'Minify with CSS Tidy');
+define('_WEBO_minify_css_min4', 'Minify with YUI CSS compressor');
 define('_WEBO_minify_js', 'جاوا اسکرپٹ فائلز کو چھوٹا کریں۔');
 define('_WEBO_minify_js_HELP', 'مرکب جاوا اسکرپٹ فائلز میں سے تمام زیادہ اسپیسز، ٹیب، لائن بریکس اور تبصرہ جات ڈیلیٹ کر دئے جائیں گے۔ لائبریری کا انتخاب الگورتھم اور سائز میں کمی کی مقدار کو متاثر کرتا ہے۔ ان میں سے کسی بھی لائبریری کی مدد سے سائز میں بہت زیادہ کمی  کی جا سکتی ہے لیکن اس کا دارومدار ابتدائی حالات پر ہوتا ہے۔');
 define('_WEBO_minify_js_HELP_DISABLED', 'آپ کی ویب سائٹ پر پی ایچ پی کے تحت جاوا عمل کی سپورٹ نہیں ہے۔ لہٰذا YUI کمپریسر سے چھوٹا کیا جانا ناممکن ہے۔');

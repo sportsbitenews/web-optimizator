@@ -222,6 +222,7 @@ define('_WEBO_minify_css_min_HELP', 'Todos los espacios, tabs, apartes, y coment
 define('_WEBO_minify_css_min1', 'No minimice CSS');
 define('_WEBO_minify_css_min2', 'Minimizar con regular expressions');
 define('_WEBO_minify_css_min3', 'Minimizar con CSS Tidy');
+define('_WEBO_minify_css_min4', 'Minimizar con YUI CSS compressor');
 define('_WEBO_minify_js', 'Minimiza archivos JavaScript');
 define('_WEBO_minify_js_HELP', 'Todos los espacios, tabs, apartes, y comentarios excesivos ser&aacute;n borrados del archivo combinado JavaScript. Elecci&oacute;n de librer&iacute;a afecta minimizar el algoritmo y efectividad de compresi&oacute;n. Compresi&oacute;n m&aacute;xima puede ser conseguida con cualquiera de estas librer&iacute;as dependiendo de las condiciones iniciales.');
 define('_WEBO_minify_js_HELP_DISABLED', 'There is no support for java execution under PHP on your website, so minify with YUI Compressor is impossible.');

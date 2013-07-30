@@ -442,7 +442,9 @@ class web_optimizer {
 				"minify" => $this->options['minify']['css'],
 				"minify_body" => $this->options['minify']['css_body'],
 				"minify_with" => $this->premium > 1 && $this->options['minify']['css_min'] == 2 ?
-					'tidy' : ($this->options['minify']['css_min'] ? 'basic' : ''),
+					'tidy' :
+					($this->premium > 1 && $this->options['minify']['css_min'] == 3 ? 'cssmin' :
+					($this->options['minify']['css_min'] ? 'basic' : '')),
 				"far_future_expires" => $this->options['far_future_expires']['css'] &&
 					!$this->options['htaccess']['mod_expires'],
 				"far_future_expires_php" => $this->options['far_future_expires']['css'],
@@ -2027,14 +2029,25 @@ class web_optimizer {
 				$contents = str_replace(array('<!--', '-->'), '', $contents);
 			}
 /* Allow for minification of CSS, CSS Sprites uses CSS Tidy -- already minified CSS */
-			if ($options['minify_with'] == 'basic' &&
-				!empty($options['minify']) &&
+			if (!empty($options['minify']) &&
 				empty($options['css_sprites']) &&
 /* data:URI with regular expressions must clean the comments before */
 				empty($options['data_uris']) &&
 				empty($options['mhtml'])) {
+					if ($options['minify_with'] == 'basic') {
 /* Minify CSS */
-				$contents = $this->minify_text($contents);
+						$contents = $this->minify_text($contents);
+					} elseif ($options['minify_with'] == 'cssmin') {
+						try {
+							$this->cssmin = new CSSmin();
+							$minified_contents = $this->cssmin->run($contents);
+						} catch (Exception $e) {}
+						if (!empty($minified_contents)) {
+							$contents = $minified_contents;
+						} else {
+							$contents = $this->minify_text($contents);
+						}
+					}
 			}
 /* Change absolute paths for distributed URLs */
 			if ($options['host'] && $options['header'] == 'css') {

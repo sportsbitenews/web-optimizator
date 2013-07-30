@@ -3310,7 +3310,7 @@ class admin {
 				'minify_css_min' => array(
 					'value' => $this->compress_options['minify']['css_min'],
 					'type' => 'radio',
-					'count' => $this->premium < 2 ? 2 : 3,
+					'count' => $this->premium < 2 ? 2 : 4,
 				),
 				'minify_js' => array(
 					'value' => $this->compress_options['minify']['with_jsmin'] ? 1 :
@@ -4063,9 +4063,9 @@ class admin {
 		}
 /* Disable CSS Sprites if no CSS Tidy is used */
 		if (isset($this->compress_options['minify']['css_min']) &&
-			$this->compress_options['minify']['css_min'] < 2 &&
+			$this->compress_options['minify']['css_min'] != 2 &&
 			(!isset($this->input['wss_minify_css_min']) ||
-			$this->input['wss_minify_css_min'] < 2)) {
+			$this->input['wss_minify_css_min'] != 2)) {
 				$this->restrictions['wss_css_sprites_tidy'] = 1;
 		}
 /* Disable CSS Sprites and data:URI if no CSS minify is used */

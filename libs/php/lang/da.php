@@ -222,6 +222,7 @@ define('_WEBO_minify_css_min_HELP', 'Alle store mellemrum, tabuleringer, linjesk
 define('_WEBO_minify_css_min1', 'Komprimer ikke CSS');
 define('_WEBO_minify_css_min2', 'Komprimer med regulære udtryk');
 define('_WEBO_minify_css_min3', 'Komprimer med CSS Tidy');
+define('_WEBO_minify_css_min4', 'Komprimer med YUI CSS compressor');
 define('_WEBO_minify_js', 'Komprimer JavaScript filer');
 define('_WEBO_minify_js_HELP', 'Alle store mellemrum, tabuleringer, linjeskift og kommentarer vil blive fra sammenflettede JavaScript filer. Valget påvirker komprimeringsalgoritme og komprimeringsstanden. Maksimal komprimering kan opnås med en af ​​disse valg, alt afhængig af betingelserne.');
 define('_WEBO_minify_js_HELP_DISABLED', 'Kørsel af Java under PHP på din hjemmeside understøttes ikke, så komprimering med YUI Compressor er ikke muligt.');
