@@ -5839,9 +5839,9 @@ Options +FollowSymLinks";
 			$this->compress_options['document_root'];
 /* don't check modules more than 9 seconds */
 		$timer = time();
+		$check_modules_curl = @function_exists('curl_init') && strpos($_SERVER['SERVER_SOFTWARE'], 'Win') === false;
 /* detect if hosting is compatible with SynLinks rule (included in core) */
-		if (@function_exists('curl_init') &&
-			$this->check_apache_module('Options +FollowSymLinks', $root, $cachedir, 'mod_symlinks')) {
+		if (($check_modules_curl && $this->check_apache_module('Options +FollowSymLinks', $root, $cachedir, 'mod_symlinks')) || strpos($_SERVER['SERVER_SOFTWARE'], 'Win') === false) {
 				$this->apache_modules[] = 'mod_symlinks';
 		}
 /* download restricted file, if sizes are equal =? file isn't restricted => htaccess won't work */
@@ -5876,7 +5876,8 @@ str_replace($root, "/", str_replace("\\", "/", dirname(__FILE__))) .
 		);
 /* test only existent modules or all if Apache doens't exist */
 		$test_all = count($apache_modules) ? 0 : 1;
-		if (@function_exists('curl_init')) {
+/* exclude Windows servers from testing */
+		if ($check_modules_curl) {
 /* detect modules one by one, it can be CGI environment */
 			foreach ($modules as $key => $value) {
 				if ((!in_array('mod_deflate', $apache_modules) || $key != 'mod_gzip') && ($test_all || in_array($key, $apache_modules))) {
