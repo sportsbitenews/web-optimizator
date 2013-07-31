@@ -36,6 +36,9 @@ function replace_urls ($cached, $filename, $document_root) {
 					if (substr($u, 0, 6) == 'mhtml:') {
 						break;
 					}
+				case '.':
+					$u = $path . $u;
+					break;
 			}
 			$content = str_replace($i, $u, $content);
 			$replaced[$i] = 1;

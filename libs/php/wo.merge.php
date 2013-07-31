@@ -9,7 +9,7 @@
  *
  **/
 /* replace all urls with absolute paths */
-function replace_urls ($filename, $document_root) {
+function replace_urls ($cached, $filename, $document_root) {
 	$content = @file_get_contents($filename);
 	if (get_magic_quotes_runtime()) {
 		$content = stripslashes($content);
@@ -36,10 +36,18 @@ function replace_urls ($filename, $document_root) {
 					if (substr($u, 0, 6) == 'mhtml:') {
 						break;
 					}
+				case '.':
+					$u = $path . $u;
+					break;
 			}
 			$content = str_replace($i, $u, $content);
 			$replaced[$i] = 1;
 		}
+	}
+	$fp = @fopen($cached, "wb");
+	if ($fp) {
+		@fwrite($fp, $content);
+		@fclose($fp);
 	}
 	return $content;
 }
