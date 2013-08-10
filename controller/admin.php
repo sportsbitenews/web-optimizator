@@ -5703,9 +5703,6 @@ Options +FollowSymLinks";
 /* small fix for Joostina */
 					if (substr($this->cms_version, 0, 8) == 'Joostina') {
 						$content_saved = preg_replace("/(exit\s*\(\);\r?\n\?>)[\r\n\s]*$/", '$web_optimizer->finish();' . "\n$1", $content_saved);
-					} else {
-/* add finish block */
-						$content_saved = preg_replace("/ ?\?>[\r\n\s]*$/", '\$web_optimizer->finish(); ?>', $content_saved);
 					}
 				} elseif (substr($this->cms_version, 0, 11) != 'Shop-Script') {
 /* fix for Drupal / Joomla / others on not-closed ?> */
