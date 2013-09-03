@@ -2814,10 +2814,13 @@ class web_optimizer {
 /* remove some files from pages at all */
 							if (empty($remove_list[$value['tag']]) || (!in_array(preg_replace("!^.*/!", "", $value['file']), $remove_list[$value['tag']]))) {
 								if ($value['tag'] == 'link') {
+									$media_array = explode("@media", $this->resolve_css_imports($value['file']));
 /* recursively resolve @import in files */
 									$content_from_file = (empty($value['media']) ? "" : "@media " . $value['media'] . "{") .
-										$this->resolve_css_imports($value['file']) .
+										$media_array[0] .
 										(empty($value['media']) ? "" : "}");
+/* add the rest, may be erroneous - if @media breaks initial file */
+									$content_from_file .= str_replace($media_array[0], "", implode("@media", $media_array));
 /* convert CSS images' paths to absolute */
 									$content_from_file = $this->convert_paths_to_absolute($content_from_file, array('file' => $value['file']), 0, 1);
 								} else {
