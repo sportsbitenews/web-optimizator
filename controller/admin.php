@@ -3236,7 +3236,7 @@ class admin {
 					'hidden' => 1
 				),
 				'external_scripts_remove_list_css' => array(
-					'value' => $this->compress_options['external_scripts']['remove_list_css'],
+					'value' => empty($this->compress_options['external_scripts']['remove_list_css']) ? '' : $this->compress_options['external_scripts']['remove_list_css'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 3
@@ -3256,7 +3256,7 @@ class admin {
 					'type' => 'checkbox'
 				),
 				'external_scripts_inline_body' => array(
-					'value' => $this->compress_options['external_scripts']['inline_body'],
+					'value' => empty($this->compress_options['external_scripts']['inline_body']) ? 0 : 1,
 					'type' => 'checkbox'
 				),
 				'external_scripts_on' => array(
@@ -3295,12 +3295,12 @@ class admin {
 					'hidden' => $this->premium < 1 ? 1 : 0
 				),
 				'external_scripts_include_mask' => array(
-					'value' => $this->compress_options['external_scripts']['include_mask'],
+					'value' => empty($this->compress_options['external_scripts']['include_mask']) ? '' : $this->compress_options['external_scripts']['include_mask'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0
 				),
 				'external_scripts_remove_list' => array(
-					'value' => $this->compress_options['external_scripts']['remove_list'],
+					'value' => empty($this->compress_options['external_scripts']['remove_list']) ? '' : $this->compress_options['external_scripts']['remove_list'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 3
@@ -3316,7 +3316,7 @@ class admin {
 					'value' => $this->compress_options['minify']['with_jsmin'] ? 1 :
 						($this->compress_options['minify']['with_yui'] ? 2 :
 						($this->compress_options['minify']['with_packer'] ? 3 : 
-						($this->compress_options['minify']['with_google'] ? 4 : 0))),
+						(!empty($this->compress_options['minify']['with_google']) ? 4 : 0))),
 					'type' => 'radio',
 					'count' => $this->premium < 2 ? 2 : 5,
 					'disabled' => array(
@@ -3371,7 +3371,7 @@ class admin {
 				),
 				'gzip_zlib' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['gzip']['zlib'],
+					'value' => empty($this->compress_options['gzip']['zlib']) ? '' : $this->compress_options['gzip']['zlib'],
 					'type' => 'checkbox',
 					'disabled' => !empty($this->restrictions['wss_gzip_zlib'])
 				),
@@ -3510,13 +3510,13 @@ class admin {
 				),
 				'footer_counter' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['footer']['counter'],
+					'value' => empty($this->compress_options['footer']['counter']) ? '' : $this->compress_options['footer']['counter'],
 					'type' => 'smalltext'
 				),
 				'footer_ab' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'type' => 'smalltext',
-					'value' => $this->compress_options['footer']['ab'],
+					'value' => empty($this->compress_options['footer']['ab']) ? '' : $this->compress_options['footer']['ab'],
 					'price' => 5
 				)
 			),
@@ -3528,7 +3528,7 @@ class admin {
 				),
 				'performance_check_files' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['performance']['cache_version'] ? 1 : 0,
+					'value' => empty($this->compress_options['performance']['cache_version']) ? 0 : 1,
 					'type' => 'checkbox',
 					'price' => 1
 				),
@@ -3563,7 +3563,7 @@ class admin {
 					'price' => 2
 				),
 				'performance_https' => array(
-					'value' => $this->compress_options['performance']['https'],
+					'value' => empty($this->compress_options['performance']['https']) ? 0 : 1,
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 1
@@ -3585,19 +3585,19 @@ class admin {
 				),
 				'performance_cache_engine_options' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['performance']['cache_engine_options'],
+					'value' => empty($this->compress_options['performance']['cache_engine_options']) ? '' : $this->compress_options['performance']['cache_engine_options'],
 					'type' => 'text',
 					'hidden' => 1
 				),
 				'performance_scale' => array(
-					'value' => $this->compress_options['performance']['scale'],
+					'value' => empty($this->compress_options['performance']['scale']) ? 0 : 1,
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 3,
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
 				'performance_scale_restriction' => array(
-					'value' => $this->compress_options['performance']['scale_restriction'],
+					'value' => empty($this->compress_options['performance']['scale_restriction']) ? '' : $this->compress_options['performance']['scale_restriction'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5,
@@ -3674,7 +3674,7 @@ class admin {
 				),
 				'css_sprites_sprites_limited' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['css_sprites']['sprites_limited'],
+					'value' => empty($this->compress_options['css_sprites']['sprites_limited']) ? '' : $this->compress_options['css_sprites']['sprites_limited'],
 					'type' => 'smalltext',
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
 				),
@@ -3700,7 +3700,7 @@ class admin {
 				),
 				'css_sprites_ignore' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
-					'value' => $this->compress_options['css_sprites']['ignore'],
+					'value' => empty($this->compress_options['css_sprites']['ignore']) ? 0 : $this->compress_options['css_sprites']['ignore'],
 					'type' => 'radio',
 					'count' => 2,
 					'disabled' => !empty($this->restrictions['wss_css_sprites_enabled'])
@@ -3742,13 +3742,13 @@ class admin {
 				),
 				'html_cache_timeout_cart' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['html_cache']['timeout_cart'],
+					'value' => empty($this->compress_options['html_cache']['timeout_cart']) ? 0 : $this->compress_options['html_cache']['timeout_cart'],
 					'type' => 'smalltext',
 					'price' => 2
 				),
 				'html_cache_timeout_ajax' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['html_cache']['timeout_ajax'],
+					'value' => empty($this->compress_options['html_cache']['timeout_ajax']) ? 0 : $this->compress_options['html_cache']['timeout_ajax'],
 					'type' => 'smalltext',
 					'price' => 2
 				),
@@ -3765,7 +3765,7 @@ class admin {
 				),
 				'html_cache_ignore' => array(
 					'hidden' => $this->premium < 1 ? 1 : 0,
-					'value' => $this->compress_options['html_cache']['ignore'],
+					'value' => empty($this->compress_options['html_cache']['ignore']) ? 0 : $this->compress_options['html_cache']['ignore'],
 					'type' => 'radio',
 					'count' => 2
 				),
@@ -3788,7 +3788,7 @@ class admin {
 				),
 				'html_cache_params' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['html_cache']['params'],
+					'value' => empty($this->compress_options['html_cache']['params']) ? '' : $this->compress_options['html_cache']['params'],
 					'type' => 'text',
 					'price' => 2
 				),
@@ -3801,7 +3801,7 @@ class admin {
 				),
 				'html_cache_cleanup' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['html_cache']['cleanup'],
+					'value' => empty($this->compress_options['html_cache']['cleanup']) ? 0 : 1,
 					'type' => 'checkbox',
 					'price' => 2
 				)
@@ -3810,26 +3810,26 @@ class admin {
 				'premium' => $this->premium < 2 ? 1 : 0,
 				'sql_cache_enabled' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['sql_cache']['enabled'],
+					'value' => empty($this->compress_options['sql_cache']['enabled']) ? 0 : 1,
 					'type' => 'checkbox',
 					'price' => 12,
 					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_time' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['sql_cache']['time'],
+					'value' => empty($this->compress_options['sql_cache']['time']) ? 0 : $this->compress_options['sql_cache']['time'],
 					'type' => 'smalltext',
 					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_timeout' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['sql_cache']['timeout'],
+					'value' => empty($this->compress_options['sql_cache']['timeout']) ? 0 : $this->compress_options['sql_cache']['timeout'],
 					'type' => 'smalltext',
 					'disabled' => empty($this->internal_sql)
 				),
 				'sql_cache_tables_exclude' => array(
 					'hidden' => $this->premium < 2 ? 1 : 0,
-					'value' => $this->compress_options['sql_cache']['tables_exclude'],
+					'value' => empty($this->compress_options['sql_cache']['tables_exclude']) ? '' : $this->compress_options['sql_cache']['tables_exclude'],
 					'type' => 'textarea',
 					'disabled' => empty($this->internal_sql)
 				)
@@ -3880,25 +3880,25 @@ class admin {
 					'price' => 3
 				),
 				'unobtrusive_background' => array(
-					'value' => $this->compress_options['unobtrusive']['background'],
+					'value' => empty($this->compress_options['unobtrusive']['background']) ? 0 : 1,
 					'type' => 'checkbox',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 2
 				),
 				'unobtrusive_configuration' => array(
-					'value' => $this->compress_options['unobtrusive']['configuration'],
+					'value' => empty($this->compress_options['unobtrusive']['configuration']) ? '' : $this->compress_options['unobtrusive']['configuration'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
 				),
 				'unobtrusive_postload' => array(
-					'value' => $this->compress_options['unobtrusive']['postload'],
+					'value' => empty($this->compress_options['unobtrusive']['postload']) ? '' : $this->compress_options['unobtrusive']['postload'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
 				),
 				'unobtrusive_frames' => array(
-					'value' => $this->compress_options['unobtrusive']['frames'],
+					'value' => empty($this->compress_options['unobtrusive']['frames']) ? '' : $this->compress_options['unobtrusive']['frames'],
 					'type' => 'textarea',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
@@ -3911,7 +3911,7 @@ class admin {
 					'price' => 3
 				),
 				'parallel_regexp' => array(
-					'value' => $this->compress_options['parallel']['regexp'],
+					'value' => empty($this->compress_options['parallel']['regexp']) ? '' : $this->compress_options['parallel']['regexp'],
 					'type' => 'text',
 					'hidden' => $this->premium < 2 ? 1 : 0,
 					'price' => 5
@@ -3972,15 +3972,15 @@ class admin {
 			),
 			'rocket' => array(
 				'rocket_css' => array(
-					'value' => $this->compress_options['rocket']['css'],
+					'value' => empty($this->compress_options['rocket']['css']) ? 0 : 1,
 					'type' => 'checkbox'
 				),
 				'rocket_javascript' => array(
-					'value' => $this->compress_options['rocket']['javascript'],
+					'value' => empty($this->compress_options['rocket']['javascript']) ? 0 : 1,
 					'type' => 'checkbox'
 				),
 				'rocket_reorder' => array(
-					'value' => $this->compress_options['rocket']['reorder'],
+					'value' => empty($this->compress_options['rocket']['reorder']) ? 0 : 1,
 					'type' => 'checkbox'
 				),
 			)
