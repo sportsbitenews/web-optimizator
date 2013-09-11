@@ -3663,7 +3663,7 @@ class web_optimizer {
 			}
 /* add info about client side load speed */
 			if ($this->debug_mode) {
-				$this->content = preg_replace("@(<head[^>]*>)@is", "$1" .
+				$this->content = preg_replace("@(<head([^e][^>]*>|>))@is", "$1" .
 					"<script type=\"text/javascript\">//<![CDATA[\n" .
 					(empty($this->options['page']['counter']) ? '__WSS=(new Date()).getTime();' : '') .
 					"window[/*@cc_on !@*/0?'attachEvent':'addEventListener'](/*@cc_on 'on'+@*/'load',function(){__WSS=(new Date()).getTime()-__WSS},false);window.onerror=function(){window.__WSSERR=(typeof window.__WSSERR!=='undefined'?window.__WSSERR:0)+1;return false}\n//]]></script>", $this->content);
