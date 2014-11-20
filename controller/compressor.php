@@ -213,7 +213,7 @@ class web_optimizer {
 				($timestamp_ajax &&
 				$this->time - $timestamp_ajax < $this->options['page']['ajax_timeout'] &&
 				($content = $this->cache_engine->get_entry($cache_key_ajax)))) {
-				if ($jutility) {
+				if ($jutility && !$jsession) {
 					$token = JUtility::getToken();
 				}
 				elseif ($jsession) {
@@ -2852,7 +2852,7 @@ class web_optimizer {
 							}
 						}
 /* remove BOM */
-						$content_from_file = str_replace('﻿', '', $content_from_file);
+						$content_from_file = str_replace(' ', '', $content_from_file);
 /* don't delete any detected scripts from array -- we need to clean up HTML page from them */
 						if (empty($value['file']) && (empty($last_key[$value['tag']]) || $key != $last_key[$value['tag']])) {
 /* glue inline and external content */
@@ -4304,7 +4304,7 @@ if ($ch) {
 	*
 	*/
 	function resolve_amps ($str) {
-		return str_replace(array('&amp;', '&#38;', '&#038;', '﻿'), array('&', '&', '&', ''), $str);
+		return str_replace(array('&amp;', '&#38;', '&#038;', ' '), array('&', '&', '&', ''), $str);
 	}
 	
 	/**
@@ -4379,7 +4379,7 @@ if ($ch) {
 	*
 	**/
 	function clear_trash () {
-		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", "﻿"), "", $this->content);
+		$this->content = str_replace(array("@@@WSSSTYLES@@@", "@@@WSSSCRIPT@@@", "@@@WSSREADY@@@", " "), "", $this->content);
 	}
 
 	/**
