@@ -3881,7 +3881,7 @@ http://www.panalysis.com/tracking-webpage-load-times.php
 					}
 /* replace path in initial CSS */
 					$content = preg_replace("@url\s*\(\s*['\"]?" .
-						str_replace("?", "\?", $file) .
+						str_replace(array("?", "@"), array("\?", "\@"), $file) .
 						"['\"]?\s*\)@is", "url(" . $absolute_path . ")", $content);
 				}
 			}
