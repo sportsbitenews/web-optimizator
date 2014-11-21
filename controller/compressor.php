@@ -1222,10 +1222,9 @@ class web_optimizer {
 				$c = $this->content;
 				$jutility = class_exists('JUtility', false);
 				$jsession = class_exists('JSession', false);
-				if ($jutility) {
+				if ($jutility && method_exists('JUtility', 'getToken')) {
 					$token = JUtility::getToken();
-				}
-				elseif ($jsession) {
+				} elseif ($jsession && method_exists('JSession', 'getFormToken')) {
 					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
