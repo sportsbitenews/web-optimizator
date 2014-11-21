@@ -213,12 +213,10 @@ class web_optimizer {
 				($timestamp_ajax &&
 				$this->time - $timestamp_ajax < $this->options['page']['ajax_timeout'] &&
 				($content = $this->cache_engine->get_entry($cache_key_ajax)))) {
-				try {
+				if ($jutility && method_exists('JUtility', 'getToken')) {
 					$token = JUtility::getToken();
-				} catch (Exception $e) {
-					try {
-						$token = JSession::getFormToken();
-					} catch (Exception $e) {}
+				} elseif ($jsession && method_exists('JSession', 'getFormToken')) {
+					$token = JSession::getFormToken();
 				}
 				if (!empty($token)) {
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
