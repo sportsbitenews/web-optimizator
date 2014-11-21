@@ -215,10 +215,10 @@ class web_optimizer {
 				($content = $this->cache_engine->get_entry($cache_key_ajax)))) {
 				try {
 					$token = JUtility::getToken();
-				} catch ($e) {
+				} catch (Exception $e) {
 					try {
 						$token = JSession::getFormToken();
-					} catch ($e) {}
+					} catch (Exception $e) {}
 				}
 				if (!empty($token)) {
 					$content = str_replace('##WSS_JTOKEN_WSS##', $token, $content);
