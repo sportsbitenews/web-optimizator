@@ -654,7 +654,7 @@ class webo_cache_files extends webo_cache_engine
 		$allow_basedirs = !count($basedirs) || empty($basedirs[0]);
 		if (!$allow_basedirs) {
 			foreach ($basedirs as $basedir) {
-				if (strpos($path, $basedir) === 0) {
+				if (strpos($path, realpath($basedir)) === 0) {
 					$cur_dir = dirname($basedir) . '/';
 					$dirs = explode('/', str_replace($cur_dir, '', $path));
 					$allow_basedirs = 1;
@@ -662,6 +662,7 @@ class webo_cache_files extends webo_cache_engine
 				}
 			}
 		}
+		$cur_dir = $path{0} == '/' ? '/' : '';
 		if ($allow_basedirs) {
 			foreach ($dirs as $dir) {
 				if (!empty($dir)) {
