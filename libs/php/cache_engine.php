@@ -472,14 +472,15 @@ class webo_cache_files extends webo_cache_engine
 			$written = @file_put_contents($webo_files_list_var . $tmp, $str);
 			$i++;
 		}
-		if (@is_file($webo_files_list_var . $tmp)) {
+/* skip mutex issues with reading / writing to cache */
+		if (@is_file($webo_files_list_var . $tmp) && $written == $length && strlen($str) > @filesize($webo_files_list_var)) {
 			if (@is_file($webo_files_list_var)) {
 /* need for APS.NET environments, why? */
 				@unlink($webo_files_list_var);
 			}
 			@rename($webo_files_list_var . $tmp, $webo_files_list_var);
-			@unlink($webo_files_list_var . $tmp);
 		}
+		@unlink($webo_files_list_var . $tmp);
 	}
 
 	/* Adds or updates entry. Expects key string and value to cache. */
